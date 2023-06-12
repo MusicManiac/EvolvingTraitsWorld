@@ -119,7 +119,7 @@ function ISInventoryTransferAction:perform()
 		local player = self.character;
 		local item = self.item;
 		local itemWeight = item:getWeight();
-		local modData = player:getModData().EvolvingTraitsWorld.TransferSystem;
+		local modData = player:getModData().EvolvingTraitsWorld;
 		local transferModData = modData.TransferSystem;
 		transferModData.ItemsTransferred = transferModData.ItemsTransferred + 1;
 		transferModData.WeightTransferred = transferModData.WeightTransferred + itemWeight;

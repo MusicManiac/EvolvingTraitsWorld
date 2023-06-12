@@ -1,8 +1,4 @@
-v.5.0.2
+v.5.0.3
 
 Fixes:
-	- Fixed ISInventoryTransferAction:perform() passing wrong modData to Delayed Traits system functions
-Translations:
-	- Added Português Brasileiro / Brazilian Portuguese translation, thanks to [url=https://steamcommunity.com/profiles/76561198154549234]Colossus_ND[/url]
-	- Updated CN and CH translations to current version
-	- Only translation that is outdated is Russian, if someone can help with maintaining it, it would be nice.
+	- Fixed item transfer stuff (incorrect moddata table)
