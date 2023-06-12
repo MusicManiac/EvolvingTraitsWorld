@@ -44,6 +44,8 @@ UI_CN = {
 
 	UI_EvolvingTraitsWorld_Options_GatherDebug = "搜集除错资料",
     UI_EvolvingTraitsWorld_Options_GatherDebug_tooltip = "将除错资料纪录于console.txt.侦错时很有用,也能用来检视内部特质基准统计值.于文件中搜寻'ETW'来找到相关资讯.",
+	UI_EvolvingTraitsWorld_Options_GatherDetailedDebug = "收集详细除错报告",
+	UI_EvolvingTraitsWorld_Options_GatherDetailedDebug_tooltip = "启用额外的除错讯息纪录,不会对特质进度条有额外纪录,对于错误回报或精准判断错误点相当有用<br>增加许多非必须的资料到报告里,若启用此选项则必须要定期重启游戏,避免纪录档太大并(可能)使游戏崩溃, 搜寻'ETW'来找到相关报告条目",
 	UI_EvolvingTraitsWorld_Options_EnableNotifications = "启用 特质 通知",
 	UI_EvolvingTraitsWorld_Options_EnableNotifications_tooltip = "当获得/失去特质时在角色头上显示讯息",
 	UI_EvolvingTraitsWorld_Options_EnableBloodLustMoodle = "启用 嗜血 图示",

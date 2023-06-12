@@ -1,5 +1,5 @@
 UI_PTBR = {
-	note_to_LANGUAGE_translators = "Make sure file is saved in <ENCODING> encoding, so game display correct characters",
+	note_to_PTBR_translators = "Make sure file is saved in ISO-8859-1 encoding, so game display correct characters",
 
 	UI_trait_AVClub = "Membro do clube CA",
 	UI_trait_AVClubDesc = "Você é parte do clube CA.<br>+1 Elétrica",

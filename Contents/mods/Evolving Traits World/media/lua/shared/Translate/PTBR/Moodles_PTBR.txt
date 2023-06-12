@@ -1,6 +1,6 @@
 Moodles_PTBR {
 	note_to_translators = "If a field has %1 in it, it's replaced with value later on when the code is run",
-    note_to_LANGUAGE_translators = "Make sure file is saved in <ENCODING> encoding, so game display correct characters",
+    note_to_PTBR_translators = "Make sure file is saved in ISO-8859-1 encoding, so game display correct characters",
 
 	Moodles_BloodlustMoodle_Good_lvl4 = "Meu Deus! amo matar zumbis",
 	Moodles_BloodlustMoodle_Good_lvl3 = "Isso é definitivamente um tempo bem gasto",

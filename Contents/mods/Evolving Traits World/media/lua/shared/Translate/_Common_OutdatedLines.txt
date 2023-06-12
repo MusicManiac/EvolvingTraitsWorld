@@ -17,5 +17,3 @@ UI.txt
 	changed:
 
 	new:
-		UI_EvolvingTraitsWorld_Options_GatherDetailedDebug = "Gather Detailed Debug Data",
-		UI_EvolvingTraitsWorld_Options_GatherDetailedDebug_tooltip = "Enables additional prints into console.txt. Useful only for debug purposes, doesn't show any additional data about counters, ONLY useful for bug reports or trying to figure pinpoint what's wrong. Adds a lot of unneeded info into console.txt, so restart game sometimes to keep it from getting too big so it won't (possibly) lag the game. Ctrl+F for 'ETW' to find the loggers.",

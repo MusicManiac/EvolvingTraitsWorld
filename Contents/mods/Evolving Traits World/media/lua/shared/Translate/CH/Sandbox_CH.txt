@@ -51,6 +51,8 @@ Sandbox_CH = {
 	Sandbox_EvolvingTraitsWorld_BloodlustMoodle_tooltip = "如果不啟用則嗜血量表不會顯示. 單人模式下可隨自身需求於模組選項開關. 如果為多人伺服器則玩家無法自行啟用量表顯示.",
 	Sandbox_EvolvingTraitsWorld_BloodlustMoodleVisibilityHours = "嗜血量表顯示持續時間",
 	Sandbox_EvolvingTraitsWorld_BloodlustMoodleVisibilityHours_tooltip = "在你擊殺僵屍後,嗜血量表會持續顯示多久時間",
+	Sandbox_EvolvingTraitsWorld_BloodlustMultiplier = "嗜血特質乘數",
+	Sandbox_EvolvingTraitsWorld_BloodlustMultiplier_tooltip = "乘數影響嗜血特質. 在預設值中,不高興/壓力/恐慌數值 會每次擊殺降低4%.乘數會直接運用在這數值上.舉例:設定0.5則每次擊殺降低2%",
 
 	Sandbox_EvolvingTraitsWorld_BodyworkEnthusiast = "修車愛好者",
 	Sandbox_EvolvingTraitsWorld_BodyworkEnthusiastSkill = "修車愛好者獲得特質所需技能等級",
@@ -91,6 +93,13 @@ Sandbox_CH = {
 
 	Sandbox_EvolvingTraitsWorld_Cook = "廚師",
 	Sandbox_EvolvingTraitsWorld_CookSkill = "廚師:獲得特質所需烹飪技能等級",
+
+	Sandbox_EvolvingTraitsWorld_DelayedTraitsSystem = "延遲相關特質系統",
+	Sandbox_EvolvingTraitsWorld_DelayedTraitsSystem_tooltip = "這個設定允許你以更隨機及非主流配置獲得/失去特質.<br>當你已經達到增加/失去一個特質的條件時(請於工作坊頁面找尋相關連結說明被影響的特質)將不會立刻獲得/失去. 它會被加入到一個清單中,並可能於下面設定的小時數中獲得.<br>每個小時遊戲都會為清單中的每個特質個別擲骰判定.所以每一個清單中的特質在每小時內獲得的機率為1/X.若擲骰失敗則X降低1<br>所以隨時間經過你更容易獲得你應得的特質<br>重要: 根據據能等級來得失的特質仍會正常獲得/失去.但是會被此設定影響的特質(例:易生疾病/戶外專家/貓眼...等)會在它們擲骰成功後的下一次自身的進度值變動才會獲得/失去.<br>因為要替這些有個別進度計算的特質編碼實在是麻煩的要死.<br>舉例:你已經達到貓眼的獲得標準,加到了延遲清單裡,並且在幾小時後擲骰成功了,但是當時你是在大白天裡<br>所以你不會立即獲得,而是在下一次接近凌晨及黃昏時段間貓眼進度值會累加的時段內獲得<br>所有這些例子可再工作仿頁面中的連接獲得",
+	Sandbox_EvolvingTraitsWorld_DelayedTraitsSystemDefaultDelay = "預設延遲",
+	Sandbox_EvolvingTraitsWorld_DelayedTraitsSystemDefaultDelay_tooltip = "預設延遲 (以小時計算):決定多少小時內特質或增加/減少<br>舉例:設定為240,並且達到特質獲得的標準後,你第1個小時獲得該特質的機率為1/240.如果擲骰失敗在下一個小時為1/239,依此類推",
+	Sandbox_EvolvingTraitsWorld_DelayedTraitsSystemDefaultStartingDelay = "針對起始特質額外增加的延遲小時",
+	Sandbox_EvolvingTraitsWorld_DelayedTraitsSystemDefaultStartingDelay_tooltip = "額外延遲 (以小時計算):針對你在角色創建時獲得的"免費"特質,疊加在預設延遲上<br>舉例:起始力量9點通常會讓你直接免費獲得騾子特質.如果延遲系統啟用,預設延遲設定為240,額外延遲設定為480,你不會在遊戲開始時就有騾子特質<br>該特質會在一個額外的延遲清單中等待擲骰(720小時).所以遊戲後第一個小時獲得騾子特質的機率為1/720,依此類推",
 
 	Sandbox_EvolvingTraitsWorld_EagleEyed = "鷹眼",
 	Sandbox_EvolvingTraitsWorld_EagleEyedDistance = "鷹眼計量距離",
@@ -236,7 +245,7 @@ Sandbox_CH = {
 	Sandbox_EvolvingTraitsWorld_SewerSkill = "裁縫師:獲得特質所需縫紉技能等級",
 
 	Sandbox_EvolvingTraitsWorld_SleepSystem = "睡眠相關特質系統",
-	___Sandbox_EvolvingTraitsWorld_SleepSystem_tooltip = "啟用是否可獲得/失去睡眠相關特質(輾轉難眠/精神抖擻)<br>---通常說明---<br>追蹤角色喜好睡覺時間段,並記錄於該時間段的睡眠時長<br>在規律時間段內睡眠會強化你的睡眠健康度.如果在時間段外睡眠將降低你的睡眠品質<br>24小時都不睡覺也會損害你的睡眠規律.模組藉由平均你過去的睡眠來決定你的睡眠規律.所以調整睡眠規律是可行的<br>但在遊戲後期因為統計資料量大,調整規律便相當困難<br>---技術說明(不想做太多設定請無視)---<br>每次睡眠時,模組紀錄你睡眠時間段的中間值,如於 23:00 到 05:30,中點將為 03:45,然後將其結果加到過去100次紀錄中.記錄滿後舊紀錄將被新紀錄取代.這個紀錄的平均值就是你的規律睡眠小時<br>如果你在此數值的正負6小時內睡眠將強化你的睡眠健康值.從 -200 到 200.每10分鐘系統會做一次檢查,並增加0.167到該計量,所以每一小時正常的睡眠都會大約+1到進度值<br>在時間段外睡眠會扣除相同量的進度值.20小時不睡眠後每10分鐘都會減少0.167.如果統計值小於-100你會得到輾轉難眠<br>如果大於100你將獲得精神抖擻.若角色創建時選擇了這些特質則統計值由最大/最小開始(起始輾轉難眠為-200/精神抖擻為+200)",
+	Sandbox_EvolvingTraitsWorld_SleepSystem_tooltip = "啟用是否可獲得/失去睡眠相關特質(輾轉難眠/精神抖擻)<br>---通常說明---<br>模組記錄你偏好的睡眠小時,在偏好時間段內睡眠會強化你的睡眠健康度.如果在時間段外睡眠則降低. 24小時都不睡覺也會損害你的睡眠規律.模組紀錄你偏好睡眠時間段的中間值,所以調整睡眠規律是可行的<br>---技術說明(不想做太多設定請無視)---<br>每次睡眠時,模組紀錄你睡眠時間段的中間值,如於 23:00 到 05:30,中點將為 03:45,這個數值就是你的最佳睡眠小時.如果你在此數值的正負6小時內睡眠將強化你的睡眠健康值.<br>從 -200 到 200. 每10分鐘系統會做一次檢查,並增加0.167到該計量,所以每一小時正常的睡眠都會大約+1到進度值.<br>在時間段外睡眠會從進度值每10分鐘扣除 0.167. 24小時不睡眠也是相同.如果進度值低於-100, 獲得輾轉難眠. 高於100則獲得精神抖擻.<br>若角色創建時選擇了這些特質則統計值由最大/最小開始(起始輾轉難眠為-200/精神抖擻為+200)",
 	Sandbox_EvolvingTraitsWorld_SleepSystemMultiplier = "睡眠系統乘數",
 	Sandbox_EvolvingTraitsWorld_SleepSystemMultiplier_tooltip = "決定你睡眠健康度的增長/衰減速率,影響你 得到/失去 精神抖擻/輾轉難眠 特質. 高數值代表更快得到/失去,反之亦然",
 	Sandbox_EvolvingTraitsWorld_SleepMoodle = "睡眠系統圖示",

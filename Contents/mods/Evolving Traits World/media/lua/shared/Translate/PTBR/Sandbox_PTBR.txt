@@ -1,5 +1,5 @@
 Sandbox_PTBR = {
-	note_to_LANGUAGE_translators = "Make sure file is saved in <ENCODING> encoding, so game display correct characters",
+	note_to_PTBR_translators = "Make sure file is saved in ISO-8859-1 encoding, so game display correct characters",
 
 	Sandbox_EvolvingTraitsWorldSimplePerks = "Evolving Traits World - Traço simples",
 	Sandbox_EvolvingTraitsWorldComplexPerks = "Evolving Traits World - Traços complexos",
