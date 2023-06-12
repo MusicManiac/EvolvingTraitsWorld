@@ -1,0 +1,282 @@
+Sandbox_PTBR = {
+	note_to_LANGUAGE_translators = "Make sure file is saved in <ENCODING> encoding, so game display correct characters",
+
+	Sandbox_EvolvingTraitsWorldSimplePerks = "Evolving Traits World - Traço simples",
+	Sandbox_EvolvingTraitsWorldComplexPerks = "Evolving Traits World - Traços complexos",
+	Sandbox_EvolvingTraitsWorldSystems = "Evolving Traits World - Sistemas",
+	Sandbox_EvolvingTraitsWorldTraitsSettings = "Evolving Traits World - Traços",
+	Sandbox_EvolvingTraitsWorldMoodles = "Evolving Traits World - Humores",
+
+	Sandbox_EvolvingTraitsWorld_AffinitySystem = "Sistema de afinidade",
+	Sandbox_EvolvingTraitsWorld_AffinitySystem_tooltip = "Define se sistema de afinidades está ativado para alguns traços ligados ao sistema e a alguns complexos (Ex., Sistema de medo a localizações, Herbalista, ou Sistema de sono. Verifique quais sistemas e traços estão sujeitos ao sistema de afinidades no Google Sheets).<br>Sistema de afinidade faz com que seja mais fácil de manter os traços que você pegou na criação de personagem, ambos positivos e negativos. Com ele ativado, você diminui pela metade (modificável) a velocidade que você perde esses traços, e dobra (também modificável) a velocidade que você ganha eles.",
+	Sandbox_EvolvingTraitsWorld_AffinitySystemLoseDivider = "Divisor do sistema de afinidade",
+	Sandbox_EvolvingTraitsWorld_AffinitySystemLoseDivider_tooltip = "Quão difícil é para perder os traços que têm a funcionalidade do sistema de afinidade (só afeta os traços que começou!). Ajustar para 1, significa que não vai ficar mais difícil perder o traço. ajustar para 2, dobra a dificuldade de perder o traço. Ajustar para 1.5 faria ficar 50% mais lento, assim por diante. Então se você começar com um traço que pode ser perdido, isso vai fazer ficar muito mais difícil perde-la . Mas isso também afeta traços negativos!",
+	Sandbox_EvolvingTraitsWorld_AffinitySystemGainMultiplier = "Multiplicador de Sistema de Afinidade",
+	Sandbox_EvolvingTraitsWorld_AffinitySystemGainMultiplier_tooltip = "Quão mais fácil é ganhar os traços que utilizam a funcionalidade do sistema de afinidade (só afeta os traços que você começou!). Ajustar para 1, significa que não vai ficar mais difícil ganhar o traço. ajustar para 2, dobra a facilidade de ganhar o traço. Ajustar para 1.5 faria ficar 50% mais mais, assim por diante. Então se você começar com um traço dinâmico positivo e o perde, isso vai fazer ficar muito mais fácil de recupera-lo. Mas isso também afeta traços negativos!",
+	
+	Sandbox_EvolvingTraitsWorld_Mechanics = "Mecânico Amador",
+	Sandbox_EvolvingTraitsWorld_MechanicsSkill = "Requerimentos para a habilidade de Mecânico Amador",
+	Sandbox_EvolvingTraitsWorld_MechanicsRepairs = "Requerimento de reparos",
+	Sandbox_EvolvingTraitsWorld_MechanicsRepairs_tooltip = "Quantos % de um automóvel deve reparar para obter o benefício. Funciona em cada parte de um automóvel, salvo para todos os automóveis.",
+
+	Sandbox_EvolvingTraitsWorld_Fishing = "Pescador",
+	Sandbox_EvolvingTraitsWorld_FishingSkill = "Requerimentos de habilidade de Pesca para o traço de pescador",
+
+	Sandbox_EvolvingTraitsWorld_Asthmatic = "Asmático",
+	Sandbox_EvolvingTraitsWorld_AsthmaticCounter = "Medidor de Asmático",
+	Sandbox_EvolvingTraitsWorld_AsthmaticCounter_tooltip = "Qual valor do medidor deve alcançar para obter o traço de asmático.",
+
+	Sandbox_EvolvingTraitsWorld_AVClub = "Membro do Clube CA",
+	Sandbox_EvolvingTraitsWorld_AVClubSkill = "Requerimentos de habilidade de elétrica para o traço de Membro do Clube CA",
+
+	Sandbox_EvolvingTraitsWorld_Axeman = "Lenhador",
+	Sandbox_EvolvingTraitsWorld_AxemanTrees = "Requerimentos de árvores cortadas para o traço de Lenhador",
+	Sandbox_EvolvingTraitsWorld_AxemanTrees_tooltip = "Quantas árvores você deve cortar para ganhar o traço de Lenhador.",
+
+	Sandbox_EvolvingTraitsWorld_AxeThrower = "Arremessador de Machado",
+	Sandbox_EvolvingTraitsWorld_AxeThrowerSkill = "Requerimentos de mortes para o traço de Lenhador",
+	Sandbox_EvolvingTraitsWorld_AxeThrowerKills = "Mortes com machado para ganhar o trado de Arremessador de Machados",
+
+	Sandbox_EvolvingTraitsWorld_BaseballPlayer = "Jogador de Baseball",
+	Sandbox_EvolvingTraitsWorld_BaseballPlayerSkill = "Requerimento de habilidade de Contundente Longo para o traço de Jogador de Baseball",
+	Sandbox_EvolvingTraitsWorld_BaseballPlayerKills = "Mortes com Contundentes Longos para o traço de Jogador de Baseball",
+
+	Sandbox_EvolvingTraitsWorld_Bloodlust = "Sede de Sangue",
+	Sandbox_EvolvingTraitsWorld_Bloodlust_tooltip = "---Entendimento Geral---<br>Esse traço te permite obter benefícios por encher e manter um medidor de sede de sangue. O medidor de sede de sangue tem um limite de 36 horas e pode se enchido matando zumbis a uma certa distância. Quanto mais próximo o zumbi está, mais rápido o medidor vai encher. Quando você estiver na metade do medidor, cada hora te dará progresso para ganhar o traço de sede de sangue, quando estiver abaixo, você perderá progresso. O medidor de sede de sangue decairá naturalmente em 1.<br>---Descrição técnica, não leia isso caso não queira fazer meta-gaming---<br>Para encher o medidor de sede de sangue, você deve matar zumbis a uma certa distância de você. A quantidade exata para enche-lo é calculada por uma fórmula que leva em conta a distância e o multiplicador. A fórmula exata é: math.min(1 / distance, 1) * multiplier. A cada hora, o medidor é diminuído em 1 hora. Se o seu medidor de sede de sangue está acima da metade, a cada hora você irá ganhar 10% de progresso para ganhar o traço. se estiver abaixo da metade, você vai perder 3.6-0.1*BloodlustBar, então se você estiver pouco abaixo de 50% você irá perder aproximadamente 1.8, mas se você estiver com 0%, irá perder 3.6 do progresso. O progresso é limitado a 2x do valor do progresso de sede de sangue.",
+	Sandbox_EvolvingTraitsWorld_BloodlustMeterFillMultiplier = "Multiplicador de Progresso da Sede de Sangue",
+	Sandbox_EvolvingTraitsWorld_BloodlustMeterFillMultiplier_tooltip = "Quão rápido você irá encher o medidor",
+	Sandbox_EvolvingTraitsWorld_BloodlustProgress = "Progresso de Sede de Sangue",
+	Sandbox_EvolvingTraitsWorld_BloodlustProgress_tooltip = "Quanto é necessário para adquirir o traço. Manter o medidor cheio lhe dará 3.6 pontos de sede de sangue em 1h. Esteja ciente, que você perderá progresso se o medidor ficar abaixo de 50%. Então se você ajustar a um valor baixo, vai ser fácil ganhar ou perder o traço. O progresso tem um limite de 2x o valor do progresso da sede de sangue.",
+	Sandbox_EvolvingTraitsWorld_BloodlustMoodle = "Habilitar humor de sede de sangue",
+	Sandbox_EvolvingTraitsWorld_BloodlustMoodle_tooltip = "Se essa opção estiver desabilitada, o humor não irá aparecer. Para single-player deixe esse traço habilitado e modifique os humores que você ver com Mod Options. Se for uma opção de servidor, jogadores não poderão habilitar o humor no lado do client.",
+	Sandbox_EvolvingTraitsWorld_BloodlustMoodleVisibilityHours = "Horas de Visibilidade do Humor de Sede de Sangue",
+	Sandbox_EvolvingTraitsWorld_BloodlustMoodleVisibilityHours_tooltip = "Por quantas horas o humor ficará visível após matar um zumbi",
+	Sandbox_EvolvingTraitsWorld_BloodlustMultiplier = "Multiplicador de Efeito de Sede de Sangue",
+	Sandbox_EvolvingTraitsWorld_BloodlustMultiplier_tooltip = "Multiplica o efeito do traço por esse valor. Por padrão, tristeza, estresse e pânico são reduzidos por 4% para cada morte. Esse multiplicador é aplicado nesses 4%. Então configurar para 0.5 vai fazer esses status serem reduzidos em 2%.",
+
+	Sandbox_EvolvingTraitsWorld_BodyworkEnthusiast = "Restaurador Automotivo",
+	Sandbox_EvolvingTraitsWorld_BodyworkEnthusiastSkill = "Requerimento de Habilidade Para o Traço de Restaurador Automotivo",
+	Sandbox_EvolvingTraitsWorld_BodyworkEnthusiastSkill_tooltip = "Metalurgia + Mecânica",
+	Sandbox_EvolvingTraitsWorld_BodyworkEnthusiastRepairs = "Requerimento de Reparo",
+	Sandbox_EvolvingTraitsWorld_BodyworkEnthusiastRepairs_tooltip = "Quantos % do carro você precisa consertar do automóvel para ganhar o traço. Funciona em todas as partes do carros, salvo para todos os carros.",
+
+	Sandbox_EvolvingTraitsWorld_BraverySystem = "Sistema de Bravura",
+	Sandbox_EvolvingTraitsWorld_BraverySystemKills = "Mortes para maximizar as vantagens de Bravura",
+	Sandbox_EvolvingTraitsWorld_BraverySystemKills_tooltip = "Aqui configura quantas mortes você precisa para atingir o máximo da sua bravura. Mortes corpo a corpo contam ao dobro para o progresso. A progressão é o seguinte: Covarde -> Hemofóbico -> Pacifista -> Viciado em adrenalina -> Brava -> Dessensibilizado<br> A quantidade para atingir cada estágio é:<br>Covarde: 10% do máximo de mortes<br>Hemofóbico: 20% do máximo de mortes<br>Pacifista: 30% do máximo de mortes<br>Viciado em adrenalina: 40% do máximo de mortes<br>Brava: 60% do máximo de mortes<br>Dessensibilizado: 100% do máximo de mortes<br>Exemplo: O máximo de mortes é 1000. Você começa como covarde. Precisa de 100 mortes para perde-lo. Se você tiver 50 mortes de corpo a corpo, ele será removido. O mesmo acontece se você tiver 40 mortes (x2 = 80 mortes para o medidor) e 20 mortes com armas de fogo",
+	Sandbox_EvolvingTraitsWorld_BraverySystemRemovesOtherFearPerks = "Sistema de bravura remove outros traços relacionados ao medo",
+	Sandbox_EvolvingTraitsWorld_BraverySystemRemovesOtherFearPerks_tooltip = "se habilitado, ficar Dessensibilizado pelo sistema de bravura também removerá traços como Pluviófilo, Medo de nevoeiros, Agorafóbico, Claustrofóbico e prevenir de reganhar eles.",
+
+	Sandbox_EvolvingTraitsWorld_Brawler = "Brigador",
+	Sandbox_EvolvingTraitsWorld_BrawlerSkill = "Requerimento de habilidade para o traço de Brigador",
+	Sandbox_EvolvingTraitsWorld_BrawlerSkill_tooltip = "Machado + Contundente Longo",
+	Sandbox_EvolvingTraitsWorld_BrawlerKills = "Requerimento de mortes para o traço de Brigador",
+	Sandbox_EvolvingTraitsWorld_BrawlerKills_tooltip = "Machado + Contundente Longo",
+
+	Sandbox_EvolvingTraitsWorld_Burglar = "Ladrão",
+	Sandbox_EvolvingTraitsWorld_BurglarSkill = "Requerimento de habilidade para o traço de Ladrão",
+	Sandbox_EvolvingTraitsWorld_BurglarSkill_tooltip = "Mecânica + Elétrica + Agilidade. Note que é necessário ter, pelo menos, 2 níveis em Mecânica e Elétrica",
+
+	Sandbox_EvolvingTraitsWorld_CatEyes = "olhos de gato",
+	Sandbox_EvolvingTraitsWorld_CatEyesCounter = "Medidor de Olhos de Gato",
+	Sandbox_EvolvingTraitsWorld_CatEyesCounter_tooltip = "---Entendimento Geral---<br>Esse traço te faz ganhar pontos ao ver e observar quadrados em uma certa distância do seu personagem. O número de pontos que você ganha é influenciado por fatores como hora do dia, a iluminação do quadrado, e o clima que você e o quadrado estão dentro ou fora. Quanto mais quadrados você vê e quão escuro eles estão, mais pontos você vai receber.<br>---Descrição técnica, não leia caso não queira fazer meta-gaming---<br>Para ganha pontos nesse traço, você precisa ver e observar em um raio de 30 quadrados do seu personagem. A quantidade exata para enche-lo é calculada por uma fórmula que leva em conta a escuridão do quadrado, a hora do dia, e o clima que você e o quadrado estão dentro ou fora. A formula exata dos pontos por quadrado é: 0.01 * escuridão do quadrado * 2 (se ambos o jogador e o quadrado estão dentro) * hora do dia. Em média, passar a noite toda do lado de fora irá dar 1.1k pontos.",
+
+	Sandbox_EvolvingTraitsWorld_Clumsy = "Desastrado",
+	Sandbox_EvolvingTraitsWorld_ClumsySkill = "Requerimento de habilidade para o traço de Desastrado",
+	Sandbox_EvolvingTraitsWorld_ClumsySkill_tooltip = "Furtividade + Descrição",
+
+	Sandbox_EvolvingTraitsWorld_ColdIllnessSystem = "Sistema de doenças por frio",
+	Sandbox_EvolvingTraitsWorld_ColdIllnessSystemColdsWeathered = "Resfriados para perder/ganhar traços relacionados a doenças por frio",
+	Sandbox_EvolvingTraitsWorld_ColdIllnessSystemColdsWeathered_tooltip = "Quantas instâncias de resfriados moderados ou pesados você deve ter para perder/ganhar traços relacionados (Baixa imunidade e Saudável). Baixa imunidade é perdido quando atinge 50% do medidor, Saudável é ganhado ao atingir 100%",
+
+	Sandbox_EvolvingTraitsWorld_Conspicuous = "Estabanado",
+	Sandbox_EvolvingTraitsWorld_ConspicuousSkill = "Requerimento de furtividade para o traço de Estabanado",
+
+	Sandbox_EvolvingTraitsWorld_Cook = "Cozinheiro",
+	Sandbox_EvolvingTraitsWorld_CookSkill = "Requerimento de culinária para o traço de Cozinheiro",
+
+	Sandbox_EvolvingTraitsWorld_DelayedTraitsSystem = "Sistema de traços atrasados",
+	Sandbox_EvolvingTraitsWorld_DelayedTraitsSystem_tooltip = "Este sistema permite que você ganhe/perca traços de forma mais aleatória e não tão baseada no meta-gaming. Como funciona é que, quando você se qualifica para adicionar/remover um traço (a lista de traços afetados por este sistema pode ser encontrada no Google Sheets, link na descrição do workshop), você não o ganha/perde instantaneamente. Em vez disso, ele é adicionado a uma tabela com a quantidade de horas que podem levar para obtê-lo (com base nas configurações do sandbox abaixo). Então, a cada hora, o jogo rola para que você ganhe/perca cada traço nesta tabela (cada traço é rolado separadamente). Portanto, você tem 1 em X chances de obter seu traço a cada hora. Se a rolagem falhar, X é reduzido em 1. Portanto, quanto mais tempo passar, maiores são as chances do traço que você conquistou alcançar você.<br>IMPORTANTE: traços que dependem dos níveis de habilidade serão desbloqueados conforme descrito acima. No entanto, os traços que dependem de contadores internos adicionados por este mod (exemplo: Baixa imunidade, Estomago Fraco, Andarilho, Olhos de gato, etc) serão desbloqueados na próxima vez em que precisarem aumentar esses contadores internos. Será dessa forma porque codificar um mecanismo de desbloqueio separado para esses traços específicos é trabalhoso e requer muito trabalho adicional desnecessário. Exemplo: Você se qualifica para Olhos de Gato, e ele é adicionado à Tabela de Traços Atrasados. Digamos que algum tempo depois você tenha sucesso na rolagem para adquiri-lo no meio do dia. Você não o receberá imediatamente, mas o receberá assim que o contador de Olhos de Gato aumentar na próxima vez (no início da noite). Todos esses casos específicos estão anotados no Google Sheets",
+	Sandbox_EvolvingTraitsWorld_DelayedTraitsSystemDefaultDelay = "Atraso Padrão",
+	Sandbox_EvolvingTraitsWorld_DelayedTraitsSystemDefaultDelay_tooltip = "Atraso padrão (em horas), quantas horas podem levar para ganha/perder o traço. Portanto, por exemplo, se você definir para 240, e se qualificar para um novo traço, você terá 1 em 240 chances de obtê-lo na 1ª hora. Se falhar, na próxima hora será 1 em 239. Na próxima hora será 1 em 238, e assim por diante.",
+	Sandbox_EvolvingTraitsWorld_DelayedTraitsSystemDefaultStartingDelay = "Atraso adicional para traços iniciais",
+	Sandbox_EvolvingTraitsWorld_DelayedTraitsSystemDefaultStartingDelay_tooltip = "Atraso adicional (em horas) que é adicionado ao atraso padrão para os traços 'gratuitos' que você obtém no início do jogo. Exemplo: Começar com Força 9 geralmente lhe daria Acumulador de graça. Se o sistema de Traços Atrasados estiver ativado e, digamos, o Atraso Padrão for de 240 e o Atraso Adicional para os Traços Iniciais for de 480, você não obterá Hoarder no início do jogo, em vez disso, ele será incluído na tabela com o máximo de horas sendo 720. Portanto, você terá 1 em 720 chances de obtê-lo na 1ª hora, e assim por diante",
+
+	Sandbox_EvolvingTraitsWorld_EagleEyed = "Olhos de Águia",
+	Sandbox_EvolvingTraitsWorld_EagleEyedDistance = "Distância de Olhos de Águia",
+	Sandbox_EvolvingTraitsWorld_EagleEyedDistance_tooltip = "A que distância o zumbi deve ser morto para contar para o medidor de Olhos de Águia. Por padrão é recomendado deixa 20, para mods que adicionam boas armas de fogo (Gunfighter + Brita por exemplo), é recomendado colocar 25 ou mais",
+	Sandbox_EvolvingTraitsWorld_EagleEyedKills = "Mortes de Olhos de Águia",
+
+	Sandbox_EvolvingTraitsWorld_FastLearner = "Aprendiz Rápido",
+	Sandbox_EvolvingTraitsWorld_FastLearnerSkill = "Requerimento de habilidade para o traço de Aprendiz Rápido",
+	Sandbox_EvolvingTraitsWorld_FastLearnerSkill_tooltip = "Manutenção + Carpintaria + Culinária + Agricultura + Primeiros Socorros + Elétrica + Metalurgia + Mecânica + Costura",
+
+	Sandbox_EvolvingTraitsWorld_FearOfLocationsSystem = "Sistema de Medo de Localizações",
+	Sandbox_EvolvingTraitsWorld_FearOfLocationsSystemCounter = "Medidor do Sistema de Medo de Localizações",
+	Sandbox_EvolvingTraitsWorld_FearOfLocationsSystemCounter_tooltip = "Medidor = quantidade de minutos que você deve passar do lado de fora/dentro para perder o traço, Agorafóbico ou Claustrofóbico. Estar do lado de fora/dentro quando estressado ou infeliz vai diminuir o contador. Atingir valor negativo no medidor fará você ganhar o traço correspondente. Atingir valor positivo no contador fará você perder o traço correspondente, estar entre valores positivos e negativos não vai te gerar nada. O limite inferior é -2x o valor do contador, o limite superior é 2x o valor definido aqui.",
+	Sandbox_EvolvingTraitsWorld_FearOfLocationsSystemCounterLoseMultiplier = "Multiplicador de Perda do Medidor do Sistema de Medo de Localizações",
+	Sandbox_EvolvingTraitsWorld_FearOfLocationsSystemCounterLoseMultiplier_tooltip = "Velocidade com que o contador diminui quando você está infeliz (50%+) ou estressado (50%+). Considerando que você está mais frequentemente normal do que infeliz ou estressado, eu recomendaria não definir isso muito baixo. A fórmula para determinar quanto o contador diminui a cada minuto é 1 * (1 + Unhappiness(0-1)) + (1 * stress(0-1)) * multiplier, então no mínimo você perde 0 * multiplier, no máximo você perde 4 * multiplier",
+	
+	Sandbox_EvolvingTraitsWorld_FirstAid = "Socorrista",
+	Sandbox_EvolvingTraitsWorld_FirstAidSkill = "Requerimento de Primeiros Socorros para o traço de Socorrista",
+
+	Sandbox_EvolvingTraitsWorld_FogSystem = "Sistema de névoa",
+	Sandbox_EvolvingTraitsWorld_FogSystemCounter = "Medidor de Sistema de Névoa",
+	Sandbox_EvolvingTraitsWorld_FogSystemCounter_tooltip = "Você recebe fogIntensity * FogSystemCounterIncreaseMultiplier a cada minuto que passa na névoa. Ao mesmo tempo, você perde fogIntensity * pânico * 0.9 * FogSystemCounterDecreaseMultiplier. Os limites máximos e mínimos do contador são -2 * contador e 2 * contador. Quando estiver em valores negativos, você adquire Medo de Nevoeiros, quando atingir valores positivos, você adquire Amante de Nevoeiros. Quando estiver entre eles, você não recebe nada.",
+	Sandbox_EvolvingTraitsWorld_FogSystemCounterIncreaseMultiplier = "Multiplicador de Aumento do Medidor de Sistema de Névoa",
+	Sandbox_EvolvingTraitsWorld_FogSystemCounterIncreaseMultiplier_tooltip = "Ajusta quão rápido seu medidor aumenta, detalhes no tooltip do Medidor de Sistema de Névoa",
+	Sandbox_EvolvingTraitsWorld_FogSystemCounterDecreaseMultiplier = "Multiplicador de Diminuição do Medidor de Sistema de Névoa",
+	Sandbox_EvolvingTraitsWorld_FogSystemCounterDecreaseMultiplier_tooltip = "Ajusta quão rápido seu medidor diminui, detalhes no tooltip do Medidor de Sistema de Névoa",
+
+	Sandbox_EvolvingTraitsWorld_FoodSicknessSystem = "Sistema de Doenças Alimentares",
+	Sandbox_EvolvingTraitsWorld_FoodSicknessSystemCounter = "Medidor de Sistema de Doenças Alimentares",
+	Sandbox_EvolvingTraitsWorld_FoodSicknessSystemCounter_tooltip = "A quantidade de doença alimentar que você precisa acumular para ganhar/perder traços relacionados à Doenças Alimentares, como Estômago Sensível e Estômago de Ferro. A doença pode variar de 0 a 1, onde em 1 você pode realmente morrer. A cada minuto, sua doença atual é adicionada ao contador, simples assim.",
+
+	Sandbox_EvolvingTraitsWorld_FurnitureAssembler = "Montador de Móveis",
+	Sandbox_EvolvingTraitsWorld_FurnitureAssemblerSkill = "Requerimento de Carpintaria para o traço de Montador de Móveis",
+
+	Sandbox_EvolvingTraitsWorld_Runner = "Corredor",
+	Sandbox_EvolvingTraitsWorld_RunnerSkill = "Requerimento de Agilidade para o traço de Corredor",
+
+	Sandbox_EvolvingTraitsWorld_Gardener = "Jardineiro",
+	Sandbox_EvolvingTraitsWorld_GardenerSkill = "Requerimento de Agricultura para o traço de Jardineiro",
+
+	Sandbox_EvolvingTraitsWorld_Graceful = "Gracioso",
+	Sandbox_EvolvingTraitsWorld_GracefulSkill = "Requerimento de habilidade para o traço de Gracioso",
+	Sandbox_EvolvingTraitsWorld_GracefulSkill_tooltip = "Agilidade + Furtividade + Discrição",
+
+	Sandbox_EvolvingTraitsWorld_GunEnthusiast = "Entusiasta de Armas",
+	Sandbox_EvolvingTraitsWorld_GunEnthusiastSkill = "Requerimento de habilidade para o traço de Entusiasta de Armas",
+	Sandbox_EvolvingTraitsWorld_GunEnthusiastSkill_tooltip = "Mira + Recarga",
+	Sandbox_EvolvingTraitsWorld_GunEnthusiastKills = "Requerimento de mortes para o traço de Entusiasta de Armas",
+
+	Sandbox_EvolvingTraitsWorld_Gymnast = "Ginasta",
+	Sandbox_EvolvingTraitsWorld_GymnastSkill = "Requerimento de habilidade para o traço de Ginasta",
+	Sandbox_EvolvingTraitsWorld_GymnastSkill_tooltip = "Pés leves + Agilidade",
+
+	Sandbox_EvolvingTraitsWorld_GymRat = "Rato de Academia",
+	Sandbox_EvolvingTraitsWorld_GymRatSkill = "Requerimento de habilidade para o traço de Rato de Academia",
+	Sandbox_EvolvingTraitsWorld_GymRatSkill_tooltip = "Força + Aptidão Física",
+
+	Sandbox_EvolvingTraitsWorld_Handy = "Habilidade",
+	Sandbox_EvolvingTraitsWorld_HandySkill = "Requerimento de habilidade para o traço de Habilidade",
+	Sandbox_EvolvingTraitsWorld_HandySkill_tooltip = "Manutenção + Carpintaria",
+
+	Sandbox_EvolvingTraitsWorld_HearingSystem = "Sistema de Audição",
+	Sandbox_EvolvingTraitsWorld_HearingSystemSkill = "Requerimento de habilidade para o traço de Sistema de Audição",
+	Sandbox_EvolvingTraitsWorld_HearingSystemSkill_tooltip = "Quantos níveis em Agilidade + Combate (sem Manutenção) você precisa atingir para ganhar/perder os benefícios relacionados à audição (Surdo e Audição Aguçada). Você perde Surdo ao passar da metade dos níveis necessários e obtém Audição Aguçada ao atingir o número definido.",
+
+	Sandbox_EvolvingTraitsWorld_Herbalist = "Herbalista",
+	Sandbox_EvolvingTraitsWorld_HerbalistHerbsDecay = "Apodrecimento de ervas do Herbalista",
+	Sandbox_EvolvingTraitsWorld_HerbalistHerbsDecay_tooltip = "Quantas ervas são removidas do contador a cada dia. Quando o contador cair pela metade, o traço será removido, portanto, você terá que adquiri-lo novamente.",
+	Sandbox_EvolvingTraitsWorld_HerbalistHerbsPicked = "Ervas colhidas para o traço de Herbalista",
+	Sandbox_EvolvingTraitsWorld_HerbalistHerbsPicked_tooltip = "Quantas ervas você precisa coletar (por meio de coleta) para obter o traço.",
+
+	Sandbox_EvolvingTraitsWorld_Hiker = "Sobrevivencialista",
+	Sandbox_EvolvingTraitsWorld_HikerSkill = "Requerimento de habilidade para o traço de Sobrevivencialista",
+	Sandbox_EvolvingTraitsWorld_HikerSkill_tooltip = "Coleta + Caça",
+
+	Sandbox_EvolvingTraitsWorld_Hoarder = "Acumulador",
+	Sandbox_EvolvingTraitsWorld_HoarderSkill = "Requerimento de força para o traço de Acumulador",
+	Sandbox_EvolvingTraitsWorld_HoarderWeight = "Carga bônus por ponto de força",
+
+	Sandbox_EvolvingTraitsWorld_HomeCook = "Cozinheiro",
+	Sandbox_EvolvingTraitsWorld_HomeCookSkill = "Requerimento de culinária para o traço de Cozinheiro",
+
+	Sandbox_EvolvingTraitsWorld_HomichlophileMultiplier = "Multiplicador de efeito de Amante de Nevoeiros",
+	Sandbox_EvolvingTraitsWorld_HomichlophileMultiplier_multiplier = "Quanto o Amante de Nevoeiro afeta o jogador. A fórmula para diminuição de estresse e pânico a cada minuto que você está na névoa é: 4% * fogIntensity * Homichlophile Multiplier. A intensidade da névoa varia entre 0 e 1, então raramente você verá uma diminuição completa de 4%",
+	Sandbox_EvolvingTraitsWorld_HomichlophobiaMultiplier = "Multiplicador de efeito de Medo de Nevoeiros",
+	Sandbox_EvolvingTraitsWorld_HomichlophobiaMultiplier_multiplier = "Quanto o Medo de Nevoeiro afeta o jogador. A fórmula para aumento de estresse e pânico a cada minuto que você está na névoa é: 4% * fogIntensity * Homichlophobia Multiplier. A intensidade da névoa varia entre 0 e 1, então raramente você verá um aumento completo de 4%",
+
+	Sandbox_EvolvingTraitsWorld_Hunter = "Caçador",
+	Sandbox_EvolvingTraitsWorld_HunterSkill = "Requerimento de habilidade para o traço de Caçador",
+	Sandbox_EvolvingTraitsWorld_HunterSkill_tooltip = "Furtividade + Mira + Lâminas Curtas + Caça",
+	Sandbox_EvolvingTraitsWorld_HunterKills = "Requerimento de mortes para o traço de Caçador",
+	Sandbox_EvolvingTraitsWorld_HunterKills_tooltip = "Armas de fogo + Lâminas Curtas",
+
+	Sandbox_EvolvingTraitsWorld_Inconspicuous = "Estabanado",
+	Sandbox_EvolvingTraitsWorld_InconspicuousSkill = "Requerimento de furtividade para o traço de Estabanado",
+
+	Sandbox_EvolvingTraitsWorld_InventoryTransferSystem = "Sistema de transferência de inventário",
+	Sandbox_EvolvingTraitsWorld_InventoryTransferSystemItems = "Medidor de itens",
+	Sandbox_EvolvingTraitsWorld_InventoryTransferSystemItems_tooltip = "Quantos itens (e peso) você precisa transferir para ganhar/perder traços relacionados à transferência de itens: Desorganizado, Organizado, Desastrado, Ágil <br>Desorganizado: 60% do contador de Peso e 30% do contador de Itens<br>Organizado: 100% do contador de Peso e 60% do contador de Itens<br>Desastrado: 30% do contador de Peso e 60% do contador de Itens<br>Ágil: 60% do contador de Peso e 100% do contador de Itens",
+	Sandbox_EvolvingTraitsWorld_InventoryTransferSystemWeight = "Medidor de Peso",
+	Sandbox_EvolvingTraitsWorld_InventoryTransferSystemWeight_tooltip = "Quanto peso você precisa transferir para ganhar/perder traços relacionados à transferência de itens: Desorganizado, Organizado, Desastrado, Ágil <br>Desorganizado: 60% do contador de Peso e 30% do contador de Itens<br>Organizado: 100% do contador de Peso e 60% do contador de Itens<br>Desastrado: 30% do contador de Peso e 60% do contador de Itens<br>Ágil: 60% do contador de Peso e 100% do contador de Itens",
+
+	Sandbox_EvolvingTraitsWorld_Kenshi = "Kenshi",
+	Sandbox_EvolvingTraitsWorld_KenshiSkill = "Requerimento de Lâminas Longas para o traço de Kenshi",
+	Sandbox_EvolvingTraitsWorld_KenshiKills = "Requerimento de mortes com Lâminas Longas para o traço de Kenshi",
+
+	Sandbox_EvolvingTraitsWorld_KnifeFighter = "Lutador de Facas",
+	Sandbox_EvolvingTraitsWorld_KnifeFighterSkill = "Requerimento de Lâminas curtas para o traço de Lutador de Facas",
+	Sandbox_EvolvingTraitsWorld_KnifeFighterKills = "Requerimento de mortes com Lâminas Curtas para o traço de Lutador de Facas",
+
+	Sandbox_EvolvingTraitsWorld_LightStep = "Passos Leves",
+	Sandbox_EvolvingTraitsWorld_LightStepSkill = "Requerimento de Agilidade para o traço de Passos Leves",
+
+	Sandbox_EvolvingTraitsWorld_LowProfile = "Low Profile",
+	Sandbox_EvolvingTraitsWorld_LowProfileSkill = "Requerimento de Furtividade para o traço de Low Profile",
+
+	Sandbox_EvolvingTraitsWorld_LuckSystem = "Sistema de Sorte",
+	Sandbox_EvolvingTraitsWorld_LuckSystemSkill = "% de habilidade para o sistema de Sorte",
+	Sandbox_EvolvingTraitsWorld_LuckSystemSkill_tooltip = "O código contará TODOS os seus níveis de habilidade (incluindo aqueles adicionados por mods e passivos) e verificará se você possui a porcentagem de níveis de habilidade necessária para ganhar/perder o traço Azarado/Sortudo. Você perde o traço Azarado quando atinge a metade da porcentagem definida. Isso significa que, nas configurações padrão, você perderá o traço Azarado quando a soma dos seus níveis de habilidade for igual ou superior a 33% (do máximo), e você obterá o traço Sortudo quando atingir 66%.",
+
+	Sandbox_EvolvingTraitsWorld_Outdoorsman = "Andarilho",
+	Sandbox_EvolvingTraitsWorld_OutdoorsmanCounter = "Medidor de Andarilho",
+	Sandbox_EvolvingTraitsWorld_OutdoorsmanCounter_tooltip = "--- Entendimento Geral---<br>Isso permite que você obtenha um traço ao passar tempo ao ar livre e ser exposto a várias condições climáticas. Quanto mais adversas forem as condições climáticas, mais rapidamente você ganhará o traço. Ficar dentro de casa gradualmente perde o progresso. Ao atingir o valor máximo do contador, você ganha o traço, e ao cair pela metade, você o perde.<br>---Detalhes técnicos---<br>A cada minuto que você passa ao ar livre, 1 ponto é adicionado ao contador. A taxa de aumento do contador é multiplicada por certas condições climáticas, como chuva, neve e vento. Quando o contador atinge o limite especificado, você ganha o traço. Com base em testes, determinou-se que passar 24 horas em tempo claro com uma manhã nebulosa resultará em aproximadamente 1.700 pontos, enquanto passar 24 horas em um clima com duas manhãs com nevoeiro e uma tempestade ao meio-dia resultará em aproximadamente 5.000 pontos. Se você estiver dentro de casa, perderá 10% do que ganharia se estivesse ao ar livre. Isso diminui linearmente para 100% ao longo de 900 minutos estando dentro de casa. Você pode redefinir a porcentagem atual em que perde pontos ao ficar ao ar livre. Você diminui a porcentagem em 0,3 a cada minuto ao ar livre (você pode ir de 100% a 10% em 300 minutos). Ao atingir metade do valor do contador que você definiu, você perde o traço. O contador tem um limite superior de 10 vezes o valor do contador e um limite inferior de 0.",
+	Sandbox_EvolvingTraitsWorld_OutdoorsmanCounterLoseMultiplier = "Multiplicador de perda do medidor de Andarilho",
+	Sandbox_EvolvingTraitsWorld_OutdoorsmanCounterLoseMultiplier_tooltip = "Define a velocidade com que você perde pontos ao ficar dentro de casa. A fórmula para determinar quanto você perde a cada minuto é 1 * (1 - OutdoorsmanCounterLoseMultiplier * 0.003). Portanto, no mínimo, você perde 0,7% do que ganharia se estivesse ao ar livre, e no máximo você perde 10% do que ganharia se estivesse ao ar livre.",
+
+	Sandbox_EvolvingTraitsWorld_RainSystem = "Sistema de chuva",
+	Sandbox_EvolvingTraitsWorld_RainSystemCounter = "Medidor de Sistema de Chuva",
+	Sandbox_EvolvingTraitsWorld_RainSystemCounter_tooltip = "A cada minuto que você passa na chuva, você ganha 1 * intensidade da chuva. Se você tiver mais de 25% de pânico, em vez disso, você perde 1 * rainIntensity * panicPercentage * RainSystemDecreaseMultiplier. Os limites máximos e mínimos do contador são -2 * medidor e 2 * medidor. Quando estiver em valores negativos, você adquire Pluviofobia; quando atingir o medidor, você adquire Pluviófilo. Quando estiver entre eles, você não recebe nada.",
+	Sandbox_EvolvingTraitsWorld_RainSystemCounterMultiplier = "Multiplicador de decaimento do medidor do Sistema de Chuva",
+	Sandbox_EvolvingTraitsWorld_RainSystemCounterMultiplier_tooltip = "Define quão rápido ou devagar você diminui o seu Contador do Sistema de Chuva, como explicado na dica do Contador do Sistema de Chuva.",
+	Sandbox_EvolvingTraitsWorld_PluviophileMultiplier = "Multiplicador de efeito de Pluviófilo",
+	Sandbox_EvolvingTraitsWorld_PluviophileMultiplier_tooltip = "Todos os efeitos (tristeza, Estresse e Tédio) são multiplicados por esse valor.",
+	Sandbox_EvolvingTraitsWorld_PluviophobiaMultiplier = "Multiplicador de efeito de Pluviofobia",
+	Sandbox_EvolvingTraitsWorld_PluviophobiaMultiplier_tooltip = "Todos os efeitos (tristeza, Estresse e Tédio) são multiplicados por esse valor.",
+
+	Sandbox_EvolvingTraitsWorld_RestorationExpert = "Especialista em Restauração",
+	Sandbox_EvolvingTraitsWorld_RestorationExpertSkill = "Requerimento de habilidade para o traço de Especialista em Restauração",
+	Sandbox_EvolvingTraitsWorld_RestorationExpertChance = "% de Especialista em Restauração",
+	Sandbox_EvolvingTraitsWorld_RestorationExpertChance_tooltip = "% para não aumentar a quantidade de vezes que o item foi reparado quando reparar o item.",
+
+	Sandbox_EvolvingTraitsWorld_Sewer = "Costureiro",
+	Sandbox_EvolvingTraitsWorld_SewerSkill = "Requerimento de Costura para o traço de Costureiro",
+
+	Sandbox_EvolvingTraitsWorld_SleepSystem = "Sistema de sono",
+	Sandbox_EvolvingTraitsWorld_SleepSystem_tooltip = "Permite ganhar/perder traços relacionados ao sono, Madrugador e Dorminhoco. <br>---Entendimento geral---<br>O mod rastreia em quais horas você gosta de dormir e, desde que você durma aproximadamente nesses horários, você reforça sua rotina de sono saudável. Se você dormir fora desse período, perderá um pouco da integridade da sua rotina. Não dormir por mais de 24 horas também começa a prejudicar sua rotina de sono. O mod rastreia em quais horas você gosta de dormir verificando o ponto médio do seu último sono, portanto, é possível ajustar sua rotina para diferentes horários.<br>---Descrição técnica, não leia isso se não quiser fazer meta-game---<br>Sempre que você dorme, o mod registra o ponto médio do seu sono. Por exemplo, se você dorme entre 23:00 e 05:30, o ponto médio seria 03:45, e esse seria o horário ideal para dormir. Se você dormir dentro de +-6h, você ganha progresso na sua barra de Saúde do Sono. A barra varia de -200 a 200. A verificação é feita a cada 10 minutos, e você ganha +0,167 na barra mencionada, ou seja, 1h de sono no horário correto adiciona +1 à barra. Dormir fora desse horário subtrai 0,167 da barra a cada 10 minutos. Após ficar mais de 24 horas sem dormir, você começa a perder -0,167 a cada dez minutos. Se sua barra estiver abaixo de -100, você adquire o traço Dorminhoco. Se estiver acima de 100, você adquire o traço Madrugador. Começar com qualquer um desses traços define o valor inicial da barra no ponto máximo/mínimo, ou seja, +200 para Madrugador e -200 para Dorminhoco.",
+	Sandbox_EvolvingTraitsWorld_SleepSystemMultiplier = "Multiplicador do Sistema de Sono",
+	Sandbox_EvolvingTraitsWorld_SleepSystemMultiplier_tooltip = "Define quão rápido você aumenta/diminui o contador de Saúde do Sono, que determina se você ganhar/perder Madrugador e Dorminhoco. Valores mais altos = ganho mais rápido, mas também perda mais rápida. O mesmo acontece ao contrário, um multiplicador mais baixo = ganho mais lento, mas também mais difícil de perder os traços.",
+	Sandbox_EvolvingTraitsWorld_SleepMoodle = "Humor do Sistema de Sono",
+	Sandbox_EvolvingTraitsWorld_SleepMoodle_tooltip = "Se esta opção estiver desativada, o humor não será exibido. Para jogador individual, deixe ativado e altere os humor que você vê nas Opções do Mod. Se for uma configuração de servidor, os jogadores não poderão habilitar o humor do lado do client.",
+
+	Sandbox_EvolvingTraitsWorld_SlowLearner = "Aprendiz Lento",
+	Sandbox_EvolvingTraitsWorld_SlowLearnerSkill = "Requerimento para o traço de Aprendiz Lento",
+	Sandbox_EvolvingTraitsWorld_SlowLearnerSkill_tooltip = "Manutenção + Carpintaria + Culinária + Agricultura + Primeiros Socorros + Elétrica + Metalurgia + Mecânica + Costura",
+
+	Sandbox_EvolvingTraitsWorld_Smoker = "Fumante",
+	Sandbox_EvolvingTraitsWorld_SmokerCounter = "Medidor de Vicio em Cigarro",
+	Sandbox_EvolvingTraitsWorld_SmokerCounter_tooltip = "Ao encher o medidor, você obterá o traço Fumante. Ao cair pela metade desse valor, você o perderá. Os limites do contador são de 0 a 2 vezes o valor do contador.",
+	Sandbox_EvolvingTraitsWorld_SmokingAddictionDecay = "Multiplicador de Decaimento de Vício em Cigarro",
+	Sandbox_EvolvingTraitsWorld_SmokingAddictionDecay_tooltip = "Quão rápido o medidor diminui",
+	Sandbox_EvolvingTraitsWorld_SmokingAddictionMultiplier = "Multiplicador de Ganho de Vício em Cigarro",
+	Sandbox_EvolvingTraitsWorld_SmokingAddictionMultiplier_tooltip = "Quão rápido você enche o medidor",
+	Sandbox_EvolvingTraitsWorld_SmokerMoodle = "Habilitar humor de Fumante",
+	Sandbox_EvolvingTraitsWorld_SmokerMoodle_tooltip = "Se esta opção estiver desativada, o humor não será exibido. para single-player, deixe ativado e altere os humor que você vê no Mod Options. Se for uma configuração de servidor, os jogadores não poderão habilitar o humor do lado do client.",
+	Sandbox_EvolvingTraitsWorld_SmokerMoodlePercentage = "% de humor de Fumante",
+	Sandbox_EvolvingTraitsWorld_SmokerMoodlePercentage_tooltip = "Isso controla quando o humor é exibido. Definir isso para 20%, por exemplo, fará com que o humor seja exibido quando você estiver a 20% de distância de obter ou perder o traço Fumante. Definir para 100 manterá o humor de fumante sempre visível. Para jogadores individuais, é recomendável definir isso como 100 e, em seguida, alterar a porcentagem no Mod Options. Para servidores, essa configuração controla qual é a porcentagem máxima que os jogadores podem definir para si mesmos. Portanto, se o valor nas configurações do servidor for 10%, os jogadores não poderão definir seu valor para 30%. Bem, eles podem, mas ainda só será exibido quando atingir 10%. Mas se você definir esse valor como 50%, os jogadores poderão alterá-lo do lado do client para 20%, por exemplo",
+
+	Sandbox_EvolvingTraitsWorld_Sojutsu = "Artista Marcial Sojutsu",
+	Sandbox_EvolvingTraitsWorld_SojutsuSkill = "Requerimento de habilidade para o traço de Artista Marcial Sojutsu",
+	Sandbox_EvolvingTraitsWorld_SojutsuKills = "Requerimento de Lanças para o traço de Artista Marcial Sojutsu",
+
+	Sandbox_EvolvingTraitsWorld_StickFighter = "Lutador de Bastão",
+	Sandbox_EvolvingTraitsWorld_StickFighterSkill = "Requerimento de Contundentes Curtos para o traço de Lutador de Bastão",
+	Sandbox_EvolvingTraitsWorld_StickFighterKills = "Requerimento de mortes com Contundentes Curtos para o traço de Lutador de Bastão",
+
+	Sandbox_EvolvingTraitsWorld_WeightSystem = "Sistema de Peso",
+	Sandbox_EvolvingTraitsWorld_WeightSystem_tooltip = "Descrever as condições em que você ganha/perde traços aqui exigiria muito texto, então apenas verifique as Planilhas do Google para obter detalhes (link na descrição da página do mod na oficina). Os traços afetados que podem ser ganhos/perdidos dinamicamente são: Sedento/Hidratado, Estomago Fraco/Forte, Casca Grossa/Pele Frágil, Saúde Fraca/Saúde de Ferro. IMPORTANTE: se você escolher qualquer um desses traços na criação do personagem, eles serão permanentes para o seu personagem, tanto os negativos quanto os positivos.",
+	Sandbox_EvolvingTraitsWorld_WeightSystemSkill = "Requerimento de habilidade para o Sistema de Peso",
+	Sandbox_EvolvingTraitsWorld_WeightSystemSkill_tooltip = "Quantos níveis de Força + Aptidão Física você precisa ter para ganhar Pele Grossa e Cicatrização Rápida (essa não é a única condição, mais uma vez, verifique as Planilhas do Google).",
+}

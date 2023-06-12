@@ -1,0 +1,44 @@
+Moodles_PTBR {
+	note_to_translators = "If a field has %1 in it, it's replaced with value later on when the code is run",
+    note_to_LANGUAGE_translators = "Make sure file is saved in <ENCODING> encoding, so game display correct characters",
+
+	Moodles_BloodlustMoodle_Good_lvl4 = "Meu Deus! amo matar zumbis",
+	Moodles_BloodlustMoodle_Good_lvl3 = "Isso é definitivamente um tempo bem gasto",
+	Moodles_BloodlustMoodle_Good_lvl2 = "Não é a pior forma de passar o tempo.",
+	Moodles_BloodlustMoodle_Good_lvl1 = "Isso é um pouco divertido",
+	Moodles_BloodlustMoodle_Bad_lvl1 = "Isso não é muito divertido",
+	Moodles_BloodlustMoodle_Bad_lvl2 = "Isso é um trabalho chato, mas alguém tem que fazer isso",
+	Moodles_BloodlustMoodle_Bad_lvl3 = "Não é tão ruim matar zumbis",
+	Moodles_BloodlustMoodle_Bad_lvl4 = "Eu realmente não queria matar zumbis",
+	Moodles_BloodlustMoodle_Custom = "Meu medidor de Sede de Sangue está %1 porcento cheio.<br>ficar acima de 50% vai, eventualmente, me fazer ganhar o traço de Sede de Sangue,<br>ficar abaixo de 50% vai diminuir meu progresso<br>(Isso é um indicador de se você está ganhando ou perdendo o traço de Sede de Sangue)",
+
+	Moodles_SleepHealthMoodle_Good_lvl4 = "Na Hora certa!",
+	Moodles_SleepHealthMoodle_Good_lvl3 = "Ótimo momento para dormir",
+	Moodles_SleepHealthMoodle_Good_lvl2 = "Bom momento para dormir",
+	Moodles_SleepHealthMoodle_Good_lvl1 = "Perto da minha hora de dormir.",
+	Moodles_SleepHealthMoodle_Bad_lvl1 = "Longe da minha hora de dormir",
+	Moodles_SleepHealthMoodle_Bad_lvl2 = "Não é um bom momento para dormir",
+	Moodles_SleepHealthMoodle_Bad_lvl3 = "Muito longe da minha hora de dormir",
+	Moodles_SleepHealthMoodle_Bad_lvl4 = "Minha rotina de sono tá uma merda!",
+	Moodles_SleepHealthMoodle_Custom = "Dormindo a %1 h do horário ideal"
+
+	Moodles_SmokerGSMoodle_Good_lvl4 = "Não me emporto de fumar",
+	Moodles_SmokerGSMoodle_Good_lvl3 = "Raramente fumo",
+	Moodles_SmokerGSMoodle_Good_lvl2 = "Fumo às vezes, mas eu não sinto necessidade",
+	Moodles_SmokerGSMoodle_Good_lvl1 = "Fumo às vezes, e às vezes eu preciso disso",
+	Moodles_SmokerGSMoodle_Bad_lvl1 = "Fumo mais do que deveria, mas eu preciso disso",
+	Moodles_SmokerGSMoodle_Bad_lvl2 = "Fumo frequentemente",
+	Moodles_SmokerGSMoodle_Bad_lvl3 = "Fumo bastante, mas tá tudo bem",
+	Moodles_SmokerGSMoodle_Bad_lvl4 = "Fumo demais",
+	Moodles_SmokerGSMoodle_GainingSmoker = "Eu estou %1 % de ficar dependente."
+
+	Moodles_SmokerLSMoodle_Good_lvl4 = "Quase não sinto vontade de fumar",
+	Moodles_SmokerLSMoodle_Good_lvl3 = "Eu só quero fumar as vezes",
+	Moodles_SmokerLSMoodle_Good_lvl2 = "Minha mente é uma fortaleza",
+	Moodles_SmokerLSMoodle_Good_lvl1 = "Estou melhorando",
+	Moodles_SmokerLSMoodle_Bad_lvl1 = "Deus, eu preciso de um cigarro",
+	Moodles_SmokerLSMoodle_Bad_lvl2 = "Fumar é bom, mas eu preciso lutar contra isso",
+	Moodles_SmokerLSMoodle_Bad_lvl3 = "Cigarro é vida",
+	Moodles_SmokerLSMoodle_Bad_lvl4 = "Prefiro morrer do que parar de fumar",
+	Moodles_SmokerLSMoodle_LosingSmoker = "Estou a %1 % de não estar mais dependente."
+}
