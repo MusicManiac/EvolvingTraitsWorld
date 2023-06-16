@@ -1,4 +1,4 @@
-New/changed lines since v.4.3.7
+New/changed lines since v.5.1.0
 
 Moodles_EN.txt
 	changed:
@@ -8,21 +8,11 @@ Moodles_EN.txt
 
 Sandbox_EN.txt
 	changed:
-		Sandbox_EvolvingTraitsWorld_SleepSystem_tooltip = "Enables obtaining/losing sleep related traits, Wakeful and Sleepyhead. <br>---General description---<br>Mod tracks at which hours you like to sleep, and as long as you sleep within around those hours, you reinforce your healthy sleep schedule. If you sleep outside of it, you lose some schedule integrity. Not sleeping for more than 24h also starts to damage your sleep schedule. Mod tracks at which hours you like to sleep by checking midpoint of your last sleep, so it's possible to shift your schedule to different hours.<br>---Technical description, don't read this if you don't want to meta-game much---<br>Every time you sleep, mod tracks midpoint of your sleep, so if u sleep between 23:00 and 05:30, midpoint would be 03:45, and it would be your optimal sleeping hour. If you sleep within +-6h you get progress to your SleepHealthiness bar. Goes from -200 to 200. Check is made every 10 min, you get + 0.167 to said bar, so essentially 1h of sleeping in correct schedule gives +1 to bar. Sleeping outside of it removes 0.167 from bar every 10 min. After not sleeping for more than 24h you start getting -0.167 every ten minutes. If your bar below -100, you get Sleepyhead. If it's above 100, you get Wakeful. Starting with either trait will set starting value of the bar to max/min point, so for Wakeful +200 and for Sleepyhead -200.",
-	new:
-		Sandbox_EvolvingTraitsWorld_BloodlustMultiplier = "Bloodlust effect multiplier",
-    	Sandbox_EvolvingTraitsWorld_BloodlustMultiplier_tooltip = "Multiplies effect of bloodlust by this value. By default, unhappiness, stress and panic each reduced by 4% for each kill. This multiplier is applied to those 4%. So setting this to 0.5 would make those stats being reduced by 2% instead.",
 
-		Sandbox_EvolvingTraitsWorld_DelayedTraitsSystem = "Delayed Traits System",
-    	Sandbox_EvolvingTraitsWorld_DelayedTraitsSystem_tooltip = "This system allows you to gain/lose trait in more random and not in so meta-game way. How it works is that when you qualify for adding/removing a trait (list of traits that are affected by this system can be found on google sheets, link in workshop description) you don't get/lose it instantly. Instead, it's added to a table with amount of hours it can take to get it (based on sandbox settings below). Then, every hour, game is rolling for you to get/lose every trait in this table (each trait is rolled separately). So you get 1 in X chance to get your trait every hour. If roll fails, X is reduced by 1. So longer you go, higher chances of trait that you earned to catch up with you.<br>IMPORTANT: traits that rely on skill levels will be unlocked as described above. However, traits that rely on internal counters added by this mod (example: Prone To Illness, Weak Stomach, Outdoorsman, Cat Eyes, etc) will unlock next time that they have to increase those internal counters. It'll be this way because coding separate unlock mechanism for those specific traits is a pain and a lot of extra unneeded work. Example: You qualify for Cat Eyes, and it's added to Delayed Traits Table. Let's say some time later you roll success in gaining it in the middle of the day. You won't get it straight away, but you'll get it as soon as Cat Eyes counter increases next time (the closest evening/night). All these specific cases are noted on google sheets.",
-    	Sandbox_EvolvingTraitsWorld_DelayedTraitsSystemDefaultDelay = "Default delay",
-    	Sandbox_EvolvingTraitsWorld_DelayedTraitsSystemDefaultDelay_tooltip = "Default delay (in hours), how many hours it can take the trait to appear/disappear. So, for example, if you set it to 240, and qualify for new trait, you'll get 1 in 240 chance to get it in 1st hour. If it fails, next hour it's 1 in 239. Next hour it's 1 in 238, and so on.",
-    	Sandbox_EvolvingTraitsWorld_DelayedTraitsSystemDefaultStartingDelay = "Additional Delay for Starting Traits",
-    	Sandbox_EvolvingTraitsWorld_DelayedTraitsSystemDefaultStartingDelay_tooltip = "Additional delay (in hours) that is stacked on top of default delay for 'free' traits that you get at the start of the game. Example: Starting with 9 Strength would usually give you Pack Mule for free. If Delayed Traits system is enabled and let's say Default Delay is 240 and Additional Delay for Starting Traits is 480, you won't get Pack mule at the start of the game, instead it'll go into the table with Max hours being 720. So you'll have 1 in 720 to get it in 1st hour, and so on.",
+	new:
+
 
 UI_EN.txt
 	changed:
 
 	new:
-		UI_EvolvingTraitsWorld_Options_GatherDetailedDebug = "Gather Detailed Debug Data",
-        UI_EvolvingTraitsWorld_Options_GatherDetailedDebug_tooltip = "Enables additional prints into console.txt. Useful only for debug purposes, doesn't show any additional data about counters, ONLY useful for bug reports or trying to figure pinpoint what's wrong. Adds a lot of unneeded info into console.txt, so restart game sometimes to keep it from getting too big so it won't (possibly) lag the game. Ctrl+F for 'ETW' to find the loggers.",

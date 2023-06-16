@@ -15,3 +15,8 @@ UI_EN.txt
 	changed:
 
 	new:
+		UI_EvolvingTraitsWorld_Options_EnableDelayedNotifications = "Enable Delayed Trait Notifications",
+		UI_EvolvingTraitsWorld_Options_EnableDelayedNotifications_tooltip = "This only does anything if you have 'Delayed Traits System' enabled. If it's enabled and this option is enabled, you'll get a notification when you qualify for a trait, and it's added to list of delayed traits",
+		UI_EvolvingTraitsWorld_DelayedNotificationsStringAdd = "Qualified for gaining ",
+		UI_EvolvingTraitsWorld_DelayedNotificationsStringRemove = "Qualified for losing ",
+		___note_to_translators = "UI_EvolvingTraitsWorld_DelayedNotificationsStringAdd and UI_EvolvingTraitsWorld_DelayedNotificationsStringRemove is used in combination with trait names, for example 'Qualified for gaining Hoarder' or 'Qualified for losing Unlucky'. You get the idea."

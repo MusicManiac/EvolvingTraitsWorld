@@ -30,7 +30,7 @@ local function outdoorsman()
 		if debug() then print("ETW Logger | outdoorsman(): totalGain=" .. totalGain .. ". OutdoorsmanCounter=" .. outdoorsmanModData.OutdoorsmanCounter) end
 		if not player:HasTrait("Outdoorsman") and outdoorsmanModData.OutdoorsmanCounter >= SBvars.OutdoorsmanCounter then
 			player:getTraits():add("Outdoorsman");
-			if notification() == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_outdoorsman"), true, HaloTextHelper.getColorGreen()) end
+			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_outdoorsman"), true, HaloTextHelper.getColorGreen()) end
 		end
 	elseif outdoorsmanModData.OutdoorsmanCounter > 0 then
 		local totalLose = totalGain * 0.1 * (1 + outdoorsmanModData.MinutesSinceOutside / 100) * SBvars.OutdoorsmanCounterLoseMultiplier;
@@ -40,7 +40,7 @@ local function outdoorsman()
 		if debug() then print("ETW Logger | outdoorsman(): totalLose=" .. totalLose .. ". OutdoorsmanCounter=" .. outdoorsmanModData.OutdoorsmanCounter) end
 		if player:HasTrait("Outdoorsman") and outdoorsmanModData.OutdoorsmanCounter <= SBvars.OutdoorsmanCounter / 2 then
 			player:getTraits():remove("Outdoorsman");
-			if notification() == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_outdoorsman"), false, HaloTextHelper.getColorRed()) end
+			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_outdoorsman"), false, HaloTextHelper.getColorRed()) end
 		end
 	end
 end
@@ -68,11 +68,11 @@ local function fearOfLocations()
 		if debug() then print("ETW Logger | fearOfLocations(): modData.FearOfOutside: " .. fearOfLocationsModData.FearOfOutside) end
 		if player:HasTrait("Agoraphobic") and fearOfLocationsModData.FearOfOutside >= SBCounter then
 			player:getTraits():remove("Agoraphobic");
-			if notification() == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_agoraphobic"), false, HaloTextHelper.getColorGreen()) end
+			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_agoraphobic"), false, HaloTextHelper.getColorGreen()) end
 		end
 		if not player:HasTrait("Agoraphobic") and fearOfLocationsModData.FearOfOutside <= -SBCounter and not desensitized(player) then
 			player:getTraits():add("Agoraphobic");
-			if notification() == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_agoraphobic"), true, HaloTextHelper.getColorRed()) end
+			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_agoraphobic"), true, HaloTextHelper.getColorRed()) end
 		end
 	elseif not player:isOutside() or player:getVehicle() ~= nil then
 		counterDecrease = counterDecrease * ((SBvars.AffinitySystem and modData.StartingTraits.Claustrophobic) and SBvars.AffinitySystemGainMultiplier or 1);
@@ -83,11 +83,11 @@ local function fearOfLocations()
 		if debug() then print("ETW Logger | fearOfLocations(): modData.FearOfInside: " .. fearOfLocationsModData.FearOfInside) end
 		if player:HasTrait("Claustophobic") and fearOfLocationsModData.FearOfInside >= SBCounter then
 			player:getTraits():remove("Claustophobic");
-			if notification() == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_claustro"), false, HaloTextHelper.getColorGreen()) end
+			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_claustro"), false, HaloTextHelper.getColorGreen()) end
 		end
 		if not player:HasTrait("Claustophobic") and fearOfLocationsModData.FearOfInside <= -SBCounter and not desensitized(player) then
 			player:getTraits():add("Claustophobic");
-			if notification() == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_claustro"), true, HaloTextHelper.getColorRed()) end
+			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_claustro"), true, HaloTextHelper.getColorRed()) end
 		end
 	end
 end

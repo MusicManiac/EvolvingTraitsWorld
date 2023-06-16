@@ -7,6 +7,7 @@ if ModOptions and ModOptions.getInstance then
 		EvolvingTraitsWorld.settings.GatherDebug = optionValues.settings.options.GatherDebug;
 		EvolvingTraitsWorld.settings.GatherDetailedDebug = optionValues.settings.options.GatherDetailedDebug;
 		EvolvingTraitsWorld.settings.EnableNotifications = optionValues.settings.options.EnableNotifications;
+		EvolvingTraitsWorld.settings.EnableDelayedNotifications = optionValues.settings.options.EnableDelayedNotifications;
 		EvolvingTraitsWorld.settings.EnableBloodLustMoodle = optionValues.settings.options.EnableBloodLustMoodle;
 		EvolvingTraitsWorld.settings.EnableSleepHealthMoodle = optionValues.settings.options.EnableSleepHealthMoodle;
 		EvolvingTraitsWorld.settings.EnableSmokerMoodle = optionValues.settings.options.EnableSmokerMoodle;
@@ -31,6 +32,13 @@ if ModOptions and ModOptions.getInstance then
 			EnableNotifications = {
 				name = "UI_EvolvingTraitsWorld_Options_EnableNotifications",
 				tooltip = "UI_EvolvingTraitsWorld_Options_EnableNotifications_tooltip",
+				default = true,
+				OnApplyMainMenu = onModOptionsApply,
+				OnApplyInGame = onModOptionsApply,
+			},
+			EnableDelayedNotifications = {
+				name = "UI_EvolvingTraitsWorld_Options_EnableDelayedNotifications",
+				tooltip = "UI_EvolvingTraitsWorld_Options_EnableDelayedNotifications_tooltip",
 				default = true,
 				OnApplyMainMenu = onModOptionsApply,
 				OnApplyInGame = onModOptionsApply,

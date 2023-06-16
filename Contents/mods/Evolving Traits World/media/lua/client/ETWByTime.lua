@@ -4,6 +4,7 @@ local ETWMoodles = require "ETWMoodles";
 local SBvars = SandboxVars.EvolvingTraitsWorld;
 
 local notification = function() return EvolvingTraitsWorld.settings.EnableNotifications end
+local delayedNotification = function() return EvolvingTraitsWorld.settings.EnableDelayedNotifications end
 local debug = function() return EvolvingTraitsWorld.settings.GatherDebug end
 local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetailedDebug end
 
@@ -36,10 +37,11 @@ local function catEyes()
 		if not player:HasTrait("NightVision") and modData.CatEyesCounter >= SBvars.CatEyesCounter then
 			if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("NightVision")) then
 				player:getTraits():add("NightVision");
-				if notification() == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_NightVision"), true, HaloTextHelper.getColorGreen()) end
+				if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_NightVision"), true, HaloTextHelper.getColorGreen()) end
 				Events.EveryOneMinute.Remove(catEyes);
 			end
 			if SBvars.DelayedTraitsSystem then
+				if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringAdd")..getText("UI_trait_NightVision"), true, HaloTextHelper.getColorGreen()) end
 				ETWCommonFunctions.addTraitToDelayTable(modData, "NightVision", player, true)
 			end
 		end
@@ -62,7 +64,11 @@ local function sleepSystem()
 	local currentPreferredTargetHour = sleepModData.LastMidpoint;
 	if player:isAsleep() then
 		local hoursAwayFromPreferredHour = math.min(math.abs(currentPreferredTargetHour - timeOfDay), 24 - math.abs(timeOfDay - currentPreferredTargetHour));
-		if sleepModData.CurrentlySleeping == false then sleepModData.CurrentlySleeping = true end
+		if sleepModData.CurrentlySleeping == false then
+			sleepModData.CurrentlySleeping = true;
+			sleepModData.WentToSleepAt = timeOfDay;
+			if detailedDebug() then print("ETW Logger | sleepSystem(): player went to sleep at: "..sleepModData.WentToSleepAt) end
+		end
 		if hoursAwayFromPreferredHour <= 6 then
 			local sleepHealthinessBarIncreaseMultiplier = SBvars.SleepSystemMultiplier;
 			if SBvars.AffinitySystem then
@@ -90,9 +96,13 @@ local function sleepSystem()
 	end
 	if not player:isAsleep() and sleepModData.CurrentlySleeping == true then
 		ETWMoodles.sleepHealthMoodleUpdate(nil, nil, true);
+		sleepModData.LastMidpoint = findMidpoint(sleepModData.WentToSleepAt, timeOfDay);
 		sleepModData.CurrentlySleeping = false;
 		sleepModData.HoursSinceLastSleep = 0;
-		if detailedDebug() then print("ETW Logger | sleepSystem(): SleepHealthinessBar: ".. sleepModData.SleepHealthinessBar) end
+		if detailedDebug() then
+			print("ETW Logger | sleepSystem(): SleepHealthinessBar: ".. sleepModData.SleepHealthinessBar);
+			print("ETW Logger | sleepSystem(): new sleepModData.LastMidpoint: "..sleepModData.LastMidpoint..", calculated from "..sleepModData.WentToSleepAt.." and "..timeOfDay);
+		end
 	end
 	if not player:isAsleep() then
 		sleepModData.HoursSinceLastSleep = sleepModData.HoursSinceLastSleep + 1 / 6;
@@ -111,21 +121,21 @@ local function sleepSystem()
 	if sleepModData.SleepHealthinessBar > 100 then
 		if not player:HasTrait("NeedsLessSleep") then
 			player:getTraits():add("NeedsLessSleep")
-			if notification() == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_LessSleep"), true, HaloTextHelper.getColorGreen()) end
+			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_LessSleep"), true, HaloTextHelper.getColorGreen()) end
 		end
 	elseif sleepModData.SleepHealthinessBar < -100 then
 		if not player:HasTrait("NeedsMoreSleep") then
 			player:getTraits():add("NeedsMoreSleep")
-			if notification() == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_MoreSleep"), true, HaloTextHelper.getColorRed()) end
+			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_MoreSleep"), true, HaloTextHelper.getColorRed()) end
 		end
 	else
 		if player:HasTrait("NeedsLessSleep") then
 			player:getTraits():remove("NeedsLessSleep")
-			if notification() == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_LessSleep"), false, HaloTextHelper.getColorRed()) end
+			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_LessSleep"), false, HaloTextHelper.getColorRed()) end
 		end
 		if player:HasTrait("NeedsMoreSleep") then
 			player:getTraits():remove("NeedsMoreSleep")
-			if notification() == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_MoreSleep"), true, HaloTextHelper.getColorGreen()) end
+			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_MoreSleep"), true, HaloTextHelper.getColorGreen()) end
 		end
 	end
 	if detailedDebug() then print("ETW Logger | sleepSystem(): modData.SleepHealthinessBar: ".. sleepModData.SleepHealthinessBar) end
@@ -150,11 +160,11 @@ local function smoker()
 	if debug() then print("ETW Logger | smoker(): smoking addictionDecay: "..addictionDecay..", modData.SmokingAddiction: ".. smokerModData.SmokingAddiction) end
 	if smokerModData.SmokingAddiction >= SBvars.SmokerCounter and not player:HasTrait("Smoker") then
 		player:getTraits():add("Smoker")
-		if notification() == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Smoker"), true, HaloTextHelper.getColorRed()) end
+		if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Smoker"), true, HaloTextHelper.getColorRed()) end
 	elseif smokerModData.SmokingAddiction <= SBvars.SmokerCounter / 2 and player:HasTrait("Smoker") then
 		stats:setStressFromCigarettes(0);
 		player:getTraits():remove("Smoker")
-		if notification() == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Smoker"), false, HaloTextHelper.getColorGreen()) end
+		if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Smoker"), false, HaloTextHelper.getColorGreen()) end
 	end
 end
 
@@ -166,7 +176,7 @@ local function herbalist()
 	if modData.HerbsPickedUp < SBvars.HerbalistHerbsPicked / 2 and player:HasTrait("Herbalist") then
 		player:getTraits():remove("Herbalist");
 		player:getKnownRecipes():remove("Herbalist");
-		if notification() == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Herbalist"), false, HaloTextHelper.getColorRed()) end
+		if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Herbalist"), false, HaloTextHelper.getColorRed()) end
 	end
 end
 

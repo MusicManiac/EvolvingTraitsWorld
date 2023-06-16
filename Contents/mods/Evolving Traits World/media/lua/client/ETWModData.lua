@@ -6,9 +6,6 @@ end
 require "ETWModOptions";
 
 local SBvars = SandboxVars.EvolvingTraitsWorld;
-local notification = function() return EvolvingTraitsWorld.settings.EnableNotifications end
-local debug = function() return EvolvingTraitsWorld.settings.GatherDebug end
-local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetailedDebug end
 
 local function checkStartingDTConflictingTrait(startingTraits, player, trait)
 	if player:getModData().DTKillscheck2 == nil then
@@ -131,6 +128,7 @@ local function createModData(playerIndex, player)
 	end
 	sleepSystem.HoursSinceLastSleep = sleepSystem.HoursSinceLastSleep or 0;
 	sleepSystem.LastMidpoint = sleepSystem.LastMidpoint or 4;
+	sleepSystem.WentToSleepAt = sleepSystem.WentToSleepAt or 21;
 	if sleepSystem.SleepHealthinessBar == nil and startingTraits.NeedsLessSleep == true then
 		sleepSystem.SleepHealthinessBar = 200;
 	elseif sleepSystem.SleepHealthinessBar == nil and startingTraits.NeedsMoreSleep == true then

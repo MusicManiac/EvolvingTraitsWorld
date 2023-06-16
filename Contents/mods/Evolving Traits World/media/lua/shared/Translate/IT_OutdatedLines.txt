@@ -1,4 +1,4 @@
-New/changed lines since v.5.0.0
+New/changed lines since v.5.1.0
 
 Moodles_EN.txt
 	changed:
@@ -15,3 +15,5 @@ UI_EN.txt
 	changed:
 
 	new:
+		UI_EvolvingTraitsWorld_Options_EnableNotifications = "Enable Trait Notifications",
+		UI_EvolvingTraitsWorld_Options_EnableNotifications_tooltip = "Show Colored Arrow above your character whenever you gain or lose trait.",

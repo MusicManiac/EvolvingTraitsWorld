@@ -34,16 +34,16 @@ local function rainTraits()
 		end
 		if not player:HasTrait("Pluviophobia") and modData.RainCounter <= -SBCounter and not desensitized(player) then
 			player:getTraits():add("Pluviophobia");
-			if notification() == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Pluviophobia"), true, HaloTextHelper.getColorRed()) end
+			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Pluviophobia"), true, HaloTextHelper.getColorRed()) end
 		elseif player:HasTrait("Pluviophobia") and modData.RainCounter > -SBCounter then
 			player:getTraits():remove("Pluviophobia");
-			if notification() == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Pluviophobia"), false, HaloTextHelper.getColorGreen()) end
+			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Pluviophobia"), false, HaloTextHelper.getColorGreen()) end
 		elseif player:HasTrait("Pluviophile") and modData.RainCounter <= SBCounter then
 			player:getTraits():remove("Pluviophile");
-			if notification() == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Pluviophile"), false, HaloTextHelper.getColorRed()) end
+			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Pluviophile"), false, HaloTextHelper.getColorRed()) end
 		elseif not player:HasTrait("Pluviophile") and modData.RainCounter > SBCounter then
 			player:getTraits():add("Pluviophile");
-			if notification() == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Pluviophile"), true, HaloTextHelper.getColorGreen()) end
+			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Pluviophile"), true, HaloTextHelper.getColorGreen()) end
 		end
 	end
 end
@@ -70,16 +70,16 @@ local function fogTraits()
 		if debug() then print("ETW Logger | fogTraits(): modData.FogCounter="..modData.FogCounter) end
 		if not player:HasTrait("Homichlophobia") and modData.FogCounter <= -SBCounter and not desensitized(player) then
 			player:getTraits():add("Homichlophobia");
-			if notification() == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Homichlophobia"), true, HaloTextHelper.getColorRed()) end
+			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Homichlophobia"), true, HaloTextHelper.getColorRed()) end
 		elseif player:HasTrait("Homichlophobia") and modData.FogCounter > -SBCounter then
 			player:getTraits():remove("Homichlophobia");
-			if notification() == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Homichlophobia"), false, HaloTextHelper.getColorGreen()) end
+			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Homichlophobia"), false, HaloTextHelper.getColorGreen()) end
 		elseif player:HasTrait("Homichlophile") and modData.FogCounter <= SBCounter then
 			player:getTraits():remove("Homichlophile");
-			if notification() == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Homichlophobia"), false, HaloTextHelper.getColorRed()) end
+			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Homichlophobia"), false, HaloTextHelper.getColorRed()) end
 		elseif not player:HasTrait("Homichlophile") and modData.FogCounter > SBCounter then
 			player:getTraits():add("Homichlophile");
-			if notification() == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Homichlophobia"), true, HaloTextHelper.getColorGreen()) end
+			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Homichlophobia"), true, HaloTextHelper.getColorGreen()) end
 		end
 	end
 end

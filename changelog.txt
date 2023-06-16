@@ -1,4 +1,10 @@
-v.5.0.3
+v.5.1.0
 
+General:
+	- Added Mod Options setting to show pop-ups when you qualify for gaining/losing traits with Delayed System enabled.
+	- Optimized code here and there
+	- Added additional detailed debug printouts to sleep system
 Fixes:
-	- Fixed item transfer stuff (incorrect moddata table)
+	- Lucky/Unlucky added to Delayed Traits system (missed it on initial 5.0.0 release, ups)
+	- Fixed Hunter popup triggering every kill after you qualify for it
+	- Sleep System was broken, your Last Sleep Midpoint was always set to 4am

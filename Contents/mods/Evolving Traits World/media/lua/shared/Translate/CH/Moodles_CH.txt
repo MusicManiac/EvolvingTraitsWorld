@@ -1,6 +1,6 @@
 Moodles_CH {
     note_to_translators = "If a field has %1 in it, it's replaced with value later on when the code is run",
-    note_to_LANGUAGE_translators = "Make sure file is saved in UTF-8 encoding, so game display correct characters",
+    note_to_CH_translators = "Make sure file is saved in UTF-8 encoding, so game display correct characters",
 
     Moodles_BloodlustMoodle_Good_lvl4 = "我的天！虐殺僵屍我喜歡",
     Moodles_BloodlustMoodle_Good_lvl3 = "這肯定是度過最好的時間",

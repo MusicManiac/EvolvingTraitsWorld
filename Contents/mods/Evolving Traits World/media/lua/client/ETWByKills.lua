@@ -5,6 +5,7 @@ local ETWCommonFunctions = require "ETWCommonFunctions";
 local SBvars = SandboxVars.EvolvingTraitsWorld;
 
 local notification = function() return EvolvingTraitsWorld.settings.EnableNotifications end
+local delayedNotification = function() return EvolvingTraitsWorld.settings.EnableDelayedNotifications end
 local debug = function() return EvolvingTraitsWorld.settings.GatherDebug end
 local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetailedDebug end
 
@@ -47,10 +48,10 @@ local function bloodlustTime()
 		end
 		if player:HasTrait("Bloodlust") and bloodlustModData.BloodlustProgress <= SBvars.BloodlustProgress / 2 then
 			player:getTraits():remove("Bloodlust");
-			if notification() == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Bloodlust"), false, HaloTextHelper.getColorRed()) end
+			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Bloodlust"), false, HaloTextHelper.getColorRed()) end
 		elseif not player:HasTrait("Bloodlust") and bloodlustModData.BloodlustProgress >= SBvars.BloodlustProgress then
 			player:getTraits():add("Bloodlust");
-			if notification() == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Bloodlust"), true, HaloTextHelper.getColorGreen()) end
+			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Bloodlust"), true, HaloTextHelper.getColorGreen()) end
 		end
 	end
 end
@@ -68,9 +69,10 @@ local function eagleEyed(wielder, character, handWeapon, damage)
 			if player:getModData().EvolvingTraitsWorld.EagleEyedKills >= SBvars.EagleEyedKills then
 				if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("EagleEyed")) then
 					player:getTraits():add("EagleEyed");
-					if notification() == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_eagleeyed"), true, HaloTextHelper.getColorGreen()) end
+					if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_eagleeyed"), true, HaloTextHelper.getColorGreen()) end
 				end
 				if SBvars.DelayedTraitsSystem then
+					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringAdd")..getText("UI_trait_eagleeyed"), true, HaloTextHelper.getColorGreen()) end
 					ETWCommonFunctions.addTraitToDelayTable(modData, "EagleEyed", player)
 				end
 			end
@@ -107,38 +109,40 @@ local function braverySystem(zombie)
 			if player:HasTrait(trait) and remove then
 				if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(trait)) then
 					player:getTraits():remove(trait)
-					if notification() == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_" .. trait), false, HaloTextHelper.getColorGreen()) end
+					if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_" .. trait), false, HaloTextHelper.getColorGreen()) end
 				end
 				if SBvars.DelayedTraitsSystem then
+					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringRemove")..getText("UI_trait_" .. trait), true, HaloTextHelper.getColorGreen()) end
 					ETWCommonFunctions.addTraitToDelayTable(ETWModData, trait, player, false)
 				end
 			elseif not player:HasTrait(trait) and add then
 				if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(trait)) then
 					player:getTraits():add(trait)
-					if notification() == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_" .. (trait == "Brave" and "brave" or trait)), true, HaloTextHelper.getColorGreen()) end
+					if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_" .. (trait == "Brave" and "brave" or trait)), true, HaloTextHelper.getColorGreen()) end
 					if trait == "Desensitized" then
 						Events.OnZombieDead.Remove(braverySystem);
 						if SBvars.BraverySystemRemovesOtherFearPerks == true then
 							if player:HasTrait("Agoraphobic") then
 								player:getTraits():remove("Agoraphobic");
-								if notification() == true then HaloTextHelper.addTextWithArrow(player, "UI_trait_agoraphobic", false, HaloTextHelper.getColorGreen()) end
+								if notification() then HaloTextHelper.addTextWithArrow(player, "UI_trait_agoraphobic", false, HaloTextHelper.getColorGreen()) end
 							end
 							if player:HasTrait("Claustophobic") then
 								player:getTraits():remove("Claustophobic");
-								if notification() == true then HaloTextHelper.addTextWithArrow(player, "UI_trait_claustro", false, HaloTextHelper.getColorGreen()) end
+								if notification() then HaloTextHelper.addTextWithArrow(player, "UI_trait_claustro", false, HaloTextHelper.getColorGreen()) end
 							end
 							if player:HasTrait("Pluviophobia") then
 								player:getTraits():remove("Pluviophobia");
-								if notification() == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Pluviophobia"), false, HaloTextHelper.getColorGreen()) end
+								if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Pluviophobia"), false, HaloTextHelper.getColorGreen()) end
 							end
 							if player:HasTrait("Homichlophobia") then
 								player:getTraits():remove("Homichlophobia");
-								if notification() == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Homichlophobia"), false, HaloTextHelper.getColorGreen()) end
+								if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Homichlophobia"), false, HaloTextHelper.getColorGreen()) end
 							end
 						end
 					end
 				end
 				if SBvars.DelayedTraitsSystem then
+					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringAdd")..getText("UI_trait_" .. (trait == "Brave" and "brave" or trait)), true, HaloTextHelper.getColorGreen()) end
 					ETWCommonFunctions.addTraitToDelayTable(ETWModData, trait, player, true)
 				end
 			end

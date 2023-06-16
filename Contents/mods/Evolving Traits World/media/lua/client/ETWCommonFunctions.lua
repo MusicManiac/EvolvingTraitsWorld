@@ -2,7 +2,6 @@ require "ETWModData";
 ETWCommonFunctions = {};
 
 local SBvars = SandboxVars.EvolvingTraitsWorld;
-local notification = function() return EvolvingTraitsWorld.settings.EnableNotifications end
 local debug = function() return EvolvingTraitsWorld.settings.GatherDebug end
 local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetailedDebug end
 
