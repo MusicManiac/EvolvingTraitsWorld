@@ -1,63 +1,63 @@
 version=1
 id=2914075159
 title=Evolving Traits World (ETW)
-description=[h1]Welcome to the world of Evolving Traits[/h1]
-description=This mod allows you to get really ripped in PZ and see an actual character progression besides getting your skills from lvl 0 to lvl10. You'll be able to purge the majority of negative traits and earn a lot of positive ones (but also earn some negative ones as well). This would help you to go from your average Joe to actual GigaChad in-game. You repair a lot of cars? You get better at it. You train yourself to take long-range kills with proper rifles? Why wouldn't it warranty getting Eagle-Eyed? You pick up thousands of plants through your lifetime and still can't call yourself Herbalist? Yea, that doesn't sound right to me. You maintain great sleeping schedule but for some reason you still need same amount of sleep as when you were sleeping whenever? Not anymore. Welcome to the Dynamic Traits World, ladies and gentlemen!
-description=
-description=[h1]Features[/h1]
-description=[list]
-description=[*] 70+ dynamic traits (vanilla + added by the mod), full list on [url=https://docs.google.com/spreadsheets/d/1405szVLTetMioT0P8ddvPUJTv6VyLtTEvWxyn0cuZjI/edit?usp=sharing]this spreadsheet[/url].
-description=[*] [h3][b]FULL sandbox customization[/b]. Choose which perks you want to be dynamic, choose how fast you get them, choose how fast you lose them, customize anything with more than 130 sandbox options. Nothing is forced upon player, if you like 1% of the mod, you can literally set it up so you get to use that 1% and nothing else.[/h3]
-description=[*] Advanced systems that affect a lot of traits. Affinity system, that allows you to stick to your starting traits better. Delayed traits system, that allows you to get/remove traits with random delay.
-description=[*] QOL (Quality of Life) submod - mark all traits that are dynamic so in character creating you can see which perks are obtainable during gameplay! Can be enabled without enabling main mod, so if you don't like main features added by this mod and just want to see which traits are dynamic in your game with SOTO/MST/MT/DT - you can do that.
-description=[*] For new traits (aka not vanilla game), customization is also present. Want Hoarder perk to give you more carry weight per point of STR? Go adjust it in Sandbox. Want to be even happier under rain with Pluviophile? Sandbox it is.
-description=[*] Client-sided moodles configuration available with [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2169435993]Mod Options[/url]. Choose which moodles you want to be shown.
-description=[*]Don't like some/all traits added by this mod but only want to have vanilla traits dynamic? Also possible, with help of [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2934686936]Evolving Traits World (ETW) - Disable Selected Traits[/url].
-description=[/list]
-description=
-description=[h1]Compatibility and Installation[/h1]
-description=Installation instructions can be found in [url=https://steamcommunity.com/workshop/filedetails/discussion/2914075159/3767857092594929252/]this discussion[/url].
-description=[list]
-description=[*] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2459400130]Dynamic Traits[/url] - an alternative to this mod, therefore main mod is incompatible. Read more on it in [url=https://steamcommunity.com/workshop/filedetails/discussion/2914075159/3767857092594927216/]this discussion[/url]. Submod is compatible.
-description=[*] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2894296454]Change Sandbox Options (by Star)[/url] - use this to change SP starting options after save is up. Other sandbox changing mods won't work unless they get fixed.
-description=[*] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2730251452]Expanded Taits[/url] - mostly absorbed by this mod, therefore probably incompatible.
-description=[*] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1299328280]More Traits[/url] - my submod shows which traits are dynamic from it, additionally makes Butterfingers dynamic. Main mod works fine too.
-description=[*] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2840805724]Simple Overhaul: Traits and Occupations (SOTO)[/url], [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2792245343]More Simple Traits (MST)[/url], [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2760950740]Explorer Trait[/url], [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2863908612]SixthSense[/url] - my submod shows which traits are dynamic from these. Main mod works fine too.
-description=[*] Literally anything else: should be compatible. Resolved mod conflicts include popular mods like: [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1905148104]Superb Survivors![/url] and all of its variations (allegedly), [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2719327441]Snake's Mod Pack 41.77[/url]
-description=[/list]
-description=
-description=[h1]Recommended Mods[/h1]
-description=[list]
-description=[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=2694448564]Mod Manager[/url] and [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2725216703]Mod Manager: Server[/url] - for the love of god, use these and not vanilla mod manager
-description=[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=2854030563]Moodle Quarters[/url] - so you can clearly see which stage your moodle is in right now
-description=[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=2763647806]Clear description for Moodles[/url] - so you know what your moodles do
-description=[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=2685168362]More Description for Traits[/url] - so you can read what your traits do
-description=[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=2894296454]Change Sandbox Options (by Star)[/url] - use this to change SP starting options mid-game
-description=[/list]
-description=
-description=[h1]GitHub and Discord[/h1]
-description=If you want to submit translation files, the easiest way to do it would be on GitHub. I've also made Discord server for this and other of my mods so if you want to suggest some traits or report bugs, the fastest way to reach me would be over the discord. Click on images, they will take you where you want.
-description=[url=https://github.com/MusicManiac/DynamicTraitsWorld][img]https://cdn.iconscout.com/icon/free/png-256/github-163-761603.png[/img][/url][url=https://discord.gg/8pBN5Ccm7z][img]https://cdn.iconscout.com/icon/free/png-256/discord-3691244-3073764.png[/img][/url]
-description=
-description=[h1]Credits and Translations[/h1]
-description=List of credits, contributors and translators can be found in [url=https://steamcommunity.com/workshop/filedetails/discussion/2914075159/3785877016603169742/]this discussion[/url] (hitting description limit so had to move it).
-description=Currently mod supports following languages:
-description=[list]
-description=[*]English
-description=[*]Italiano / Italian
-description=[*]Español / Spanish
-description=[*]??????? / Russian
-description=[*]???? / Chinese
-description=[*]???? / Traditional Chinese
-description=[*]Português Brasileiro / Brazilian Portuguese
-description=[/list]
-description=
-description=[h1]Afterword and Permission[/h1]
-description=If you like this mod, check out collection on top of page for other mods I made or collaborated on! Rate ups are appreciated, and if you wanna send me a coffee, that's a real homie move, and you can do it here:
-description=[url=https://ko-fi.com/musicmaniac][img]https://uploads-ssl.webflow.com/5c14e387dab576fe667689cf/61e11d5cf697cee7ca5b65d9_Button-p-500.png[/img][/url]
-description=
-description=[quote]? Permissions
-description=Redistribution of this mod without explicit permission from the creator is prohibited under any circumstances. This includes, but not limited to, uploading this mod to the Steam Workshop or any other site, distribution as part of another mod or modpack, distribution of modified versions.
+description=[h1]Welcome to the world of Evolving Traits[/h1]
+description=This mod allows you to get really ripped in PZ and see an actual character progression besides getting your skills from lvl 0 to lvl10. You'll be able to purge the majority of negative traits and earn a lot of positive ones (but also earn some negative ones as well). This would help you to go from your average Joe to actual GigaChad in-game. You repair a lot of cars? You get better at it. You train yourself to take long-range kills with proper rifles? Why wouldn't it warranty getting Eagle-Eyed? You pick up thousands of plants through your lifetime and still can't call yourself Herbalist? Yea, that doesn't sound right to me. You maintain great sleeping schedule but for some reason you still need same amount of sleep as when you were sleeping whenever? Not anymore. Welcome to the Dynamic Traits World, ladies and gentlemen!
+description=
+description=[h1]Features[/h1]
+description=[list]
+description=[*] 70+ dynamic traits (vanilla + added by the mod), full list on [url=https://docs.google.com/spreadsheets/d/1405szVLTetMioT0P8ddvPUJTv6VyLtTEvWxyn0cuZjI/edit?usp=sharing]this spreadsheet[/url].
+description=[*] [h3][b]FULL sandbox customization[/b]. Choose which perks you want to be dynamic, choose how fast you get them, choose how fast you lose them, customize anything with more than 130 sandbox options. Nothing is forced upon player, if you like 1% of the mod, you can literally set it up so you get to use that 1% and nothing else.[/h3]
+description=[*] Advanced systems that affect a lot of traits. Affinity system, that allows you to stick to your starting traits better. Delayed traits system, that allows you to get/remove traits with random delay.
+description=[*] QOL (Quality of Life) submod - mark all traits that are dynamic so in character creating you can see which perks are obtainable during gameplay! Can be enabled without enabling main mod, so if you don't like main features added by this mod and just want to see which traits are dynamic in your game with SOTO/MST/MT/DT - you can do that.
+description=[*] For new traits (aka not vanilla game), customization is also present. Want Hoarder perk to give you more carry weight per point of STR? Go adjust it in Sandbox. Want to be even happier under rain with Pluviophile? Sandbox it is.
+description=[*] Client-sided moodles configuration available with [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2169435993]Mod Options[/url]. Choose which moodles you want to be shown.
+description=[*]Don't like some/all traits added by this mod but only want to have vanilla traits dynamic? Also possible, with help of [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2934686936]Evolving Traits World (ETW) - Disable Selected Traits[/url].
+description=[/list]
+description=
+description=[h1]Compatibility and Installation[/h1]
+description=Installation instructions can be found in [url=https://steamcommunity.com/workshop/filedetails/discussion/2914075159/3767857092594929252/]this discussion[/url].
+description=[list]
+description=[*] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2459400130]Dynamic Traits[/url] - an alternative to this mod, therefore main mod is incompatible. Read more on it in [url=https://steamcommunity.com/workshop/filedetails/discussion/2914075159/3767857092594927216/]this discussion[/url]. Submod is compatible.
+description=[*] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2894296454]Change Sandbox Options (by Star)[/url] - use this to change SP starting options after save is up. Other sandbox changing mods won't work unless they get fixed.
+description=[*] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2730251452]Expanded Taits[/url] - mostly absorbed by this mod, therefore probably incompatible.
+description=[*] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1299328280]More Traits[/url] - my submod shows which traits are dynamic from it, additionally makes Butterfingers dynamic. Main mod works fine too.
+description=[*] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2840805724]Simple Overhaul: Traits and Occupations (SOTO)[/url], [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2792245343]More Simple Traits (MST)[/url], [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2760950740]Explorer Trait[/url], [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2863908612]SixthSense[/url] - my submod shows which traits are dynamic from these. Main mod works fine too.
+description=[*] Literally anything else: should be compatible. Resolved mod conflicts include popular mods like: [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1905148104]Superb Survivors![/url] and all of its variations (allegedly), [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2719327441]Snake's Mod Pack 41.77[/url]
+description=[/list]
+description=
+description=[h1]Recommended Mods[/h1]
+description=[list]
+description=[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=2694448564]Mod Manager[/url] and [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2725216703]Mod Manager: Server[/url] - for the love of god, use these and not vanilla mod manager
+description=[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=2854030563]Moodle Quarters[/url] - so you can clearly see which stage your moodle is in right now
+description=[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=2763647806]Clear description for Moodles[/url] - so you know what your moodles do
+description=[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=2685168362]More Description for Traits[/url] - so you can read what your traits do
+description=[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=2894296454]Change Sandbox Options (by Star)[/url] - use this to change SP starting options mid-game
+description=[/list]
+description=
+description=[h1]GitHub and Discord[/h1]
+description=If you want to submit translation files, the easiest way to do it would be on GitHub. I've also made Discord server for this and other of my mods so if you want to suggest some traits or report bugs, the fastest way to reach me would be over the discord. Click on images, they will take you where you want.
+description=[url=https://github.com/MusicManiac/DynamicTraitsWorld][img]https://cdn.iconscout.com/icon/free/png-256/github-163-761603.png[/img][/url][url=https://discord.gg/8pBN5Ccm7z][img]https://cdn.iconscout.com/icon/free/png-256/discord-3691244-3073764.png[/img][/url]
+description=
+description=[h1]Credits and Translations[/h1]
+description=List of credits, contributors and translators can be found in [url=https://steamcommunity.com/workshop/filedetails/discussion/2914075159/3785877016603169742/]this discussion[/url] (hitting description limit so had to move it).
+description=Currently mod supports following languages:
+description=[list]
+description=[*]English
+description=[*]Italiano / Italian
+description=[*]Español / Spanish
+description=[*]??????? / Russian
+description=[*]???? / Chinese
+description=[*]???? / Traditional Chinese
+description=[*]Português Brasileiro / Brazilian Portuguese
+description=[/list]
+description=
+description=[h1]Afterword and Permission[/h1]
+description=If you like this mod, check out collection on top of page for other mods I made or collaborated on! Rate ups are appreciated, and if you wanna send me a coffee, that's a real homie move, and you can do it here:
+description=[url=https://ko-fi.com/musicmaniac][img]https://uploads-ssl.webflow.com/5c14e387dab576fe667689cf/61e11d5cf697cee7ca5b65d9_Button-p-500.png[/img][/url]
+description=
+description=[quote]? Permissions
+description=Redistribution of this mod without explicit permission from the creator is prohibited under any circumstances. This includes, but not limited to, uploading this mod to the Steam Workshop or any other site, distribution as part of another mod or modpack, distribution of modified versions.
 description=© 2023 [url=https://steamcommunity.com/profiles/76561198152820942]MusicManiac[/url] (SteamID64: 76561198152820942)[/quote]
 tags=Build 41;Balance;Multiplayer;Realistic;Silly/Fun;Traits
 visibility=public

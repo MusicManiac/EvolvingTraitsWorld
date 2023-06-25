@@ -1,6 +1,6 @@
-Current Translation version: v.5.1.0
+Current Translation version: v.5.1.1
 
-New/changed lines since v.5.1.0
+New/changed lines since v.5.1.1
 
 Moodles.txt
 	changed:
