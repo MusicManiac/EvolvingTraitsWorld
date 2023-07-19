@@ -1,4 +1,4 @@
-v.5.1.1
+v.5.1.2
 
-Translations:
-	- RU, ES and IT translations update. Now all should be up-to-date, if you notice some bad/missing translations feel free to hop in discord and mention it in #translations channel.
+Fixes:
+	- Fixed some traits exclusivity

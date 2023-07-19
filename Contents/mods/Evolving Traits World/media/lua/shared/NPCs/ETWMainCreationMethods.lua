@@ -125,17 +125,30 @@ local function addTraits()
 	--Exclusives
 	if not activatedMods:contains("EvolvingTraitsWorldDisableGymRat") then
 		TraitFactory.setMutualExclusive("GymRat", "Unfit");
+		TraitFactory.setMutualExclusive("Unfit", "GymRat");
+
 		TraitFactory.setMutualExclusive("GymRat", "Out of Shape");
+		TraitFactory.setMutualExclusive("Out of Shape", "GymRat");
+
 		TraitFactory.setMutualExclusive("GymRat", "Weak");
+		TraitFactory.setMutualExclusive("Weak", "GymRat");
+
 		TraitFactory.setMutualExclusive("GymRat", "Feeble");
+		TraitFactory.setMutualExclusive("Feeble", "GymRat");
+
 		TraitFactory.setMutualExclusive("GymRat", "Obese");
+		TraitFactory.setMutualExclusive("Obese", "GymRat");
+
 		TraitFactory.setMutualExclusive("GymRat", "Very Underweight");
+		TraitFactory.setMutualExclusive("Very Underweight", "GymRat");
 	end
 	if not activatedMods:contains("EvolvingTraitsWorldDisableRainTraits") then
 		TraitFactory.setMutualExclusive("Pluviophobia", "Pluviophile");
+		TraitFactory.setMutualExclusive("Pluviophile", "Pluviophobia");
 	end
 	if not activatedMods:contains("EvolvingTraitsWorldDisableFogTraits") then
 		TraitFactory.setMutualExclusive("Homichlophobia", "Homichlophile");
+		TraitFactory.setMutualExclusive("Homichlophile", "Homichlophobia");
 	end
 
 	TraitFactory.sortList();
