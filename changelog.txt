@@ -1,4 +1,4 @@
-v.5.1.2
+v.5.1.3
 
 Fixes:
-	- Fixed some traits exclusivity
+	- Added some safeguards (where they were missing) for character stats (panic, boredom, etc) to not go above/below game limits

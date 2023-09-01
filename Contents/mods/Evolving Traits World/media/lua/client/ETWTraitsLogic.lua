@@ -75,20 +75,20 @@ local function rainTraits(player, rainIntensity)
 		local stressFromCigarettes = stats:getStressFromCigarettes();
 		if Pluviophobia then
 			local unhappinessIncrease = 0.1 * rainIntensity * (rainProtection and 0.5 or 1) * SBvars.PluviophobiaMultiplier;
-			bodydamage:setUnhappynessLevel(bodydamage:getUnhappynessLevel() + unhappinessIncrease);
+			bodydamage:setUnhappynessLevel(math.min(100, bodydamage:getUnhappynessLevel() + unhappinessIncrease));
 			if detailedDebug() then print("ETW Logger | rainTraits(): unhappinessIncrease:"..unhappinessIncrease) end
 			local boredomIncrease = 0.02 * rainIntensity * (rainProtection and 0.5 or 1) * SBvars.PluviophobiaMultiplier;
-			stats:setBoredom(stats:getBoredom() + boredomIncrease);
+			stats:setBoredom(math.min(100, stats:getBoredom() + boredomIncrease));
 			if detailedDebug() then print("ETW Logger | rainTraits(): boredomIncrease:"..boredomIncrease) end
 			local stressIncrease = 0.04 * rainIntensity * (rainProtection and 0.5 or 1) * SBvars.PluviophobiaMultiplier;
 			stats:setStress(math.min(1, stats:getStress() - stressFromCigarettes + stressIncrease));
 			if detailedDebug() then print("ETW Logger | rainTraits(): stressIncrease:"..stressIncrease) end
 		elseif Pluviophile then
 			local unhappinessDecrease = 0.1 * rainIntensity * (rainProtection and 0.5 or 1) * SBvars.PluviophileMultiplier;
-			bodydamage:setUnhappynessLevel(bodydamage:getUnhappynessLevel() - unhappinessDecrease);
+			bodydamage:setUnhappynessLevel(math.max(0, bodydamage:getUnhappynessLevel() - unhappinessDecrease));
 			if detailedDebug() then print("ETW Logger | rainTraits(): unhappinessDecrease:"..unhappinessDecrease) end
 			local boredomDecrease = 0.02 * rainIntensity * (rainProtection and 0.5 or 1) * SBvars.PluviophileMultiplier;
-			stats:setBoredom(stats:getBoredom() - boredomDecrease);
+			stats:setBoredom(math.max(0, stats:getBoredom() - boredomDecrease));
 			if detailedDebug() then print("ETW Logger | rainTraits(): boredomDecrease:"..boredomDecrease) end
 			local stressDecrease = 0.04 * rainIntensity * (rainProtection and 0.5 or 1) * SBvars.PluviophileMultiplier;
 			stats:setStress(math.max(0, stats:getStress() - stressFromCigarettes - stressDecrease));
@@ -107,7 +107,7 @@ local function fogTraits(player, fogIntensity)
 			local panicIncrease = 4 * fogIntensity * SBvars.HomichlophobiaMultiplier;
 			local resultingPanic = stats:getPanic() + panicIncrease;
 			if resultingPanic <= 50 then
-				stats:setPanic(resultingPanic);
+				stats:setPanic(math.max(0, resultingPanic));
 				if detailedDebug() then print("ETW Logger | fogTraits(): panicIncrease:"..panicIncrease) end
 			end
 			local stressIncrease = 0.04 * fogIntensity * SBvars.HomichlophobiaMultiplier;
@@ -118,7 +118,7 @@ local function fogTraits(player, fogIntensity)
 			end
 		elseif Homichlophile then
 			local panicDecrease = 4 * fogIntensity * SBvars.HomichlophileMultiplier;
-			stats:setPanic(stats:getPanic() - panicDecrease);
+			stats:setPanic(math.max(0, stats:getPanic() - panicDecrease));
 			local stressDecrease = 0.04 * fogIntensity * SBvars.HomichlophileMultiplier;
 			stats:setStress(math.max(0, stats:getStress() - stressFromCigarettes - stressDecrease));
 			if detailedDebug() then print("ETW Logger | fogTraits(): panicDecrease:"..panicDecrease.."stressDecrease: "..stressDecrease) end
