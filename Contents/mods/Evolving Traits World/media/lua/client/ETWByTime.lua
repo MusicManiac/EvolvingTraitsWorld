@@ -40,7 +40,7 @@ local function catEyes()
 				if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_NightVision"), true, HaloTextHelper.getColorGreen()) end
 				Events.EveryOneMinute.Remove(catEyes);
 			end
-			if SBvars.DelayedTraitsSystem then
+			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInTable("NightVision") then
 				if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringAdd")..getText("UI_trait_NightVision"), true, HaloTextHelper.getColorGreen()) end
 				ETWCommonFunctions.addTraitToDelayTable(modData, "NightVision", player, true)
 			end

@@ -31,7 +31,7 @@ local function coldTraits()
 					player:getTraits():remove("ProneToIllness");
 					if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_pronetoillness"), false, HaloTextHelper.getColorGreen()) end
 				end
-				if SBvars.DelayedTraitsSystem then
+				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInTable("ProneToIllness") then
 					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringRemove")..getText("UI_trait_pronetoillness"), true, HaloTextHelper.getColorGreen()) end
 					ETWCommonFunctions.addTraitToDelayTable(modData, "ProneToIllness", player, false)
 				end
@@ -41,7 +41,7 @@ local function coldTraits()
 					if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_resilient"), true, HaloTextHelper.getColorGreen()) end
 					Events.EveryOneMinute.Remove(coldTraits);
 				end
-				if SBvars.DelayedTraitsSystem then
+				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInTable("Resilient") then
 					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringAdd")..getText("UI_trait_resilient"), true, HaloTextHelper.getColorGreen()) end
 					ETWCommonFunctions.addTraitToDelayTable(modData, "Resilient", player, true)
 				end
@@ -61,7 +61,7 @@ local function foodSicknessTraits()
 			player:getTraits():remove("WeakStomach");
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_WeakStomach"), false, HaloTextHelper.getColorGreen()) end
 		end
-		if SBvars.DelayedTraitsSystem then
+		if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInTable("WeakStomach") then
 			if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringRemove")..getText("UI_trait_WeakStomach"), true, HaloTextHelper.getColorGreen()) end
 			ETWCommonFunctions.addTraitToDelayTable(modData, "WeakStomach", player, false)
 		end
@@ -71,7 +71,7 @@ local function foodSicknessTraits()
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_IronGut"), true, HaloTextHelper.getColorGreen()) end
 			Events.EveryOneMinute.Remove(foodSicknessTraits);
 		end
-		if SBvars.DelayedTraitsSystem then
+		if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInTable("IronGut") then
 			if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringAdd")..getText("UI_trait_IronGut"), true, HaloTextHelper.getColorGreen()) end
 			ETWCommonFunctions.addTraitToDelayTable(modData, "IronGut", player, true)
 		end

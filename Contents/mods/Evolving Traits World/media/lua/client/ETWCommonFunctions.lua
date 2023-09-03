@@ -62,4 +62,17 @@ function ETWCommonFunctions.checkDelayedTraits(name)
 	return false;
 end
 
+function ETWCommonFunctions.checkIfTraitIsInTable(name)
+	local traitTable = getPlayer():getModData().EvolvingTraitsWorld.DelayedTraits
+	for index, traitEntry in ipairs(traitTable) do
+		local traitName = traitEntry[1]
+		if traitName == name then
+			if detailedDebug() then print("ETW Logger | Delayed Traits System: checking if "..name.." is already in the table, it is.") end;
+			return true;
+		end
+	end
+	if detailedDebug() then print("ETW Logger | Delayed Traits System: checking if "..name.." is already in the table, it is not.") end;
+	return false;
+end
+
 return ETWCommonFunctions;

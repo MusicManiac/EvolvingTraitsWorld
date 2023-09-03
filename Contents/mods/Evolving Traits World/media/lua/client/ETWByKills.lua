@@ -71,7 +71,7 @@ local function eagleEyed(wielder, character, handWeapon, damage)
 					player:getTraits():add("EagleEyed");
 					if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_eagleeyed"), true, HaloTextHelper.getColorGreen()) end
 				end
-				if SBvars.DelayedTraitsSystem then
+				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInTable("EagleEyed") then
 					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringAdd")..getText("UI_trait_eagleeyed"), true, HaloTextHelper.getColorGreen()) end
 					ETWCommonFunctions.addTraitToDelayTable(modData, "EagleEyed", player)
 				end
@@ -111,7 +111,7 @@ local function braverySystem(zombie)
 					player:getTraits():remove(trait)
 					if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_" .. trait), false, HaloTextHelper.getColorGreen()) end
 				end
-				if SBvars.DelayedTraitsSystem then
+				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInTable(trait) then
 					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringRemove")..getText("UI_trait_" .. trait), true, HaloTextHelper.getColorGreen()) end
 					ETWCommonFunctions.addTraitToDelayTable(ETWModData, trait, player, false)
 				end
@@ -141,7 +141,7 @@ local function braverySystem(zombie)
 						end
 					end
 				end
-				if SBvars.DelayedTraitsSystem then
+				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInTable(trait) then
 					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringAdd")..getText("UI_trait_" .. (trait == "Brave" and "brave" or trait)), true, HaloTextHelper.getColorGreen()) end
 					ETWCommonFunctions.addTraitToDelayTable(ETWModData, trait, player, true)
 				end
