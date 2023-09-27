@@ -1,6 +1,4 @@
-v.5.1.4
+v.5.1.5
 
 Fixes:
-	- Fixed repeated "qualified for xyz" msgs, now it will pop up only once (as intended)
-	- Fixed Lucky/Unlucky acquisition (was checking wrong stuff)
-	- Added missing popups for when qualifying for some traits (some traits weren't informing that you are qualified for them)
+	- Fixed smoking not being detected for purposes of losing smoker trait in singleplayer (oups)

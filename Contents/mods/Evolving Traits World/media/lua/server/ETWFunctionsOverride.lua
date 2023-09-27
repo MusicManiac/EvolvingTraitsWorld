@@ -7,7 +7,7 @@ local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetai
 local original_oneat_cigarettes = OnEat_Cigarettes;
 
 function OnEat_Cigarettes(food, character, percent)
-	if isClient() then
+	if isClient() or (not isClient() and not isServer()) then
 		if detailedDebug() then print("ETW Logger | OnEat_Cigarettes(): detected smoking") end
 		local modData = character:getModData().EvolvingTraitsWorld;
 		local smokerModData = modData.SmokeSystem; -- SmokingAddiction MinutesSinceLastSmoke

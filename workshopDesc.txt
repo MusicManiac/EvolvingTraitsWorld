@@ -33,8 +33,8 @@ Installation instructions can be found in [url=https://steamcommunity.com/worksh
 [/list]
 
 [h1]GitHub and Discord[/h1]
-If you want to submit translation files, the easiest way to do it would be on GitHub. I've also made Discord server for this and other of my mods so if you want to suggest some traits or report bugs, the fastest way to reach me would be over the discord. Click on images, they will take you where you want.
-[url=https://github.com/MusicManiac/DynamicTraitsWorld][img]https://cdn.iconscout.com/icon/free/png-256/github-163-761603.png[/img][/url][url=https://discord.gg/8pBN5Ccm7z][img]https://cdn.iconscout.com/icon/free/png-256/discord-3691244-3073764.png[/img][/url]
+If you want to submit translation files, the easiest way to do it would be on Discord. I've made Discord server for this and other of my mods so if you want to suggest some traits or report bugs, the fastest way to reach me would be over the discord. Click on images, they will take you where you want.
+[url=https://discord.gg/8pBN5Ccm7z][img]https://cdn.iconscout.com/icon/free/png-256/discord-3691244-3073764.png[/img][/url][url=https://github.com/MusicManiac/DynamicTraitsWorld][img]https://cdn.iconscout.com/icon/free/png-256/github-163-761603.png[/img][/url]
 
 [h1]Credits and Translations[/h1]
 List of credits, contributors and translators can be found in [url=https://steamcommunity.com/workshop/filedetails/discussion/2914075159/3785877016603169742/]this discussion[/url] (hitting description limit so had to move it).
