@@ -1,4 +1,5 @@
-v.5.1.5
+v.5.1.6
 
-Fixes:
-	- Fixed smoking not being detected for purposes of losing smoker trait in singleplayer (oups)
+Mod Conflicts:
+	- Slight code optimizations for carry weight calculations (was running SOTO compatibility code when SOTO wasn't even enabled)
+	- Possible fix for errors caused by bloodlust code being ran when kill is made by NPC

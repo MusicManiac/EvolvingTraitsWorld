@@ -12,18 +12,24 @@ local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetai
 local function bloodlustKill(zombie)
 	if SBvars.Bloodlust == true then
 		local player = getPlayer();
-		local bloodlust = player:getModData().EvolvingTraitsWorld.BloodlustSystem;
-		local distance = player:DistTo(zombie);
-		if distance <= 10 then
-			bloodlust.LastKillTimestamp = player:getHoursSurvived();
-			if bloodlust.BloodlustMeter <= 36 then
-				bloodlust.BloodlustMeter = bloodlust.BloodlustMeter + math.min(1 / distance, 1) * SBvars.BloodlustMeterFillMultiplier;
-				if detailedDebug() then print("ETW Logger | bloodlustKill(): BloodlustMeter="..bloodlust.BloodlustMeter) end
-			else
-				bloodlust.BloodlustMeter = bloodlust.BloodlustMeter + math.min(1 / distance, 1) * SBvars.BloodlustMeterFillMultiplier * 0.1;
-				if detailedDebug() then print("ETW Logger | bloodlustKill(): BloodlustMeter (soft-capped)="..bloodlust.BloodlustMeter) end
+		if player:isLocalPlayer() == false then -- checks if it's NPC doing stuff
+			if detailedDebug() then print("ETW Logger | bloodlustKill(): kill by NPC") end
+		else
+			if detailedDebug() then print("ETW Logger | bloodlustKill(): kill by player") end
+			local bloodlust = player:getModData().EvolvingTraitsWorld.BloodlustSystem;
+			local distance = player:DistTo(zombie);
+			if distance <= 10 then
+				bloodlust.LastKillTimestamp = player:getHoursSurvived();
+				if bloodlust.BloodlustMeter <= 36 then
+					bloodlust.BloodlustMeter = bloodlust.BloodlustMeter + math.min(1 / distance, 1) * SBvars.BloodlustMeterFillMultiplier;
+					if detailedDebug() then print("ETW Logger | bloodlustKill(): BloodlustMeter="..bloodlust.BloodlustMeter) end
+				else
+					bloodlust.BloodlustMeter = bloodlust.BloodlustMeter + math.min(1 / distance, 1) * SBvars.BloodlustMeterFillMultiplier * 0.1;
+					if detailedDebug() then print("ETW Logger | bloodlustKill(): BloodlustMeter (soft-capped)="..bloodlust.BloodlustMeter) end
+				end
+				ETWMoodles.bloodlustMoodleUpdate(player, false);
 			end
-			ETWMoodles.bloodlustMoodleUpdate(player, false);
+
 		end
 	end
 end

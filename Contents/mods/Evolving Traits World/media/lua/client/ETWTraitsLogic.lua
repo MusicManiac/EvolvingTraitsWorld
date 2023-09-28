@@ -45,13 +45,15 @@ local function checkWeightLimit(player)
 		if detailedDebug() then print("ETW Logger | checkWeightLimit(): [ToadTraits present] Set maxWeightBase to "..maxWeightBase) end
 	end
 
-	for _, trait in ipairs(traits) do
-		local trait1, trait2, maxWeight = unpack(trait)
-		if (not trait1 or player:HasTrait(trait1)) and (not trait2 or player:HasTrait(trait2)) then
-			if not maxWeight then maxWeight = 0 end
-			maxWeightBase = maxWeightBase + maxWeight;
-			if detailedDebug() then print("ETW Logger | checkWeightLimit(): [SOTO compatibility] Set maxWeightBase to "..tostring(maxWeightBase)) end
-			break
+	if getActivatedMods():contains("SimpleOverhaulTraitsAndOccupations") then
+		for _, trait in ipairs(traits) do
+			local trait1, trait2, maxWeight = unpack(trait)
+			if (not trait1 or player:HasTrait(trait1)) and (not trait2 or player:HasTrait(trait2)) then
+				if not maxWeight then maxWeight = 0 end
+				maxWeightBase = maxWeightBase + maxWeight;
+				if detailedDebug() then print("ETW Logger | checkWeightLimit(): [SOTO compatibility] Set maxWeightBase to "..tostring(maxWeightBase)) end
+				break
+			end
 		end
 	end
 
