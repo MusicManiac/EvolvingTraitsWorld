@@ -279,4 +279,8 @@ Sandbox_CH = {
 	Sandbox_EvolvingTraitsWorld_WeightSystem_tooltip = "由於描述相關設置篇幅冗長,請於此模組之工作坊頁面尋找看. 可被此系統影響的特質有:易/不易口渴,輕食簡餐/食欲旺盛,皮粗肉厚/細皮嫩肉,恢復緩慢/快速恢復.<br>!!!重要!!!:如果你要在角色創建時選擇了以上任何特質,它將不會隨遊戲狀況失去(正面或負面特質皆是)",
 	Sandbox_EvolvingTraitsWorld_WeightSystemSkill = "負重系統被動需求",
 	Sandbox_EvolvingTraitsWorld_WeightSystemSkill_tooltip = "需要多少力量 + 體格才能獲得皮粗肉厚及快速復原(次要需求)",
+	Sandbox_EvolvingTraitsWorld_WeightSystemLowerMentalThreshold = "心理權重最低閥值",
+	Sandbox_EvolvingTraitsWorld_WeightSystemLowerMentalThreshold_tooltip = "以你在過去31天內的平均心理健康度 (驚恐 + 不高興 + 恐懼 + 壓力的平均值) 來決定是否可以取得 皮粗肉厚 或 快速復原特質 (非唯一條件，詳細請見此模組good說明表單)",
+	Sandbox_EvolvingTraitsWorld_WeightSystemUpperMentalThreshold = "心理權重最高閥值",
+	Sandbox_EvolvingTraitsWorld_WeightSystemUpperMentalThreshold_tooltip = "以你在過去31天內的平均心理健康度 (驚恐 + 不高興 + 恐懼 + 壓力的平均值) 來決定是否可以取得 皮粗肉厚 或 快速復原特質 (非唯一條件，詳細請見此模組good說明表單)",
 }

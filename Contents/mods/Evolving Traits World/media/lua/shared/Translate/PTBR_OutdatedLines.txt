@@ -10,7 +10,10 @@ Sandbox_EN.txt
 	changed:
 
 	new:
-
+	     Sandbox_EvolvingTraitsWorld_WeightSystemLowerMentalThreshold = "Weight System Lower Mental Threshold",
+        Sandbox_EvolvingTraitsWorld_WeightSystemLowerMentalThreshold_tooltip = "What your average mental (average from panic + unhappiness + fear + stress) health should be in last 31 survived days to obtain Thick Skinned and Fast Healer (this is not only condition, once again check google sheets)",
+        Sandbox_EvolvingTraitsWorld_WeightSystemUpperMentalThreshold = "Weight System Upper Mental Threshold",
+        Sandbox_EvolvingTraitsWorld_WeightSystemUpperMentalThreshold_tooltip = "What your average mental (average from panic + unhappiness + fear + stress) health should be in last 31 survived days to obtain Light Eater and Low Thirst (this is not only condition, once again check google sheets)",S
 
 UI_EN.txt
 	changed:

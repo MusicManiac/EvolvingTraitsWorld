@@ -16,7 +16,7 @@ local function indexOf(tbl, value)
 	return -1
 end
 
-function ETWCommonFunctions.dataDump()
+function ETWCommonFunctions.delayedTraitsDataDump()
 	if not SBvars.DelayedTraitsSystem then return true end;
 	local traitTable = getPlayer():getModData().EvolvingTraitsWorld.DelayedTraits;
 	for index, traitEntry in ipairs(traitTable) do
@@ -42,7 +42,7 @@ function ETWCommonFunctions.addTraitToDelayTable(modData, traitName, player, pos
 	end
 	if detailedDebug() then
 		print("ETW Logger | Delayed Traits System | Data Dump after ETWCommonFunctions.addTraitToDelayTable() ------------");
-		ETWCommonFunctions.dataDump();
+		ETWCommonFunctions.delayedTraitsDataDump();
 		print("ETW Logger | Delayed Traits System | Data Dump after ETWCommonFunctions.addTraitToDelayTable() done --------------");
 	end
 end
@@ -62,7 +62,7 @@ function ETWCommonFunctions.checkDelayedTraits(name)
 	return false;
 end
 
-function ETWCommonFunctions.checkIfTraitIsInTable(name)
+function ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(name)
 	local traitTable = getPlayer():getModData().EvolvingTraitsWorld.DelayedTraits
 	for index, traitEntry in ipairs(traitTable) do
 		local traitName = traitEntry[1]

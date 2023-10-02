@@ -31,7 +31,7 @@ local function coldTraits()
 					player:getTraits():remove("ProneToIllness");
 					if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_pronetoillness"), false, HaloTextHelper.getColorGreen()) end
 				end
-				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInTable("ProneToIllness") then
+				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("ProneToIllness") then
 					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringRemove")..getText("UI_trait_pronetoillness"), true, HaloTextHelper.getColorGreen()) end
 					ETWCommonFunctions.addTraitToDelayTable(modData, "ProneToIllness", player, false)
 				end
@@ -41,7 +41,7 @@ local function coldTraits()
 					if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_resilient"), true, HaloTextHelper.getColorGreen()) end
 					Events.EveryOneMinute.Remove(coldTraits);
 				end
-				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInTable("Resilient") then
+				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Resilient") then
 					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringAdd")..getText("UI_trait_resilient"), true, HaloTextHelper.getColorGreen()) end
 					ETWCommonFunctions.addTraitToDelayTable(modData, "Resilient", player, true)
 				end
@@ -61,7 +61,7 @@ local function foodSicknessTraits()
 			player:getTraits():remove("WeakStomach");
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_WeakStomach"), false, HaloTextHelper.getColorGreen()) end
 		end
-		if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInTable("WeakStomach") then
+		if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("WeakStomach") then
 			if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringRemove")..getText("UI_trait_WeakStomach"), true, HaloTextHelper.getColorGreen()) end
 			ETWCommonFunctions.addTraitToDelayTable(modData, "WeakStomach", player, false)
 		end
@@ -71,7 +71,7 @@ local function foodSicknessTraits()
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_IronGut"), true, HaloTextHelper.getColorGreen()) end
 			Events.EveryOneMinute.Remove(foodSicknessTraits);
 		end
-		if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInTable("IronGut") then
+		if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("IronGut") then
 			if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringAdd")..getText("UI_trait_IronGut"), true, HaloTextHelper.getColorGreen()) end
 			ETWCommonFunctions.addTraitToDelayTable(modData, "IronGut", player, true)
 		end
@@ -88,11 +88,8 @@ end
 local function weightSystem()
 	local player = getPlayer();
 	local startingTraits = player:getModData().EvolvingTraitsWorld.StartingTraits;
-	local modData = player:getModData().EvolvingTraitsWorld.SleepSystem;
+	local modData = player:getModData().EvolvingTraitsWorld;
 	local weight = player:getNutrition():getWeight();
-	local stress = player:getStats():getStress();
-	local unhappiness = player:getBodyDamage():getUnhappynessLevel();
-	if detailedDebug() then print("ETW Logger | weightSystem(): stress: "..stress.." unhappiness:"..unhappiness) end -- stress is 0-1, unhappiness is 0-100
 	if weight >= 100 or weight <= 65 then
 		if not player:HasTrait("SlowHealer") and startingTraits.FastHealer ~= true then
 			player:getTraits():add("SlowHealer");
@@ -102,16 +99,7 @@ local function weightSystem()
 			player:getTraits():add("Thinskinned");
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_ThinSkinned"), true, HaloTextHelper.getColorRed()) end
 		end
-	end
-	if (weight > 85 and weight < 100) or (weight > 65 and weight < 75) then
-		if not player:HasTrait("HeartyAppitite") and startingTraits.LightEater ~= true then
-			player:getTraits():add("HeartyAppitite");
-			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_heartyappetite"), true, HaloTextHelper.getColorRed()) end
-		end
-		if not player:HasTrait("HighThirst") and startingTraits.LowThirst ~= true then
-			player:getTraits():add("HighThirst");
-			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_HighThirst"), true, HaloTextHelper.getColorRed()) end
-		end
+	else
 		if player:HasTrait("Thinskinned") and startingTraits.ThinSkinned ~= true then
 			player:getTraits():remove("Thinskinned");
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_ThinSkinned"), false, HaloTextHelper.getColorGreen()) end
@@ -137,7 +125,34 @@ local function weightSystem()
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_LowThirst"), false, HaloTextHelper.getColorRed()) end
 		end
 	end
+	if (weight > 85 and weight < 100) or (weight > 65 and weight < 75) then
+		if not player:HasTrait("HeartyAppitite") and startingTraits.LightEater ~= true then
+			player:getTraits():add("HeartyAppitite");
+			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_heartyappetite"), true, HaloTextHelper.getColorRed()) end
+		end
+		if not player:HasTrait("HighThirst") and startingTraits.LowThirst ~= true then
+			player:getTraits():add("HighThirst");
+			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_HighThirst"), true, HaloTextHelper.getColorRed()) end
+		end
+		if player:HasTrait("ThickSkinned") and startingTraits.ThickSkinned ~= true then
+			player:getTraits():remove("ThickSkinned");
+			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_thickskinned"), false, HaloTextHelper.getColorRed()) end
+		end
+		if player:HasTrait("FastHealer") and startingTraits.FastHealer ~= true then
+			player:getTraits():remove("FastHealer");
+			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_FastHealer"), false, HaloTextHelper.getColorRed()) end
+		end
+		if player:HasTrait("LightEater") and startingTraits.LightEater ~= true then
+			player:getTraits():remove("LightEater");
+			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_lighteater"), false, HaloTextHelper.getColorRed()) end
+		end
+		if player:HasTrait("LowThirst") and startingTraits.LowThirst ~= true then
+			player:getTraits():remove("LowThirst");
+			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_LowThirst"), false, HaloTextHelper.getColorRed()) end
+		end
+	end
 	if weight >= 75 and weight <= 85 then
+		-- losing Hearty Appetite and High Thirst if weight 75-85
 		if player:HasTrait("HeartyAppitite") and startingTraits.HeartyAppetite ~= true then
 			player:getTraits():remove("HeartyAppitite");
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_heartyappetite"), false, HaloTextHelper.getColorGreen()) end
@@ -146,17 +161,19 @@ local function weightSystem()
 			player:getTraits():remove("HighThirst");
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_HighThirst"), false, HaloTextHelper.getColorGreen()) end
 		end
-		if (stress <= 0.75 and unhappiness <= 75) and sleepCheck(modData.SleepHealthinessBar) then
-			if not player:HasTrait("LightEater") and startingTraits.HeartyAppetite ~= true then
-				player:getTraits():add("LightEater");
-				if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_lighteater"), true, HaloTextHelper.getColorGreen()) end
+		-- losing Thick Skinned and Fast Healer if mental state not good
+		if modData.RecentAverageMental <= (SBvars.WeightSystemLowerMentalThreshold / 100) then
+			if player:HasTrait("ThickSkinned") and startingTraits.ThickSkinned ~= true then
+				player:getTraits():remove("ThickSkinned");
+				if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_thickskinned"), false, HaloTextHelper.getColorRed()) end
 			end
-			if not player:HasTrait("LowThirst") and startingTraits.HighThirst ~= true then
-				player:getTraits():add("LowThirst");
-				if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_LowThirst"), true, HaloTextHelper.getColorGreen()) end
+			if player:HasTrait("FastHealer") and startingTraits.FastHealer ~= true then
+				player:getTraits():remove("FastHealer");
+				if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_FastHealer"), false, HaloTextHelper.getColorRed()) end
 			end
+		else -- gaining Thick Skinned and Fast Healer if weight 75-85, mental is good, passive levels are good and sleep health enabled
 			local passiveLevels = player:getPerkLevel(Perks.Strength) + player:getPerkLevel(Perks.Fitness);
-			if passiveLevels >= SBvars.WeightSystemSkill then
+			if sleepCheck(modData.SleepSystem.SleepHealthinessBar) and passiveLevels >= SBvars.WeightSystemSkill then
 				if not player:HasTrait("ThickSkinned") and startingTraits.ThinSkinned ~= true then
 					player:getTraits():add("ThickSkinned");
 					if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_thickskinned"), true, HaloTextHelper.getColorGreen()) end
@@ -166,7 +183,9 @@ local function weightSystem()
 					if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_FastHealer"), true, HaloTextHelper.getColorGreen()) end
 				end
 			end
-		else
+		end
+		-- losing Light Eater and Low Thirst if mental is not good or if sleep is bad
+		if modData.RecentAverageMental <= (SBvars.WeightSystemUpperMentalThreshold / 100) or sleepCheck(modData.SleepSystem.SleepHealthinessBar) == false then
 			if player:HasTrait("LightEater") and startingTraits.LightEater ~= true then
 				player:getTraits():remove("LightEater");
 				if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_lighteater"), false, HaloTextHelper.getColorRed()) end
@@ -174,6 +193,16 @@ local function weightSystem()
 			if player:HasTrait("LowThirst") and startingTraits.LowThirst ~= true then
 				player:getTraits():remove("LowThirst");
 				if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_LowThirst"), false, HaloTextHelper.getColorRed()) end
+			end
+		else
+			-- gaining Light Eater and Low Thirst if mental is good, sleep is good, and weight 75-85
+			if not player:HasTrait("LightEater") and startingTraits.HeartyAppetite ~= true then
+				player:getTraits():add("LightEater");
+				if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_lighteater"), true, HaloTextHelper.getColorGreen()) end
+			end
+			if not player:HasTrait("LowThirst") and startingTraits.HighThirst ~= true then
+				player:getTraits():add("LowThirst");
+				if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_LowThirst"), true, HaloTextHelper.getColorGreen()) end
 			end
 		end
 	end
@@ -213,6 +242,48 @@ local function asthmaticTrait()
 	end
 end
 
+local function recordMentalState()
+	local player = getPlayer();
+	local modData = player:getModData().EvolvingTraitsWorld;
+	local stress = player:getStats():getStress(); -- 0-1
+	local unhappiness = player:getBodyDamage():getUnhappynessLevel() / 100; -- 0-100 -> 0-1
+	local panic = player:getStats():getPanic() / 100; -- 0-100 -> 0-1
+	local fear = player:getStats():getFear(); -- 0-1
+	local mentalHealth = 1 - ((stress + unhappiness + panic + fear) / 4);
+	table.insert(modData.MentalStateInLast60Min, mentalHealth)
+	if #modData.MentalStateInLast60Min >= 60 then
+		local sum = 0;
+		for i = 1, 60 do
+			sum = sum + modData.MentalStateInLast60Min[i];
+		end
+		local average = sum / 60;
+		if debug() then print("ETW Logger | recordMentalState(): average mental in last 60 min: "..average) end
+		table.insert(modData.MentalStateInLast24Hours, average);
+		modData.MentalStateInLast60Min = {average};
+		-- last 24h mental
+		if #modData.MentalStateInLast24Hours >= 24 then
+			sum = 0;
+			for i = 1, 24 do
+				sum = sum + modData.MentalStateInLast24Hours[i];
+			end
+			average = sum / 24;
+			if debug() then print("ETW Logger | recordMentalState(): average mental in last 24 hours: "..average) end
+			table.insert(modData.MentalStateInLast31Days, average);
+			modData.MentalStateInLast24Hours = {average};
+			-- last days mental
+			sum = 0;
+			for i = 1, #modData.MentalStateInLast31Days do
+				sum = sum + modData.MentalStateInLast31Days[i];
+			end
+			modData.RecentAverageMental = sum / #modData.MentalStateInLast31Days;
+			if debug() then print("ETW Logger | recordMentalState(): average mental in last 31 days: "..average) end
+			if #modData.MentalStateInLast31Days > 31 then
+				table.remove(modData.MentalStateInLast31Days, 1);
+			end
+		end
+	end
+end
+
 local function initializeEvents(playerIndex, player)
 	Events.EveryOneMinute.Remove(coldTraits);
 	if SBvars.ColdIllnessSystem == true and not player:HasTrait("Resilient") then Events.EveryOneMinute.Add(coldTraits) end
@@ -222,6 +293,8 @@ local function initializeEvents(playerIndex, player)
 	if SBvars.WeightSystem == true then Events.EveryTenMinutes.Add(weightSystem) end
 	Events.EveryOneMinute.Remove(asthmaticTrait);
 	if SBvars.Asthmatic == true then Events.EveryOneMinute.Add(asthmaticTrait) end
+	Events.EveryOneMinute.Remove(recordMentalState);
+	Events.EveryOneMinute.Add(recordMentalState);
 end
 
 local function clearEvents(character)

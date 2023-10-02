@@ -279,4 +279,8 @@ Sandbox_EN = {
 	Sandbox_EvolvingTraitsWorld_WeightSystem_tooltip = "Describing conditions on which you lose/gain traits in here would take a lot of text, so just check goolge sheets for details (link in mod workshop page description). Affected traits that can be gained/lost dynamically: High/Low Thirst, Light Eater/Hearty Appetite, Thick/Thin Skinned, Slow/Fast Healer.<br>IMPORTANT: if you pick any of these traits in character creation they will be permanent on your character, both negative and positive.",
 	Sandbox_EvolvingTraitsWorld_WeightSystemSkill = "Weight System Passives requirement",
 	Sandbox_EvolvingTraitsWorld_WeightSystemSkill_tooltip = "How many levels in Strength + Fitness you need to have to gain Thick Skinned and Fast Healer (this is not only condition, once again check google sheets)",
+	Sandbox_EvolvingTraitsWorld_WeightSystemLowerMentalThreshold = "Weight System Lower Mental Threshold",
+	Sandbox_EvolvingTraitsWorld_WeightSystemLowerMentalThreshold_tooltip = "What your average mental (average from panic + unhappiness + fear + stress) health should be in last 31 survived days to obtain Thick Skinned and Fast Healer (this is not only condition, once again check google sheets)",
+	Sandbox_EvolvingTraitsWorld_WeightSystemUpperMentalThreshold = "Weight System Upper Mental Threshold",
+    Sandbox_EvolvingTraitsWorld_WeightSystemUpperMentalThreshold_tooltip = "What your average mental (average from panic + unhappiness + fear + stress) health should be in last 31 survived days to obtain Light Eater and Low Thirst (this is not only condition, once again check google sheets)",
 }

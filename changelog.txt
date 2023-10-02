@@ -1,5 +1,4 @@
-v.5.1.6
+v.5.2.0
 
-Mod Conflicts:
-	- Slight code optimizations for carry weight calculations (was running SOTO compatibility code when SOTO wasn't even enabled)
-	- Possible fix for errors caused by bloodlust code being ran when kill is made by NPC
+General:
+	- Weight System now uses your mental state over course of last 31 days instead of current mental state, details in sandbox/google sheets. Should work. Not tested. Good luck.

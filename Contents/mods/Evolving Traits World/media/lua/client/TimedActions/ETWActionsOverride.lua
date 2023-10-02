@@ -41,7 +41,7 @@ function ETWActionsOverride.bodyworkEnthusiastCheck()
 			addRecipe(player, "Make Metal Roof");
 			if notification == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_BodyWorkEnthusiast"), true, HaloTextHelper.getColorGreen()) end
 		end
-		if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInTable("BodyWorkEnthusiast") then
+		if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("BodyWorkEnthusiast") then
 			if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringAdd")..getText("UI_trait_BodyWorkEnthusiast"), true, HaloTextHelper.getColorGreen()) end
 			ETWCommonFunctions.addTraitToDelayTable(modData, "BodyWorkEnthusiast", player, true)
 		end
@@ -59,7 +59,7 @@ function ETWActionsOverride.mechanicsCheck()
 			addRecipe(player, "Intermediate Mechanics");
 			if notification == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Mechanics"), true, HaloTextHelper.getColorGreen()) end
 		end
-		if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInTable("Mechanics") then
+		if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Mechanics") then
 			if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringAdd")..getText("UI_trait_Mechanics"), true, HaloTextHelper.getColorGreen()) end
 			ETWCommonFunctions.addTraitToDelayTable(modData, "Mechanics", player, true)
 		end
@@ -104,7 +104,7 @@ function ISChopTreeAction:perform()
 			player:getTraits():add("Axeman");
 			if notification == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_axeman"), true, HaloTextHelper.getColorGreen()) end
 		end
-		if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInTable("Axeman") then
+		if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Axeman") then
 			if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringAdd")..getText("UI_trait_axeman"), true, HaloTextHelper.getColorGreen()) end
 			ETWCommonFunctions.addTraitToDelayTable(modData, "Axeman", player, true)
 		end
@@ -135,7 +135,7 @@ function ISInventoryTransferAction:perform()
 					player:getTraits():remove("Disorganized");
 					if notification == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Disorganized"), false, HaloTextHelper.getColorGreen()) end
 				end
-				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInTable("Disorganized") then
+				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Disorganized") then
 					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringRemove")..getText("UI_trait_Disorganized"), false, HaloTextHelper.getColorGreen()) end
 					ETWCommonFunctions.addTraitToDelayTable(modData, "Disorganized", player, false)
 				end
@@ -146,7 +146,7 @@ function ISInventoryTransferAction:perform()
 					-- UI_trait_Packmule is internal string name
 					if notification == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Packmule"), true, HaloTextHelper.getColorGreen()) end
 				end
-				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInTable("Organized") then
+				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Organized") then
 					-- UI_trait_Packmule is internal string name
 					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringAdd")..getText("UI_trait_Packmule"), true, HaloTextHelper.getColorGreen()) end
 					ETWCommonFunctions.addTraitToDelayTable(modData, "Organized", player, true)
@@ -157,7 +157,7 @@ function ISInventoryTransferAction:perform()
 					player:getTraits():remove("AllThumbs");
 					if notification == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_AllThumbs"), false, HaloTextHelper.getColorGreen()) end
 				end
-				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInTable("AllThumbs") then
+				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("AllThumbs") then
 					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringRemove")..getText("UI_trait_AllThumbs"), false, HaloTextHelper.getColorGreen()) end
 					ETWCommonFunctions.addTraitToDelayTable(modData, "AllThumbs", player, false)
 				end
@@ -167,7 +167,7 @@ function ISInventoryTransferAction:perform()
 					player:getTraits():add("Dextrous");
 					if notification == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Dexterous"), true, HaloTextHelper.getColorGreen()) end
 				end
-				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInTable("Dextrous") then
+				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Dextrous") then
 					ETWCommonFunctions.addTraitToDelayTable(modData, "Dextrous", player, true)
 				end
 			end
@@ -176,7 +176,7 @@ function ISInventoryTransferAction:perform()
 					player:getTraits():remove("butterfingers");
 					if notification == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_AllThumbs"), false, HaloTextHelper.getColorGreen()) end
 				end
-				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInTable("butterfingers") then
+				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("butterfingers") then
 					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringAdd")..getText("UI_trait_AllThumbs"), false, HaloTextHelper.getColorGreen()) end
 					ETWCommonFunctions.addTraitToDelayTable(modData, "butterfingers", player, false)
 				end

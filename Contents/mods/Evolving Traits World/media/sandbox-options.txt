@@ -283,6 +283,24 @@ option EvolvingTraitsWorld.WeightSystemSkill
 	page = EvolvingTraitsWorldSystems,
 	translation = EvolvingTraitsWorld_WeightSystemSkill,
 }
+option EvolvingTraitsWorld.WeightSystemLowerMentalThreshold
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 60,
+	page = EvolvingTraitsWorldSystems,
+	translation = EvolvingTraitsWorld_WeightSystemLowerMentalThreshold,
+}
+option EvolvingTraitsWorld.WeightSystemUpperMentalThreshold
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 80,
+	page = EvolvingTraitsWorldSystems,
+	translation = EvolvingTraitsWorld_WeightSystemUpperMentalThreshold,
+}
 
 option EvolvingTraitsWorld.MOODLES
 {

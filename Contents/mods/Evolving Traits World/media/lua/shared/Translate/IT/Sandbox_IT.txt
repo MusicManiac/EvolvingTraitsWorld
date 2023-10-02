@@ -281,4 +281,8 @@ Sandbox_IT = {
 	Sandbox_EvolvingTraitsWorld_WeightSystem_tooltip = "Descrivere qui le condizioni in cui perdi/acquisisci i tratti richiederebbe molto spazio, quindi controlla il documento Google per i dettagli (link nella descrizione della pagina della mod sul workshop). Tratti interessati che possono essere acquisiti/persi dinamicamente: Assetato/Poca Sete, Insaziabile/Poco Appetito, Pelle Spessa/Sottile, Cura Lenta/Veloce.<br>IMPORTANTE: se scegli uno di questi tratti in creazione, sia negativo che positivo, sarà permanente sul tuo personaggio.",
 	Sandbox_EvolvingTraitsWorld_WeightSystemSkill = "Requisiti passivi per il Sistema di peso ",
 	Sandbox_EvolvingTraitsWorld_WeightSystemSkill_tooltip = "Quanti livelli in Forza + Forma Fisica devi avere per ottenere Pelle spessa e Cura Veloce (questa è solo una condizione ma ce ne sono altre, controlla ancora una volta il documento Google)",
+	Sandbox_EvolvingTraitsWorld_WeightSystemLowerMentalThreshold = "Soglia mentale bassa del sistema di peso",
+	Sandbox_EvolvingTraitsWorld_WeightSystemLowerMentalThreshold_tooltip = "Quale dovrebbe essere la tua salute mentale media (media da panico + infelicità + paura + stress) negli ultimi 31 giorni sopravvissuti per ottenere Pelle spessa e Guaritore veloce (questa non è solo una condizione, controlla ancora GoogleSheet)",
+	Sandbox_EvolvingTraitsWorld_WeightSystemUpperMentalThreshold = "Soglia mentale alta del sistema di peso",
+	Sandbox_EvolvingTraitsWorld_WeightSystemUpperMentalThreshold_tooltip = "Quale dovrebbe essere la tua salute mentale media (media da panico + infelicità + paura + stress) negli ultimi 31 giorni sopravvissuti per ottenere Poco appetito e Poca Sete  (questa non è solo una condizione, controlla ancora GoogleSheet)",
 }

@@ -51,6 +51,11 @@ local function createModData(playerIndex, player)
 	modData.FoodSicknessWeathered = modData.FoodSicknessWeathered or 0;
 	modData.TreesChopped = modData.TreesChopped or 0;
 
+	modData.MentalStateInLast60Min = modData.MentalStateInLast60Min or {0.75};
+	modData.MentalStateInLast24Hours = modData.MentalStateInLast24Hours or {0.75};
+	modData.MentalStateInLast31Days = modData.MentalStateInLast31Days or {0.75};
+	modData.RecentAverageMental = modData.RecentAverageMental or 0.75;
+
 	modData.StartingTraits = modData.StartingTraits or {};
 	local startingTraits = modData.StartingTraits;
 	checkStartingDTConflictingTrait(startingTraits, player, "HeartyAppitite");
