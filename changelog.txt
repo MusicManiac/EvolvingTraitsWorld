@@ -1,4 +1,4 @@
-v.5.2.0
+v.5.2.1
 
-General:
-	- Weight System now uses your mental state over course of last 31 days instead of current mental state, details in sandbox/google sheets. Should work. Not tested. Good luck.
+Fixes:
+	- Fixed constantly gaining/losing some of the weight system traits.

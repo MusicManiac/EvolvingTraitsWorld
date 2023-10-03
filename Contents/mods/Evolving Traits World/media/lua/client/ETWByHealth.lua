@@ -108,22 +108,6 @@ local function weightSystem()
 			player:getTraits():remove("SlowHealer");
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_SlowHealer"), false, HaloTextHelper.getColorGreen()) end
 		end
-		if player:HasTrait("ThickSkinned") and startingTraits.ThickSkinned ~= true then
-			player:getTraits():remove("ThickSkinned");
-			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_thickskinned"), false, HaloTextHelper.getColorRed()) end
-		end
-		if player:HasTrait("FastHealer") and startingTraits.FastHealer ~= true then
-			player:getTraits():remove("FastHealer");
-			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_FastHealer"), false, HaloTextHelper.getColorRed()) end
-		end
-		if player:HasTrait("LightEater") and startingTraits.LightEater ~= true then
-			player:getTraits():remove("LightEater");
-			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_lighteater"), false, HaloTextHelper.getColorRed()) end
-		end
-		if player:HasTrait("LowThirst") and startingTraits.LowThirst ~= true then
-			player:getTraits():remove("LowThirst");
-			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_LowThirst"), false, HaloTextHelper.getColorRed()) end
-		end
 	end
 	if (weight > 85 and weight < 100) or (weight > 65 and weight < 75) then
 		if not player:HasTrait("HeartyAppitite") and startingTraits.LightEater ~= true then
