@@ -1,4 +1,4 @@
-v.5.2.1
+v.5.2.2
 
 Fixes:
-	- Fixed constantly gaining/losing some of the weight system traits.
+	- Fixed repeated "Qualified for Eagle Eyed" notification.

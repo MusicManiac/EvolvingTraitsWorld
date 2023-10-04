@@ -1,5 +1,6 @@
 require "ETWModData";
 local ETWMoodles = require "ETWMoodles";
+local ETWCommonFunctions = require "ETWCommonFunctions";
 
 local SBvars = SandboxVars.EvolvingTraitsWorld;
 

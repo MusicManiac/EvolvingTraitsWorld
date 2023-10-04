@@ -79,7 +79,7 @@ local function eagleEyed(wielder, character, handWeapon, damage)
 				end
 				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("EagleEyed") then
 					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringAdd")..getText("UI_trait_eagleeyed"), true, HaloTextHelper.getColorGreen()) end
-					ETWCommonFunctions.addTraitToDelayTable(modData, "EagleEyed", player)
+					ETWCommonFunctions.addTraitToDelayTable(modData, "EagleEyed", player, true)
 				end
 			end
 		end
