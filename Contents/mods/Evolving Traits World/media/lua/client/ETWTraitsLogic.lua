@@ -9,9 +9,9 @@ local function onZombieKill(zombie)
 	if player:HasTrait("Bloodlust") and player:DistTo(zombie) <= 4 then
 		local bodydamage = player:getBodyDamage();
 		local stats = player:getStats();
-		local stressFromCigarettes = stats:getStressFromCigarettes();
+		local stressFromCigarettes = stats:getStressFromCigarettes(); -- 0-1
 		local unhappiness = bodydamage:getUnhappynessLevel(); -- 0-100
-		local stress = math.max(0, stats:getStress() - stressFromCigarettes); -- 0-1
+		local stress = math.max(0, stats:getStress() - stressFromCigarettes); -- 0-1, may be higher with stress from cigarettes
 		local panic = stats:getPanic(); -- 0-100
 		bodydamage:setUnhappynessLevel(math.max(0, unhappiness - 4 * SBvars.BloodlustMultiplier));
 		stats:setStress(math.max(0, stress - 0.04 * SBvars.BloodlustMultiplier));
@@ -74,7 +74,7 @@ local function rainTraits(player, rainIntensity)
 		local rainProtection = (primaryItem and primaryItem:isProtectFromRainWhileEquipped()) or (secondaryItem and secondaryItem:isProtectFromRainWhileEquipped());
 		local bodydamage = player:getBodyDamage();
 		local stats = player:getStats();
-		local stressFromCigarettes = stats:getStressFromCigarettes();
+		local stressFromCigarettes = stats:getStressFromCigarettes(); -- 0-1
 		if Pluviophobia then
 			local unhappinessIncrease = 0.1 * rainIntensity * (rainProtection and 0.5 or 1) * SBvars.PluviophobiaMultiplier;
 			bodydamage:setUnhappynessLevel(math.min(100, bodydamage:getUnhappynessLevel() + unhappinessIncrease));

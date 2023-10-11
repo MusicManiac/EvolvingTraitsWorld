@@ -1,4 +1,6 @@
-v.5.2.2
+v.5.2.3
 
 Fixes:
-	- Fixed repeated "Qualified for Eagle Eyed" notification.
+	- You could have been gaining smoking addiction instead of losing/keeping it stable when you don't smoke due to how game handles stress, now the worst case scenario is that you don't gain/lose any progress
+Translations:
+	- Updated PTBR translation to latest mod version

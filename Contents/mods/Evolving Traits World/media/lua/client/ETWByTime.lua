@@ -150,9 +150,10 @@ local function smoker()
 	smokerModData.MinutesSinceLastSmoke = smokerModData.MinutesSinceLastSmoke + 1;
 	if detailedDebug() then print("ETW Logger | smoker(): timeSinceLastSmoke: "..timeSinceLastSmoke..", modData.MinutesSinceLastSmoke: ".. smokerModData.MinutesSinceLastSmoke) end
 	local stats = player:getStats();
-	local stress = stats:getStress(); -- stress is 0-1
+	local stress = stats:getStress(); -- stress is 0-1, may be higher with stress from cigarettes
 	local panic = stats:getPanic(); -- 0-100
 	local addictionDecay = SBvars.SmokingAddictionDecay * (0.0167 / 10) * (1 - stress) * (1 - panic / 100);
+	addictionDecay = math.max(0, addictionDecay); -- make sure values doesn't go into negative
 	if SBvars.AffinitySystem and modData.StartingTraits.Smoker then
 		addictionDecay = addictionDecay / SBvars.AffinitySystemLoseDivider;
 	end

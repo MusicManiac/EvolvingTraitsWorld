@@ -13,7 +13,7 @@ function OnEat_Cigarettes(food, character, percent)
 		local smokerModData = modData.SmokeSystem; -- SmokingAddiction MinutesSinceLastSmoke
 		local timeSinceLastSmoke = character:getTimeSinceLastSmoke() * 60;
 		if detailedDebug() then print("ETW Logger | OnEat_Cigarettes(): timeSinceLastSmoke: "..timeSinceLastSmoke..", modData.MinutesSinceLastSmoke: "..smokerModData.MinutesSinceLastSmoke) end
-		local stress = character:getStats():getStress(); -- stress is 0-1
+		local stress = character:getStats():getStress(); -- stress is 0-1, may be higher with stress from cigarettes
 		local panic = character:getStats():getPanic(); -- 0-100
 		local addictionGain = SBvars.SmokingAddictionMultiplier * (1 + stress) * (1 + panic / 100) * 1000 / (math.max(timeSinceLastSmoke, smokerModData.MinutesSinceLastSmoke) + 100);
 		if SBvars.AffinitySystem and modData.StartingTraits.Smoker then

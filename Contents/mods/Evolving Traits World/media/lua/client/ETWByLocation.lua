@@ -49,7 +49,7 @@ local function fearOfLocations()
 	local player = getPlayer();
 	local modData = player:getModData().EvolvingTraitsWorld;
 	local fearOfLocationsModData = modData.LocationFearSystem;
-	local stress = player:getStats():getStress(); -- 0-1
+	local stress = player:getStats():getStress(); -- 0-1, may be higher with stress from cigarettes
 	local unhappiness = player:getBodyDamage():getUnhappynessLevel(); -- 0-100
 	local SBCounter = SBvars.FearOfLocationsSystemCounter;
 	local upperCounterBoundary = SBCounter * 2;

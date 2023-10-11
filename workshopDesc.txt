@@ -29,7 +29,7 @@ Installation instructions can be found in [url=https://steamcommunity.com/worksh
 [*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=2854030563]Moodle Quarters[/url] - so you can clearly see which stage your moodle is in right now
 [*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=2763647806]Clear description for Moodles[/url] - so you know what your moodles do
 [*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=2685168362]More Description for Traits[/url] - so you can read what your traits do
-[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=2894296454]Change Sandbox Options (by Star)[/url] - use this to change SP starting options mid-game
+[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=2894296454]Change Sandbox Options (by Star)[/url] - use this to change SP starting options mid-game. [b]ATTENTION[/b]: upon changing any settings it's highly recommended to reload save (if SP) or rejoin server (if MP) for technical reasons (mod decides what to run based on sandbox settings when character is loaded in game world)
 [/list]
 
 [h1]GitHub and Discord[/h1]
