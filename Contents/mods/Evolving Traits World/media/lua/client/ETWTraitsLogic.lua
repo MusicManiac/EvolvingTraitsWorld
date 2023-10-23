@@ -21,19 +21,6 @@ local function onZombieKill(zombie)
 end
 
 local function checkWeightLimit(player)
-	local traits = {
-		{"Metalstrongback", "StrongBack", 5},
-		{"Metalstrongback2", "StrongBack", 5},
-		{"Strongback", "StrongBack", 2},
-		{"Strongback2", "StrongBack", 2},
-		{"Metalstrongback", nil, 4},
-		{"Metalstrongback2", nil, 4},
-		{"Strongback", nil, 2},
-		{"Strongback2", nil, 2},
-		{"WeakBack", nil, -1},
-		{nil, nil, 0},
-	}
-
 	local maxWeightBase = 8;
 	local strength = player:getPerkLevel(Perks.Strength);
 
@@ -45,16 +32,16 @@ local function checkWeightLimit(player)
 		if detailedDebug() then print("ETW Logger | checkWeightLimit(): [ToadTraits present] Set maxWeightBase to "..maxWeightBase) end
 	end
 
-	if getActivatedMods():contains("SimpleOverhaulTraitsAndOccupations") then
-		for _, trait in ipairs(traits) do
-			local trait1, trait2, maxWeight = unpack(trait)
-			if (not trait1 or player:HasTrait(trait1)) and (not trait2 or player:HasTrait(trait2)) then
-				if not maxWeight then maxWeight = 0 end
-				maxWeightBase = maxWeightBase + maxWeight;
-				if detailedDebug() then print("ETW Logger | checkWeightLimit(): [SOTO compatibility] Set maxWeightBase to "..tostring(maxWeightBase)) end
-				break
-			end
+	if getActivatedMods():contains("SimpleOverhaulTraitsAndOccupations") or getActivatedMods():contains("AliceSPack") then
+		if player:HasTrait("StrongBack") or player:HasTrait("Strongback2") or player:HasTrait("Strongback") then
+			maxWeightBase = maxWeightBase + 1;
+		elseif player:HasTrait("WeakBack") then
+			maxWeightBase = maxWeightBase - 1;
 		end
+		if player:HasTrait("Metalstrongback") or player:HasTrait("Metalstrongback2") then
+			maxWeightBase = maxWeightBase + 4;
+		end
+		if detailedDebug() then print("ETW Logger | checkWeightLimit(): [SOTO/AlicePack compatibility] Set maxWeightBase to "..tostring(maxWeightBase)) end
 	end
 
 	if player:HasTrait("Hoarder") then
