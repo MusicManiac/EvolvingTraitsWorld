@@ -45,11 +45,11 @@ description=Currently mod supports following languages:
 description=[list]
 description=[*]English
 description=[*]Italiano / Italian
-description=[*]Español / Spanish
+description=[*]Espaï¿½ol / Spanish
 description=[*]??????? / Russian
 description=[*]???? / Chinese
 description=[*]???? / Traditional Chinese
-description=[*]Português Brasileiro / Brazilian Portuguese
+description=[*]Portuguï¿½s Brasileiro / Brazilian Portuguese
 description=[/list]
 description=
 description=[h1]Afterword and Permission[/h1]
@@ -58,6 +58,6 @@ description=[url=https://ko-fi.com/musicmaniac][img]https://uploads-ssl.webflow.
 description=
 description=[quote]? Permissions
 description=Redistribution of this mod without explicit permission from the creator is prohibited under any circumstances. This includes, but not limited to, uploading this mod to the Steam Workshop or any other site, distribution as part of another mod or modpack, distribution of modified versions.
-description=© 2023 [url=https://steamcommunity.com/profiles/76561198152820942]MusicManiac[/url] (SteamID64: 76561198152820942)[/quote]
+description=ï¿½ 2023 [url=https://steamcommunity.com/profiles/76561198152820942]MusicManiac[/url] (SteamID64: 76561198152820942)[/quote]
 tags=Build 41;Balance;Multiplayer;Realistic;Silly/Fun;Traits
 visibility=public
