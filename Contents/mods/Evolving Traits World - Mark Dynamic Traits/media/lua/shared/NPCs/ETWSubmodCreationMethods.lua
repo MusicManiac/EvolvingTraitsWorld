@@ -289,7 +289,7 @@ if getActivatedMods():contains('SimpleOverhaulTraitsAndOccupations') then
 	altNames.MetalWelder = true;
 	altNames.Nimble = true;
 	altNames.NinjaWay = true;
-	altNames.Nutritionist = true;
+	altNames.Nutritionist = false;
 	altNames.Pacifist = true;
 	altNames.Relentless = true;
 	altNames.Scullion = true;
