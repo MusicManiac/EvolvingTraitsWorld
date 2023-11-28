@@ -1,6 +1,5 @@
-v.5.2.4
+v.5.2.5
 
 Fixes:
-	- Fixed Pluviophobia Multiplier sandbox setting using incorrect translation string.
-Mod Conflicts:
-	- Rewrote code responsible for carry weight calculations when using Alice Packs
+	- Fixed duplicating perks during character creation
+	- Submod was incorrectly showing Nutritionist as dynamic when running SOTO
