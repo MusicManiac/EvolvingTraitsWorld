@@ -1,6 +1,7 @@
 Sandbox_PTBR = {
 	note_to_PTBR_translators = "Make sure file is saved in ISO-8859-1 encoding, so game display correct characters",
 
+	Sandbox_EvolvingTraitsWorldSettings = "Evolving Traits World - Opções Globais",
 	Sandbox_EvolvingTraitsWorldSimplePerks = "Evolving Traits World - Traço simples",
 	Sandbox_EvolvingTraitsWorldComplexPerks = "Evolving Traits World - Traços complexos",
 	Sandbox_EvolvingTraitsWorldSystems = "Evolving Traits World - Sistemas",
@@ -115,6 +116,9 @@ Sandbox_PTBR = {
 	Sandbox_EvolvingTraitsWorld_FearOfLocationsSystemCounter_tooltip = "Medidor = quantidade de minutos que você deve passar do lado de fora/dentro para perder o traço, Agorafóbico ou Claustrofóbico. Estar do lado de fora/dentro quando estressado ou infeliz vai diminuir o contador. Atingir valor negativo no medidor fará você ganhar o traço correspondente. Atingir valor positivo no contador fará você perder o traço correspondente, estar entre valores positivos e negativos não vai te gerar nada. O limite inferior é -2x o valor do contador, o limite superior é 2x o valor definido aqui.",
 	Sandbox_EvolvingTraitsWorld_FearOfLocationsSystemCounterLoseMultiplier = "Multiplicador de Perda do Medidor do Sistema de Medo de Localizações",
 	Sandbox_EvolvingTraitsWorld_FearOfLocationsSystemCounterLoseMultiplier_tooltip = "Velocidade com que o contador diminui quando você está infeliz (50%+) ou estressado (50%+). Considerando que você está mais frequentemente normal do que infeliz ou estressado, eu recomendaria não definir isso muito baixo. A fórmula para determinar quanto o contador diminui a cada minuto é 1 * (1 + Unhappiness(0-1)) + (1 * stress(0-1)) * multiplier, então no mínimo você perde 0 * multiplier, no máximo você perde 4 * multiplier",
+	Sandbox_EvolvingTraitsWorld_FearOfLocationsSystemPassiveCounterDecay = "Decaimento do medidor passivo de medo de locais",
+	Sandbox_EvolvingTraitsWorld_FearOfLocationsSystemPassiveCounterDecay_tooltip = "Se você é um noob e não consegue ser agorafóbico e claustrofóbico ao mesmo tempo (quem iria imaginar que pegar todos esse "pontos grátis" no início poderia gerar consequências negativas), nas opções você consegue configurar o decaimento passivo. Ao ficar do lado de fora/dentro por 1 minuto ou mais, o medidor ira diminuir independentemente do seu estado mental. Por exemplo, mudar ele para 0.1 e ficar do lado de dentro vai fazer com que o seu medo diminua gradualmente, adicionando 0.1 para o contador de lado de fora. Faz 0 sentido, mas vocês reclamaram muito sobre ter Agorafobia e claustrofobia ao mesmo tempo. Configurar isso para 0 não vai contecer nada. Os valores recomendados são de 0.1 à 0.5",
+
 	
 	Sandbox_EvolvingTraitsWorld_FirstAid = "Socorrista",
 	Sandbox_EvolvingTraitsWorld_FirstAidSkill = "Requerimento de Primeiros Socorros para o traço de Socorrista",
@@ -225,6 +229,12 @@ Sandbox_PTBR = {
 	Sandbox_EvolvingTraitsWorld_OutdoorsmanCounter_tooltip = "--- Entendimento Geral---<br>Isso permite que você obtenha um traço ao passar tempo ao ar livre e ser exposto a várias condições climáticas. Quanto mais adversas forem as condições climáticas, mais rapidamente você ganhará o traço. Ficar dentro de casa gradualmente perde o progresso. Ao atingir o valor máximo do contador, você ganha o traço, e ao cair pela metade, você o perde.<br>---Detalhes técnicos---<br>A cada minuto que você passa ao ar livre, 1 ponto é adicionado ao contador. A taxa de aumento do contador é multiplicada por certas condições climáticas, como chuva, neve e vento. Quando o contador atinge o limite especificado, você ganha o traço. Com base em testes, determinou-se que passar 24 horas em tempo claro com uma manhã nebulosa resultará em aproximadamente 1.700 pontos, enquanto passar 24 horas em um clima com duas manhãs com nevoeiro e uma tempestade ao meio-dia resultará em aproximadamente 5.000 pontos. Se você estiver dentro de casa, perderá 10% do que ganharia se estivesse ao ar livre. Isso diminui linearmente para 100% ao longo de 900 minutos estando dentro de casa. Você pode redefinir a porcentagem atual em que perde pontos ao ficar ao ar livre. Você diminui a porcentagem em 0,3 a cada minuto ao ar livre (você pode ir de 100% a 10% em 300 minutos). Ao atingir metade do valor do contador que você definiu, você perde o traço. O contador tem um limite superior de 10 vezes o valor do contador e um limite inferior de 0.",
 	Sandbox_EvolvingTraitsWorld_OutdoorsmanCounterLoseMultiplier = "Multiplicador de perda do medidor de Andarilho",
 	Sandbox_EvolvingTraitsWorld_OutdoorsmanCounterLoseMultiplier_tooltip = "Define a velocidade com que você perde pontos ao ficar dentro de casa. A fórmula para determinar quanto você perde a cada minuto é 1 * (1 - OutdoorsmanCounterLoseMultiplier * 0.003). Portanto, no mínimo, você perde 0,7% do que ganharia se estivesse ao ar livre, e no máximo você perde 10% do que ganharia se estivesse ao ar livre.",
+
+	Sandbox_EvolvingTraitsWorld_PainTolerance = "Tolerância a dor",
+	Sandbox_EvolvingTraitsWorld_PainToleranceThreshold = "Limite de Tolerância a Dor",
+	Sandbox_EvolvingTraitsWorld_PainToleranceThreshold_tooltip = "Qual o máximo de níveld e dor o seu personagem consegue atingir usando o traço",
+	Sandbox_EvolvingTraitsWorld_PainToleranceCounter = "Contador de Tolerância a Dor",
+	Sandbox_EvolvingTraitsWorld_PainToleranceCounter_tooltip = "A cada 10 minutos a sua dor (0-100) é adicionada ao contador. Ao encher o contador, receberá o traço de Tolerância a dor",
 
 	Sandbox_EvolvingTraitsWorld_RainSystem = "Sistema de chuva",
 	Sandbox_EvolvingTraitsWorld_RainSystemCounter = "Medidor de Sistema de Chuva",

@@ -14,7 +14,7 @@ local function addTraits()
 	local activatedMods = getActivatedMods();
 
 	if not activatedMods:contains("EvolvingTraitsWorldDisableAVClub") then
-		local AVClub = createTrait("AVClub", 5);
+		local AVClub = createTrait("AVClub", 4);
 		AVClub:addXPBoost(Perks.Electricity, 1);
 		AVClub:getFreeRecipes():add("Make Remote Controller V1");
 		AVClub:getFreeRecipes():add("Make Remote Controller V2");
@@ -105,6 +105,10 @@ local function addTraits()
 	if not activatedMods:contains("EvolvingTraitsWorldDisableRainTraits") then
 		local Pluviophile = createTrait("Pluviophile", 2);
 		local Pluviophobia = createTrait("Pluviophobia", -2);
+	end
+
+	if not activatedMods:contains("EvolvingTraitsWorldDisablePainTolerance") then
+		local PainTolerance = createTrait("PainTolerance", 2);
 	end
 
 	if not activatedMods:contains("EvolvingTraitsWorldDisableRestorationExpert") then

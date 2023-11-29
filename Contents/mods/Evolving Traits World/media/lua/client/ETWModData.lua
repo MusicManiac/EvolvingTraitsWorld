@@ -50,6 +50,7 @@ local function createModData(playerIndex, player)
 	modData.CatEyesCounter = modData.CatEyesCounter or 0;
 	modData.FoodSicknessWeathered = modData.FoodSicknessWeathered or 0;
 	modData.TreesChopped = modData.TreesChopped or 0;
+	modData.PainToleranceCounter = modData.PainToleranceCounter or 0;
 
 	modData.MentalStateInLast60Min = modData.MentalStateInLast60Min or {0.75};
 	modData.MentalStateInLast24Hours = modData.MentalStateInLast24Hours or {0.75};

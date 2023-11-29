@@ -100,4 +100,5 @@ end
 
 Events.OnCreatePlayer.Remove(initializeEvents);
 Events.OnCreatePlayer.Add(initializeEvents);
+Events.OnPlayerDeath.Remove(clearEvents);
 Events.OnPlayerDeath.Add(clearEvents);

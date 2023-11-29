@@ -1,5 +1,7 @@
-v.5.2.5
+v.5.3.0
 
-Fixes:
-	- Fixed duplicating perks during character creation
-	- Submod was incorrectly showing Nutritionist as dynamic when running SOTO
+General:
+	- Added Pain Tolerance trait.
+	- Adjusted AV Club perk cost 5 -> 4
+	- Moved general settings (Affinity and Delay systems) to its own sandbox page where stuff that affects major parts of mod can be found
+	- Added option for Fear of Locations system to slowly decay by itself for all of you with skill issues complaining about having both Agoraphobic and Claustrophobic after picking up every possible negative perk in existence for 'free points'. Not tested but should work.

@@ -115,6 +115,16 @@ local function fogTraits(player, fogIntensity)
 	end
 end
 
+local function painTolerance()
+	local player = getPlayer();
+	local PainTolerance = player:HasTrait("PainTolerance");
+	local stats = player:getStats();
+	local pain = stats:getPain();
+	if PainTolerance and pain >= SBvars.PainToleranceThreshold then
+		stats:setPain(SBvars.PainToleranceThreshold);
+	end
+end
+
 local function oneMinuteUpdate()
 	local player = getPlayer();
 	local climateManager = getClimateManager();
@@ -123,16 +133,24 @@ local function oneMinuteUpdate()
 	if not getActivatedMods():contains("EvolvingTraitsWorldDisableFogTraits") then fogTraits(player, climateManager:getFogIntensity()) end
 end
 
+function ETW_InitiatePainToleranceTrait(player)
+	Events.OnTick.Remove(painTolerance(player));
+	if not getActivatedMods():contains("EvolvingTraitsWorldDisablePainTolerance") and player:HasTrait("PainTolerance") then Events.OnTick.Add(painTolerance) end
+end
+
 local function initializeTraitsLogic(playerIndex, player)
 	Events.OnZombieDead.Remove(onZombieKill);
 	Events.OnZombieDead.Add(onZombieKill);
 	Events.EveryOneMinute.Remove(oneMinuteUpdate);
 	Events.EveryOneMinute.Add(oneMinuteUpdate);
+	Events.OnTick.Remove(painTolerance);
+	if not getActivatedMods():contains("EvolvingTraitsWorldDisablePainTolerance") and getPlayer():HasTrait("PainTolerance") then Events.OnTick.Add(painTolerance) end
 end
 
 local function clearEvents(character)
 	Events.OnZombieDead.Remove(onZombieKill);
 	Events.EveryOneMinute.Remove(oneMinuteUpdate);
+	Events.OnTick.Remove(painTolerance);
 	if detailedDebug() then print("ETW Logger | System: clearEvents in ETWTraitsLogic.lua") end
 end
 
@@ -140,4 +158,5 @@ Events.EveryHours.Remove(SOcheckWeight);
 
 Events.OnCreatePlayer.Remove(initializeTraitsLogic);
 Events.OnCreatePlayer.Add(initializeTraitsLogic);
+Events.OnPlayerDeath.Remove(clearEvents);
 Events.OnPlayerDeath.Add(clearEvents);

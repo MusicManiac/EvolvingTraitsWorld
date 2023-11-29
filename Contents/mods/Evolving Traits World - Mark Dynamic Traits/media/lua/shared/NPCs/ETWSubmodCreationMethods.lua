@@ -61,6 +61,7 @@ if getActivatedMods():contains('EvolvingTraitsWorld') or getActivatedMods():cont
 	altNames.Organized = true;
 	altNames.Outdoorsman = true;
 	altNames.Pacifist = true;
+	altNames.PainTolerance = true;
 	altNames.ProneToIllness = true;
 	altNames.Resilient = true;
 	altNames.SlowLearner = true;

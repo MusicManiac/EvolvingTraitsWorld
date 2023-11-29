@@ -1,15 +1,15 @@
 VERSION = 1,
 
-option EvolvingTraitsWorld.SYSTEMS
+option EvolvingTraitsWorld.SETTINGS
 {
-	translation = ---------------------------------------------SYSTEMS-------------------------------------------------------------------,
+	translation = ---------------------------------------------SETTINGS-------------------------------------------------------------------,
 }
 
 option EvolvingTraitsWorld.AffinitySystem
 {
 	type = boolean,
 	default = true,
-	page = EvolvingTraitsWorldSystems,
+	page = EvolvingTraitsWorldSettings,
 	translation = EvolvingTraitsWorld_AffinitySystem,
 }
 option EvolvingTraitsWorld.AffinitySystemLoseDivider
@@ -18,7 +18,7 @@ option EvolvingTraitsWorld.AffinitySystemLoseDivider
 	min = 1,
 	max = 100,
 	default = 2,
-	page = EvolvingTraitsWorldSystems,
+	page = EvolvingTraitsWorldSettings,
 	translation = EvolvingTraitsWorld_AffinitySystemLoseDivider,
 }
 option EvolvingTraitsWorld.AffinitySystemGainMultiplier
@@ -27,9 +27,40 @@ option EvolvingTraitsWorld.AffinitySystemGainMultiplier
 	min = 1,
 	max = 100,
 	default = 2,
-	page = EvolvingTraitsWorldSystems,
+	page = EvolvingTraitsWorldSettings,
 	translation = EvolvingTraitsWorld_AffinitySystemGainMultiplier,
 }
+option EvolvingTraitsWorld.DelayedTraitsSystem
+{
+	type = boolean,
+	default = true,
+	page = EvolvingTraitsWorldSettings,
+	translation = EvolvingTraitsWorld_DelayedTraitsSystem,
+}
+option EvolvingTraitsWorld.DelayedTraitsSystemDefaultDelay
+{
+	type = integer,
+	min = 1,
+	max = 5000,
+	default = 336,
+	page = EvolvingTraitsWorldSettings,
+	translation = EvolvingTraitsWorld_DelayedTraitsSystemDefaultDelay,
+}
+option EvolvingTraitsWorld.DelayedTraitsSystemDefaultStartingDelay
+{
+	type = integer,
+	min = 1,
+	max = 5000,
+	default = 504,
+	page = EvolvingTraitsWorldSettings,
+	translation = EvolvingTraitsWorld_DelayedTraitsSystemDefaultStartingDelay,
+}
+
+option EvolvingTraitsWorld.SYSTEMS
+{
+	translation = ---------------------------------------------SYSTEMS-------------------------------------------------------------------,
+}
+
 option EvolvingTraitsWorld.BraverySystem
 {
 	type = boolean,
@@ -69,37 +100,21 @@ option EvolvingTraitsWorld.ColdIllnessSystemColdsWeathered
 	page = EvolvingTraitsWorldSystems,
 	translation = EvolvingTraitsWorld_ColdIllnessSystemColdsWeathered,
 }
-option EvolvingTraitsWorld.DelayedTraitsSystem
-{
-	type = boolean,
-	default = true,
-	page = EvolvingTraitsWorldSystems,
-	translation = EvolvingTraitsWorld_DelayedTraitsSystem,
-}
-option EvolvingTraitsWorld.DelayedTraitsSystemDefaultDelay
-{
-	type = integer,
-	min = 1,
-	max = 5000,
-	default = 336,
-	page = EvolvingTraitsWorldSystems,
-	translation = EvolvingTraitsWorld_DelayedTraitsSystemDefaultDelay,
-}
-option EvolvingTraitsWorld.DelayedTraitsSystemDefaultStartingDelay
-{
-	type = integer,
-	min = 1,
-	max = 5000,
-	default = 504,
-	page = EvolvingTraitsWorldSystems,
-	translation = EvolvingTraitsWorld_DelayedTraitsSystemDefaultStartingDelay,
-}
 option EvolvingTraitsWorld.FearOfLocationsSystem
 {
 	type = boolean,
 	default = true,
 	page = EvolvingTraitsWorldSystems,
 	translation = EvolvingTraitsWorld_FearOfLocationsSystem,
+}
+option EvolvingTraitsWorld.FearOfLocationsSystemPassiveCounterDecay
+{
+	type = double,
+	min = 0,
+	max = 8,
+	default = 0,
+	page = EvolvingTraitsWorldSystems,
+	translation = EvolvingTraitsWorld_FearOfLocationsSystemPassiveCounterDecay,
 }
 option EvolvingTraitsWorld.FearOfLocationsSystemCounter
 {
@@ -385,6 +400,15 @@ option EvolvingTraitsWorld.HomichlophobiaMultiplier
 	default = 1,
 	page = EvolvingTraitsWorldTraitsSettings,
 	translation = EvolvingTraitsWorld_HomichlophobiaMultiplier,
+}
+option EvolvingTraitsWorld.PainToleranceThreshold
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 60,
+	page = EvolvingTraitsWorldTraitsSettings,
+	translation = EvolvingTraitsWorld_PainToleranceThreshold,
 }
 option EvolvingTraitsWorld.PluviophileMultiplier
 {
@@ -1151,6 +1175,22 @@ option EvolvingTraitsWorld.LowProfileSkill
 	default = 4,
 	page = EvolvingTraitsWorldSimplePerks,
 	translation = EvolvingTraitsWorld_LowProfileSkill,
+}
+option EvolvingTraitsWorld.PainTolerance
+{
+	type = boolean,
+	default = true,
+	page = EvolvingTraitsWorldSimplePerks,
+	translation = EvolvingTraitsWorld_PainTolerance,
+}
+option EvolvingTraitsWorld.PainToleranceCounter
+{
+	type = integer,
+	min = 0,
+	max = 500000,
+	default = 30000,
+	page = EvolvingTraitsWorldSimplePerks,
+	translation = EvolvingTraitsWorld_PainToleranceCounter,
 }
 option EvolvingTraitsWorld.RestorationExpert
 {

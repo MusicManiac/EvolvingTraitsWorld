@@ -268,6 +268,25 @@ local function recordMentalState()
 	end
 end
 
+local function painToleranceTrait()
+	local player = getPlayer();
+	local modData = player:getModData().EvolvingTraitsWorld;
+	modData.PainToleranceCounter = modData.PainToleranceCounter + player:getStats():getPain(); -- pain is 0-100
+	if debug() then print("ETW Logger | painToleranceTrait(): pain counter: "..modData.PainToleranceCounter) end
+	if modData.PainToleranceCounter >= SBvars.PainToleranceCounter then
+		if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("PainTolerance")) then
+			player:getTraits():add("PainTolerance");
+			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_PainTolerance"), true, HaloTextHelper.getColorGreen()) end
+			ETW_InitiatePainToleranceTrait(player);
+			Events.EveryTenMinutes.Remove(painToleranceTrait);
+		end
+		if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("PainTolerance") then
+			if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringAdd")..getText("UI_trait_PainTolerance"), true, HaloTextHelper.getColorGreen()) end
+			ETWCommonFunctions.addTraitToDelayTable(modData, "PainTolerance", player, true);
+		end
+	end
+end
+
 local function initializeEvents(playerIndex, player)
 	Events.EveryOneMinute.Remove(coldTraits);
 	if SBvars.ColdIllnessSystem == true and not player:HasTrait("Resilient") then Events.EveryOneMinute.Add(coldTraits) end
@@ -275,6 +294,8 @@ local function initializeEvents(playerIndex, player)
 	if SBvars.FoodSicknessSystem == true and not player:HasTrait("IronGut") then Events.EveryOneMinute.Add(foodSicknessTraits) end
 	Events.EveryTenMinutes.Remove(weightSystem);
 	if SBvars.WeightSystem == true then Events.EveryTenMinutes.Add(weightSystem) end
+	Events.EveryTenMinutes.Remove(painToleranceTrait);
+	if SBvars.PainTolerance == true and not player:HasTrait("PainTolerance") and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("PainTolerance") then Events.EveryTenMinutes.Add(painToleranceTrait) end
 	Events.EveryOneMinute.Remove(asthmaticTrait);
 	if SBvars.Asthmatic == true then Events.EveryOneMinute.Add(asthmaticTrait) end
 	Events.EveryOneMinute.Remove(recordMentalState);
@@ -291,4 +312,5 @@ end
 
 Events.OnCreatePlayer.Remove(initializeEvents);
 Events.OnCreatePlayer.Add(initializeEvents);
+Events.OnPlayerDeath.Remove(clearEvents);
 Events.OnPlayerDeath.Add(clearEvents);

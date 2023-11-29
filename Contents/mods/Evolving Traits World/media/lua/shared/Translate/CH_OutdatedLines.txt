@@ -1,4 +1,4 @@
-New/changed lines since v.5.1.1
+New/changed lines since v.5.3.0
 
 Moodles_EN.txt
 	changed:
@@ -6,13 +6,21 @@ Moodles_EN.txt
 	new:
 
 
-Sandbox_EN.txt
+Sandbox.txt
 	changed:
 
 	new:
-
-
-UI_EN.txt
+		Sandbox_EvolvingTraitsWorldSettings = "Evolving Traits World - Global Settings",
+		Sandbox_FearOfLocationsSystemPassiveCounterDecay = "Fear of Locations passive counter decay",
+		Sandbox_FearOfLocationsSystemPassiveCounterDecay_tooltip = "If you have skill issue and can't manage being Agoraphobic and Claustrophobic at same time (who would've guessed that picking all the 'free points' at the start could have negative consequences), you can setup passive decay using this option. How it works that it slowly decays opposite counter based if you're outside/inside every 1 min regardless of your mental state. For example, setting this to 0.1 and being inside will slowly make you less afraid of outside by adding 0.1 to outside counter every minute. Makes 0 sense but you guys complained a lot about having both Agoraphobic and Claustrophobic so there. Setting it to 0 will have no effect on counters. Recommended values are 0.1 to 0.5",
+		Sandbox_EvolvingTraitsWorld_PainTolerance = "Pain Tolerance",
+		Sandbox_EvolvingTraitsWorld_PainToleranceThreshold = "Pain Tolerance Threshold",
+		Sandbox_EvolvingTraitsWorld_PainToleranceThreshold_tooltip = "Whats the maximum pain level your character can reach while using the perk",
+		Sandbox_EvolvingTraitsWorld_PainToleranceCounter = "Pain Tolerance Counter",
+		Sandbox_EvolvingTraitsWorld_PainToleranceCounter_tooltip = "Every 10 minutes your pain (0-100) is added to counter. Upon reaching counter you'll get Pain Tolerance trait",
+UI.txt
 	changed:
+		UI_trait_PainTolerance = "Pain Tolerance",
+		UI_trait_PainToleranceDesc = "You are resistant to pain, your pain level never go above specific percentage (60% by default)",
 
 	new:

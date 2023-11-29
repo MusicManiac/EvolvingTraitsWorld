@@ -65,30 +65,34 @@ local function fearOfLocations()
 		resultingCounter = math.min(upperCounterBoundary, resultingCounter);
 		resultingCounter = math.max(lowerCounterBoundary, resultingCounter);
 		fearOfLocationsModData.FearOfOutside = resultingCounter;
-		if debug() then print("ETW Logger | fearOfLocations(): modData.FearOfOutside: " .. fearOfLocationsModData.FearOfOutside) end
-		if player:HasTrait("Agoraphobic") and fearOfLocationsModData.FearOfOutside >= SBCounter then
-			player:getTraits():remove("Agoraphobic");
-			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_agoraphobic"), false, HaloTextHelper.getColorGreen()) end
-		end
-		if not player:HasTrait("Agoraphobic") and fearOfLocationsModData.FearOfOutside <= -SBCounter and not desensitized(player) then
-			player:getTraits():add("Agoraphobic");
-			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_agoraphobic"), true, HaloTextHelper.getColorRed()) end
-		end
+		fearOfLocationsModData.FearOfInside = math.min(upperCounterBoundary, fearOfLocationsModData.FearOfInside + SBvars.FearOfLocationsSystemPassiveCounterDecay);
 	elseif not player:isOutside() or player:getVehicle() ~= nil then
 		counterDecrease = counterDecrease * ((SBvars.AffinitySystem and modData.StartingTraits.Claustrophobic) and SBvars.AffinitySystemGainMultiplier or 1);
 		local resultingCounter = fearOfLocationsModData.FearOfInside - counterDecrease + ((SBvars.AffinitySystem and modData.StartingTraits.Claustrophobic) and 1 / SBvars.AffinitySystemLoseDivider or 1); -- +1/divider passive ticking of just being inside
 		resultingCounter = math.min(upperCounterBoundary, resultingCounter);
 		resultingCounter = math.max(lowerCounterBoundary, resultingCounter);
 		fearOfLocationsModData.FearOfInside = resultingCounter;
-		if debug() then print("ETW Logger | fearOfLocations(): modData.FearOfInside: " .. fearOfLocationsModData.FearOfInside) end
-		if player:HasTrait("Claustophobic") and fearOfLocationsModData.FearOfInside >= SBCounter then
-			player:getTraits():remove("Claustophobic");
-			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_claustro"), false, HaloTextHelper.getColorGreen()) end
-		end
-		if not player:HasTrait("Claustophobic") and fearOfLocationsModData.FearOfInside <= -SBCounter and not desensitized(player) then
-			player:getTraits():add("Claustophobic");
-			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_claustro"), true, HaloTextHelper.getColorRed()) end
-		end
+		fearOfLocationsModData.FearOfOutside = math.min(upperCounterBoundary, fearOfLocationsModData.FearOfOutside + SBvars.FearOfLocationsSystemPassiveCounterDecay);
+	end
+	if debug() then
+		print("ETW Logger | fearOfLocations(): modData.FearOfOutside: " .. fearOfLocationsModData.FearOfOutside);
+		print("ETW Logger | fearOfLocations(): modData.FearOfInside: " .. fearOfLocationsModData.FearOfInside);
+	end
+	if player:HasTrait("Agoraphobic") and fearOfLocationsModData.FearOfOutside >= SBCounter then
+		player:getTraits():remove("Agoraphobic");
+		if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_agoraphobic"), false, HaloTextHelper.getColorGreen()) end
+	end
+	if not player:HasTrait("Agoraphobic") and fearOfLocationsModData.FearOfOutside <= -SBCounter and not desensitized(player) then
+		player:getTraits():add("Agoraphobic");
+		if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_agoraphobic"), true, HaloTextHelper.getColorRed()) end
+	end
+	if player:HasTrait("Claustophobic") and fearOfLocationsModData.FearOfInside >= SBCounter then
+		player:getTraits():remove("Claustophobic");
+		if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_claustro"), false, HaloTextHelper.getColorGreen()) end
+	end
+	if not player:HasTrait("Claustophobic") and fearOfLocationsModData.FearOfInside <= -SBCounter and not desensitized(player) then
+		player:getTraits():add("Claustophobic");
+		if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_claustro"), true, HaloTextHelper.getColorRed()) end
 	end
 end
 
@@ -107,4 +111,5 @@ end
 
 Events.OnCreatePlayer.Remove(initializeEvents);
 Events.OnCreatePlayer.Add(initializeEvents);
+Events.OnPlayerDeath.Remove(clearEvents);
 Events.OnPlayerDeath.Add(clearEvents);

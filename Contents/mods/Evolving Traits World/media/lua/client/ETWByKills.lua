@@ -180,4 +180,5 @@ end
 
 Events.OnCreatePlayer.Remove(initializeKills);
 Events.OnCreatePlayer.Add(initializeKills);
+Events.OnPlayerDeath.Remove(clearEvents);
 Events.OnPlayerDeath.Add(clearEvents);
