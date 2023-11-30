@@ -20,7 +20,7 @@ Sandbox.txt
 		Sandbox_EvolvingTraitsWorld_PainToleranceCounter_tooltip = "Every 10 minutes your pain (0-100) is added to counter. Upon reaching counter you'll get Pain Tolerance trait",
 UI.txt
 	changed:
-		UI_trait_PainTolerance = "Pain Tolerance",
-		UI_trait_PainToleranceDesc = "You are resistant to pain, your pain level never go above specific percentage (60% by default)",
 
 	new:
+		UI_trait_PainTolerance = "Pain Tolerance",
+		UI_trait_PainToleranceDesc = "You are resistant to pain, your pain level never go above specific percentage (60% by default)",

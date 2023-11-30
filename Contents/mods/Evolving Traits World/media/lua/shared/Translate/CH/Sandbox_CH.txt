@@ -1,6 +1,7 @@
 Sandbox_CH = {
 	note_to_CH_translators = "Make sure file is saved in UTF-8 encoding, so game display correct characters"
 
+	Sandbox_EvolvingTraitsWorldSettings = "進化特性世界 - 通用設定",
 	Sandbox_EvolvingTraitsWorldSimplePerks = "技能進化世界 - 簡化技能",
 	Sandbox_EvolvingTraitsWorldComplexPerks = "技能進化世界 - 複雜技能",
 	Sandbox_EvolvingTraitsWorldSystems = "技能進化世界 - 系統",
@@ -115,6 +116,8 @@ Sandbox_CH = {
 	Sandbox_EvolvingTraitsWorld_FearOfLocationsSystemCounter_tooltip = "計算方式 = 依照待在戶外或室內的時間來失去相應特質(開闊恐懼/密室恐懼).待在戶外/室內且經歷壓力或不開心會降低基準值.達到最大負基準則得到相應負面特質.最大正基準則會失去相應負面特質,在正負基準中間則不會有任何改變.基準值正負最高為2倍設定值",
 	Sandbox_EvolvingTraitsWorld_FearOfLocationsSystemCounterLoseMultiplier = "區域恐懼負面乘數",
 	Sandbox_EvolvingTraitsWorld_FearOfLocationsSystemCounterLoseMultiplier_tooltip = "在經歷壓力大與不開心時基準衰減的速率. 考慮到你通常更多是處在正常狀態下,建議不要設定太低.每分鐘衰減值公式為下 1 * (1 + 不開心值(0-1)) + (1 * 壓力值(0-1)) * 負面乘數, 所以衰減最快的情況每分鐘會減少 4 * 負面乘數",
+	Sandbox_FearOfLocationsSystemPassiveCounterDecay = "地區型恐懼症被動衰減計數",
+	Sandbox_FearOfLocationsSystemPassiveCounterDecay_tooltip = "如果你技術太爛沒辦法承受同時有密閉/開闊恐懼症 (誰想的到在創角的時候把那些 '免費點數' 的負面特質選起來會有負面效果喔??), you can setup passive decay using this option. 無論你的精神狀態,這個被動計數會根據的的所處地點持續的衰減反面的特質計數. 舉例:設定此數值為0.1且待在室內時, 會每分鐘持續地在開闊恐懼症的計數累加(這一點都沒道理,不過一堆人在靠北之前的設定太難所以就這樣了). 設定為0不會有任何影響. 建議數值為0.1到0.5",
 	
 	Sandbox_EvolvingTraitsWorld_FirstAid = "急救員",
 	Sandbox_EvolvingTraitsWorld_FirstAidSkill = "急救員:獲得特質所需醫療技能等級",
@@ -225,6 +228,12 @@ Sandbox_CH = {
 	Sandbox_EvolvingTraitsWorld_OutdoorsmanCounter_tooltip = "---通常說明---<br>藉由待在戶外並經歷不同天氣狀況來獲得此特質.天氣越不同你獲得特質的速度越快.而待在室內會緩慢失去進度.達到設定基準來獲得特質,低於一半以下則會失去.<br>---技術性說明---<br>待在戶外的每分鐘都會增加進度.其速率根據特定天氣狀況會有所增加(下雨/下雪/颳風).當進度超過基準閥值方可獲得特質.<br>測試狀態在整天晴朗,只有清晨起霧的狀況下約可獲得1.7k進度值,而當經歷兩次早上起霧且中午豪雨的狀況下約可獲得5k進度值.<br>如果你回到室內,你將開始失去如果你在室外時可獲得的10%進度值. 這是線性成長並且會在900分鐘內完全失去. 你可以藉由回到室外來減緩進度值衰減速率.每分鐘會回復0.3%的增長速率 (300分鐘可從100%回復衰減到10%衰減).<br>當進度減少到設定值的一半時將失去特質.進度值上限為10倍設定值,而底限為0",
 	Sandbox_EvolvingTraitsWorld_OutdoorsmanCounterLoseMultiplier = "戶外專家基準衰減乘數",
 	Sandbox_EvolvingTraitsWorld_OutdoorsmanCounterLoseMultiplier_tooltip = "決定你進度值的衰減速率,預設為1",
+
+	Sandbox_EvolvingTraitsWorld_PainTolerance = "痛覺耐受性",
+	Sandbox_EvolvingTraitsWorld_PainToleranceThreshold = "痛覺耐受性上限",
+	Sandbox_EvolvingTraitsWorld_PainToleranceThreshold_tooltip = "設定角色可以承受的最大痛覺上限",
+	Sandbox_EvolvingTraitsWorld_PainToleranceCounter = "疼痛耐受計數",
+	Sandbox_EvolvingTraitsWorld_PainToleranceCounter_tooltip = "每10分鐘你的疼痛 (0-100) 會加到此計數中. 累加到計數設定後則獲得疼痛耐性",
 
 	Sandbox_EvolvingTraitsWorld_RainSystem = "降雨相關特質系統",
 	Sandbox_EvolvingTraitsWorld_RainSystemCounter = "降雨系統基準,

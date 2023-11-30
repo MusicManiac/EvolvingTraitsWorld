@@ -1,7 +1,7 @@
-v.5.3.0
+v.5.3.1
 
-General:
-	- Added Pain Tolerance trait.
-	- Adjusted AV Club perk cost 5 -> 4
-	- Moved general settings (Affinity and Delay systems) to its own sandbox page where stuff that affects major parts of mod can be found
-	- Added option for Fear of Locations system to slowly decay by itself for all of you with skill issues complaining about having both Agoraphobic and Claustrophobic after picking up every possible negative perk in existence for 'free points'. Not tested but should work.
+Fixes:
+	- Fixed Knife Fighter not increasing exp multiplier when earned
+Translations:
+	- Updated CN and CH translations
+	- Still looking for more maintainers of existing languages and new translators for missing ones
