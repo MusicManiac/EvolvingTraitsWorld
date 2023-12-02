@@ -1,6 +1,7 @@
 Sandbox_IT = {
 	note_to_italian_translators = "Make sure file is saved in ISO-8859-1 encoding, so game display correct characters",
 
+	Sandbox_EvolvingTraitsWorldSettings = "Evolving Traits World - Impostazioni globali",
 	Sandbox_EvolvingTraitsWorld = "Evolving Traits World - Punti abilità singoli",
 	Sandbox_EvolvingTraitsWorldSystems = "Evolving Traits World - Sistemi",
 	Sandbox_EvolvingTraitsWorldTraitsSettings = "Evolving Traits World - Tratti",
@@ -115,6 +116,8 @@ Sandbox_IT = {
 	Sandbox_EvolvingTraitsWorld_FearOfLocationsSystemCounter_tooltip = "Contarore = quantità di minuti che devi trascorrere all'interno/esterno per perdere il rispettivo tratto, agorafobico o claustrofobico. Stare all'interno/esterno quando sei stressato o infelice farà diminuire il contatore. Raggiungere il valore del contatore ti farà GUADAGNARE il tratto appropriato. Raggiungere il valore +contatore eliminerà il tratto appropriato, trovarsi tra -contatore e +contatore non farà ottenere nulla. Il limite inferiore è -2x del contatore, il limite superiore è 2x del valore impostato qui.",
 	Sandbox_EvolvingTraitsWorld_FearOfLocationsSystemCounterLoseMultiplier = "Moltiplicatore diminuitivo del contatore di paura localizzata",
 	Sandbox_EvolvingTraitsWorld_FearOfLocationsSystemCounterLoseMultiplier_tooltip = "La velocità con cui diminuisce il contatore quando sei infelice (50%+) o stressato (50%+). Considerando che sarai più spesso normale che infelice o stressato, ti consiglio di non impostarlo su un valore troppo basso. La formula per quanto il contatore diminuisce ogni minuto è 1 * (1 + infelicità(0-1)) + (1 * stress(0-1)) * moltiplicatore, quindi minimo perdi 0 * moltiplicatore, e al massimo perdi 4 * moltiplicatore.",
+	Sandbox_FearOfLocationsSystemPassiveCounterDecay = "contatore di diminuzione passiva del sistema di paura locazionale",
+    Sandbox_FearOfLocationsSystemPassiveCounterDecay_tooltip = "Se hai problemi di skill e non riesci a gestire l'agorafobia e la claustrofobia allo stesso tempo (chi avrebbe mai immaginato che raccogliere tutti i 'punti gratuiti' all'inizio avrebbe potuto avere conseguenze negative), puoi impostare la diminuzione passiva usando questo opzione. Come funziona: diminuisce lentamente in base al contatore opposto se sei all'esterno/interno ogni minuto, indipendentemente dal tuo stato mentale. Ad esempio, impostandolo su 0,1 e stando dentro avrai lentamente meno paura dell'esterno aggiungendo 0,1 a contatore esterno ogni minuto. Ha 0 senso, ma voi ragazzi vi siete lamentati molto di avere sia agorafobico che claustrofobico. Impostarlo su 0 non avrà alcun effetto sui contatori. I valori consigliati sono compresi tra 0,1 e 0,5",
 	
 	Sandbox_EvolvingTraitsWorld_FirstAid = "Soccorritore",
 	Sandbox_EvolvingTraitsWorld_FirstAidSkill = "Abilità richiesta per Soccorritore",
@@ -227,6 +230,12 @@ Sandbox_IT = {
 	Sandbox_EvolvingTraitsWorld_OutdoorsmanCounterLoseMultiplier = "Moltiplicatore diminuitivo del contatore per Gitante",
 	Sandbox_EvolvingTraitsWorld_OutdoorsmanCounterLoseMultiplier_tooltip = "Definisce la velocità o la lentezza con cui diminuisce il contatore di attività all'aperto, il moltiplicatore di 1 è descritto nella descrizione precedente",
 
+	Sandbox_EvolvingTraitsWorld_PainTolerance = "Resistenza al dolore",
+    Sandbox_EvolvingTraitsWorld_PainToleranceThreshold = "Soglia di resistenza al dolore",
+    Sandbox_EvolvingTraitsWorld_PainToleranceThreshold_tooltip = "Qual è il livello massimo di dolore che il tuo personaggio può raggiungere mentre usa il vantaggio",
+    Sandbox_EvolvingTraitsWorld_PainToleranceCounter = "Contatore di resistenza al dolore",
+    Sandbox_EvolvingTraitsWorld_PainToleranceCounter_tooltip = "Ogni 10 minuti il tuo dolore (0-100) viene aggiunto al contatore. Una volta raggiunto il contatore otterrai il tratto Resistenza al dolore",
+
 	Sandbox_EvolvingTraitsWorld_RainSystem = "Rain System",
 	Sandbox_EvolvingTraitsWorld_RainSystemCounter = "Contatore del sistema di pioggia",
 	Sandbox_EvolvingTraitsWorld_RainSystemCounter_tooltip = "Ottieni 1 * IntensitaDiPioggia ogni minuto che trascorri sotto la pioggia. Se hai oltre il 25% di panico invece, perdi 1 * IntensitàDiPioggia * PercentualeDiPanico * MoltiplicatoreDiminuitivoDelSistemaDiPioggia. I limiti max e min del contatore sono -2contatore e 2*contatore. Quando sei sotto -contatore, ottieni Pluviofobia, quando raggiungi il contatore, ottieni Pluviofilia. Nel mezzo, non ottieni nulla.",
@@ -234,7 +243,6 @@ Sandbox_IT = {
 	Sandbox_EvolvingTraitsWorld_RainSystemCounterMultiplier_tooltip = "Definisce la velocità o la lentezza con cui riduci il contatore del sistema di pioggia, spiegato nel tooltip del contatore del sistema di pioggia",
 	Sandbox_EvolvingTraitsWorld_PluviophileMultiplier = "Moltiplicatore dell'effetto di pluviofilia",
 	Sandbox_EvolvingTraitsWorld_PluviophileMultiplier_tooltip = "Tutti gli effetti (diminuzione di infelicità, stress e noia) vengono moltiplicati per questo valore.",
-
 	Sandbox_EvolvingTraitsWorld_PluviophobiaMultiplier = "Moltiplicatore dell'effetto di pluviofobia",
 	Sandbox_EvolvingTraitsWorld_PluviophobiaMultiplier_tooltip = "Tutti gli effetti ( Aumento di felicità, Stress e Noia) vengono moltiplicati per questo valore.",
 

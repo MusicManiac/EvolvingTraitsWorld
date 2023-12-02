@@ -1,7 +1,6 @@
-v.5.3.1
+v.5.3.2
 
 Fixes:
-	- Fixed Knife Fighter not increasing exp multiplier when earned
+	- Fixed vehicle repairs not being counted in MP, additionally repairing anything that gives vehicle exp now counts towards earning related perks. Thanks to JS.
 Translations:
-	- Updated CN and CH translations
-	- Still looking for more maintainers of existing languages and new translators for missing ones
+	- Updated IT translation

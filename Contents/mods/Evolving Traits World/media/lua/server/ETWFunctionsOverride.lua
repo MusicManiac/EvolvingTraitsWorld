@@ -5,7 +5,6 @@ local debug = function() return EvolvingTraitsWorld.settings.GatherDebug end
 local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetailedDebug end
 
 local original_oneat_cigarettes = OnEat_Cigarettes;
-
 function OnEat_Cigarettes(food, character, percent)
 	if isClient() or (not isClient() and not isServer()) then
 		if detailedDebug() then print("ETW Logger | OnEat_Cigarettes(): detected smoking") end
