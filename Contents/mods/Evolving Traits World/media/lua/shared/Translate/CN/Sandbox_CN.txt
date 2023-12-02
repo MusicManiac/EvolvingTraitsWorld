@@ -83,7 +83,7 @@ Sandbox_CN = {
 
 	Sandbox_EvolvingTraitsWorld_Clumsy = "笨手笨脚",
 	Sandbox_EvolvingTraitsWorld_ClumsySkill = "笨手笨脚:获得特质所需技能等级",
-	Sandbox_EvolvingTraitsWorld_ClumsySkill_tooltip = "潜行 + 轻盈",
+	Sandbox_EvolvingTraitsWorld_ClumsySkill_tooltip = "潜行 + 轻巧",
 
 	Sandbox_EvolvingTraitsWorld_ColdIllnessSystem = "风寒相关系统",
 	Sandbox_EvolvingTraitsWorld_ColdIllnessSystemColdsWeathered = "风寒基准",
@@ -146,7 +146,7 @@ Sandbox_CN = {
 
 	Sandbox_EvolvingTraitsWorld_Graceful = "身轻如燕",
 	Sandbox_EvolvingTraitsWorld_GracefulSkill = "身轻如燕:获得特质所需技能等级",
-	Sandbox_EvolvingTraitsWorld_GracefulSkill_tooltip = "灵活 + 潜行 + 轻盈",
+	Sandbox_EvolvingTraitsWorld_GracefulSkill_tooltip = "灵活 + 潜行 + 轻巧",
 
 	Sandbox_EvolvingTraitsWorld_GunEnthusiast = "枪械爱好者",
 	Sandbox_EvolvingTraitsWorld_GunEnthusiastSkill = "枪械爱好者:获得特质所需技能等级",
@@ -155,7 +155,7 @@ Sandbox_CN = {
 
 	Sandbox_EvolvingTraitsWorld_Gymnast = "体操选手",
 	Sandbox_EvolvingTraitsWorld_GymnastSkill = "体操选手:获得特质所需技能等级",
-	Sandbox_EvolvingTraitsWorld_GymnastSkill_tooltip = "轻盈 + 灵活",
+	Sandbox_EvolvingTraitsWorld_GymnastSkill_tooltip = "轻巧 + 灵活",
 
 	Sandbox_EvolvingTraitsWorld_GymRat = "健身狂",
 	Sandbox_EvolvingTraitsWorld_GymRatSkill = "健身狂:获得特质所需技能等级",
@@ -215,7 +215,7 @@ Sandbox_CN = {
 	Sandbox_EvolvingTraitsWorld_KnifeFighterKills = "刀客:获得特质所需短刀击杀数",
 
 	Sandbox_EvolvingTraitsWorld_LightStep = "轻手轻脚",
-	Sandbox_EvolvingTraitsWorld_LightStepSkill = "轻手轻脚:获得特质所需轻盈技能等级",
+	Sandbox_EvolvingTraitsWorld_LightStepSkill = "轻手轻脚:获得特质所需轻巧技能等级",
 
 	Sandbox_EvolvingTraitsWorld_LowProfile = "低调",
 	Sandbox_EvolvingTraitsWorld_LowProfileSkill = "低调:获得特质所需潜行技能等级",
@@ -278,8 +278,8 @@ Sandbox_CN = {
 	Sandbox_EvolvingTraitsWorld_SmokerMoodlePercentage_tooltip = "控制量表可视条件.设定为20%代表量表会在你离戒菸或烟瘾前20%进度时出现.设定100为永久显示.单人游戏时建议为100,并于模组设定中调整%.如果为多人游戏下，伺服器端设定值将为玩家端所能设置最高有效值,举例如伺服端设置10%,玩家端可以设置到30%,但仍只会在10%时显示;若伺服端设置50%,玩家端可设置为20%并在20%时正常显示",
 
 	Sandbox_EvolvingTraitsWorld_Sojutsu = "武枪大师",
-	Sandbox_EvolvingTraitsWorld_SojutsuSkill = "武枪大师:获得特质所需长枪技能等级",
-	Sandbox_EvolvingTraitsWorld_SojutsuKills = "武枪大师:获得特质所需长枪击杀数",
+	Sandbox_EvolvingTraitsWorld_SojutsuSkill = "武枪大师:获得特质所需长矛技能等级",
+	Sandbox_EvolvingTraitsWorld_SojutsuKills = "武枪大师:获得特质所需长矛击杀数",
 
 	Sandbox_EvolvingTraitsWorld_StickFighter = "使棍武者",
 	Sandbox_EvolvingTraitsWorld_StickFighterSkill = "使棍武者:获得特质所需长棍技能等级",
