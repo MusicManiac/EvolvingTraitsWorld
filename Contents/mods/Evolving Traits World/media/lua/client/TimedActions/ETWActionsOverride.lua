@@ -66,20 +66,32 @@ function ETWActionsOverride.mechanicsCheck()
 	end
 end
 
+local function isVehiclePart(action)
+	if action.vehiclePart then
+		return true;
+	end
+	local skills = action.fixer:getFixerSkills();
+	if skills then
+		for i = 0, skills:size() - 1 do
+			if skills:get(i):getSkillName() == "Mechanics" then
+				return true;
+			end
+		end
+	end
+	return false;
+end
+
 local original_fix_perform = ISFixAction.perform;
 function ISFixAction:perform()
 	local player = self.character;
 	local modData = player:getModData().EvolvingTraitsWorld;
-	local vehiclePartCondition = 0;
 	if detailedDebug() then print("ETW Logger | ISFixAction:perform(): caught") end
-	if self.vehiclePart then
-		local part = self.vehiclePart;
-		vehiclePartCondition = part:getCondition();
-	end
+	local conditionBefore = self.item:getCondition();
 	original_fix_perform(self);
-	if self.vehiclePart and ((SBvars.Mechanics == true and not player:HasTrait("Mechanics")) or (SBvars.BodyWorkEnthusiast == true and not player:HasTrait("BodyWorkEnthusiast"))) then
-		if detailedDebug() then print("ETW Logger | ISFixAction.perform(): car part") end
-		modData.VehiclePartRepairs = modData.VehiclePartRepairs + (self.vehiclePart:getCondition() - vehiclePartCondition);
+	local conditionAfter = self.item:getCondition(); -- calculated by FixingManager locally
+	if conditionAfter > conditionBefore and isVehiclePart(self) and ((SBvars.Mechanics == true and not player:HasTrait("Mechanics")) or (SBvars.BodyWorkEnthusiast == true and not player:HasTrait("BodyWorkEnthusiast"))) then
+		modData.VehiclePartRepairs = modData.VehiclePartRepairs + (conditionAfter - conditionBefore);
+		if detailedDebug() then print("ETW Logger | ISFixAction.perform(): car part "..conditionBefore.."->"..conditionAfter.." VehiclePartRepairs="..modData.VehiclePartRepairs) end
 		if not getActivatedMods():contains("EvolvingTraitsWorldDisableBodyWorkEnthusiast") then ETWActionsOverride.bodyworkEnthusiastCheck() end
 		ETWActionsOverride.mechanicsCheck();
 	end
