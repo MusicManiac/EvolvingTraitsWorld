@@ -70,6 +70,14 @@ local function isVehiclePart(action)
 	if action.vehiclePart then
 		return true;
 	end
+	local skills = action.fixer:getFixerSkills();
+	if skills then
+		for i = 0, skills:size() - 1 do
+			if skills:get(i):getSkillName() == "Mechanics" then
+				return true;
+			end
+		end
+	end
 	return false;
 end
 
