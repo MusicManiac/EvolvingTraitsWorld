@@ -1,6 +1,7 @@
 Sandbox_ES = {
 	note_to_ES_translators = "Make sure file is saved in windows-1252 encoding, so game display correct characters"
 
+	Sandbox_EvolvingTraitsWorldSettings = "Evolving Traits World -  Ajustes globales",
 	Sandbox_EvolvingTraitsWorldSimplePerks = "Evolving Traits World - Habilidades simples",
 	Sandbox_EvolvingTraitsWorldComplexPerks = "Evolving Traits World - Habilidades complejas",
 	Sandbox_EvolvingTraitsWorldSystems = "Evolving Traits World - Sistemas",
@@ -116,6 +117,8 @@ Sandbox_ES = {
 	Sandbox_EvolvingTraitsWorld_FearOfLocationsSystemCounter_tooltip = "Contador = cantidad de minutos que necesitas pasar afuera/adentro para perder el rasgo respectivo, agorafóbico o claustrofóbico. Estar afuera/adentro cuando estás estresado o infeliz disminuirá el contador. Al alcanzar -contador obtendrás el rasgo apropiado. Alcanzar el valor de +contador eliminará el rasgo apropiado, estar entre -contador y +contador no le dará nada. El límite inferior es -2x del contador, el límite superior es 2x del valor establecido aquí.",
 	Sandbox_EvolvingTraitsWorld_FearOfLocationsSystemCounterLoseMultiplier = "Multiplicador de disminución de contador de miedo a las ubicaciones",
 	Sandbox_EvolvingTraitsWorld_FearOfLocationsSystemCounterLoseMultiplier_tooltip = "Qué tan rápido disminuyes el contador cuando estás infeliz (50%+) o estresado (50%+). Teniendo en cuenta que con más frecuencia no estas infeliz o estresado, te recomiendo que no lo configures demasiado bajo. La fórmula de cuánto disminuye el contador cada minuto es 1 * (1 + infelicidad (0-1)) + (1 * estrés (0-1)) * multiplicador, por lo que como mínimo pierdes 0 * multiplicador, como máximo pierdes 4 * multiplicador.",
+	Sandbox_FearOfLocationsSystemPassiveCounterDecay = "Reducción del miedo a las ubicaciones",
+	Sandbox_FearOfLocationsSystemPassiveCounterDecay_tooltip = "Si escogiste ser Claustrofobico o Agorafobico, puedes activar esta función para ir perdiendole el miedo a las ubicaciones según tu tiempo dentro de estos.",
 	
 	Sandbox_EvolvingTraitsWorld_FirstAid = "Socorrista",
 	Sandbox_EvolvingTraitsWorld_FirstAidSkill = "Socorrista Requisito de habilidad de Primeros auxilios",
@@ -226,6 +229,12 @@ Sandbox_ES = {
 	Sandbox_EvolvingTraitsWorld_OutdoorsmanCounter_tooltip = "---Comprensión general---<br>Esto te permite obtener un rasgo al pasar tiempo al aire libre y estar expuesto a diversas condiciones climáticas. Cuanto más adversas sean las condiciones climáticas, más rápido obtendrás el rasgo. Al estar adentro pierdes lentamente el progreso. A alcanzar el contador ganará el rasgo, bajar a la mitad lo perderá.<br>---Detalles técnicos---<br>Cada minuto que pases afuera agregará 1 punto a un contador. La velocidad a la que aumenta el contador se multiplica aún más por ciertas condiciones climáticas, como lluvia, nieve y viento. Cuando el contador alcance el umbral especificado, obtendrá el rasgo. A partir de las pruebas, se ha determinado que pasar 24 horas con tiempo despejado con una mañana con niebla dará como resultado aproximadamente 1,700 puntos, mientras que pasar 24 horas con tiempo con dos mañanas con niebla y una tormenta al mediodía dará como resultado aproximadamente 5,000 puntos. Si estás adentro, pierdes el 10% de lo que ganarías si estuvieras afuera. Esto tiene un escalado lineal del 100% en el transcurso de 900 minutos de estar adentro. Puedes restablecer el % actual en el que pierdes el punto por estar afuera. Disminuyes el % en 0.3 por cada minuto que estás fuera (puedes pasar del 100 % al 10 % en 300 minutos). Al llegar a la mitad del contador que configuraste, pierdes el rasgo. El contador tiene un límite superior de 10 veces el valor del contador y un límite inferior de 0",
 	Sandbox_EvolvingTraitsWorld_OutdoorsmanCounterLoseMultiplier = "Amante de la naturaleza Multiplicador de disminución de contador",
 	Sandbox_EvolvingTraitsWorld_OutdoorsmanCounterLoseMultiplier_tooltip = "Define qué tan rápido o lento disminuye tu contador de Amantes de la Naturaleza, el multiplicador de 1 se describe en la información sobre herramientas anterior",
+
+	Sandbox_EvolvingTraitsWorld_PainTolerance = "Tolerancia al Dolor",
+	Sandbox_EvolvingTraitsWorld_PainToleranceThreshold = "Limite de Tolerancia al Dolor",
+	Sandbox_EvolvingTraitsWorld_PainToleranceThreshold_tooltip = "El nivel de dolor que puede soportar tu personaje",
+	Sandbox_EvolvingTraitsWorld_PainToleranceCounter = "Contador de Tolerancia al dolor",
+	Sandbox_EvolvingTraitsWorld_PainToleranceCounter_tooltip = "Cada diez minutos, tu dolor es agregado a un contador (0/100); Al llegar al 100% conseguiras el rasgo de Tolerancia al Dolor",
 
 	Sandbox_EvolvingTraitsWorld_RainSystem = "Sistema de lluvia",
 	Sandbox_EvolvingTraitsWorld_RainSystemCounter = "Contador de Sistema de lluvia",

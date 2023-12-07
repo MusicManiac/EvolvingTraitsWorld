@@ -1,6 +1,6 @@
-v.5.3.2
+v.5.3.3
 
-Fixes:
-	- Fixed vehicle repairs not being counted in MP, additionally repairing anything that gives vehicle exp now counts towards earning related perks. Thanks to JS.
 Translations:
-	- Updated IT translation
+	- New translation: Korean (KO), thanks to t3qquq
+	- Some CN translation improvements
+	- Update ES translation to 5.3.3 thanks to new ES maintainer Get
