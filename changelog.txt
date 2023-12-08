@@ -1,6 +1,4 @@
-v.5.3.3
+v.5.3.4
 
-Translations:
-	- New translation: Korean (KO), thanks to t3qquq
-	- Some CN translation improvements
-	- Update ES translation to 5.3.3 thanks to new ES maintainer Get
+Fixes:
+	- Fixed error thrown by recordMentalState when dying

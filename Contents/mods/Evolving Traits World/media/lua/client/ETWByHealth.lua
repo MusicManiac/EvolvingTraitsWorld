@@ -307,6 +307,7 @@ local function clearEvents(character)
 	Events.EveryOneMinute.Remove(foodSicknessTraits);
 	Events.EveryTenMinutes.Remove(weightSystem);
 	Events.EveryOneMinute.Remove(asthmaticTrait);
+	Events.EveryOneMinute.Remove(recordMentalState);
 	if detailedDebug() then print("ETW Logger | System: clearEvents in ETWByHealth.lua") end
 end
 
