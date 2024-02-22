@@ -20,6 +20,7 @@ Installation instructions can be found in [url=https://steamcommunity.com/worksh
 [*] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2730251452]Expanded Taits[/url] - mostly absorbed by this mod, therefore probably incompatible.
 [*] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1299328280]More Traits[/url] - my submod shows which traits are dynamic from it, additionally makes Butterfingers dynamic. Main mod works fine too.
 [*] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2840805724]Simple Overhaul: Traits and Occupations (SOTO)[/url], [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2792245343]More Simple Traits (MST)[/url], [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2760950740]Explorer Trait[/url], [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2863908612]SixthSense[/url] - my submod shows which traits are dynamic from these. Main mod works fine too.
+[*] Any mods that allow you to become Desensitized - incompatible with Bravery System. Disable bravery system or disable those mods.
 [*] Literally anything else: should be compatible. Resolved mod conflicts include popular mods like: [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1905148104]Superb Survivors![/url] and all of its variations (allegedly), [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2719327441]Snake's Mod Pack 41.77[/url]
 [/list]
 
@@ -33,7 +34,7 @@ Installation instructions can be found in [url=https://steamcommunity.com/worksh
 [/list]
 
 [h1]GitHub and Discord[/h1]
-If you want to submit translation files, the easiest way to do it would be on Discord. Join the server and ping me there. Discord is made for this and other of my mods so if you want to suggest some traits or report bugs, the fastest way to reach me would be over the discord. Click on images, they will take you where you want.
+If you want to submit translation files, make suggestions or report bugs, the easiest way to do it would be on Discord.
 [url=https://discord.gg/8pBN5Ccm7z][img]https://cdn.iconscout.com/icon/free/png-256/discord-3691244-3073764.png[/img][/url][url=https://github.com/MusicManiac/DynamicTraitsWorld][img]https://cdn.iconscout.com/icon/free/png-256/github-163-761603.png[/img][/url]
 
 [h1]Credits and Translations[/h1]

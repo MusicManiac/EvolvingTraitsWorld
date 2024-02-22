@@ -116,8 +116,8 @@ Sandbox_CN = {
 	Sandbox_EvolvingTraitsWorld_FearOfLocationsSystemCounter_tooltip = "计算方式 = 依照待在户外或室内的时间来失去相应特质(开阔恐惧/密室恐惧).待在户外/室内且经历压力或不开心会降低基准值.达到最大负基准则得到相应负面特质.最大正基准则会失去相应负面特质,在正负基准中间则不会有任何改变.基准值正负最高为2倍设定值",
 	Sandbox_EvolvingTraitsWorld_FearOfLocationsSystemCounterLoseMultiplier = "区域恐惧负面乘数",
 	Sandbox_EvolvingTraitsWorld_FearOfLocationsSystemCounterLoseMultiplier_tooltip = "在经历压力大与不开心时基准衰减的速率. 考虑到你通常更多是处在正常状态下,建议不要设定太低.每分钟衰减值公式为下 1 * (1 + 不开心值(0-1)) + (1 * 压力值(0-1)) * 负面乘数, 所以衰减最快的情况每分钟会减少 4 * 负面乘数",
-	Sandbox_FearOfLocationsSystemPassiveCounterDecay = "地区型恐惧症被动衰减计数",
-	Sandbox_FearOfLocationsSystemPassiveCounterDecay_tooltip = "如果你技术太烂没办法承受同时有密闭/开阔恐惧症 (谁想的到在创角的时候把那些 '免费点数' 的负面特质选起来会有负面效果喔??), you can setup passive decay using this option. 无论你的精神状态,这个被动计数会根据的的所处地点持续的衰减反面的特质计数. 举例:设定此数值为0.1且待在室内时, 会每分钟持续地在开阔恐惧症的计数累加(这一点都没道理,不过一堆人在靠北之前的设定太难所以就这样了). 设定为0不会有任何影响. 建议数值为0.1到0.5",
+	Sandbox_EvolvingTraitsWorld_FearOfLocationsSystemPassiveCounterDecay = "地区型恐惧症被动衰减计数",
+	Sandbox_EvolvingTraitsWorld_FearOfLocationsSystemPassiveCounterDecay_tooltip = "如果你技术太烂没办法承受同时有密闭/开阔恐惧症 (谁想的到在创角的时候把那些 '免费点数' 的负面特质选起来会有负面效果喔??), you can setup passive decay using this option. 无论你的精神状态,这个被动计数会根据的的所处地点持续的衰减反面的特质计数. 举例:设定此数值为0.1且待在室内时, 会每分钟持续地在开阔恐惧症的计数累加(这一点都没道理,不过一堆人在靠北之前的设定太难所以就这样了). 设定为0不会有任何影响. 建议数值为0.1到0.5",
 
 	
 	Sandbox_EvolvingTraitsWorld_FirstAid = "急救员",

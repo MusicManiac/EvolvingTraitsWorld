@@ -1,4 +1,7 @@
-v.5.3.4
+v.5.4.0
 
+General:
+	- Added sandbox option to make Agoraphobic and Claustrophobic exclusive, so you will only ever have 1 at the time. Enabled by default.
+	- Changed default value of "Debug" in Mod Options to false
 Fixes:
-	- Fixed error thrown by recordMentalState when dying
+	- Fixed sandbox string not being displayed for one of Fear Of Locations option

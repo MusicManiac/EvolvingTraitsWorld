@@ -144,11 +144,11 @@ local function addTraits()
 
 	TraitFactory.sortList();
 
-	--local traitList = TraitFactory.getTraits()
-	--for i = 1, traitList:size() do
-	--	local trait = traitList:get(i - 1)
-	--	BaseGameCharacterDetails.SetTraitDescription(trait)
-	--end
+	local traitList = TraitFactory.getTraits()
+	for i = 1, traitList:size() do
+		local trait = traitList:get(i - 1)
+		BaseGameCharacterDetails.SetTraitDescription(trait)
+	end
 end
 
 Events.OnGameBoot.Add(addTraits);

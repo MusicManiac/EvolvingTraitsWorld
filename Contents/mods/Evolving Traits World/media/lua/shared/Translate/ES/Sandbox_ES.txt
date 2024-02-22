@@ -117,8 +117,8 @@ Sandbox_ES = {
 	Sandbox_EvolvingTraitsWorld_FearOfLocationsSystemCounter_tooltip = "Contador = cantidad de minutos que necesitas pasar afuera/adentro para perder el rasgo respectivo, agorafóbico o claustrofóbico. Estar afuera/adentro cuando estás estresado o infeliz disminuirá el contador. Al alcanzar -contador obtendrás el rasgo apropiado. Alcanzar el valor de +contador eliminará el rasgo apropiado, estar entre -contador y +contador no le dará nada. El límite inferior es -2x del contador, el límite superior es 2x del valor establecido aquí.",
 	Sandbox_EvolvingTraitsWorld_FearOfLocationsSystemCounterLoseMultiplier = "Multiplicador de disminución de contador de miedo a las ubicaciones",
 	Sandbox_EvolvingTraitsWorld_FearOfLocationsSystemCounterLoseMultiplier_tooltip = "Qué tan rápido disminuyes el contador cuando estás infeliz (50%+) o estresado (50%+). Teniendo en cuenta que con más frecuencia no estas infeliz o estresado, te recomiendo que no lo configures demasiado bajo. La fórmula de cuánto disminuye el contador cada minuto es 1 * (1 + infelicidad (0-1)) + (1 * estrés (0-1)) * multiplicador, por lo que como mínimo pierdes 0 * multiplicador, como máximo pierdes 4 * multiplicador.",
-	Sandbox_FearOfLocationsSystemPassiveCounterDecay = "Reducción del miedo a las ubicaciones",
-	Sandbox_FearOfLocationsSystemPassiveCounterDecay_tooltip = "Si escogiste ser Claustrofobico o Agorafobico, puedes activar esta función para ir perdiendole el miedo a las ubicaciones según tu tiempo dentro de estos.",
+	Sandbox_EvolvingTraitsWorld_FearOfLocationsSystemPassiveCounterDecay = "Reducción del miedo a las ubicaciones",
+	Sandbox_EvolvingTraitsWorld_FearOfLocationsSystemPassiveCounterDecay_tooltip = "Si escogiste ser Claustrofobico o Agorafobico, puedes activar esta función para ir perdiendole el miedo a las ubicaciones según tu tiempo dentro de estos.",
 	
 	Sandbox_EvolvingTraitsWorld_FirstAid = "Socorrista",
 	Sandbox_EvolvingTraitsWorld_FirstAidSkill = "Socorrista Requisito de habilidad de Primeros auxilios",

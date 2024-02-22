@@ -18,7 +18,7 @@ if ModOptions and ModOptions.getInstance then
 			GatherDebug = {
 				name = "UI_EvolvingTraitsWorld_Options_GatherDebug",
 				tooltip = "UI_EvolvingTraitsWorld_Options_GatherDebug_tooltip",
-				default = true,
+				default = false,
 				OnApplyMainMenu = onModOptionsApply,
 				OnApplyInGame = onModOptionsApply,
 			},

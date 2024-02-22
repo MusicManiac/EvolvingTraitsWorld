@@ -107,6 +107,13 @@ option EvolvingTraitsWorld.FearOfLocationsSystem
 	page = EvolvingTraitsWorldSystems,
 	translation = EvolvingTraitsWorld_FearOfLocationsSystem,
 }
+option EvolvingTraitsWorld.FearOfLocationsExclusiveFears
+{
+	type = boolean,
+	default = true,
+	page = EvolvingTraitsWorldSystems,
+	translation = EvolvingTraitsWorld_FearOfLocationsExclusiveFears,
+}
 option EvolvingTraitsWorld.FearOfLocationsSystemPassiveCounterDecay
 {
 	type = double,
