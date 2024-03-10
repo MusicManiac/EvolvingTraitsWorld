@@ -113,6 +113,8 @@ Sandbox_ES = {
 	Sandbox_EvolvingTraitsWorld_FastLearnerSkill_tooltip = "Mantenimiento + Carpintería + Cocina + Agricultura + Primeros Auxilios + Electrónica + Metalistería + Mecánica + Sastrería",
 
 	Sandbox_EvolvingTraitsWorld_FearOfLocationsSystem = "Sistema de miedo a las ubicaciones",
+	Sandbox_EvolvingTraitsWorld_FearOfLocationsExclusiveFears = "La Claustrofobia y Agorafobia son rasgos exclusivos",
+	Sandbox_EvolvingTraitsWorld_FearOfLocationsExclusiveFears_tooltip = "Si esta función está activada, solo tendrás Claustrofobia o Agorafobia, la que tenga el contador más bajo."
 	Sandbox_EvolvingTraitsWorld_FearOfLocationsSystemCounter = "Contador de Sistema de miedo a las ubicaciones",
 	Sandbox_EvolvingTraitsWorld_FearOfLocationsSystemCounter_tooltip = "Contador = cantidad de minutos que necesitas pasar afuera/adentro para perder el rasgo respectivo, agorafóbico o claustrofóbico. Estar afuera/adentro cuando estás estresado o infeliz disminuirá el contador. Al alcanzar -contador obtendrás el rasgo apropiado. Alcanzar el valor de +contador eliminará el rasgo apropiado, estar entre -contador y +contador no le dará nada. El límite inferior es -2x del contador, el límite superior es 2x del valor establecido aquí.",
 	Sandbox_EvolvingTraitsWorld_FearOfLocationsSystemCounterLoseMultiplier = "Multiplicador de disminución de contador de miedo a las ubicaciones",

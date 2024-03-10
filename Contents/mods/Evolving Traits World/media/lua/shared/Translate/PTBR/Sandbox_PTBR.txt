@@ -112,6 +112,8 @@ Sandbox_PTBR = {
 	Sandbox_EvolvingTraitsWorld_FastLearnerSkill_tooltip = "Manutenção + Carpintaria + Culinária + Agricultura + Primeiros Socorros + Elétrica + Metalurgia + Mecânica + Costura",
 
 	Sandbox_EvolvingTraitsWorld_FearOfLocationsSystem = "Sistema de Medo de Localizações",
+	Sandbox_EvolvingTraitsWorld_FearOfLocationsExclusiveFears = "Claustrofóbico e Agorafóbico São únicos",
+	Sandbox_EvolvingTraitsWorld_FearOfLocationsExclusiveFears_tooltip = "Se ativado, você terá apenas um dos traços, o que tiver o menor contador. "
 	Sandbox_EvolvingTraitsWorld_FearOfLocationsSystemCounter = "Medidor do Sistema de Medo de Localizações",
 	Sandbox_EvolvingTraitsWorld_FearOfLocationsSystemCounter_tooltip = "Medidor = quantidade de minutos que você deve passar do lado de fora/dentro para perder o traço, Agorafóbico ou Claustrofóbico. Estar do lado de fora/dentro quando estressado ou infeliz vai diminuir o contador. Atingir valor negativo no medidor fará você ganhar o traço correspondente. Atingir valor positivo no contador fará você perder o traço correspondente, estar entre valores positivos e negativos não vai te gerar nada. O limite inferior é -2x o valor do contador, o limite superior é 2x o valor definido aqui.",
 	Sandbox_EvolvingTraitsWorld_FearOfLocationsSystemCounterLoseMultiplier = "Multiplicador de Perda do Medidor do Sistema de Medo de Localizações",

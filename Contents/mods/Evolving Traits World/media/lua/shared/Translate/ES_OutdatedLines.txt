@@ -1,4 +1,4 @@
-New/changed lines since v.5.4.0
+New/changed lines since v.5.4.1
 
 Moodles_EN.txt
 	changed:
@@ -10,8 +10,6 @@ Sandbox.txt
 	changed:
 
 	new:
-		Sandbox_EvolvingTraitsWorld_FearOfLocationsExclusiveFears = "Claustrophobic and Agoraphobic are exclusive",
-		Sandbox_EvolvingTraitsWorld_FearOfLocationsExclusiveFears_tooltip = "If enabled, you will only ever have Claustrophobic OR Agoraphobic, whichever has lower counter."
 
 UI.txt
 	changed:

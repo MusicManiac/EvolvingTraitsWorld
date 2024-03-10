@@ -49,6 +49,11 @@ local function checkWeightLimit(player)
 		if detailedDebug() then print("ETW Logger | checkWeightLimit(): Set Hoarder maxWeightBase to "..maxWeightBase) end
 	end
 
+	if getActivatedMods():contains("zReArmorPackBYKK") and player:getWornItem("zReExoskeleton") then
+		maxWeightBase = math.floor(maxWeightBase * 1.5)
+		if detailedDebug() then print("ETW Logger | checkWeightLimit(): [zReArmorPackBYKK compatibility] Set maxWeightBase to "..maxWeightBase) end
+	end
+
 	player:setMaxWeightBase(maxWeightBase);
 end
 

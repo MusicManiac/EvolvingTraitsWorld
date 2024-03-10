@@ -1,7 +1,6 @@
-v.5.4.0
+v.5.4.1
 
-General:
-	- Added sandbox option to make Agoraphobic and Claustrophobic exclusive, so you will only ever have 1 at the time. Enabled by default.
-	- Changed default value of "Debug" in Mod Options to false
-Fixes:
-	- Fixed sandbox string not being displayed for one of Fear Of Locations option
+Mod Conflicts:
+	- Added compatibility for zRe ARMOR PACK by kERHUS (https://steamcommunity.com/workshop/filedetails/?id=3038026478)
+Translations:
+	- Updated translations
