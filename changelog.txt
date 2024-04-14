@@ -1,6 +1,6 @@
-v.5.4.1
+v.5.4.2
 
-Mod Conflicts:
-	- Added compatibility for zRe ARMOR PACK by kERHUS (https://steamcommunity.com/workshop/filedetails/?id=3038026478)
+Fixes:
+	- Changed some default smoker values a bit to be more realistic
 Translations:
-	- Updated translations
+	- Added Turkish translation thanks to MUTANT_Hero https://steamcommunity.com/profiles/76561199237578839

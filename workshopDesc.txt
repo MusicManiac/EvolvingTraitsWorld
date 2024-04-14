@@ -14,15 +14,7 @@ This mod allows you to get really ripped in PZ and see an actual character progr
 
 [h1]Compatibility and Installation[/h1]
 Installation instructions can be found in [url=https://steamcommunity.com/workshop/filedetails/discussion/2914075159/3767857092594929252/]this discussion[/url].
-[list]
-[*] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2459400130]Dynamic Traits[/url] - an alternative to this mod, therefore main mod is incompatible. Read more on it in [url=https://steamcommunity.com/workshop/filedetails/discussion/2914075159/3767857092594927216/]this discussion[/url]. Submod is compatible.
-[*] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2894296454]Change Sandbox Options (by Star)[/url] - use this to change SP starting options after save is up. Other sandbox changing mods won't work unless they get fixed.
-[*] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2730251452]Expanded Taits[/url] - mostly absorbed by this mod, therefore probably incompatible.
-[*] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1299328280]More Traits[/url] - my submod shows which traits are dynamic from it, additionally makes Butterfingers dynamic. Main mod works fine too.
-[*] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2840805724]Simple Overhaul: Traits and Occupations (SOTO)[/url], [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2792245343]More Simple Traits (MST)[/url], [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2760950740]Explorer Trait[/url], [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2863908612]SixthSense[/url] - my submod shows which traits are dynamic from these. Main mod works fine too.
-[*] Any mods that allow you to become Desensitized - incompatible with Bravery System. Disable bravery system or disable those mods.
-[*] Literally anything else: should be compatible. Resolved mod conflicts include popular mods like: [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1905148104]Superb Survivors![/url] and all of its variations (allegedly), [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2719327441]Snake's Mod Pack 41.77[/url]
-[/list]
+List of compatible/incompatible mods can be found in [url=https://steamcommunity.com/workshop/filedetails/discussion/2914075159/4290313152633468883/]this discussion[/url], including details on: Dynamic Traits, Expanded Taits, More Traits, zRe ARMOR PACK by kERHUS, Simple Overhaul: Traits and Occupations (SOTO), More Simple Traits (MST), Explorer Trait, SixthSense, Superb Survivors!, Snake's Mod Pack 41.77
 
 [h1]Recommended Mods[/h1]
 [list]

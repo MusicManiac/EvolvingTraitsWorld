@@ -594,7 +594,7 @@ option EvolvingTraitsWorld.SmokerCounter
 	type = integer,
 	min = 0,
 	max = 500000,
-	default = 1000,
+	default = 500,
 	page = EvolvingTraitsWorldComplexPerks,
 	translation = EvolvingTraitsWorld_SmokerCounter,
 }
