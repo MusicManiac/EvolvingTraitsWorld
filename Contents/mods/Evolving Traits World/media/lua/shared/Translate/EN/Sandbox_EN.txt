@@ -286,6 +286,15 @@ Sandbox_EN = {
 	Sandbox_EvolvingTraitsWorld_StickFighterSkill = "Stick Fighter Short Blunt Skill requirement",
 	Sandbox_EvolvingTraitsWorld_StickFighterKills = "Stick Fighter Short Blunt Kills requirement",
 
+	Sandbox_EvolvingTraitsWorld_TraitsLockSystemCanLosePositive = "Traits Lock: Can Lose Positive",
+	Sandbox_EvolvingTraitsWorld_TraitsLockSystemCanLosePositive_tooltip = "If this is enabled, you can lose positive traits during gameplay. This mostly applies to trait systems like love/fear of weather/locations or weight system as not a lot of positive traits can be lost.",
+	Sandbox_EvolvingTraitsWorld_TraitsLockSystemCanGainPositive = "Traits Lock: Can Gain Positive",
+	Sandbox_EvolvingTraitsWorld_TraitsLockSystemCanGainPositive_tooltip = "If this is enabled, you can gain positive traits during gameplay. This applies to a lot of traits, you DO NOT want to have this disabled.",
+	Sandbox_EvolvingTraitsWorld_TraitsLockSystemCanLoseNegative = "Traits Lock: Can Lose Negative",
+	Sandbox_EvolvingTraitsWorld_TraitsLockSystemCanLoseNegative_tooltip = "If this is enabled, you can lose negative traits during gameplay. This mostly applies to trait systems like love/fear of weather/locations or weight system and also a bunch of simple traits.",
+	Sandbox_EvolvingTraitsWorld_TraitsLockSystemCanGainNegative = "Traits Lock: Can Gain Negative",
+	Sandbox_EvolvingTraitsWorld_TraitsLockSystemCanGainNegative_tooltip = "If this is enabled, you can gain negative traits during gameplay. This mostly applies to trait systems like love/fear of weather/locations or weight system as not a lot of negative traits can be earned.",
+
 	Sandbox_EvolvingTraitsWorld_WeightSystem = "Weight System",
 	Sandbox_EvolvingTraitsWorld_WeightSystem_tooltip = "Describing conditions on which you lose/gain traits in here would take a lot of text, so just check goolge sheets for details (link in mod workshop page description). Affected traits that can be gained/lost dynamically: High/Low Thirst, Light Eater/Hearty Appetite, Thick/Thin Skinned, Slow/Fast Healer.<br>IMPORTANT: if you pick any of these traits in character creation they will be permanent on your character, both negative and positive.",
 	Sandbox_EvolvingTraitsWorld_WeightSystemSkill = "Weight System Passives requirement",

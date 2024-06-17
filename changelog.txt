@@ -1,6 +1,7 @@
-v.5.4.2
+v.6.0.0
 
+General:
+	- Added trait lock system which affect every single perk, can be found in systems page. Allows you to restrict if positive/negative perks can be gained/lost. Applies globally, so instead of going and figuring out what sandbox settings to change, so you can't lose positive perks or can't gain negative you can just change these sandbox settings.
 Fixes:
-	- Changed some default smoker values a bit to be more realistic
-Translations:
-	- Added Turkish translation thanks to MUTANT_Hero https://steamcommunity.com/profiles/76561199237578839
+	- Few being unable to gain Inconspicuous
+	- Removed some redundant and not working safeguard in Sleep System.

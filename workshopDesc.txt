@@ -41,6 +41,7 @@ Currently mod supports following languages:
 [*]繁體中文 / Traditional Chinese
 [*]Português Brasileiro / Brazilian Portuguese
 [*]한국어 / Korean
+[*]Türkçe / Turkish
 [/list]
 
 [h1]Afterword and Permission[/h1]

@@ -284,6 +284,15 @@ Sandbox_CH = {
 	Sandbox_EvolvingTraitsWorld_StickFighterSkill = "使棍武者:獲得特質所需長棍技能等級",
 	Sandbox_EvolvingTraitsWorld_StickFighterKills = "使棍武者:獲得特質所需長棍擊殺數",
 
+	Sandbox_EvolvingTraitsWorld_TraitsLockSystemCanLosePositive = "特製鎖定: 正向特製可丟失",
+	Sandbox_EvolvingTraitsWorld_TraitsLockSystemCanLosePositive_tooltip = "開啟此選項會讓你在遊戲過程中遺失正向特製. 這個選項大多只會影響到天氣/地點喜好,或負重相關的特質. 其餘正向特質大多無法或難以被影響而丟失.",
+	Sandbox_EvolvingTraitsWorld_TraitsLockSystemCanGainPositive = "特質鎖定: 可獲得正向特質",
+	Sandbox_EvolvingTraitsWorld_TraitsLockSystemCanGainPositive_tooltip = "開啟此選項讓你在遊戲過程中可獲得正向特質. 此選項會影響 很 多 特質, 你絕對不會想關閉它.",
+	Sandbox_EvolvingTraitsWorld_TraitsLockSystemCanLoseNegative = "特質鎖定: 可丟失負面特質",
+	Sandbox_EvolvingTraitsWorld_TraitsLockSystemCanLoseNegative_tooltip = "開啟此選項讓你在遊戲過程中可丟失負面特質. 這個選項大多只會影響到天氣/地點喜好,或負重相關的特質,或是其他一些較小的特質.",
+	Sandbox_EvolvingTraitsWorld_TraitsLockSystemCanGainNegative = "特質鎖定: 可獲得負面特質",
+	Sandbox_EvolvingTraitsWorld_TraitsLockSystemCanGainNegative_tooltip = "開啟此選項讓你在遊戲過程中可獲得負面特質. 這個選項大多只會影響到天氣/地點喜好,或負重相關的特質. 其餘負面特質大多無法或難以被影響而獲得.",
+
 	Sandbox_EvolvingTraitsWorld_WeightSystem = "負重相關特質系統",
 	Sandbox_EvolvingTraitsWorld_WeightSystem_tooltip = "由於描述相關設置篇幅冗長,請於此模組之工作坊頁面尋找看. 可被此系統影響的特質有:易/不易口渴,輕食簡餐/食欲旺盛,皮粗肉厚/細皮嫩肉,恢復緩慢/快速恢復.<br>!!!重要!!!:如果你要在角色創建時選擇了以上任何特質,它將不會隨遊戲狀況失去(正面或負面特質皆是)",
 	Sandbox_EvolvingTraitsWorld_WeightSystemSkill = "負重系統被動需求",

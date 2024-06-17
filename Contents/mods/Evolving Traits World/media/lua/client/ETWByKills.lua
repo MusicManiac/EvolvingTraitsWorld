@@ -109,10 +109,10 @@ local function braverySystem(zombie)
 	for i, info in ipairs(traitInfo) do
 		local trait = info.trait
 		local threshold = info.threshold
-		local remove = info.remove
-		local add = info.add
+		local negativeTrait = info.remove
+		local positiveTrait = info.add
 		if (totalKills + meleeKills) >= threshold then -- melee kills counted double
-			if player:HasTrait(trait) and remove then
+			if player:HasTrait(trait) and negativeTrait and SBvars.TraitsLockSystemCanLoseNegative then
 				if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(trait)) then
 					player:getTraits():remove(trait)
 					if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_" .. trait), false, HaloTextHelper.getColorGreen()) end
@@ -121,13 +121,13 @@ local function braverySystem(zombie)
 					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringRemove")..getText("UI_trait_" .. trait), true, HaloTextHelper.getColorGreen()) end
 					ETWCommonFunctions.addTraitToDelayTable(ETWModData, trait, player, false)
 				end
-			elseif not player:HasTrait(trait) and add then
+			elseif not player:HasTrait(trait) and positiveTrait and SBvars.TraitsLockSystemCanGainPositive then
 				if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(trait)) then
 					player:getTraits():add(trait)
 					if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_" .. (trait == "Brave" and "brave" or trait)), true, HaloTextHelper.getColorGreen()) end
 					if trait == "Desensitized" then
 						Events.OnZombieDead.Remove(braverySystem);
-						if SBvars.BraverySystemRemovesOtherFearPerks == true then
+						if SBvars.BraverySystemRemovesOtherFearPerks == true and SBvars.TraitsLockSystemCanLoseNegative then
 							if player:HasTrait("Agoraphobic") then
 								player:getTraits():remove("Agoraphobic");
 								if notification() then HaloTextHelper.addTextWithArrow(player, "UI_trait_agoraphobic", false, HaloTextHelper.getColorGreen()) end
@@ -157,7 +157,7 @@ local function braverySystem(zombie)
 end
 
 local function initializeKills(playerIndex, player)
-	if not getActivatedMods():contains("EvolvingTraitsWorldDisableBloodlust") then
+	if not getActivatedMods():contains("EvolvingTraitsWorldDisableBloodlust") and (SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLosePositive)then
 		ETWMoodles.bloodlustMoodleUpdate(player);
 		Events.OnZombieDead.Remove(bloodlustKill);
 		Events.OnZombieDead.Add(bloodlustKill);
@@ -165,9 +165,9 @@ local function initializeKills(playerIndex, player)
 		Events.EveryHours.Add(bloodlustTime);
 	end
 	Events.OnWeaponHitCharacter.Remove(eagleEyed);
-	if SBvars.EagleEyed == true and not player:HasTrait("EagleEyed") then Events.OnWeaponHitCharacter.Add(eagleEyed) end
+	if SBvars.EagleEyed == true and not player:HasTrait("EagleEyed") and SBvars.TraitsLockSystemCanGainPositive then Events.OnWeaponHitCharacter.Add(eagleEyed) end
 	Events.OnZombieDead.Remove(braverySystem);
-	if SBvars.BraverySystem == true and not player:HasTrait("Desensitized") then Events.OnZombieDead.Add(braverySystem) end
+	if SBvars.BraverySystem == true and not player:HasTrait("Desensitized") and (SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLoseNegative) then Events.OnZombieDead.Add(braverySystem) end
 end
 
 local function clearEvents(character)

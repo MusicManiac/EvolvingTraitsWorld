@@ -6,6 +6,7 @@ local notification = function() return EvolvingTraitsWorld.settings.EnableNotifi
 local debug = function() return EvolvingTraitsWorld.settings.GatherDebug end
 local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetailedDebug end
 local desensitized = function(player) return player:HasTrait("Desensitized") and SBvars.BraverySystemRemovesOtherFearPerks end
+local noTraitsLock = function() return (SBvars.TraitsLockSystemCanGainNegative or SBvars.TraitsLockSystemCanLoseNegative or SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLosePositive) end
 
 local function rainTraits()
 	local player = getPlayer();
@@ -32,16 +33,16 @@ local function rainTraits()
 			if debug() then print("ETW Logger | rainTraits(): rainTraits rainDecrease="..rainDecrease..". RainCounter=" .. modData.RainCounter) end
 			modData.RainCounter = math.max(lowerBoundary, modData.RainCounter - rainDecrease);
 		end
-		if not player:HasTrait("Pluviophobia") and modData.RainCounter <= -SBCounter and not desensitized(player) then
+		if not player:HasTrait("Pluviophobia") and modData.RainCounter <= -SBCounter and not desensitized(player) and SBvars.TraitsLockSystemCanGainNegative then
 			player:getTraits():add("Pluviophobia");
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Pluviophobia"), true, HaloTextHelper.getColorRed()) end
-		elseif player:HasTrait("Pluviophobia") and modData.RainCounter > -SBCounter then
+		elseif player:HasTrait("Pluviophobia") and modData.RainCounter > -SBCounter and SBvars.TraitsLockSystemCanLoseNegative then
 			player:getTraits():remove("Pluviophobia");
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Pluviophobia"), false, HaloTextHelper.getColorGreen()) end
-		elseif player:HasTrait("Pluviophile") and modData.RainCounter <= SBCounter then
+		elseif player:HasTrait("Pluviophile") and modData.RainCounter <= SBCounter and SBvars.TraitsLockSystemCanLosePositive then
 			player:getTraits():remove("Pluviophile");
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Pluviophile"), false, HaloTextHelper.getColorRed()) end
-		elseif not player:HasTrait("Pluviophile") and modData.RainCounter > SBCounter then
+		elseif not player:HasTrait("Pluviophile") and modData.RainCounter > SBCounter and SBvars.TraitsLockSystemCanGainPositive then
 			player:getTraits():add("Pluviophile");
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Pluviophile"), true, HaloTextHelper.getColorGreen()) end
 		end
@@ -68,16 +69,16 @@ local function fogTraits()
 		finalFogCounter = math.min(finalFogCounter, upperBoundary);
 		modData.FogCounter = finalFogCounter;
 		if debug() then print("ETW Logger | fogTraits(): modData.FogCounter="..modData.FogCounter) end
-		if not player:HasTrait("Homichlophobia") and modData.FogCounter <= -SBCounter and not desensitized(player) then
+		if not player:HasTrait("Homichlophobia") and modData.FogCounter <= -SBCounter and not desensitized(player) and SBvars.TraitsLockSystemCanGainNegative then
 			player:getTraits():add("Homichlophobia");
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Homichlophobia"), true, HaloTextHelper.getColorRed()) end
-		elseif player:HasTrait("Homichlophobia") and modData.FogCounter > -SBCounter then
+		elseif player:HasTrait("Homichlophobia") and modData.FogCounter > -SBCounter and SBvars.TraitsLockSystemCanLoseNegative then
 			player:getTraits():remove("Homichlophobia");
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Homichlophobia"), false, HaloTextHelper.getColorGreen()) end
-		elseif player:HasTrait("Homichlophile") and modData.FogCounter <= SBCounter then
+		elseif player:HasTrait("Homichlophile") and modData.FogCounter <= SBCounter and SBvars.TraitsLockSystemCanLosePositive then
 			player:getTraits():remove("Homichlophile");
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Homichlophobia"), false, HaloTextHelper.getColorRed()) end
-		elseif not player:HasTrait("Homichlophile") and modData.FogCounter > SBCounter then
+		elseif not player:HasTrait("Homichlophile") and modData.FogCounter > SBCounter and SBvars.TraitsLockSystemCanGainPositive then
 			player:getTraits():add("Homichlophile");
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Homichlophobia"), true, HaloTextHelper.getColorGreen()) end
 		end
@@ -87,9 +88,9 @@ end
 local function initializeEvents(playerIndex, player)
 	local activatedMods = getActivatedMods();
 	Events.EveryOneMinute.Remove(rainTraits);
-	if not activatedMods:contains("EvolvingTraitsWorldDisableRainTraits") and SBvars.RainSystem == true then Events.EveryOneMinute.Add(rainTraits) end
+	if not activatedMods:contains("EvolvingTraitsWorldDisableRainTraits") and SBvars.RainSystem == true and noTraitsLock() then Events.EveryOneMinute.Add(rainTraits) end
 	Events.EveryOneMinute.Remove(fogTraits);
-	if not activatedMods:contains("EvolvingTraitsWorldDisableFogTraits") and SBvars.FogSystem == true then Events.EveryOneMinute.Add(fogTraits) end
+	if not activatedMods:contains("EvolvingTraitsWorldDisableFogTraits") and SBvars.FogSystem == true and noTraitsLock() then Events.EveryOneMinute.Add(fogTraits) end
 end
 
 local function clearEvents(character)

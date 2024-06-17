@@ -79,23 +79,23 @@ local function fearOfLocations()
 		print("ETW Logger | fearOfLocations(): modData.FearOfInside: " .. fearOfLocationsModData.FearOfInside);
 	end
 	if not SBvars.FearOfLocationsExclusiveFears then
-		if player:HasTrait("Agoraphobic") and fearOfLocationsModData.FearOfOutside >= SBCounter then
+		if player:HasTrait("Agoraphobic") and fearOfLocationsModData.FearOfOutside >= SBCounter and SBvars.TraitsLockSystemCanLoseNegative then
 			player:getTraits():remove("Agoraphobic");
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_agoraphobic"), false, HaloTextHelper.getColorGreen()) end
 		end
-		if not player:HasTrait("Agoraphobic") and fearOfLocationsModData.FearOfOutside <= -SBCounter and not desensitized(player) then
+		if not player:HasTrait("Agoraphobic") and fearOfLocationsModData.FearOfOutside <= -SBCounter and not desensitized(player) and SBvars.TraitsLockSystemCanGainNegative then
 			player:getTraits():add("Agoraphobic");
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_agoraphobic"), true, HaloTextHelper.getColorRed()) end
 		end
-		if player:HasTrait("Claustophobic") and fearOfLocationsModData.FearOfInside >= SBCounter then
+		if player:HasTrait("Claustophobic") and fearOfLocationsModData.FearOfInside >= SBCounter and SBvars.TraitsLockSystemCanLoseNegative then
 			player:getTraits():remove("Claustophobic");
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_claustro"), false, HaloTextHelper.getColorGreen()) end
 		end
-		if not player:HasTrait("Claustophobic") and fearOfLocationsModData.FearOfInside <= -SBCounter and not desensitized(player) then
+		if not player:HasTrait("Claustophobic") and fearOfLocationsModData.FearOfInside <= -SBCounter and not desensitized(player) and SBvars.TraitsLockSystemCanGainNegative then
 			player:getTraits():add("Claustophobic");
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_claustro"), true, HaloTextHelper.getColorRed()) end
 		end
-	else
+	elseif SBvars.TraitsLockSystemCanLoseNegative and SBvars.TraitsLockSystemCanGainNegative then
 		if fearOfLocationsModData.FearOfOutside <= -SBCounter and not desensitized(player) and
 			fearOfLocationsModData.FearOfOutside < fearOfLocationsModData.FearOfInside and
 			not player:HasTrait("Agoraphobic") then
@@ -117,9 +117,11 @@ end
 
 local function initializeEvents(playerIndex, player)
 	Events.EveryOneMinute.Remove(outdoorsman);
-	if SBvars.Outdoorsman == true then Events.EveryOneMinute.Add(outdoorsman) end
+	if SBvars.Outdoorsman == true and SBvars.TraitsLockSystemCanGainPositive then Events.EveryOneMinute.Add(outdoorsman) end
 	Events.EveryOneMinute.Remove(fearOfLocations);
-	if SBvars.FearOfLocationsSystem == true then Events.EveryOneMinute.Add(fearOfLocations) end
+	if SBvars.FearOfLocationsSystem == true and (SBvars.TraitsLockSystemCanGainNegative or SBvars.TraitsLockSystemCanLoseNegative) then
+		Events.EveryOneMinute.Add(fearOfLocations);
+	end
 end
 
 local function clearEvents(character)

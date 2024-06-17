@@ -289,6 +289,34 @@ option EvolvingTraitsWorld.SleepSystemMultiplier
 	page = EvolvingTraitsWorldSystems,
 	translation = EvolvingTraitsWorld_SleepSystemMultiplier,
 }
+option EvolvingTraitsWorld.TraitsLockSystemCanLosePositive
+{
+	type = boolean,
+	default = true,
+	page = EvolvingTraitsWorldSystems,
+	translation = EvolvingTraitsWorld_TraitsLockSystemCanLosePositive,
+}
+option EvolvingTraitsWorld.TraitsLockSystemCanGainPositive
+{
+	type = boolean,
+	default = true,
+	page = EvolvingTraitsWorldSystems,
+	translation = EvolvingTraitsWorld_TraitsLockSystemCanGainPositive,
+}
+option EvolvingTraitsWorld.TraitsLockSystemCanLoseNegative
+{
+	type = boolean,
+	default = true,
+	page = EvolvingTraitsWorldSystems,
+	translation = EvolvingTraitsWorld_TraitsLockSystemCanLoseNegative,
+}
+option EvolvingTraitsWorld.TraitsLockSystemCanGainNegative
+{
+	type = boolean,
+	default = true,
+	page = EvolvingTraitsWorldSystems,
+	translation = EvolvingTraitsWorld_TraitsLockSystemCanGainNegative,
+}
 option EvolvingTraitsWorld.WeightSystem
 {
 	type = boolean,
