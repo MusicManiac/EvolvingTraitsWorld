@@ -1,4 +1,4 @@
-New/changed lines since v.5.4.0
+Lines missing in latest version
 
 Moodles.txt
 	changed:
@@ -10,14 +10,6 @@ Sandbox.txt
 	changed:
 
 	new:
-		Sandbox_EvolvingTraitsWorld_TraitsLockSystemCanLosePositive = "Traits Lock: Can Lose Positive",
-		Sandbox_EvolvingTraitsWorld_TraitsLockSystemCanLosePositive_tooltip = "If this is enabled, you can lose positive traits during gameplay. This mostly applies to trait systems like love/fear of weather/locations or weight system as not a lot of positive traits can be lost.",
-		Sandbox_EvolvingTraitsWorld_TraitsLockSystemCanGainPositive = "Traits Lock: Can Gain Positive",
-		Sandbox_EvolvingTraitsWorld_TraitsLockSystemCanGainPositive_tooltip = "If this is enabled, you can gain positive traits during gameplay. This applies to a lot of traits, you DO NOT want to have this disabled.",
-		Sandbox_EvolvingTraitsWorld_TraitsLockSystemCanLoseNegative = "Traits Lock: Can Lose Negative",
-		Sandbox_EvolvingTraitsWorld_TraitsLockSystemCanLoseNegative_tooltip = "If this is enabled, you can lose negative traits during gameplay. This mostly applies to trait systems like love/fear of weather/locations or weight system and also a bunch of simple traits.",
-		Sandbox_EvolvingTraitsWorld_TraitsLockSystemCanGainNegative = "Traits Lock: Can Gain Negative",
-		Sandbox_EvolvingTraitsWorld_TraitsLockSystemCanGainNegative_tooltip = "If this is enabled, you can gain negative traits during gameplay. This mostly applies to trait systems like love/fear of weather/locations or weight system as not a lot of negative traits can be earned.",
 
 UI.txt
 	changed:

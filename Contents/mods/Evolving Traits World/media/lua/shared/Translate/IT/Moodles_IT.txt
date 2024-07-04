@@ -21,24 +21,4 @@ Moodles_IT {
 	Moodles_SleepHealthMoodle_Bad_lvl3 = "Il mio ciclo sonno-veglia è un po' sballato",
 	Moodles_SleepHealthMoodle_Bad_lvl4 = "Il mio ciclo sonno-veglia è totalmente sballato",
 	Moodles_SleepHealthMoodle_Custom = "Il mio sonno è sfalsato di %1 ore rispetto al mio orario abituale",
-
-	Moodles_SmokerGSMoodle_Good_lvl4 = "Il fumo non ha alcuna attrattiva per me",
-	Moodles_SmokerGSMoodle_Good_lvl3 = "Ogni tanto fumo, occasionalmente",
-	Moodles_SmokerGSMoodle_Good_lvl2 = "Ogni tanto fumo, ma non ho il vizio",
-	Moodles_SmokerGSMoodle_Good_lvl1 = "Talvolta fumo, e capita che ne senta il bisogno",
-	Moodles_SmokerGSMoodle_Bad_lvl1 = "Fumo più di quanto dovrei, è un brutto vizio",
-	Moodles_SmokerGSMoodle_Bad_lvl2 = "Fumo tanto",
-	Moodles_SmokerGSMoodle_Bad_lvl3 = "Fumo tantissimo, perchè mi piace",
-	Moodles_SmokerGSMoodle_Bad_lvl4 = "Si, fumo come un turco",
-	Moodles_SmokerGSMoodle_GainingSmoker = "Mi manca %1 % Per prendermi il vizio."
-
-	Moodles_SmokerLSMoodle_Good_lvl4 = "Non ho molta voglia di fumare",
-	Moodles_SmokerLSMoodle_Good_lvl3 = "Ogni tanto mi viene voglia di fumare",
-	Moodles_SmokerLSMoodle_Good_lvl2 = "Ho una volontà di ferro",
-	Moodles_SmokerLSMoodle_Good_lvl1 = "Ora va meglio",
-	Moodles_SmokerLSMoodle_Bad_lvl1 = "Caspita, magari potessi fumare adesso",
-	Moodles_SmokerLSMoodle_Bad_lvl2 = "Mi piace molto fumare, ma sto cercando di smettere",
-	Moodles_SmokerLSMoodle_Bad_lvl3 = "Fumare fa parte della mia personalità",
-	Moodles_SmokerLSMoodle_Bad_lvl4 = "Preferirei morire che smettere di fumare",
-	Moodles_SmokerLSMoodle_LosingSmoker = "Mi manca %1 % per perdere il vizio.",
 }

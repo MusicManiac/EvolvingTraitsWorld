@@ -44,24 +44,33 @@ UI_CH = {
 	UI_trait_StickFighter = "使棍武者",
 	UI_trait_StickFighterDesc = "你懂得如何用路邊的木棒就把一群人打到滿地找牙.",
 
-	UI_EvolvingTraitsWorld_Options_GatherDebug = "蒐集除錯資料",
-    UI_EvolvingTraitsWorld_Options_GatherDebug_tooltip = "將除錯資料紀錄於console.txt.偵錯時很有用,也能用來檢視內部特質基準統計值.於文件中搜尋'ETW'來找到相關資訊.",
-	UI_EvolvingTraitsWorld_Options_GatherDetailedDebug = "收集詳細除錯報告",
-	UI_EvolvingTraitsWorld_Options_GatherDetailedDebug_tooltip = "啟用額外的除錯訊息紀錄,不會對特質進度條有額外紀錄,對於錯誤回報或精準判斷錯誤點相當有用<br>增加許多非必須的資料到報告裡,若啟用此選項則必須要定期重啟遊戲,避免紀錄檔太大並(可能)使遊戲崩潰, 搜尋'ETW'來找到相關報告條目",
-	UI_EvolvingTraitsWorld_Options_EnableNotifications = "啟用 特質 通知",
-	UI_EvolvingTraitsWorld_Options_EnableNotifications_tooltip = "當獲得/失去特質時在角色頭上顯示訊息",
-	UI_EvolvingTraitsWorld_Options_EnableDelayedNotifications = "啟用特質延遲系統通知",
-	UI_EvolvingTraitsWorld_Options_EnableDelayedNotifications_tooltip = "這個選項只有在你啟用特質延遲系統時才有作用.你會在當你達成某個特質的獲得條件時獲得通知,並被加入延遲清單中",
-	UI_EvolvingTraitsWorld_DelayedNotificationsStringAdd = "達成特質獲得條件: ",
-	UI_EvolvingTraitsWorld_DelayedNotificationsStringRemove = "達成特質失去條件: ",
-	___note_to_translators = "UI_EvolvingTraitsWorld_DelayedNotificationsStringAdd and UI_EvolvingTraitsWorld_DelayedNotificationsStringRemove is used in combination with trait names, for example 'Qualified for gaining Hoarder' or 'Qualified for losing Unlucky'. You get the idea."
-	UI_EvolvingTraitsWorld_Options_EnableBloodLustMoodle = "啟用 嗜血 圖示",
-	UI_EvolvingTraitsWorld_Options_EnableBloodLustMoodle_tooltip = "變更此選項後需要一個遊戲天來刷新",
-	UI_EvolvingTraitsWorld_Options_EnableSleepHealthMoodle = "啟用 睡眠品質 圖示 ",
-	UI_EvolvingTraitsWorld_Options_EnableSleepHealthMoodle_tooltip = "顯示角色目前睡眠時間狀況,只會在角色睡眠時出現",
-	UI_EvolvingTraitsWorld_Options_EnableSmokerMoodle = "啟用 老煙槍 圖示",
-	UI_EvolvingTraitsWorld_Options_EnableSmokerMoodle_tooltip = "當你快要獲得/失去老煙槍特質時出現",
-	UI_EvolvingTraitsWorld_Options_SmokerMoodleVisibilityValue = "老煙槍圖示出現時機",
-	UI_EvolvingTraitsWorld_Options_SmokerMoodleVisibilityValue_tooltip = "控制圖示量表出現時機.設定為20%代表量表會在你離戒菸或煙癮前20%進度時出現.設定100為永久顯示.以沙盒設定中數值為優先<br>舉例:若沙盒設置為40%,但此處為60%,仍會在40%時顯示.但如果沙盒/伺服端設置為70%,你可以在此設置30%並正常於30%時顯示",
+	UI_ETW_Options_GatherDebug = "蒐集除錯資料",
+    UI_ETW_Options_GatherDebug_tooltip = "將除錯資料紀錄於console.txt.偵錯時很有用,也能用來檢視內部特質基準統計值.於文件中搜尋'ETW'來找到相關資訊.",
+	UI_ETW_Options_GatherDetailedDebug = "收集詳細除錯報告",
+	UI_ETW_Options_GatherDetailedDebug_tooltip = "啟用額外的除錯訊息紀錄,不會對特質進度條有額外紀錄,對於錯誤回報或精準判斷錯誤點相當有用<br>增加許多非必須的資料到報告裡,若啟用此選項則必須要定期重啟遊戲,避免紀錄檔太大並(可能)使遊戲崩潰, 搜尋'ETW'來找到相關報告條目",
+	UI_ETW_Options_EnableNotifications = "啟用 特質 通知",
+	UI_ETW_Options_EnableNotifications_tooltip = "當獲得/失去特質時在角色頭上顯示訊息",
+	UI_ETW_Options_EnableDelayedNotifications = "啟用特質延遲系統通知",
+	UI_ETW_Options_EnableDelayedNotifications_tooltip = "這個選項只有在你啟用特質延遲系統時才有作用.你會在當你達成某個特質的獲得條件時獲得通知,並被加入延遲清單中",
+	UI_ETW_DelayedNotificationsStringAdd = "達成特質獲得條件: ",
+	UI_ETW_DelayedNotificationsStringRemove = "達成特質失去條件: ",
+	___note_to_translators = "UI_ETW_DelayedNotificationsStringAdd and UI_ETW_DelayedNotificationsStringRemove is used in combination with trait names, for example 'Qualified for gaining Hoarder' or 'Qualified for losing Unlucky'. You get the idea."
+	UI_ETW_Options_EnableBloodLustMoodle = "啟用 嗜血 圖示",
+	UI_ETW_Options_EnableBloodLustMoodle_tooltip = "變更此選項後需要一個遊戲天來刷新",
+	UI_ETW_Options_EnableSleepHealthMoodle = "啟用 睡眠品質 圖示 ",
+	UI_ETW_Options_EnableSleepHealthMoodle_tooltip = "顯示角色目前睡眠時間狀況,只會在角色睡眠時出現",
 
+	UI_ETW_Options_UIWidth = "[UI] 角色頁面長度",
+    UI_ETW_Options_UIWidth_tooltip = "角色頁面的設定長度. 預設數值只適用於英文介面, 其使用其他語言(包含中文)時可能需要在此增加或減少數值來符合使用.",
+    UI_ETW_Options_TraitColumns = "[UI] 特質行列",
+    UI_ETW_Options_TraitColumns_tooltip = "決定了在角色頁面能夠顯示幾行特質. 預設數值只適用於英文介面, 其使用其他語言(包含中文)時發生文字重疊狀況,可能需要在此減少數值來符合使用"
+
+    UI_ETW_GainTooltip = "在計數達到指示條的這裡之後即可獲得特質 (如果技能延遲系統有啟動則是得到獲得的門檻)",
+    UI_ETW_LooseTooltip = "在計數達到指示條的這裡之後即可失去特質 (如果技能延遲系統有啟動則是得到失去的門檻)",
+    UI_ETW_GainLoseTooltip = "在計數達到指示條的這裡之後即可失去/獲得特質 (如果技能延遲系統有啟動則是得到失去/獲得的門檻)",
+    UI_ETW_ListOfDelayedTraits = "當前置於延遲列表中的技能: ",
+
+    UI_ETW_Chance = "比",
+    ___note_to_translators = "UI_ETW_Chance is used in displaying chances, so for example '1 in 300' or '1 in 50300', etc."
+    UI_ETW_ProgressPageDisabled = "ETW頁面 在沙盒模式下已被禁用",
 }

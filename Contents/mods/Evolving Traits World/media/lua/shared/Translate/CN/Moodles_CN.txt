@@ -21,23 +21,4 @@ Moodles_CN {
     Moodles_SleepHealthMoodle_Bad_lvl3 = "我的睡眠时间表被打乱了",
     Moodles_SleepHealthMoodle_Bad_lvl4 = "我的睡眠时间表乱七八糟",
     Moodles_SleepHealthMoodle_Custom = "离最佳时间还有 %1 小时的睡眠"
-
-    Moodles_SmokerGSMoodle_Good_lvl4 = "我不想也不会吸烟",
-    Moodles_SmokerGSMoodle_Good_lvl3 = "我不常吸烟，感觉无所谓",
-    Moodles_SmokerGSMoodle_Good_lvl2 = "我有时吸烟，但我不会冲动想吸",
-    Moodles_SmokerGSMoodle_Good_lvl1 = "我有时吸烟，但那是因为需要它",
-    Moodles_SmokerGSMoodle_Bad_lvl1 = "我吸烟的频率比平常人来的高，因为我需要它",
-    Moodles_SmokerGSMoodle_Bad_lvl2 = "我经常吸烟",
-    Moodles_SmokerGSMoodle_Bad_lvl3 = "我非常经常吸烟，这没甚么关系吧",
-    Moodles_SmokerGSMoodle_Bad_lvl4 = "没错，我吸烟，你怎么知道?",
-    Moodles_SmokerGSMoodle_GainingSmoker = "我离吸烟成瘾还有 %1 %"
-
-    Moodles_SmokerLSMoodle_Good_lvl4 = "我几乎不想吸烟了",
-    Moodles_SmokerLSMoodle_Good_lvl3 = "我只想偶尔吸烟",
-    Moodles_SmokerLSMoodle_Good_lvl2 = "我的意志坚强",
-    Moodles_SmokerLSMoodle_Good_lvl1 = "情况正在好转",
-    Moodles_SmokerLSMoodle_Bad_lvl1 = "天哪，我现在真想吸烟...",
-    Moodles_SmokerLSMoodle_Bad_lvl2 = "吸一口肯定很棒，但我必须对抗我的烟瘾",
-    Moodles_SmokerLSMoodle_Bad_lvl3 = "吸烟是我的生活的一部分",
-    Moodles_SmokerLSMoodle_Bad_lvl4 = "宁死也不戒!!!",
-    Moodles_SmokerLSMoodle_LosingSmoker = "我离戒烟成功还有 %1 %。"
+}

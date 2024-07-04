@@ -19,24 +19,4 @@ Moodles_TR {
 	Moodles_SleepHealthMoodle_Bad_lvl3 = "uyku programýmdan baya uzak bir zaman",
 	Moodles_SleepHealthMoodle_Bad_lvl4 = "uyku düzenim altüst oldu",
 	Moodles_SleepHealthMoodle_Custom = "uyku %1 ideal saatten uzak bir vakitte"
-
-	Moodles_SmokerGSMoodle_Good_lvl4 = "Sigara içmek gram umurumda deðil",
-	Moodles_SmokerGSMoodle_Good_lvl3 = "Nadiren sigara içiyorum ama pek de önemli deðil",
-	Moodles_SmokerGSMoodle_Good_lvl2 = "Bazen sigara içiyorum ama çokta istekli deðilim",
-	Moodles_SmokerGSMoodle_Good_lvl1 = "Bazen ihtiyaçtan bazen de keyif için içiyorum",
-	Moodles_SmokerGSMoodle_Bad_lvl1 = "içmem gerekenden fazla sigara içiyorum ama ihtiyacým var",
-	Moodles_SmokerGSMoodle_Bad_lvl2 = "Sýkça sigara içiyorum",
-	Moodles_SmokerGSMoodle_Bad_lvl3 = "Sýkça sigara içiyorum ama çok da sorun deðil.",
-	Moodles_SmokerGSMoodle_Bad_lvl4 = "Harbi, baya sigara içiyorum",
-	Moodles_SmokerGSMoodle_GainingSmoker = "Ben sigara baðýmlýsý olmaktan %1 uzaktayým"
-
-	Moodles_SmokerLSMoodle_Good_lvl4 = "Neredeyse hiç sigara içesim yok.",
-	Moodles_SmokerLSMoodle_Good_lvl3 = "Artýk baya nadiren sigara içmek istiyorum.",
-	Moodles_SmokerLSMoodle_Good_lvl2 = "Zihnim sigara içme isteðime karþý geliyor.",
-	Moodles_SmokerLSMoodle_Good_lvl1 = "Sanýrým daha iyileþiyor.",
-	Moodles_SmokerLSMoodle_Bad_lvl1 = "Tanrým sigara içmeyi çok isterdim.",
-	Moodles_SmokerLSMoodle_Bad_lvl2 = "Sigara içmek iyi ama baðýmlýlýðýmý býrakmalýyým.",
-	Moodles_SmokerLSMoodle_Bad_lvl3 = "Sigara içmek hayatýmýn bir parçasý.",
-	Moodles_SmokerLSMoodle_Bad_lvl4 = "sigara içmeyi býrakmak yerine ölmeyi tercih ederim.",
-	Moodles_SmokerLSMoodle_LosingSmoker = "Ben baðýmlýlýðýmý býrakmaktan %1 uzaktayým."
 }

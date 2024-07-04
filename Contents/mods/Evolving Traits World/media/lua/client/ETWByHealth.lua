@@ -1,6 +1,6 @@
 require "ETWModData";
-
 local ETWCommonFunctions = require "ETWCommonFunctions";
+local ETWCommonLogicChecks = require "ETWCommonLogicChecks";
 
 local SBvars = SandboxVars.EvolvingTraitsWorld;
 
@@ -8,7 +8,7 @@ local notification = function() return EvolvingTraitsWorld.settings.EnableNotifi
 local delayedNotification = function() return EvolvingTraitsWorld.settings.EnableDelayedNotifications end
 local debug = function() return EvolvingTraitsWorld.settings.GatherDebug end
 local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetailedDebug end
-local noTraitsLock = function() return (SBvars.TraitsLockSystemCanGainNegative or SBvars.TraitsLockSystemCanLoseNegative or SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLosePositive) end
+local noTraitsLock = function() return (SBvars.TraitsLockSystemCanGainNegative or SBvars.TraitsLockSystemCanLoseNegative or SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLoosePositive) end
 
 local function coldTraits()
 	local player = getPlayer();
@@ -119,19 +119,19 @@ local function weightSystem()
 			player:getTraits():add("HighThirst");
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_HighThirst"), true, HaloTextHelper.getColorRed()) end
 		end
-		if player:HasTrait("ThickSkinned") and startingTraits.ThickSkinned ~= true and SBvars.TraitsLockSystemCanLosePositive then
+		if player:HasTrait("ThickSkinned") and startingTraits.ThickSkinned ~= true and SBvars.TraitsLockSystemCanLoosePositive then
 			player:getTraits():remove("ThickSkinned");
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_thickskinned"), false, HaloTextHelper.getColorRed()) end
 		end
-		if player:HasTrait("FastHealer") and startingTraits.FastHealer ~= true and SBvars.TraitsLockSystemCanLosePositive then
+		if player:HasTrait("FastHealer") and startingTraits.FastHealer ~= true and SBvars.TraitsLockSystemCanLoosePositive then
 			player:getTraits():remove("FastHealer");
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_FastHealer"), false, HaloTextHelper.getColorRed()) end
 		end
-		if player:HasTrait("LightEater") and startingTraits.LightEater ~= true and SBvars.TraitsLockSystemCanLosePositive then
+		if player:HasTrait("LightEater") and startingTraits.LightEater ~= true and SBvars.TraitsLockSystemCanLoosePositive then
 			player:getTraits():remove("LightEater");
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_lighteater"), false, HaloTextHelper.getColorRed()) end
 		end
-		if player:HasTrait("LowThirst") and startingTraits.LowThirst ~= true and SBvars.TraitsLockSystemCanLosePositive then
+		if player:HasTrait("LowThirst") and startingTraits.LowThirst ~= true and SBvars.TraitsLockSystemCanLoosePositive then
 			player:getTraits():remove("LowThirst");
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_LowThirst"), false, HaloTextHelper.getColorRed()) end
 		end
@@ -148,11 +148,11 @@ local function weightSystem()
 		end
 		-- losing Thick Skinned and Fast Healer if mental state not good
 		if modData.RecentAverageMental <= (SBvars.WeightSystemLowerMentalThreshold / 100) then
-			if player:HasTrait("ThickSkinned") and startingTraits.ThickSkinned ~= true and SBvars.TraitsLockSystemCanLosePositive then
+			if player:HasTrait("ThickSkinned") and startingTraits.ThickSkinned ~= true and SBvars.TraitsLockSystemCanLoosePositive then
 				player:getTraits():remove("ThickSkinned");
 				if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_thickskinned"), false, HaloTextHelper.getColorRed()) end
 			end
-			if player:HasTrait("FastHealer") and startingTraits.FastHealer ~= true and SBvars.TraitsLockSystemCanLosePositive then
+			if player:HasTrait("FastHealer") and startingTraits.FastHealer ~= true and SBvars.TraitsLockSystemCanLoosePositive then
 				player:getTraits():remove("FastHealer");
 				if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_FastHealer"), false, HaloTextHelper.getColorRed()) end
 			end
@@ -171,11 +171,11 @@ local function weightSystem()
 		end
 		-- losing Light Eater and Low Thirst if mental is not good or if sleep is bad
 		if modData.RecentAverageMental <= (SBvars.WeightSystemUpperMentalThreshold / 100) or sleepCheck(modData.SleepSystem.SleepHealthinessBar) == false then
-			if player:HasTrait("LightEater") and startingTraits.LightEater ~= true and SBvars.TraitsLockSystemCanLosePositive then
+			if player:HasTrait("LightEater") and startingTraits.LightEater ~= true and SBvars.TraitsLockSystemCanLoosePositive then
 				player:getTraits():remove("LightEater");
 				if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_lighteater"), false, HaloTextHelper.getColorRed()) end
 			end
-			if player:HasTrait("LowThirst") and startingTraits.LowThirst ~= true and SBvars.TraitsLockSystemCanLosePositive then
+			if player:HasTrait("LowThirst") and startingTraits.LowThirst ~= true and SBvars.TraitsLockSystemCanLoosePositive then
 				player:getTraits():remove("LowThirst");
 				if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_LowThirst"), false, HaloTextHelper.getColorRed()) end
 			end
@@ -207,23 +207,23 @@ local function asthmaticTrait()
 	local lowerBoundary = -2 * SBvars.AsthmaticCounter;
 	local upperBoundary = 2 * SBvars.AsthmaticCounter;
 	if (running or sprinting) and (temperature <= 10 or smoker) then
-		local counterIncrease = temperatureMultiplier * (outside and 1.2 or 1) * (smoker and 1.5 or 0.8) * (asthmatic and 1.5 or 0.8) * (sprinting and 1.5 or 1);
-		counterIncrease = counterIncrease * ((SBvars.AffinitySystem and modData.StartingTraits.Asthmatic) and SBvars.AffinitySystemGainMultiplier or 1);
-		modData.AsthmaticCounter = math.min(upperBoundary, modData.AsthmaticCounter + counterIncrease);
-		if debug() then print("ETW Logger | asthmaticTrait(): counterIncrease: "..counterIncrease..", modData.AsthmaticCounter: "..modData.AsthmaticCounter) end
-		if modData.AsthmaticCounter >= SBvars.AsthmaticCounter and not player:HasTrait("Asthmatic") then
-			player:getTraits():add("Asthmatic");
-			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Asthmatic"), true, HaloTextHelper.getColorRed()) end
-		elseif modData.AsthmaticCounter <= SBvars.AsthmaticCounter and player:HasTrait("Asthmatic") then
-			player:getTraits():remove("Asthmatic");
-			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Asthmatic"), false, HaloTextHelper.getColorGreen()) end
-		end
+		local counterDecrease = temperatureMultiplier * (outside and 1.2 or 1) * (smoker and 1.5 or 0.8) * (asthmatic and 1.5 or 0.8) * (sprinting and 1.5 or 1);
+		counterDecrease = counterDecrease * ((SBvars.AffinitySystem and modData.StartingTraits.Asthmatic) and SBvars.AffinitySystemGainMultiplier or 1);
+		modData.AsthmaticCounter = math.max(lowerBoundary, modData.AsthmaticCounter - counterDecrease);
+		if debug() then print("ETW Logger | asthmaticTrait(): counterDecrease: ".. counterDecrease ..", modData.AsthmaticCounter: "..modData.AsthmaticCounter) end
 	end
 	if not running and not sprinting and temperature >= 0 then
-		local counterDecrease = (1 + player:getPerkLevel(Perks.Fitness) * 0.1) * (smoker and 0.5 or 1) * (asthmatic and 0.5 or 1) * endurance;
-		counterDecrease = counterDecrease * ((SBvars.AffinitySystem and modData.StartingTraits.Asthmatic) and SBvars.AffinitySystemLoseDivider or 1);
-		modData.AsthmaticCounter = math.max(lowerBoundary, modData.AsthmaticCounter - counterDecrease);
-		if debug() then print("ETW Logger | asthmaticTrait(): counterDecrease: "..counterDecrease..", modData.AsthmaticCounter: "..modData.AsthmaticCounter) end
+		local counterIncrease = (1 + player:getPerkLevel(Perks.Fitness) * 0.1) * (smoker and 0.5 or 1) * (asthmatic and 0.5 or 1) * endurance;
+		counterIncrease = counterIncrease / ((SBvars.AffinitySystem and modData.StartingTraits.Asthmatic) and SBvars.AffinitySystemLoseDivider or 1);
+		modData.AsthmaticCounter = math.min(upperBoundary, modData.AsthmaticCounter + counterIncrease);
+		if debug() then print("ETW Logger | asthmaticTrait(): counterDecrease: ".. counterIncrease ..", modData.AsthmaticCounter: "..modData.AsthmaticCounter) end
+	end
+	if modData.AsthmaticCounter <= -SBvars.AsthmaticCounter and not player:HasTrait("Asthmatic") then
+		player:getTraits():add("Asthmatic");
+		if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Asthmatic"), true, HaloTextHelper.getColorRed()) end
+	elseif modData.AsthmaticCounter >= SBvars.AsthmaticCounter and player:HasTrait("Asthmatic") then
+		player:getTraits():remove("Asthmatic");
+		if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Asthmatic"), false, HaloTextHelper.getColorGreen()) end
 	end
 end
 
@@ -290,11 +290,11 @@ end
 
 local function initializeEvents(playerIndex, player)
 	Events.EveryOneMinute.Remove(coldTraits);
-	if SBvars.ColdIllnessSystem == true and not player:HasTrait("Resilient") and (SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLoseNegative) then
+	if ETWCommonLogicChecks.ColdIllnessSystemShouldExecute() then
 		Events.EveryOneMinute.Add(coldTraits);
 	end
 	Events.EveryOneMinute.Remove(foodSicknessTraits);
-	if SBvars.FoodSicknessSystem == true and not player:HasTrait("IronGut") and (SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLoseNegative) then
+	if ETWCommonLogicChecks.FoodSicknessSystemShouldExecute() then
 		Events.EveryOneMinute.Add(foodSicknessTraits) ;
 	end
 	Events.EveryTenMinutes.Remove(weightSystem);
@@ -302,11 +302,11 @@ local function initializeEvents(playerIndex, player)
 		Events.EveryTenMinutes.Add(weightSystem) ;
 	end
 	Events.EveryTenMinutes.Remove(painToleranceTrait);
-	if SBvars.PainTolerance == true and not player:HasTrait("PainTolerance") and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("PainTolerance") and SBvars.TraitsLockSystemCanGainPositive then
+	if ETWCommonLogicChecks.PainToleranceShouldExecute() and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("PainTolerance") then
 		Events.EveryTenMinutes.Add(painToleranceTrait);
 	end
 	Events.EveryOneMinute.Remove(asthmaticTrait);
-	if SBvars.Asthmatic == true and SBvars.TraitsLockSystemCanLoseNegative then Events.EveryOneMinute.Add(asthmaticTrait) end
+	if ETWCommonLogicChecks.AsthmaticShouldExecute() then Events.EveryOneMinute.Add(asthmaticTrait) end
 	Events.EveryOneMinute.Remove(recordMentalState);
 	Events.EveryOneMinute.Add(recordMentalState);
 end
@@ -315,6 +315,7 @@ local function clearEvents(character)
 	Events.EveryOneMinute.Remove(coldTraits);
 	Events.EveryOneMinute.Remove(foodSicknessTraits);
 	Events.EveryTenMinutes.Remove(weightSystem);
+	Events.EveryTenMinutes.Remove(painToleranceTrait);
 	Events.EveryOneMinute.Remove(asthmaticTrait);
 	Events.EveryOneMinute.Remove(recordMentalState);
 	if detailedDebug() then print("ETW Logger | System: clearEvents in ETWByHealth.lua") end

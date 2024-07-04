@@ -21,24 +21,4 @@ Moodles_PTBR {
 	Moodles_SleepHealthMoodle_Bad_lvl3 = "Muito longe da minha hora de dormir",
 	Moodles_SleepHealthMoodle_Bad_lvl4 = "Minha rotina de sono tá uma merda!",
 	Moodles_SleepHealthMoodle_Custom = "Dormindo a %1 h do horário ideal"
-
-	Moodles_SmokerGSMoodle_Good_lvl4 = "Não me emporto de fumar",
-	Moodles_SmokerGSMoodle_Good_lvl3 = "Raramente fumo",
-	Moodles_SmokerGSMoodle_Good_lvl2 = "Fumo às vezes, mas eu não sinto necessidade",
-	Moodles_SmokerGSMoodle_Good_lvl1 = "Fumo às vezes, e às vezes eu preciso disso",
-	Moodles_SmokerGSMoodle_Bad_lvl1 = "Fumo mais do que deveria, mas eu preciso disso",
-	Moodles_SmokerGSMoodle_Bad_lvl2 = "Fumo frequentemente",
-	Moodles_SmokerGSMoodle_Bad_lvl3 = "Fumo bastante, mas tá tudo bem",
-	Moodles_SmokerGSMoodle_Bad_lvl4 = "Fumo demais",
-	Moodles_SmokerGSMoodle_GainingSmoker = "Eu estou %1 % de ficar dependente."
-
-	Moodles_SmokerLSMoodle_Good_lvl4 = "Quase não sinto vontade de fumar",
-	Moodles_SmokerLSMoodle_Good_lvl3 = "Eu só quero fumar as vezes",
-	Moodles_SmokerLSMoodle_Good_lvl2 = "Minha mente é uma fortaleza",
-	Moodles_SmokerLSMoodle_Good_lvl1 = "Estou melhorando",
-	Moodles_SmokerLSMoodle_Bad_lvl1 = "Deus, eu preciso de um cigarro",
-	Moodles_SmokerLSMoodle_Bad_lvl2 = "Fumar é bom, mas eu preciso lutar contra isso",
-	Moodles_SmokerLSMoodle_Bad_lvl3 = "Cigarro é vida",
-	Moodles_SmokerLSMoodle_Bad_lvl4 = "Prefiro morrer do que parar de fumar",
-	Moodles_SmokerLSMoodle_LosingSmoker = "Estou a %1 % de não estar mais dependente."
 }

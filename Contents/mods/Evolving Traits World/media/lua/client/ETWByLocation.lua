@@ -1,4 +1,5 @@
 require "ETWModData";
+local ETWCommonLogicChecks = require "ETWCommonLogicChecks";
 
 local SBvars = SandboxVars.EvolvingTraitsWorld;
 
@@ -26,7 +27,7 @@ local function outdoorsman()
 	if player:isOutside() and player:getVehicle() == nil then
 		totalGain = totalGain * ((SBvars.AffinitySystem and modData.StartingTraits.Outdoorsman) and SBvars.AffinitySystemGainMultiplier or 1);
 		outdoorsmanModData.MinutesSinceOutside = math.max(0, outdoorsmanModData.MinutesSinceOutside - 3);
-		outdoorsmanModData.OutdoorsmanCounter = math.min(outdoorsmanModData.OutdoorsmanCounter + totalGain, SBvars.OutdoorsmanCounter * 10);
+		outdoorsmanModData.OutdoorsmanCounter = math.min(outdoorsmanModData.OutdoorsmanCounter + totalGain, SBvars.OutdoorsmanCounter * 2);
 		if debug() then print("ETW Logger | outdoorsman(): totalGain=" .. totalGain .. ". OutdoorsmanCounter=" .. outdoorsmanModData.OutdoorsmanCounter) end
 		if not player:HasTrait("Outdoorsman") and outdoorsmanModData.OutdoorsmanCounter >= SBvars.OutdoorsmanCounter then
 			player:getTraits():add("Outdoorsman");
@@ -36,9 +37,9 @@ local function outdoorsman()
 		local totalLose = totalGain * 0.1 * (1 + outdoorsmanModData.MinutesSinceOutside / 100) * SBvars.OutdoorsmanCounterLoseMultiplier;
 		totalLose = totalLose / ((SBvars.AffinitySystem and modData.StartingTraits.Outdoorsman) and SBvars.AffinitySystemLoseDivider or 1);
 		outdoorsmanModData.MinutesSinceOutside = math.min(900, outdoorsmanModData.MinutesSinceOutside + 1);
-		outdoorsmanModData.OutdoorsmanCounter = math.max(0, outdoorsmanModData.OutdoorsmanCounter - totalLose);
+		outdoorsmanModData.OutdoorsmanCounter = math.max(SBvars.OutdoorsmanCounter * -2, outdoorsmanModData.OutdoorsmanCounter - totalLose);
 		if debug() then print("ETW Logger | outdoorsman(): totalLose=" .. totalLose .. ". OutdoorsmanCounter=" .. outdoorsmanModData.OutdoorsmanCounter) end
-		if player:HasTrait("Outdoorsman") and outdoorsmanModData.OutdoorsmanCounter <= SBvars.OutdoorsmanCounter / 2 then
+		if player:HasTrait("Outdoorsman") and outdoorsmanModData.OutdoorsmanCounter <= -SBvars.OutdoorsmanCounter then
 			player:getTraits():remove("Outdoorsman");
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_outdoorsman"), false, HaloTextHelper.getColorRed()) end
 		end
@@ -117,11 +118,9 @@ end
 
 local function initializeEvents(playerIndex, player)
 	Events.EveryOneMinute.Remove(outdoorsman);
-	if SBvars.Outdoorsman == true and SBvars.TraitsLockSystemCanGainPositive then Events.EveryOneMinute.Add(outdoorsman) end
+	if ETWCommonLogicChecks.OutdoorsmanShouldExecute() then Events.EveryOneMinute.Add(outdoorsman) end
 	Events.EveryOneMinute.Remove(fearOfLocations);
-	if SBvars.FearOfLocationsSystem == true and (SBvars.TraitsLockSystemCanGainNegative or SBvars.TraitsLockSystemCanLoseNegative) then
-		Events.EveryOneMinute.Add(fearOfLocations);
-	end
+	if ETWCommonLogicChecks.FearOfLocationsSystemShouldExecute() then Events.EveryOneMinute.Add(fearOfLocations) end
 end
 
 local function clearEvents(character)

@@ -44,23 +44,34 @@ UI_EN = {
 	UI_trait_StickFighter = "Stick Fighter",
 	UI_trait_StickFighterDesc = "You have practiced stick fighting martial arts",
 
-	UI_EvolvingTraitsWorld_Options_GatherDebug = "Gather Debug Data",
-	UI_EvolvingTraitsWorld_Options_GatherDebug_tooltip = "Enables prints into console.txt. Useful for debug purposes, also allows you to find data about internal counters. Ctrl+F for 'ETW' to find the loggers.",
-	UI_EvolvingTraitsWorld_Options_GatherDetailedDebug = "Gather Detailed Debug Data",
-	UI_EvolvingTraitsWorld_Options_GatherDetailedDebug_tooltip = "Enables additional prints into console.txt. Useful only for debug purposes, doesn't show any additional data about counters, ONLY useful for bug reports or trying to figure pinpoint what's wrong. Adds a lot of unneeded info into console.txt, so restart game sometimes to keep it from getting too big so it won't (possibly) lag the game. Ctrl+F for 'ETW' to find the loggers.",
-	UI_EvolvingTraitsWorld_Options_EnableNotifications = "Enable Trait Notifications",
-	UI_EvolvingTraitsWorld_Options_EnableNotifications_tooltip = "Show Colored Arrow above your character whenever you gain or lose trait.",
-	UI_EvolvingTraitsWorld_Options_EnableDelayedNotifications = "Enable Delayed Trait Notifications",
-	UI_EvolvingTraitsWorld_Options_EnableDelayedNotifications_tooltip = "This only does anything if you have 'Delayed Traits System' enabled. If it's enabled and this option is enabled, you'll get a notification when you qualify for a trait, and it's added to list of delayed traits",
-	UI_EvolvingTraitsWorld_DelayedNotificationsStringAdd = "Qualified for gaining ",
-	UI_EvolvingTraitsWorld_DelayedNotificationsStringRemove = "Qualified for losing ",
-	___note_to_translators = "UI_EvolvingTraitsWorld_DelayedNotificationsStringAdd and UI_EvolvingTraitsWorld_DelayedNotificationsStringRemove is used in combination with trait names, for example 'Qualified for gaining Hoarder' or 'Qualified for losing Unlucky'. You get the idea."
-	UI_EvolvingTraitsWorld_Options_EnableBloodLustMoodle = "Enable Bloodlust Moodle",
-	UI_EvolvingTraitsWorld_Options_EnableBloodLustMoodle_tooltip = "Will take up to 1 in-game hour to update since moodle is updated on hourly basis.",
-	UI_EvolvingTraitsWorld_Options_EnableSleepHealthMoodle = "Enable Sleep Health Moodle",
-	UI_EvolvingTraitsWorld_Options_EnableSleepHealthMoodle_tooltip = "Shows if you're sleeping within your optimal hours or not. Only active while character is sleeping.",
-	UI_EvolvingTraitsWorld_Options_EnableSmokerMoodle = "Enable Smoker Moodle",
-	UI_EvolvingTraitsWorld_Options_EnableSmokerMoodle_tooltip = "Shows if when you're close to gaining or loosing Smoker trait.",
-	UI_EvolvingTraitsWorld_Options_SmokerMoodleVisibilityValue = "When Smoker Moodle Shows up",
-	UI_EvolvingTraitsWorld_Options_SmokerMoodleVisibilityValue_tooltip = "This controls when moodle shows up. Setting this to 20%, for example, will make moodle show up when you're 20% away from earning or loosing Smoker. Setting to 100 will leave smoker moodle up always. Limited by Sandbox Settings, so if Sandbox Settings allow max of 40%, and you set 60% here, it'll still show up only at 40%. However, if server has 70% for example, and you wish to show ot much less, you can lower the value, for example, to 20%.",
+	UI_ETW_Options_GatherDebug = "Gather Debug Data",
+	UI_ETW_Options_GatherDebug_tooltip = "Enables prints into console.txt. Useful for debug purposes, also allows you to find data about internal counters. Ctrl+F for 'ETW' to find the loggers.",
+	UI_ETW_Options_GatherDetailedDebug = "Gather Detailed Debug Data",
+	UI_ETW_Options_GatherDetailedDebug_tooltip = "Enables additional prints into console.txt. Useful only for debug purposes, doesn't show any additional data about counters, ONLY useful for bug reports or trying to figure pinpoint what's wrong. Adds a lot of unneeded info into console.txt, so restart game sometimes to keep it from getting too big so it won't (possibly) lag the game. Ctrl+F for 'ETW' to find the loggers.",
+	UI_ETW_Options_EnableNotifications = "Enable Trait Notifications",
+	UI_ETW_Options_EnableNotifications_tooltip = "Show Colored Arrow above your character whenever you gain or lose trait.",
+	UI_ETW_Options_EnableDelayedNotifications = "Enable Delayed Trait Notifications",
+	UI_ETW_Options_EnableDelayedNotifications_tooltip = "This only does anything if you have 'Delayed Traits System' enabled. If it's enabled and this option is enabled, you'll get a notification when you qualify for a trait, and it's added to list of delayed traits",
+	UI_ETW_DelayedNotificationsStringAdd = "Qualified for gaining ",
+	UI_ETW_DelayedNotificationsStringRemove = "Qualified for losing ",
+	___note_to_translators = "UI_ETW_DelayedNotificationsStringAdd and UI_ETW_DelayedNotificationsStringRemove is used in combination with trait names, for example 'Qualified for gaining Hoarder' or 'Qualified for losing Unlucky'. You get the idea."
+	UI_ETW_Options_EnableBloodLustMoodle = "Enable Bloodlust Moodle",
+	UI_ETW_Options_EnableBloodLustMoodle_tooltip = "Will take up to 1 in-game hour to update since moodle is updated on hourly basis.",
+	UI_ETW_Options_EnableSleepHealthMoodle = "Enable Sleep Health Moodle",
+	UI_ETW_Options_EnableSleepHealthMoodle_tooltip = "Shows if you're sleeping within your optimal hours or not. Only active while character is sleeping.",
+	UI_ETW_Options_UIWidth = "[UI] Character page width",
+	UI_ETW_Options_UIWidth_tooltip = "Width of character page in pixels. If you play in english language default should work fine for you, but in other languages it can be weird so if you need more space, increase it here.",
+	UI_ETW_Options_TraitColumns = "[UI] Trait Columns",
+	UI_ETW_Options_TraitColumns_tooltip = "How many columns are there in the UI on character page. Default setting should work good if you play in English language, but if text overlaps in other languages, you might want to reduce this value"
+
+	UI_ETW_GainTooltip = "You will gain the trait when bar is around here (or qualify for gaining it, if Delayed Traits System is on and this trait in that system)",
+	UI_ETW_LooseTooltip = "You will lose the trait when bar is around here (or qualify for losing it, if Delayed Traits System is on and this trait in that system)",
+	UI_ETW_GainLoseTooltip = "You will gain/lose the trait when bar is around here (or qualify for gaining/losing it, if Delayed Traits System is on and this trait in that system)",
+	UI_ETW_ListOfDelayedTraits = "List of Delayed Traits: ",
+
+	UI_ETW_Chance = "in",
+	___note_to_translators = "UI_ETW_Chance is used in displaying chances, so for example '1 in 300' or '1 in 50300', etc."
+
+	UI_ETW_ProgressPageDisabled = "ETW page is disabled in sandbox settings",
+	UI_ETW = "ETW",
 }

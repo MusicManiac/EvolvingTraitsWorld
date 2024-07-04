@@ -21,24 +21,4 @@ Moodles_RU {
 	Moodles_SleepHealthMoodle_Bad_lvl3 = "Не соответствует моему графику сна",
 	Moodles_SleepHealthMoodle_Bad_lvl4 = "Мой график полностью нарушен",
 	Moodles_SleepHealthMoodle_Custom = "Время сна на %1 час меньше оптимального"
-
-	Moodles_SmokerGSMoodle_Good_lvl4 = "Меня не волнует курение",
-	Moodles_SmokerGSMoodle_Good_lvl3 = "Я курю редко, но это неважно",
-	Moodles_SmokerGSMoodle_Good_lvl2 = "Я иногда курю, но у меня нет желания",
-	Moodles_SmokerGSMoodle_Good_lvl1 = "Я иногда курю, и иногда мне это нужно",
-	Moodles_SmokerGSMoodle_Bad_lvl1 = "Я курю больше, чем следовало бы, но мне это нужно",
-	Moodles_SmokerGSMoodle_Bad_lvl2 = "Я часто курю",
-	Moodles_SmokerGSMoodle_Bad_lvl3 = "Я курю очень часто, но это нормально",
-	Moodles_SmokerGSMoodle_Bad_lvl4 = "Да, я много курю",
-	Moodles_SmokerGSMoodle_GainingSmoker = "Я на %1 % далек от зависимости".
-
-	Moodles_SmokerLSMoodle_Good_lvl4 = "Мне почти не хочется курить",
-	Moodles_SmokerLSMoodle_Good_lvl3 = "Я хочу курить только иногда",
-	Moodles_SmokerLSMoodle_Good_lvl2 = "Мой разум - крепость",
-	Moodles_SmokerLSMoodle_Good_lvl1 = "Становится лучше",
-	Moodles_SmokerLSMoodle_Bad_lvl1 = "Боже, как бы я хотел курить прямо сейчас",
-	Moodles_SmokerLSMoodle_Bad_lvl2 = "Курение - это отлично, но я должен бороться со своей зависимостью",
-	Moodles_SmokerLSMoodle_Bad_lvl3 = "Курение - часть моей жизни",
-	Moodles_SmokerLSMoodle_Bad_lvl4 = "Я скорее умру, чем брошу курить",
-	Moodles_SmokerLSMoodle_LosingSmoker = "Я на %1 % далек от избавления от пагубной привычки".
 }

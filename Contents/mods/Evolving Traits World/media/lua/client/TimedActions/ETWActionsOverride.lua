@@ -1,13 +1,14 @@
 ETWActionsOverride = {};
 
 local ETWCommonFunctions = require "ETWCommonFunctions";
+local ETWCommonLogicChecks = require "ETWCommonLogicChecks";
 
 local SBvars = SandboxVars.EvolvingTraitsWorld;
 local notification = function() return EvolvingTraitsWorld.settings.EnableNotifications end
 local delayedNotification = function() return EvolvingTraitsWorld.settings.EnableDelayedNotifications end
 local debug = function() return EvolvingTraitsWorld.settings.GatherDebug end
 local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetailedDebug end
-local noTraitsLock = function() return (SBvars.TraitsLockSystemCanGainNegative or SBvars.TraitsLockSystemCanLoseNegative or SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLosePositive) end
+local noTraitsLock = function() return (SBvars.TraitsLockSystemCanGainNegative or SBvars.TraitsLockSystemCanLoseNegative or SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLoosePositive) end
 
 local function applyXPBoost(player, perk, boostLevel)
 	local newBoost = player:getXp():getPerkBoost(perk) + boostLevel;
@@ -90,7 +91,7 @@ function ISFixAction:perform()
 	local conditionBefore = self.item:getCondition();
 	original_fix_perform(self);
 	local conditionAfter = self.item:getCondition(); -- calculated by FixingManager locally
-	if conditionAfter > conditionBefore and isVehiclePart(self) and ((SBvars.Mechanics == true and not player:HasTrait("Mechanics")) or (SBvars.BodyWorkEnthusiast == true and not player:HasTrait("BodyWorkEnthusiast"))) and SBvars.TraitsLockSystemCanGainPositive then
+	if conditionAfter > conditionBefore and isVehiclePart(self) and (ETWCommonLogicChecks.MechanicsShouldExecute() or ETWCommonLogicChecks.BodyWorkEnthusiastShouldExecute()) then
 		modData.VehiclePartRepairs = modData.VehiclePartRepairs + (conditionAfter - conditionBefore);
 		if detailedDebug() then print("ETW Logger | ISFixAction.perform(): car part "..conditionBefore.."->"..conditionAfter.." VehiclePartRepairs="..modData.VehiclePartRepairs) end
 		if not getActivatedMods():contains("EvolvingTraitsWorldDisableBodyWorkEnthusiast") then ETWActionsOverride.bodyworkEnthusiastCheck() end
@@ -107,19 +108,21 @@ end
 
 local original_chop_perform = ISChopTreeAction.perform;
 function ISChopTreeAction:perform()
-	if detailedDebug() then print("ETW Logger | ISChopTreeAction.perform(): caught") end
-	local player = self.character;
-	local modData = player:getModData().EvolvingTraitsWorld;
-	modData.TreesChopped = modData.TreesChopped + 1;
-	if debug() then print("ETW Logger | ISChopTreeAction.perform(): modData.TreesChopped = "..modData.TreesChopped) end
-	if not player:HasTrait("Axeman") and modData.TreesChopped >= SBvars.AxemanTrees and SBvars.TraitsLockSystemCanGainPositive then
-		if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Axeman")) then
-			player:getTraits():add("Axeman");
-			if notification == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_axeman"), true, HaloTextHelper.getColorGreen()) end
-		end
-		if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Axeman") then
-			if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringAdd")..getText("UI_trait_axeman"), true, HaloTextHelper.getColorGreen()) end
-			ETWCommonFunctions.addTraitToDelayTable(modData, "Axeman", player, true)
+	if ETWCommonLogicChecks.AxemanShouldExecute() then
+		if detailedDebug() then print("ETW Logger | ISChopTreeAction.perform(): caught") end
+		local player = self.character;
+		local modData = player:getModData().EvolvingTraitsWorld;
+		modData.TreesChopped = modData.TreesChopped + 1;
+		if debug() then print("ETW Logger | ISChopTreeAction.perform(): modData.TreesChopped = "..modData.TreesChopped) end
+		if modData.TreesChopped >= SBvars.AxemanTrees then
+			if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Axeman")) then
+				player:getTraits():add("Axeman");
+				if notification == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_axeman"), true, HaloTextHelper.getColorGreen()) end
+			end
+			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Axeman") then
+				if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringAdd")..getText("UI_trait_axeman"), true, HaloTextHelper.getColorGreen()) end
+				ETWCommonFunctions.addTraitToDelayTable(modData, "Axeman", player, true)
+			end
 		end
 	end
 	original_chop_perform(self);
@@ -143,7 +146,7 @@ function ISInventoryTransferAction:perform()
 			if detailedDebug() then print("ETW Logger | ISInventoryTransferAction.perform(): Moving an item with weight of "..itemWeight) end
 			if debug() then print("ETW Logger | ISInventoryTransferAction.perform(): Moved weight: "..transferModData.WeightTransferred..", Moved Items: "..transferModData.ItemsTransferred) end
 			original_transfer_perform(self);
-			if player:HasTrait("Disorganized") and transferModData.WeightTransferred >= SBvars.InventoryTransferSystemWeight * 0.6 and transferModData.ItemsTransferred >= SBvars.InventoryTransferSystemItems * 0.3 and SBvars.TraitsLockSystemCanLoseNegative then
+			if player:HasTrait("Disorganized") and transferModData.WeightTransferred >= SBvars.InventoryTransferSystemWeight * 0.66 and transferModData.ItemsTransferred >= SBvars.InventoryTransferSystemItems * 0.33 and SBvars.TraitsLockSystemCanLoseNegative then
 				if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Disorganized")) then
 					player:getTraits():remove("Disorganized");
 					if notification == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Disorganized"), false, HaloTextHelper.getColorGreen()) end
@@ -153,7 +156,7 @@ function ISInventoryTransferAction:perform()
 					ETWCommonFunctions.addTraitToDelayTable(modData, "Disorganized", player, false)
 				end
 			end
-			if not player:HasTrait("Disorganized") and not player:HasTrait("Organized") and transferModData.WeightTransferred >= SBvars.InventoryTransferSystemWeight and transferModData.ItemsTransferred >= SBvars.InventoryTransferSystemItems * 0.6 and SBvars.TraitsLockSystemCanGainPositive then
+			if not player:HasTrait("Disorganized") and not player:HasTrait("Organized") and transferModData.WeightTransferred >= SBvars.InventoryTransferSystemWeight and transferModData.ItemsTransferred >= SBvars.InventoryTransferSystemItems * 0.66 and SBvars.TraitsLockSystemCanGainPositive then
 				if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Organized")) then
 					player:getTraits():add("Organized");
 					-- UI_trait_Packmule is internal string name
@@ -165,7 +168,7 @@ function ISInventoryTransferAction:perform()
 					ETWCommonFunctions.addTraitToDelayTable(modData, "Organized", player, true)
 				end
 			end
-			if player:HasTrait("AllThumbs") and transferModData.WeightTransferred >= SBvars.InventoryTransferSystemWeight * 0.3 and transferModData.ItemsTransferred >= SBvars.InventoryTransferSystemItems * 0.6 and SBvars.TraitsLockSystemCanLoseNegative then
+			if player:HasTrait("AllThumbs") and transferModData.WeightTransferred >= SBvars.InventoryTransferSystemWeight * 0.33 and transferModData.ItemsTransferred >= SBvars.InventoryTransferSystemItems * 0.66 and SBvars.TraitsLockSystemCanLoseNegative then
 				if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("AllThumbs")) then
 					player:getTraits():remove("AllThumbs");
 					if notification == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_AllThumbs"), false, HaloTextHelper.getColorGreen()) end
@@ -175,7 +178,7 @@ function ISInventoryTransferAction:perform()
 					ETWCommonFunctions.addTraitToDelayTable(modData, "AllThumbs", player, false)
 				end
 			end
-			if not player:HasTrait("Dextrous") and transferModData.WeightTransferred >= SBvars.InventoryTransferSystemWeight * 0.6 and transferModData.ItemsTransferred >= SBvars.InventoryTransferSystemItems and SBvars.TraitsLockSystemCanGainPositive then
+			if not player:HasTrait("Dextrous") and transferModData.WeightTransferred >= SBvars.InventoryTransferSystemWeight * 0.66 and transferModData.ItemsTransferred >= SBvars.InventoryTransferSystemItems and SBvars.TraitsLockSystemCanGainPositive then
 				if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Dextrous")) then
 					player:getTraits():add("Dextrous");
 					if notification == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Dexterous"), true, HaloTextHelper.getColorGreen()) end
@@ -217,45 +220,47 @@ end
 
 local original_forageSystem_addOrDropItems = forageSystem.addOrDropItems;
 function forageSystem.addOrDropItems(_character, _inventory, _items, _discardItems)
-	local player = getPlayer();
-	if not _discardItems then
-		for item in iterList(_items) do
-			if detailedDebug() then print("ETW Logger | forageSystem.addOrDropItems(): picking up foraging item: "..item:getFullType()) end
-			local herbs = {
-				-- Medical herbs
-				"Base.Plantain",
-				"Base.Comfrey",
-				"Base.WildGarlic",
-				"Base.CommonMallow",
-				"Base.LemonGrass",
-				"Base.BlackSage",
-				"Base.Ginseng",
-				-- Wild Plants
-				"Base.Violets",
-				"Base.GrapeLeaves",
-				"Base.Rosehips",
-				-- Wild Herbs
-				"Base.Basil",
-				"Base.Chives",
-				"Base.Cilantro",
-				"Base.Oregano",
-				"Base.Parsley",
-				"Base.Rosemary",
-				"Base.Sage",
-				"Base.Thyme",
-				-- Testing
-				--"Base.Twigs",
-			}
-			for _, herb in pairs(herbs) do
-				if herb == item:getFullType() then
-					if detailedDebug() then print("ETW Logger | forageSystem.addOrDropItems(): confirmed that it's a herb: "..item:getFullType()) end
-					local modData = player:getModData().EvolvingTraitsWorld;
-					modData.HerbsPickedUp = modData.HerbsPickedUp + ((SBvars.AffinitySystem and modData.StartingTraits.Herbalist) and 1 * SBvars.AffinitySystemGainMultiplier or 1);
-					if debug() then print("ETW Logger | forageSystem.addOrDropItems(): modData.HerbsPickedUp: "..modData.HerbsPickedUp) end
-					if not player:HasTrait("Herbalist") and modData.HerbsPickedUp >= SBvars.HerbalistHerbsPicked and SBvars.TraitsLockSystemCanGainPositive then
-						player:getTraits():add("Herbalist");
-						addRecipe(player, "Herbalist");
-						if notification == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Herbalist"), true, HaloTextHelper.getColorGreen()) end
+	if ETWCommonLogicChecks.HerbalistShouldExecute() then
+		local player = getPlayer();
+		if not _discardItems then
+			for item in iterList(_items) do
+				if detailedDebug() then print("ETW Logger | forageSystem.addOrDropItems(): picking up foraging item: "..item:getFullType()) end
+				local herbs = {
+					-- Medical herbs
+					"Base.Plantain",
+					"Base.Comfrey",
+					"Base.WildGarlic",
+					"Base.CommonMallow",
+					"Base.LemonGrass",
+					"Base.BlackSage",
+					"Base.Ginseng",
+					-- Wild Plants
+					"Base.Violets",
+					"Base.GrapeLeaves",
+					"Base.Rosehips",
+					-- Wild Herbs
+					"Base.Basil",
+					"Base.Chives",
+					"Base.Cilantro",
+					"Base.Oregano",
+					"Base.Parsley",
+					"Base.Rosemary",
+					"Base.Sage",
+					"Base.Thyme",
+					-- Testing
+					--"Base.Twigs",
+				}
+				for _, herb in pairs(herbs) do
+					if herb == item:getFullType() then
+						if detailedDebug() then print("ETW Logger | forageSystem.addOrDropItems(): confirmed that it's a herb: "..item:getFullType()) end
+						local modData = player:getModData().EvolvingTraitsWorld;
+						modData.HerbsPickedUp = modData.HerbsPickedUp + ((SBvars.AffinitySystem and modData.StartingTraits.Herbalist) and 1 * SBvars.AffinitySystemGainMultiplier or 1);
+						if debug() then print("ETW Logger | forageSystem.addOrDropItems(): modData.HerbsPickedUp: "..modData.HerbsPickedUp) end
+						if not player:HasTrait("Herbalist") and modData.HerbsPickedUp >= SBvars.HerbalistHerbsPicked and SBvars.TraitsLockSystemCanGainPositive then
+							player:getTraits():add("Herbalist");
+							addRecipe(player, "Herbalist");
+							if notification == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Herbalist"), true, HaloTextHelper.getColorGreen()) end
+						end
 					end
 				end
 			end

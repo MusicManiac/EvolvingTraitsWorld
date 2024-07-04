@@ -1,6 +1,7 @@
 require "ETWModData";
 local ETWMoodles = require "ETWMoodles";
 local ETWCommonFunctions = require "ETWCommonFunctions";
+local ETWCommonLogicChecks = require "ETWCommonLogicChecks";
 
 local SBvars = SandboxVars.EvolvingTraitsWorld;
 
@@ -8,7 +9,6 @@ local notification = function() return EvolvingTraitsWorld.settings.EnableNotifi
 local delayedNotification = function() return EvolvingTraitsWorld.settings.EnableDelayedNotifications end
 local debug = function() return EvolvingTraitsWorld.settings.GatherDebug end
 local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetailedDebug end
-local noTraitsLock = function() return (SBvars.TraitsLockSystemCanGainNegative or SBvars.TraitsLockSystemCanLoseNegative or SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLosePositive) end
 
 local function catEyes()
 	local player = getPlayer();
@@ -131,7 +131,7 @@ local function sleepSystem()
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_MoreSleep"), true, HaloTextHelper.getColorRed()) end
 		end
 	else
-		if player:HasTrait("NeedsLessSleep") and SBvars.TraitsLockSystemCanLosePositive then
+		if player:HasTrait("NeedsLessSleep") and SBvars.TraitsLockSystemCanLoosePositive then
 			player:getTraits():remove("NeedsLessSleep")
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_LessSleep"), false, HaloTextHelper.getColorRed()) end
 		end
@@ -158,13 +158,12 @@ local function smoker()
 	if SBvars.AffinitySystem and modData.StartingTraits.Smoker then
 		addictionDecay = addictionDecay / SBvars.AffinitySystemLoseDivider;
 	end
-	smokerModData.SmokingAddiction = math.max(0, smokerModData.SmokingAddiction - addictionDecay);
-	ETWMoodles.smokerMoodleUpdate(player, smokerModData.SmokingAddiction);
+	smokerModData.SmokingAddiction = math.max(SBvars.SmokerCounter * -2, smokerModData.SmokingAddiction - addictionDecay);
 	if debug() then print("ETW Logger | smoker(): smoking addictionDecay: "..addictionDecay..", modData.SmokingAddiction: ".. smokerModData.SmokingAddiction) end
 	if smokerModData.SmokingAddiction >= SBvars.SmokerCounter and not player:HasTrait("Smoker") and SBvars.TraitsLockSystemCanGainNegative then
 		player:getTraits():add("Smoker")
 		if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Smoker"), true, HaloTextHelper.getColorRed()) end
-	elseif smokerModData.SmokingAddiction <= SBvars.SmokerCounter / 2 and player:HasTrait("Smoker") and SBvars.TraitsLockSystemCanLoseNegative then
+	elseif smokerModData.SmokingAddiction <= -SBvars.SmokerCounter and player:HasTrait("Smoker") and SBvars.TraitsLockSystemCanLoseNegative then
 		stats:setStressFromCigarettes(0);
 		player:getTraits():remove("Smoker")
 		if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Smoker"), false, HaloTextHelper.getColorGreen()) end
@@ -185,15 +184,13 @@ end
 
 local function initializeEvents(playerIndex, player)
 	Events.EveryOneMinute.Remove(catEyes);
-	if SBvars.CatEyes == true and not player:HasTrait("NightVision") and SBvars.TraitsLockSystemCanGainPositive then Events.EveryOneMinute.Add(catEyes) end
+	if ETWCommonLogicChecks.CatEyesShouldExecute() then Events.EveryOneMinute.Add(catEyes) end
 	Events.EveryTenMinutes.Remove(sleepSystem);
-	if SBvars.SleepSystem == true and noTraitsLock() then
-		Events.EveryTenMinutes.Add(sleepSystem)
-	end
+	if ETWCommonLogicChecks.SleepSystemShouldExecute() then	Events.EveryTenMinutes.Add(sleepSystem)	end
 	Events.EveryOneMinute.Remove(smoker);
-	if SBvars.Smoker == true and (SBvars.TraitsLockSystemCanGainNegative or SBvars.TraitsLockSystemCanLoseNegative) then Events.EveryOneMinute.Add(smoker) end
+	if ETWCommonLogicChecks.SmokerShouldExecute() then Events.EveryOneMinute.Add(smoker) end
 	Events.EveryDays.Remove(herbalist);
-	if SBvars.Herbalist == true and SBvars.TraitsLockSystemCanLosePositive then Events.EveryDays.Add(herbalist) end
+	if ETWCommonLogicChecks.HerbalistShouldExecute() then Events.EveryDays.Add(herbalist) end
 end
 
 local function clearEvents(character)

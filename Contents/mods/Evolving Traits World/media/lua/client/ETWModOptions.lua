@@ -3,71 +3,73 @@ EvolvingTraitsWorld.settings = EvolvingTraitsWorld.SETTINGS or {};
 
 if ModOptions and ModOptions.getInstance then
 	local function onModOptionsApply(optionValues)
-		local SmokerMoodleVisibilityValues = { 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 };
+		local UIWidth = { 500, 550, 600, 650, 700, 750, 800, 850, 900 };
+		local traitColumns = { 1, 2, 3, 4, 5, 6};
 		EvolvingTraitsWorld.settings.GatherDebug = optionValues.settings.options.GatherDebug;
 		EvolvingTraitsWorld.settings.GatherDetailedDebug = optionValues.settings.options.GatherDetailedDebug;
 		EvolvingTraitsWorld.settings.EnableNotifications = optionValues.settings.options.EnableNotifications;
 		EvolvingTraitsWorld.settings.EnableDelayedNotifications = optionValues.settings.options.EnableDelayedNotifications;
 		EvolvingTraitsWorld.settings.EnableBloodLustMoodle = optionValues.settings.options.EnableBloodLustMoodle;
 		EvolvingTraitsWorld.settings.EnableSleepHealthMoodle = optionValues.settings.options.EnableSleepHealthMoodle;
-		EvolvingTraitsWorld.settings.EnableSmokerMoodle = optionValues.settings.options.EnableSmokerMoodle;
-		EvolvingTraitsWorld.settings.SmokerMoodleVisibilityValue = SmokerMoodleVisibilityValues[optionValues.settings.options.SmokerMoodleVisibilityValue];
+		EvolvingTraitsWorld.settings.UIWidth = UIWidth[optionValues.settings.options.UIWidth];
+		EvolvingTraitsWorld.settings.TraitColumns = traitColumns[optionValues.settings.options.TraitColumns];
 	end
 	local SETTINGS = {
 		options_data = {
 			GatherDebug = {
-				name = "UI_EvolvingTraitsWorld_Options_GatherDebug",
-				tooltip = "UI_EvolvingTraitsWorld_Options_GatherDebug_tooltip",
+				name = "UI_ETW_Options_GatherDebug",
+				tooltip = "UI_ETW_Options_GatherDebug_tooltip",
 				default = false,
 				OnApplyMainMenu = onModOptionsApply,
 				OnApplyInGame = onModOptionsApply,
 			},
 			GatherDetailedDebug = {
-				name = "UI_EvolvingTraitsWorld_Options_GatherDetailedDebug",
-				tooltip = "UI_EvolvingTraitsWorld_Options_GatherDetailedDebug_tooltip",
+				name = "UI_ETW_Options_GatherDetailedDebug",
+				tooltip = "UI_ETW_Options_GatherDetailedDebug_tooltip",
 				default = false,
 				OnApplyMainMenu = onModOptionsApply,
 				OnApplyInGame = onModOptionsApply,
 			},
 			EnableNotifications = {
-				name = "UI_EvolvingTraitsWorld_Options_EnableNotifications",
-				tooltip = "UI_EvolvingTraitsWorld_Options_EnableNotifications_tooltip",
+				name = "UI_ETW_Options_EnableNotifications",
+				tooltip = "UI_ETW_Options_EnableNotifications_tooltip",
 				default = true,
 				OnApplyMainMenu = onModOptionsApply,
 				OnApplyInGame = onModOptionsApply,
 			},
 			EnableDelayedNotifications = {
-				name = "UI_EvolvingTraitsWorld_Options_EnableDelayedNotifications",
-				tooltip = "UI_EvolvingTraitsWorld_Options_EnableDelayedNotifications_tooltip",
+				name = "UI_ETW_Options_EnableDelayedNotifications",
+				tooltip = "UI_ETW_Options_EnableDelayedNotifications_tooltip",
 				default = true,
 				OnApplyMainMenu = onModOptionsApply,
 				OnApplyInGame = onModOptionsApply,
 			},
 			EnableBloodLustMoodle = {
-				name = "UI_EvolvingTraitsWorld_Options_EnableBloodLustMoodle",
-				tooltip = "UI_EvolvingTraitsWorld_Options_EnableBloodLustMoodle_tooltip",
+				name = "UI_ETW_Options_EnableBloodLustMoodle",
+				tooltip = "UI_ETW_Options_EnableBloodLustMoodle_tooltip",
 				default = true,
 				OnApplyMainMenu = onModOptionsApply,
 				OnApplyInGame = onModOptionsApply,
 			},
 			EnableSleepHealthMoodle = {
-				name = "UI_EvolvingTraitsWorld_Options_EnableSleepHealthMoodle",
-				tooltip = "UI_EvolvingTraitsWorld_Options_EnableSleepHealthMoodle_tooltip",
+				name = "UI_ETW_Options_EnableSleepHealthMoodle",
+				tooltip = "UI_ETW_Options_EnableSleepHealthMoodle_tooltip",
 				default = true,
 				OnApplyMainMenu = onModOptionsApply,
 				OnApplyInGame = onModOptionsApply,
 			},
-			EnableSmokerMoodle = {
-				name = "UI_EvolvingTraitsWorld_Options_EnableSmokerMoodle",
-				tooltip = "UI_EvolvingTraitsWorld_Options_EnableSmokerMoodle_tooltip",
-				default = true,
+			UIWidth = {
+				"500", "550", "600", "650", "700", "750", "800", "850", "900",
+				name = "UI_ETW_Options_UIWidth",
+				tooltip = "UI_ETW_Options_UIWidth_tooltip",
+				default = 5,
 				OnApplyMainMenu = onModOptionsApply,
 				OnApplyInGame = onModOptionsApply,
 			},
-			SmokerMoodleVisibilityValue = {
-				"10", "20", "30", "40", "50", "60", "70", "80", "90", "100",
-				name = "UI_EvolvingTraitsWorld_Options_SmokerMoodleVisibilityValue",
-				tooltip = "UI_EvolvingTraitsWorld_Options_SmokerMoodleVisibilityValue_tooltip",
+			TraitColumns = {
+				"1", "2", "3", "4", "5", "6",
+				name = "UI_ETW_Options_TraitColumns",
+				tooltip = "UI_ETW_Options_TraitColumns_tooltip",
 				default = 4,
 				OnApplyMainMenu = onModOptionsApply,
 				OnApplyInGame = onModOptionsApply,

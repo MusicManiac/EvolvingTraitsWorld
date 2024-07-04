@@ -1,6 +1,7 @@
 require "ETWModData";
 local ETWMoodles = require "ETWMoodles";
 local ETWCommonFunctions = require "ETWCommonFunctions";
+local ETWCommonLogicChecks = require "ETWCommonLogicChecks";
 
 local SBvars = SandboxVars.EvolvingTraitsWorld;
 
@@ -10,55 +11,50 @@ local debug = function() return EvolvingTraitsWorld.settings.GatherDebug end
 local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetailedDebug end
 
 local function bloodlustKill(zombie)
-	if SBvars.Bloodlust == true then
-		local player = getPlayer();
-		if player:isLocalPlayer() == false then -- checks if it's NPC doing stuff
-			if detailedDebug() then print("ETW Logger | bloodlustKill(): kill by NPC") end
-		else
-			if detailedDebug() then print("ETW Logger | bloodlustKill(): kill by player") end
-			local bloodlust = player:getModData().EvolvingTraitsWorld.BloodlustSystem;
-			local distance = player:DistTo(zombie);
-			if distance <= 10 then
-				bloodlust.LastKillTimestamp = player:getHoursSurvived();
-				if bloodlust.BloodlustMeter <= 36 then
-					bloodlust.BloodlustMeter = bloodlust.BloodlustMeter + math.min(1 / distance, 1) * SBvars.BloodlustMeterFillMultiplier;
-					if detailedDebug() then print("ETW Logger | bloodlustKill(): BloodlustMeter="..bloodlust.BloodlustMeter) end
-				else
-					bloodlust.BloodlustMeter = bloodlust.BloodlustMeter + math.min(1 / distance, 1) * SBvars.BloodlustMeterFillMultiplier * 0.1;
-					if detailedDebug() then print("ETW Logger | bloodlustKill(): BloodlustMeter (soft-capped)="..bloodlust.BloodlustMeter) end
-				end
-				ETWMoodles.bloodlustMoodleUpdate(player, false);
+	local player = getPlayer();
+	if player:isLocalPlayer() == false then -- checks if it's NPC doing stuff
+		if detailedDebug() then print("ETW Logger | bloodlustKill(): kill by NPC") end
+	else
+		if detailedDebug() then print("ETW Logger | bloodlustKill(): kill by player") end
+		local bloodlust = player:getModData().EvolvingTraitsWorld.BloodlustSystem;
+		local distance = player:DistTo(zombie);
+		if distance <= 10 then
+			bloodlust.LastKillTimestamp = player:getHoursSurvived();
+			if bloodlust.BloodlustMeter <= 36 then
+				bloodlust.BloodlustMeter = bloodlust.BloodlustMeter + math.min(1 / distance, 1) * SBvars.BloodlustMeterFillMultiplier;
+				if detailedDebug() then print("ETW Logger | bloodlustKill(): BloodlustMeter="..bloodlust.BloodlustMeter) end
+			else
+				bloodlust.BloodlustMeter = bloodlust.BloodlustMeter + math.min(1 / distance, 1) * SBvars.BloodlustMeterFillMultiplier * 0.1;
+				if detailedDebug() then print("ETW Logger | bloodlustKill(): BloodlustMeter (soft-capped)="..bloodlust.BloodlustMeter) end
 			end
-
+			ETWMoodles.bloodlustMoodleUpdate(player, false);
 		end
+
 	end
 end
 
 local function bloodlustTime()
-	if SBvars.Bloodlust == true then
-		local player = getPlayer();
-		local modData = player:getModData().EvolvingTraitsWorld;
-		local bloodlustModData = modData.BloodlustSystem;
-		bloodlustModData.BloodlustMeter = math.max(bloodlustModData.BloodlustMeter - 1, 0);
-		ETWMoodles.bloodlustMoodleUpdate(player, false);
-		-- Bloodlust Progress when no perk
-		if detailedDebug() then print("ETW Logger | bloodlustTime(): Bloodlust Meter: ".. bloodlustModData.BloodlustMeter) end
-		if bloodlustModData.BloodlustMeter >= 18 then -- gain if above 50%
-			local bloodLustProgressIncrease = bloodlustModData.BloodlustMeter * 0.1 * ((SBvars.AffinitySystem and modData.StartingTraits.Bloodlust) and SBvars.AffinitySystemGainMultiplier or 1);
-			bloodlustModData.BloodlustProgress = math.min(SBvars.BloodlustProgress * 2, bloodlustModData.BloodlustProgress + bloodLustProgressIncrease);
-			if debug() then print("ETW Logger | bloodlustTime(): BloodlustMeter is above 50%, BloodlustProgress =".. bloodlustModData.BloodlustProgress) end
-		else -- lose if below 50%
-			local bloodLustProgressDecrease = bloodlustModData.BloodlustMeter * 0.1 / ((SBvars.AffinitySystem and modData.StartingTraits.Bloodlust) and SBvars.AffinitySystemLoseDivider or 1);
-			bloodlustModData.BloodlustProgress = math.max(0, bloodlustModData.BloodlustProgress - (3.6 - bloodLustProgressDecrease));
-			if debug() then print("ETW Logger | bloodlustTime(): BloodlustMeter is below 50%, BloodlustProgress =".. bloodlustModData.BloodlustProgress) end
-		end
-		if player:HasTrait("Bloodlust") and bloodlustModData.BloodlustProgress <= SBvars.BloodlustProgress / 2 then
-			player:getTraits():remove("Bloodlust");
-			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Bloodlust"), false, HaloTextHelper.getColorRed()) end
-		elseif not player:HasTrait("Bloodlust") and bloodlustModData.BloodlustProgress >= SBvars.BloodlustProgress then
-			player:getTraits():add("Bloodlust");
-			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Bloodlust"), true, HaloTextHelper.getColorGreen()) end
-		end
+	local player = getPlayer();
+	local modData = player:getModData().EvolvingTraitsWorld;
+	local bloodlustModData = modData.BloodlustSystem;
+	bloodlustModData.BloodlustMeter = math.max(bloodlustModData.BloodlustMeter - 1, 0);
+	ETWMoodles.bloodlustMoodleUpdate(player, false);
+	if detailedDebug() then print("ETW Logger | bloodlustTime(): Bloodlust Meter: ".. bloodlustModData.BloodlustMeter) end
+	if bloodlustModData.BloodlustMeter >= 18 then -- gain if above 50%
+		local bloodLustProgressIncrease = bloodlustModData.BloodlustMeter * 0.1 * ((SBvars.AffinitySystem and modData.StartingTraits.Bloodlust) and SBvars.AffinitySystemGainMultiplier or 1);
+		bloodlustModData.BloodlustProgress = math.min(SBvars.BloodlustProgress * 2, bloodlustModData.BloodlustProgress + bloodLustProgressIncrease);
+		if debug() then print("ETW Logger | bloodlustTime(): BloodlustMeter is above 50%, BloodlustProgress =".. bloodlustModData.BloodlustProgress) end
+	else -- lose if below 50%
+		local bloodLustProgressDecrease = bloodlustModData.BloodlustMeter * 0.1 / ((SBvars.AffinitySystem and modData.StartingTraits.Bloodlust) and SBvars.AffinitySystemLoseDivider or 1);
+		bloodlustModData.BloodlustProgress = math.max(0, bloodlustModData.BloodlustProgress - (3.6 - bloodLustProgressDecrease));
+		if debug() then print("ETW Logger | bloodlustTime(): BloodlustMeter is below 50%, BloodlustProgress =".. bloodlustModData.BloodlustProgress) end
+	end
+	if player:HasTrait("Bloodlust") and bloodlustModData.BloodlustProgress <= SBvars.BloodlustProgress / 2 then
+		player:getTraits():remove("Bloodlust");
+		if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Bloodlust"), false, HaloTextHelper.getColorRed()) end
+	elseif not player:HasTrait("Bloodlust") and bloodlustModData.BloodlustProgress >= SBvars.BloodlustProgress then
+		player:getTraits():add("Bloodlust");
+		if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Bloodlust"), true, HaloTextHelper.getColorGreen()) end
 	end
 end
 
@@ -115,7 +111,7 @@ local function braverySystem(zombie)
 			if player:HasTrait(trait) and negativeTrait and SBvars.TraitsLockSystemCanLoseNegative then
 				if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(trait)) then
 					player:getTraits():remove(trait)
-					if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_" .. trait), false, HaloTextHelper.getColorGreen()) end
+					if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_" .. (trait == "Cowardly" and "cowardly" or trait)), false, HaloTextHelper.getColorGreen()) end
 				end
 				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(trait) then
 					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringRemove")..getText("UI_trait_" .. trait), true, HaloTextHelper.getColorGreen()) end
@@ -157,7 +153,7 @@ local function braverySystem(zombie)
 end
 
 local function initializeKills(playerIndex, player)
-	if not getActivatedMods():contains("EvolvingTraitsWorldDisableBloodlust") and (SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLosePositive)then
+	if ETWCommonLogicChecks.BloodlustShouldExecute() then
 		ETWMoodles.bloodlustMoodleUpdate(player);
 		Events.OnZombieDead.Remove(bloodlustKill);
 		Events.OnZombieDead.Add(bloodlustKill);
@@ -165,9 +161,9 @@ local function initializeKills(playerIndex, player)
 		Events.EveryHours.Add(bloodlustTime);
 	end
 	Events.OnWeaponHitCharacter.Remove(eagleEyed);
-	if SBvars.EagleEyed == true and not player:HasTrait("EagleEyed") and SBvars.TraitsLockSystemCanGainPositive then Events.OnWeaponHitCharacter.Add(eagleEyed) end
+	if ETWCommonLogicChecks.EagleEyedShouldExecute() then Events.OnWeaponHitCharacter.Add(eagleEyed) end
 	Events.OnZombieDead.Remove(braverySystem);
-	if SBvars.BraverySystem == true and not player:HasTrait("Desensitized") and (SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLoseNegative) then Events.OnZombieDead.Add(braverySystem) end
+	if ETWCommonLogicChecks.BraverySystemShouldExecute() then Events.OnZombieDead.Add(braverySystem) end
 end
 
 local function clearEvents(character)

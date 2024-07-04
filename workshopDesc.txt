@@ -3,6 +3,7 @@ This mod allows you to get really ripped in PZ and see an actual character progr
 
 [h1]Features[/h1]
 [list]
+[*] [h3]NEW! UI with all the mod information in-game! Observe your progress without google sheets![/h3]
 [*] 70+ dynamic traits (vanilla + added by the mod), full list on [url=https://docs.google.com/spreadsheets/d/1405szVLTetMioT0P8ddvPUJTv6VyLtTEvWxyn0cuZjI/edit?usp=sharing]this spreadsheet[/url].
 [*] [h3][b]FULL sandbox customization[/b]. Choose which perks you want to be dynamic, choose how fast you get them, choose how fast you lose them, customize anything with more than 130 sandbox options. Nothing is forced upon player, if you like 1% of the mod, you can literally set it up so you get to use that 1% and nothing else.[/h3]
 [*] Advanced systems that affect a lot of traits. Affinity system, that allows you to stick to your starting traits better. Delayed traits system, that allows you to get/remove traits with random delay.

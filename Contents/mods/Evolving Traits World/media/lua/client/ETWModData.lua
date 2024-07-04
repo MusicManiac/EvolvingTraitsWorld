@@ -85,9 +85,11 @@ local function createModData(playerIndex, player)
 	modData.DelayedTraits = modData.DelayedTraits or {};
 
 	if modData.AsthmaticCounter == nil and startingTraits.Asthmatic == true then -- start at full counter if they start with the trait
-		modData.AsthmaticCounter = SBvars.AsthmaticCounter * 2;
+		modData.AsthmaticCounter = SBvars.AsthmaticCounter * -2;
 	end
 	modData.AsthmaticCounter = modData.AsthmaticCounter or 0;
+
+
 
 	if modData.HerbsPickedUp == nil and startingTraits.Herbalist == true then -- start at full counter if they start with the trait
 		modData.HerbsPickedUp = SBvars.HerbalistHerbsPicked;
@@ -111,7 +113,7 @@ local function createModData(playerIndex, player)
 	modData.OutdoorsmanSystem = modData.OutdoorsmanSystem or {};
 	local outdoorsmanSystem = modData.OutdoorsmanSystem;
 	if outdoorsmanSystem.OutdoorsmanCounter == nil and startingTraits.Outdoorsman == true then -- start at full counter if they start with the trait
-		outdoorsmanSystem.OutdoorsmanCounter = SBvars.OutdoorsmanCounter * 10;
+		outdoorsmanSystem.OutdoorsmanCounter = SBvars.OutdoorsmanCounter * 2;
 	end
 	outdoorsmanSystem.OutdoorsmanCounter = outdoorsmanSystem.OutdoorsmanCounter or 0;
 	outdoorsmanSystem.MinutesSinceOutside = outdoorsmanSystem.MinutesSinceOutside or 0;
@@ -172,7 +174,7 @@ local function createModData(playerIndex, player)
 		bloodlustSystem.BloodlustProgress = SBvars.BloodlustProgress;
 		bloodlustSystem.BloodlustMeter = 18;
 	else
-		bloodlustSystem.BloodlustProgress = bloodlustSystem.BloodlustProgress or 0;
+		bloodlustSystem.BloodlustProgress = bloodlustSystem.BloodlustProgress or SBvars.BloodlustProgress * 0.75;
 		bloodlustSystem.BloodlustMeter = bloodlustSystem.BloodlustMeter or 0;
 	end
 

@@ -21,24 +21,4 @@ Moodles_EN {
 	Moodles_SleepHealthMoodle_Bad_lvl3 = "Way off my sleeping schedule",
 	Moodles_SleepHealthMoodle_Bad_lvl4 = "My schedule is completely broken",
 	Moodles_SleepHealthMoodle_Custom = "Sleeping %1 h away from optimal hour"
-
-	Moodles_SmokerGSMoodle_Good_lvl4 = "I don't care about smoking",
-	Moodles_SmokerGSMoodle_Good_lvl3 = "I smoke rarely, but it's whatever",
-	Moodles_SmokerGSMoodle_Good_lvl2 = "I smoke sometimes, but I don't have an urge to",
-	Moodles_SmokerGSMoodle_Good_lvl1 = "I smoke sometimes, and sometimes I need it",
-	Moodles_SmokerGSMoodle_Bad_lvl1 = "I smoke more than I should, but I need it",
-	Moodles_SmokerGSMoodle_Bad_lvl2 = "I smoke often",
-	Moodles_SmokerGSMoodle_Bad_lvl3 = "I smoke very often, but it's fine",
-	Moodles_SmokerGSMoodle_Bad_lvl4 = "Yea, I smoke a lot",
-	Moodles_SmokerGSMoodle_GainingSmoker = "I'm %1 % away from having an addiction."
-
-	Moodles_SmokerLSMoodle_Good_lvl4 = "I almost don't feel like smoking",
-	Moodles_SmokerLSMoodle_Good_lvl3 = "I only want to smoke sometimes",
-	Moodles_SmokerLSMoodle_Good_lvl2 = "My mind is a fortress",
-	Moodles_SmokerLSMoodle_Good_lvl1 = "This is getting better",
-	Moodles_SmokerLSMoodle_Bad_lvl1 = "God I wish I could smoke right now",
-	Moodles_SmokerLSMoodle_Bad_lvl2 = "Smoking is great but I have to fight my addiction",
-	Moodles_SmokerLSMoodle_Bad_lvl3 = "Smoking is part of my life",
-	Moodles_SmokerLSMoodle_Bad_lvl4 = "I'd rather die than stop smoking",
-	Moodles_SmokerLSMoodle_LosingSmoker = "I'm %1 % away from losing an addiction."
 }

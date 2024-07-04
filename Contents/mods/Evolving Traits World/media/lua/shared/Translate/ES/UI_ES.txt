@@ -44,24 +44,33 @@ UI_ES = {
 	UI_trait_StickFighter = "Luchador de Palo",
 	UI_trait_StickFighterDesc = "Has practicado artes marciales de lucha con palos.",
 
-	UI_EvolvingTraitsWorld_Options_GatherDebug = "Recopilar datos de depuración",
-    UI_EvolvingTraitsWorld_Options_GatherDebug_tooltip = "Habilita las impresiones en console.txt. Útil para fines de depuración, también permite encontrar datos sobre contadores internos. Ctrl+F para 'ETW' para encontrar los registradores.",
-	UI_EvolvingTraitsWorld_Options_GatherDetailedDebug = "Recuperar Datos Detallados de Depuracion",
-	UI_EvolvingTraitsWorld_Options_GatherDetailedDebug_tooltip = "permitir imprimir informacion en console.txt. Util solo para propositos de depuracion, no muestra informacion adicional sobre contadores, SOLO util para reportes de bugs o tratar de ver que esta mal. Agrega mucha información innecesaria en la console.txt, asi que reiniciar el juego algunas veces evitara que sea muy grande asi que no (posiblemente) ralentizara el juego. Ctrl+F para 'ETW' para encontrar los registros.",
-	UI_EvolvingTraitsWorld_Options_EnableNotifications = "Habilitar notificaciones de rasgos",
-	UI_EvolvingTraitsWorld_Options_EnableNotifications_tooltip = "Muestra la flecha de color sobre el personaje cada vez que gana o pierde un rasgo.",
-	UI_EvolvingTraitsWorld_Options_EnableDelayedNotifications = "Habilitar Notificaciones De Los Rasgos Retrasados",
-	UI_EvolvingTraitsWorld_Options_EnableDelayedNotifications_tooltip = "Esto solo hace algo si tienes 'El sistema de Rasgos Restrasados' habilitado. Si esta habilitado y esta opcion esta habilitada, recibiras una notificacion cuando califiques para un rasgo, y estara agregado a la lista de rasgos retrasados",
-	UI_EvolvingTraitsWorld_DelayedNotificationsStringAdd = "Calificado para obtener ",
-	UI_EvolvingTraitsWorld_DelayedNotificationsStringRemove = "Calificado para perder ",
-	___note_to_translators = "UI_EvolvingTraitsWorld_Options_EnableDelayedNotificationsString is used in combination with trait names, for example 'Qualified for gaining Hoarder' or 'Qualified for losing Unlucky'. You get the idea."
-	UI_EvolvingTraitsWorld_Options_EnableBloodLustMoodle = "Habilitar estado de Sed de Sangre",
-	UI_EvolvingTraitsWorld_Options_EnableBloodLustMoodle_tooltip = "Tardará hasta una hora en el juego, ya que el estado es actualizado cada hora.",
-	UI_EvolvingTraitsWorld_Options_EnableSleepHealthMoodle = "Habilitar estado de Salud del Sueño",
-	UI_EvolvingTraitsWorld_Options_EnableSleepHealthMoodle_tooltip = "Muestra si estás durmiendo dentro de tus horas óptimas o no. Solo activo mientras el personaje duerme.",
-	UI_EvolvingTraitsWorld_Options_EnableSmokerMoodle = "Habilitar estado de Fumador",
-	UI_EvolvingTraitsWorld_Options_EnableSmokerMoodle_tooltip = "Muestra si estás cerca de ganar o perder el rasgo de fumador.",
-	UI_EvolvingTraitsWorld_Options_SmokerMoodleVisibilityValue = "Cuando aparece el estado de Fumador",
-	UI_EvolvingTraitsWorld_Options_SmokerMoodleVisibilityValue_tooltip = "Esto controla cuando aparece el estado. Establecer esto en 20%, por ejemplo, hará que el estado aparezca cuando estés a un 20% de ganar o perder el rasgo de Fumador. Establecerlo en 100 dejará al estado de Fumador siempre activo. Limitado por la configuración de Sandbox, por lo que si la configuración del Sandbox permite un máximo del 40% y establece un 60% aquí, seguirá apareciendo solo en un 40 %. Sin embargo, si el servidor tiene un 70%, por ejemplo, y deseas mostrar mucho menos, puedes reducir el valor, por ejemplo, al 20 %.",
+	UI_ETW_Options_GatherDebug = "Recopilar datos de depuración",
+    UI_ETW_Options_GatherDebug_tooltip = "Habilita las impresiones en console.txt. Útil para fines de depuración, también permite encontrar datos sobre contadores internos. Ctrl+F para 'ETW' para encontrar los registradores.",
+	UI_ETW_Options_GatherDetailedDebug = "Recuperar Datos Detallados de Depuracion",
+	UI_ETW_Options_GatherDetailedDebug_tooltip = "permitir imprimir informacion en console.txt. Util solo para propositos de depuracion, no muestra informacion adicional sobre contadores, SOLO util para reportes de bugs o tratar de ver que esta mal. Agrega mucha información innecesaria en la console.txt, asi que reiniciar el juego algunas veces evitara que sea muy grande asi que no (posiblemente) ralentizara el juego. Ctrl+F para 'ETW' para encontrar los registros.",
+	UI_ETW_Options_EnableNotifications = "Habilitar notificaciones de rasgos",
+	UI_ETW_Options_EnableNotifications_tooltip = "Muestra la flecha de color sobre el personaje cada vez que gana o pierde un rasgo.",
+	UI_ETW_Options_EnableDelayedNotifications = "Habilitar Notificaciones De Los Rasgos Retrasados",
+	UI_ETW_Options_EnableDelayedNotifications_tooltip = "Esto solo hace algo si tienes 'El sistema de Rasgos Restrasados' habilitado. Si esta habilitado y esta opcion esta habilitada, recibiras una notificacion cuando califiques para un rasgo, y estara agregado a la lista de rasgos retrasados",
+	UI_ETW_DelayedNotificationsStringAdd = "Calificado para obtener ",
+	UI_ETW_DelayedNotificationsStringRemove = "Calificado para perder ",
+	___note_to_translators = "UI_ETW_Options_EnableDelayedNotificationsString is used in combination with trait names, for example 'Qualified for gaining Hoarder' or 'Qualified for losing Unlucky'. You get the idea."
+	UI_ETW_Options_EnableBloodLustMoodle = "Habilitar estado de Sed de Sangre",
+	UI_ETW_Options_EnableBloodLustMoodle_tooltip = "Tardará hasta una hora en el juego, ya que el estado es actualizado cada hora.",
+	UI_ETW_Options_EnableSleepHealthMoodle = "Habilitar estado de Salud del Sueño",
+	UI_ETW_Options_EnableSleepHealthMoodle_tooltip = "Muestra si estás durmiendo dentro de tus horas óptimas o no. Solo activo mientras el personaje duerme.",
 
+	UI_ETW_Options_UIWidth = "[IU] Ancho de pagina",
+    UI_ETW_Options_UIWidth_tooltip = "Ancho de pagina en pixeles. Si juegas en el idioma ingles debería de funcionar correctamente, pero en cualquier otro idioma puede verse raro asique si necesitas mas espacio, auméntalo  aquí.",
+    UI_ETW_Options_TraitColumns = "[UI] Columnas de Rasgos",
+    UI_ETW_Options_TraitColumns_tooltip = "Cuantas columnas hay en la IU en la pestaña del personaje. La configuración predeterminada deberia de funcionar correctamente si juegas en el idioma ingles, pero si el texto se superpone, quizas deberias de reducir este valor"
+
+    UI_ETW_GainTooltip = "Obtendras el rasgo cuando la barra este alrededor de aquí (o calificado para obtenerlo, si el sistema de rasgos retrasados esta activado y si este rasgo esta en ese sistema)",
+    UI_ETW_LooseTooltip = "Perderas el rasgo cuando la barra este alrededor de aquí (o calificado para obtenerlo, si el sistema de rasgos retrasados esta activado y si este rasgo esta en ese sistema)",
+    UI_ETW_GainLoseTooltip = "obtendrás/perderas el rasgo cuando la barra este alrededor de aquí (o calificado para obtenerlo, si el sistema de rasgos retrasados esta activado y si este rasgo esta en ese sistema)",
+    UI_ETW_ListOfDelayedTraits = "Lista de rasgos retrasados: ",
+
+    UI_ETW_Chance = "en",
+    ___note_to_translators = "UI_ETW_Chance is used in displaying chances, so for example '1 in 300' or '1 in 50300', etc."
+    UI_ETW_ProgressPageDisabled = "la pagina de ETW esta deshabilitada en la sandbox",
 }

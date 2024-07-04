@@ -1,6 +1,7 @@
 require "ETWModData";
 local ETWActionsOverride = require "TimedActions/ETWActionsOverride";
 local ETWCommonFunctions = require "ETWCommonFunctions";
+local ETWCommonLogicChecks = require "ETWCommonLogicChecks";
 
 local SBvars = SandboxVars.EvolvingTraitsWorld;
 local notification = function() return EvolvingTraitsWorld.settings.EnableNotifications end
@@ -70,7 +71,7 @@ local function traitsGainsBySkill(player, perk)
 
 	-- All Perks
 		-- Unlucky/Lucky
-				if SBvars.LuckSystem == true and not player:HasTrait("Lucky") then
+				if ETWCommonLogicChecks.LuckSystemShouldExecute() then
 					local totalPerkLevel = 0
 					local totalMaxPerkLevel = 0;
 					for i = 1, Perks.getMaxIndex() - 1 do
@@ -106,8 +107,8 @@ local function traitsGainsBySkill(player, perk)
 	-- Passive
 		-- Strength
 			-- Hoarder
-				if perk == "characterInitialization" or perk == Perks.Strength or perk =="Hoarder" and SBvars.TraitsLockSystemCanGainPositive then
-					if not activatedMods:contains("EvolvingTraitsWorldDisableHoarder") and SBvars.Hoarder == true and not player:HasTrait("Hoarder") and strength >= SBvars.HoarderSkill then
+				if (perk == "characterInitialization" or perk == Perks.Strength or perk =="Hoarder") and ETWCommonLogicChecks.HoarderShouldExecute() then
+					if strength >= SBvars.HoarderSkill then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Hoarder")) then
 							player:getTraits():add("Hoarder");
 							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Hoarder"), true, HaloTextHelper.getColorGreen()) end
@@ -119,8 +120,8 @@ local function traitsGainsBySkill(player, perk)
 					end
 				end
 			-- Gym Rat
-				if perk == "characterInitialization" or perk == Perks.Strength or perk == Perks.Fitness or perk =="GymRat" and SBvars.TraitsLockSystemCanGainPositive then
-					if not activatedMods:contains("EvolvingTraitsWorldDisableGymRat") and SBvars.GymRat == true and not player:HasTrait("GymRat") and (strength + fitness) >= SBvars.GymRatSkill then
+				if (perk == "characterInitialization" or perk == Perks.Strength or perk == Perks.Fitness or perk =="GymRat") and ETWCommonLogicChecks.GymRatShouldExecute() then
+					if (strength + fitness) >= SBvars.GymRatSkill then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("GymRat")) then
 							player:getTraits():add("GymRat");
 							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_GymRat"), true, HaloTextHelper.getColorGreen()) end
@@ -134,8 +135,8 @@ local function traitsGainsBySkill(player, perk)
 	-- Agility
 		-- Springing
 			-- Runner
-				if perk == "characterInitialization" or perk == Perks.Sprinting or perk =="Jogger" and SBvars.TraitsLockSystemCanGainPositive then
-					if SBvars.Runner == true and not player:HasTrait("Jogger") and sprinting >= SBvars.RunnerSkill then
+				if (perk == "characterInitialization" or perk == Perks.Sprinting or perk =="Jogger") and ETWCommonLogicChecks.RunnerShouldExecute() then
+					if sprinting >= SBvars.RunnerSkill then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Jogger")) then
 							player:getTraits():add("Jogger");
 							applyXPBoost(player, Perks.Sprinting, 1);
@@ -148,7 +149,7 @@ local function traitsGainsBySkill(player, perk)
 					end
 				end
 			-- Hard of Hearing / Keen Hearing
-				if perk == "characterInitialization" or perk == Perks.Sprinting or perk == Perks.Lightfoot or perk == Perks.Nimble or perk == Perks.Sneak or perk == Perks.Axe or perk == Perks.Blunt or perk == Perks.SmallBlunt or perk == Perks.LongBlade or perk == Perks.SmallBlade or perk == Perks.Spear or perk =="HardOfHearing" or perk =="KeenHearing" and SBvars.HearingSystem == true then
+				if (perk == "characterInitialization" or perk == Perks.Sprinting or perk == Perks.Lightfoot or perk == Perks.Nimble or perk == Perks.Sneak or perk == Perks.Axe or perk == Perks.Blunt or perk == Perks.SmallBlunt or perk == Perks.LongBlade or perk == Perks.SmallBlade or perk == Perks.Spear or perk =="HardOfHearing" or perk =="KeenHearing") and ETWCommonLogicChecks.HearingSystemShouldExecute() then
 					local levels = sprinting + lightfooted + nimble + sneaking + axe + longBlunt + shortBlunt + longBlade + shortBlade + spear;
 					if player:HasTrait("HardOfHearing") and levels >= SBvars.HearingSystemSkill / 2 and SBvars.TraitsLockSystemCanLoseNegative then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("HardOfHearing")) then
@@ -159,7 +160,7 @@ local function traitsGainsBySkill(player, perk)
 							if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringRemove")..getText("UI_trait_hardhear"), true, HaloTextHelper.getColorGreen()) end
 							ETWCommonFunctions.addTraitToDelayTable(modData, "HardOfHearing", player, false)
 						end
-					elseif not player:HasTrait("HardOfHearing") and not player:HasTrait("KeenHearing") and levels >= SBvars.HearingSystemSkill and SBvars.TraitsLockSystemCanGainPositive then
+					elseif not player:HasTrait("HardOfHearing") and levels >= SBvars.HearingSystemSkill then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("KeenHearing")) then
 							player:getTraits():add("KeenHearing");
 							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_keenhearing"), true, HaloTextHelper.getColorGreen()) end
@@ -172,8 +173,8 @@ local function traitsGainsBySkill(player, perk)
 				end
 		-- Lightfooted
 			-- Light Step
-				if perk == "characterInitialization" or perk == Perks.Lightfoot or perk == "LightStep" and SBvars.TraitsLockSystemCanGainPositive then
-					if not activatedMods:contains("EvolvingTraitsWorldDisableLightStep") and SBvars.LightStep == true and not player:HasTrait("LightStep") and lightfooted >= SBvars.LightStepSkill then
+				if (perk == "characterInitialization" or perk == Perks.Lightfoot or perk == "LightStep") and ETWCommonLogicChecks.LightStepShouldExecute() then
+					if lightfooted >= SBvars.LightStepSkill then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("LightStep")) then
 							player:getTraits():add("LightStep");
 							applyXPBoost(player, Perks.Lightfoot, 1);
@@ -186,8 +187,8 @@ local function traitsGainsBySkill(player, perk)
 					end
 				end
 			-- Gymnast
-				if perk == "characterInitialization" or perk == Perks.Lightfoot or perk == Perks.Nimble or perk == "Gymnast" and SBvars.TraitsLockSystemCanGainPositive then
-					if SBvars.Gymnast == true and not player:HasTrait("Gymnast") and (lightfooted + nimble) >= SBvars.GymnastSkill then
+				if (perk == "characterInitialization" or perk == Perks.Lightfoot or perk == Perks.Nimble or perk == "Gymnast") and ETWCommonLogicChecks.GymnastShouldExecute() then
+					if (lightfooted + nimble) >= SBvars.GymnastSkill then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Gymnast")) then
 							player:getTraits():add("Gymnast");
 							applyXPBoost(player, Perks.Lightfoot, 1);
@@ -201,8 +202,8 @@ local function traitsGainsBySkill(player, perk)
 					end
 				end
 			-- Clumsy
-				if perk == "characterInitialization" or perk == Perks.Lightfoot or perk == Perks.Sneak or perk == "Clumsy" and SBvars.TraitsLockSystemCanLoseNegative then
-					if SBvars.Clumsy == true and player:HasTrait("Clumsy") and (lightfooted + sneaking) >= SBvars.ClumsySkill then
+				if (perk == "characterInitialization" or perk == Perks.Lightfoot or perk == Perks.Sneak or perk == "Clumsy") and ETWCommonLogicChecks.ClumsyShouldExecute() then
+					if (lightfooted + sneaking) >= SBvars.ClumsySkill then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Clumsy")) then
 							player:getTraits():remove("Clumsy");
 							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_clumsy"), false, HaloTextHelper.getColorGreen()) end
@@ -214,9 +215,9 @@ local function traitsGainsBySkill(player, perk)
 					end
 				end
 	-- Graceful
-		if perk == "characterInitialization" or perk == Perks.Nimble or perk == Perks.Sneak or perk == Perks.Lightfoot or perk == "Graceful" and SBvars.TraitsLockSystemCanGainPositive then
+		if (perk == "characterInitialization" or perk == Perks.Nimble or perk == Perks.Sneak or perk == Perks.Lightfoot or perk == "Graceful") and ETWCommonLogicChecks.GracefulShouldExecute() then
 			local levels = nimble + sneaking + lightfooted;
-			if SBvars.Graceful == true and not player:HasTrait("Graceful") and levels >= SBvars.GracefulSkill then
+			if levels >= SBvars.GracefulSkill then
 				if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Graceful")) then
 					player:getTraits():add("Graceful");
 					if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_graceful"), true, HaloTextHelper.getColorGreen()) end
@@ -228,23 +229,23 @@ local function traitsGainsBySkill(player, perk)
 			end
 		end
 	-- Nimble
-		if perk == "characterInitialization" or perk == Perks.Nimble or perk == Perks.Mechanics or perk == Perks.Electricity or perk == "Burglar" and SBvars.TraitsLockSystemCanGainPositive then
+		if (perk == "characterInitialization" or perk == Perks.Nimble or perk == Perks.Mechanics or perk == Perks.Electricity or perk == "Burglar") and ETWCommonLogicChecks.BurglarShouldExecute() then
 			local levels = nimble + mechanics + electrical;
-			if SBvars.Burglar == true and not player:HasTrait("Burglar") and electrical >= 2 and mechanics >= 2 and levels >= SBvars.BurglarSkill then
+			if electrical >= 2 and mechanics >= 2 and levels >= SBvars.BurglarSkill then
 				if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Burglar")) then
 					player:getTraits():add("Burglar");
 					if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Burglar"), true, HaloTextHelper.getColorGreen()) end
 				end
 				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Burglar") then
-					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringAdd")..getText("UI_trait_Burglar"), true, HaloTextHelper.getColorGreen()) end
+					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringAdd")..getText("UI_prof_Burglar"), true, HaloTextHelper.getColorGreen()) end
 					ETWCommonFunctions.addTraitToDelayTable(modData, "Burglar", player, true)
 				end
 			end
 		end
 		-- Sneaking
 			-- Low Profile
-				if perk == "characterInitialization" or perk == Perks.Sneak or perk == "LowProfile" and SBvars.TraitsLockSystemCanGainPositive then
-					if not activatedMods:contains("EvolvingTraitsWorldDisableLowProfile") and SBvars.LowProfile == true and not player:HasTrait("LowProfile") and sneaking >= SBvars.LowProfileSkill then
+				if (perk == "characterInitialization" or perk == Perks.Sneak or perk == "LowProfile") and ETWCommonLogicChecks.LowProfileShouldExecute() then
+					if sneaking >= SBvars.LowProfileSkill then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("LowProfile")) then
 							player:getTraits():add("LowProfile");
 							applyXPBoost(player, Perks.Sneak, 1);
@@ -258,7 +259,7 @@ local function traitsGainsBySkill(player, perk)
 				end
 			-- Conspicuous/Inconspicuous
 				if perk == "characterInitialization" or perk == Perks.Sneak or perk == "Conspicuous" or perk == "Inconspicuous" then
-					if SBvars.Conspicuous == true and player:HasTrait("Conspicuous") and sneaking >= SBvars.ConspicuousSkill and SBvars.TraitsLockSystemCanLoseNegative then
+					if ETWCommonLogicChecks.ConspicuousShouldExecute() and sneaking >= SBvars.ConspicuousSkill then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Conspicuous")) then
 							player:getTraits():remove("Conspicuous");
 							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Conspicuous"), false, HaloTextHelper.getColorGreen()) end
@@ -267,7 +268,7 @@ local function traitsGainsBySkill(player, perk)
 							if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringRemove")..getText("UI_trait_Conspicuous"), true, HaloTextHelper.getColorGreen()) end
 							ETWCommonFunctions.addTraitToDelayTable(modData, "Conspicuous", player, false)
 						end
-					elseif SBvars.Inconspicuous == true and not player:HasTrait("Conspicuous") and not player:HasTrait("Inconspicuous") and sneaking >= SBvars.InconspicuousSkill and SBvars.TraitsLockSystemCanGainPositive then
+					elseif ETWCommonLogicChecks.InconspicuousShouldExecute() and sneaking >= SBvars.InconspicuousSkill then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Inconspicuous")) then
 							player:getTraits():add("Inconspicuous");
 							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Inconspicuous"), true, HaloTextHelper.getColorGreen()) end
@@ -279,9 +280,9 @@ local function traitsGainsBySkill(player, perk)
 					end
 				end
 			-- Hunter
-				if perk == "characterInitialization" or perk == "kill" or perk == Perks.Sneak or perk == Perks.Aiming or perk == Perks.Trapping or perk == Perks.SmallBlade or perk == "Hunter" and SBvars.TraitsLockSystemCanGainPositive then
+				if (perk == "characterInitialization" or perk == "kill" or perk == Perks.Sneak or perk == Perks.Aiming or perk == Perks.Trapping or perk == Perks.SmallBlade or perk == "Hunter") and ETWCommonLogicChecks.HunterShouldExecute() then
 					local levels = sneaking + aiming + trapping + shortBlade;
-					if SBvars.Hunter == true and not player:HasTrait("Hunter") and sneaking >= 2 and aiming >= 2 and trapping >= 2 and shortBlade >= 2 and levels >= SBvars.HunterSkill and (shortBladeKills + firearmKills) >= SBvars.HunterKills then
+					if sneaking >= 2 and aiming >= 2 and trapping >= 2 and shortBlade >= 2 and levels >= SBvars.HunterSkill and (shortBladeKills + firearmKills) >= SBvars.HunterKills then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Hunter")) then
 							player:getTraits():add("Hunter");
 							applyXPBoost(player, Perks.Aiming, 1);
@@ -304,8 +305,8 @@ local function traitsGainsBySkill(player, perk)
 	-- Combat
 		-- Axe
 			-- Brawler
-				if perk == "characterInitialization" or perk == "kill" or perk == Perks.Axe or perk == Perks.Blunt or perk == "Brawler" and SBvars.TraitsLockSystemCanGainPositive then
-					if SBvars.Brawler == true and not player:HasTrait("Brawler") and (axe + longBlunt) >= SBvars.BrawlerSkill and (axeKills + longBluntKills) >= SBvars.BrawlerKills then
+				if (perk == "characterInitialization" or perk == "kill" or perk == Perks.Axe or perk == Perks.Blunt or perk == "Brawler") and ETWCommonLogicChecks.BrawlerShouldExecute() then
+					if (axe + longBlunt) >= SBvars.BrawlerSkill and (axeKills + longBluntKills) >= SBvars.BrawlerKills then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Brawler")) then
 							player:getTraits():add("Brawler");
 							applyXPBoost(player, Perks.Axe, 1);
@@ -319,8 +320,8 @@ local function traitsGainsBySkill(player, perk)
 					end
 				end
 			-- Axe Thrower
-				if perk == "characterInitialization" or perk == "kill" or perk == Perks.Axe or perk == "AxeThrower" and SBvars.TraitsLockSystemCanGainPositive then
-					if not activatedMods:contains("EvolvingTraitsWorldDisableAxeThrower") and SBvars.AxeThrower == true and not player:HasTrait("AxeThrower") and axe >= SBvars.AxeThrowerSkill and axeKills >= SBvars.AxeThrowerKills then
+				if (perk == "characterInitialization" or perk == "kill" or perk == Perks.Axe or perk == "AxeThrower") and ETWCommonLogicChecks.AxeThrowerShouldExecute() then
+					if axe >= SBvars.AxeThrowerSkill and axeKills >= SBvars.AxeThrowerKills then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("AxeThrower")) then
 							player:getTraits():add("AxeThrower");
 							applyXPBoost(player, Perks.Axe, 1);
@@ -334,8 +335,8 @@ local function traitsGainsBySkill(player, perk)
 				end
 		-- Long Blunt
 			-- Baseball Player
-				if perk == "characterInitialization" or perk == "kill" or perk == Perks.Blunt or perk == "BaseballPlayer" and SBvars.TraitsLockSystemCanGainPositive then
-					if SBvars.BaseballPlayer == true and not player:HasTrait("BaseballPlayer") and longBlunt >= SBvars.BaseballPlayerSkill and longBluntKills >= SBvars.BaseballPlayerKills then
+				if perk == "characterInitialization" or perk == "kill" or perk == Perks.Blunt or perk == "BaseballPlayer" and ETWCommonLogicChecks.BaseballPlayerShouldExecute() then
+					if longBlunt >= SBvars.BaseballPlayerSkill and longBluntKills >= SBvars.BaseballPlayerKills then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("BaseballPlayer")) then
 							player:getTraits():add("BaseballPlayer");
 							applyXPBoost(player, Perks.Blunt, 1);
@@ -349,8 +350,8 @@ local function traitsGainsBySkill(player, perk)
 				end
 		-- Short Blunt
 			-- Stick Fighter
-				if perk == "characterInitialization" or perk == "kill" or perk == Perks.SmallBlunt or perk == "StickFighter" and SBvars.TraitsLockSystemCanGainPositive then
-					if not activatedMods:contains("EvolvingTraitsWorldDisableStickFighter") and SBvars.StickFighter == true and not player:HasTrait("StickFighter") and shortBlunt >= SBvars.StickFighterSkill and shortBluntKills >= SBvars.StickFighterKills then
+				if (perk == "characterInitialization" or perk == "kill" or perk == Perks.SmallBlunt or perk == "StickFighter") and ETWCommonLogicChecks.StickFighterShouldExecute() then
+					if shortBlunt >= SBvars.StickFighterSkill and shortBluntKills >= SBvars.StickFighterKills then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("StickFighter")) then
 							player:getTraits():add("StickFighter");
 							applyXPBoost(player, Perks.SmallBlunt, 1);
@@ -364,8 +365,8 @@ local function traitsGainsBySkill(player, perk)
 				end
 		-- Long Blade
 			-- Kenshi
-				if perk == "characterInitialization" or perk == "kill" or perk == Perks.LongBlade or perk == "Kenshi" and SBvars.TraitsLockSystemCanGainPositive then
-					if not activatedMods:contains("EvolvingTraitsWorldDisableKenshi") and SBvars.Kenshi == true and not player:HasTrait("Kenshi") and longBlade >= SBvars.KenshiSkill and longBladeKills >= SBvars.KenshiKills then
+				if (perk == "characterInitialization" or perk == "kill" or perk == Perks.LongBlade or perk == "Kenshi") and ETWCommonLogicChecks.KenshiShouldExecute() then
+					if longBlade >= SBvars.KenshiSkill and longBladeKills >= SBvars.KenshiKills then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Kenshi")) then
 							player:getTraits():add("Kenshi");
 							applyXPBoost(player, Perks.LongBlade, 1);
@@ -379,8 +380,8 @@ local function traitsGainsBySkill(player, perk)
 				end
 		-- Short Blade
 			-- Knife Fighter
-				if perk == "characterInitialization" or perk == "kill" or perk == Perks.ShortBlade or perk == "KnifeFighter" and SBvars.TraitsLockSystemCanGainPositive then
-					if not activatedMods:contains("EvolvingTraitsWorldDisableKnifeFighter") and SBvars.KnifeFighter == true and not player:HasTrait("KnifeFighter") and shortBlade >= SBvars.KnifeFighterSkill and shortBladeKills >= SBvars.KnifeFighterKills then
+				if (perk == "characterInitialization" or perk == "kill" or perk == Perks.ShortBlade or perk == "KnifeFighter") and ETWCommonLogicChecks.KnifeFighterShouldExecute() then
+					if shortBlade >= SBvars.KnifeFighterSkill and shortBladeKills >= SBvars.KnifeFighterKills then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("KnifeFighter")) then
 							player:getTraits():add("KnifeFighter");
 							applyXPBoost(player, Perks.SmallBlade, 1);
@@ -394,8 +395,8 @@ local function traitsGainsBySkill(player, perk)
 				end
 		-- Spear
 			-- Sojutsu
-				if perk == "characterInitialization" or perk == "kill" or perk == Perks.Spear or perk == "Sojutsu" and SBvars.TraitsLockSystemCanGainPositive then
-					if not activatedMods:contains("EvolvingTraitsWorldDisableSojutsu") and SBvars.Sojutsu == true and not player:HasTrait("Sojutsu") and spear >= SBvars.SojutsuSkill and spearKills >= SBvars.SojutsuKills then
+				if (perk == "characterInitialization" or perk == "kill" or perk == Perks.Spear or perk == "Sojutsu") and ETWCommonLogicChecks.SojutsuShouldExecute() then
+					if spear >= SBvars.SojutsuSkill and spearKills >= SBvars.SojutsuKills then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Sojutsu")) then
 							player:getTraits():add("Sojutsu");
 							applyXPBoost(player, Perks.Spear, 1);
@@ -409,8 +410,8 @@ local function traitsGainsBySkill(player, perk)
 				end
 		-- Maintenance
 			-- Restoration Expert
-				if perk == "characterInitialization" or perk == Perks.Maintenance or perk == "RestorationExpert" and SBvars.TraitsLockSystemCanGainPositive then
-					if not activatedMods:contains("EvolvingTraitsWorldDisableRestorationExpert") and SBvars.RestorationExpert == true and not player:HasTrait("RestorationExpert") and maintenance >= SBvars.RestorationExpertSkill then
+				if (perk == "characterInitialization" or perk == Perks.Maintenance or perk == "RestorationExpert") and ETWCommonLogicChecks.RestorationExpertShouldExecute() then
+					if maintenance >= SBvars.RestorationExpertSkill then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("RestorationExpert")) then
 							player:getTraits():add("RestorationExpert");
 							applyXPBoost(player, Perks.Maintenance, 1);
@@ -423,8 +424,8 @@ local function traitsGainsBySkill(player, perk)
 					end
 				end
 			-- Handy
-				if perk == "characterInitialization" or perk == Perks.Maintenance or perk == Perks.Woodwork or perk == "Handy" and SBvars.TraitsLockSystemCanGainPositive then
-					if SBvars.Handy == true and not player:HasTrait("Handy") and (maintenance + carpentry) >= SBvars.HandySkill then
+				if (perk == "characterInitialization" or perk == Perks.Maintenance or perk == Perks.Woodwork or perk == "Handy") and ETWCommonLogicChecks.HandyShouldExecute() then
+					if (maintenance + carpentry) >= SBvars.HandySkill then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Handy")) then
 							player:getTraits():add("Handy");
 							applyXPBoost(player, Perks.Maintenance, 1);
@@ -438,9 +439,9 @@ local function traitsGainsBySkill(player, perk)
 					end
 				end
 			-- Slow/Fast Learner
-				if perk == "characterInitialization" or perk == Perks.Maintenance or perk == Perks.Woodwork or perk == Perks.Cooking or perk == Perks.Farming or perk == Perks.Doctor or perk == Perks.Electricity or perk == Perks.MetalWelding or perk == Perks.Mechanics or perk == Perks.Tailoring or perk == "SlowLearner" or perk == "FastLearner" then
+				if (perk == "characterInitialization" or perk == Perks.Maintenance or perk == Perks.Woodwork or perk == Perks.Cooking or perk == Perks.Farming or perk == Perks.Doctor or perk == Perks.Electricity or perk == Perks.MetalWelding or perk == Perks.Mechanics or perk == Perks.Tailoring or perk == "SlowLearner" or perk == "FastLearner") and ETWCommonLogicChecks.LearnerSystemShouldExecute() then
 					local levels = maintenance + carpentry + farming + firstAid + electrical + metalworking + mechanics + tailoring + cooking;
-					if SBvars.SlowLearner == true and player:HasTrait("SlowLearner") and levels >= SBvars.SlowLearnerSkill and SBvars.TraitsLockSystemCanLoseNegative then
+					if levels >= SBvars.LearnerSystemSkill / 2 and SBvars.TraitsLockSystemCanLoseNegative then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("SlowLearner")) then
 							player:getTraits():remove("SlowLearner");
 							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_SlowLearner"), false, HaloTextHelper.getColorGreen()) end
@@ -449,7 +450,7 @@ local function traitsGainsBySkill(player, perk)
 							if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringRemove")..getText("UI_trait_SlowLearner"), true, HaloTextHelper.getColorGreen()) end
 							ETWCommonFunctions.addTraitToDelayTable(modData, "SlowLearner", player, false)
 						end
-					elseif SBvars.FastLearner == true and not player:HasTrait("SlowLearner") and not player:HasTrait("FastLearner") and levels >= SBvars.FastLearnerSkill and SBvars.TraitsLockSystemCanGainPositive then
+					elseif not player:HasTrait("SlowLearner") and levels >= SBvars.LearnerSystemSkill and SBvars.TraitsLockSystemCanGainPositive then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("FastLearner")) then
 							player:getTraits():add("FastLearner");
 							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_FastLearner"), true, HaloTextHelper.getColorGreen()) end
@@ -463,8 +464,8 @@ local function traitsGainsBySkill(player, perk)
 	-- Crafting
 		-- Carpentry
 			-- Furniture Assembler
-				if perk == "characterInitialization" or perk == Perks.Woodwork or perk == "FurnitureAssembler" and SBvars.TraitsLockSystemCanGainPositive then
-					if not activatedMods:contains("EvolvingTraitsWorldDisableFurnitureAssembler") and SBvars.FurnitureAssembler == true and not player:HasTrait("FurnitureAssembler") and carpentry >= SBvars.FurnitureAssemblerSkill then
+				if (perk == "characterInitialization" or perk == Perks.Woodwork or perk == "FurnitureAssembler") and ETWCommonLogicChecks.FurnitureAssemblerShouldExecute() then
+					if carpentry >= SBvars.FurnitureAssemblerSkill then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("FurnitureAssembler")) then
 							player:getTraits():add("FurnitureAssembler");
 							applyXPBoost(player, Perks.Woodwork, 1);
@@ -478,8 +479,8 @@ local function traitsGainsBySkill(player, perk)
 				end
 		-- Cooking
 			-- Home Cook
-				if perk == "characterInitialization" or perk == Perks.Cooking or perk == "HomeCook" and SBvars.TraitsLockSystemCanGainPositive then
-					if not activatedMods:contains("EvolvingTraitsWorldDisableHomeCook") and SBvars.HomeCook == true and not player:HasTrait("HomeCook") and cooking >= SBvars.HomeCookSkill then
+				if (perk == "characterInitialization" or perk == Perks.Cooking or perk == "HomeCook") and ETWCommonLogicChecks.HomeCookShouldExecute() then
+					if cooking >= SBvars.HomeCookSkill then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("HomeCook")) then
 							player:getTraits():add("HomeCook");
 							addRecipe(player, "Make Cake Batter");
@@ -493,8 +494,8 @@ local function traitsGainsBySkill(player, perk)
 					end
 				end
 			-- Cook
-				if perk == "characterInitialization" or perk == Perks.Cooking or perk == "Cook" and SBvars.TraitsLockSystemCanGainPositive then
-					if SBvars.Cook == true and not player:HasTrait("Cook") and cooking >= SBvars.CookSkill then
+				if (perk == "characterInitialization" or perk == Perks.Cooking or perk == "Cook") and ETWCommonLogicChecks.CookShouldExecute() then
+					if cooking >= SBvars.CookSkill then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Cook")) then
 							player:getTraits():add("Cook");
 							addRecipe(player, "Make Cake Batter");
@@ -518,8 +519,8 @@ local function traitsGainsBySkill(player, perk)
 				end
 		-- Farming
 			-- Gardener
-				if perk == "characterInitialization" or perk == Perks.Farming or perk == "Gardener" and SBvars.TraitsLockSystemCanGainPositive then
-					if SBvars.Gardener == true and not player:HasTrait("Gardener") and farming >= SBvars.GardenerSkill then
+				if (perk == "characterInitialization" or perk == Perks.Farming or perk == "Gardener") and ETWCommonLogicChecks.GardenerShouldExecute() then
+					if farming >= SBvars.GardenerSkill then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Gardener")) then
 							player:getTraits():add("Gardener");
 							applyXPBoost(player, Perks.Farming, 1);
@@ -535,8 +536,8 @@ local function traitsGainsBySkill(player, perk)
 				end
 		-- First Aid
 			-- First Aider
-				if perk == "characterInitialization" or perk == Perks.Doctor or perk == "FirstAid" and SBvars.TraitsLockSystemCanGainPositive then
-					if SBvars.FirstAid == true and not player:HasTrait("FirstAid") and firstAid >= SBvars.FirstAidSkill then
+				if (perk == "characterInitialization" or perk == Perks.Doctor or perk == "FirstAid") and ETWCommonLogicChecks.FirstAidShouldExecute() then
+					if firstAid >= SBvars.FirstAidSkill then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("FirstAid")) then
 							player:getTraits():add("FirstAid");
 							applyXPBoost(player, Perks.Doctor, 1);
@@ -550,8 +551,8 @@ local function traitsGainsBySkill(player, perk)
 				end
 		-- Electrical
 			-- AVClub
-				if perk == "characterInitialization" or perk == Perks.Electricity or perk == "AVClub" and SBvars.TraitsLockSystemCanGainPositive then
-					if not activatedMods:contains("EvolvingTraitsWorldDisableAVClub") and SBvars.AVClub == true and not player:HasTrait("AVClub") and electrical >= SBvars.AVClubSkill then
+				if (perk == "characterInitialization" or perk == Perks.Electricity or perk == "AVClub") and ETWCommonLogicChecks.AVClubShouldExecute() then
+					if electrical >= SBvars.AVClubSkill then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("AVClub")) then
 							player:getTraits():add("AVClub");
 							addRecipe(player, "Make Remote Controller V1");
@@ -574,22 +575,18 @@ local function traitsGainsBySkill(player, perk)
 				end
 		-- Metalworking
 			-- Bodywork Enthusiast
-				if perk == "characterInitialization" or perk == Perks.MetalWelding  or perk == Perks.Mechanics or perk == "BodyWorkEnthusiast" and SBvars.TraitsLockSystemCanGainPositive then
-					if not activatedMods:contains("EvolvingTraitsWorldDisableBodyWorkEnthusiast") and SBvars.BodyworkEnthusiast == true and not player:HasTrait("BodyWorkEnthusiast") then
-						ETWActionsOverride.bodyworkEnthusiastCheck();
-					end
+				if (perk == "characterInitialization" or perk == Perks.MetalWelding  or perk == Perks.Mechanics or perk == "BodyWorkEnthusiast") and ETWCommonLogicChecks.BodyWorkEnthusiastShouldExecute() then
+					ETWActionsOverride.bodyworkEnthusiastCheck();
 				end
 		-- Mechanics
 			-- Amateur Mechanic
-				if perk == "characterInitialization" or perk == Perks.Mechanics or perk == "Mechanics" and SBvars.TraitsLockSystemCanGainPositive then
-					if SBvars.Mechanics == true and not player:HasTrait("Mechanics") and mechanics >= SBvars.MechanicsSkill then
-						ETWActionsOverride.mechanicsCheck();
-					end
+				if (perk == "characterInitialization" or perk == Perks.Mechanics or perk == "Mechanics") and ETWCommonLogicChecks.MechanicsShouldExecute() then
+					ETWActionsOverride.mechanicsCheck();
 				end
 		-- Tailoring
 			-- Sewer
-				if perk == "characterInitialization" or perk == Perks.Tailoring or perk == "Tailor" and SBvars.TraitsLockSystemCanGainPositive then
-					if SBvars.Sewer == true and not player:HasTrait("Tailor") and tailoring >= SBvars.SewerSkill then
+				if (perk == "characterInitialization" or perk == Perks.Tailoring or perk == "Tailor") and ETWCommonLogicChecks.TailorShouldExecute() then
+					if tailoring >= SBvars.SewerSkill then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Tailor")) then
 							player:getTraits():add("Tailor");
 							applyXPBoost(player, Perks.Tailoring, 1);
@@ -604,8 +601,8 @@ local function traitsGainsBySkill(player, perk)
 	-- Firearms
 		-- Aiming
 			-- Gun Enthusiast
-				if perk == "characterInitialization" or perk == "kill" or perk == Perks.Aiming or perk == Perks.Reloading or perk == "GunEnthusiast" and SBvars.TraitsLockSystemCanGainPositive then
-					if not activatedMods:contains("EvolvingTraitsWorldDisableGunEnthusiast") and SBvars.GunEnthusiast == true and not player:HasTrait("GunEnthusiast") and (aiming + reloading) >= SBvars.GunEnthusiastSkill and firearmKills >= SBvars.GunEnthusiastKills then
+				if (perk == "characterInitialization" or perk == "kill" or perk == Perks.Aiming or perk == Perks.Reloading or perk == "GunEnthusiast") and ETWCommonLogicChecks.GunEnthusiastShouldExecute() then
+					if (aiming + reloading) >= SBvars.GunEnthusiastSkill and firearmKills >= SBvars.GunEnthusiastKills then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("GunEnthusiast")) then
 							player:getTraits():add("GunEnthusiast");
 							applyXPBoost(player, Perks.Aiming, 1);
@@ -621,8 +618,8 @@ local function traitsGainsBySkill(player, perk)
 	-- Survival
 		-- Fishing
 			-- Angler
-				if perk == "characterInitialization" or perk == "kill" or perk == Perks.Fishing or perk == "Fishing" and SBvars.TraitsLockSystemCanGainPositive then
-					if SBvars.Fishing == true and not player:HasTrait("Fishing") and fishing >= SBvars.FishingSkill then
+				if (perk == "characterInitialization" or perk == "kill" or perk == Perks.Fishing or perk == "Fishing") and ETWCommonLogicChecks.AnglerShouldExecute() then
+					if fishing >= SBvars.FishingSkill then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Fishing")) then
 							player:getTraits():add("Fishing");
 							addRecipe(player, "Make Fishing Rod");
@@ -638,8 +635,8 @@ local function traitsGainsBySkill(player, perk)
 				end
 		-- Trapping
 			-- Hiker
-				if perk == "characterInitialization" or perk == Perks.Trapping or perk == Perks.PlantScavenging or perk == "Hiker" and SBvars.TraitsLockSystemCanGainPositive then
-					if SBvars.Hiker == true and not player:HasTrait("Hiker") and (trapping + foraging) >= SBvars.HikerSkill then
+				if (perk == "characterInitialization" or perk == Perks.Trapping or perk == Perks.PlantScavenging or perk == "Hiker") and ETWCommonLogicChecks.HikerShouldExecute() then
+					if (trapping + foraging) >= SBvars.HikerSkill then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Hiker")) then
 							player:getTraits():add("Hiker");
 							addRecipe(player, "Make Stick Trap");
