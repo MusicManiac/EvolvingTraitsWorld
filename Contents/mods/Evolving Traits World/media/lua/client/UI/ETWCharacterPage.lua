@@ -403,7 +403,7 @@ function ISETWProgressUI:createChildren()
 
 			str = "+ " .. getText("UI_trait_LessSleep")
 			self.labelLessSleepGain = ISLabel:new(barThreeFourthPosition - strLen(textManager, str)/2, y, FONT_HGT_SMALL, str, self.DimmedTextColor.r, self.DimmedTextColor.g, self.DimmedTextColor.b, self.DimmedTextColor.a, UIFont.Small, true)
-			self.labelFastLearnerGain:setTooltip(getText("UI_ETW_GainTooltip"))
+			self.labelLessSleepGain:setTooltip(getText("UI_ETW_GainTooltip"))
 			self:addChild(self.labelLessSleepGain)
 
 			y = y + FONT_HGT_SMALL

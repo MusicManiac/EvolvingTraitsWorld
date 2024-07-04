@@ -1,21 +1,4 @@
-v.7.0.0
+v.7.0.1
 
-General:
-	- This is the biggest update I've done yet: UI is here. It has everything you need to know. There are also tooltips. And mod settings. And sandbox settings. Almost 2000 new lines of code. This almost doubled mod size code-wise.
-	- Large refactor of conditions for increasing maintainability and reusability of the code, should be less error-prone now
-	- Asthmatic System was written in a dumb way, I rewrote it so expect to suddenly gain/loose Asthmatic when loading into pre-version 7.0.0 saves. Sorry. You can fix in debug mode by pasting this in console: "getPlayer()player:getModData().EvolvingTraitsWorld.AsthmaticCounter = -getPlayer()player:getModData().EvolvingTraitsWorld.AsthmaticCounter", without the quote marks.
-	- Smoker counter also wasn't making a lot of sense, so I had to change it too. Internally it was able to go between 0 and sandbox value multiplied by 2. For coding and consistency purposes I have to change it to go between minus sandbox x2 and sandbox x2. Shouldn't really change much but may take longer to gain/lose smoker now.
-	- Following above change, adjusted default Smoker Addiction Decay Multiplier from 8 to 12. Would recommend adjusting it on existent games
-	- Outdoorsman had similar but slightly different issue, so things got slightly re-arranged there too. Nothing as drastic as Asthmatic but some of you might lose/gain it too. Not fixable in debug mode like Asthmatic is.
-	- Fast/Slow Learner merged into a system instead of being 2 separate thing
-	- New dependency to add UI page, TchernoLib
-Moodles:
-	- Removed Smoker Moodle, now this information can be found on UI character page.
 Fixes:
-	- Possible fix on error popping up after dying and making new character
-	- Fixed bravery system showing incorrect notification when losing Cowardly
-	- Fixed Asthmatic sandbox description
-	- Fixed Outdoorsman and Asthmatic sometimes not being locked by Traits Lock System
-	- Fixed some logic mistakes that appeared in last update
-Translations:
-	- Mostly up to date, need maintainers for KO, PTBR and RU
+	- Fixed UI breaking (ETWCharacterPage.lua line # 406), there might be more errors, I'll need logs to fix it. Send them on Discord. Or in the thread.
