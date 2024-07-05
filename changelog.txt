@@ -1,4 +1,5 @@
-v.7.0.1
+v.7.0.2
 
 Fixes:
-	- Fixed UI breaking (ETWCharacterPage.lua line # 406), there might be more errors, I'll need logs to fix it. Send them on Discord. Or in the thread.
+	- Fixed delayed notifications not showing correct strings
+	- Fixed Baseball player showing up non-stop

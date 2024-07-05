@@ -74,7 +74,7 @@ local function eagleEyed(wielder, character, handWeapon, damage)
 					if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_eagleeyed"), true, HaloTextHelper.getColorGreen()) end
 				end
 				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("EagleEyed") then
-					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringAdd")..getText("UI_trait_eagleeyed"), true, HaloTextHelper.getColorGreen()) end
+					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd")..getText("UI_trait_eagleeyed"), true, HaloTextHelper.getColorGreen()) end
 					ETWCommonFunctions.addTraitToDelayTable(modData, "EagleEyed", player, true)
 				end
 			end
@@ -114,7 +114,7 @@ local function braverySystem(zombie)
 					if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_" .. (trait == "Cowardly" and "cowardly" or trait)), false, HaloTextHelper.getColorGreen()) end
 				end
 				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(trait) then
-					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringRemove")..getText("UI_trait_" .. trait), true, HaloTextHelper.getColorGreen()) end
+					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringRemove")..getText("UI_trait_" .. trait), true, HaloTextHelper.getColorGreen()) end
 					ETWCommonFunctions.addTraitToDelayTable(ETWModData, trait, player, false)
 				end
 			elseif not player:HasTrait(trait) and positiveTrait and SBvars.TraitsLockSystemCanGainPositive then
@@ -144,7 +144,7 @@ local function braverySystem(zombie)
 					end
 				end
 				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(trait) then
-					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringAdd")..getText("UI_trait_" .. (trait == "Brave" and "brave" or trait)), true, HaloTextHelper.getColorGreen()) end
+					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd")..getText("UI_trait_" .. (trait == "Brave" and "brave" or trait)), true, HaloTextHelper.getColorGreen()) end
 					ETWCommonFunctions.addTraitToDelayTable(ETWModData, trait, player, true)
 				end
 			end

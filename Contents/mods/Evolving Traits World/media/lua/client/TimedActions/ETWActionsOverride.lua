@@ -44,7 +44,7 @@ function ETWActionsOverride.bodyworkEnthusiastCheck()
 			if notification == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_BodyWorkEnthusiast"), true, HaloTextHelper.getColorGreen()) end
 		end
 		if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("BodyWorkEnthusiast") then
-			if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringAdd")..getText("UI_trait_BodyWorkEnthusiast"), true, HaloTextHelper.getColorGreen()) end
+			if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd")..getText("UI_trait_BodyWorkEnthusiast"), true, HaloTextHelper.getColorGreen()) end
 			ETWCommonFunctions.addTraitToDelayTable(modData, "BodyWorkEnthusiast", player, true)
 		end
 	end
@@ -62,7 +62,7 @@ function ETWActionsOverride.mechanicsCheck()
 			if notification == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Mechanics"), true, HaloTextHelper.getColorGreen()) end
 		end
 		if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Mechanics") then
-			if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringAdd")..getText("UI_trait_Mechanics"), true, HaloTextHelper.getColorGreen()) end
+			if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd")..getText("UI_trait_Mechanics"), true, HaloTextHelper.getColorGreen()) end
 			ETWCommonFunctions.addTraitToDelayTable(modData, "Mechanics", player, true)
 		end
 	end
@@ -120,7 +120,7 @@ function ISChopTreeAction:perform()
 				if notification == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_axeman"), true, HaloTextHelper.getColorGreen()) end
 			end
 			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Axeman") then
-				if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringAdd")..getText("UI_trait_axeman"), true, HaloTextHelper.getColorGreen()) end
+				if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd")..getText("UI_trait_axeman"), true, HaloTextHelper.getColorGreen()) end
 				ETWCommonFunctions.addTraitToDelayTable(modData, "Axeman", player, true)
 			end
 		end
@@ -152,7 +152,7 @@ function ISInventoryTransferAction:perform()
 					if notification == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Disorganized"), false, HaloTextHelper.getColorGreen()) end
 				end
 				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Disorganized") then
-					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringRemove")..getText("UI_trait_Disorganized"), false, HaloTextHelper.getColorGreen()) end
+					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringRemove")..getText("UI_trait_Disorganized"), false, HaloTextHelper.getColorGreen()) end
 					ETWCommonFunctions.addTraitToDelayTable(modData, "Disorganized", player, false)
 				end
 			end
@@ -164,7 +164,7 @@ function ISInventoryTransferAction:perform()
 				end
 				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Organized") then
 					-- UI_trait_Packmule is internal string name
-					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringAdd")..getText("UI_trait_Packmule"), true, HaloTextHelper.getColorGreen()) end
+					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd")..getText("UI_trait_Packmule"), true, HaloTextHelper.getColorGreen()) end
 					ETWCommonFunctions.addTraitToDelayTable(modData, "Organized", player, true)
 				end
 			end
@@ -174,7 +174,7 @@ function ISInventoryTransferAction:perform()
 					if notification == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_AllThumbs"), false, HaloTextHelper.getColorGreen()) end
 				end
 				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("AllThumbs") then
-					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringRemove")..getText("UI_trait_AllThumbs"), false, HaloTextHelper.getColorGreen()) end
+					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringRemove")..getText("UI_trait_AllThumbs"), false, HaloTextHelper.getColorGreen()) end
 					ETWCommonFunctions.addTraitToDelayTable(modData, "AllThumbs", player, false)
 				end
 			end
@@ -193,7 +193,7 @@ function ISInventoryTransferAction:perform()
 					if notification == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_AllThumbs"), false, HaloTextHelper.getColorGreen()) end
 				end
 				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("butterfingers") then
-					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_EvolvingTraitsWorld_DelayedNotificationsStringAdd")..getText("UI_trait_AllThumbs"), false, HaloTextHelper.getColorGreen()) end
+					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd")..getText("UI_trait_AllThumbs"), false, HaloTextHelper.getColorGreen()) end
 					ETWCommonFunctions.addTraitToDelayTable(modData, "butterfingers", player, false)
 				end
 			end
