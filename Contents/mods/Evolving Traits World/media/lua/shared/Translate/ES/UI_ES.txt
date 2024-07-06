@@ -59,7 +59,6 @@ UI_ES = {
 	UI_ETW_Options_EnableBloodLustMoodle_tooltip = "Tardará hasta una hora en el juego, ya que el estado es actualizado cada hora.",
 	UI_ETW_Options_EnableSleepHealthMoodle = "Habilitar estado de Salud del Sueño",
 	UI_ETW_Options_EnableSleepHealthMoodle_tooltip = "Muestra si estás durmiendo dentro de tus horas óptimas o no. Solo activo mientras el personaje duerme.",
-
 	UI_ETW_Options_UIWidth = "[IU] Ancho de pagina",
     UI_ETW_Options_UIWidth_tooltip = "Ancho de pagina en pixeles. Si juegas en el idioma ingles debería de funcionar correctamente, pero en cualquier otro idioma puede verse raro asique si necesitas mas espacio, auméntalo  aquí.",
     UI_ETW_Options_TraitColumns = "[UI] Columnas de Rasgos",

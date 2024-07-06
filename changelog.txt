@@ -1,5 +1,8 @@
-v.7.0.2
+v.7.0.3
 
 Fixes:
-	- Fixed delayed notifications not showing correct strings
-	- Fixed Baseball player showing up non-stop
+	- Removed Smoker Moodle from Sandbox
+	- Fixed Smoker Bar showing incorrect info
+	- Fixed Pain Tolerance being unobtainable if it's in delayed traits system
+Translations:
+	- PTBR translation update

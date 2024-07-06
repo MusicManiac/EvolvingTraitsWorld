@@ -85,7 +85,6 @@ local function fogTraits()
 end
 
 local function initializeEvents(playerIndex, player)
-	local activatedMods = getActivatedMods();
 	Events.EveryOneMinute.Remove(rainTraits);
 	if ETWCommonLogicChecks.RainSystemShouldExecute() then Events.EveryOneMinute.Add(rainTraits) end
 	Events.EveryOneMinute.Remove(fogTraits);

@@ -274,10 +274,6 @@ Sandbox_IT = {
 	Sandbox_ETW_SmokingAddictionDecay_tooltip = "Quanto velocemente diminuisce la dipendenza",
 	Sandbox_ETW_SmokingAddictionMultiplier = "Moltiplicatore di aumento della dipendenza dal fumo",
 	Sandbox_ETW_SmokingAddictionMultiplier_tooltip = "Quanto velocemente aumenta la dipendenza",
-	Sandbox_ETW_SmokerMoodle = "Abilita il Moodle Fumatore",
-	Sandbox_ETW_SmokerMoodle_tooltip = "Se questa opzione è disabilitata, il Moodle non verrà visualizzato. Per il giocatore singolo, lascialo attivo e cambia il moodle che vedi dalle opzione della mod. Se si tratta di un'impostazione del server, i giocatori non saranno in grado di abilitare il Moodle lato client.",
-	Sandbox_ETW_SmokerMoodlePercentage = "Percentuale del Moodle Fumatore",
-	Sandbox_ETW_SmokerMoodlePercentage_tooltip = "Questa opzione controlla quando si presenta Moodle. Impostandolo al 20%, ad esempio, farà apparire moodle quando sei al 20% di distanza dal guadagnare o perdere Fumatore. L'impostazione su 100 lascerà sempre visibile il moodle del fumatore. Per giocatore singolo Si consiglia di impostarlo su 100, quindi modificare la % dalle opzioni mod. Per i server, questa impostazione controlla qual'è la percentuale massima che i client possono impostare per se stessi. Quindi, se questo valore nelle impostazioni del server è al 10%, i giocatori non possono impostarlo al 30%. Cioè, possono farlo, ma verrà comunque visualizzato solo quando raggiungerà il 10%. Ma se imposti questo valore al 50%, i giocatori possono cambiarlo lato client al 20%, per esempio.",
 
 	Sandbox_ETW_SlowLearner = "Allievo Distratto",
 	Sandbox_ETW_SlowLearnerSkill = "Abilità richieste per rimuovere Allievo Distratto",

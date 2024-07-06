@@ -59,7 +59,7 @@ local function bloodlustTime()
 end
 
 local function eagleEyed(wielder, character, handWeapon, damage)
-	if wielder == getPlayer() and character:isZombie() and SBvars.EagleEyed == true and not wielder:HasTrait("EagleEyed") then
+	if wielder == getPlayer() and character:isZombie() then
 		local player = wielder;
 		local zombie = character;
 		local zHealth = zombie:getHealth();

@@ -1,6 +1,6 @@
 REMINDER: Don't forget to update mod.info with new mod version
 
-v.6.x.x
+v.7.x.x
 
 General:
 	-

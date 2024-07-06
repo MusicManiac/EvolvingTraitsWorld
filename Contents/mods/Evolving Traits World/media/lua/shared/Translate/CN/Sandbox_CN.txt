@@ -270,10 +270,6 @@ Sandbox_CN = {
 	Sandbox_ETW_SmokingAddictionDecay_tooltip = "决定你戒菸的速率",
 	Sandbox_ETW_SmokingAddictionMultiplier = "烟瘾成长乘数",
 	Sandbox_ETW_SmokingAddictionMultiplier_tooltip = "决定你上瘾的速率",
-	Sandbox_ETW_SmokerMoodle = "启用烟瘾示意量表",
-	Sandbox_ETW_SmokerMoodle_tooltip = "如果不启用则烟瘾量表不会显示. 单人模式下可随自身需求于模组选项开关. 如果为多人伺服器则玩家无法自行启用量表显示",
-	Sandbox_ETW_SmokerMoodlePercentage = "烟瘾量表提示",
-	Sandbox_ETW_SmokerMoodlePercentage_tooltip = "控制量表可视条件.设定为20%代表量表会在你离戒菸或烟瘾前20%进度时出现.设定100为永久显示.单人游戏时建议为100,并于模组设定中调整%.如果为多人游戏下，伺服器端设定值将为玩家端所能设置最高有效值,举例如伺服端设置10%,玩家端可以设置到30%,但仍只会在10%时显示;若伺服端设置50%,玩家端可设置为20%并在20%时正常显示",
 
 	Sandbox_ETW_Sojutsu = "武枪大师",
 	Sandbox_ETW_SojutsuSkill = "武枪大师:获得特质所需长矛技能等级",

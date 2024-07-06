@@ -403,22 +403,6 @@ option EvolvingTraitsWorld.SleepMoodle
 	page = ETWMoodles,
 	translation = ETW_SleepMoodle,
 }
-option EvolvingTraitsWorld.SmokerMoodle
-{
-	type = boolean,
-	default = true,
-	page = ETWMoodles,
-	translation = ETW_SmokerMoodle,
-}
-option EvolvingTraitsWorld.SmokerMoodlePercentage
-{
-	type = double,
-	min = 0,
-	max = 100,
-	default = 100,
-	page = ETWMoodles,
-	translation = ETW_SmokerMoodlePercentage,
-}
 option EvolvingTraitsWorld.TRAITS
 {
 	translation = --------------------------------------------------TRAITS-----------------------------------------------------------------,

@@ -52,7 +52,7 @@ end
 
 function ISETWProgressUI:createChildren()
 	if SBvars.UIPage then
-		local barStartPosition = 150;
+		local barStartPosition = 150; -- TODO : add modoption to adjust this
 		local barEndPosition = WINDOW_WIDTH - lineStartPosition;
 		local barMidPosition = barStartPosition + (barEndPosition - barStartPosition) / 2;
 		local barLength = barEndPosition - barStartPosition;
@@ -421,32 +421,6 @@ function ISETWProgressUI:createChildren()
 			y = y + FONT_HGT_SMALL
 		end
 
-		if ETWCommonLogicChecks.SmokerShouldExecute() then
-			str = "+ " .. getText("UI_trait_Smoker")
-			self.labelSmokerGain = ISLabel:new(barOneFourthPosition - strLen(textManager, str)/2, y, FONT_HGT_SMALL, str, self.DimmedTextColor.r, self.DimmedTextColor.g, self.DimmedTextColor.b, self.DimmedTextColor.a, UIFont.Small, true)
-			self.labelSmokerGain:setTooltip(getText("UI_ETW_LooseTooltip"))
-			self:addChild(self.labelSmokerGain)
-
-			str = "- " .. getText("UI_trait_Smoker")
-			self.labelSmokerLose = ISLabel:new(barThreeFourthPosition - strLen(textManager, str)/2, y, FONT_HGT_SMALL, str, self.DimmedTextColor.r, self.DimmedTextColor.g, self.DimmedTextColor.b, self.DimmedTextColor.a, UIFont.Small, true)
-			self.labelSmokerLose:setTooltip(getText("UI_ETW_GainTooltip"))
-			self:addChild(self.labelSmokerLose)
-
-			y = y + FONT_HGT_SMALL
-
-			self.labelSmokerBarName = ISLabel:new(barStartPosition - lineStartPosition, y, FONT_HGT_SMALL, getText("UI_trait_Smoker"), self.TextColor.r, self.TextColor.g, self.TextColor.b, self.TextColor.a, UIFont.Small, false)
-			self.labelSmokerBarName:setTooltip(getText("Sandbox_ETW_SmokerCounter_tooltip"))
-			self:addChild(self.labelSmokerBarName)
-
-			self.barSmokerSystem = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
-			self.barSmokerSystem:setGradientTexture(redYellowGreenGradient)
-			self.barSmokerSystem:setHighlightRadius(highlightRadius)
-			self.barSmokerSystem:setDoKnob(false)
-			self:addChild(self.barSmokerSystem)
-
-			y = y + FONT_HGT_SMALL
-		end
-
 		if ETWCommonLogicChecks.RainSystemShouldExecute() then
 			str = "+/- " .. getText("UI_trait_Pluviophobia")
 			self.labelPluviophobia = ISLabel:new(barOneFourthPosition - strLen(textManager, str)/2, y, FONT_HGT_SMALL, str, self.DimmedTextColor.r, self.DimmedTextColor.g, self.DimmedTextColor.b, self.DimmedTextColor.a, UIFont.Small, true)
@@ -679,6 +653,34 @@ function ISETWProgressUI:createChildren()
 			self.labelDesensitizedGain = ISLabel:new(barEndPosition, y, FONT_HGT_SMALL, "+ " .. getText("UI_trait_Desensitized"), self.DimmedTextColor.r, self.DimmedTextColor.g, self.DimmedTextColor.b, self.DimmedTextColor.a, UIFont.Small, false)
 			self.labelDesensitizedGain:setTooltip(getText("UI_ETW_GainTooltip"))
 			self:addChild(self.labelDesensitizedGain)
+
+			y = y + FONT_HGT_SMALL
+		end
+
+		if ETWCommonLogicChecks.SmokerShouldExecute() then
+			y = y + FONT_HGT_SMALL / 2
+
+			str = "- " .. getText("UI_trait_Smoker")
+			self.labelSmokerLose = ISLabel:new(barOneFourthPosition - strLen(textManager, str)/2, y, FONT_HGT_SMALL, str, self.DimmedTextColor.r, self.DimmedTextColor.g, self.DimmedTextColor.b, self.DimmedTextColor.a, UIFont.Small, true)
+			self.labelSmokerLose:setTooltip(getText("UI_ETW_GainTooltip"))
+			self:addChild(self.labelSmokerLose)
+
+			str = "+ " .. getText("UI_trait_Smoker")
+			self.labelSmokerGain = ISLabel:new(barThreeFourthPosition - strLen(textManager, str)/2, y, FONT_HGT_SMALL, str, self.DimmedTextColor.r, self.DimmedTextColor.g, self.DimmedTextColor.b, self.DimmedTextColor.a, UIFont.Small, true)
+			self.labelSmokerGain:setTooltip(getText("UI_ETW_LooseTooltip"))
+			self:addChild(self.labelSmokerGain)
+
+			y = y + FONT_HGT_SMALL
+
+			self.labelSmokerBarName = ISLabel:new(barStartPosition - lineStartPosition, y, FONT_HGT_SMALL, getText("UI_trait_Smoker"), self.TextColor.r, self.TextColor.g, self.TextColor.b, self.TextColor.a, UIFont.Small, false)
+			self.labelSmokerBarName:setTooltip(getText("Sandbox_ETW_SmokerCounter_tooltip"))
+			self:addChild(self.labelSmokerBarName)
+
+			self.barSmokerSystem = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
+			self.barSmokerSystem:setGradientTexture(greenYellowRedGradient)
+			self.barSmokerSystem:setHighlightRadius(highlightRadius)
+			self.barSmokerSystem:setDoKnob(false)
+			self:addChild(self.barSmokerSystem)
 		end
 
 		y = y + FONT_HGT_SMALL * 1.5
@@ -1144,6 +1146,10 @@ function ISETWProgressUI:render()
 	end
 
 	if self.barBravery ~= nil then
+		local heightOfBox = FONT_HGT_SMALL * 3.5
+		self:drawRectBorder(lineStartPosition, self.labelCowardlyLose:getY() - (FONT_HGT_SMALL / 4), self:getWidth() - lineStartPosition * 1.5, heightOfBox, self.DimmedTextColor.a, self.DimmedTextColor.r, self.DimmedTextColor.g, self.DimmedTextColor.b);
+	end
+	if self.barBravery ~= nil then
 		local totalKills = player:getZombieKills();
 		local fireKills = killCountModData["Fire"].count;
 		local firearmsKills = killCountModData["Firearm"].count;
@@ -1271,7 +1277,7 @@ end
 
 function ISETWProgressUI:ensureVisible()
 	if not self.joyfocus then return end
-	local child = nil --TODO manage scroll? self.progressBars[self.joypadIndex]
+	local child = nil
 	if not child then return end
 	local Y = child:getY()
 	if Y - 40 < 0 - self:getYScroll() then

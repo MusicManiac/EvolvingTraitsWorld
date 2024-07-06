@@ -302,7 +302,7 @@ local function initializeEvents(playerIndex, player)
 		Events.EveryTenMinutes.Add(weightSystem) ;
 	end
 	Events.EveryTenMinutes.Remove(painToleranceTrait);
-	if ETWCommonLogicChecks.PainToleranceShouldExecute() and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("PainTolerance") then
+	if ETWCommonLogicChecks.PainToleranceShouldExecute() then
 		Events.EveryTenMinutes.Add(painToleranceTrait);
 	end
 	Events.EveryOneMinute.Remove(asthmaticTrait);

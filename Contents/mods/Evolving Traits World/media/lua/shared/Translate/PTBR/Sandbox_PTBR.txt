@@ -25,7 +25,7 @@ Sandbox_PTBR = {
 
 	Sandbox_ETW_Asthmatic = "Asmático",
 	Sandbox_ETW_AsthmaticCounter = "Medidor de Asmático",
-	Sandbox_ETW_AsthmaticCounter_tooltip = "Qual valor do medidor deve alcançar para obter o traço de asmático.",
+	Sandbox_ETW_AsthmaticCounter_tooltip = "Qual valor no contador você deve atingir para perder o traço asmático. Correr ou se exercitar em temperaturas frias diminui o contador; quanto mais frio estiver, mais rápido será a diminuição. Se você estiver ao ar livre, a diminuição é ainda mais rápida. Se você for fumante, a diminuição é ainda mais rápida. Além disso, ser fumante diminui lentamente o contador quando você corre, mesmo se o tempo estiver bom. Atingir o valor do contador remove o traço. O contador aumenta lentamente por conta própria, desde que você não esteja correndo ou sprintando e respirando ar mais quente que 0 graus Celsius. Além disso, ele aumenta com base no seu nível de Aptidão Física e nível atual de resistência. Ser fumante reduz pela metade a taxa de aumento. Ser asmático reduz pela metade novamente.",
 
 	Sandbox_ETW_AVClub = "Membro do Clube CA",
 	Sandbox_ETW_AVClubSkill = "Requerimentos de habilidade de elétrica para o traço de Membro do Clube CA",
@@ -216,6 +216,10 @@ Sandbox_PTBR = {
 	Sandbox_ETW_KnifeFighterSkill = "Requerimento de Lâminas curtas para o traço de Lutador de Facas",
 	Sandbox_ETW_KnifeFighterKills = "Requerimento de mortes com Lâminas Curtas para o traço de Lutador de Facas",
 
+	Sandbox_ETW_LearnerSystem = "Sistema de Aprendizagem",
+    Sandbox_ETW_LearnerSystemSkill = "Requisito de Habilidade do Sistema de Aprendizagem",
+    Sandbox_ETW_LearnerSystemSkill_tooltip = "Permite perder Aprendiz Lento e ganhar Aprendiz Rápido. Ao atingir metade dos níveis, você perde Aprendiz Lento, ao atingir a quantidade definida de níveis, você ganha Aprendiz Rápido. Manutenção + Carpintaria + Culinária + Agricultura + Primeiros Socorros + Elétrica + Metalurgia + Mecânica + Alfaiataria",
+
 	Sandbox_ETW_LightStep = "Passos Leves",
 	Sandbox_ETW_LightStepSkill = "Requerimento de Agilidade para o traço de Passos Leves",
 
@@ -228,7 +232,7 @@ Sandbox_PTBR = {
 
 	Sandbox_ETW_Outdoorsman = "Andarilho",
 	Sandbox_ETW_OutdoorsmanCounter = "Medidor de Andarilho",
-	Sandbox_ETW_OutdoorsmanCounter_tooltip = "--- Entendimento Geral---<br>Isso permite que você obtenha um traço ao passar tempo ao ar livre e ser exposto a várias condições climáticas. Quanto mais adversas forem as condições climáticas, mais rapidamente você ganhará o traço. Ficar dentro de casa gradualmente perde o progresso. Ao atingir o valor máximo do contador, você ganha o traço, e ao cair pela metade, você o perde.<br>---Detalhes técnicos---<br>A cada minuto que você passa ao ar livre, 1 ponto é adicionado ao contador. A taxa de aumento do contador é multiplicada por certas condições climáticas, como chuva, neve e vento. Quando o contador atinge o limite especificado, você ganha o traço. Com base em testes, determinou-se que passar 24 horas em tempo claro com uma manhã nebulosa resultará em aproximadamente 1.700 pontos, enquanto passar 24 horas em um clima com duas manhãs com nevoeiro e uma tempestade ao meio-dia resultará em aproximadamente 5.000 pontos. Se você estiver dentro de casa, perderá 10% do que ganharia se estivesse ao ar livre. Isso diminui linearmente para 100% ao longo de 900 minutos estando dentro de casa. Você pode redefinir a porcentagem atual em que perde pontos ao ficar ao ar livre. Você diminui a porcentagem em 0,3 a cada minuto ao ar livre (você pode ir de 100% a 10% em 300 minutos). Ao atingir metade do valor do contador que você definiu, você perde o traço. O contador tem um limite superior de 10 vezes o valor do contador e um limite inferior de 0.",
+	Sandbox_ETW_OutdoorsmanCounter_tooltip = "Isso permite que você ganhe um traço passando tempo ao ar livre e sendo exposto a várias condições climáticas. Quanto mais adversas forem as condições climáticas, mais rapidamente você ganhará o traço. Estar dentro de casa perde progresso lentamente. Atingir o valor no contador ganhará o traço, enquanto descer para o valor oposto (por exemplo, -500k com as configurações padrão) fará você perdê-lo.",
 	Sandbox_ETW_OutdoorsmanCounterLoseMultiplier = "Multiplicador de perda do medidor de Andarilho",
 	Sandbox_ETW_OutdoorsmanCounterLoseMultiplier_tooltip = "Define a velocidade com que você perde pontos ao ficar dentro de casa. A fórmula para determinar quanto você perde a cada minuto é 1 * (1 - OutdoorsmanCounterLoseMultiplier * 0.003). Portanto, no mínimo, você perde 0,7% do que ganharia se estivesse ao ar livre, e no máximo você perde 10% do que ganharia se estivesse ao ar livre.",
 
@@ -269,15 +273,11 @@ Sandbox_PTBR = {
 
 	Sandbox_ETW_Smoker = "Fumante",
 	Sandbox_ETW_SmokerCounter = "Medidor de Vicio em Cigarro",
-	Sandbox_ETW_SmokerCounter_tooltip = "Ao encher o medidor, você obterá o traço Fumante. Ao cair pela metade desse valor, você o perderá. Os limites do contador são de 0 a 2 vezes o valor do contador.",
+	Sandbox_ETW_SmokerCounter_tooltip = "Ao atingir esse valor no contador, você ganhará o traço Fumante. Ao descer para o valor oposto, você o perderá. Os limites do contador são de -2x a 2x o valor do contador.<br><br> Como funciona: Cada cigarro que você fuma aumenta seu contador de vício. Quanto maiores os intervalos entre os cigarros, menor será o aumento. Fumar enquanto estiver em pânico ou estressado aumenta o contador muito mais rapidamente, com base no nível de pânico e estresse. Não fumar faz o contador decair lentamente. Estar em pânico ou estressado diminui a taxa de decaimento.",
 	Sandbox_ETW_SmokingAddictionDecay = "Multiplicador de Decaimento de Vício em Cigarro",
 	Sandbox_ETW_SmokingAddictionDecay_tooltip = "Quão rápido o medidor diminui",
 	Sandbox_ETW_SmokingAddictionMultiplier = "Multiplicador de Ganho de Vício em Cigarro",
 	Sandbox_ETW_SmokingAddictionMultiplier_tooltip = "Quão rápido você enche o medidor",
-	Sandbox_ETW_SmokerMoodle = "Habilitar humor de Fumante",
-	Sandbox_ETW_SmokerMoodle_tooltip = "Se esta opção estiver desativada, o humor não será exibido. para single-player, deixe ativado e altere os humor que você vê no Mod Options. Se for uma configuração de servidor, os jogadores não poderão habilitar o humor do lado do client.",
-	Sandbox_ETW_SmokerMoodlePercentage = "% de humor de Fumante",
-	Sandbox_ETW_SmokerMoodlePercentage_tooltip = "Isso controla quando o humor é exibido. Definir isso para 20%, por exemplo, fará com que o humor seja exibido quando você estiver a 20% de distância de obter ou perder o traço Fumante. Definir para 100 manterá o humor de fumante sempre visível. Para jogadores individuais, é recomendável definir isso como 100 e, em seguida, alterar a porcentagem no Mod Options. Para servidores, essa configuração controla qual é a porcentagem máxima que os jogadores podem definir para si mesmos. Portanto, se o valor nas configurações do servidor for 10%, os jogadores não poderão definir seu valor para 30%. Bem, eles podem, mas ainda só será exibido quando atingir 10%. Mas se você definir esse valor como 50%, os jogadores poderão alterá-lo do lado do client para 20%, por exemplo",
 
 	Sandbox_ETW_Sojutsu = "Artista Marcial Sojutsu",
 	Sandbox_ETW_SojutsuSkill = "Requerimento de habilidade para o traço de Artista Marcial Sojutsu",
@@ -295,6 +295,9 @@ Sandbox_PTBR = {
 	Sandbox_ETW_TraitsLockSystemCanLoseNegative_tooltip = "Se isto estiver habilitado, você pode perder traços negativos durante o jogo. Isso se aplica principalmente a sistemas de traços como amor/medo de clima/locais ou sistema de peso e também a vários traços simples.",
 	Sandbox_ETW_TraitsLockSystemCanGainNegative = "Sistema de Bloqueio de Traços: Pode Ganhar Negativos",
 	Sandbox_ETW_TraitsLockSystemCanGainNegative_tooltip = "Se isto estiver habilitado, você pode ganhar traços negativos durante o jogo. Isso se aplica principalmente a sistemas de traços como amor/medo de clima/locais ou sistema de peso, pois não há muitos traços negativos que podem ser adquiridos.",
+
+	Sandbox_ETW_UIPage = "Página de UI com estatísticas",
+	Sandbox_ETW_UIPage_tooltip = "Isso habilitará uma página na tela do personagem com informações detalhadas sobre seu progresso em perder/ganhar traços.",
 
 	Sandbox_ETW_WeightSystem = "Sistema de Peso",
 	Sandbox_ETW_WeightSystem_tooltip = "Descrever as condições em que você ganha/perde traços aqui exigiria muito texto, então apenas verifique as Planilhas do Google para obter detalhes (link na descrição da página do mod na oficina). Os traços afetados que podem ser ganhos/perdidos dinamicamente são: Sedento/Hidratado, Estomago Fraco/Forte, Casca Grossa/Pele Frágil, Saúde Fraca/Saúde de Ferro. IMPORTANTE: se você escolher qualquer um desses traços na criação do personagem, eles serão permanentes para o seu personagem, tanto os negativos quanto os positivos.",

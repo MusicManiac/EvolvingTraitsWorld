@@ -269,10 +269,6 @@ Sandbox_EN = {
 	Sandbox_ETW_SmokingAddictionDecay_tooltip = "How fast your addiction decaying",
 	Sandbox_ETW_SmokingAddictionMultiplier = "Smoker Addiction Increase Multiplier",
 	Sandbox_ETW_SmokingAddictionMultiplier_tooltip = "How fast your addiction is increasing",
-	Sandbox_ETW_SmokerMoodle = "Enable Smoker Moodle",
-	Sandbox_ETW_SmokerMoodle_tooltip = "If this option is disabled, moodle won't show up. For single-player leave this on and change moodles you see with Mod Options. If it's a server setting, players won't be able to enable moodle client-sided.",
-	Sandbox_ETW_SmokerMoodlePercentage = "Smoker Moodle Percentage",
-	Sandbox_ETW_SmokerMoodlePercentage_tooltip = "This controls when moodle shows up. Setting this to 20%, for example, will make moodle show up when you're 20% away from earning or loosing Smoker. Setting to 100 will leave smoker moodle up always. For single-player It's recommended to set this to 100, and then change % in Mod Options. For servers, this setting controls what's maximum % that clients can set up for themselves. So if this value in server settings is at 10%, players can't set their value to 30%. Well, they can, but it'll still only show up when it hits 10%. But if you set this value to 50%, players can then change it client-sided to 20%, for example.",
 
 	Sandbox_ETW_Sojutsu = "Sojutsu Martial Artist",
 	Sandbox_ETW_SojutsuSkill = "Sojutsu Martial Artist Spear Skill requirement",

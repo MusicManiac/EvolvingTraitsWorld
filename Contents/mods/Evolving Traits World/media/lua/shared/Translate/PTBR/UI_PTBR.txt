@@ -59,4 +59,18 @@ UI_PTBR = {
 	UI_ETW_Options_EnableBloodLustMoodle_tooltip = "Demora 1  ou mais horas em jogo para atualizar, ja que humor é atualizado a cada hora.",
 	UI_ETW_Options_EnableSleepHealthMoodle = "Habilitar Humor de Saúde de Sono",
 	UI_ETW_Options_EnableSleepHealthMoodle_tooltip = "Mostra se você está dormindo na melhor hora ou não. Apenas ativo quando personagem está dormindo.",
+	UI_ETW_Options_UIWidth = "[UI] Largura da página do personagem",
+    UI_ETW_Options_UIWidth_tooltip = "Largura da página do personagem em pixels. Se você joga em inglês, a configuração padrão deve funcionar bem para você, mas em outras línguas pode ser estranho, então se precisar de mais espaço, aumente aqui.",
+    UI_ETW_Options_TraitColumns = "[UI] Colunas de Traços",
+    UI_ETW_Options_TraitColumns_tooltip = "Quantas colunas existem na UI na página do personagem. A configuração padrão deve funcionar bem se você joga em inglês, mas se o texto estiver sobreposto em outras línguas, talvez você queira reduzir esse valor",
+
+    UI_ETW_GainTooltip = "Você ganhará o traço quando a barra estiver por aqui (ou se qualificar para ganhá-lo, se o Sistema de Traços Atrasados estiver ativado e este traço estiver nesse sistema)",
+    UI_ETW_LoseTooltip = "Você perderá o traço quando a barra estiver por aqui (ou se qualificar para perdê-lo, se o Sistema de Traços Atrasados estiver ativado e este traço estiver nesse sistema)",
+    UI_ETW_GainLoseTooltip = "Você ganhará/perderá o traço quando a barra estiver por aqui (ou se qualificar para ganhá-lo/perdê-lo, se o Sistema de Traços Atrasados estiver ativado e este traço estiver nesse sistema)",
+    UI_ETW_ListOfDelayedTraits = "Lista de Traços Atrasados: ",
+
+    UI_ETW_Chance = "em",
+    ___note_to_translators = "UI_ETW_Chance is used in displaying chances, so for example '1 in 300' or '1 in 50300', etc."
+
+    UI_ETWPageDisabled = "A página do ETW está desabilitado nas configurações de sandbox",
 }

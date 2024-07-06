@@ -278,10 +278,6 @@ Sandbox_ETW_RainSystemCounterMultiplier = "Multiplicador de disminución del Sist
 	Sandbox_ETW_SmokingAddictionDecay_tooltip = "Qué tan rápido decae tu adicción",
 	Sandbox_ETW_SmokingAddictionMultiplier = "Fumador Multiplicador de aumento de adicción",
 	Sandbox_ETW_SmokingAddictionMultiplier_tooltip = "Qué tan rápido está aumentando su adicción",
-	Sandbox_ETW_SmokerMoodle = "Habilitar estado de Fumador",
-	Sandbox_ETW_SmokerMoodle_tooltip = "Si esta opción está deshabilitada, el estado no aparecerá. Para un solo jugador, déjalo activado y cambia los estados de ánimo que ves con Mod Options. Si se trata de una configuración de servidor, los jugadores no podrán habilitar el estado del lado del cliente.",
-	Sandbox_ETW_SmokerMoodlePercentage = "Porcentaje de estado de fumador",
-	Sandbox_ETW_SmokerMoodlePercentage_tooltip = "Esto controla cuando aparece el estado. Establecer esto en 20%, por ejemplo, hará que el estado aparezca cuando estés a un 20% de ganar o perder Fumador. Establecer en 100 dejará al estado de Fumador siempre activo. Para un solo jugador, se recomienda establecerlo en 100 y luego cambiar el % en Mod Options. Para los servidores, esta configuración controla cuál es el porcentaje máximo que los clientes pueden configurar por sí mismos. Entonces, si este valor en la configuración del servidor es del 10 %, los jugadores no pueden establecer su valor en el 30 %. Bueno, pueden hacerlo, pero solo aparecerá cuando alcance el 10 %. Pero si establece este valor en 50%, los jugadores pueden cambiarlo del lado del cliente a 20%, por ejemplo.",
 
 	Sandbox_ETW_Sojutsu = "Artista marcial de sojutsu",
 	Sandbox_ETW_SojutsuSkill = "Artista marcial de sojutsu Requisito de habilidad de Lanza",

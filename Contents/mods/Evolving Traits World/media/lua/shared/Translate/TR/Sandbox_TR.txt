@@ -278,10 +278,6 @@ Sandbox_TR = {
 	Sandbox_ETW_SmokingAddictionDecay_tooltip = "Baðýmlýlýðýnýzýn ne kadar hýzlý azaldýðý",
 	Sandbox_ETW_SmokingAddictionMultiplier = "Sigara Baðýmlýlýðý Artýþ Oraný Çarpaný",
 	Sandbox_ETW_SmokingAddictionMultiplier_tooltip = "Baðýmlýlýðýnýzýn ne kadar hýzlý arttýðý",
-	Sandbox_ETW_SmokerMoodle = "Sigara Tiryakisi moodle'ýný etkinleþtir",
-	Sandbox_ETW_SmokerMoodle_tooltip = "Bu seçenek devre dýþý býrakýlýrsa moodle görünmez. Tek oyunculu için bunu açýk býrakýn ve gördüðünüz moodle'larý "Mod Options" modunu kullanarak deðiþtirebilirsiniz. Bu ayar bir sunucuya için açýlmýþsa, oyuncular moodle'ý kendileri için zýt þekilde deðiþtiremez.",
-	Sandbox_ETW_SmokerMoodlePercentage = "Sigara Tiryakisi Moodle Yüzdesi",
-	Sandbox_ETW_SmokerMoodlePercentage_tooltip = "Bu, moodle'ýn ne zaman görüneceðini kontrol eder. Bunu %20 olarak ayarlamak, örneðin, Sigara Tiryaksi özelliðini kazanmaya veya kaybetmeye %20 uzak olduðunuzda moodle'ý gösterir. 100'e ayarlamak sigara içen moodle'ýný her zaman açýk býrakýr. Tek oyunculu için bunu 100'e ayarlamanýz ve ardýndan Mod Options moduyla %'yi deðiþtirmeniz önerilir. Sunucular için bu ayar, istemcilerin kendileri için ayarlayabilecekleri maksimum %'yi kontrol eder. Dolayýsýyla sunucu ayarlarýndaki bu deðer %10 ise, oyuncular kendi deðerlerini %30'a ayarlayamaz. Evet ayarlayabilirler, ancak yine de %10'a ulaþtýðýnda görünecektir. Ancak bu deðeri %50 olarak ayarlarsanýz, oyuncular daha sonra kendilerin için %20 olarak deðiþtirebilir.",
 
 	Sandbox_ETW_Sojutsu = "Sojutsu dövüþ stili ustasý",
 	Sandbox_ETW_SojutsuSkill = "Sojutsu dövüþ stili ustasý için gereken Mýzrak yeteneði ihtiyacý",
