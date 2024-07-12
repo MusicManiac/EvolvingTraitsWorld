@@ -441,7 +441,7 @@ local function traitsGainsBySkill(player, perk)
 			-- Slow/Fast Learner
 				if (perk == "characterInitialization" or perk == Perks.Maintenance or perk == Perks.Woodwork or perk == Perks.Cooking or perk == Perks.Farming or perk == Perks.Doctor or perk == Perks.Electricity or perk == Perks.MetalWelding or perk == Perks.Mechanics or perk == Perks.Tailoring or perk == "SlowLearner" or perk == "FastLearner") and ETWCommonLogicChecks.LearnerSystemShouldExecute() then
 					local levels = maintenance + carpentry + farming + firstAid + electrical + metalworking + mechanics + tailoring + cooking;
-					if levels >= SBvars.LearnerSystemSkill / 2 and SBvars.TraitsLockSystemCanLoseNegative then
+					if player:HasTrait("SlowLearner") and levels >= SBvars.LearnerSystemSkill / 2 and SBvars.TraitsLockSystemCanLoseNegative then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("SlowLearner")) then
 							player:getTraits():remove("SlowLearner");
 							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_SlowLearner"), false, HaloTextHelper.getColorGreen()) end
