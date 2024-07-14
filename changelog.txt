@@ -1,5 +1,7 @@
-v.7.0.4
+v.7.1.0
 
-Fixes:
-	- Fixed Slow Learner notifications popping up every level-up
-	- Fixed not being able to lose Agoraphobic or Claustrophobic sometimes
+General:
+	- Added tooltip for gradient bars, how it will display your current counter value when hovering over it.
+	- Lowered default values for fog and rain systems so it's more reasonable without additional tweaking
+Translations:
+	- Did some Quality Assurance on English lines, fixed various grammar mistakes and improved overall readability.

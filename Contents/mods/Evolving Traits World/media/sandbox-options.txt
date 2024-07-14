@@ -160,7 +160,7 @@ option EvolvingTraitsWorld.FogSystemCounter
 	type = integer,
 	min = 0,
 	max = 500000,
-	default = 30000,
+	default = 20000,
 	page = ETWSystems,
 	translation = ETW_FogSystemCounter,
 }
@@ -283,7 +283,7 @@ option EvolvingTraitsWorld.RainSystemCounter
 	type = integer,
 	min = 0,
 	max = 500000,
-	default = 50000,
+	default = 40000,
 	page = ETWSystems,
 	translation = ETW_RainSystemCounter,
 }

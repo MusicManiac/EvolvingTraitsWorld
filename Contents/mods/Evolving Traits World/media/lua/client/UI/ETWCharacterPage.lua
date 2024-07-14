@@ -1037,16 +1037,10 @@ function ISETWProgressUI:prerender()
 	self:setStencilRect(0, 0, self.width, self.height)
 end
 
-local gradientRender = ISGradientBar.render
-function ISGradientBar:render()
-	self:setStencilRect(0, 0, self.width, self.height)
-	gradientRender(self)
-	self:clearStencilRect()
-end
-
-local function updateBar(bar, value)
+local function updateBar(bar, value, tooltip)
 	if bar then
 		bar:setValue(value)
+		bar:setTooltip(tooltip)
 	end
 end
 
@@ -1099,14 +1093,14 @@ function ISETWProgressUI:render()
 	local spearKills = killCountModData["Spear"].count;
 	local firearmKills = killCountModData["Firearm"].count;
 
-	updateBar(self.barColdIllnessSystem, percentile(0, SBvars.ColdIllnessSystemColdsWeathered, modData.ColdSystem.ColdsWeathered))
-	updateBar(self.barSicknessSystem, percentile(0, SBvars.FoodSicknessSystemCounter, modData.FoodSicknessWeathered))
-	updateBar(self.barPainTolerance, percentile(0, SBvars.PainToleranceCounter, modData.PainToleranceCounter))
-	updateBar(self.barAsthmatic, percentile(SBvars.AsthmaticCounter * -2, SBvars.AsthmaticCounter * 2, modData.AsthmaticCounter))
-	updateBar(self.barBloodlust, percentile(0, SBvars.BloodlustProgress * 2, modData.BloodlustSystem.BloodlustProgress))
-	updateBar(self.barOutdoorsman, percentile(SBvars.OutdoorsmanCounter * -2, SBvars.OutdoorsmanCounter * 2, modData.OutdoorsmanSystem.OutdoorsmanCounter))
-	updateBar(self.barAgoraphobic, percentile(SBvars.FearOfLocationsSystemCounter * -2, SBvars.FearOfLocationsSystemCounter * 2, modData.LocationFearSystem.FearOfOutside))
-	updateBar(self.barClaustrophobic, percentile(SBvars.FearOfLocationsSystemCounter * -2, SBvars.FearOfLocationsSystemCounter * 2, modData.LocationFearSystem.FearOfInside))
+	updateBar(self.barColdIllnessSystem, percentile(0, SBvars.ColdIllnessSystemColdsWeathered, modData.ColdSystem.ColdsWeathered), modData.ColdSystem.ColdsWeathered)
+	updateBar(self.barSicknessSystem, percentile(0, SBvars.FoodSicknessSystemCounter, modData.FoodSicknessWeathered), modData.FoodSicknessWeathered)
+	updateBar(self.barPainTolerance, percentile(0, SBvars.PainToleranceCounter, modData.PainToleranceCounter), modData.PainToleranceCounter)
+	updateBar(self.barAsthmatic, percentile(SBvars.AsthmaticCounter * -2, SBvars.AsthmaticCounter * 2, modData.AsthmaticCounter), modData.AsthmaticCounter)
+	updateBar(self.barBloodlust, percentile(0, SBvars.BloodlustProgress * 2, modData.BloodlustSystem.BloodlustProgress), modData.BloodlustSystem.BloodlustProgress)
+	updateBar(self.barOutdoorsman, percentile(SBvars.OutdoorsmanCounter * -2, SBvars.OutdoorsmanCounter * 2, modData.OutdoorsmanSystem.OutdoorsmanCounter), modData.OutdoorsmanSystem.OutdoorsmanCounter)
+	updateBar(self.barAgoraphobic, percentile(SBvars.FearOfLocationsSystemCounter * -2, SBvars.FearOfLocationsSystemCounter * 2, modData.LocationFearSystem.FearOfOutside), modData.LocationFearSystem.FearOfOutside)
+	updateBar(self.barClaustrophobic, percentile(SBvars.FearOfLocationsSystemCounter * -2, SBvars.FearOfLocationsSystemCounter * 2, modData.LocationFearSystem.FearOfInside), modData.LocationFearSystem.FearOfInside)
 	if self.barLuckSystem ~= nil then
 		local totalPerkLevel = 0
 		local totalMaxPerkLevel = 0;
@@ -1120,13 +1114,16 @@ function ISETWProgressUI:render()
 		end
 		local percentageOfSkillLevels = totalPerkLevel / totalMaxPerkLevel * 100;
 		self.barLuckSystem:setValue(percentageOfSkillLevels / 100)
+		self.barLuckSystem:setTooltip(totalPerkLevel)
 	end
-	updateBar(self.barHearingSystem, percentile(0, SBvars.HearingSystemSkill, sprinting + lightfooted + nimble + sneaking + axe + longBlunt + shortBlunt + longBlade + shortBlade + spear))
-	updateBar(self.barLearnerSystem, percentile(0, SBvars.LearnerSystemSkill, maintenance + carpentry + farming + firstAid + electrical + metalworking + mechanics + tailoring + cooking))
-	updateBar(self.barSleepSystem, percentile(-200, 200, modData.SleepSystem.SleepHealthinessBar))
-	updateBar(self.barSmokerSystem, percentile(SBvars.SmokerCounter * -2, SBvars.SmokerCounter * 2, modData.SmokeSystem.SmokingAddiction))
-	updateBar(self.barRainSystem, percentile(SBvars.RainSystemCounter * -2, SBvars.RainSystemCounter * 2, modData.RainCounter))
-	updateBar(self.barFogSystem, percentile(SBvars.FogSystemCounter * -2, SBvars.FogSystemCounter * 2, modData.FogCounter))
+	local levels = sprinting + lightfooted + nimble + sneaking + axe + longBlunt + shortBlunt + longBlade + shortBlade + spear
+	updateBar(self.barHearingSystem, percentile(0, SBvars.HearingSystemSkill, levels), levels)
+	levels = maintenance + carpentry + farming + firstAid + electrical + metalworking + mechanics + tailoring + cooking
+	updateBar(self.barLearnerSystem, percentile(0, SBvars.LearnerSystemSkill, levels), levels)
+	updateBar(self.barSleepSystem, percentile(-200, 200, modData.SleepSystem.SleepHealthinessBar), modData.SleepSystem.SleepHealthinessBar)
+	updateBar(self.barSmokerSystem, percentile(SBvars.SmokerCounter * -2, SBvars.SmokerCounter * 2, modData.SmokeSystem.SmokingAddiction), modData.SmokeSystem.SmokingAddiction)
+	updateBar(self.barRainSystem, percentile(SBvars.RainSystemCounter * -2, SBvars.RainSystemCounter * 2, modData.RainCounter), modData.RainCounter)
+	updateBar(self.barFogSystem, percentile(SBvars.FogSystemCounter * -2, SBvars.FogSystemCounter * 2, modData.FogCounter), modData.FogCounter)
 	if self.barInventoryTransferSystemWeight ~= nil or self.barInventoryTransferSystemItems ~= nil then
 		local heightOfBox = FONT_HGT_SMALL * 3.5
 		if self.barInventoryTransferSystemWeight ~= nil and self.barInventoryTransferSystemItems ~= nil then
@@ -1135,14 +1132,14 @@ function ISETWProgressUI:render()
 		self:drawRectBorder(lineStartPosition, self.labelAllThumbsWeightLose:getY() - (FONT_HGT_SMALL / 4), self:getWidth() - lineStartPosition * 1.5, heightOfBox, self.DimmedTextColor.a, self.DimmedTextColor.r, self.DimmedTextColor.g, self.DimmedTextColor.b);
 	end
 	if player:HasTrait("butterfingers") then
-		updateBar(self.barInventoryTransferSystemWeight, percentile(0, SBvars.InventoryTransferSystemWeight * 1.5, modData.TransferSystem.WeightTransferred))
+		updateBar(self.barInventoryTransferSystemWeight, percentile(0, SBvars.InventoryTransferSystemWeight * 1.5, modData.TransferSystem.WeightTransferred), modData.TransferSystem.WeightTransferred)
 	else
-		updateBar(self.barInventoryTransferSystemWeight, percentile(0, SBvars.InventoryTransferSystemWeight, modData.TransferSystem.WeightTransferred))
+		updateBar(self.barInventoryTransferSystemWeight, percentile(0, SBvars.InventoryTransferSystemWeight, modData.TransferSystem.WeightTransferred), modData.TransferSystem.WeightTransferred)
 	end
 	if player:HasTrait("butterfingers") then
-		updateBar(self.barInventoryTransferSystemItems, percentile(0, SBvars.InventoryTransferSystemItems * 1.5, modData.TransferSystem.ItemsTransferred))
+		updateBar(self.barInventoryTransferSystemItems, percentile(0, SBvars.InventoryTransferSystemItems * 1.5, modData.TransferSystem.ItemsTransferred), modData.TransferSystem.ItemsTransferred)
 	else
-		updateBar(self.barInventoryTransferSystemItems, percentile(0, SBvars.InventoryTransferSystemItems, modData.TransferSystem.ItemsTransferred))
+		updateBar(self.barInventoryTransferSystemItems, percentile(0, SBvars.InventoryTransferSystemItems, modData.TransferSystem.ItemsTransferred), modData.TransferSystem.ItemsTransferred)
 	end
 
 	if self.barBravery ~= nil then
@@ -1157,6 +1154,7 @@ function ISETWProgressUI:render()
 		local explosivesKills = killCountModData["Explosives"].count;
 		local meleeKills = totalKills - firearmsKills - fireKills - vehiclesKills - explosivesKills;
 		self.barBravery:setValue(percentile(0, SBvars.BraverySystemKills, totalKills + meleeKills))
+		self.barBravery:setTooltip(totalKills + meleeKills)
 	end
 
 	updateLabel(self.labelEagleEyedProgress, getText("UI_trait_eagleeyed") .. ": " .. modData.EagleEyedKills .. "/" .. SBvars.EagleEyedKills)
