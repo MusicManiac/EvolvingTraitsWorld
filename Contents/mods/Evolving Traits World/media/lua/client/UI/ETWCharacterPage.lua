@@ -1017,7 +1017,7 @@ function ISETWProgressUI:createChildren()
 
 		if SBvars.DelayedTraitsSystem then
 			y = y + FONT_HGT_SMALL
-			local str = getText("Sandbox_ETW_DelayedTraitsSystem")
+			str = getText("Sandbox_ETW_DelayedTraitsSystem")
 			self.labelDelayedTraitsSystem = ISLabel:new(WINDOW_WIDTH / 2 - strLen(textManager, str)/2, y, FONT_HGT_SMALL, str, self.TextColor.r, self.TextColor.g, self.TextColor.b, self.TextColor.a, UIFont.Small, true)
 			self.labelDelayedTraitsSystem:setTooltip(getText("Sandbox_ETW_DelayedTraitsSystem_tooltip"))
 			self:addChild(self.labelDelayedTraitsSystem)
@@ -1129,7 +1129,8 @@ function ISETWProgressUI:render()
 		if self.barInventoryTransferSystemWeight ~= nil and self.barInventoryTransferSystemItems ~= nil then
 			heightOfBox = FONT_HGT_SMALL * 6.5
 		end
-		self:drawRectBorder(lineStartPosition, self.labelAllThumbsWeightLose:getY() - (FONT_HGT_SMALL / 4), self:getWidth() - lineStartPosition * 1.5, heightOfBox, self.DimmedTextColor.a, self.DimmedTextColor.r, self.DimmedTextColor.g, self.DimmedTextColor.b);
+		local yPosition = (self.labelAllThumbsWeightLose and self.labelAllThumbsWeightLose:getY()) or (self.labelDisorganizedItemsLose and self.labelDisorganizedItemsLose:getY())
+		self:drawRectBorder(lineStartPosition, yPosition - (FONT_HGT_SMALL / 4), self:getWidth() - lineStartPosition * 1.5, heightOfBox, self.DimmedTextColor.a, self.DimmedTextColor.r, self.DimmedTextColor.g, self.DimmedTextColor.b);
 	end
 	if player:HasTrait("butterfingers") then
 		updateBar(self.barInventoryTransferSystemWeight, percentile(0, SBvars.InventoryTransferSystemWeight * 1.5, modData.TransferSystem.WeightTransferred), modData.TransferSystem.WeightTransferred)
@@ -1241,7 +1242,6 @@ function ISETWProgressUI:render()
 	end
 	self:clearStencilRect();
 
-	local MOvars = EvolvingTraitsWorld.settings;
 	if WINDOW_WIDTH ~= MOvars.UIWidth or nonBarsEntriesPerRow ~= MOvars.TraitColumns then
 		WINDOW_WIDTH = MOvars.UIWidth
 		nonBarsEntriesPerRow = MOvars.TraitColumns

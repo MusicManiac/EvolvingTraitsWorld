@@ -1,7 +1,6 @@
-v.7.1.0
+v.7.1.1
 
-General:
-	- Added tooltip for gradient bars, how it will display your current counter value when hovering over it.
-	- Lowered default values for fog and rain systems so it's more reasonable without additional tweaking
+Fixes:
+	- Fixed edge case where UI could break dues to edge-case in rendering Inventory Transfer system progress
 Translations:
-	- Did some Quality Assurance on English lines, fixed various grammar mistakes and improved overall readability.
+	- PTBR translation got some love
