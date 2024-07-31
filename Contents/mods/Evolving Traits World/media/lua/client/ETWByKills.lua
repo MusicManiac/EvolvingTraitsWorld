@@ -59,7 +59,7 @@ local function bloodlustTime()
 end
 
 local function eagleEyed(wielder, character, handWeapon, damage)
-	if wielder == getPlayer() and character:isZombie() then
+	if ETWCommonLogicChecks.EagleEyedShouldExecute() and wielder == getPlayer() and character:isZombie() then
 		local player = wielder;
 		local zombie = character;
 		local zHealth = zombie:getHealth();

@@ -1,6 +1,6 @@
-v.7.1.1
+v.7.1.2
 
 Fixes:
-	- Fixed edge case where UI could break dues to edge-case in rendering Inventory Transfer system progress
+	- Fixed repeated Eagle-Eyed notifications
 Translations:
-	- PTBR translation got some love
+	- Added German translation thanks to Lampiooo
