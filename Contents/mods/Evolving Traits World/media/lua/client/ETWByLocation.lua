@@ -29,7 +29,7 @@ local function outdoorsman()
 		outdoorsmanModData.MinutesSinceOutside = math.max(0, outdoorsmanModData.MinutesSinceOutside - 3);
 		outdoorsmanModData.OutdoorsmanCounter = math.min(outdoorsmanModData.OutdoorsmanCounter + totalGain, SBvars.OutdoorsmanCounter * 2);
 		if debug() then print("ETW Logger | outdoorsman(): totalGain=" .. totalGain .. ". OutdoorsmanCounter=" .. outdoorsmanModData.OutdoorsmanCounter) end
-		if not player:HasTrait("Outdoorsman") and outdoorsmanModData.OutdoorsmanCounter >= SBvars.OutdoorsmanCounter then
+		if not player:HasTrait("Outdoorsman") and outdoorsmanModData.OutdoorsmanCounter >= SBvars.OutdoorsmanCounter and SBvars.TraitsLockSystemCanGainPositive then
 			player:getTraits():add("Outdoorsman");
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_outdoorsman"), true, HaloTextHelper.getColorGreen()) end
 		end
@@ -39,7 +39,7 @@ local function outdoorsman()
 		outdoorsmanModData.MinutesSinceOutside = math.min(900, outdoorsmanModData.MinutesSinceOutside + 1);
 		outdoorsmanModData.OutdoorsmanCounter = math.max(SBvars.OutdoorsmanCounter * -2, outdoorsmanModData.OutdoorsmanCounter - totalLose);
 		if debug() then print("ETW Logger | outdoorsman(): totalLose=" .. totalLose .. ". OutdoorsmanCounter=" .. outdoorsmanModData.OutdoorsmanCounter) end
-		if player:HasTrait("Outdoorsman") and outdoorsmanModData.OutdoorsmanCounter <= -SBvars.OutdoorsmanCounter then
+		if player:HasTrait("Outdoorsman") and outdoorsmanModData.OutdoorsmanCounter <= -SBvars.OutdoorsmanCounter and SBvars.TraitsLockSystemCanLosePositive then
 			player:getTraits():remove("Outdoorsman");
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_outdoorsman"), false, HaloTextHelper.getColorRed()) end
 		end

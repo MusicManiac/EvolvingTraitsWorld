@@ -218,10 +218,10 @@ local function asthmaticTrait()
 		modData.AsthmaticCounter = math.min(upperBoundary, modData.AsthmaticCounter + counterIncrease);
 		if debug() then print("ETW Logger | asthmaticTrait(): counterDecrease: ".. counterIncrease ..", modData.AsthmaticCounter: "..modData.AsthmaticCounter) end
 	end
-	if modData.AsthmaticCounter <= -SBvars.AsthmaticCounter and not player:HasTrait("Asthmatic") then
+	if modData.AsthmaticCounter <= -SBvars.AsthmaticCounter and not player:HasTrait("Asthmatic") and SBvars.TraitsLockSystemCanGainNegative then
 		player:getTraits():add("Asthmatic");
 		if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Asthmatic"), true, HaloTextHelper.getColorRed()) end
-	elseif modData.AsthmaticCounter >= SBvars.AsthmaticCounter and player:HasTrait("Asthmatic") then
+	elseif modData.AsthmaticCounter >= SBvars.AsthmaticCounter and player:HasTrait("Asthmatic") and SBvars.TraitsLockSystemCanLoseNegative then
 		player:getTraits():remove("Asthmatic");
 		if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Asthmatic"), false, HaloTextHelper.getColorGreen()) end
 	end

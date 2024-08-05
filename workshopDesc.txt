@@ -43,6 +43,7 @@ Currently mod supports following languages:
 [*]Português Brasileiro / Brazilian Portuguese
 [*]한국어 / Korean
 [*]Türkçe / Turkish
+[*]Deutsch / German
 [/list]
 
 [h1]Afterword and Permission[/h1]

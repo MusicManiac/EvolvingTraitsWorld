@@ -1,6 +1,4 @@
-v.7.1.2
+v.7.1.3
 
 Fixes:
-	- Fixed repeated Eagle-Eyed notifications
-Translations:
-	- Added German translation thanks to Lampiooo
+	- Fixed Bloodlust, Asthmatic and Outdoorsman not abiding by Trait Lock system
