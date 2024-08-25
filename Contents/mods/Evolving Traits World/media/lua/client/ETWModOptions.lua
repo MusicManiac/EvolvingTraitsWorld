@@ -1,6 +1,11 @@
 EvolvingTraitsWorld = EvolvingTraitsWorld or {};
 EvolvingTraitsWorld.settings = EvolvingTraitsWorld.SETTINGS or {};
 
+if ModOptions and ModOptions.AddKeyBinding then
+	EvolvingTraitsWorld.KEYS_Toggle = { name = "ETW_UI_Toggle", key = Keyboard.KEY_LBRACKET}
+	ModOptions:AddKeyBinding("[UI]",EvolvingTraitsWorld.KEYS_Toggle)
+end
+
 if ModOptions and ModOptions.getInstance then
 	local function onModOptionsApply(optionValues)
 		local UIWidth = { 500, 550, 600, 650, 700, 750, 800, 850, 900 };

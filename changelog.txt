@@ -1,4 +1,4 @@
-v.7.1.3
+v.7.2.0
 
-Fixes:
-	- Fixed Bloodlust, Asthmatic and Outdoorsman not abiding by Trait Lock system
+General:
+	- Added hotkey to toggle new UI. It can be found in Options -> Key Bindings -> UI, default is "[" (left bracket, button next to P)

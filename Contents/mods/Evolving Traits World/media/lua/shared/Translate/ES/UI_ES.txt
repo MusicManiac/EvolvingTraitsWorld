@@ -64,6 +64,8 @@ UI_ES = {
     UI_ETW_Options_TraitColumns = "[UI] Columnas de Rasgos",
     UI_ETW_Options_TraitColumns_tooltip = "Cuantas columnas hay en la IU en la pestaña del personaje. La configuración predeterminada deberia de funcionar correctamente si juegas en el idioma ingles, pero si el texto se superpone, quizas deberias de reducir este valor"
 
+    UI_optionscreen_binding_ETW_UI_Toggle = "Activar Interfaz del Evolving Traits World"
+
     UI_ETW_GainTooltip = "Obtendras el rasgo cuando la barra este alrededor de aquí (o calificado para obtenerlo, si el sistema de rasgos retrasados esta activado y si este rasgo esta en ese sistema)",
     UI_ETW_LooseTooltip = "Perderas el rasgo cuando la barra este alrededor de aquí (o calificado para obtenerlo, si el sistema de rasgos retrasados esta activado y si este rasgo esta en ese sistema)",
     UI_ETW_GainLoseTooltip = "obtendrás/perderas el rasgo cuando la barra este alrededor de aquí (o calificado para obtenerlo, si el sistema de rasgos retrasados esta activado y si este rasgo esta en ese sistema)",

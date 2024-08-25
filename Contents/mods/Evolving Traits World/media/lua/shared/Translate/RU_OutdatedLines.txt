@@ -41,6 +41,8 @@ UI.txt
 		UI_ETW_Options_TraitColumns = "[UI] Trait Columns",
 		UI_ETW_Options_TraitColumns_tooltip = "How many columns are there in the UI on character page. Default setting should work good if you play in English language, but if text overlaps in other languages, you might want to reduce this value"
 
+		UI_optionscreen_binding_ETW_UI_Toggle = "Toggle Evolving Traits World UI"
+
 		UI_ETW_GainTooltip = "You will gain the trait when bar is around here (or qualify for gaining it, if Delayed Traits System is on and this trait in that system)",
 		UI_ETW_LooseTooltip = "You will lose the trait when bar is around here (or qualify for losing it, if Delayed Traits System is on and this trait in that system)",
 		UI_ETW_GainLoseTooltip = "You will gain/lose the trait when bar is around here (or qualify for gaining/losing it, if Delayed Traits System is on and this trait in that system)",

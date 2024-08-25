@@ -17,3 +17,4 @@ UI.txt
 
 
 	new:
+		UI_optionscreen_binding_ETW_UI_Toggle = "Toggle Evolving Traits World UI"
