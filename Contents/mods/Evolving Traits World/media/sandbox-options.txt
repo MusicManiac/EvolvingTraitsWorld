@@ -312,12 +312,12 @@ option EvolvingTraitsWorld.SleepSystemMultiplier
 	page = ETWSystems,
 	translation = ETW_SleepSystemMultiplier,
 }
-option EvolvingTraitsWorld.TraitsLockSystemCanLoosePositive
+option EvolvingTraitsWorld.TraitsLockSystemCanLosePositive
 {
 	type = boolean,
 	default = true,
 	page = ETWSystems,
-	translation = ETW_TraitsLockSystemCanLoosePositive,
+	translation = ETW_TraitsLockSystemCanLosePositive,
 }
 option EvolvingTraitsWorld.TraitsLockSystemCanGainPositive
 {

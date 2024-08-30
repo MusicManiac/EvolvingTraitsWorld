@@ -3,44 +3,30 @@ ETWActionsOverride = {};
 local ETWCommonFunctions = require "ETWCommonFunctions";
 local ETWCommonLogicChecks = require "ETWCommonLogicChecks";
 
+--- @type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld;
 local notification = function() return EvolvingTraitsWorld.settings.EnableNotifications end
 local delayedNotification = function() return EvolvingTraitsWorld.settings.EnableDelayedNotifications end
 local debug = function() return EvolvingTraitsWorld.settings.GatherDebug end
 local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetailedDebug end
-local noTraitsLock = function() return (SBvars.TraitsLockSystemCanGainNegative or SBvars.TraitsLockSystemCanLoseNegative or SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLoosePositive) end
+local noTraitsLock = function() return (SBvars.TraitsLockSystemCanGainNegative or SBvars.TraitsLockSystemCanLoseNegative or SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLosePositive) end
 
-local function applyXPBoost(player, perk, boostLevel)
-	local newBoost = player:getXp():getPerkBoost(perk) + boostLevel;
-	if newBoost > 3 then
-		player:getXp():setPerkBoost(perk, 3);
-	else
-		player:getXp():setPerkBoost(perk, newBoost);
-	end
-end
-
-local function addRecipe(player, recipe)
-	local playerRecipes = player:getKnownRecipes();
-	if not playerRecipes:contains(recipe) then
-		playerRecipes:add(recipe);
-	end
-end
-
+---Function responsible for checking if player qualifies for Bodywork Enthusiast trait
 function ETWActionsOverride.bodyworkEnthusiastCheck()
 	local player = getPlayer();
-	local modData = player:getModData().EvolvingTraitsWorld;
+	local modData = ETWCommonFunctions.getETWModData(player);
 	local level = player:getPerkLevel(Perks.MetalWelding) + player:getPerkLevel(Perks.Mechanics);
 	if level >= SBvars.BodyworkEnthusiastSkill and modData.VehiclePartRepairs >= SBvars.BodyworkEnthusiastRepairs then
 		if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("BodyWorkEnthusiast")) then
 			player:getTraits():add("BodyWorkEnthusiast");
-			applyXPBoost(player, Perks.MetalWelding, 1);
-			applyXPBoost(player, Perks.Mechanics, 1);
-			addRecipe(player, "Make Metal Walls");
-			addRecipe(player, "Make Metal Fences");
-			addRecipe(player, "Make Metal Containers");
-			addRecipe(player, "Make Metal Sheet");
-			addRecipe(player, "Make Small Metal Sheet");
-			addRecipe(player, "Make Metal Roof");
+			ETWCommonFunctions.applyXPBoost(player, Perks.MetalWelding, 1);
+			ETWCommonFunctions.applyXPBoost(player, Perks.Mechanics, 1);
+			ETWCommonFunctions.addRecipe(player, "Make Metal Walls");
+			ETWCommonFunctions.addRecipe(player, "Make Metal Fences");
+			ETWCommonFunctions.addRecipe(player, "Make Metal Containers");
+			ETWCommonFunctions.addRecipe(player, "Make Metal Sheet");
+			ETWCommonFunctions.addRecipe(player, "Make Small Metal Sheet");
+			ETWCommonFunctions.addRecipe(player, "Make Metal Roof");
 			if notification == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_BodyWorkEnthusiast"), true, HaloTextHelper.getColorGreen()) end
 		end
 		if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("BodyWorkEnthusiast") then
@@ -50,15 +36,16 @@ function ETWActionsOverride.bodyworkEnthusiastCheck()
 	end
 end
 
+---Function responsible for checking if player qualifies for Mechanics trait
 function ETWActionsOverride.mechanicsCheck()
 	local player = getPlayer();
-	local modData = player:getModData().EvolvingTraitsWorld;
+	local modData = ETWCommonFunctions.getETWModData(player);
 	if player:getPerkLevel(Perks.Mechanics) >= SBvars.MechanicsSkill and modData.VehiclePartRepairs >= SBvars.MechanicsRepairs then
 		if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Mechanics")) then
 			player:getTraits():add("Mechanics");
-			applyXPBoost(player, Perks.Mechanics, 1);
-			addRecipe(player, "Basic Mechanics");
-			addRecipe(player, "Intermediate Mechanics");
+			ETWCommonFunctions.applyXPBoost(player, Perks.Mechanics, 1);
+			ETWCommonFunctions.addRecipe(player, "Basic Mechanics");
+			ETWCommonFunctions.addRecipe(player, "Intermediate Mechanics");
 			if notification == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Mechanics"), true, HaloTextHelper.getColorGreen()) end
 		end
 		if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Mechanics") then
@@ -68,6 +55,9 @@ function ETWActionsOverride.mechanicsCheck()
 	end
 end
 
+---Function responsible for checking if current ISFixAction performed on a vehicle part
+---@param action ISFixAction
+---@return boolean
 local function isVehiclePart(action)
 	if action.vehiclePart then
 		return true;
@@ -84,9 +74,12 @@ local function isVehiclePart(action)
 end
 
 local original_fix_perform = ISFixAction.perform;
+
+---Overwriting ISFixAction:perform() here so insert ETW logic catching player doing any kind of repairs
+---@diagnostic disable-next-line: duplicate-set-field
 function ISFixAction:perform()
 	local player = self.character;
-	local modData = player:getModData().EvolvingTraitsWorld;
+	local modData = ETWCommonFunctions.getETWModData(player);
 	if detailedDebug() then print("ETW Logger | ISFixAction:perform(): caught") end
 	local conditionBefore = self.item:getCondition();
 	original_fix_perform(self);
@@ -107,11 +100,13 @@ function ISFixAction:perform()
 end
 
 local original_chop_perform = ISChopTreeAction.perform;
+---Overwriting ISChopTreeAction:perform() here so insert ETW logic catching player cutting down trees
+---@diagnostic disable-next-line: duplicate-set-field
 function ISChopTreeAction:perform()
 	if ETWCommonLogicChecks.AxemanShouldExecute() then
 		if detailedDebug() then print("ETW Logger | ISChopTreeAction.perform(): caught") end
 		local player = self.character;
-		local modData = player:getModData().EvolvingTraitsWorld;
+		local modData = ETWCommonFunctions.getETWModData(player);
 		modData.TreesChopped = modData.TreesChopped + 1;
 		if debug() then print("ETW Logger | ISChopTreeAction.perform(): modData.TreesChopped = "..modData.TreesChopped) end
 		if modData.TreesChopped >= SBvars.AxemanTrees then
@@ -129,6 +124,8 @@ function ISChopTreeAction:perform()
 end
 
 local original_transfer_perform = ISInventoryTransferAction.perform;
+---Overwriting ISInventoryTransferAction:perform() here so insert ETW logic catching player transferring items
+---@diagnostic disable-next-line: duplicate-set-field
 function ISInventoryTransferAction:perform()
 	if SBvars.InventoryTransferSystem == true and noTraitsLock then
 		if self.character:isLocalPlayer() == false then -- checks if it's NPC doing stuff
@@ -139,7 +136,7 @@ function ISInventoryTransferAction:perform()
 			local player = self.character;
 			local item = self.item;
 			local itemWeight = item:getWeight();
-			local modData = player:getModData().EvolvingTraitsWorld;
+			local modData = ETWCommonFunctions.getETWModData(player);
 			local transferModData = modData.TransferSystem;
 			transferModData.ItemsTransferred = transferModData.ItemsTransferred + 1;
 			transferModData.WeightTransferred = transferModData.WeightTransferred + itemWeight;
@@ -206,6 +203,9 @@ function ISInventoryTransferAction:perform()
 	end
 end
 
+---Creates an iterator for a list-like table, allowing to iterate over its elements
+---@param _list table
+---@return function
 local function iterList(_list)
 	local list = _list;
 	local size = list:size() - 1;
@@ -219,6 +219,8 @@ local function iterList(_list)
 end
 
 local original_forageSystem_addOrDropItems = forageSystem.addOrDropItems;
+---Overwriting forageSystem.addOrDropItems() here so insert ETW logic catching player picking up herbs while foraging
+---@diagnostic disable-next-line: duplicate-set-field
 function forageSystem.addOrDropItems(_character, _inventory, _items, _discardItems)
 	if ETWCommonLogicChecks.HerbalistShouldExecute() then
 		local player = getPlayer();
@@ -253,12 +255,12 @@ function forageSystem.addOrDropItems(_character, _inventory, _items, _discardIte
 				for _, herb in pairs(herbs) do
 					if herb == item:getFullType() then
 						if detailedDebug() then print("ETW Logger | forageSystem.addOrDropItems(): confirmed that it's a herb: "..item:getFullType()) end
-						local modData = player:getModData().EvolvingTraitsWorld;
+						local modData = ETWCommonFunctions.getETWModData(player);
 						modData.HerbsPickedUp = modData.HerbsPickedUp + ((SBvars.AffinitySystem and modData.StartingTraits.Herbalist) and 1 * SBvars.AffinitySystemGainMultiplier or 1);
 						if debug() then print("ETW Logger | forageSystem.addOrDropItems(): modData.HerbsPickedUp: "..modData.HerbsPickedUp) end
 						if not player:HasTrait("Herbalist") and modData.HerbsPickedUp >= SBvars.HerbalistHerbsPicked and SBvars.TraitsLockSystemCanGainPositive then
 							player:getTraits():add("Herbalist");
-							addRecipe(player, "Herbalist");
+							ETWCommonFunctions.addRecipe(player, "Herbalist");
 							if notification == true then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Herbalist"), true, HaloTextHelper.getColorGreen()) end
 						end
 					end

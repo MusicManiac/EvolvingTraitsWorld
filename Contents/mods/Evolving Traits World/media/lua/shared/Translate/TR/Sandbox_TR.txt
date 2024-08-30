@@ -287,8 +287,8 @@ Sandbox_TR = {
 	Sandbox_ETW_StickFighterSkill = "Sopa Dövüþçüsü için gereken Kýsa künt(kýsa yakýn dövüþ silahlarý) yeteneði ihtiyacý",
 	Sandbox_ETW_StickFighterKills = "Sopa Dövüþçüsü için gereken Kýsa künt(kýsa yakýn dövüþ silahlarý) silahlarla öldürme sayýsý",
 
-	Sandbox_ETW_TraitsLockSystemCanLoosePositive = "Özellik Kilidi: pozitif özellikler kaybedilebilir",
-	Sandbox_ETW_TraitsLockSystemCanLoosePositive_tooltip = "Eger bu açiksa oynanis boyunca pozitif özellikleri kaybedebilirsiniz. Bu genellikle korku/sevgi, hava durumu/lokasyon ve agirlik sistemi için geçerlidir çünkü çogu pozitif özellik varsayilan olarak kaybedilemez.",
+	Sandbox_ETW_TraitsLockSystemCanLosePositive = "Özellik Kilidi: pozitif özellikler kaybedilebilir",
+	Sandbox_ETW_TraitsLockSystemCanLosePositive_tooltip = "Eger bu açiksa oynanis boyunca pozitif özellikleri kaybedebilirsiniz. Bu genellikle korku/sevgi, hava durumu/lokasyon ve agirlik sistemi için geçerlidir çünkü çogu pozitif özellik varsayilan olarak kaybedilemez.",
 	Sandbox_ETW_TraitsLockSystemCanGainPositive = "Özellik Kilidi: Pozitif özellikler kazanilabilir",
 	Sandbox_ETW_TraitsLockSystemCanGainPositive_tooltip = "Eger bu açiksa oynanis boyunca pozitif özellikleri kazanabilirsiniz. Bu baya bir özelligi içerdigi için kendi iyiliginiz için kapatmamaniz önerilir.",
 	Sandbox_ETW_TraitsLockSystemCanLoseNegative = "Özellik Kilidi: Negatif özellikler kaybedilebilir",

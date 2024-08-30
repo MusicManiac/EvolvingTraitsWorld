@@ -1,5 +1,12 @@
+---@diagnostic disable: missing-parameter
 require('NPCs/MainCreationMethods');
 
+---Function creating trait with set parameters
+---@param name string
+---@param cost number
+---@param isProfExclusive boolean
+---@param isDisabled boolean
+---@return Trait
 local function createTrait(name, cost, isProfExclusive, isDisabled)
 	isProfExclusive = isProfExclusive or false;
 	isDisabled = isDisabled or false;
@@ -10,6 +17,7 @@ local function createTrait(name, cost, isProfExclusive, isDisabled)
 	end
 end
 
+---Function responsible for creating all traits
 local function addTraits()
 	local activatedMods = getActivatedMods();
 

@@ -22,6 +22,7 @@ local columnGap;
 local nonBarsEntriesPerRow = MOvars.TraitColumns or 4;
 local nonBarsEntryNumber = 0;
 
+--- @type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld;
 
 ISETWProgressUI = ISPanelJoypad:derive("ISETWUI")
@@ -75,7 +76,7 @@ function ISETWProgressUI:createChildren()
 		local str;
 
 		local player = getPlayer();
-		local modData = player:getModData().EvolvingTraitsWorld;
+		local modData = ETWCommonFunctions.getETWModData(player);
 		local strength = player:getPerkLevel(Perks.Strength);
 		local fitness = player:getPerkLevel(Perks.Fitness);
 		local sprinting = player:getPerkLevel(Perks.Sprinting);
@@ -657,7 +658,7 @@ function ISETWProgressUI:createChildren()
 			y = y + FONT_HGT_SMALL
 		end
 
-		if ETWCommonLogicChecks.SmokerShouldExecute() then
+		if ETWCommonLogicChecks.SmokerShouldExecute() and not MOvars.HideSmokerUI then
 			y = y + FONT_HGT_SMALL / 2
 
 			str = "- " .. getText("UI_trait_Smoker")
@@ -1055,7 +1056,7 @@ function ISETWProgressUI:render()
 	self:setHeightAndParentHeight(WINDOW_HEIGHT);
 
 	local player = getPlayer();
-	local modData = player:getModData().EvolvingTraitsWorld;
+	local modData = ETWCommonFunctions.getETWModData(player);
 
 	local strength = player:getPerkLevel(Perks.Strength);
 	local fitness = player:getPerkLevel(Perks.Fitness);

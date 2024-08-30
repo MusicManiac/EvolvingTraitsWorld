@@ -1,10 +1,13 @@
 require "ETWModData";
 
+--- @type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld;
 
 local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetailedDebug end
 
-local function onZombieKill(zombie)
+---Function responsible for processing Bloodlust trait execution logic
+---@param zombie IsoZombie
+local function OnZombieDeadETW(zombie)
 	local player = getPlayer();
 	if player:HasTrait("Bloodlust") and player:DistTo(zombie) <= 4 then
 		local bodydamage = player:getBodyDamage();
@@ -16,10 +19,12 @@ local function onZombieKill(zombie)
 		bodydamage:setUnhappynessLevel(math.max(0, unhappiness - 4 * SBvars.BloodlustMultiplier));
 		stats:setStress(math.max(0, stress - 0.04 * SBvars.BloodlustMultiplier));
 		stats:setPanic(math.max(0, panic - 4 * SBvars.BloodlustMultiplier));
-		if detailedDebug() then print("ETW Logger | onZombieKill(): Bloodlust kill. Unhappiness:"..unhappiness.."->"..bodydamage:getUnhappynessLevel()..", stress: "..math.min(1, stress + stressFromCigarettes).."->"..stats:getStress()..", panic: "..panic.."->"..stats:getPanic()) end
+		if detailedDebug() then print("ETW Logger | OnZombieDeadETW(): Bloodlust kill. Unhappiness:"..unhappiness.."->"..bodydamage:getUnhappynessLevel()..", stress: "..math.min(1, stress + stressFromCigarettes).."->"..stats:getStress()..", panic: "..panic.."->"..stats:getPanic()) end
 	end
 end
 
+---Function responsible for processing carry weight traits execution logic
+---@param player IsoPlayer
 local function checkWeightLimit(player)
 	local maxWeightBase = 8;
 	local strength = player:getPerkLevel(Perks.Strength);
@@ -57,6 +62,9 @@ local function checkWeightLimit(player)
 	player:setMaxWeightBase(maxWeightBase);
 end
 
+---Function responsible for processing Rain traits execution logic
+---@param player IsoPlayer
+---@param rainIntensity number
 local function rainTraits(player, rainIntensity)
 	local Pluviophobia = player:HasTrait("Pluviophobia");
 	local Pluviophile = player:HasTrait("Pluviophile");
@@ -91,6 +99,9 @@ local function rainTraits(player, rainIntensity)
 	end
 end
 
+---Function responsible for processing Rain traits execution logic
+---@param player IsoPlayer
+---@param fogIntensity number
 local function fogTraits(player, fogIntensity)
 	local Homichlophobia = player:HasTrait("Homichlophobia");
 	local Homichlophile = player:HasTrait("Homichlophile");
@@ -120,6 +131,7 @@ local function fogTraits(player, fogIntensity)
 	end
 end
 
+---unction responsible for processing Pain Tolerance execution logic
 local function painTolerance()
 	local player = getPlayer();
 	local PainTolerance = player:HasTrait("PainTolerance");
@@ -130,6 +142,7 @@ local function painTolerance()
 	end
 end
 
+---Function responsible for setting up every minute updates
 local function oneMinuteUpdate()
 	local player = getPlayer();
 	local climateManager = getClimateManager();
@@ -138,30 +151,37 @@ local function oneMinuteUpdate()
 	if not getActivatedMods():contains("EvolvingTraitsWorldDisableFogTraits") then fogTraits(player, climateManager:getFogIntensity()) end
 end
 
+---Function responsible for activating Pain Tolerance trait. It's global so it can be called from another file
+---@param player IsoPlayer
 function ETW_InitiatePainToleranceTrait(player)
-	Events.OnTick.Remove(painTolerance(player));
+	Events.OnTick.Remove(painTolerance);
 	if not getActivatedMods():contains("EvolvingTraitsWorldDisablePainTolerance") and player:HasTrait("PainTolerance") then Events.OnTick.Add(painTolerance) end
 end
 
+---Function responsible for initializing all traits logic
+---@param playerIndex number
+---@param player IsoPlayer
 local function initializeTraitsLogic(playerIndex, player)
-	Events.OnZombieDead.Remove(onZombieKill);
-	Events.OnZombieDead.Add(onZombieKill);
+	Events.OnZombieDead.Remove(OnZombieDeadETW);
+	Events.OnZombieDead.Add(OnZombieDeadETW);
 	Events.EveryOneMinute.Remove(oneMinuteUpdate);
 	Events.EveryOneMinute.Add(oneMinuteUpdate);
 	Events.OnTick.Remove(painTolerance);
 	if not getActivatedMods():contains("EvolvingTraitsWorldDisablePainTolerance") and getPlayer():HasTrait("PainTolerance") then Events.OnTick.Add(painTolerance) end
 end
 
-local function clearEvents(character)
-	Events.OnZombieDead.Remove(onZombieKill);
+---Function responsible for clearing events
+---@param character IsoPlayer
+local function clearEventsETW(character)
+	Events.OnZombieDead.Remove(OnZombieDeadETW);
 	Events.EveryOneMinute.Remove(oneMinuteUpdate);
 	Events.OnTick.Remove(painTolerance);
-	if detailedDebug() then print("ETW Logger | System: clearEvents in ETWTraitsLogic.lua") end
+	if detailedDebug() then print("ETW Logger | System: clearEventsETW in ETWTraitsLogic.lua") end
 end
 
 Events.EveryHours.Remove(SOcheckWeight);
 
 Events.OnCreatePlayer.Remove(initializeTraitsLogic);
 Events.OnCreatePlayer.Add(initializeTraitsLogic);
-Events.OnPlayerDeath.Remove(clearEvents);
-Events.OnPlayerDeath.Add(clearEvents);
+Events.OnPlayerDeath.Remove(clearEventsETW);
+Events.OnPlayerDeath.Add(clearEventsETW);

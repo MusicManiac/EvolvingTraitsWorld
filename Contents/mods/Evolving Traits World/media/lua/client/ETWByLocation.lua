@@ -1,6 +1,7 @@
 require "ETWModData";
 local ETWCommonLogicChecks = require "ETWCommonLogicChecks";
 
+--- @type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld;
 
 local notification = function() return EvolvingTraitsWorld.settings.EnableNotifications end
@@ -8,9 +9,10 @@ local debug = function() return EvolvingTraitsWorld.settings.GatherDebug end
 local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetailedDebug end
 local desensitized = function(player) return player:HasTrait("Desensitized") and SBvars.BraverySystemRemovesOtherFearPerks end
 
+---Function responsible for managing Outdoorsman trait
 local function outdoorsman()
 	local player = getPlayer();
-	local modData = player:getModData().EvolvingTraitsWorld;
+	local modData = ETWCommonFunctions.getETWModData(player);
 	local outdoorsmanModData = modData.OutdoorsmanSystem;
 	local climateManager = getClimateManager();
 	local rainIntensity = climateManager:getRainIntensity();
@@ -46,9 +48,10 @@ local function outdoorsman()
 	end
 end
 
+---Function responsible for managing Fear of Locations System traits
 local function fearOfLocations()
 	local player = getPlayer();
-	local modData = player:getModData().EvolvingTraitsWorld;
+	local modData = ETWCommonFunctions.getETWModData(player);
 	local fearOfLocationsModData = modData.LocationFearSystem;
 	local stress = player:getStats():getStress(); -- 0-1, may be higher with stress from cigarettes
 	local unhappiness = player:getBodyDamage():getUnhappynessLevel(); -- 0-100
@@ -116,20 +119,25 @@ local function fearOfLocations()
 	end
 end
 
-local function initializeEvents(playerIndex, player)
+---Function responsible for setting up events
+---@param playerIndex number
+---@param player IsoPlayer
+local function initializeEventsETW(playerIndex, player)
 	Events.EveryOneMinute.Remove(outdoorsman);
 	if ETWCommonLogicChecks.OutdoorsmanShouldExecute() then Events.EveryOneMinute.Add(outdoorsman) end
 	Events.EveryOneMinute.Remove(fearOfLocations);
 	if ETWCommonLogicChecks.FearOfLocationsSystemShouldExecute() then Events.EveryOneMinute.Add(fearOfLocations) end
 end
 
-local function clearEvents(character)
+---Function responsible for clearing events
+---@param character IsoPlayer
+local function clearEventsETW(character)
 	Events.EveryOneMinute.Remove(outdoorsman);
 	Events.EveryOneMinute.Remove(fearOfLocations);
-	if detailedDebug() then print("ETW Logger | System: clearEvents in ETWByLocation.lua") end
+	if detailedDebug() then print("ETW Logger | System: clearEventsETW in ETWByLocation.lua") end
 end
 
-Events.OnCreatePlayer.Remove(initializeEvents);
-Events.OnCreatePlayer.Add(initializeEvents);
-Events.OnPlayerDeath.Remove(clearEvents);
-Events.OnPlayerDeath.Add(clearEvents);
+Events.OnCreatePlayer.Remove(initializeEventsETW);
+Events.OnCreatePlayer.Add(initializeEventsETW);
+Events.OnPlayerDeath.Remove(clearEventsETW);
+Events.OnPlayerDeath.Add(clearEventsETW);

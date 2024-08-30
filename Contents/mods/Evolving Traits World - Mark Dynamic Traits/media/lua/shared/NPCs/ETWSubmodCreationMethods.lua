@@ -314,7 +314,8 @@ if getActivatedMods():contains('ExplorerTrait') then
 end
 
 local old_addTrait = TraitFactory.addTrait
-
+---Overwriting TraitFactory.addTrait() to insert ETW logic to modify trait name during generation
+---@diagnostic disable-next-line: duplicate-set-field
 function TraitFactory.addTrait(type, name, ...)
 	if altNamesSpecial[type] == true then
 		name = name .. " (P/D)";

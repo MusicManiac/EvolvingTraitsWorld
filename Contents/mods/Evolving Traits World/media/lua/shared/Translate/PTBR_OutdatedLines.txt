@@ -8,7 +8,9 @@ Moodles.txt
 
 Sandbox.txt
 	changed:
+		Sandbox_ETW_Bloodlust_tooltip = "This perk allows you to gain a benefit by filling and maintaining a bloodlust meter. The bloodlust meter is soft-capped at 36 hours and can be filled by killing zombies. The closer the zombies are, the more quickly the meter will fill. When you're above half of the meter, every hour it will give you progress towards the bloodlust perk; when it's below, it'll remove progress. The bloodlust meter naturally decays by 1 every hour. Having bloodied clothes helps the process",
 
+		Sandbox_ETW_BraverySystemKills_tooltip = "Here you set up how many kills you need to get to max out your bravery system. Melee kills count twice for progress. Progression is as follows: Cowardly -> Fear of Blood -> Pacifist -> Adrenaline Junkie -> Brave -> Desensitized<br>You need to have previous trait gone (if it's negative) or present (if it's positive) to earn/lose next trait In progression.<br>Amounts to reach each stage are as follows:<br>Cowardly: 10% of max kills<br>Fear of Blood: 20% of max kills<br>Pacifist: 30% of max kills<br>Adrenaline Junkie: 40% of max kills<br>Brave: 60% of max kills<br>Desensitized: 100% of max kills<br>Example: Max kills is set to 1000. You start with Cowardly. You need 100 kills to remove it. If you get 50 melee kills, it'll be removed. The same is true if you get 40 melee kills (x2 = 80 kills for the counter) and 20 firearms kills",
 	new:
 
 
@@ -17,4 +19,5 @@ UI.txt
 
 
 	new:
-		UI_optionscreen_binding_ETW_UI_Toggle = "Toggle Evolving Traits World UI"
+		UI_ETW_Options_HideSmokerUI = "[UI] Hide Smoker Bar",
+		UI_ETW_Options_HideSmokerUI_tooltip = "Hides Smoker trait progress from ETW UI (for example, if you don't have it and not planning on smoking). Requires reloading the save or rejoining the server.",,

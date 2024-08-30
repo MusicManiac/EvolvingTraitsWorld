@@ -63,6 +63,8 @@ UI_EN = {
     UI_ETW_Options_UIWidth_tooltip = "Width of character page in pixels. If you play in English language default should work fine for you, but in other languages it can be weird so if you need more space, increase it here.",
     UI_ETW_Options_TraitColumns = "[UI] Trait Columns",
     UI_ETW_Options_TraitColumns_tooltip = "How many columns are there in the UI on character page. Default setting should work good if you play in English language, but if text overlaps in other languages, you might want to reduce this value",
+    UI_ETW_Options_HideSmokerUI = "[UI] Hide Smoker Bar",
+	UI_ETW_Options_HideSmokerUI_tooltip = "Hides Smoker trait progress from ETW UI (for example, if you don't have it and not planning on smoking). Requires reloading the save or rejoining the server.",
 
     UI_optionscreen_binding_ETW_UI_Toggle = "Toggle Evolving Traits World UI"
 

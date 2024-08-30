@@ -1,10 +1,6 @@
-if getActivatedMods():contains('EvolvingTraitsWorld') and getActivatedMods():contains('EvolvingTraitsWorldBeta') then
-	print("ETW Logger | System: player is trying to use both BETA and main branch");
-	error("YOU LOADED MAIN MOD AND BETA BRANCH OF THE MOD AT THE SAME TIME, ENABLE ONLY 1!!!");
-end
-
 require "ETWModOptions";
 
+--- @type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld;
 
 local function checkStartingDTConflictingTrait(startingTraits, player, trait)
@@ -40,9 +36,12 @@ local function checkStartingTrait(startingTraits, player, trait)
 	end
 end
 
+--- @param playerIndex number -- The index of the player
+--- @param player IsoPlayer   -- The player object
 local function createModData(playerIndex, player)
 	print("ETW Logger | System: initializing modData");
 	player:getModData().EvolvingTraitsWorld = player:getModData().EvolvingTraitsWorld or {};
+	---@type EvolvingTraitsWorldModData
 	local modData = player:getModData().EvolvingTraitsWorld
 
 	modData.VehiclePartRepairs = modData.VehiclePartRepairs or 0;

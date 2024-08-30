@@ -288,8 +288,8 @@ Sandbox_DE = {
 	Sandbox_ETW_StickFighterSkill = "Erforderliche Qualifikationen für Stockkämpfer",
 	Sandbox_ETW_StickFighterKills = "Erforderliche Kurze Stumpfwaffen Tötungen für Stockkämpfer",
 
-	Sandbox_ETW_TraitsLockSystemCanLoosePositive = "Eigenschaften sperren: Kann positiv verlieren",
-	Sandbox_ETW_TraitsLockSystemCanLoosePositive_tooltip = "Wenn dies aktiviert ist, kann man während des Spiels positive Eigenschaften verlieren. Dies gilt vor allem für Eigenschaftssysteme wie Liebe/Furcht vor Wetter/Orten oder das Gewichtssystem, da nicht viele positive Eigenschaften verloren gehen können",
+	Sandbox_ETW_TraitsLockSystemCanLosePositive = "Eigenschaften sperren: Kann positiv verlieren",
+	Sandbox_ETW_TraitsLockSystemCanLosePositive_tooltip = "Wenn dies aktiviert ist, kann man während des Spiels positive Eigenschaften verlieren. Dies gilt vor allem für Eigenschaftssysteme wie Liebe/Furcht vor Wetter/Orten oder das Gewichtssystem, da nicht viele positive Eigenschaften verloren gehen können",
 	Sandbox_ETW_TraitsLockSystemCanGainPositive = "Eigenschaften sperren: Kann positiv werden",
 	Sandbox_ETW_TraitsLockSystemCanGainPositive_tooltip = "Wenn dies aktiviert ist, können Sie während des Spiels positive Eigenschaften erhalten. Dies gilt für viele Eigenschaften; Sie wollen dies NICHT deaktiviert haben",
 	Sandbox_ETW_TraitsLockSystemCanLoseNegative = "Eigenschaften sperren: Kann negativ verlieren",

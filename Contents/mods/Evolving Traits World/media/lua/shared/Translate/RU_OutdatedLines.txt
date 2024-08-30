@@ -10,6 +10,10 @@ Sandbox.txt
 	changed:
 		Sandbox_ETW_AsthmaticCounter_tooltip = "What value on counter you should reach to lose asthmatic trait. Running or exercising in cold temperature decreases counter, the colder it is, faster the decrease. If you're outside, it decreases even faster. If you have smoker, it decreases even faster. Additionally, having smoker slowly decreases the counter when you run even if weather is fine. Reaching the counter removes the trait. Counter slowly increases by itself as long as you're not running or sprinting and breathing air warmer than 0 degrees Celsius. On top of that, it increases based on your Fitness level and current endurance level. Having smoker halves increases rate. Having asthmatic halves it again.",
 
+		Sandbox_ETW_Bloodlust_tooltip = "This perk allows you to gain a benefit by filling and maintaining a bloodlust meter. The bloodlust meter is soft-capped at 36 hours and can be filled by killing zombies. The closer the zombies are, the more quickly the meter will fill. When you're above half of the meter, every hour it will give you progress towards the bloodlust perk; when it's below, it'll remove progress. The bloodlust meter naturally decays by 1 every hour. Having bloodied clothes helps the process",
+
+		Sandbox_ETW_BraverySystemKills_tooltip = "Here you set up how many kills you need to get to max out your bravery system. Melee kills count twice for progress. Progression is as follows: Cowardly -> Fear of Blood -> Pacifist -> Adrenaline Junkie -> Brave -> Desensitized<br>You need to have previous trait gone (if it's negative) or present (if it's positive) to earn/lose next trait In progression.<br>Amounts to reach each stage are as follows:<br>Cowardly: 10% of max kills<br>Fear of Blood: 20% of max kills<br>Pacifist: 30% of max kills<br>Adrenaline Junkie: 40% of max kills<br>Brave: 60% of max kills<br>Desensitized: 100% of max kills<br>Example: Max kills is set to 1000. You start with Cowardly. You need 100 kills to remove it. If you get 50 melee kills, it'll be removed. The same is true if you get 40 melee kills (x2 = 80 kills for the counter) and 20 firearms kills",
+
 		Sandbox_ETW_OutdoorsmanCounter_tooltip = "This allows you to gain a trait by spending time outside and being exposed to various weather conditions. The more adverse the weather conditions are, the more quickly you will gain the trait. Being inside slowly loses progress. Reaching counter will gain the trait, dropping down to opposite of it (for example, -500k with default settings) will lose it",
 
 		Sandbox_ETW_SmokerCounter_tooltip = "Upon reaching this value on the counter, you'll get Smoker trait. When dropping to opposite of it, you'll lose it. Counter boundaries are -2x the counter to 2x counter<br><br> How it works:Every smoke you take increases your addiction counter. Bigger breaks you take between smokes, less the increase. Smoking while being panicked or stressed increases counter much faster, based on level of panic and stress. Not smoking slowly decays the counter. Being panicked or stressed slows decay rate.",
@@ -19,8 +23,8 @@ Sandbox.txt
 		Sandbox_ETW_LearnerSystemSkill = "Learner System Skill requirement",
 		Sandbox_ETW_LearnerSystemSkill_tooltip = "Allows to lose Slow Learner and earn Fast Learner. Upon reaching half of levels you lose Slow learner, upon reaching set amount of levels you gain Fast Learner. Maintenance + Carpentry + Cooking + Farming + First Aid + Electrical + Metalworking + Mechanics + Tailoring",
 
-		Sandbox_ETW_TraitsLockSystemCanLoosePositive = "Traits Lock: Can Lose Positive",
-		Sandbox_ETW_TraitsLockSystemCanLoosePositive_tooltip = "If this is enabled, you can lose positive traits during gameplay. This mostly applies to trait systems like love/fear of weather/locations or weight system as not a lot of positive traits can be lost.",
+		Sandbox_ETW_TraitsLockSystemCanLosePositive = "Traits Lock: Can Lose Positive",
+		Sandbox_ETW_TraitsLockSystemCanLosePositive_tooltip = "If this is enabled, you can lose positive traits during gameplay. This mostly applies to trait systems like love/fear of weather/locations or weight system as not a lot of positive traits can be lost.",
 		Sandbox_ETW_TraitsLockSystemCanGainPositive = "Traits Lock: Can Gain Positive",
 		Sandbox_ETW_TraitsLockSystemCanGainPositive_tooltip = "If this is enabled, you can gain positive traits during gameplay. This applies to a lot of traits, you DO NOT want to have this disabled.",
 		Sandbox_ETW_TraitsLockSystemCanLoseNegative = "Traits Lock: Can Lose Negative",
@@ -40,6 +44,8 @@ UI.txt
 		UI_ETW_Options_UIWidth_tooltip = "Width of character page in pixels. If you play in English language default should work fine for you, but in other languages it can be weird so if you need more space, increase it here.",
 		UI_ETW_Options_TraitColumns = "[UI] Trait Columns",
 		UI_ETW_Options_TraitColumns_tooltip = "How many columns are there in the UI on character page. Default setting should work good if you play in English language, but if text overlaps in other languages, you might want to reduce this value"
+		UI_ETW_Options_HideSmokerUI = "[UI] Hide Smoker Bar",
+		UI_ETW_Options_HideSmokerUI_tooltip = "Hides Smoker trait progress from ETW UI (for example, if you don't have it and not planning on smoking). Requires reloading the save or rejoining the server.",,
 
 		UI_optionscreen_binding_ETW_UI_Toggle = "Toggle Evolving Traits World UI"
 

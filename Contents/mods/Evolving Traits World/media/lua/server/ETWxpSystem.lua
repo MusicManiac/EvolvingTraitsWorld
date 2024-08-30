@@ -1,5 +1,7 @@
 xpSystemText.ETW = getText("UI_ETW");
 
+---Function responsible for opening up ETW UI
+---@param keynum number
 function EvolvingTraitsWorld.KeyPressed(keynum)
 	if EvolvingTraitsWorld.KEYS_Toggle.key and keynum == EvolvingTraitsWorld.KEYS_Toggle.key and getPlayer() then
 		local playerObj = getSpecificPlayer(0)

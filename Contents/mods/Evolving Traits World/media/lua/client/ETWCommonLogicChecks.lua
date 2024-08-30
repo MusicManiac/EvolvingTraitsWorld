@@ -1,8 +1,8 @@
 require "ETWModData";
-local ETWCommonFunctions = require "ETWCommonFunctions";
 
 ETWCommonLogicChecks = {};
 
+--- @type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld;
 local activatedMods = getActivatedMods();
 
@@ -70,7 +70,7 @@ Events.LevelPerk.Add(populateSkills);
 
 function ETWCommonLogicChecks.ColdIllnessSystemShouldExecute()
 	local player = getPlayer();
-	if SBvars.ColdIllnessSystem == true and not player:HasTrait("Resilient") and (SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLooseNegative) then
+	if SBvars.ColdIllnessSystem == true and not player:HasTrait("Resilient") and (SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLoseNegative) then
 		return true
 	else
 		return false
@@ -79,7 +79,7 @@ end
 
 function ETWCommonLogicChecks.FoodSicknessSystemShouldExecute()
 	local player = getPlayer();
-	if SBvars.FoodSicknessSystem == true and not player:HasTrait("IronGut") and (SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLooseNegative) then
+	if SBvars.FoodSicknessSystem == true and not player:HasTrait("IronGut") and (SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLoseNegative) then
 		return true
 	else
 		return false
@@ -87,7 +87,7 @@ function ETWCommonLogicChecks.FoodSicknessSystemShouldExecute()
 end
 
 function ETWCommonLogicChecks.AsthmaticShouldExecute()
-	if SBvars.Asthmatic == true and (SBvars.TraitsLockSystemCanLooseNegative or SBvars.TraitsLockSystemCanGainNegative) then
+	if SBvars.Asthmatic == true and (SBvars.TraitsLockSystemCanLoseNegative or SBvars.TraitsLockSystemCanGainNegative) then
 		return true
 	else
 		return false
@@ -104,7 +104,7 @@ function ETWCommonLogicChecks.PainToleranceShouldExecute()
 end
 
 function ETWCommonLogicChecks.BloodlustShouldExecute()
-	if not getActivatedMods():contains("EvolvingTraitsWorldDisableBloodlust") and SBvars.Bloodlust == true and (SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLoosePositive) then
+	if not getActivatedMods():contains("EvolvingTraitsWorldDisableBloodlust") and SBvars.Bloodlust == true and (SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLosePositive) then
 		return true
 	else
 		return false
@@ -122,7 +122,7 @@ end
 
 function ETWCommonLogicChecks.BraverySystemShouldExecute()
 	local player = getPlayer();
-	if SBvars.BraverySystem == true and not player:HasTrait("Desensitized") and (SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLooseNegative) then
+	if SBvars.BraverySystem == true and not player:HasTrait("Desensitized") and (SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLoseNegative) then
 		return true
 	else
 		return false
@@ -130,7 +130,7 @@ function ETWCommonLogicChecks.BraverySystemShouldExecute()
 end
 
 function ETWCommonLogicChecks.OutdoorsmanShouldExecute()
-	if SBvars.Outdoorsman == true and (SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLoosePositive) then
+	if SBvars.Outdoorsman == true and (SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLosePositive) then
 		return true
 	else
 		return false
@@ -479,7 +479,7 @@ function ETWCommonLogicChecks.CatEyesShouldExecute()
 end
 
 function ETWCommonLogicChecks.SleepSystemShouldExecute()
-	if SBvars.SleepSystem == true and (SBvars.TraitsLockSystemCanGainNegative or SBvars.TraitsLockSystemCanLoseNegative or SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLoosePositive) then
+	if SBvars.SleepSystem == true and (SBvars.TraitsLockSystemCanGainNegative or SBvars.TraitsLockSystemCanLoseNegative or SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLosePositive) then
 		return true
 	else
 		return false
@@ -495,7 +495,7 @@ function ETWCommonLogicChecks.SmokerShouldExecute()
 end
 
 function ETWCommonLogicChecks.HerbalistShouldExecute()
-	if SBvars.Herbalist == true and (SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLoosePositive) then
+	if SBvars.Herbalist == true and (SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLosePositive) then
 		return true
 	else
 		return false
@@ -503,7 +503,7 @@ function ETWCommonLogicChecks.HerbalistShouldExecute()
 end
 
 function ETWCommonLogicChecks.RainSystemShouldExecute()
-	if not activatedMods:contains("EvolvingTraitsWorldDisableRainTraits") and SBvars.RainSystem == true and (SBvars.TraitsLockSystemCanGainNegative or SBvars.TraitsLockSystemCanLoseNegative or SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLoosePositive) then
+	if not activatedMods:contains("EvolvingTraitsWorldDisableRainTraits") and SBvars.RainSystem == true and (SBvars.TraitsLockSystemCanGainNegative or SBvars.TraitsLockSystemCanLoseNegative or SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLosePositive) then
 		return true
 	else
 		return false
@@ -511,7 +511,7 @@ function ETWCommonLogicChecks.RainSystemShouldExecute()
 end
 
 function ETWCommonLogicChecks.FogSystemShouldExecute()
-	if not activatedMods:contains("EvolvingTraitsWorldDisableFogTraits") and SBvars.FogSystem == true and (SBvars.TraitsLockSystemCanGainNegative or SBvars.TraitsLockSystemCanLoseNegative or SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLoosePositive) then
+	if not activatedMods:contains("EvolvingTraitsWorldDisableFogTraits") and SBvars.FogSystem == true and (SBvars.TraitsLockSystemCanGainNegative or SBvars.TraitsLockSystemCanLoseNegative or SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLosePositive) then
 		return true
 	else
 		return false
@@ -529,7 +529,7 @@ end
 
 function ETWCommonLogicChecks.InventoryTransferSystemShouldExecute()
 	local player = getPlayer();
-	if SBvars.InventoryTransferSystem == true and (not player:HasTrait("Dextrous") or not player:HasTrait("Organized") or player:HasTrait("butterfingers")) and (SBvars.TraitsLockSystemCanGainNegative or SBvars.TraitsLockSystemCanLoseNegative or SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLoosePositive) then
+	if SBvars.InventoryTransferSystem == true and (not player:HasTrait("Dextrous") or not player:HasTrait("Organized") or player:HasTrait("butterfingers")) and (SBvars.TraitsLockSystemCanGainNegative or SBvars.TraitsLockSystemCanLoseNegative or SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLosePositive) then
 		return true
 	else
 		return false

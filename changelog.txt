@@ -1,4 +1,11 @@
-v.7.2.0
+v.8.0.0 - Proper Types and Classes
 
 General:
-	- Added hotkey to toggle new UI. It can be found in Options -> Key Bindings -> UI, default is "[" (left bracket, button next to P)
+	- Huge internal refactor and documentation work, mostly just coding stuff and making project work better with IDE. Non-relevant to average player, unless I broke stuff.
+	- Bloodlust gain/lose is now affected by general level of your bloodied clothes. Has only positive net gain. Having no bloodied clothes doesn't change speed of getting/losing the trait. Having bloodied clothes makes it easier to get the trait and harder to lose it.
+	- Made Bloodlust softcap less harsh (you can go above 100% meter fill easier)
+	- Bravery system now will not allow you to earn next trait in progression until previous trait is gone (if it's negative) or present (if it's positive)
+	- Added ModOption to disable Smoker bar display in UI
+Fixes:
+	- Cold System had a bug when Delayed Traits System was enabled
+	- Fixed some traits being dynamic when they shouldn't be and vice versa

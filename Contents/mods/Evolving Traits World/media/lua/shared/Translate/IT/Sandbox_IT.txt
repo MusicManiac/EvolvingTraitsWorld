@@ -287,8 +287,8 @@ Sandbox_IT = {
 	Sandbox_ETW_StickFighterSkill = "Abilità di Contundente richiesta per Combattente da Contundente",
 	Sandbox_ETW_StickFighterKills = "Uccisioni con Contundente richieste per Combattente da Contundente",
 
-	Sandbox_ETW_TraitsLockSystemCanLoosePositive = "Blocco dei Tratti: Poter Perdere i Positivi",
-	Sandbox_ETW_TraitsLockSystemCanLoosePositive_tooltip = "Se attivo, puoi perdere i tratti positivi durante la partita. Questo si applica principalmente ai sistemi di tratti come amore/paura di meteo/luoghi o al sistema del peso dato che non molti tratti positivi possono essere persi.",
+	Sandbox_ETW_TraitsLockSystemCanLosePositive = "Blocco dei Tratti: Poter Perdere i Positivi",
+	Sandbox_ETW_TraitsLockSystemCanLosePositive_tooltip = "Se attivo, puoi perdere i tratti positivi durante la partita. Questo si applica principalmente ai sistemi di tratti come amore/paura di meteo/luoghi o al sistema del peso dato che non molti tratti positivi possono essere persi.",
 	Sandbox_ETW_TraitsLockSystemCanGainPositive = "Blocco dei Tratti: Poter Acquisire i Positivi",
 	Sandbox_ETW_TraitsLockSystemCanGainPositive_tooltip = "Se attivo, puoi acquisire i tratti positivi durante la partita. Questo vale per molti tratti, quindi NON vuoi disattivarla.",
 	Sandbox_ETW_TraitsLockSystemCanLoseNegative = "Blocco dei Tratti: Poter Perdere i Negativi",

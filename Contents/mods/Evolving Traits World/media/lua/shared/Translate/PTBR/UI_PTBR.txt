@@ -64,6 +64,8 @@ UI_ETW_Options_GatherDebug = "Reunir dados de depuração",
     UI_ETW_Options_TraitColumns = "[UI] Colunas de Traços",
     UI_ETW_Options_TraitColumns_tooltip = "Quantas colunas existem na UI na página do personagem. A configuração padrão deve funcionar bem se você joga em inglês, mas se o texto estiver sobreposto em outras línguas, talvez você queira reduzir esse valor",
 
+	UI_optionscreen_binding_ETW_UI_Toggle = "Ativar UI do Evolving Traits World"
+
     UI_ETW_GainTooltip = "Você ganhará o traço quando a barra estiver por aqui (ou se qualificar para ganhá-lo, se o Sistema de Traços Atrasados estiver ativado e este traço estiver nesse sistema)",
     UI_ETW_LoseTooltip = "Você perderá o traço quando a barra estiver por aqui (ou se qualificar para perdê-lo, se o Sistema de Traços Atrasados estiver ativado e este traço estiver nesse sistema)",
     UI_ETW_GainLoseTooltip = "Você ganhará/perderá o traço quando a barra estiver por aqui (ou se qualificar para ganhá-lo/perdê-lo, se o Sistema de Traços Atrasados estiver ativado e este traço estiver nesse sistema)",

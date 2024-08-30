@@ -278,8 +278,8 @@ Sandbox_CH = {
 	Sandbox_ETW_StickFighterSkill = "使棍武者:獲得特質所需長棍技能等級",
 	Sandbox_ETW_StickFighterKills = "使棍武者:獲得特質所需長棍擊殺數",
 
-	Sandbox_ETW_TraitsLockSystemCanLoosePositive = "特製鎖定: 正向特製可丟失",
-	Sandbox_ETW_TraitsLockSystemCanLoosePositive_tooltip = "開啟此選項會讓你在遊戲過程中遺失正向特製. 這個選項大多只會影響到天氣/地點喜好,或負重相關的特質. 其餘正向特質大多無法或難以被影響而丟失.",
+	Sandbox_ETW_TraitsLockSystemCanLosePositive = "特製鎖定: 正向特製可丟失",
+	Sandbox_ETW_TraitsLockSystemCanLosePositive_tooltip = "開啟此選項會讓你在遊戲過程中遺失正向特製. 這個選項大多只會影響到天氣/地點喜好,或負重相關的特質. 其餘正向特質大多無法或難以被影響而丟失.",
 	Sandbox_ETW_TraitsLockSystemCanGainPositive = "特質鎖定: 可獲得正向特質",
 	Sandbox_ETW_TraitsLockSystemCanGainPositive_tooltip = "開啟此選項讓你在遊戲過程中可獲得正向特質. 此選項會影響 很 多 特質, 你絕對不會想關閉它.",
 	Sandbox_ETW_TraitsLockSystemCanLoseNegative = "特質鎖定: 可丟失負面特質",

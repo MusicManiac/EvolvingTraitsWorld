@@ -1,0 +1,17 @@
+{
+  "$schema": "https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json",
+  "workspace.library": ["C:\\Users\\Slava\\Umbrella"],
+  "runtime.version": "Lua 5.1",
+  "runtime.path": [
+    "shared/?.lua",
+    "client/?.lua",
+    "server/?.lua"
+  ],
+  "completion.requireSeparator": "/",
+  "workspace.preloadFileSize": 800,
+  "runtime.builtin": {
+    "debug": "disable",
+    "io": "disable",
+    "package": "disable"
+  }
+}

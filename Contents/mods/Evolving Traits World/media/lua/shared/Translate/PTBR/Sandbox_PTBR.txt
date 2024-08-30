@@ -127,8 +127,8 @@ Sandbox_PTBR = {
 	Sandbox_ETW_StickFighterSkill = "Requisito de habilidade de Bastão do Lutador de Bastão",
 	Sandbox_ETW_StickFighterKills = "Requisito de mortes com Bastão do Lutador de Bastão",
 
-	Sandbox_ETW_TraitsLockSystemCanLoosePositive = "Sistema de Bloqueio de Traços: Pode Perder Positivos",
-	Sandbox_ETW_TraitsLockSystemCanLoosePositive_tooltip = "Se isso estiver habilitado, você pode perder traços positivos durante o jogo. Isso se aplica principalmente a sistemas de traços como amor/medo de condições climáticas/localizações ou sistema de peso, pois não muitos traços positivos podem ser perdidos.",
+	Sandbox_ETW_TraitsLockSystemCanLosePositive = "Sistema de Bloqueio de Traços: Pode Perder Positivos",
+	Sandbox_ETW_TraitsLockSystemCanLosePositive_tooltip = "Se isso estiver habilitado, você pode perder traços positivos durante o jogo. Isso se aplica principalmente a sistemas de traços como amor/medo de condições climáticas/localizações ou sistema de peso, pois não muitos traços positivos podem ser perdidos.",
 
 	Sandbox_ETW_TraitsLockSystemCanGainPositive = "Sistema de Bloqueio de Traços: Pode Ganhar Positivos",
 	Sandbox_ETW_TraitsLockSystemCanGainPositive_tooltip = "Se isso estiver habilitado, você pode ganhar traços positivos durante o jogo. Isso se aplica a muitos traços; você NÃO quer desabilitar isso.",

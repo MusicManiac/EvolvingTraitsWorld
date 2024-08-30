@@ -3,6 +3,7 @@ local ETWMoodles = require "ETWMoodles";
 local ETWCommonFunctions = require "ETWCommonFunctions";
 local ETWCommonLogicChecks = require "ETWCommonLogicChecks";
 
+--- @type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld;
 
 local notification = function() return EvolvingTraitsWorld.settings.EnableNotifications end
@@ -10,6 +11,7 @@ local delayedNotification = function() return EvolvingTraitsWorld.settings.Enabl
 local debug = function() return EvolvingTraitsWorld.settings.GatherDebug end
 local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetailedDebug end
 
+---Function responsible for managing Cat Eyes trait
 local function catEyes()
 	local player = getPlayer();
 	local nightStrength = getClimateManager():getNightStrength()
@@ -21,7 +23,7 @@ local function catEyes()
 		local square;
 		local plX, plY, plZ = player:getX(), player:getY(), player:getZ();
 		local radius = 30;
-		local modData = player:getModData().EvolvingTraitsWorld;
+		local modData = ETWCommonFunctions.getETWModData(player);
 		for x = -radius, radius do
 			for y = -radius, radius do
 				square = getCell():getGridSquare(plX + x, plY + y, plZ);
@@ -50,6 +52,11 @@ local function catEyes()
 	end
 end
 
+---Function responsible for finding midpoint between 2 timestamps
+---time1 and time2 are passed in chronological order, time2 was after time1
+---@param time1 number
+---@param time2 number
+---@return number
 local function findMidpoint(time1, time2)
 	local midPoint = 0;
 	if time1 > time2 then midPoint = (time1 + time2 + 24) / 2 else midPoint = (time1 + time2) / 2 end
@@ -57,9 +64,10 @@ local function findMidpoint(time1, time2)
 	return midPoint
 end
 
+---Function responsible for managing Sleep System tratis
 local function sleepSystem()
 	local player = getPlayer();
-	local modData = player:getModData().EvolvingTraitsWorld;
+	local modData = ETWCommonFunctions.getETWModData(player);
 	local startingTraitsModData = modData.StartingTraits;
 	local sleepModData = modData.SleepSystem;
 	local timeOfDay = getGameTime():getTimeOfDay();
@@ -131,7 +139,7 @@ local function sleepSystem()
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_MoreSleep"), true, HaloTextHelper.getColorRed()) end
 		end
 	else
-		if player:HasTrait("NeedsLessSleep") and SBvars.TraitsLockSystemCanLoosePositive then
+		if player:HasTrait("NeedsLessSleep") and SBvars.TraitsLockSystemCanLosePositive then
 			player:getTraits():remove("NeedsLessSleep")
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_LessSleep"), false, HaloTextHelper.getColorRed()) end
 		end
@@ -143,10 +151,11 @@ local function sleepSystem()
 	if detailedDebug() then print("ETW Logger | sleepSystem(): modData.SleepHealthinessBar: ".. sleepModData.SleepHealthinessBar) end
 end
 
+---Function responsible for managing hourly Smoker trait decay
 local function smoker()
 	local player = getPlayer();
-	local modData = player:getModData().EvolvingTraitsWorld;
-	local smokerModData = modData.SmokeSystem; -- SmokingAddiction MinutesSinceLastSmoke
+	local modData = ETWCommonFunctions.getETWModData(player);
+	local smokerModData = modData.SmokeSystem;
 	local timeSinceLastSmoke = player:getTimeSinceLastSmoke() * 60;
 	smokerModData.MinutesSinceLastSmoke = smokerModData.MinutesSinceLastSmoke + 1;
 	if detailedDebug() then print("ETW Logger | smoker(): timeSinceLastSmoke: "..timeSinceLastSmoke..", modData.MinutesSinceLastSmoke: ".. smokerModData.MinutesSinceLastSmoke) end
@@ -170,9 +179,10 @@ local function smoker()
 	end
 end
 
+---Function responsible for managing hourly Herbalist trait decay
 local function herbalist()
 	local player = getPlayer();
-	local modData = player:getModData().EvolvingTraitsWorld;
+	local modData = ETWCommonFunctions.getETWModData(player);
 	modData.HerbsPickedUp = math.max(0, modData.HerbsPickedUp - ((SBvars.AffinitySystem and modData.StartingTraits.Herbalist) and 1 / SBvars.AffinitySystemLoseDivider or 1));
 	if debug() then print("ETW Logger | herbalist(): modData.HerbsPickedUp: "..modData.HerbsPickedUp) end
 	if modData.HerbsPickedUp < SBvars.HerbalistHerbsPicked / 2 and player:HasTrait("Herbalist") then
@@ -182,7 +192,10 @@ local function herbalist()
 	end
 end
 
-local function initializeEvents(playerIndex, player)
+---Function responsible for setting up events
+---@param playerIndex number
+---@param player IsoPlayer
+local function initializeEventsETW(playerIndex, player)
 	Events.EveryOneMinute.Remove(catEyes);
 	if ETWCommonLogicChecks.CatEyesShouldExecute() then Events.EveryOneMinute.Add(catEyes) end
 	Events.EveryTenMinutes.Remove(sleepSystem);
@@ -193,15 +206,17 @@ local function initializeEvents(playerIndex, player)
 	if ETWCommonLogicChecks.HerbalistShouldExecute() then Events.EveryDays.Add(herbalist) end
 end
 
-local function clearEvents(character)
+---Function responsible for clearing events
+---@param character IsoPlayer
+local function clearEventsETW(character)
 	Events.EveryOneMinute.Remove(catEyes);
 	Events.EveryTenMinutes.Remove(sleepSystem);
 	Events.EveryOneMinute.Remove(smoker);
 	Events.EveryDays.Remove(herbalist);
-	if detailedDebug() then print("ETW Logger | System: clearEvents in ETWByTime.lua") end
+	if detailedDebug() then print("ETW Logger | System: clearEventsETW in ETWByTime.lua") end
 end
 
-Events.OnCreatePlayer.Remove(initializeEvents);
-Events.OnCreatePlayer.Add(initializeEvents);
-Events.OnPlayerDeath.Remove(clearEvents);
-Events.OnPlayerDeath.Add(clearEvents);
+Events.OnCreatePlayer.Remove(initializeEventsETW);
+Events.OnCreatePlayer.Add(initializeEventsETW);
+Events.OnPlayerDeath.Remove(clearEventsETW);
+Events.OnPlayerDeath.Add(clearEventsETW);

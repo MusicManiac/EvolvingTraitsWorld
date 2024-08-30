@@ -43,7 +43,7 @@ Sandbox_EN = {
 	Sandbox_ETW_BaseballPlayerKills = "Baseball Player Kills with Long Blunt requirement",
 
 	Sandbox_ETW_Bloodlust = "Bloodlust",
-    Sandbox_ETW_Bloodlust_tooltip = "---General understanding---<br>This perk allows you to gain a benefit by filling and maintaining a bloodlust meter. The bloodlust meter is soft-capped at 36 hours and can be filled by killing zombies within a certain distance. The closer the zombies are, the more quickly the meter will fill. When you're above half of the meter, every hour it will give you progress towards the bloodlust perk; when it's below, it'll remove progress. The bloodlust meter naturally decays by 1 every hour.<br>---Technical description, don't read this if you don't want to meta-game much---<br>To fill the bloodlust meter, you must kill zombies within a certain distance from you. The exact amount the meter fills is determined by a formula that takes into account the distance of the zombies and a multiplier. The precise formula is: math.min(1 / distance, 1) * multiplier. Every hour, the meter is reduced by 1. If your bloodlust meter is above half, every hour you will gain 10% of it as progress towards gaining the bloodlust perk. If it's below 50%, you'll lose 3.6 - 0.1 * BloodlustBar. So, if you're slightly below 50%, you lose around 1.8, but if you're at 0%, you'll lose 3.6 from your progress. Progress is capped at 2x the Bloodlust Progress value",
+    Sandbox_ETW_Bloodlust_tooltip = "This perk allows you to gain a benefit by filling and maintaining a bloodlust meter. The bloodlust meter is soft-capped at 36 hours and can be filled by killing zombies. The closer the zombies are, the more quickly the meter will fill. When you're above half of the meter, every hour it will give you progress towards the bloodlust perk; when it's below, it'll remove progress. The bloodlust meter naturally decays by 1 every hour. Having bloodied clothes helps the process",
     Sandbox_ETW_BloodlustMeterFillMultiplier = "Bloodlust Meter Fill Multiplier",
     Sandbox_ETW_BloodlustMeterFillMultiplier_tooltip = "How fast you fill your bloodlust meter",
     Sandbox_ETW_BloodlustProgress = "Bloodlust Progress",
@@ -64,7 +64,7 @@ Sandbox_EN = {
 
 	Sandbox_ETW_BraverySystem = "Bravery System",
     Sandbox_ETW_BraverySystemKills = "Kills to Max Bravery Perks",
-    Sandbox_ETW_BraverySystemKills_tooltip = "Here you set up how many kills you need to get to max out your bravery system. Melee kills count twice for progress. Progression is as follows: Cowardly -> Fear of Blood -> Pacifist -> Adrenaline Junkie -> Brave -> Desensitized<br>Amounts to reach each stage are as follows:<br>Cowardly: 10% of max kills<br>Fear of Blood: 20% of max kills<br>Pacifist: 30% of max kills<br>Adrenaline Junkie: 40% of max kills<br>Brave: 60% of max kills<br>Desensitized: 100% of max kills<br>Example: Max kills is set to 1000. You start with Cowardly. You need 100 kills to remove it. If you get 50 melee kills, it'll be removed. The same is true if you get 40 melee kills (x2 = 80 kills for the counter) and 20 firearms kills",
+    Sandbox_ETW_BraverySystemKills_tooltip = "Here you set up how many kills you need to get to max out your bravery system. Melee kills count twice for progress. Progression is as follows: Cowardly -> Fear of Blood -> Pacifist -> Adrenaline Junkie -> Brave -> Desensitized<br>You need to have previous trait gone (if it's negative) or present (if it's positive) to earn/lose next trait In progression.<br>Amounts to reach each stage are as follows:<br>Cowardly: 10% of max kills<br>Fear of Blood: 20% of max kills<br>Pacifist: 30% of max kills<br>Adrenaline Junkie: 40% of max kills<br>Brave: 60% of max kills<br>Desensitized: 100% of max kills<br>Example: Max kills is set to 1000. You start with Cowardly. You need 100 kills to remove it. If you get 50 melee kills, it'll be removed. The same is true if you get 40 melee kills (x2 = 80 kills for the counter) and 20 firearms kills",
     Sandbox_ETW_BraverySystemRemovesOtherFearPerks = "Bravery System Removes Other Fear Perks",
     Sandbox_ETW_BraverySystemRemovesOtherFearPerks_tooltip = "If enabled, getting desensitized through the Bravery system will also remove other fear perks like Pluviophile, Homichlophobia, Agoraphobic, and Claustrophobic, and prevent you from gaining them",
 
@@ -279,8 +279,8 @@ Sandbox_EN = {
 	Sandbox_ETW_StickFighterSkill = "Stick Fighter Short Blunt Skill requirement",
 	Sandbox_ETW_StickFighterKills = "Stick Fighter Short Blunt Kills requirement",
 
-	Sandbox_ETW_TraitsLockSystemCanLoosePositive = "Traits Lock: Can Lose Positive",
-    Sandbox_ETW_TraitsLockSystemCanLoosePositive_tooltip = "If this is enabled, you can lose positive traits during gameplay. This mostly applies to trait systems like love/fear of weather/locations or weight system as not a lot of positive traits can be lost",
+	Sandbox_ETW_TraitsLockSystemCanLosePositive = "Traits Lock: Can Lose Positive",
+    Sandbox_ETW_TraitsLockSystemCanLosePositive_tooltip = "If this is enabled, you can lose positive traits during gameplay. This mostly applies to trait systems like love/fear of weather/locations or weight system as not a lot of positive traits can be lost",
     Sandbox_ETW_TraitsLockSystemCanGainPositive = "Traits Lock: Can Gain Positive",
     Sandbox_ETW_TraitsLockSystemCanGainPositive_tooltip = "If this is enabled, you can gain positive traits during gameplay. This applies to a lot of traits; you DO NOT want to have this disabled",
     Sandbox_ETW_TraitsLockSystemCanLoseNegative = "Traits Lock: Can Lose Negative",
