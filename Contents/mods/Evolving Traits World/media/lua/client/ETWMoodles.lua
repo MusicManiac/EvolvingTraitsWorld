@@ -1,7 +1,8 @@
+---@diagnostic disable: undefined-global
 ETWMoodles = {};
 require "MF_ISMoodle";
 
---- @type EvolvingTraitsWorldSandboxVars
+---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld;
 
 local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetailedDebug end

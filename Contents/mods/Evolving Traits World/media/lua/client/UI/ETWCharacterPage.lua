@@ -1,3 +1,4 @@
+---@diagnostic disable: param-type-mismatch, undefined-global
 require "ISUI/ISPanelJoypad"
 require "UI/CharacterInfoAddTab"
 require "ETWModOptions"
@@ -22,7 +23,7 @@ local columnGap;
 local nonBarsEntriesPerRow = MOvars.TraitColumns or 4;
 local nonBarsEntryNumber = 0;
 
---- @type EvolvingTraitsWorldSandboxVars
+---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld;
 
 ISETWProgressUI = ISPanelJoypad:derive("ISETWUI")
@@ -53,7 +54,7 @@ end
 
 function ISETWProgressUI:createChildren()
 	if SBvars.UIPage then
-		local barStartPosition = 150; -- TODO : add modoption to adjust this
+		local barStartPosition = 150; -- TODO : add mod option to adjust this
 		local barEndPosition = WINDOW_WIDTH - lineStartPosition;
 		local barMidPosition = barStartPosition + (barEndPosition - barStartPosition) / 2;
 		local barLength = barEndPosition - barStartPosition;

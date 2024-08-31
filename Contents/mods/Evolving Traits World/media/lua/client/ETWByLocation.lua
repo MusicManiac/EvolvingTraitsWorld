@@ -1,7 +1,7 @@
 require "ETWModData";
 local ETWCommonLogicChecks = require "ETWCommonLogicChecks";
 
---- @type EvolvingTraitsWorldSandboxVars
+---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld;
 
 local notification = function() return EvolvingTraitsWorld.settings.EnableNotifications end
@@ -92,21 +92,17 @@ local function fearOfLocations()
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_claustro"), true, HaloTextHelper.getColorRed()) end
 		end
 	elseif SBvars.TraitsLockSystemCanLoseNegative and SBvars.TraitsLockSystemCanGainNegative then
-		if fearOfLocationsModData.FearOfOutside <= -SBCounter and not desensitized(player) and
-			fearOfLocationsModData.FearOfOutside < fearOfLocationsModData.FearOfInside and
-			not player:HasTrait("Agoraphobic") then
-				player:getTraits():remove("Claustophobic");
-				if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_claustro"), false, HaloTextHelper.getColorGreen()) end
-				player:getTraits():add("Agoraphobic");
-				if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_agoraphobic"), true, HaloTextHelper.getColorRed()) end
+		if fearOfLocationsModData.FearOfOutside <= -SBCounter and not desensitized(player) and fearOfLocationsModData.FearOfOutside < fearOfLocationsModData.FearOfInside and not player:HasTrait("Agoraphobic") then
+			player:getTraits():remove("Claustophobic");
+			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_claustro"), false, HaloTextHelper.getColorGreen()) end
+			player:getTraits():add("Agoraphobic");
+			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_agoraphobic"), true, HaloTextHelper.getColorRed()) end
 		end
-		if fearOfLocationsModData.FearOfInside <= -SBCounter and not desensitized(player) and
-			fearOfLocationsModData.FearOfInside < fearOfLocationsModData.FearOfOutside and
-			not player:HasTrait("Claustophobic") then
-				player:getTraits():remove("Agoraphobic");
-				if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_agoraphobic"), false, HaloTextHelper.getColorGreen()) end
-				player:getTraits():add("Claustophobic");
-				if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_claustro"), true, HaloTextHelper.getColorRed()) end
+		if fearOfLocationsModData.FearOfInside <= -SBCounter and not desensitized(player) and fearOfLocationsModData.FearOfInside < fearOfLocationsModData.FearOfOutside and not player:HasTrait("Claustophobic") then
+			player:getTraits():remove("Agoraphobic");
+			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_agoraphobic"), false, HaloTextHelper.getColorGreen()) end
+			player:getTraits():add("Claustophobic");
+			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_claustro"), true, HaloTextHelper.getColorRed()) end
 		end
 	end
 	if player:HasTrait("Agoraphobic") and fearOfLocationsModData.FearOfOutside >= SBCounter and SBvars.TraitsLockSystemCanLoseNegative then

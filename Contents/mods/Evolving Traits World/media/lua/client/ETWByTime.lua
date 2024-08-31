@@ -3,7 +3,7 @@ local ETWMoodles = require "ETWMoodles";
 local ETWCommonFunctions = require "ETWCommonFunctions";
 local ETWCommonLogicChecks = require "ETWCommonLogicChecks";
 
---- @type EvolvingTraitsWorldSandboxVars
+---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld;
 
 local notification = function() return EvolvingTraitsWorld.settings.EnableNotifications end
@@ -64,7 +64,7 @@ local function findMidpoint(time1, time2)
 	return midPoint
 end
 
----Function responsible for managing Sleep System tratis
+---Function responsible for managing Sleep System traits
 local function sleepSystem()
 	local player = getPlayer();
 	local modData = ETWCommonFunctions.getETWModData(player);
@@ -105,7 +105,7 @@ local function sleepSystem()
 		ETWMoodles.sleepHealthMoodleUpdate(player, hoursAwayFromPreferredHour, false);
 	end
 	if not player:isAsleep() and sleepModData.CurrentlySleeping == true then
-		ETWMoodles.sleepHealthMoodleUpdate(nil, nil, true);
+		ETWMoodles.sleepHealthMoodleUpdate(player, 0, true);
 		sleepModData.LastMidpoint = findMidpoint(sleepModData.WentToSleepAt, timeOfDay);
 		sleepModData.CurrentlySleeping = false;
 		sleepModData.HoursSinceLastSleep = 0;

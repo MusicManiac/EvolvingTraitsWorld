@@ -58,7 +58,7 @@ option EvolvingTraitsWorld.DelayedTraitsSystemDefaultStartingDelay
 option EvolvingTraitsWorld.UIPage
 {
 	type = boolean,
-    default = true,
+	default = true,
 	page = ETWSettings,
 	translation = ETW_UIPage,
 }

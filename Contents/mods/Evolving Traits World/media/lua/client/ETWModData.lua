@@ -1,6 +1,6 @@
 require "ETWModOptions";
 
---- @type EvolvingTraitsWorldSandboxVars
+---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld;
 
 local function checkStartingDTConflictingTrait(startingTraits, player, trait)

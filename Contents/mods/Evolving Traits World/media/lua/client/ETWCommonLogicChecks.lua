@@ -2,7 +2,7 @@ require "ETWModData";
 
 ETWCommonLogicChecks = {};
 
---- @type EvolvingTraitsWorldSandboxVars
+---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld;
 local activatedMods = getActivatedMods();
 

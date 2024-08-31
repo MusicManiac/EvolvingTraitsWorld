@@ -3,7 +3,7 @@ ETWActionsOverride = {};
 local ETWCommonFunctions = require "ETWCommonFunctions";
 local ETWCommonLogicChecks = require "ETWCommonLogicChecks";
 
---- @type EvolvingTraitsWorldSandboxVars
+---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld;
 local notification = function() return EvolvingTraitsWorld.settings.EnableNotifications end
 local delayedNotification = function() return EvolvingTraitsWorld.settings.EnableDelayedNotifications end

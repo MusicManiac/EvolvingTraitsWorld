@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-global
 EvolvingTraitsWorld = EvolvingTraitsWorld or {};
 EvolvingTraitsWorld.settings = EvolvingTraitsWorld.SETTINGS or {};
 

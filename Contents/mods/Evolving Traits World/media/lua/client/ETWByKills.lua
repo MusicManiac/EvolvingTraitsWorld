@@ -3,7 +3,7 @@ local ETWMoodles = require "ETWMoodles";
 local ETWCommonFunctions = require "ETWCommonFunctions";
 local ETWCommonLogicChecks = require "ETWCommonLogicChecks";
 
---- @type EvolvingTraitsWorldSandboxVars
+---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld;
 
 local notification = function() return EvolvingTraitsWorld.settings.EnableNotifications end
@@ -20,18 +20,20 @@ local function bloodiedClothesLevel(player)
 	local amountOfWornItems = 0;
 	if wornItems ~= nil and wornItems:size() > 1 then
 		for i = 0, wornItems:size() - 1, 1 do
-        	local item = wornItems:getItemByIndex(i);
-        	if item:IsClothing() and item:getBodyLocation() ~= "Wound" and item:getBodyLocation() ~= "Bandage" and not item:isCosmetic() and item:getCanHaveHoles() then
-        		---@cast item Clothing
-        		local bloodLevel = item:getBloodLevel() or 0;
-        		amountOfWornItems = amountOfWornItems + 1;
-        		totalBloodLevelPercentage = totalBloodLevelPercentage + bloodLevel;
-        		if detailedDebug() then print("Clothing: "..item:getClothingItemName().. " | blood level: "..bloodLevel) end;
-        	end
-        end
-        local avg = totalBloodLevelPercentage / 100 / amountOfWornItems;
-        if detailedDebug() then print("avg: "..avg) end;
-        return avg;
+			local item = wornItems:getItemByIndex(i);
+			if instanceof(item, "Clothing") then
+				---@cast item Clothing
+				if item:getBloodClothingType() ~= nil then
+					local bloodLevel = item:getBloodLevel() or 0;
+					amountOfWornItems = amountOfWornItems + 1;
+					totalBloodLevelPercentage = totalBloodLevelPercentage + bloodLevel;
+					if detailedDebug() then print("Clothing: "..item:getClothingItemName().. " | blood level: "..bloodLevel) end;
+				end
+			end
+		end
+		local avg = totalBloodLevelPercentage / 100 / amountOfWornItems;
+		if detailedDebug() then print("avg: "..avg) end;
+		return avg;
 	end
 	return 0;
 end
@@ -69,7 +71,6 @@ local function bloodlustTimeETW()
 	local bloodlustModData = modData.BloodlustSystem;
 	bloodlustModData.BloodlustMeter = math.max(bloodlustModData.BloodlustMeter - 1, 0);
 	ETWMoodles.bloodlustMoodleUpdate(player, false);
-	bloodiedClothesLevel(player)
 	if detailedDebug() then print("ETW Logger | bloodlustTimeETW(): Bloodlust Meter: ".. bloodlustModData.BloodlustMeter) end
 	if bloodlustModData.BloodlustMeter >= 18 then -- gain if above 50%
 		local bloodLustProgressIncrease = bloodlustModData.BloodlustMeter * 0.1 * (1 + bloodiedClothesLevel(player)) * ((SBvars.AffinitySystem and modData.StartingTraits.Bloodlust) and SBvars.AffinitySystemGainMultiplier or 1);
@@ -197,7 +198,7 @@ end
 ---@param player IsoPlayer
 local function initializeEventsETW(playerIndex, player)
 	if ETWCommonLogicChecks.BloodlustShouldExecute() then
-		ETWMoodles.bloodlustMoodleUpdate(player);
+		ETWMoodles.bloodlustMoodleUpdate(player, true);
 		Events.OnZombieDead.Remove(bloodlustKillETW);
 		Events.OnZombieDead.Add(bloodlustKillETW);
 		Events.EveryHours.Remove(bloodlustTimeETW);

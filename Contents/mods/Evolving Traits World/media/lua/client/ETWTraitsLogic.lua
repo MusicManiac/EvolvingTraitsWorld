@@ -1,6 +1,6 @@
 require "ETWModData";
 
---- @type EvolvingTraitsWorldSandboxVars
+---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld;
 
 local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetailedDebug end
@@ -10,16 +10,16 @@ local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetai
 local function OnZombieDeadETW(zombie)
 	local player = getPlayer();
 	if player:HasTrait("Bloodlust") and player:DistTo(zombie) <= 4 then
-		local bodydamage = player:getBodyDamage();
+		local bodyDamage = player:getBodyDamage();
 		local stats = player:getStats();
 		local stressFromCigarettes = stats:getStressFromCigarettes(); -- 0-1
-		local unhappiness = bodydamage:getUnhappynessLevel(); -- 0-100
+		local unhappiness = bodyDamage:getUnhappynessLevel(); -- 0-100
 		local stress = math.max(0, stats:getStress() - stressFromCigarettes); -- 0-1, may be higher with stress from cigarettes
 		local panic = stats:getPanic(); -- 0-100
-		bodydamage:setUnhappynessLevel(math.max(0, unhappiness - 4 * SBvars.BloodlustMultiplier));
+		bodyDamage:setUnhappynessLevel(math.max(0, unhappiness - 4 * SBvars.BloodlustMultiplier));
 		stats:setStress(math.max(0, stress - 0.04 * SBvars.BloodlustMultiplier));
 		stats:setPanic(math.max(0, panic - 4 * SBvars.BloodlustMultiplier));
-		if detailedDebug() then print("ETW Logger | OnZombieDeadETW(): Bloodlust kill. Unhappiness:"..unhappiness.."->"..bodydamage:getUnhappynessLevel()..", stress: "..math.min(1, stress + stressFromCigarettes).."->"..stats:getStress()..", panic: "..panic.."->"..stats:getPanic()) end
+		if detailedDebug() then print("ETW Logger | OnZombieDeadETW(): Bloodlust kill. Unhappiness:"..unhappiness.."->"..bodyDamage:getUnhappynessLevel()..", stress: "..math.min(1, stress + stressFromCigarettes).."->"..stats:getStress()..", panic: "..panic.."->"..stats:getPanic()) end
 	end
 end
 
@@ -72,12 +72,12 @@ local function rainTraits(player, rainIntensity)
 		local primaryItem = player:getPrimaryHandItem();
 		local secondaryItem = player:getSecondaryHandItem();
 		local rainProtection = (primaryItem and primaryItem:isProtectFromRainWhileEquipped()) or (secondaryItem and secondaryItem:isProtectFromRainWhileEquipped());
-		local bodydamage = player:getBodyDamage();
+		local bodyDamage = player:getBodyDamage();
 		local stats = player:getStats();
 		local stressFromCigarettes = stats:getStressFromCigarettes(); -- 0-1
 		if Pluviophobia then
 			local unhappinessIncrease = 0.1 * rainIntensity * (rainProtection and 0.5 or 1) * SBvars.PluviophobiaMultiplier;
-			bodydamage:setUnhappynessLevel(math.min(100, bodydamage:getUnhappynessLevel() + unhappinessIncrease));
+			bodyDamage:setUnhappynessLevel(math.min(100, bodyDamage:getUnhappynessLevel() + unhappinessIncrease));
 			if detailedDebug() then print("ETW Logger | rainTraits(): unhappinessIncrease:"..unhappinessIncrease) end
 			local boredomIncrease = 0.02 * rainIntensity * (rainProtection and 0.5 or 1) * SBvars.PluviophobiaMultiplier;
 			stats:setBoredom(math.min(100, stats:getBoredom() + boredomIncrease));
@@ -87,7 +87,7 @@ local function rainTraits(player, rainIntensity)
 			if detailedDebug() then print("ETW Logger | rainTraits(): stressIncrease:"..stressIncrease) end
 		elseif Pluviophile then
 			local unhappinessDecrease = 0.1 * rainIntensity * (rainProtection and 0.5 or 1) * SBvars.PluviophileMultiplier;
-			bodydamage:setUnhappynessLevel(math.max(0, bodydamage:getUnhappynessLevel() - unhappinessDecrease));
+			bodyDamage:setUnhappynessLevel(math.max(0, bodyDamage:getUnhappynessLevel() - unhappinessDecrease));
 			if detailedDebug() then print("ETW Logger | rainTraits(): unhappinessDecrease:"..unhappinessDecrease) end
 			local boredomDecrease = 0.02 * rainIntensity * (rainProtection and 0.5 or 1) * SBvars.PluviophileMultiplier;
 			stats:setBoredom(math.max(0, stats:getBoredom() - boredomDecrease));
@@ -179,6 +179,7 @@ local function clearEventsETW(character)
 	if detailedDebug() then print("ETW Logger | System: clearEventsETW in ETWTraitsLogic.lua") end
 end
 
+---@diagnostic disable-next-line: undefined-global
 Events.EveryHours.Remove(SOcheckWeight);
 
 Events.OnCreatePlayer.Remove(initializeTraitsLogic);

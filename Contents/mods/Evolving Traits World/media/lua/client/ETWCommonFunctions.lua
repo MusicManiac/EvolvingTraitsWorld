@@ -1,7 +1,7 @@
 require "ETWModData";
 ETWCommonFunctions = {};
 
---- @type EvolvingTraitsWorldSandboxVars
+---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld;
 local debug = function() return EvolvingTraitsWorld.settings.GatherDebug end
 local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetailedDebug end
@@ -52,7 +52,7 @@ function ETWCommonFunctions.applyXPBoost(player, perk, boostLevel)
 	end
 end
 
----Add recepie to a player
+---Add recipe to a player
 ---@param player IsoPlayer
 ---@param recipe string
 function ETWCommonFunctions.addRecipe(player, recipe)

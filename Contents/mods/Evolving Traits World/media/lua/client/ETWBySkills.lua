@@ -3,7 +3,7 @@ local ETWActionsOverride = require "TimedActions/ETWActionsOverride";
 local ETWCommonFunctions = require "ETWCommonFunctions";
 local ETWCommonLogicChecks = require "ETWCommonLogicChecks";
 
---- @type EvolvingTraitsWorldSandboxVars
+---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld;
 local notification = function() return EvolvingTraitsWorld.settings.EnableNotifications end
 local delayedNotification = function() return EvolvingTraitsWorld.settings.EnableDelayedNotifications end
@@ -366,7 +366,7 @@ local function traitsGainsBySkill(player, perk)
 				end
 		-- Short Blade
 			-- Knife Fighter
-				if (perk == "characterInitialization" or perk == "kill" or perk == Perks.ShortBlade or perk == "KnifeFighter") and ETWCommonLogicChecks.KnifeFighterShouldExecute() then
+				if (perk == "characterInitialization" or perk == "kill" or perk == Perks.SmallBlade or perk == "KnifeFighter") and ETWCommonLogicChecks.KnifeFighterShouldExecute() then
 					if shortBlade >= SBvars.KnifeFighterSkill and shortBladeKills >= SBvars.KnifeFighterKills then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("KnifeFighter")) then
 							player:getTraits():add("KnifeFighter");

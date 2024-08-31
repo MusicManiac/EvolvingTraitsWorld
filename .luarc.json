@@ -1,17 +1,163 @@
 {
-  "$schema": "https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json",
-  "workspace.library": ["C:\\Users\\Slava\\Umbrella"],
-  "runtime.version": "Lua 5.1",
-  "runtime.path": [
-    "shared/?.lua",
-    "client/?.lua",
-    "server/?.lua"
-  ],
-  "completion.requireSeparator": "/",
-  "workspace.preloadFileSize": 800,
-  "runtime.builtin": {
-    "debug": "disable",
-    "io": "disable",
-    "package": "disable"
-  }
+    "$schema": "https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json",
+    "completion": {
+        "requireSeparator": "/"
+    },
+    "diagnostics": {
+        "globals": [],
+        "ignoredFiles": "Disable",
+        "libraryFiles": "Disable",
+        "neededFileStatus": {
+            "codestyle-check": "None"
+        },
+        "severity": {
+            "ambiguity-1": "Warning",
+            "assign-type-mismatch": "Error",
+            "await-in-sync": "Warning",
+            "cast-local-type": "Error",
+            "cast-type-mismatch": "Error",
+            "circle-doc-class": "Warning",
+            "close-non-object": "Warning",
+            "code-after-break": "Error",
+            "codestyle-check": "Hint",
+            "count-down-loop": "Warning",
+            "deprecated": "Error",
+            "different-requires": "Warning",
+            "discard-returns": "Error",
+            "doc-field-no-class": "Warning",
+            "duplicate-doc-alias": "Warning",
+            "duplicate-doc-field": "Warning",
+            "duplicate-doc-param": "Warning",
+            "duplicate-index": "Error",
+            "duplicate-set-field": "Warning",
+            "empty-block": "Hint",
+            "global-element": "Error!",
+            "global-in-nil-env": "Error",
+            "incomplete-signature-doc": "Warning",
+            "inject-field": "Error",
+            "invisible": "Error",
+            "lowercase-global": "Information",
+            "missing-fields": "Warning",
+            "missing-global-doc": "Error",
+            "missing-local-export-doc": "Error",
+            "missing-parameter": "Error",
+            "missing-return": "Error",
+            "missing-return-value": "Error",
+            "name-style-check": "Hint",
+            "need-check-nil": "Warning",
+            "newfield-call": "Error",
+            "newline-call": "Error",
+            "no-unknown": "Error",
+            "not-yieldable": "Error",
+            "param-type-mismatch": "Error",
+            "redefined-local": "Warning",
+            "redundant-parameter": "Warning",
+            "redundant-return": "Warning",
+            "redundant-return-value": "Error",
+            "redundant-value": "Error",
+            "return-type-mismatch": "Error",
+            "spell-check": "Information",
+            "trailing-space": "Hint",
+            "unbalanced-assignments": "Error",
+            "undefined-doc-class": "Error",
+            "undefined-doc-name": "Error",
+            "undefined-doc-param": "Error",
+            "undefined-env-child": "Error",
+            "undefined-field": "Error",
+            "undefined-global": "Error!",
+            "unknown-cast-variable": "Error",
+            "unknown-diag-code": "Warning",
+            "unknown-operator": "Error",
+            "unreachable-code": "Warning",
+            "unused-function": "Warning",
+            "unused-label": "Error!",
+            "unused-local": "Hint",
+            "unused-vararg": "Warning"
+        }
+    },
+    "doc": {
+        "privateName": [
+            "_*"
+        ]
+    },
+    "format": {
+        "enable": true
+    },
+    "hint": {
+        "arrayIndex": "Disable",
+        "await": false,
+        "enable": false,
+        "paramName": "Disable",
+        "paramType": false,
+        "semicolon": "SameLine",
+        "setType": true
+    },
+    "hover": {
+        "expandAlias": false
+    },
+    "runtime": {
+        "fileEncoding": "utf8",
+        "path": [
+            "shared/?.lua",
+            "client/?.lua",
+            "server/?.lua"
+        ],
+        "builtin" : {
+            "basic": "default",
+            "bit": "default",
+            "bit32": "default",
+            "builtin": "default",
+            "coroutine": "default",
+            "ffi": "default",
+            "jit": "default",
+            "jit.profile": "default",
+            "jit.util": "default",
+            "math": "default",
+            "os": "default",
+            "string": "default",
+            "string.buffer": "default",
+            "table": "default",
+            "table.clear": "default",
+            "table.new": "default",
+            "utf8": "default",
+            "debug": "disable",
+            "io": "disable",
+            "package": "disable"
+        },
+        "version": "Lua 5.1"
+    },
+    "semantic": {
+        "annotation": true,
+        "enable": true,
+        "keyword": false,
+        "variable": true
+    },
+    "signatureHelp": {
+        "enable": true
+    },
+    "type": {
+        "castNumberToInteger": false,
+        "weakNilCheck": false,
+        "weakUnionCheck": false
+    },
+    "typeFormat": {
+        "config": {
+            "auto_complete_end": "true",
+            "auto_complete_table_sep": "true",
+            "format_line": "true"
+        }
+    },
+    "workspace": {
+        "checkThirdParty": false,
+        "ignoreDir": [
+            ".vscode",
+            "libs/"
+        ],
+        "library": [
+            "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid/media/lua",
+            "C:/Users/Slava/AppData/Roaming/Code/User/globalStorage/sumneko.lua/addonManager/addons/umbrella/module/library"
+        ],
+        "maxPreload": 10000,
+        "preloadFileSize": 800
+    }
 }
