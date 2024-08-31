@@ -1,5 +1,4 @@
-v.8.0.1
+v.8.0.2
 
 Fixes:
-	- Knife Fighter minor fix
-	- Refined function that checks how bloodied player is, now it's accurate and doesn't include items that can't be bloodied in calculation.
+	- Fixed error thrown when detailed debug enabled in mod options

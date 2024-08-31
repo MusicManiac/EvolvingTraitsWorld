@@ -27,12 +27,12 @@ local function bloodiedClothesLevel(player)
 					local bloodLevel = item:getBloodLevel() or 0;
 					amountOfWornItems = amountOfWornItems + 1;
 					totalBloodLevelPercentage = totalBloodLevelPercentage + bloodLevel;
-					if detailedDebug() then print("Clothing: "..item:getClothingItemName().. " | blood level: "..bloodLevel) end;
+					if detailedDebug() then print("ETW Logger | bloodiedClothesLevel(): Clothing = "..item:getClothingItemName().." | blood clothing type = "..tostring(item:getBloodClothingType()).." | blood level = "..bloodLevel) end;
 				end
 			end
 		end
 		local avg = totalBloodLevelPercentage / 100 / amountOfWornItems;
-		if detailedDebug() then print("avg: "..avg) end;
+		if detailedDebug() then print("ETW Logger | bloodiedClothesLevel(): avg = "..avg) end;
 		return avg;
 	end
 	return 0;
