@@ -8,42 +8,43 @@ Moodles.txt
 
 Sandbox.txt
 	changed:
-		Sandbox_ETW_AsthmaticCounter_tooltip = "What value on counter you should reach to lose asthmatic trait. Running or exercising in cold temperature decreases counter, the colder it is, faster the decrease. If you're outside, it decreases even faster. If you have smoker, it decreases even faster. Additionally, having smoker slowly decreases the counter when you run even if weather is fine. Reaching the counter removes the trait. Counter slowly increases by itself as long as you're not running or sprinting and breathing air warmer than 0 degrees Celsius. On top of that, it increases based on your Fitness level and current endurance level. Having smoker halves increases rate. Having asthmatic halves it again.",
+		Sandbox_ETW_AsthmaticCounter_tooltip = "천식환자 특성을 없애기 위해 도달해야 하는 카운터 값입니다. 추운 온도에서 달리거나 운동하면 카운터가 감소하며, 온도가 낮을수록 감소 속도가 빨라집니다. 실외에 있거나 골초일 경우 감소 속도가 더 빨라집니다. 또한, 골초는 날씨가 좋더라도 달릴 때 카운터가 천천히 감소합니다. 카운터가 목표에 도달하면 천식환자 특성이 제거됩니다. 카운터는 달리거나 전력질주하지 않으면서 0도 이상의 따뜻한 공기를 마시면 서서히 증가합니다. 추가로, 체력 수준과 현재의 지구력 수준에 따라 증가합니다. 골초는 증가 속도가 절반으로 줄어들며, 천식환자가 있을 경우 다시 절반으로 줄어듭니다.",
 
-		Sandbox_ETW_Bloodlust_tooltip = "This perk allows you to gain a benefit by filling and maintaining a bloodlust meter. The bloodlust meter is soft-capped at 36 hours and can be filled by killing zombies. The closer the zombies are, the more quickly the meter will fill. When you're above half of the meter, every hour it will give you progress towards the bloodlust perk; when it's below, it'll remove progress. The bloodlust meter naturally decays by 1 every hour. Having bloodied clothes helps the process",
+		Sandbox_ETW_Bloodlust_tooltip = "이 특성은 피의 갈망 게이지를 채우고 유지함으로써 혜택을 얻을 수 있게 합니다. 피의 갈망 게이지는 최대 36시간 동안 유지되며, 좀비를 처치함으로써 채워집니다. 좀비가 가까울수록 게이지가 더 빨리 채워집니다. 게이지가 절반 이상일 때, 매 시간마다 피의 갈망 특성을 향한 진행도를 얻습니다. 반대로 절반 이하일 때는 진행도가 감소합니다. 피의 갈망 게이지는 매 시간마다 자연적으로 1씩 감소합니다. 피투성이인 옷을 입고 있으면 이 과정이 더 빨라집니다.",
 
-		Sandbox_ETW_BraverySystemKills_tooltip = "Here you set up how many kills you need to get to max out your bravery system. Melee kills count twice for progress. Progression is as follows: Cowardly -> Fear of Blood -> Pacifist -> Adrenaline Junkie -> Brave -> Desensitized<br>You need to have previous trait gone (if it's negative) or present (if it's positive) to earn/lose next trait In progression.<br>Amounts to reach each stage are as follows:<br>Cowardly: 10% of max kills<br>Fear of Blood: 20% of max kills<br>Pacifist: 30% of max kills<br>Adrenaline Junkie: 40% of max kills<br>Brave: 60% of max kills<br>Desensitized: 100% of max kills<br>Example: Max kills is set to 1000. You start with Cowardly. You need 100 kills to remove it. If you get 50 melee kills, it'll be removed. The same is true if you get 40 melee kills (x2 = 80 kills for the counter) and 20 firearms kills",
+		Sandbox_ETW_BraverySystemKills_tooltip = "용기 시스템을 최대로 달성하기 위해 필요한 킬 수를 설정합니다. 근접처치는 2킬 취급됩니다. 용기 시스템은 다음 순서로 진행됩니다:<br> 겁쟁이 -> 피 공포증 -> 평화주의자 -> 아드레날린 중독 -> 용감함 -> 둔감함<br> 각 단계별 도달량은 다음과 같습니다:<br>겁쟁이: 최대 킬의 10%<br>피 공포증: 최대 킬의 20%<br>평화주의자: 최대 킬의 30%<br>아드레날린 중독: 최대 킬의 40%<br>용감함: 최대 킬의 60%<br>둔감함: 최대 킬의 100%<br>예시: 최대 킬이 1000으로 설정되어있고 겁쟁이 특성을 가지고 게임을 시작할 경우. 겁쟁이 특성을 얻기 위해서는 100킬이 필요합니다. 근접무기로 처치시 50킬만 해도 됩니다. 근접무기 40킬에 총기 20킬도 같습니다",
 
-		Sandbox_ETW_OutdoorsmanCounter_tooltip = "This allows you to gain a trait by spending time outside and being exposed to various weather conditions. The more adverse the weather conditions are, the more quickly you will gain the trait. Being inside slowly loses progress. Reaching counter will gain the trait, dropping down to opposite of it (for example, -500k with default settings) will lose it",
+		Sandbox_ETW_OutdoorsmanCounter_tooltip = "야외에서 시간을 보내고 다양한 날씨 조건에 노출됨으로써 특성을 얻을 수 있습니다. 날씨가 악화될수록 특성을 더 빨리 얻을 수 있습니다. 실내에 있으면 진행도가 천천히 감소합니다. 카운터에 도달하면 특성을 얻게 되며, 반대 값(기본 설정: -500k)을 도달하면 특성을 잃게 됩니다.,
 
-		Sandbox_ETW_SmokerCounter_tooltip = "Upon reaching this value on the counter, you'll get Smoker trait. When dropping to opposite of it, you'll lose it. Counter boundaries are -2x the counter to 2x counter<br><br> How it works:Every smoke you take increases your addiction counter. Bigger breaks you take between smokes, less the increase. Smoking while being panicked or stressed increases counter much faster, based on level of panic and stress. Not smoking slowly decays the counter. Being panicked or stressed slows decay rate.",
+		Sandbox_ETW_SmokerCounter_tooltip = "카운터에 도달하면 골초 특성을 얻게 됩니다. 반대 값으로 떨어지면 특성을 잃게 됩니다. 카운터의 경계는 -2x에서 2x까지입니다.<br><br> 작동 방식: 흡연할 때마다 중독 카운터가 증가합니다. 흡연 사이의 간격이 길수록 증가폭이 줄어듭니다. 패닉 상태나 스트레스를 받을 때 흡연하면 카운터가 훨씬 빠르게 증가하며, 패닉과 스트레스의 수준에 따라 증가 속도가 달라집니다. 흡연하지 않으면 카운터가 서서히 감소합니다. 패닉 상태나 스트레스 상태에서는 감소 속도가 느려집니다.",
 	new:
-		Sandbox_ETW_LearnerSystem = "Learner System",
-		Sandbox_ETW_LearnerSystemSkill = "Learner System Skill requirement",
-		Sandbox_ETW_LearnerSystemSkill_tooltip = "Allows to lose Slow Learner and earn Fast Learner. Upon reaching half of levels you lose Slow learner, upon reaching set amount of levels you gain Fast Learner. Maintenance + Carpentry + Cooking + Farming + First Aid + Electrical + Metalworking + Mechanics + Tailoring",
+		
+                Sandbox_ETW_LearnerSystem = "학습 시스템",
+                Sandbox_ETW_LearnerSystemSkill = "학습 시스템 스킬 요구 사항",
+                Sandbox_ETW_LearnerSystemSkill_tooltip = "느린 학습 특성을 잃고 빠른 학습 특성을 얻을 수 있게 합니다. 지정된 스킬 레벨의 절반에 도달하면 느린 학습 특성을 잃고, 설정된 스킬 레벨에 도달하면 빠른 학습 특성을 얻습니다. 포함된 스킬: 물건관리 + 목공 + 요리 + 농사 + 의료 + 전기 + 금속 + 차량정비 + 재단술",
 
-		Sandbox_ETW_UIPage = "UI Page with stats",
-        Sandbox_ETW_UIPage_tooltip = "This will enable page in character screen with detailed information on what's your progress on losing/gaining traits.",
+		Sandbox_ETW_UIPage = "캐릭터 UI 페이지",
+                Sandbox_ETW_UIPage_tooltip = "캐릭터 화면에 특성 제거/획득 진행 상황에 대한 자세한 정보를 제공하는 페이지를 활성화합니다, ETW 페이지에서 확인할 수 있습니다."
 
 UI.txt
 	changed:
 
 
 	new:
-		UI_ETW_Options_UIWidth = "[UI] Character page width",
-		UI_ETW_Options_UIWidth_tooltip = "Width of character page in pixels. If you play in English language default should work fine for you, but in other languages it can be weird so if you need more space, increase it here.",
-		UI_ETW_Options_TraitColumns = "[UI] Trait Columns",
-		UI_ETW_Options_TraitColumns_tooltip = "How many columns are there in the UI on character page. Default setting should work good if you play in English language, but if text overlaps in other languages, you might want to reduce this value"
-		UI_ETW_Options_HideSmokerUI = "[UI] Hide Smoker Bar",
-		UI_ETW_Options_HideSmokerUI_tooltip = "Hides Smoker trait progress from ETW UI (for example, if you don't have it and not planning on smoking). Requires reloading the save or rejoining the server.",,
+		UI_ETW_Options_UIWidth = "[UI] 캐릭터 페이지 너비",
+                UI_ETW_Options_UIWidth_tooltip = "캐릭터 페이지의 너비를 픽셀 단위로 설정합니다. 영어로 플레이하는 경우 기본 설정이 적합하지만, 다른 언어에서는 이상하게 보일 수 있으므로 공간이 더 필요하다면 여기에서 너비를 늘리세요.",
+                UI_ETW_Options_TraitColumns = "[UI] 특성 열 수",
+                UI_ETW_Options_TraitColumns_tooltip = "캐릭터 페이지의 UI에서 특성이 표시되는 열의 수를 설정합니다. 기본 설정은 영어로 플레이할 때 잘 작동하지만, 다른 언어에서 텍스트가 겹치는 경우 이 값을 줄이는 것이 좋습니다.",
+		UI_ETW_Options_HideSmokerUI = "[UI] 골초 게이지 숨기기",
+                UI_ETW_Options_HideSmokerUI_tooltip = "ETW UI에서 골초 특성 진행률을 숨깁니다. (예: 골초 특성이 없거나 흡연할 계획이 없는 경우). 세이브를 다시 로드하거나 서버에 다시 접속해야 적용됩니다.",
 
-		UI_optionscreen_binding_ETW_UI_Toggle = "Toggle Evolving Traits World UI"
+		UI_optionscreen_binding_ETW_UI_Toggle = "ETW UI 토글"
 
-		UI_ETW_GainTooltip = "You will gain the trait when bar is around here (or qualify for gaining it, if Delayed Traits System is on and this trait in that system)",
-		UI_ETW_LooseTooltip = "You will lose the trait when bar is around here (or qualify for losing it, if Delayed Traits System is on and this trait in that system)",
-		UI_ETW_GainLoseTooltip = "You will gain/lose the trait when bar is around here (or qualify for gaining/losing it, if Delayed Traits System is on and this trait in that system)",
-		UI_ETW_ListOfDelayedTraits = "List of Delayed Traits: ",
+		UI_ETW_GainTooltip = "게이지가 이 근처에 있을 때 특성을 획득하게 됩니다. (혹은 특성 획득 지연 시스템이 켜져 있고 이 특성이 해당 시스템에 포함된 경우 획득 자격을 얻게 됩니다).",
+                UI_ETW_LooseTooltip = "게이지가 이 근처에 있을 때 특성을 잃게 됩니다. (혹은 특성 획득 지연 시스템이 켜져 있고 이 특성이 해당 시스템에 포함된 경우 잃을 자격을 얻게 됩니다).",
+                UI_ETW_GainLoseTooltip = "게이지가 이 근처에 있을 때 특성을 얻게/잃게 됩니다. (혹은 특성 획득 지연 시스템이 켜져 있고 이 특성이 해당 시스템에 포함된 경우 얻을/잃을 자격을 얻게 됩니다).",
+		UI_ETW_ListOfDelayedTraits = "지연된 특성 목록: ",
 
-		UI_ETW_ProgressPageDisabled = "ETW page is disabled in sandbox settings",
-		UI_ETW_Chance = "in",
-		___note_to_translators = "UI_ETW_Chance is used in displaying chances, so for example '1 in 300' or '1 in 50300', etc."
+		UI_ETW_ProgressPageDisabled = "ETW 페이지가 샌드박스 설정에서 비활성화됐습니다.",
+		UI_ETW_Chance = "확률: ",
+		___note_to_translators = "UI_ETW_Chance는 확률을 표시할 때 사용됩니다. 예를 들어 '1/300' 또는 '1/50300' 등으로 표시됩니다."
