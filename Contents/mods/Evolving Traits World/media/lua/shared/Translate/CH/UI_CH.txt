@@ -54,7 +54,7 @@ UI_CH = {
 	UI_ETW_Options_EnableDelayedNotifications_tooltip = "這個選項只有在你啟用特質延遲系統時才有作用.你會在當你達成某個特質的獲得條件時獲得通知,並被加入延遲清單中",
 	UI_ETW_DelayedNotificationsStringAdd = "達成特質獲得條件: ",
 	UI_ETW_DelayedNotificationsStringRemove = "達成特質失去條件: ",
-	___note_to_translators = "UI_ETW_DelayedNotificationsStringAdd and UI_ETW_DelayedNotificationsStringRemove is used in combination with trait names, for example 'Qualified for gaining Hoarder' or 'Qualified for losing Unlucky'. You get the idea."
+	___note_to_translators = "(Don't translate this, this is just info for you guys) UI_ETW_DelayedNotificationsStringAdd and UI_ETW_DelayedNotificationsStringRemove is used in combination with trait names, for example 'Qualified for gaining Hoarder' or 'Qualified for losing Unlucky'. You get the idea."
 	UI_ETW_Options_EnableBloodLustMoodle = "啟用 嗜血 圖示",
 	UI_ETW_Options_EnableBloodLustMoodle_tooltip = "變更此選項後需要一個遊戲天來刷新",
 	UI_ETW_Options_EnableSleepHealthMoodle = "啟用 睡眠品質 圖示 ",
@@ -71,6 +71,6 @@ UI_CH = {
     UI_ETW_ListOfDelayedTraits = "當前置於延遲列表中的技能: ",
 
     UI_ETW_Chance = "比",
-    ___note_to_translators = "UI_ETW_Chance is used in displaying chances, so for example '1 in 300' or '1 in 50300', etc."
+    ___note_to_translators = "(Don't translate this, this is just info for you guys) UI_ETW_Chance is used in displaying chances, so for example '1 in 300' or '1 in 50300', etc."
     UI_ETW_ProgressPageDisabled = "ETW頁面 在沙盒模式下已被禁用",
 }

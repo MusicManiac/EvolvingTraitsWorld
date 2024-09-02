@@ -1,6 +1,6 @@
 Moodles_ES {
-	note_to_translators = "If a field has %1 in it, it's replaced with value later on when the code is run",
-    note_to_ES_translators = "Make sure file is saved in windows-1252 encoding, so game display correct characters"
+	___note_to_translators = "(Don't translate this, this is just info for you guys) If a field has %1 in it, it's replaced with value later on when the code is run",
+    ___note_to_ES_translators = "Make sure file is saved in windows-1252 encoding, so game display correct characters"
 
 	Moodles_BloodlustMoodle_Good_lvl4 = "Dios ¡Me encanta matar zombies!",
 	Moodles_BloodlustMoodle_Good_lvl3 = "Definitivamente esto es una buena inversión de tiempo",

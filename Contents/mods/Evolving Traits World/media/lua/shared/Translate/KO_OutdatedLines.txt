@@ -16,4 +16,4 @@ UI.txt
 
 
 	new:
-		UI_ETW_ProgressPageDisabled = "ETW page is disabled in sandbox settings",
+		

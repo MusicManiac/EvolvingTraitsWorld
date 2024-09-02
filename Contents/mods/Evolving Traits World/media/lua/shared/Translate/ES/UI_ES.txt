@@ -54,7 +54,7 @@ UI_ES = {
 	UI_ETW_Options_EnableDelayedNotifications_tooltip = "Esto solo hace algo si tienes 'El sistema de Rasgos Restrasados' habilitado. Si esta habilitado y esta opcion esta habilitada, recibiras una notificacion cuando califiques para un rasgo, y estara agregado a la lista de rasgos retrasados",
 	UI_ETW_DelayedNotificationsStringAdd = "Calificado para obtener ",
 	UI_ETW_DelayedNotificationsStringRemove = "Calificado para perder ",
-	___note_to_translators = "UI_ETW_Options_EnableDelayedNotificationsString is used in combination with trait names, for example 'Qualified for gaining Hoarder' or 'Qualified for losing Unlucky'. You get the idea."
+	___note_to_translators = "(Don't translate this, this is just info for you guys) UI_ETW_Options_EnableDelayedNotificationsString is used in combination with trait names, for example 'Qualified for gaining Hoarder' or 'Qualified for losing Unlucky'. You get the idea."
 	UI_ETW_Options_EnableBloodLustMoodle = "Habilitar estado de Sed de Sangre",
 	UI_ETW_Options_EnableBloodLustMoodle_tooltip = "Tardará hasta una hora en el juego, ya que el estado es actualizado cada hora.",
 	UI_ETW_Options_EnableSleepHealthMoodle = "Habilitar estado de Salud del Sueño",
@@ -72,6 +72,6 @@ UI_ES = {
     UI_ETW_ListOfDelayedTraits = "Lista de rasgos retrasados: ",
 
     UI_ETW_Chance = "en",
-    ___note_to_translators = "UI_ETW_Chance is used in displaying chances, so for example '1 in 300' or '1 in 50300', etc."
+    ___note_to_translators = "(Don't translate this, this is just info for you guys) UI_ETW_Chance is used in displaying chances, so for example '1 in 300' or '1 in 50300', etc."
     UI_ETW_ProgressPageDisabled = "la pagina de ETW esta deshabilitada en la sandbox",
 }

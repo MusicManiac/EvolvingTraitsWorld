@@ -54,7 +54,7 @@ UI_DE = {
 	UI_ETW_Options_EnableDelayedNotifications_tooltip = "Dies funktioniert nur, wenn Sie das „System für verzögerte Eigenschaften“ aktiviert haben. Wenn es aktiviert ist und diese Option aktiviert ist, erhalten Sie eine Benachrichtigung, wenn Sie sich für eine Eigenschaft qualifizieren, und sie wird zur Liste der verzögerten Eigenschaften hinzugefügt",
 	UI_ETW_DelayedNotificationsStringAdd = "Qualifiziert für den Erhalt von Merkmalen",
 	UI_ETW_DelayedNotificationsStringRemove = "Qualifiziert für den Verlust von Merkmalen",
-	___note_to_translators = "UI_ETW_Options_EnableDelayedNotificationsString wird in Kombination mit Eigenschaftsnamen verwendet, z. B. „Qualifiziert für den Gewinn von Horter“ oder „Qualifiziert für den Verlust von Unglücklich“. Sie verstehen die Idee."
+	___note_to_translators = "(Don't translate this, this is just info for you guys) UI_ETW_DelayedNotificationsStringAdd and UI_ETW_DelayedNotificationsStringRemove is used in combination with trait names, for example 'Qualified for gaining Hoarder' or 'Qualified for losing Unlucky'. You get the idea."
 	UI_ETW_Options_EnableBloodLustMoodle = "Aktivierung des Blutrausch-Moodle",
 	UI_ETW_Options_EnableBloodLustMoodle_tooltip = "Die Aktualisierung kann bis zu 1 Stunde dauern, da Moodle stündlich aktualisiert wird.",
 	UI_ETW_Options_EnableSleepHealthMoodle = "Ermöglichung des gesunden Schlafs Moodle",
@@ -70,6 +70,6 @@ UI_DE = {
     UI_ETW_ListOfDelayedTraits = "Liste der verzögerten Eigenschaften:",
 
     UI_ETW_Chance = "unter",
-    ___note_to_translators = "UI_ETW_Chance wird bei der Anzeige von Chancen verwendet, also z. B. „1 zu 300“ oder „1 zu 50300“ usw."
+    ___note_to_translators = "(Don't translate this, this is just info for you guys) UI_ETW_Chance is used in displaying chances, so for example '1 in 300' or '1 in 50300', etc."
     UI_ETW_ProgressPageDisabled = "Die ETW-Seite ist in den Sandbox-Einstellungen deaktiviert",
 }

@@ -646,7 +646,7 @@ local function progressDelayedTraits()
 	if not SBvars.DelayedTraitsSystem then return end;
 	local player = getPlayer();
 	local modData = ETWCommonFunctions.getETWModData(player);
-	local traitTable = modData.DelayedTraits;
+    local traitTable = modData.DelayedTraits;
 	if detailedDebug() then print("ETW Logger | Delayed Traits System: new progressDelayedTraits() execution ----------") end;
 	for index, traitEntry in ipairs(traitTable) do
 		local traitName, traitValue, gained = traitEntry[1], traitEntry[2], traitEntry[3];
@@ -656,8 +656,9 @@ local function progressDelayedTraits()
 				if detailedDebug() then print("ETW Logger | Delayed Traits System: rolled to get "..traitName..": rolled 0 from 0-"..traitTable[index][2]) end;
 				traitTable[index][3] = true;
 				if detailedDebug() then print("ETW Logger | Delayed Traits System: "..traitName.." in traitTable["..index.."][3]".." set to "..tostring(traitTable[index][3])) end;
-				if detailedDebug() then print("ETW Logger | Delayed Traits System: running traitsGainsBySkill(player, "..traitName..")") end;
-				traitsGainsBySkill(player, traitName);
+                if detailedDebug() then print("ETW Logger | Delayed Traits System: running traitsGainsBySkill(player, " ..
+                    traitName .. ")") end;
+                traitsGainsBySkill(player, traitName);
 			elseif randomValue > 0 then
 				if detailedDebug() then print("ETW Logger | Delayed Traits System: rolled to get "..traitName..": rolled "..randomValue.." from 0-"..traitTable[index][2]) end;
 				traitTable[index][2] = traitValue - 1;

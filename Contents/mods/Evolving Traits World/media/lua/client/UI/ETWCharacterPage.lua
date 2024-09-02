@@ -852,13 +852,13 @@ function ISETWProgressUI:createChildren()
 			if shortBlade < SBvars.KnifeFighterSkill then
 				arrangeColumnsInTable();
 				self.labelKnifeFighterSkillProgress = ISLabel:new(x, y, FONT_HGT_SMALL, getText(""), self.TextColor.r, self.TextColor.g, self.TextColor.b, self.TextColor.a, UIFont.Small, true)
-				self.labelKnifeFighterSkillProgress:setTooltip(getText("Sandbox_ETW_KenshiSkill"))
+				self.labelKnifeFighterSkillProgress:setTooltip(getText("Sandbox_ETW_KnifeFighterSkill"))
 				self:addChild(self.labelKnifeFighterSkillProgress)
 			end
 			if shortBladeKills < SBvars.KnifeFighterKills then
 				arrangeColumnsInTable();
 				self.labelKnifeFighterKillsProgress = ISLabel:new(x, y, FONT_HGT_SMALL, getText(""), self.TextColor.r, self.TextColor.g, self.TextColor.b, self.TextColor.a, UIFont.Small, true)
-				self.labelKnifeFighterKillsProgress:setTooltip(getText("Sandbox_ETW_KenshiKills"))
+				self.labelKnifeFighterKillsProgress:setTooltip(getText("Sandbox_ETW_KnifeFighterKills"))
 				self:addChild(self.labelKnifeFighterKillsProgress)
 			end
 		end
@@ -1212,7 +1212,8 @@ function ISETWProgressUI:render()
 		local delayedY = initialWindowHeight - FONT_HGT_SMALL * 2
 		local traitTable = player:getModData().EvolvingTraitsWorld.DelayedTraits
 		local parts = {}
-		for index, traitEntry in ipairs(traitTable) do
+		for index = 1, #traitTable do
+			local traitEntry = traitTable[index]
 			local traitName, roll = traitEntry[1], traitEntry[2]
 			local strAddition = traitName .. " (1 " .. getText("UI_ETW_Chance") .. " " .. roll .. ")"
 			table.insert(parts, strAddition)
@@ -1233,7 +1234,8 @@ function ISETWProgressUI:render()
 		if currentLine ~= "" then
 			table.insert(lines, currentLine:sub(1, -3))
 		end
-		for i, line in ipairs(lines) do
+		for i = 1, #lines do
+			local line = lines[i]
 			self:drawText(line, lineStartPosition, delayedY + (i * FONT_HGT_SMALL), self.TextColor.r, self.TextColor.g, self.TextColor.b, self.TextColor.a)
 		end
 		WINDOW_HEIGHT = initialWindowHeight + (#lines * FONT_HGT_SMALL)

@@ -1,6 +1,6 @@
 Moodles_RU {
-	note_to_translators = "≈сли в поле содержитс€ %1, оно замен€етс€ значением позже при запуске кода",
-    note_to_RU_translators = "”бедитесь, что файл сохранен в кодировке windows-1251, чтобы игра отображала правильные символы",
+	___note_to_translators = "(Don't translate this, this is just info for you guys) If a field has %1 in it, it's replaced with value later on when the code is run",
+    ___note_to_RU_translators = "Make sure file is saved in windows-1251 encoding, so game display correct characters",
 
 	Moodles_BloodlustMoodle_Good_lvl4 = "Ѕоже, € люблю убивать нежить",
 	Moodles_BloodlustMoodle_Good_lvl3 = "Ёто определенно хорошо проведенное врем€",

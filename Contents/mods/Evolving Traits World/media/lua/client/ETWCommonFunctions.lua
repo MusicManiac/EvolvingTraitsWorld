@@ -11,9 +11,10 @@ local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetai
 ---@param value any
 ---@return integer
 local function indexOf(tbl, value)
-	for i, subTable in ipairs(tbl) do
-		for j, v in ipairs(subTable) do
-			if v == value then
+	for i = 1, #tbl do
+		local subTable = tbl[i]
+		for j = 1, #subTable do
+			if subTable[j] == value then
 				return i
 			end
 		end
@@ -32,8 +33,9 @@ end
 function ETWCommonFunctions.delayedTraitsDataDump()
 	if SBvars.DelayedTraitsSystem then
 		local traitTable = getPlayer():getModData().EvolvingTraitsWorld.DelayedTraits;
-		for index, traitEntry in ipairs(traitTable) do
-			local traitName, roll, gained = traitEntry[1], traitEntry[2], traitEntry[3];
+		for index = 1, #traitTable do
+			local traitEntry = traitTable[index]
+			local traitName, roll, gained = traitEntry[1], traitEntry[2], traitEntry[3]
 			print("ETW Logger | Delayed Traits System | Data Dump: "..traitName.. ", "..roll..", "..tostring(gained))
 		end
 	end
@@ -97,8 +99,9 @@ function ETWCommonFunctions.checkDelayedTraits(name)
 	local player = getPlayer();
 	local modData = ETWCommonFunctions.getETWModData(player);
 	local traitTable = modData.DelayedTraits;
-	for index, traitEntry in ipairs(traitTable) do
-		local traitName, gained = traitEntry[1], traitEntry[3];
+	for index = 1, #traitTable do
+		local traitEntry = traitTable[index]
+		local traitName, gained = traitEntry[1], traitEntry[3]
 		if detailedDebug() then print("ETW Logger | Delayed Traits System: caught check on "..traitName) end;
 		if traitName == name and gained then
 			if detailedDebug() then print("ETW Logger | Delayed Traits System: caught check on "..traitName..": player qualifies for it; removing it from the table") end;
@@ -116,7 +119,8 @@ function ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(name)
 	local player = getPlayer();
 	local modData = ETWCommonFunctions.getETWModData(player);
 	local traitTable = modData.DelayedTraits;
-	for index, traitEntry in ipairs(traitTable) do
+	for index = 1, #traitTable do
+		local traitEntry = traitTable[index]
 		local traitName = traitEntry[1]
 		if traitName == name then
 			if detailedDebug() then print("ETW Logger | Delayed Traits System: checking if "..name.." is already in the table, it is.") end;

@@ -1,5 +1,5 @@
 Sandbox_RU = {
-	note_to_RU_translators = "Убедитесь, что файл сохранен в кодировке windows-1251, чтобы игра отображала правильные символы",
+	___note_to_RU_translators = "Make sure file is saved in windows-1251 encoding, so game display correct characters",
 
 	Sandbox_ETWSettings = "Мир эволюционирующих черт - Глобальные настройки",
 	Sandbox_ETWSimplePerks = "Мир эволюционирующих черт - простые перки",

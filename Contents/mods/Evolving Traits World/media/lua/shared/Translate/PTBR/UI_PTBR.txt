@@ -1,5 +1,5 @@
 UI_PTBR = {
-	note_to_PTBR_translators = "Make sure file is saved in ISO-8859-1 encoding, so game display correct characters",
+	note_to_PTBR_translators = "Make sure file is saved in Windows-1252 / ISO-8859-1 encoding, so game display correct characters",
 
 	UI_trait_AVClub = "Membro do clube CA",
 	UI_trait_AVClubDesc = "Você é parte do clube CA.",
@@ -54,7 +54,7 @@ UI_ETW_Options_GatherDebug = "Reunir dados de depuração",
 	UI_ETW_Options_EnableDelayedNotifications_tooltip = "Isso só faz alguma coisa se você tiver 'Sistema de traços atrasados' ativado. Se estiver ativado e essa opção também, você irá receber uma notificação quando se qualificar para o Traço e será adicionado à lista de notificações atrasadas.",
 	UI_ETW_DelayedNotificationsStringAdd = "Qualificado para ganhar o traço ",
 	UI_ETW_DelayedNotificationsStringRemove = "Qualificado para perder o traço ",
-	___note_to_translators = "UI_ETW_DelayedNotificationsStringAdd and UI_ETW_DelayedNotificationsStringRemove is used in combination with trait names, for example 'Qualified for gaining Hoarder' or 'Qualified for losing Unlucky'. You get the idea."
+	___note_to_translators = "(Don't translate this, this is just info for you guys) UI_ETW_DelayedNotificationsStringAdd and UI_ETW_DelayedNotificationsStringRemove is used in combination with trait names, for example 'Qualified for gaining Hoarder' or 'Qualified for losing Unlucky'. You get the idea."
 	UI_ETW_Options_EnableBloodLustMoodle = "Habilitar Humor de Sede de Sangue",
 	UI_ETW_Options_EnableBloodLustMoodle_tooltip = "Demora 1  ou mais horas em jogo para atualizar, já que humor é atualizado a cada hora.",
 	UI_ETW_Options_EnableSleepHealthMoodle = "Habilitar Humor de Saúde de Sono",
@@ -72,7 +72,7 @@ UI_ETW_Options_GatherDebug = "Reunir dados de depuração",
     UI_ETW_ListOfDelayedTraits = "Lista de Traços Atrasados: ",
 
     UI_ETW_Chance = "em",
-    ___note_to_translators = "UI_ETW_Chance is used in displaying chances, so for example '1 in 300' or '1 in 50300', etc."
+    ___note_to_translators = "(Don't translate this, this is just info for you guys) UI_ETW_Chance is used in displaying chances, so for example '1 in 300' or '1 in 50300', etc."
 
     UI_ETWPageDisabled = "A página do ETW está desabilitado nas configurações de sandbox",
 }
