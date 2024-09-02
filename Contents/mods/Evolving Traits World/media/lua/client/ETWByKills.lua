@@ -48,14 +48,15 @@ local function bloodlustKillETW(zombie)
 		if detailedDebug() then print("ETW Logger | bloodlustKillETW(): kill by player") end
 		local modData = ETWCommonFunctions.getETWModData(player);
 		local bloodlust = modData.BloodlustSystem;
-		local distance = player:DistTo(zombie);
+        local distance = player:DistTo(zombie);
+		if detailedDebug() then print("ETW Logger | bloodlustKillETW(): distance="..distance) end
 		if distance <= 10 then
 			bloodlust.LastKillTimestamp = player:getHoursSurvived();
 			if bloodlust.BloodlustMeter <= 36 then
-				bloodlust.BloodlustMeter = bloodlust.BloodlustMeter + math.min(1 / distance, 1) * SBvars.BloodlustMeterFillMultiplier * (1 + bloodiedClothesLevel(player));
+				bloodlust.BloodlustMeter = bloodlust.BloodlustMeter + math.min(2 / distance, 1) * SBvars.BloodlustMeterFillMultiplier * (1 + bloodiedClothesLevel(player));
 				if detailedDebug() then print("ETW Logger | bloodlustKillETW(): BloodlustMeter="..bloodlust.BloodlustMeter) end
 			else
-				bloodlust.BloodlustMeter = bloodlust.BloodlustMeter + math.min(1 / distance, 1) * SBvars.BloodlustMeterFillMultiplier * (1 + bloodiedClothesLevel(player)) * 0.5;
+				bloodlust.BloodlustMeter = bloodlust.BloodlustMeter + math.min(2 / distance, 1) * SBvars.BloodlustMeterFillMultiplier * (1 + bloodiedClothesLevel(player)) * 0.5;
 				if detailedDebug() then print("ETW Logger | bloodlustKillETW(): BloodlustMeter (soft-capped)="..bloodlust.BloodlustMeter) end
 			end
 			ETWMoodles.bloodlustMoodleUpdate(player, false);
@@ -68,16 +69,17 @@ end
 local function bloodlustTimeETW()
 	local player = getPlayer();
 	local modData = ETWCommonFunctions.getETWModData(player);
-	local bloodlustModData = modData.BloodlustSystem;
-	bloodlustModData.BloodlustMeter = math.max(bloodlustModData.BloodlustMeter - 1, 0);
+    local bloodlustModData = modData.BloodlustSystem;
+	local bloodLustMeter = bloodlustModData.BloodlustMeter;
+	bloodLustMeter = math.max(bloodLustMeter - 1, 0);
 	ETWMoodles.bloodlustMoodleUpdate(player, false);
-	if detailedDebug() then print("ETW Logger | bloodlustTimeETW(): Bloodlust Meter: ".. bloodlustModData.BloodlustMeter) end
-	if bloodlustModData.BloodlustMeter >= 18 then -- gain if above 50%
-		local bloodLustProgressIncrease = bloodlustModData.BloodlustMeter * 0.1 * (1 + bloodiedClothesLevel(player)) * ((SBvars.AffinitySystem and modData.StartingTraits.Bloodlust) and SBvars.AffinitySystemGainMultiplier or 1);
+	if detailedDebug() then print("ETW Logger | bloodlustTimeETW(): Bloodlust Meter: ".. bloodLustMeter) end
+	if bloodLustMeter >= 18 then -- gain if above 50%
+		local bloodLustProgressIncrease = bloodLustMeter * 0.1 * (1 + bloodiedClothesLevel(player)) * ((SBvars.AffinitySystem and modData.StartingTraits.Bloodlust) and SBvars.AffinitySystemGainMultiplier or 1);
 		bloodlustModData.BloodlustProgress = math.min(SBvars.BloodlustProgress * 2, bloodlustModData.BloodlustProgress + bloodLustProgressIncrease);
 		if debug() then print("ETW Logger | bloodlustTimeETW(): BloodlustMeter is above 50%, BloodlustProgress =".. bloodlustModData.BloodlustProgress) end
 	else -- lose if below 50%
-		local bloodLustProgressDecrease = bloodlustModData.BloodlustMeter * 0.1 * (1 - bloodiedClothesLevel(player)) / ((SBvars.AffinitySystem and modData.StartingTraits.Bloodlust) and SBvars.AffinitySystemLoseDivider or 1);
+		local bloodLustProgressDecrease = bloodLustMeter * 0.1 * (1 - bloodiedClothesLevel(player)) / ((SBvars.AffinitySystem and modData.StartingTraits.Bloodlust) and SBvars.AffinitySystemLoseDivider or 1);
 		bloodlustModData.BloodlustProgress = math.max(0, bloodlustModData.BloodlustProgress - (3.6 - bloodLustProgressDecrease));
 		if debug() then print("ETW Logger | bloodlustTimeETW(): BloodlustMeter is below 50%, BloodlustProgress =".. bloodlustModData.BloodlustProgress) end
 	end
@@ -141,7 +143,8 @@ local function braverySystemETW(zombie)
 		{ trait = "Brave", threshold = braveryKills * 0.6, add = true, requiredTrait = "AdrenalineJunkie" },
 		{ trait = "Desensitized", threshold = braveryKills, add = true, requiredTrait = "Desensitized" }
 	}
-	for i, info in ipairs(traitInfo) do
+	for i = 1, #traitInfo do
+		local info = traitInfo[i]
 		local trait = info.trait;
 		local threshold = info.threshold;
 		local negativeTrait = info.remove;

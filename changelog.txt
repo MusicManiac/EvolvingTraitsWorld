@@ -1,4 +1,8 @@
-v.8.0.2
+v.8.0.4
 
+General:
+	- A bit of internal micro-optimizations
 Fixes:
-	- Fixed error thrown when detailed debug enabled in mod options
+	- Fixed Knife Fighter in UI having wrong tooltip
+Translations:
+	- KO translation update thanks to new maintainer, KimLeon

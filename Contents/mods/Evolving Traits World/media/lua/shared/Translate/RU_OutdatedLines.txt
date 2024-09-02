@@ -56,4 +56,4 @@ UI.txt
 
 		UI_ETW_ProgressPageDisabled = "ETW page is disabled in sandbox settings",
 		UI_ETW_Chance = "in",
-		___note_to_translators = "UI_ETW_Chance is used in displaying chances, so for example '1 in 300' or '1 in 50300', etc."
+		___note_to_translators = "(Don't translate this, this is just info for you guys) UI_ETW_Chance is used in displaying chances, so for example '1 in 300' or '1 in 50300', etc."

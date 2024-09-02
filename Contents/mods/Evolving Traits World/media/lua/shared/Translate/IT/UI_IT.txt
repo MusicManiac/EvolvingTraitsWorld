@@ -1,5 +1,5 @@
 UI_IT = {
-	note_to_italian_translators = "Make sure file is saved in ISO-8859-1 encoding, so game display correct characters",
+	note_to_italian_translators = "Make sure file is saved in Windows-1252 / ISO-8859-1 encoding, so game display correct characters",
 
 	UI_trait_AVClub = "Membro dell'AV Club",
 	UI_trait_AVClubDesc = "Sei un membro dell'AV Club.",
@@ -54,7 +54,7 @@ UI_IT = {
 	UI_ETW_Options_EnableDelayedNotifications_tooltip = "Questa opzione agisce solo se hai abilitato il "Sistema Tratti Ritardati". Se il sistema è abilitato e questa opzione è abilitata, riceverai una notifica quando ti qualifichi per un tratto, e verrà aggiunto all'elenco dei tratti ritardati",
 	UI_ETW_DelayedNotificationsStringAdd = "Qualificato per ottenere Tratti",
 	UI_ETW_DelayedNotificationsStringRemove = "Qualificato per perdere Tratti",
-	___note_to_translators = "UI_ETW_Options_EnableDelayedNotificationsString is used in combination with trait names, for example 'Qualified for gaining Hoarder' or 'Qualified for losing Unlucky'. You get the idea."
+	___note_to_translators = "(Don't translate this, this is just info for you guys) UI_ETW_Options_EnableDelayedNotificationsString is used in combination with trait names, for example 'Qualified for gaining Hoarder' or 'Qualified for losing Unlucky'. You get the idea."
 	UI_ETW_Options_EnableBloodLustMoodle = "Abilita il moodle di Sete di Sangue",
 	UI_ETW_Options_EnableBloodLustMoodle_tooltip = "L'aggiornamento richiederà fino a 1 ora di gioco poiché il Moodle viene aggiornato su base oraria.",
 	UI_ETW_Options_EnableSleepHealthMoodle = "Abilita il moodle del sonno salutare",
@@ -70,6 +70,6 @@ UI_IT = {
     UI_ETW_ListOfDelayedTraits = "Elenco dei Tratti Ritardati: ",
 
     UI_ETW_Chance = "su",
-    ___note_to_translators = "UI_ETW_Chance is used in displaying chances, so for example '1 in 300' or '1 in 50300', etc."
+    ___note_to_translators = "(Don't translate this, this is just info for you guys) UI_ETW_Chance is used in displaying chances, so for example '1 in 300' or '1 in 50300', etc."
     UI_ETW_ProgressPageDisabled = "La pagina di ETW è disabilitata nelle impostazioni sandbox",
 }

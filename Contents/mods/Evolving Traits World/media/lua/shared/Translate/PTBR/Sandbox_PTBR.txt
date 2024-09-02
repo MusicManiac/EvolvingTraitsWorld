@@ -1,4 +1,6 @@
 Sandbox_PTBR = {
+	___note_to_PTBR_translators = "Make sure file is saved in Windows-1252 / ISO-8859-1 encoding, so game display correct characters",
+	
 	Sandbox_ETWSettings = "Evolving Traits World - Configurações Globais",
 	Sandbox_ETWSimplePerks = "Evolving Traits World - Traços Simples",
 	Sandbox_ETWComplexPerks = "Evolving Traits World - Traços Complexos",

@@ -54,7 +54,7 @@ UI_EN = {
     UI_ETW_Options_EnableDelayedNotifications_tooltip = "This only does anything if you have 'Delayed Traits System' enabled. If it's enabled and this option is enabled, you'll get a notification when you qualify for a trait, and it's added to list of delayed traits",
     UI_ETW_DelayedNotificationsStringAdd = "Qualified for gaining ",
     UI_ETW_DelayedNotificationsStringRemove = "Qualified for losing ",
-    ___note_to_translators = "UI_ETW_DelayedNotificationsStringAdd and UI_ETW_DelayedNotificationsStringRemove is used in combination with trait names, for example 'Qualified for gaining Hoarder' or 'Qualified for losing Unlucky'. You get the idea.",
+    ___note_to_translators = "(Don't translate this, this is just info for you guys) UI_ETW_DelayedNotificationsStringAdd and UI_ETW_DelayedNotificationsStringRemove is used in combination with trait names, for example 'Qualified for gaining Hoarder' or 'Qualified for losing Unlucky'. You get the idea.",
     UI_ETW_Options_EnableBloodLustMoodle = "Enable Bloodlust Moodle",
     UI_ETW_Options_EnableBloodLustMoodle_tooltip = "Will take up to 1 in-game hour to update since moodle is updated on hourly basis.",
     UI_ETW_Options_EnableSleepHealthMoodle = "Enable Sleep Health Moodle",
@@ -74,9 +74,9 @@ UI_EN = {
     UI_ETW_ListOfDelayedTraits = "List of Delayed Traits: ",
 
     UI_ETW_Chance = "in",
-    ___note_to_translators = "UI_ETW_Chance is used in displaying chances, so for example '1 in 300' or '1 in 50300', etc.",
+    ___note_to_translators = "(Don't translate this, this is just info for you guys) UI_ETW_Chance is used in displaying chances, so for example '1 in 300' or '1 in 50300', etc.",
     UI_ETW_CurrentValue = "Current value: "
-    ___note_to_translators = "UI_ETW_CurrentValue is showed in tooltip when hovering over gradient bars in UI page",
+    ___note_to_translators = "(Don't translate this, this is just info for you guys) UI_ETW_CurrentValue is showed in tooltip when hovering over gradient bars in UI page",
 
     UI_ETW_ProgressPageDisabled = "ETW page is disabled in sandbox settings",
     UI_ETW = "ETW",

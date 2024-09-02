@@ -1,5 +1,5 @@
 UI_RU = {
-	note_to_RU_translators = "Убедитесь, что файл сохранен в кодировке windows-1251, чтобы игра отображала правильные символы",
+	___note_to_RU_translators = "Make sure file is saved in windows-1251 encoding, so game display correct characters",
 
 	UI_trait_AVClub = "Член AV-клуба",
 	UI_trait_AVClubDesc = "Вы являетесь частью AV-клуба.<br>+1 Электрика",
@@ -54,7 +54,7 @@ UI_RU = {
 	UI_ETW_Options_EnableDelayedNotifications_tooltip = "Это работает только в том случае, если у вас включена «Система отложенных признаков». Если он включен и эта опция включена, вы получите уведомление, когда вы соответствуете требованиям для черты, и она будет добавлена в список отложенных черт.",
 	UI_ETW_DelayedNotificationsStringAdd = "Квалифицирован для получения ",
 	UI_ETW_DelayedNotificationsStringRemove = "Квалифицирован для утраты ",
-	___note_to_translators = "UI_ETW_DelayedNotificationsStringAdd and UI_ETW_DelayedNotificationsStringRemove is used in combination with trait names, for example 'Qualified for gaining Hoarder' or 'Qualified for losing Unlucky'. You get the idea."
+	___note_to_translators = "(Don't translate this, this is just info for you guys) UI_ETW_DelayedNotificationsStringAdd and UI_ETW_DelayedNotificationsStringRemove is used in combination with trait names, for example 'Qualified for gaining Hoarder' or 'Qualified for losing Unlucky'. You get the idea."
 	UI_ETW_Options_EnableBloodLustMoodle = "Включить мудлет жажды крови",
 	UI_ETW_Options_EnableBloodLustMoodle_tooltip = "Обновление займет до 1 часа в игре, поскольку мудлет обновляется ежечасно.",
 	UI_ETW_Options_EnableSleepHealthMoodle = "Включить Moodle для здоровья сна",
