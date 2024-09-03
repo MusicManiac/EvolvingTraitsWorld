@@ -5,7 +5,8 @@ require "MF_ISMoodle";
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld;
 
-local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetailedDebug end
+---@return boolean
+local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetailedDebug end;
 
 MF.createMoodle("BloodlustMoodle");
 MF.createMoodle("SleepHealthMoodle");
@@ -43,7 +44,7 @@ function ETWMoodles.sleepHealthMoodleUpdate(player, hoursAwayFromPreferredHour, 
 		local moodle = MF.getMoodle("SleepHealthMoodle");
 		moodle:setThresholds(1.5, 3, 4.5, 5.999, 6.001, 7.5, 9, 10.5);
 		if player == getPlayer() and MOvars.EnableSleepHealthMoodle == true and hide == false then
-			if detailedDebug() then print("ETW Logger | ETWMoodles.sleepHealthMoodleUpdate(): hoursAwayFromPreferredHour: "..hoursAwayFromPreferredHour) end
+			if detailedDebug() then print("ETW Logger | ETWMoodles.sleepHealthMoodleUpdate(): hoursAwayFromPreferredHour: " .. hoursAwayFromPreferredHour) end;
 			local displayedDifference = string.format("%.2f", hoursAwayFromPreferredHour);
 			moodle:setValue(12 - hoursAwayFromPreferredHour);
 			moodle:setDescription(moodle:getGoodBadNeutral(), moodle:getLevel(), getText("Moodles_SleepHealthMoodle_Custom", displayedDifference));

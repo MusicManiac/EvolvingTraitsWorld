@@ -159,5 +159,6 @@
         ],
         "maxPreload": 10000,
         "preloadFileSize": 800
-    }
+    },
+    "workspace.checkThirdParty": false
 }

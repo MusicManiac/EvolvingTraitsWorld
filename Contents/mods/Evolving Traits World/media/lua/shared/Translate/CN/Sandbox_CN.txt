@@ -213,8 +213,8 @@ Sandbox_CN = {
 	Sandbox_ETW_KnifeFighterKills = "刀客:获得特质所需短刀击杀数",
 
 	Sandbox_ETW_LearnerSystem = "脑筋特质系统",
-    Sandbox_ETW_LearnerSystemSkill = "脑筋特质技能需求",
-    Sandbox_ETW_LearnerSystemSkill_tooltip = "允许失去学习缓慢以及获得快速学习特质. 当达到技能等级阀值一半时会失去学习缓慢特质, 而达到阀值时则获得快速学习特质. 技能等级统计为以下技能总和:维护 + 木工 + 烹调 + 耕种 + 急救 + 电工 + 金工 + 黑手 + 裁缝",
+	Sandbox_ETW_LearnerSystemSkill = "脑筋特质技能需求",
+	Sandbox_ETW_LearnerSystemSkill_tooltip = "允许失去学习缓慢以及获得快速学习特质. 当达到技能等级阀值一半时会失去学习缓慢特质, 而达到阀值时则获得快速学习特质. 技能等级统计为以下技能总和:维护 + 木工 + 烹调 + 耕种 + 急救 + 电工 + 金工 + 黑手 + 裁缝",
 
 	Sandbox_ETW_LightStep = "轻手轻脚",
 	Sandbox_ETW_LightStepSkill = "轻手轻脚:获得特质所需轻巧技能等级",

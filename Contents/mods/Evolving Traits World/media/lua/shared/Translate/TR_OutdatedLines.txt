@@ -15,3 +15,5 @@ UI.txt
 	changed:
 
 	new:
+		UI_ETW_Options_EnableSoundNotifications = "Enable Sound Notifications",
+		UI_ETW_Options_EnableSoundNotifications_tooltip = "Play a sound whenever you gain/lose a trait or have a trait added to Delayed Traits System",

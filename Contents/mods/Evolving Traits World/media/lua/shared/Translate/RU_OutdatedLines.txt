@@ -40,6 +40,9 @@ UI.txt
 
 
 	new:
+		UI_ETW_Options_EnableSoundNotifications = "Enable Sound Notifications",
+		UI_ETW_Options_EnableSoundNotifications_tooltip = "Play a sound whenever you gain/lose a trait or have a trait added to Delayed Traits System",
+		
 		UI_ETW_Options_UIWidth = "[UI] Character page width",
 		UI_ETW_Options_UIWidth_tooltip = "Width of character page in pixels. If you play in English language default should work fine for you, but in other languages it can be weird so if you need more space, increase it here.",
 		UI_ETW_Options_TraitColumns = "[UI] Trait Columns",
