@@ -153,7 +153,7 @@ local function braverySystemETW(zombie)
 		{ trait = "AdrenalineJunkie", threshold = braveryKills * 0.4, add = true, cantHaveTrait = "Pacifist"},
 		{ trait = "Brave", threshold = braveryKills * 0.6, add = true, requiredTrait = "AdrenalineJunkie" },
 		{ trait = "Desensitized", threshold = braveryKills, add = true }
-	}
+	};
 	for i = 1, #traitInfo do
 		local info = traitInfo[i]
 		local trait = info.trait;
@@ -161,9 +161,9 @@ local function braverySystemETW(zombie)
 		local negativeTrait = info.remove;
 		local positiveTrait = info.add;
 		local cantHaveTrait = info.cantHaveTrait;
-		local requiredTrait = info.requiredTrait;
+        local requiredTrait = info.requiredTrait;
 		if (totalKills + meleeKills) >= threshold then -- melee kills counted double
-			if player:HasTrait(trait) and negativeTrait and not player:HasTrait(cantHaveTrait) and SBvars.TraitsLockSystemCanLoseNegative then
+			if player:HasTrait(trait) and negativeTrait and (not cantHaveTrait or not player:HasTrait(cantHaveTrait)) and SBvars.TraitsLockSystemCanLoseNegative then
 				if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(trait)) then
 					player:getTraits():remove(trait);
 					ETWCommonFunctions.traitSound(player);
@@ -174,8 +174,8 @@ local function braverySystemETW(zombie)
 					ETWCommonFunctions.addTraitToDelayTable(ETWModData, trait, player, false);
 					ETWCommonFunctions.traitSound(player);
 				end
-			elseif not player:HasTrait(trait) and positiveTrait and not player:HasTrait(cantHaveTrait) and player:HasTrait(requiredTrait) and SBvars.TraitsLockSystemCanGainPositive then
-				if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(trait)) then
+            elseif not player:HasTrait(trait) and positiveTrait and (not cantHaveTrait or not player:HasTrait(cantHaveTrait)) and (not requiredTrait or player:HasTrait(requiredTrait)) and SBvars.TraitsLockSystemCanGainPositive then
+                if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(trait)) then
 					player:getTraits():add(trait);
 					ETWCommonFunctions.traitSound(player);
 					if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_" .. (trait == "Brave" and "brave" or trait)), true, HaloTextHelper.getColorGreen()) end;
