@@ -1,8 +1,10 @@
-v.8.0.4
+v.8.1.0
 
 General:
-	- A bit of internal micro-optimizations
+	- Some Bloodlust balancing, it's slightly harder to fill the meter
+	- Added sound notification when getting/losing trait or adding it to Delayed Traits System. Toggable in Mod Options.
+	- Now engine repairs are counted towards Vehicle Repair counter. Special shout-out to Albion for big help with figuring server-client communication.
 Fixes:
-	- Fixed Knife Fighter in UI having wrong tooltip
+	- Fixed Desensitized being unobtainable
 Translations:
-	- KO translation update thanks to new maintainer, KimLeon
+	- KO translation got some polishing

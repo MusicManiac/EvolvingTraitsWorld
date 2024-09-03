@@ -3,8 +3,10 @@ ETWCommonFunctions = {};
 
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld;
-local debug = function() return EvolvingTraitsWorld.settings.GatherDebug end
-local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetailedDebug end
+---@return boolean
+local debug = function() return EvolvingTraitsWorld.settings.GatherDebug end;
+---@return boolean
+local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetailedDebug end;
 
 ---Function responsible for finding index of specific item in a table
 ---@param tbl table
@@ -22,6 +24,14 @@ local function indexOf(tbl, value)
 	return -1
 end
 
+---comment
+---@param player IsoPlayer
+function ETWCommonFunctions.traitSound(player)
+	if EvolvingTraitsWorld.settings.EnableSoundNotifications then
+		player:playSoundLocal("ETWGainTrait");
+	end
+end
+
 ---Returns ETW mod data with correct type (for IDE)
 ---@param player IsoPlayer|IsoGameCharacter
 ---@return EvolvingTraitsWorldModData
@@ -36,7 +46,7 @@ function ETWCommonFunctions.delayedTraitsDataDump()
 		for index = 1, #traitTable do
 			local traitEntry = traitTable[index]
 			local traitName, roll, gained = traitEntry[1], traitEntry[2], traitEntry[3]
-			print("ETW Logger | Delayed Traits System | Data Dump: "..traitName.. ", "..roll..", "..tostring(gained))
+			print("ETW Logger | Delayed Traits System | Data Dump: " .. traitName.. ", " .. roll .. ", " .. tostring(gained))
 		end
 	end
 end
@@ -69,25 +79,25 @@ end
 ---@param traitName string
 ---@param player IsoPlayer|IsoGameCharacter
 ---@param positiveTrait boolean
-function ETWCommonFunctions.addTraitToDelayTable(modData, traitName, player, positiveTrait)
+function ETWCommonFunctions.addTraitToDelayTable(modData, traitName, player, positiveTrait);
 	if not SBvars.DelayedTraitsSystem then return end;
-	if detailedDebug() then print("ETW Logger | Delayed Traits System: modData.DelayedStartingTraitsFilled =  "..tostring(modData.DelayedStartingTraitsFilled)) end;
+	if detailedDebug() then print("ETW Logger | Delayed Traits System: modData.DelayedStartingTraitsFilled =  " .. tostring(modData.DelayedStartingTraitsFilled)) end;
 	if not modData.DelayedStartingTraitsFilled then
-		if debug() then print("ETW Logger | Delayed Traits System: player qualifies for "..traitName.." from the start of the game, adding it to delayed traits table") end;
+		if debug() then print("ETW Logger | Delayed Traits System: player qualifies for " .. traitName .. " from the start of the game, adding it to delayed traits table") end;
 		table.insert(modData.DelayedTraits, {traitName, SBvars.DelayedTraitsSystemDefaultDelay + SBvars.DelayedTraitsSystemDefaultStartingDelay, false})
 	elseif indexOf(modData.DelayedTraits, traitName) == -1 and not player:HasTrait(traitName) and positiveTrait then
-		if debug() then print("ETW Logger | Delayed Traits System: player qualifies for positive trait "..traitName..", adding it to delayed traits table") end;
+		if debug() then print("ETW Logger | Delayed Traits System: player qualifies for positive trait " .. traitName .. ", adding it to delayed traits table") end;
 		table.insert(modData.DelayedTraits, {traitName, SBvars.DelayedTraitsSystemDefaultDelay, false})
 	elseif indexOf(modData.DelayedTraits, traitName) == -1 and player:HasTrait(traitName) and not positiveTrait then
-		if debug() then print("ETW Logger | Delayed Traits System: player qualifies for removing negative trait "..traitName..", adding it to delayed traits table") end;
+		if debug() then print("ETW Logger | Delayed Traits System: player qualifies for removing negative trait " .. traitName .. ", adding it to delayed traits table") end;
 		table.insert(modData.DelayedTraits, {traitName, SBvars.DelayedTraitsSystemDefaultDelay, false})
 	else
-		if debug() then print("ETW Logger | Delayed Traits System: player qualifies for "..traitName..", but it's already in delayed traits table or player already has the trait") end;
+		if debug() then print("ETW Logger | Delayed Traits System: player qualifies for " .. traitName .. ", but it's already in delayed traits table or player already has the trait") end;
 	end
 	if detailedDebug() then
-		print("ETW Logger | Delayed Traits System | Data Dump after ETWCommonFunctions.addTraitToDelayTable() ------------");
+		print("ETW Logger | Delayed Traits System | Data Dump after ETWCommonFunctions.addTraitToDelayTable(); ------------");
 		ETWCommonFunctions.delayedTraitsDataDump();
-		print("ETW Logger | Delayed Traits System | Data Dump after ETWCommonFunctions.addTraitToDelayTable() done --------------");
+		print("ETW Logger | Delayed Traits System | Data Dump after ETWCommonFunctions.addTraitToDelayTable(); done --------------");
 	end
 end
 
@@ -102,9 +112,9 @@ function ETWCommonFunctions.checkDelayedTraits(name)
 	for index = 1, #traitTable do
 		local traitEntry = traitTable[index]
 		local traitName, gained = traitEntry[1], traitEntry[3]
-		if detailedDebug() then print("ETW Logger | Delayed Traits System: caught check on "..traitName) end;
+		if detailedDebug() then print("ETW Logger | Delayed Traits System: caught check on " .. traitName) end;
 		if traitName == name and gained then
-			if detailedDebug() then print("ETW Logger | Delayed Traits System: caught check on "..traitName..": player qualifies for it; removing it from the table") end;
+			if detailedDebug() then print("ETW Logger | Delayed Traits System: caught check on " .. traitName .. ": player qualifies for it; removing it from the table") end;
 			table.remove(traitTable, index);
 			return true;
 		end
@@ -123,11 +133,11 @@ function ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(name)
 		local traitEntry = traitTable[index]
 		local traitName = traitEntry[1]
 		if traitName == name then
-			if detailedDebug() then print("ETW Logger | Delayed Traits System: checking if "..name.." is already in the table, it is.") end;
+			if detailedDebug() then print("ETW Logger | Delayed Traits System: checking if " .. name .. " is already in the table, it is.") end;
 			return true;
 		end
 	end
-	if detailedDebug() then print("ETW Logger | Delayed Traits System: checking if "..name.." is already in the table, it is not.") end;
+	if detailedDebug() then print("ETW Logger | Delayed Traits System: checking if " .. name .. " is already in the table, it is not.") end;
 	return false;
 end
 

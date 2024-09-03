@@ -19,5 +19,8 @@ UI.txt
 
 
 	new:
+		UI_ETW_Options_EnableSoundNotifications = "Enable Sound Notifications",
+		UI_ETW_Options_EnableSoundNotifications_tooltip = "Play a sound whenever you gain/lose a trait or have a trait added to Delayed Traits System",
+		
 		UI_ETW_Options_HideSmokerUI = "[UI] Hide Smoker Bar",
 		UI_ETW_Options_HideSmokerUI_tooltip = "Hides Smoker trait progress from ETW UI (for example, if you don't have it and not planning on smoking). Requires reloading the save or rejoining the server.",,

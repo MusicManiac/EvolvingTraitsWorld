@@ -13,6 +13,7 @@ if ModOptions and ModOptions.getInstance then
 		local traitColumns = { 1, 2, 3, 4, 5, 6};
 		EvolvingTraitsWorld.settings.GatherDebug = optionValues.settings.options.GatherDebug;
 		EvolvingTraitsWorld.settings.GatherDetailedDebug = optionValues.settings.options.GatherDetailedDebug;
+		EvolvingTraitsWorld.settings.EnableSoundNotifications = optionValues.settings.options.EnableSoundNotifications;
 		EvolvingTraitsWorld.settings.EnableNotifications = optionValues.settings.options.EnableNotifications;
 		EvolvingTraitsWorld.settings.EnableDelayedNotifications = optionValues.settings.options.EnableDelayedNotifications;
 		EvolvingTraitsWorld.settings.EnableBloodLustMoodle = optionValues.settings.options.EnableBloodLustMoodle;
@@ -34,6 +35,13 @@ if ModOptions and ModOptions.getInstance then
 				name = "UI_ETW_Options_GatherDetailedDebug",
 				tooltip = "UI_ETW_Options_GatherDetailedDebug_tooltip",
 				default = false,
+				OnApplyMainMenu = onModOptionsApply,
+				OnApplyInGame = onModOptionsApply,
+			},
+			EnableSoundNotifications = {
+				name = "UI_ETW_Options_EnableSoundNotifications",
+				tooltip = "UI_ETW_Options_EnableSoundNotifications_tooltip",
+				default = true,
 				OnApplyMainMenu = onModOptionsApply,
 				OnApplyInGame = onModOptionsApply,
 			},

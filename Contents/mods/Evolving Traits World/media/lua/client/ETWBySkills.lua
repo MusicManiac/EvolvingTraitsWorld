@@ -5,15 +5,18 @@ local ETWCommonLogicChecks = require "ETWCommonLogicChecks";
 
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld;
-local notification = function() return EvolvingTraitsWorld.settings.EnableNotifications end
-local delayedNotification = function() return EvolvingTraitsWorld.settings.EnableDelayedNotifications end
-local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetailedDebug end
+---@return boolean
+local notification = function() return EvolvingTraitsWorld.settings.EnableNotifications end;
+---@return boolean
+local delayedNotification = function() return EvolvingTraitsWorld.settings.EnableDelayedNotifications end;
+---@return boolean
+local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetailedDebug end;
 
 ---Gain traits by skills (in majority cases)
 ---@param player IsoPlayer
 ---@param perk Perk|String
 local function traitsGainsBySkill(player, perk)
-	if player:getModData().EvolvingTraitsWorld == nil then return end
+	if player:getModData().EvolvingTraitsWorld == nil then return end;
 	local modData = ETWCommonFunctions.getETWModData(player);
 
 	-- locals for perk levels
@@ -54,6 +57,10 @@ local function traitsGainsBySkill(player, perk)
 	local shortBladeKills = killCountModData["SmallBlade"].count;
 	local spearKills = killCountModData["Spear"].count;
 	local firearmKills = killCountModData["Firearm"].count;
+	
+	local detailedDebug = detailedDebug();
+	local notification = notification();
+	local delayedNotification = delayedNotification();
 
 	-- All Perks
 		-- Unlucky/Lucky
@@ -63,7 +70,7 @@ local function traitsGainsBySkill(player, perk)
 					for i = 1, Perks.getMaxIndex() - 1 do
 						local selectedPerk = Perks.fromIndex(i)
 						if selectedPerk:getParent():getName() ~= "None" then
-							if detailedDebug() then print("ETW Logger | Lucky/Unlucky perks pickup: Perk: "..selectedPerk:getName()..", parent: "..selectedPerk:getParent():getName()) end
+							if detailedDebug then print("ETW Logger | Lucky/Unlucky perks pickup: Perk: " .. selectedPerk:getName() .. ", parent: " .. selectedPerk:getParent():getName()) end;
 							local perkLevel = player:getPerkLevel(selectedPerk)
 							totalPerkLevel = totalPerkLevel + perkLevel;
 							totalMaxPerkLevel = totalMaxPerkLevel + 10;
@@ -73,20 +80,24 @@ local function traitsGainsBySkill(player, perk)
 					if player:HasTrait("Unlucky") and percentageOfSkillLevels >= SBvars.LuckSystemSkill / 2 and SBvars.TraitsLockSystemCanLoseNegative then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Unlucky")) then
 							player:getTraits():remove("Unlucky");
-							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_unlucky"), false, HaloTextHelper.getColorGreen()) end
+							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_unlucky"), false, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
 						end
 						if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Unlucky") then
-							if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringRemove")..getText("UI_trait_unlucky"), true, HaloTextHelper.getColorGreen()) end
-							ETWCommonFunctions.addTraitToDelayTable(modData, "Unlucky", player, false)
+							if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringRemove") .. getText("UI_trait_unlucky"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
+							ETWCommonFunctions.addTraitToDelayTable(modData, "Unlucky", player, false);
 						end
 					elseif not player:HasTrait("Unlucky") and not player:HasTrait("Lucky") and percentageOfSkillLevels >= SBvars.LuckSystemSkill and SBvars.TraitsLockSystemCanGainPositive then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Lucky")) then
 							player:getTraits():add("Lucky");
-							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_lucky"), true, HaloTextHelper.getColorGreen()) end
+							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_lucky"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
 						end
 						if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Lucky") then
-							if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd")..getText("UI_trait_lucky"), true, HaloTextHelper.getColorGreen()) end
-							ETWCommonFunctions.addTraitToDelayTable(modData, "Lucky", player, true)
+							if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_lucky"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
+							ETWCommonFunctions.addTraitToDelayTable(modData, "Lucky", player, true);
 						end
 					end
 				end
@@ -97,11 +108,15 @@ local function traitsGainsBySkill(player, perk)
 					if strength >= SBvars.HoarderSkill then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Hoarder")) then
 							player:getTraits():add("Hoarder");
-							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Hoarder"), true, HaloTextHelper.getColorGreen()) end
+							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Hoarder"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
+							ETWCommonFunctions.traitSound(player);
 						end
 						if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Hoarder") then
-							if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd")..getText("UI_trait_Hoarder"), true, HaloTextHelper.getColorGreen()) end
-							ETWCommonFunctions.addTraitToDelayTable(modData, "Hoarder", player, true)
+							if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_Hoarder"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
+							ETWCommonFunctions.addTraitToDelayTable(modData, "Hoarder", player, true);
+							ETWCommonFunctions.traitSound(player);
 						end
 					end
 				end
@@ -110,11 +125,13 @@ local function traitsGainsBySkill(player, perk)
 					if (strength + fitness) >= SBvars.GymRatSkill then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("GymRat")) then
 							player:getTraits():add("GymRat");
-							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_GymRat"), true, HaloTextHelper.getColorGreen()) end
+							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_GymRat"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
 						end
 						if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("GymRat") then
-							if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd")..getText("UI_trait_GymRat"), true, HaloTextHelper.getColorGreen()) end
-							ETWCommonFunctions.addTraitToDelayTable(modData, "GymRat", player, true)
+							if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_GymRat"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
+							ETWCommonFunctions.addTraitToDelayTable(modData, "GymRat", player, true);
 						end
 					end
 				end
@@ -126,11 +143,13 @@ local function traitsGainsBySkill(player, perk)
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Jogger")) then
 							player:getTraits():add("Jogger");
 							ETWCommonFunctions.applyXPBoost(player, Perks.Sprinting, 1);
-							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Jogger"), true, HaloTextHelper.getColorGreen()) end
+							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Jogger"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
 						end
 						if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Jogger") then
-							if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd")..getText("UI_trait_Jogger"), true, HaloTextHelper.getColorGreen()) end
-							ETWCommonFunctions.addTraitToDelayTable(modData, "Jogger", player, true)
+							if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_Jogger"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
+							ETWCommonFunctions.addTraitToDelayTable(modData, "Jogger", player, true);
 						end
 					end
 				end
@@ -140,20 +159,24 @@ local function traitsGainsBySkill(player, perk)
 					if player:HasTrait("HardOfHearing") and levels >= SBvars.HearingSystemSkill / 2 and SBvars.TraitsLockSystemCanLoseNegative then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("HardOfHearing")) then
 							player:getTraits():remove("HardOfHearing");
-							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_hardhear"), false, HaloTextHelper.getColorGreen()) end
+							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_hardhear"), false, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
 						end
 						if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("HardOfHearing") then
-							if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringRemove")..getText("UI_trait_hardhear"), true, HaloTextHelper.getColorGreen()) end
-							ETWCommonFunctions.addTraitToDelayTable(modData, "HardOfHearing", player, false)
+							if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringRemove") .. getText("UI_trait_hardhear"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
+							ETWCommonFunctions.addTraitToDelayTable(modData, "HardOfHearing", player, false);
 						end
 					elseif not player:HasTrait("HardOfHearing") and levels >= SBvars.HearingSystemSkill then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("KeenHearing")) then
 							player:getTraits():add("KeenHearing");
-							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_keenhearing"), true, HaloTextHelper.getColorGreen()) end
+							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_keenhearing"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
 						end
 						if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("KeenHearing") then
-							if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd")..getText("UI_trait_keenhearing"), true, HaloTextHelper.getColorGreen()) end
-							ETWCommonFunctions.addTraitToDelayTable(modData, "KeenHearing", player, true)
+							if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_keenhearing"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
+							ETWCommonFunctions.addTraitToDelayTable(modData, "KeenHearing", player, true);
 						end
 					end
 				end
@@ -164,11 +187,13 @@ local function traitsGainsBySkill(player, perk)
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("LightStep")) then
 							player:getTraits():add("LightStep");
 							ETWCommonFunctions.applyXPBoost(player, Perks.Lightfoot, 1);
-							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_LightStep"), true, HaloTextHelper.getColorGreen()) end
+							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_LightStep"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
 						end
 						if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("LightStep") then
-							if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd")..getText("UI_trait_LightStep"), true, HaloTextHelper.getColorGreen()) end
-							ETWCommonFunctions.addTraitToDelayTable(modData, "LightStep", player, true)
+							if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_LightStep"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
+							ETWCommonFunctions.addTraitToDelayTable(modData, "LightStep", player, true);
 						end
 					end
 				end
@@ -179,11 +204,13 @@ local function traitsGainsBySkill(player, perk)
 							player:getTraits():add("Gymnast");
 							ETWCommonFunctions.applyXPBoost(player, Perks.Lightfoot, 1);
 							ETWCommonFunctions.applyXPBoost(player, Perks.Nimble, 1);
-							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Gymnast"), true, HaloTextHelper.getColorGreen()) end
+							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Gymnast"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
 						end
 						if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Gymnast") then
-							if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd")..getText("UI_trait_Gymnast"), true, HaloTextHelper.getColorGreen()) end
-							ETWCommonFunctions.addTraitToDelayTable(modData, "Gymnast", player, true)
+							if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_Gymnast"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
+							ETWCommonFunctions.addTraitToDelayTable(modData, "Gymnast", player, true);
 						end
 					end
 				end
@@ -192,11 +219,13 @@ local function traitsGainsBySkill(player, perk)
 					if (lightfooted + sneaking) >= SBvars.ClumsySkill then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Clumsy")) then
 							player:getTraits():remove("Clumsy");
-							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_clumsy"), false, HaloTextHelper.getColorGreen()) end
+							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_clumsy"), false, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
 						end
 						if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Clumsy") then
-							if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringRemove")..getText("UI_trait_clumsy"), true, HaloTextHelper.getColorGreen()) end
-							ETWCommonFunctions.addTraitToDelayTable(modData, "Clumsy", player, false)
+							if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringRemove") .. getText("UI_trait_clumsy"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
+							ETWCommonFunctions.addTraitToDelayTable(modData, "Clumsy", player, false);
 						end
 					end
 				end
@@ -206,11 +235,13 @@ local function traitsGainsBySkill(player, perk)
 			if levels >= SBvars.GracefulSkill then
 				if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Graceful")) then
 					player:getTraits():add("Graceful");
-					if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_graceful"), true, HaloTextHelper.getColorGreen()) end
+					if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_graceful"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
 				end
 				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Graceful") then
-					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd")..getText("UI_trait_graceful"), true, HaloTextHelper.getColorGreen()) end
-					ETWCommonFunctions.addTraitToDelayTable(modData, "Graceful", player, true)
+					if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_graceful"), true, HaloTextHelper.getColorGreen()) end;
+					ETWCommonFunctions.traitSound(player);
+					ETWCommonFunctions.addTraitToDelayTable(modData, "Graceful", player, true);
 				end
 			end
 		end
@@ -220,11 +251,13 @@ local function traitsGainsBySkill(player, perk)
 			if electrical >= 2 and mechanics >= 2 and levels >= SBvars.BurglarSkill then
 				if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Burglar")) then
 					player:getTraits():add("Burglar");
-					if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Burglar"), true, HaloTextHelper.getColorGreen()) end
+					if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Burglar"), true, HaloTextHelper.getColorGreen()) end;
+					ETWCommonFunctions.traitSound(player);
 				end
 				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Burglar") then
-					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd")..getText("UI_prof_Burglar"), true, HaloTextHelper.getColorGreen()) end
-					ETWCommonFunctions.addTraitToDelayTable(modData, "Burglar", player, true)
+					if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_prof_Burglar"), true, HaloTextHelper.getColorGreen()) end;
+					ETWCommonFunctions.traitSound(player);
+					ETWCommonFunctions.addTraitToDelayTable(modData, "Burglar", player, true);
 				end
 			end
 		end
@@ -235,11 +268,13 @@ local function traitsGainsBySkill(player, perk)
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("LowProfile")) then
 							player:getTraits():add("LowProfile");
 							ETWCommonFunctions.applyXPBoost(player, Perks.Sneak, 1);
-							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_LowProfile"), true, HaloTextHelper.getColorGreen()) end
+							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_LowProfile"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
 						end
 						if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("LowProfile") then
-							if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd")..getText("UI_trait_LowProfile"), true, HaloTextHelper.getColorGreen()) end
-							ETWCommonFunctions.addTraitToDelayTable(modData, "LowProfile", player, true)
+							if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_LowProfile"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
+							ETWCommonFunctions.addTraitToDelayTable(modData, "LowProfile", player, true);
 						end
 					end
 				end
@@ -248,20 +283,24 @@ local function traitsGainsBySkill(player, perk)
 					if ETWCommonLogicChecks.ConspicuousShouldExecute() and sneaking >= SBvars.ConspicuousSkill then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Conspicuous")) then
 							player:getTraits():remove("Conspicuous");
-							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Conspicuous"), false, HaloTextHelper.getColorGreen()) end
+							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Conspicuous"), false, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
 						end
 						if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Conspicuous") then
-							if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringRemove")..getText("UI_trait_Conspicuous"), true, HaloTextHelper.getColorGreen()) end
-							ETWCommonFunctions.addTraitToDelayTable(modData, "Conspicuous", player, false)
+							if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringRemove") .. getText("UI_trait_Conspicuous"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
+							ETWCommonFunctions.addTraitToDelayTable(modData, "Conspicuous", player, false);
 						end
 					elseif ETWCommonLogicChecks.InconspicuousShouldExecute() and sneaking >= SBvars.InconspicuousSkill then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Inconspicuous")) then
 							player:getTraits():add("Inconspicuous");
-							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Inconspicuous"), true, HaloTextHelper.getColorGreen()) end
+							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Inconspicuous"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
 						end
 						if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Inconspicuous") then
-							if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd")..getText("UI_trait_Inconspicuous"), true, HaloTextHelper.getColorGreen()) end
-							ETWCommonFunctions.addTraitToDelayTable(modData, "Inconspicuous", player, true)
+							if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_Inconspicuous"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
+							ETWCommonFunctions.addTraitToDelayTable(modData, "Inconspicuous", player, true);
 						end
 					end
 				end
@@ -280,11 +319,13 @@ local function traitsGainsBySkill(player, perk)
 							ETWCommonFunctions.addRecipe(player, "Make Wooden Box Trap");
 							ETWCommonFunctions.addRecipe(player, "Make Trap Box");
 							ETWCommonFunctions.addRecipe(player, "Make Cage Trap");
-							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Hunter"), true, HaloTextHelper.getColorGreen()) end
+							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Hunter"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
 						end
 						if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Hunter") then
-							if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd")..getText("UI_trait_Hunter"), true, HaloTextHelper.getColorGreen()) end
-							ETWCommonFunctions.addTraitToDelayTable(modData, "Hunter", player, true)
+							if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_Hunter"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
+							ETWCommonFunctions.addTraitToDelayTable(modData, "Hunter", player, true);
 						end
 					end
 				end
@@ -297,11 +338,13 @@ local function traitsGainsBySkill(player, perk)
 							player:getTraits():add("Brawler");
 							ETWCommonFunctions.applyXPBoost(player, Perks.Axe, 1);
 							ETWCommonFunctions.applyXPBoost(player, Perks.Blunt, 1);
-							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_BarFighter"), true, HaloTextHelper.getColorGreen()) end
+							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_BarFighter"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
 						end
 						if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Brawler") then
-							if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd")..getText("UI_trait_BarFighter"), true, HaloTextHelper.getColorGreen()) end
-							ETWCommonFunctions.addTraitToDelayTable(modData, "Brawler", player, true)
+							if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_BarFighter"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
+							ETWCommonFunctions.addTraitToDelayTable(modData, "Brawler", player, true);
 						end
 					end
 				end
@@ -311,11 +354,13 @@ local function traitsGainsBySkill(player, perk)
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("AxeThrower")) then
 							player:getTraits():add("AxeThrower");
 							ETWCommonFunctions.applyXPBoost(player, Perks.Axe, 1);
-							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_AxeThrower"), true, HaloTextHelper.getColorGreen()) end
+							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_AxeThrower"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
 						end
 						if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("AxeThrower") then
-							if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd")..getText("UI_trait_AxeThrower"), true, HaloTextHelper.getColorGreen()) end
-							ETWCommonFunctions.addTraitToDelayTable(modData, "AxeThrower", player, true)
+							if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_AxeThrower"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
+							ETWCommonFunctions.addTraitToDelayTable(modData, "AxeThrower", player, true);
 						end
 					end
 				end
@@ -326,11 +371,13 @@ local function traitsGainsBySkill(player, perk)
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("BaseballPlayer")) then
 							player:getTraits():add("BaseballPlayer");
 							ETWCommonFunctions.applyXPBoost(player, Perks.Blunt, 1);
-							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_PlaysBaseball"), true, HaloTextHelper.getColorGreen()) end
+							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_PlaysBaseball"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
 						end
 						if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("BaseballPlayer") then
-							if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd")..getText("UI_trait_PlaysBaseball"), true, HaloTextHelper.getColorGreen()) end
-							ETWCommonFunctions.addTraitToDelayTable(modData, "BaseballPlayer", player, true)
+							if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_PlaysBaseball"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
+							ETWCommonFunctions.addTraitToDelayTable(modData, "BaseballPlayer", player, true);
 						end
 					end
 				end
@@ -341,11 +388,13 @@ local function traitsGainsBySkill(player, perk)
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("StickFighter")) then
 							player:getTraits():add("StickFighter");
 							ETWCommonFunctions.applyXPBoost(player, Perks.SmallBlunt, 1);
-							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_StickFighter"), true, HaloTextHelper.getColorGreen()) end
+							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_StickFighter"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
 						end
 						if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("StickFighter") then
-							if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd")..getText("UI_trait_StickFighter"), true, HaloTextHelper.getColorGreen()) end
-							ETWCommonFunctions.addTraitToDelayTable(modData, "StickFighter", player, true)
+							if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_StickFighter"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
+							ETWCommonFunctions.addTraitToDelayTable(modData, "StickFighter", player, true);
 						end
 					end
 				end
@@ -356,11 +405,13 @@ local function traitsGainsBySkill(player, perk)
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Kenshi")) then
 							player:getTraits():add("Kenshi");
 							ETWCommonFunctions.applyXPBoost(player, Perks.LongBlade, 1);
-							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Kenshi"), true, HaloTextHelper.getColorGreen()) end
+							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Kenshi"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
 						end
 						if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Kenshi") then
-							if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd")..getText("UI_trait_Kenshi"), true, HaloTextHelper.getColorGreen()) end
-							ETWCommonFunctions.addTraitToDelayTable(modData, "Kenshi", player, true)
+							if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_Kenshi"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
+							ETWCommonFunctions.addTraitToDelayTable(modData, "Kenshi", player, true);
 						end
 					end
 				end
@@ -371,11 +422,13 @@ local function traitsGainsBySkill(player, perk)
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("KnifeFighter")) then
 							player:getTraits():add("KnifeFighter");
 							ETWCommonFunctions.applyXPBoost(player, Perks.SmallBlade, 1);
-							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_KnifeFighter"), true, HaloTextHelper.getColorGreen()) end
+							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_KnifeFighter"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
 						end
 						if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("KnifeFighter") then
-							if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd")..getText("UI_trait_KnifeFighter"), true, HaloTextHelper.getColorGreen()) end
-							ETWCommonFunctions.addTraitToDelayTable(modData, "KnifeFighter", player, true)
+							if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_KnifeFighter"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
+							ETWCommonFunctions.addTraitToDelayTable(modData, "KnifeFighter", player, true);
 						end
 					end
 				end
@@ -386,11 +439,13 @@ local function traitsGainsBySkill(player, perk)
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Sojutsu")) then
 							player:getTraits():add("Sojutsu");
 							ETWCommonFunctions.applyXPBoost(player, Perks.Spear, 1);
-							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Sojutsu"), true, HaloTextHelper.getColorGreen()) end
+							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Sojutsu"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
 						end
 						if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Sojutsu") then
-							if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd")..getText("UI_trait_Sojutsu"), true, HaloTextHelper.getColorGreen()) end
-							ETWCommonFunctions.addTraitToDelayTable(modData, "Sojutsu", player, true)
+							if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_Sojutsu"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
+							ETWCommonFunctions.addTraitToDelayTable(modData, "Sojutsu", player, true);
 						end
 					end
 				end
@@ -401,11 +456,13 @@ local function traitsGainsBySkill(player, perk)
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("RestorationExpert")) then
 							player:getTraits():add("RestorationExpert");
 							ETWCommonFunctions.applyXPBoost(player, Perks.Maintenance, 1);
-							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_RestorationExpert"), true, HaloTextHelper.getColorGreen()) end
+							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_RestorationExpert"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
 						end
 						if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("RestorationExpert") then
-							if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd")..getText("UI_trait_RestorationExpert"), true, HaloTextHelper.getColorGreen()) end
-							ETWCommonFunctions.addTraitToDelayTable(modData, "RestorationExpert", player, true)
+							if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_RestorationExpert"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
+							ETWCommonFunctions.addTraitToDelayTable(modData, "RestorationExpert", player, true);
 						end
 					end
 				end
@@ -416,11 +473,13 @@ local function traitsGainsBySkill(player, perk)
 							player:getTraits():add("Handy");
 							ETWCommonFunctions.applyXPBoost(player, Perks.Maintenance, 1);
 							ETWCommonFunctions.applyXPBoost(player, Perks.Woodwork, 1);
-							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_handy"), true, HaloTextHelper.getColorGreen()) end
+							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_handy"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
 						end
 						if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Handy") then
-							if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd")..getText("UI_trait_handy"), true, HaloTextHelper.getColorGreen()) end
-							ETWCommonFunctions.addTraitToDelayTable(modData, "Handy", player, true)
+							if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_handy"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
+							ETWCommonFunctions.addTraitToDelayTable(modData, "Handy", player, true);
 						end
 					end
 				end
@@ -430,20 +489,24 @@ local function traitsGainsBySkill(player, perk)
 					if player:HasTrait("SlowLearner") and levels >= SBvars.LearnerSystemSkill / 2 and SBvars.TraitsLockSystemCanLoseNegative then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("SlowLearner")) then
 							player:getTraits():remove("SlowLearner");
-							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_SlowLearner"), false, HaloTextHelper.getColorGreen()) end
+							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_SlowLearner"), false, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
 						end
 						if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("SlowLearner") then
-							if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringRemove")..getText("UI_trait_SlowLearner"), true, HaloTextHelper.getColorGreen()) end
-							ETWCommonFunctions.addTraitToDelayTable(modData, "SlowLearner", player, false)
+							if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringRemove") .. getText("UI_trait_SlowLearner"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
+							ETWCommonFunctions.addTraitToDelayTable(modData, "SlowLearner", player, false);
 						end
 					elseif not player:HasTrait("SlowLearner") and levels >= SBvars.LearnerSystemSkill and SBvars.TraitsLockSystemCanGainPositive then
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("FastLearner")) then
 							player:getTraits():add("FastLearner");
-							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_FastLearner"), true, HaloTextHelper.getColorGreen()) end
+							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_FastLearner"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
 						end
 						if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("FastLearner") then
-							if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd")..getText("UI_trait_FastLearner"), true, HaloTextHelper.getColorGreen()) end
-							ETWCommonFunctions.addTraitToDelayTable(modData, "FastLearner", player, true)
+							if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_FastLearner"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
+							ETWCommonFunctions.addTraitToDelayTable(modData, "FastLearner", player, true);
 						end
 					end
 				end
@@ -455,11 +518,13 @@ local function traitsGainsBySkill(player, perk)
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("FurnitureAssembler")) then
 							player:getTraits():add("FurnitureAssembler");
 							ETWCommonFunctions.applyXPBoost(player, Perks.Woodwork, 1);
-							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_FurnitureAssembler"), true, HaloTextHelper.getColorGreen()) end
+							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_FurnitureAssembler"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
 						end
 						if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("FurnitureAssembler") then
-							if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd")..getText("UI_trait_FurnitureAssembler"), true, HaloTextHelper.getColorGreen()) end
-							ETWCommonFunctions.addTraitToDelayTable(modData, "FurnitureAssembler", player, true)
+							if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_FurnitureAssembler"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
+							ETWCommonFunctions.addTraitToDelayTable(modData, "FurnitureAssembler", player, true);
 						end
 					end
 				end
@@ -471,11 +536,13 @@ local function traitsGainsBySkill(player, perk)
 							player:getTraits():add("HomeCook");
 							ETWCommonFunctions.addRecipe(player, "Make Cake Batter");
 							ETWCommonFunctions.applyXPBoost(player, Perks.Cooking, 1);
-							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_HomeCook"), true, HaloTextHelper.getColorGreen()) end
+							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_HomeCook"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
 						end
 						if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("HomeCook") then
-							if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd")..getText("UI_trait_HomeCook"), true, HaloTextHelper.getColorGreen()) end
-							ETWCommonFunctions.addTraitToDelayTable(modData, "HomeCook", player, true)
+							if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_HomeCook"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
+							ETWCommonFunctions.addTraitToDelayTable(modData, "HomeCook", player, true);
 						end
 					end
 				end
@@ -495,11 +562,13 @@ local function traitsGainsBySkill(player, perk)
 							ETWCommonFunctions.addRecipe(player, "Make Sugar Cookie Dough");
 							ETWCommonFunctions.addRecipe(player, "Make Pizza");
 							ETWCommonFunctions.applyXPBoost(player, Perks.Cooking, 1);
-							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Cook"), true, HaloTextHelper.getColorGreen()) end
+							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Cook"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
 						end
 						if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Cook") then
-							if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd")..getText("UI_trait_Cook"), true, HaloTextHelper.getColorGreen()) end
-							ETWCommonFunctions.addTraitToDelayTable(modData, "Cook", player, true)
+							if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_Cook"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
+							ETWCommonFunctions.addTraitToDelayTable(modData, "Cook", player, true);
 						end
 					end
 				end
@@ -512,11 +581,13 @@ local function traitsGainsBySkill(player, perk)
 							ETWCommonFunctions.applyXPBoost(player, Perks.Farming, 1);
 							ETWCommonFunctions.addRecipe(player, "Make Mildew Cure");
 							ETWCommonFunctions.addRecipe(player, "Make Flies Cure");
-							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Gardener"), true, HaloTextHelper.getColorGreen()) end
+							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Gardener"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
 						end
 						if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Gardener") then
-							if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd")..getText("UI_trait_Gardener"), true, HaloTextHelper.getColorGreen()) end
-							ETWCommonFunctions.addTraitToDelayTable(modData, "Gardener", player, true)
+							if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_Gardener"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
+							ETWCommonFunctions.addTraitToDelayTable(modData, "Gardener", player, true);
 						end
 					end
 				end
@@ -527,11 +598,13 @@ local function traitsGainsBySkill(player, perk)
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("FirstAid")) then
 							player:getTraits():add("FirstAid");
 							ETWCommonFunctions.applyXPBoost(player, Perks.Doctor, 1);
-							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_FirstAid"), true, HaloTextHelper.getColorGreen()) end
+							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_FirstAid"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
 						end
 						if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("FirstAid") then
-							if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd")..getText("UI_trait_FirstAid"), true, HaloTextHelper.getColorGreen()) end
-							ETWCommonFunctions.addTraitToDelayTable(modData, "FirstAid", player, true)
+							if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_FirstAid"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
+							ETWCommonFunctions.addTraitToDelayTable(modData, "FirstAid", player, true);
 						end
 					end
 				end
@@ -551,11 +624,13 @@ local function traitsGainsBySkill(player, perk)
 							ETWCommonFunctions.addRecipe(player, "Craft Makeshift Walkie Talkie");
 							ETWCommonFunctions.addRecipe(player, "Make Noise generator");
 							ETWCommonFunctions.applyXPBoost(player, Perks.Electricity, 1);
-							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_AVClub"), true, HaloTextHelper.getColorGreen()) end
+							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_AVClub"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
 						end
 						if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("AVClub") then
-							if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd")..getText("UI_trait_AVClub"), true, HaloTextHelper.getColorGreen()) end
-							ETWCommonFunctions.addTraitToDelayTable(modData, "AVClub", player, true)
+							if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_AVClub"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
+							ETWCommonFunctions.addTraitToDelayTable(modData, "AVClub", player, true);
 						end
 					end
 				end
@@ -576,11 +651,13 @@ local function traitsGainsBySkill(player, perk)
 						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Tailor")) then
 							player:getTraits():add("Tailor");
 							ETWCommonFunctions.applyXPBoost(player, Perks.Tailoring, 1);
-							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Tailor"), true, HaloTextHelper.getColorGreen()) end
+							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Tailor"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
 						end
 						if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Tailor") then
-							if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd")..getText("UI_trait_Tailor"), true, HaloTextHelper.getColorGreen()) end
-							ETWCommonFunctions.addTraitToDelayTable(modData, "Tailor", player, true)
+							if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_Tailor"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
+							ETWCommonFunctions.addTraitToDelayTable(modData, "Tailor", player, true);
 						end
 					end
 				end
@@ -593,11 +670,13 @@ local function traitsGainsBySkill(player, perk)
 							player:getTraits():add("GunEnthusiast");
 							ETWCommonFunctions.applyXPBoost(player, Perks.Aiming, 1);
 							ETWCommonFunctions.applyXPBoost(player, Perks.Reloading, 1);
-							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_GunEnthusiast"), true, HaloTextHelper.getColorGreen()) end
+							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_GunEnthusiast"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
 						end
 						if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("GunEnthusiast") then
-							if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd")..getText("UI_trait_GunEnthusiast"), true, HaloTextHelper.getColorGreen()) end
-							ETWCommonFunctions.addTraitToDelayTable(modData, "GunEnthusiast", player, true)
+							if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_GunEnthusiast"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
+							ETWCommonFunctions.addTraitToDelayTable(modData, "GunEnthusiast", player, true);
 						end
 					end
 				end
@@ -611,11 +690,13 @@ local function traitsGainsBySkill(player, perk)
 							ETWCommonFunctions.addRecipe(player, "Make Fishing Rod");
 							ETWCommonFunctions.addRecipe(player, "Fix Fishing Rod");
 							ETWCommonFunctions.applyXPBoost(player, Perks.Fishing, 1);
-							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Fishing"), true, HaloTextHelper.getColorGreen()) end
+							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Fishing"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
 						end
 						if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Fishing") then
-							if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd")..getText("UI_trait_Fishing"), true, HaloTextHelper.getColorGreen()) end
-							ETWCommonFunctions.addTraitToDelayTable(modData, "Fishing", player, true)
+							if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_Fishing"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
+							ETWCommonFunctions.addTraitToDelayTable(modData, "Fishing", player, true);
 						end
 					end
 				end
@@ -630,11 +711,13 @@ local function traitsGainsBySkill(player, perk)
 							ETWCommonFunctions.addRecipe(player, "Make Wooden Box Trap");
 							ETWCommonFunctions.applyXPBoost(player, Perks.PlantScavenging, 1);
 							ETWCommonFunctions.applyXPBoost(player, Perks.Trapping, 1);
-							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Hiker"), true, HaloTextHelper.getColorGreen()) end
+							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Hiker"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
 						end
 						if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Hiker") then
-							if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd")..getText("UI_trait_Hiker"), true, HaloTextHelper.getColorGreen()) end
-							ETWCommonFunctions.addTraitToDelayTable(modData, "Hiker", player, true)
+							if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_Hiker"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
+							ETWCommonFunctions.addTraitToDelayTable(modData, "Hiker", player, true);
 						end
 					end
 				end
@@ -646,26 +729,27 @@ local function progressDelayedTraits()
 	if not SBvars.DelayedTraitsSystem then return end;
 	local player = getPlayer();
 	local modData = ETWCommonFunctions.getETWModData(player);
-    local traitTable = modData.DelayedTraits;
-	if detailedDebug() then print("ETW Logger | Delayed Traits System: new progressDelayedTraits() execution ----------") end;
+	local traitTable = modData.DelayedTraits;
+	local detailedDebug = detailedDebug();
+	if detailedDebug then print("ETW Logger | Delayed Traits System: new progressDelayedTraits() execution ----------") end;
 	for index, traitEntry in ipairs(traitTable) do
 		local traitName, traitValue, gained = traitEntry[1], traitEntry[2], traitEntry[3];
 		if not gained then
 			local randomValue = ZombRand(traitValue + 1);
 			if randomValue == 0 then
-				if detailedDebug() then print("ETW Logger | Delayed Traits System: rolled to get "..traitName..": rolled 0 from 0-"..traitTable[index][2]) end;
+				if detailedDebug then print("ETW Logger | Delayed Traits System: rolled to get " .. traitName .. ": rolled 0 from 0-" .. traitTable[index][2]) end;
 				traitTable[index][3] = true;
-				if detailedDebug() then print("ETW Logger | Delayed Traits System: "..traitName.." in traitTable["..index.."][3]".." set to "..tostring(traitTable[index][3])) end;
-                if detailedDebug() then print("ETW Logger | Delayed Traits System: running traitsGainsBySkill(player, " ..
-                    traitName .. ")") end;
-                traitsGainsBySkill(player, traitName);
+				if detailedDebug then print("ETW Logger | Delayed Traits System: " .. traitName .. " in traitTable[" .. index .. "][3]" .. " set to " .. tostring(traitTable[index][3])) end;
+				if detailedDebug then print("ETW Logger | Delayed Traits System: running traitsGainsBySkill(player, " ..
+					traitName .. ")") end;
+				traitsGainsBySkill(player, traitName);
 			elseif randomValue > 0 then
-				if detailedDebug() then print("ETW Logger | Delayed Traits System: rolled to get "..traitName..": rolled "..randomValue.." from 0-"..traitTable[index][2]) end;
+				if detailedDebug then print("ETW Logger | Delayed Traits System: rolled to get " .. traitName .. ": rolled " .. randomValue .. " from 0-" .. traitTable[index][2]) end;
 				traitTable[index][2] = traitValue - 1;
 			end
 		end
 	end
-	if detailedDebug() then print("ETW Logger | Delayed Traits System: finished progressDelayedTraits() execution ----------") end;
+	if detailedDebug then print("ETW Logger | Delayed Traits System: finished progressDelayedTraits() execution ----------") end;
 end
 
 ---Function responsible for firing check on all kill-related traits
