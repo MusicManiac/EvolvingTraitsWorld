@@ -1,10 +1,6 @@
-v.8.1.0
+v.8.1.1
 
-General:
-	- Some Bloodlust balancing, it's slightly harder to fill the meter
-	- Added sound notification when getting/losing trait or adding it to Delayed Traits System. Toggable in Mod Options.
-	- Now engine repairs are counted towards Vehicle Repair counter. Special shout-out to Albion for big help with figuring server-client communication.
 Fixes:
-	- Fixed Desensitized being unobtainable
+	- Fixed Bravery System not working (ups)
 Translations:
-	- KO translation got some polishing
+	- I hate encodings. Fixed RU

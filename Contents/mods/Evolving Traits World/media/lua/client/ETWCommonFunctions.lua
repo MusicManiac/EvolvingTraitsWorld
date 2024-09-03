@@ -79,7 +79,7 @@ end
 ---@param traitName string
 ---@param player IsoPlayer|IsoGameCharacter
 ---@param positiveTrait boolean
-function ETWCommonFunctions.addTraitToDelayTable(modData, traitName, player, positiveTrait);
+function ETWCommonFunctions.addTraitToDelayTable(modData, traitName, player, positiveTrait)
 	if not SBvars.DelayedTraitsSystem then return end;
 	if detailedDebug() then print("ETW Logger | Delayed Traits System: modData.DelayedStartingTraitsFilled =  " .. tostring(modData.DelayedStartingTraitsFilled)) end;
 	if not modData.DelayedStartingTraitsFilled then

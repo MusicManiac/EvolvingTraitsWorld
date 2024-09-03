@@ -96,7 +96,6 @@
         "expandAlias": false
     },
     "runtime": {
-        "fileEncoding": "utf8",
         "path": [
             "shared/?.lua",
             "client/?.lua",
