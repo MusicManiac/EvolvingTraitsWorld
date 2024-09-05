@@ -43,7 +43,7 @@ Sandbox_EN = {
 	Sandbox_ETW_BaseballPlayerKills = "Baseball Player Kills with Long Blunt requirement",
 
 	Sandbox_ETW_Bloodlust = "Bloodlust",
-	Sandbox_ETW_Bloodlust_tooltip = "This perk allows you to gain a benefit by filling and maintaining a bloodlust meter. The bloodlust meter is soft-capped at 36 hours and can be filled by killing zombies. The closer the zombies are, the more quickly the meter will fill. When you're above half of the meter, every hour it will give you progress towards the bloodlust perk; when it's below, it'll remove progress. The bloodlust meter naturally decays by 1 every hour. Having bloodied clothes helps the process",
+	Sandbox_ETW_Bloodlust_tooltip = "This allows you to gain a benefit by filling and maintaining a bloodlust meter. The bloodlust meter is soft-capped at 36 hours and can be filled by killing zombies. The closer the zombies are, the more quickly the meter will fill. When you're above half of the meter, every hour it will give you progress towards the bloodlust perk; when it's below, it'll remove progress. The bloodlust meter naturally decays by 1 every hour. Having bloodied clothes helps the process",
 	Sandbox_ETW_BloodlustMeterFillMultiplier = "Bloodlust Meter Fill Multiplier",
 	Sandbox_ETW_BloodlustMeterFillMultiplier_tooltip = "How fast you fill your bloodlust meter",
 	Sandbox_ETW_BloodlustMeterMaxCapMultiplier = "Bloodlust Meter Max Cap Multiplier",
