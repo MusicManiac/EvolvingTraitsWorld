@@ -57,7 +57,7 @@ local function traitsGainsBySkill(player, perk)
 	local shortBladeKills = killCountModData["SmallBlade"].count;
 	local spearKills = killCountModData["Spear"].count;
 	local firearmKills = killCountModData["Firearm"].count;
-	
+
 	local detailedDebug = detailedDebug();
 	local notification = notification();
 	local delayedNotification = delayedNotification();
@@ -614,12 +614,12 @@ local function traitsGainsBySkill(player, perk)
 		-- Tailoring
 			-- Sewer
 				if (perk == "characterInitialization" or perk == Perks.Tailoring or perk == "Tailor") and ETWCommonLogicChecks.TailorShouldExecute() then
-					if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Tailor") then
-						if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_Tailor"), true, HaloTextHelper.getColorGreen()) end;
-						ETWCommonFunctions.traitSound(player);
-						ETWCommonFunctions.addTraitToDelayTable(modData, "Tailor", player, true);
-					elseif tailoring >= SBvars.SewerSkill then
-						if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Tailor")) then
+					if tailoring >= SBvars.SewerSkill then
+						if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Tailor") then
+							if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_Tailor"), true, HaloTextHelper.getColorGreen()) end;
+							ETWCommonFunctions.traitSound(player);
+							ETWCommonFunctions.addTraitToDelayTable(modData, "Tailor", player, true);
+						elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Tailor")) then
 							player:getTraits():add("Tailor");
 							ETWCommonFunctions.applyXPBoost(player, Perks.Tailoring, 1);
 							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Tailor"), true, HaloTextHelper.getColorGreen()) end;
