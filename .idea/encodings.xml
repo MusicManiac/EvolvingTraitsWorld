@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/Contents/mods/Evolving Traits World/media/lua/shared/Translate/DE/Moodles_DE.txt" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/Contents/mods/Evolving Traits World/media/lua/shared/Translate/DE/Sandbox_DE.txt" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/Contents/mods/Evolving Traits World/media/lua/shared/Translate/DE/UI_DE.txt" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/Contents/mods/Evolving Traits World/media/lua/shared/Translate/ES/Moodles_ES.txt" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/Contents/mods/Evolving Traits World/media/lua/shared/Translate/ES/Sandbox_ES.txt" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/Contents/mods/Evolving Traits World/media/lua/shared/Translate/ES/UI_ES.txt" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/Contents/mods/Evolving Traits World/media/lua/shared/Translate/IT/Moodles_IT.txt" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/Contents/mods/Evolving Traits World/media/lua/shared/Translate/IT/Sandbox_IT.txt" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/Contents/mods/Evolving Traits World/media/lua/shared/Translate/IT/UI_IT.txt" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/Contents/mods/Evolving Traits World/media/lua/shared/Translate/PTBR/Moodles_PTBR.txt" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/Contents/mods/Evolving Traits World/media/lua/shared/Translate/PTBR/Sandbox_PTBR.txt" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/Contents/mods/Evolving Traits World/media/lua/shared/Translate/PTBR/UI_PTBR.txt" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/Contents/mods/Evolving Traits World/media/lua/shared/Translate/RU/Moodles_RU.txt" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/Contents/mods/Evolving Traits World/media/lua/shared/Translate/RU/Sandbox_RU.txt" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/Contents/mods/Evolving Traits World/media/lua/shared/Translate/RU/UI_RU.txt" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/Contents/mods/Evolving Traits World/media/lua/shared/Translate/TR/Moodles_TR.txt" charset="ISO-8859-9" />
+    <file url="file://$PROJECT_DIR$/Contents/mods/Evolving Traits World/media/lua/shared/Translate/TR/Sandbox_TR.txt" charset="ISO-8859-9" />
+    <file url="file://$PROJECT_DIR$/Contents/mods/Evolving Traits World/media/lua/shared/Translate/TR/UI_TR.txt" charset="ISO-8859-9" />
+  </component>
+</project>

@@ -29,11 +29,11 @@ local function rainTraits()
 		local upperBoundary = SBCounter * 2;
 		if panic <= 25 then
 			rainGain = rainGain / ((SBvars.AffinitySystem and modData.StartingTraits.Pluviophobia) and SBvars.AffinitySystemLoseDivider or 1);
-			rainGain = rainGain * ((SBvars.AffinitySystem and modData.StartingTraits.Pluviophile) and SBvars.AffinitySystemGainMultiplier or 1);
+			rainGain = rainGain * ((SBvars.AffinitySystem and modData.StartingTraits.Pluviophile) and SBvars.AffinitySystemGainMultiplier or 1) * SBvars.RainSystemCounterIncreaseMultiplier;
 			if debug() then print("ETW Logger | rainTraits(): rainTraits rainGain=" .. rainGain .. ". RainCounter=" .. modData.RainCounter) end;
 			modData.RainCounter = math.min(upperBoundary, modData.RainCounter + rainGain);
 		else
-			local rainDecrease = rainGain * panic / 100 * SBvars.RainSystemCounterMultiplier;
+			local rainDecrease = rainGain * (panic / 100) * SBvars.RainSystemCounterDecreaseMultiplier;
 			rainDecrease = rainDecrease / ((SBvars.AffinitySystem and modData.StartingTraits.Pluviophile) and SBvars.AffinitySystemLoseDivider or 1);
 			rainDecrease = rainDecrease * ((SBvars.AffinitySystem and modData.StartingTraits.Pluviophobia) and SBvars.AffinitySystemGainMultiplier or 1);
 			if debug() then print("ETW Logger | rainTraits(): rainTraits rainDecrease=" .. rainDecrease .. ". RainCounter=" .. modData.RainCounter) end;

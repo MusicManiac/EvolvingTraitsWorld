@@ -35,28 +35,26 @@ local function coldTraitsETW()
 				if debug() then print("ETW Logger | coldTraitsETW(): Weathered a cold, coldSystemData.ColdsWeathered = " .. coldSystemData.ColdsWeathered) end;
 			end
 			coldSystemData.CurrentColdCounterContribution = 0;
-			if player:HasTrait("ProneToIllness") and coldSystemData.ColdsWeathered >= SBvars.ColdIllnessSystemColdsWeathered / 2 and SBvars.TraitsLockSystemCanLoseNegative then
-				if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("ProneToIllness")) then
-					player:getTraits():remove("ProneToIllness");
-                    if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_pronetoillness"), false, HaloTextHelper.getColorGreen()) end;
-					ETWCommonFunctions.traitSound(player);
-				end
+            if player:HasTrait("ProneToIllness") and coldSystemData.ColdsWeathered >= SBvars.ColdIllnessSystemColdsWeathered / 2 and SBvars.TraitsLockSystemCanLoseNegative then
 				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("ProneToIllness") then
 					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringRemove") .. getText("UI_trait_pronetoillness"), true, HaloTextHelper.getColorGreen()) end;
 					ETWCommonFunctions.traitSound(player);
 					ETWCommonFunctions.addTraitToDelayTable(modData, "ProneToIllness", player, false);
-				end
-			elseif not player:HasTrait("ProneToIllness") and not player:HasTrait("Resilient") and coldSystemData.ColdsWeathered >= SBvars.ColdIllnessSystemColdsWeathered and SBvars.TraitsLockSystemCanGainPositive then
-				if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Resilient")) then
-					player:getTraits():add("Resilient");
-					if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_resilient"), true, HaloTextHelper.getColorGreen()) end;
+				elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("ProneToIllness")) then
+					player:getTraits():remove("ProneToIllness");
+                    if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_pronetoillness"), false, HaloTextHelper.getColorGreen()) end;
 					ETWCommonFunctions.traitSound(player);
-					Events.EveryOneMinute.Remove(coldTraitsETW);
 				end
+            elseif not player:HasTrait("ProneToIllness") and not player:HasTrait("Resilient") and coldSystemData.ColdsWeathered >= SBvars.ColdIllnessSystemColdsWeathered and SBvars.TraitsLockSystemCanGainPositive then
 				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Resilient") then
 					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_resilient"), true, HaloTextHelper.getColorGreen()) end;
 					ETWCommonFunctions.traitSound(player);
 					ETWCommonFunctions.addTraitToDelayTable(modData, "Resilient", player, true);
+				elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Resilient")) then
+					player:getTraits():add("Resilient");
+					if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_resilient"), true, HaloTextHelper.getColorGreen()) end;
+					ETWCommonFunctions.traitSound(player);
+					Events.EveryOneMinute.Remove(coldTraitsETW);
 				end
 			end
 		end
@@ -73,27 +71,25 @@ local function foodSicknessTraitsETW()
 	local notification = notification();
 	local delayedNotification = delayedNotification();
 	if player:HasTrait("WeakStomach") and modData.FoodSicknessWeathered >= SBvars.FoodSicknessSystemCounter / 2 and SBvars.TraitsLockSystemCanLoseNegative then
-		if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("WeakStomach")) then
-			player:getTraits():remove("WeakStomach");
-			if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_WeakStomach"), false, HaloTextHelper.getColorGreen()) end;
-			ETWCommonFunctions.traitSound(player);
-		end
 		if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("WeakStomach") then
 			if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringRemove") .. getText("UI_trait_WeakStomach"), true, HaloTextHelper.getColorGreen()) end;
 			ETWCommonFunctions.traitSound(player);
 			ETWCommonFunctions.addTraitToDelayTable(modData, "WeakStomach", player, false);
+		elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("WeakStomach")) then
+			player:getTraits():remove("WeakStomach");
+			if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_WeakStomach"), false, HaloTextHelper.getColorGreen()) end;
+			ETWCommonFunctions.traitSound(player);
 		end
 	elseif not player:HasTrait("WeakStomach") and not player:HasTrait("IronGut") and modData.FoodSicknessWeathered >= SBvars.FoodSicknessSystemCounter and SBvars.TraitsLockSystemCanGainPositive then
-		if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("IronGut")) then
-			player:getTraits():add("IronGut");
-			if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_IronGut"), true, HaloTextHelper.getColorGreen()) end;
-			ETWCommonFunctions.traitSound(player);
-			Events.EveryOneMinute.Remove(foodSicknessTraitsETW);
-		end
 		if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("IronGut") then
 			if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_IronGut"), true, HaloTextHelper.getColorGreen()) end;
 			ETWCommonFunctions.traitSound(player);
 			ETWCommonFunctions.addTraitToDelayTable(modData, "IronGut", player, true);
+		elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("IronGut")) then
+			player:getTraits():add("IronGut");
+			if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_IronGut"), true, HaloTextHelper.getColorGreen()) end;
+			ETWCommonFunctions.traitSound(player);
+			Events.EveryOneMinute.Remove(foodSicknessTraitsETW);
 		end
 	end
 end
@@ -324,17 +320,16 @@ local function painToleranceTraitETW()
 	modData.PainToleranceCounter = modData.PainToleranceCounter + player:getStats():getPain(); -- pain is 0-100
 	if debug() then print("ETW Logger | painToleranceTraitETW(): pain counter: " .. modData.PainToleranceCounter) end;
 	if modData.PainToleranceCounter >= SBvars.PainToleranceCounter then
-		if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("PainTolerance")) then
+		if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("PainTolerance") then
+			if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_PainTolerance"), true, HaloTextHelper.getColorGreen()) end;
+			ETWCommonFunctions.traitSound(player);
+			ETWCommonFunctions.addTraitToDelayTable(modData, "PainTolerance", player, true);
+		elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("PainTolerance")) then
 			player:getTraits():add("PainTolerance");
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_PainTolerance"), true, HaloTextHelper.getColorGreen()) end;
 			ETWCommonFunctions.traitSound(player);
 			ETW_InitiatePainToleranceTrait(player);
 			Events.EveryTenMinutes.Remove(painToleranceTraitETW);
-		end
-		if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("PainTolerance") then
-			if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_PainTolerance"), true, HaloTextHelper.getColorGreen()) end;
-			ETWCommonFunctions.traitSound(player);
-			ETWCommonFunctions.addTraitToDelayTable(modData, "PainTolerance", player, true);
 		end
 	end
 end

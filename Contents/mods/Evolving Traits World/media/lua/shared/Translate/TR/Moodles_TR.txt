@@ -1,4 +1,5 @@
 Moodles_TR {
+	___note_to_translators = "(Don't translate this, this is just info for you guys) If a field has %1 in it, it's replaced with value later on when the code is run",
 	note_to_TR_translators = "Make sure file is saved in ISO 8859-9 encoding, so game display correct characters"
 
 	Moodles_BloodlustMoodle_Good_lvl4 = "Tanr?m, zombilerin kökünü kurutmaya bay?l?yorum",

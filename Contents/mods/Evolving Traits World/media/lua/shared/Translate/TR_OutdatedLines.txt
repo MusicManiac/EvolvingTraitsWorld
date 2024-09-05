@@ -8,8 +8,13 @@ Moodles.txt
 
 Sandbox.txt
 	changed:
-		
+		Sandbox_ETW_CatEyesCounter_tooltip = "This allows you to gain points by seeing and observing squares within a certain radius of your character. The number of points you earn is influenced by factors such as the time of day, the darkness of the square, and whether you and the square are inside or outside. The more squares you see and the darker they are, the more points you will earn. Having Eagle Eyed doubles the gain. Making a kill at night triggers extra execution of function responsible for gaining progress (so instead of getting progress 1 time / minute you can get progress 3 times per minute, for example)",
+
+		Sandbox_ETW_RainSystemCounter_tooltip = "You gain progress every minute you spend in rain. If your panic is above 25%, you instead lose progress. Counter has upper boundary of 2x the set value here and lower boundary of -2x the set value here. Reaching -counter will gain you Pluviophobia. Reaching +counter will gain you Pluviophile. Being in between will give you nothing",
+
 	new:
+		Sandbox_ETW_BloodlustMeterMaxCapMultiplier = "Bloodlust Meter Max Cap Multiplier",
+		Sandbox_ETW_BloodlustMeterMaxCapMultiplier_tooltip = "By how much you can overfill your Bloodlust Meter. This is a multiplier. 2 means you can fill your Bloodlust Meter to 200%, for example",
 
 UI.txt
 	changed:

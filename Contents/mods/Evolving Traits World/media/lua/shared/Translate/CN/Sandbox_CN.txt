@@ -14,7 +14,7 @@ Sandbox_CN = {
 	Sandbox_ETW_AffinitySystemLoseDivider_tooltip = "决定技能有多难失去 (只影响你一开始创建角色时的技能).设定为1代表无难易度变更.设定为2代表失去的速率是2倍慢,依此类推. 如果一开始选择了会失去的特质,设定高数值代表更难失去,同样引响负面特质.",
 	Sandbox_ETW_AffinitySystemGainMultiplier = "偏好系统获得难易",
 	Sandbox_ETW_AffinitySystemGainMultiplier_tooltip = "决定技能有多难获得 (只影响你一开始创建角色时的技能).设定为1代表无难易度变更.设定为2代表获得的速率是2倍快,依此类推. 设定高数值代表如果一开始选择了的特质在游戏中失去了,将更快重新获得,同样引响负面特质.",
-	
+
 	Sandbox_ETW_Mechanics = "业余技工",
 	Sandbox_ETW_MechanicsSkill = "业余技工:获得所需技工技能等级",
 	Sandbox_ETW_MechanicsRepairs = "业余技工:获得特质所需维修百分比需求",
@@ -117,7 +117,7 @@ Sandbox_CN = {
 	Sandbox_ETW_FearOfLocationsSystemPassiveCounterDecay = "地区型恐惧症被动衰减计数",
 	Sandbox_ETW_FearOfLocationsSystemPassiveCounterDecay_tooltip = "如果你技术太烂没办法承受同时有密闭/开阔恐惧症 (谁想的到在创角的时候把那些 '免费点数' 的负面特质选起来会有负面效果喔??), you can setup passive decay using this option. 无论你的精神状态,这个被动计数会根据的的所处地点持续的衰减反面的特质计数. 举例:设定此数值为0.1且待在室内时, 会每分钟持续地在开阔恐惧症的计数累加(这一点都没道理,不过一堆人在靠北之前的设定太难所以就这样了). 设定为0不会有任何影响. 建议数值为0.1到0.5",
 
-	
+
 	Sandbox_ETW_FirstAid = "急救员",
 	Sandbox_ETW_FirstAidSkill = "急救员:获得特质所需医疗技能等级",
 
@@ -241,8 +241,8 @@ Sandbox_CN = {
 	Sandbox_ETW_RainSystem = "降雨相关特质系统",
 	Sandbox_ETW_RainSystemCounter = "降雨系统基准,
 	Sandbox_ETW_RainSystemCounter_tooltip = "你在雨中的每1分钟都会得到 1 * 降雨程度的计量.如果在雨中当下你的恐慌已超过25%则是减少1 * 降雨程度 * 恐慌百分比 * 降雨系统乘数的计量.计量基准的上下限为2倍设定值. 当达到基准值为负设定值时时获得恐雨症,当基准值为正设定值时时获得雨瘾者.数值在两者之间时无变化",
-	Sandbox_ETW_RainSystemCounterMultiplier = "降雨系统乘数",
-	Sandbox_ETW_RainSystemCounterMultiplier_tooltip = "决定降雨基准的增长/衰减速率",
+	Sandbox_ETW_RainSystemCounterIncreaseMultiplier = "降雨系统乘数",
+	Sandbox_ETW_RainSystemCounterIncreaseMultiplier_tooltip = "决定降雨基准的增长/衰减速率",
 	Sandbox_ETW_PluviophileMultiplier = "雨瘾者效果乘数",
 	Sandbox_ETW_PluviophileMultiplier_tooltip = "所有以下效果(不开心/压力/无聊值降低)被会被此数值加乘",
 	Sandbox_ETW_PluviophobiaMultiplier = "恐雨症效果乘数",
