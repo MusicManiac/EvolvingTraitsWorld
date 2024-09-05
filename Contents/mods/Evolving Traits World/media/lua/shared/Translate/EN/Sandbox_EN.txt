@@ -14,7 +14,7 @@ Sandbox_EN = {
 	Sandbox_ETW_AffinitySystemLoseDivider_tooltip = "How much harder it is to lose perks that have Affinity System functionality (only affects perks you started with!). Setting it to 1 would mean that it doesn't make it harder to lose. Setting it to 2 means you'll be twice as slow to lose them. Setting it to 1.5 would make it 50% slower, and so on. So if you start with a positive trait that you can lose, it'll be much harder to lose it. But it also affects negative traits!",
 	Sandbox_ETW_AffinitySystemGainMultiplier = "Affinity System Multiplier",
 	Sandbox_ETW_AffinitySystemGainMultiplier_tooltip = "How much easier it is to gain perks that have Affinity System functionality (only affects perks you started with!). Setting it to 1 would mean that it doesn't make it easier to gain. Setting it to 2 means it'll take twice as fast to gain them. Setting it to 1.5 would make it 50% faster, and so on. So if you start with a positive dynamic trait and later lose it, you'll get it back much faster. But it also affects negative traits!",
-	
+
 	Sandbox_ETW_Mechanics = "Amateur Mechanic",
 	Sandbox_ETW_MechanicsSkill = "Amateur Mechanic Mechanics Skill requirement",
 	Sandbox_ETW_MechanicsRepairs = "Repairs requirement",
@@ -46,6 +46,8 @@ Sandbox_EN = {
 	Sandbox_ETW_Bloodlust_tooltip = "This perk allows you to gain a benefit by filling and maintaining a bloodlust meter. The bloodlust meter is soft-capped at 36 hours and can be filled by killing zombies. The closer the zombies are, the more quickly the meter will fill. When you're above half of the meter, every hour it will give you progress towards the bloodlust perk; when it's below, it'll remove progress. The bloodlust meter naturally decays by 1 every hour. Having bloodied clothes helps the process",
 	Sandbox_ETW_BloodlustMeterFillMultiplier = "Bloodlust Meter Fill Multiplier",
 	Sandbox_ETW_BloodlustMeterFillMultiplier_tooltip = "How fast you fill your bloodlust meter",
+	Sandbox_ETW_BloodlustMeterMaxCapMultiplier = "Bloodlust Meter Max Cap Multiplier",
+	Sandbox_ETW_BloodlustMeterMaxCapMultiplier_tooltip = "By how much you can overfill your Bloodlust Meter. This is a multiplier. 2 means you can fill your Bloodlust Meter to 200%, for example",
 	Sandbox_ETW_BloodlustProgress = "Bloodlust Progress",
 	Sandbox_ETW_BloodlustProgress_tooltip = "How much total bloodlust progress you need to get the trait. Keeping your bloodlust meter full would earn you 3.6 points in 1 hour. Be aware that you also lose bloodlust if this meter ever falls below 50%. So if you set it low, it's going to be easy to earn but also easy to lose the perk. Progress is capped at 2x the Bloodlust Progress value",
 	Sandbox_ETW_BloodlustMoodle = "Enable Bloodlust Moodle",
@@ -80,7 +82,7 @@ Sandbox_EN = {
 
 	Sandbox_ETW_CatEyes = "Cat Eyes",
 	Sandbox_ETW_CatEyesCounter = "Cat Eyes Counter",
-	Sandbox_ETW_CatEyesCounter_tooltip = "---General understanding---<br>This perk allows you to gain points by seeing and observing squares within a certain radius of your character. The number of points you earn is influenced by factors such as the time of day, the darkness of the square, and whether you and the square are inside or outside. The more squares you see and the darker they are, the more points you will earn.<br>---Technical description, don't read this if you don't want to meta-game much---<br>To earn points for this perk, you must see and observe squares within a 30-radius of your character. The exact number of points you earn for each square is determined by a formula that takes into account the darkness of the square, the time of day, and whether you and the square are inside or outside. The detailed formula for calculating points for each square is: 0.01 * darkness of square * 2 (if both player and square are inside) * time of day. On average, spending a full night outside will net you approximately 1.1k points",
+	Sandbox_ETW_CatEyesCounter_tooltip = "This allows you to gain points by seeing and observing squares within a certain radius of your character. The number of points you earn is influenced by factors such as the time of day, the darkness of the square, and whether you and the square are inside or outside. The more squares you see and the darker they are, the more points you will earn. Having Eagle Eyed doubles the gain. Making a kill at night triggers extra execution of function responsible for gaining progress (so instead of getting progress 1 time / minute you can get progress 3 times per minute, for example)",
 
 	Sandbox_ETW_Clumsy = "Clumsy",
 	Sandbox_ETW_ClumsySkill = "Clumsy Skill requirement",
@@ -117,7 +119,7 @@ Sandbox_EN = {
 	Sandbox_ETW_FearOfLocationsSystemCounterLoseMultiplier_tooltip = "Controls how fast the counter decreases when you are unhappy (50%+) or stressed (50%+). Since you are more often normal than unhappy or stressed, it's recommended not to set this value too low. The formula for how much the counter decreases every minute is: 1 * (1 + unhappiness(0-1)) + (1 * stress(0-1)) * multiplier. At minimum, you lose 0 * multiplier; at maximum, you lose 4 * multiplier",
 	Sandbox_ETW_FearOfLocationsSystemPassiveCounterDecay = "Fear of Locations Passive Counter Decay",
 	Sandbox_ETW_FearOfLocationsSystemPassiveCounterDecay_tooltip = "If you have an issue managing both Agoraphobic and Claustrophobic traits simultaneously, you can set up passive decay using this option. This slowly decays the opposite counter based on whether you're outside/inside every minute, regardless of your mental state. For example, setting this to 0.1 and being inside will gradually reduce your fear of outside by adding 0.1 to the outside counter every minute. Setting it to 0 will have no effect on counters. Recommended values range from 0.1 to 0.5"
-	
+
 	Sandbox_ETW_FirstAid = "First Aider",
 	Sandbox_ETW_FirstAidSkill = "First Aider First Aid Skill requirement",
 
@@ -240,9 +242,11 @@ Sandbox_EN = {
 
 	Sandbox_ETW_RainSystem = "Rain System",
 	Sandbox_ETW_RainSystemCounter = "Rain System Counter",
-	Sandbox_ETW_RainSystemCounter_tooltip = "You gain 1 * rainIntensity every minute you spend in rain. If your panic is above 25%, you instead lose 1 * rainIntensity * panicPercentage * RainSystemDecreaseMultiplier. Counter has upper boundary of 2x the set value here and lower boundary of -2x the set value here. Reaching -counter will gain you Pluviophobia. Reaching +counter will gain you Pluviophile. Being in between will give you nothing",
-	Sandbox_ETW_RainSystemCounterMultiplier = "Rain System Decrease Multiplier",
-	Sandbox_ETW_RainSystemCounterMultiplier_tooltip = "Adjusts the rate at which your Rain System Counter decreases, detailed in Rain System Counter tooltip",
+	Sandbox_ETW_RainSystemCounter_tooltip = "You gain progress every minute you spend in rain. If your panic is above 25%, you instead lose progress. Counter has upper boundary of 2x the set value here and lower boundary of -2x the set value here. Reaching -counter will gain you Pluviophobia. Reaching +counter will gain you Pluviophile. Being in between will give you nothing",
+	Sandbox_ETW_RainSystemCounterIncreaseMultiplier = "Rain System Increase Multiplier",
+	Sandbox_ETW_RainSystemCounterIncreaseMultiplier_tooltip = "Adjusts the rate at which your Rain System Counter increases, detailed in Rain System Counter tooltip",
+	Sandbox_ETW_RainSystemCounterDecreaseMultiplier = "Rain System Decrease Multiplier",
+	Sandbox_ETW_RainSystemCounterDecreaseMultiplier_tooltip = "Adjusts the rate at which your Rain System Counter decreases, detailed in Rain System Counter tooltip",
 	Sandbox_ETW_PluviophileMultiplier = "Pluviophile effect multiplier",
 	Sandbox_ETW_PluviophileMultiplier_tooltip = "Multiplies the effects of Unhappiness, Stress, and Boredom decreases",
 	Sandbox_ETW_PluviophobiaMultiplier = "Pluviophobia effect multiplier",

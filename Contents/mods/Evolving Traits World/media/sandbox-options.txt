@@ -169,7 +169,7 @@ option EvolvingTraitsWorld.FogSystemCounterIncreaseMultiplier
 	type = double,
 	min = 0,
 	max = 100,
-	default = 1,
+	default = 10,
 	page = ETWSystems,
 	translation = ETW_FogSystemCounterIncreaseMultiplier,
 }
@@ -178,7 +178,7 @@ option EvolvingTraitsWorld.FogSystemCounterDecreaseMultiplier
 	type = double,
 	min = 0,
 	max = 100,
-	default = 1,
+	default = 10,
 	page = ETWSystems,
 	translation = ETW_FogSystemCounterDecreaseMultiplier,
 }
@@ -287,14 +287,23 @@ option EvolvingTraitsWorld.RainSystemCounter
 	page = ETWSystems,
 	translation = ETW_RainSystemCounter,
 }
-option EvolvingTraitsWorld.RainSystemCounterMultiplier
+option EvolvingTraitsWorld.RainSystemCounterIncreaseMultiplier
 {
 	type = double,
 	min = 0,
 	max = 100,
-	default = 1,
+	default = 10,
 	page = ETWSystems,
-	translation = ETW_RainSystemCounterMultiplier,
+	translation = ETW_RainSystemCounterIncreaseMultiplier,
+}
+option EvolvingTraitsWorld.RainSystemCounterDecreaseMultiplier
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 10,
+	page = ETWSystems,
+	translation = ETW_RainSystemCounterDecreaseMultiplier,
 }
 option EvolvingTraitsWorld.SleepSystem
 {
@@ -516,6 +525,15 @@ option EvolvingTraitsWorld.BloodlustMeterFillMultiplier
 	default = 0.5,
 	page = ETWComplexPerks,
 	translation = ETW_BloodlustMeterFillMultiplier,
+}
+option EvolvingTraitsWorld.BloodlustMeterMaxCapMultiplier
+{
+	type = integer,
+	min = 1,
+	max = 100,
+	default = 2,
+	page = ETWComplexPerks,
+	translation = ETW_BloodlustMeterMaxCapMultiplier,
 }
 option EvolvingTraitsWorld.BloodlustProgress
 {

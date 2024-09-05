@@ -8,10 +8,16 @@ Moodles_EN.txt
 
 Sandbox.txt
 	changed:
-		Sandbox_ETW_Bloodlust_tooltip = "This perk allows you to gain a benefit by filling and maintaining a bloodlust meter. The bloodlust meter is soft-capped at 36 hours and can be filled by killing zombies. The closer the zombies are, the more quickly the meter will fill. When you're above half of the meter, every hour it will give you progress towards the bloodlust perk; when it's below, it'll remove progress. The bloodlust meter naturally decays by 1 every hour. Having bloodied clothes helps the process",
+		Sandbox_ETW_Bloodlust_tooltip = "This perk allows you to gain a benefit by filling and maintaining a bloodlust meter. The bloodlust meter is soft-capped at 72 hours and can be filled by killing zombies. The closer the zombies are, the more quickly the meter will fill. When you're above half of the meter, every hour it will give you progress towards the bloodlust perk; when it's below, it'll remove progress. The bloodlust meter naturally decays by 1 every hour. Having bloodied clothes helps the process",
 
 		Sandbox_ETW_BraverySystemKills_tooltip = "Here you set up how many kills you need to get to max out your bravery system. Melee kills count twice for progress. Progression is as follows: Cowardly -> Fear of Blood -> Pacifist -> Adrenaline Junkie -> Brave -> Desensitized<br>You need to have previous trait gone (if it's negative) or present (if it's positive) to earn/lose next trait In progression.<br>Amounts to reach each stage are as follows:<br>Cowardly: 10% of max kills<br>Fear of Blood: 20% of max kills<br>Pacifist: 30% of max kills<br>Adrenaline Junkie: 40% of max kills<br>Brave: 60% of max kills<br>Desensitized: 100% of max kills<br>Example: Max kills is set to 1000. You start with Cowardly. You need 100 kills to remove it. If you get 50 melee kills, it'll be removed. The same is true if you get 40 melee kills (x2 = 80 kills for the counter) and 20 firearms kills",
+
+		Sandbox_ETW_CatEyesCounter_tooltip = "This allows you to gain points by seeing and observing squares within a certain radius of your character. The number of points you earn is influenced by factors such as the time of day, the darkness of the square, and whether you and the square are inside or outside. The more squares you see and the darker they are, the more points you will earn. Having Eagle Eyed doubles the gain. Making a kill at night triggers extra execution of function responsible for gaining progress (so instead of getting progress 1 time / minute you can get progress 3 times per minute, for example)",
+
+		Sandbox_ETW_RainSystemCounter_tooltip = "You gain progress every minute you spend in rain. If your panic is above 25%, you instead lose progress. Counter has upper boundary of 2x the set value here and lower boundary of -2x the set value here. Reaching -counter will gain you Pluviophobia. Reaching +counter will gain you Pluviophile. Being in between will give you nothing",
 	new:
+		Sandbox_ETW_BloodlustMeterMaxCapMultiplier = "Bloodlust Meter Max Cap Multiplier",
+		Sandbox_ETW_BloodlustMeterMaxCapMultiplier_tooltip = "By how much you can overfill your Bloodlust Meter. This is a multiplier. 2 means you can fill your Bloodlust Meter to 200%, for example",
 
 UI.txt
 	changed:

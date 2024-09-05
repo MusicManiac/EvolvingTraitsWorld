@@ -150,7 +150,8 @@
         "checkThirdParty": false,
         "ignoreDir": [
             ".vscode",
-            "libs/"
+            "libs/",
+            "Contents/mods/Evolving Traits World/media/lua/shared/Translate/"
         ],
         "library": [
             "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid/media/lua",

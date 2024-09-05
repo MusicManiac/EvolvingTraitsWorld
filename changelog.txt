@@ -1,6 +1,13 @@
-v.8.1.1
+v.8.2.0
 
+General:
+	- Bloodlust Meter (one you fill by killing stuff) is now capped at 300%. Adjustable in Sandbox
+	- Kills made at night now help with earning Cat Eyes
+	- Having Eagle Eyed doubles gain rate of Cat Eyes
+	- Added new Rain System sandbox setting
+	- Adjusted default settings for Rain System and Fog System
 Fixes:
-	- Fixed Bravery System not working (ups)
+	- Fixed doubled notification when gaining traits through Delay Traits System
+	- Fixed Bloodlust Meter not decaying
 Translations:
-	- I hate encodings. Fixed RU
+	- Fixed all encodings, should be no more weird symbols.

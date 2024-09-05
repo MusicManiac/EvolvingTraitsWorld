@@ -14,7 +14,7 @@ Sandbox_ES = {
 	Sandbox_ETW_AffinitySystemLoseDivider_tooltip = "Que tan difícil es perder las ventajas que tienen la funcionalidad del sistema de afinidad (¡solo afecta las ventajas con las que comenzaste!). Establecerlo en 1 no hará que perder el rasgo sea más dificil. Establecerlo en 2 significa que será el doble de lento para perderlos. Establecerlo en 1.5 lo haría un 50% más lento, y así sucesivamente. Entonces, si comienzas con un rasgo positivo que puedes perder, será mucho más difícil perderlo. ¡Pero también afecta los rasgos negativos!",
 	Sandbox_ETW_AffinitySystemGainMultiplier = "Multiplicador de sistema de afinidad",
 	Sandbox_ETW_AffinitySystemGainMultiplier_tooltip = "Cuánto más fácil es obtener ventajas que tienen la funcionalidad del sistema de afinidad (¡solo afecta las ventajas con las que comenzaste!). Establecerlo en 1  no hace que sean más fácil de obtener. Establecerlo en 2 significa que será el doble de rápido obtenerlas. Establecerlo en 1.5 lo haría un 50% más rápido, y así sucesivamente. Entonces, si comienzas con un rasgo dinámico positivo y luego lo pierdes, lo recuperarás mucho más rápido. ¡Pero también afecta los rasgos negativos!",
-	
+
 	Sandbox_ETW_Mechanics = "Mecánico aficionado",
 	Sandbox_ETW_MechanicsSkill = "Mecánico aficionado Requisito de habilidad de Mecánica",
 	Sandbox_ETW_MechanicsRepairs = "Requisito de reparaciones",
@@ -121,7 +121,7 @@ Sandbox_ES = {
 	Sandbox_ETW_FearOfLocationsSystemCounterLoseMultiplier_tooltip = "Qué tan rápido disminuyes el contador cuando estás infeliz (50%+) o estresado (50%+). Teniendo en cuenta que con más frecuencia no estas infeliz o estresado, te recomiendo que no lo configures demasiado bajo. La fórmula de cuánto disminuye el contador cada minuto es 1 * (1 + infelicidad (0-1)) + (1 * estrés (0-1)) * multiplicador, por lo que como mínimo pierdes 0 * multiplicador, como máximo pierdes 4 * multiplicador.",
 	Sandbox_ETW_FearOfLocationsSystemPassiveCounterDecay = "Reducción del miedo a las ubicaciones",
 	Sandbox_ETW_FearOfLocationsSystemPassiveCounterDecay_tooltip = "Si escogiste ser Claustrofobico o Agorafobico, puedes activar esta función para ir perdiendole el miedo a las ubicaciones según tu tiempo dentro de estos.",
-	
+
 	Sandbox_ETW_FirstAid = "Socorrista",
 	Sandbox_ETW_FirstAidSkill = "Socorrista Requisito de habilidad de Primeros auxilios",
 
@@ -245,8 +245,8 @@ Sandbox_ES = {
 	Sandbox_ETW_RainSystem = "Sistema de lluvia",
 	Sandbox_ETW_RainSystemCounter = "Contador de Sistema de lluvia",
 	Sandbox_ETW_RainSystemCounter_tooltip = "Obtienes 1*rainIntensity cada minuto que pasas bajo la lluvia. Si tienes más del 25% de pánico, perderás 1*rainIntensity*panicPercentage*RainSystemDecreaseMultiplier. Los límites máximo y mínimo del contador son -2*contador y 2*contador. Al estar debajo del contador, ganas Pluviofobia, al llegar al contador, ganas Pluviofilo. Cuando estás en el medio, no obtienes nada.",
-Sandbox_ETW_RainSystemCounterMultiplier = "Multiplicador de disminución del Sistema de lluvia",
-	Sandbox_ETW_RainSystemCounterMultiplier_tooltip = "Define qué tan rápido o lento disminuye su Contador del sistema de lluvia, explicado en la información sobre herramientas del Contador del sistema de lluvia",
+	Sandbox_ETW_RainSystemCounterIncreaseMultiplier = "Multiplicador de disminución del Sistema de lluvia",
+	Sandbox_ETW_RainSystemCounterIncreaseMultiplier_tooltip = "Define qué tan rápido o lento disminuye su Contador del sistema de lluvia, explicado en la información sobre herramientas del Contador del sistema de lluvia",
 	Sandbox_ETW_PluviophileMultiplier = "Multiplicador de efecto de Pluviofilo",
 	Sandbox_ETW_PluviophileMultiplier_tooltip = "Todos los efectos (Disminución de la Infelicidad, Estrés y Aburrimiento) se multiplican por este valor.",
 	Sandbox_ETW_PluviophobiaMultiplier = "Multiplicador de efecto de Pluviofobia",

@@ -16,43 +16,49 @@ local debug = function() return EvolvingTraitsWorld.settings.GatherDebug end;
 local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetailedDebug end;
 
 ---Function responsible for managing Cat Eyes trait
-local function catEyes()
+---@param isKill boolean
+local function catEyes(isKill)
+	local isKill = isKill or false;
 	local player = getPlayer();
 	local nightStrength = getClimateManager():getNightStrength()
 	if nightStrength > 0 then
 		local playerNum = player:getPlayerNum();
 		local checkedSquares = 0;
 		local squaresVisible = 0;
-		local darknessLevel = 0;
 		local square;
 		local plX, plY, plZ = player:getX(), player:getY(), player:getZ();
 		local radius = 30;
 		local modData = ETWCommonFunctions.getETWModData(player);
+		local playerIsInside = player:isInARoom();
+		local hasEagleEyed = player:HasTrait("EagleEyed");
+		local thisMinuteIncrease = 0;
 		for x = -radius, radius do
 			for y = -radius, radius do
 				square = getCell():getGridSquare(plX + x, plY + y, plZ);
 				checkedSquares = checkedSquares + 1;
 				if square and square:isCanSee(playerNum) then
-					local squareDarknessLevel = nightStrength * (1 - square:getLightLevel(playerNum)) * 0.01 * (square:isInARoom() and player:isInARoom() and 2 or 1);
+					local squareDarknessLevel = nightStrength * (1 - square:getLightLevel(playerNum)) * 0.01 * (square:isInARoom() and playerIsInside and 2 or 1) * (hasEagleEyed and 2 or 1);
 					squaresVisible = squaresVisible + 1;
-					darknessLevel = darknessLevel + squareDarknessLevel;
-					modData.CatEyesCounter = modData.CatEyesCounter + squareDarknessLevel;
+					thisMinuteIncrease = thisMinuteIncrease + squareDarknessLevel;
 				end
 			end
 		end
-		if detailedDebug() then print("ETW Logger | catEyes(): Checked squares: " .. checkedSquares .. ", visible squares: " .. squaresVisible .. " with total darkness level of " .. darknessLevel) end;
+        modData.CatEyesCounter = modData.CatEyesCounter + thisMinuteIncrease;
+		if detailedDebug() then
+			if isKill then print("ETW Logger | catEyes(): was triggered by a kill") end;
+			print("ETW Logger | catEyes(): Checked squares: " .. checkedSquares .. ", visible squares: " .. squaresVisible .. " with total darkness level of " .. thisMinuteIncrease)
+		end;
 		if debug() then print("ETW Logger | catEyes(): CatEyesCounter: " .. modData.CatEyesCounter) end;
 		if not player:HasTrait("NightVision") and modData.CatEyesCounter >= SBvars.CatEyesCounter then
-			if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("NightVision")) then
-				player:getTraits():add("NightVision");
-				ETWCommonFunctions.traitSound(player);
-				if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_NightVision"), true, HaloTextHelper.getColorGreen()) end;
-				Events.EveryOneMinute.Remove(catEyes);
-			end
 			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("NightVision") then
 				if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_NightVision"), true, HaloTextHelper.getColorGreen()) end;
 				ETWCommonFunctions.addTraitToDelayTable(modData, "NightVision", player, true);
 				ETWCommonFunctions.traitSound(player);
+			elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("NightVision")) then
+				player:getTraits():add("NightVision");
+				ETWCommonFunctions.traitSound(player);
+				if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_NightVision"), true, HaloTextHelper.getColorGreen()) end;
+				Events.EveryOneMinute.Remove(catEyes);
 			end
 		end
 	end
@@ -205,12 +211,28 @@ local function herbalist()
 	end
 end
 
+---Helper function to fire catEyes() on zombie kill
+---@param zombie IsoZombie
+local function catEyesKill(zombie)
+    local player = zombie:getAttackedBy()
+	---@cast player IsoPlayer
+    if not player or not player:isLocalPlayer() then
+		return
+	else
+		catEyes(true);
+	end
+end
+
 ---Function responsible for setting up events
 ---@param playerIndex number
 ---@param player IsoPlayer
 local function initializeEventsETW(playerIndex, player)
 	Events.EveryOneMinute.Remove(catEyes);
-	if ETWCommonLogicChecks.CatEyesShouldExecute() then Events.EveryOneMinute.Add(catEyes) end;
+	Events.OnZombieDead.Remove(catEyesKill);
+	if ETWCommonLogicChecks.CatEyesShouldExecute() then
+		Events.EveryOneMinute.Add(catEyes)
+		Events.OnZombieDead.Add(catEyesKill);
+	end
 	Events.EveryTenMinutes.Remove(sleepSystem);
 	if ETWCommonLogicChecks.SleepSystemShouldExecute() then	Events.EveryTenMinutes.Add(sleepSystem)	end;
 	Events.EveryOneMinute.Remove(smoker);

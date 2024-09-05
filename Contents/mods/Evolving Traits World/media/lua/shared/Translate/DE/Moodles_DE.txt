@@ -8,17 +8,17 @@ Moodles_DE {
 	Moodles_BloodlustMoodle_Good_lvl1 = "Am Ende habe ich Spass",
 	Moodles_BloodlustMoodle_Bad_lvl1 = "Nicht die lustigste Sache der Welt",
 	Moodles_BloodlustMoodle_Bad_lvl2 = "Das ist ein langweiliger Job, aber irgendjemand muss ihn ja machen",
-	Moodles_BloodlustMoodle_Bad_lvl3 = "Ein paar Zombies zu tï¿½ten ist nicht das Schlimmste",
-	Moodles_BloodlustMoodle_Bad_lvl4 = "Ich habe wirklich keine Lust, irgendwelche Zombies zu tï¿½ten.",
-	Moodles_BloodlustMoodle_Custom = "Mein Blutrausch-Meter ist zu %1 gefï¿½llt.<br>Wenn ich ï¿½ber 50% liege, erhalte ich die Eigenschaft Blutrausch,<br>Wenn ich unter 50% bleibe, werden meine Fortschritte zurï¿½ckgehen.<br>(Dies ist ein Indikator dafï¿½r, ob du die Eigenschaft "Blutrausch" erhï¿½ltst oder verlierst)",
+	Moodles_BloodlustMoodle_Bad_lvl3 = "Ein paar Zombies zu töten ist nicht das Schlimmste",
+	Moodles_BloodlustMoodle_Bad_lvl4 = "Ich habe wirklich keine Lust, irgendwelche Zombies zu töten.",
+	Moodles_BloodlustMoodle_Custom = "Mein Blutrausch-Meter ist zu %1 gefüllt.<br>Wenn ich über 50% liege, erhalte ich die Eigenschaft Blutrausch,<br>Wenn ich unter 50% bleibe, werden meine Fortschritte zurückgehen.<br>(Dies ist ein Indikator dafür, ob du die Eigenschaft "Blutrausch" erhältst oder verlierst)",
 
-	Moodles_SleepHealthMoodle_Good_lvl4 = "Was fï¿½r ein guter Schlaf",
+	Moodles_SleepHealthMoodle_Good_lvl4 = "Was für ein guter Schlaf",
 	Moodles_SleepHealthMoodle_Good_lvl3 = "Mein Schlaf war sehr erholsam",
 	Moodles_SleepHealthMoodle_Good_lvl2 = "Ich habe gut geschlafen",
-	Moodles_SleepHealthMoodle_Good_lvl1 = "Ich habe anstï¿½ndig geschlafen",
+	Moodles_SleepHealthMoodle_Good_lvl1 = "Ich habe anständig geschlafen",
 	Moodles_SleepHealthMoodle_Bad_lvl1 = "Ich habe ein bisschen schlecht geschlafen",
 	Moodles_SleepHealthMoodle_Bad_lvl2 = "Ich habe sehr schlecht geschlafen",
-	Moodles_SleepHealthMoodle_Bad_lvl3 = "Mein Schlaf-Wach-Rhythmus ist ein wenig gestï¿½rt",
-	Moodles_SleepHealthMoodle_Bad_lvl4 = "Mein Schlaf-Wach-Rhythmus ist vï¿½llig aus dem Gleichgewicht geraten",
-	Moodles_SleepHealthMoodle_Custom = "Mein Schlaf ist im Vergleich zu meinem ï¿½blichen Zeitplan um %1 Stunde verschoben"
+	Moodles_SleepHealthMoodle_Bad_lvl3 = "Mein Schlaf-Wach-Rhythmus ist ein wenig gestört",
+	Moodles_SleepHealthMoodle_Bad_lvl4 = "Mein Schlaf-Wach-Rhythmus ist völlig aus dem Gleichgewicht geraten",
+	Moodles_SleepHealthMoodle_Custom = "Mein Schlaf ist im Vergleich zu meinem üblichen Zeitplan um %1 Stunde verschoben"
 }
