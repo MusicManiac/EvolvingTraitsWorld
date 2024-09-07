@@ -216,8 +216,8 @@ end
 local function catEyesKill(zombie)
     local player = zombie:getAttackedBy()
 	---@cast player IsoPlayer
-    if not player or not player:isLocalPlayer() then
-		return
+    if not player or not instanceof(player, "IsoPlayer") or not player:isLocalPlayer() then
+		return;
 	else
 		catEyes(true);
 	end

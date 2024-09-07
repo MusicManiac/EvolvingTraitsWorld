@@ -18,11 +18,23 @@ Commands.ETW.carRepairCheck = function(args)
 	local player = getPlayer();
 	local modData = player:getModData().EvolvingTraitsWorld;
 	---@cast modData EvolvingTraitsWorldModData
-	if detailedDebug() then print("ETW Logger | Commands.player.carRepairCheck: args.repairedPercentage: " .. args.repairedPercentage) end;
+	if detailedDebug() then print("ETW Logger | Commands.ETW.carRepairCheck: args.repairedPercentage: " .. args.repairedPercentage) end;
 	modData.VehiclePartRepairs = modData.VehiclePartRepairs + args.repairedPercentage;
 	if ETWCommonLogicChecks.BodyWorkEnthusiastShouldExecute() then ETWActionsOverride.bodyworkEnthusiastCheck() end;
 	if ETWCommonLogicChecks.MechanicsShouldExecute() then ETWActionsOverride.mechanicsCheck() end;
 end
+
+-----@class AddClothingToUniqueRippedClothingListArgs
+-----@field item Clothing
+--
+-----comment
+-----@param args AddClothingToUniqueRippedClothingListArgs
+--Commands.ETW.addClothingToUniqueRippedClothingList = function(args)
+--	local player = getPlayer();
+--	local modData = player:getModData().EvolvingTraitsWorld;
+--	---@cast modData EvolvingTraitsWorldModData
+--	print("ETW Logger | Commands.ETW.addClothingToUniqueRippedClothingList: args.item: " .. args.item:getName());
+--end
 
 Commands.OnServerCommand = function(module, command, args)
     if Commands[module] and Commands[module][command] then

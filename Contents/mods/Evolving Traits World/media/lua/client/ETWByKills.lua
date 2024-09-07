@@ -54,11 +54,11 @@ local function bloodlustKillETW(zombie)
 		if detailedDebug then print("ETW Logger | bloodlustKillETW(): kill by NPC") end;
 	else
 		if detailedDebug then print("ETW Logger | bloodlustKillETW(): kill by player") end;
-		local modData = ETWCommonFunctions.getETWModData(player);
-		local bloodlust = modData.BloodlustSystem;
 		local distance = player:DistTo(zombie);
 		if detailedDebug then print("ETW Logger | bloodlustKillETW(): distance=" .. distance) end;
 		if distance <= 10 then
+			local modData = ETWCommonFunctions.getETWModData(player);
+			local bloodlust = modData.BloodlustSystem;
 			bloodlust.LastKillTimestamp = player:getHoursSurvived();
 			if bloodlust.BloodlustMeter <= bloodlustMeterCapacity then
 				bloodlust.BloodlustMeter = bloodlust.BloodlustMeter + math.min(2 / distance, 1) * SBvars.BloodlustMeterFillMultiplier * (1 + bloodiedClothesLevel(player));
@@ -69,7 +69,6 @@ local function bloodlustKillETW(zombie)
 			end
 			ETWMoodles.bloodlustMoodleUpdate(player, false);
 		end
-
 	end
 end
 
