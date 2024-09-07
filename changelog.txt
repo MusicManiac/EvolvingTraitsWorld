@@ -1,4 +1,8 @@
-v.8.2.1
+v.8.2.2
 
 Fixes:
-	- Fixed repeated Tailor notifications
+	- Fixed Bloodlust bar on UI having labels in incorrect position
+Mod Conflicts:
+	- Fixed error when zombie killed by someone else than a player (like NPC from Bandits mod)
+Translations:
+	- KO update, looking for more maintainers of existing languages, they are lagging behind a bit. Ping me on discord if someone wants to help.

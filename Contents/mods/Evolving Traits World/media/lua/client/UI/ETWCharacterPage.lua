@@ -222,12 +222,12 @@ function ISETWProgressUI:createChildren()
 
 		if ETWCommonLogicChecks.BloodlustShouldExecute() then
 			str = "- " .. getText("UI_trait_Bloodlust")
-			self.labelBloodlustLose = ISLabel:new(barOneThirdPosition - strLen(textManager, str)/2, y, FONT_HGT_SMALL, str, self.DimmedTextColor.r, self.DimmedTextColor.g, self.DimmedTextColor.b, self.DimmedTextColor.a, UIFont.Small, true)
+			self.labelBloodlustLose = ISLabel:new(barOneFourthPosition - strLen(textManager, str)/2, y, FONT_HGT_SMALL, str, self.DimmedTextColor.r, self.DimmedTextColor.g, self.DimmedTextColor.b, self.DimmedTextColor.a, UIFont.Small, true)
 			self.labelBloodlustLose:setTooltip(getText("UI_ETW_LooseTooltip"))
 			self:addChild(self.labelBloodlustLose)
 
 			str = "+ " .. getText("UI_trait_Bloodlust")
-			self.labelBloodlustGain = ISLabel:new(barTwoThirdPosition, y, FONT_HGT_SMALL, str, self.DimmedTextColor.r, self.DimmedTextColor.g, self.DimmedTextColor.b, self.DimmedTextColor.a, UIFont.Small, true)
+			self.labelBloodlustGain = ISLabel:new(barMidPosition, y, FONT_HGT_SMALL, str, self.DimmedTextColor.r, self.DimmedTextColor.g, self.DimmedTextColor.b, self.DimmedTextColor.a, UIFont.Small, true)
 			self.labelBloodlustGain:setTooltip(getText("UI_ETW_GainTooltip"))
 			self:addChild(self.labelBloodlustGain)
 

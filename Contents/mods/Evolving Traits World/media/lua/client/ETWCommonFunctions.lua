@@ -24,7 +24,7 @@ local function indexOf(tbl, value)
 	return -1
 end
 
----comment
+---Plays a sound if enabled in settings
 ---@param player IsoPlayer
 function ETWCommonFunctions.traitSound(player)
 	if EvolvingTraitsWorld.settings.EnableSoundNotifications then
@@ -139,6 +139,13 @@ function ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(name)
 	end
 	if detailedDebug() then print("ETW Logger | Delayed Traits System: checking if " .. name .. " is already in the table, it is not.") end;
 	return false;
+end
+
+---comment
+---@param player IsoPlayer
+---@param item Clothing
+function ETWCommonFunctions.addClothingToUniqueRippedClothingList(player, item)
+
 end
 
 return ETWCommonFunctions;
