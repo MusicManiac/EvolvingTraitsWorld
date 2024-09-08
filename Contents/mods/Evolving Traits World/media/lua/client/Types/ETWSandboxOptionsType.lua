@@ -160,6 +160,7 @@
 --- @field RunnerSkill integer
 --- @field Sewer boolean
 --- @field SewerSkill integer
+--- @field SewerUniqueClothesRipped integer
 --- @field Sojutsu boolean
 --- @field SojutsuSkill integer
 --- @field SojutsuKills integer

@@ -16,6 +16,9 @@ Sandbox.txt
 		Sandbox_ETW_BloodlustMeterMaxCapMultiplier = "Bloodlust Meter Max Cap Multiplier",
 		Sandbox_ETW_BloodlustMeterMaxCapMultiplier_tooltip = "By how much you can overfill your Bloodlust Meter. This is a multiplier. 2 means you can fill your Bloodlust Meter to 200%, for example",
 
+		Sandbox_ETW_SewerUniqueClothesRipped = "Sewer Unique Clothes Ripped",
+		Sandbox_ETW_SewerUniqueClothesRipped_tooltip = "Amount of unique clothing you need to rip to qualify for Sewer. If you are running with modded clothes, increase this respectively. AuthenticZ or Brita Armor Pack all add A LOT of clothing to rip, as an example.",
+
 UI.txt
 	changed:
 

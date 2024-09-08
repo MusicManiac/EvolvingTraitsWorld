@@ -1,5 +1,5 @@
 require "ETWModData";
-ETWCommonFunctions = {};
+local ETWCommonFunctions = {};
 
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld;
@@ -8,20 +8,31 @@ local debug = function() return EvolvingTraitsWorld.settings.GatherDebug end;
 ---@return boolean
 local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetailedDebug end;
 
----Function responsible for finding index of specific item in a table
+---Function responsible for finding index of delayed trait in Delayed Traits Table
+---@param tbl table
+---@param value any
+---@return integer
+local function indexOfDelayedTrait(tbl, value)
+	for i = 1, #tbl do
+		local subTable = tbl[i]
+		if subTable[1] == value then
+			return i
+		end
+	end
+	return -1
+end
+
+---Function responsible for finding index of a specific item in a flat table
 ---@param tbl table
 ---@param value any
 ---@return integer
 local function indexOf(tbl, value)
-	for i = 1, #tbl do
-		local subTable = tbl[i]
-		for j = 1, #subTable do
-			if subTable[j] == value then
-				return i
-			end
-		end
-	end
-	return -1
+    for i = 1, #tbl do
+        if tbl[i] == value then
+            return i
+        end
+    end
+    return -1
 end
 
 ---Plays a sound if enabled in settings
@@ -85,10 +96,10 @@ function ETWCommonFunctions.addTraitToDelayTable(modData, traitName, player, pos
 	if not modData.DelayedStartingTraitsFilled then
 		if debug() then print("ETW Logger | Delayed Traits System: player qualifies for " .. traitName .. " from the start of the game, adding it to delayed traits table") end;
 		table.insert(modData.DelayedTraits, {traitName, SBvars.DelayedTraitsSystemDefaultDelay + SBvars.DelayedTraitsSystemDefaultStartingDelay, false})
-	elseif indexOf(modData.DelayedTraits, traitName) == -1 and not player:HasTrait(traitName) and positiveTrait then
+	elseif indexOfDelayedTrait(modData.DelayedTraits, traitName) == -1 and not player:HasTrait(traitName) and positiveTrait then
 		if debug() then print("ETW Logger | Delayed Traits System: player qualifies for positive trait " .. traitName .. ", adding it to delayed traits table") end;
 		table.insert(modData.DelayedTraits, {traitName, SBvars.DelayedTraitsSystemDefaultDelay, false})
-	elseif indexOf(modData.DelayedTraits, traitName) == -1 and player:HasTrait(traitName) and not positiveTrait then
+	elseif indexOfDelayedTrait(modData.DelayedTraits, traitName) == -1 and player:HasTrait(traitName) and not positiveTrait then
 		if debug() then print("ETW Logger | Delayed Traits System: player qualifies for removing negative trait " .. traitName .. ", adding it to delayed traits table") end;
 		table.insert(modData.DelayedTraits, {traitName, SBvars.DelayedTraitsSystemDefaultDelay, false})
 	else
@@ -141,11 +152,16 @@ function ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(name)
 	return false;
 end
 
----comment
+---Adds item name to the table of unique ripped clothes
 ---@param player IsoPlayer
 ---@param item Clothing
 function ETWCommonFunctions.addClothingToUniqueRippedClothingList(player, item)
-
+	local itemName = item:getName();
+	local modData = ETWCommonFunctions.getETWModData(player);
+	if detailedDebug() then print("ETW Logger | ETWCommonFunctions.addClothingToUniqueRippedClothingList() item: " .. itemName) end;
+	if indexOf(modData.UniqueClothingRipped, itemName) == -1 then
+	    table.insert(modData.UniqueClothingRipped, itemName)
+	end
 end
 
 return ETWCommonFunctions;

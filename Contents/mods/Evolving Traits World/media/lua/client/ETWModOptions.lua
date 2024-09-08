@@ -20,7 +20,8 @@ if ModOptions and ModOptions.getInstance then
 		EvolvingTraitsWorld.settings.EnableSleepHealthMoodle = optionValues.settings.options.EnableSleepHealthMoodle;
 		EvolvingTraitsWorld.settings.UIWidth = UIWidth[optionValues.settings.options.UIWidth];
 		EvolvingTraitsWorld.settings.TraitColumns = traitColumns[optionValues.settings.options.TraitColumns];
-		EvolvingTraitsWorld.settings.HideSmokerUI = optionValues.settings.options.HideSmokerUI
+		EvolvingTraitsWorld.settings.HideSmokerUI = optionValues.settings.options.HideSmokerUI;
+		EvolvingTraitsWorld.settings.HideReadMeUI = optionValues.settings.options.HideReadMeUI;
 	end
 	local SETTINGS = {
 		options_data = {
@@ -92,6 +93,13 @@ if ModOptions and ModOptions.getInstance then
 			HideSmokerUI = {
 				name = "UI_ETW_Options_HideSmokerUI",
 				tooltip = "UI_ETW_Options_HideSmokerUI_tooltip",
+				default = false,
+				OnApplyMainMenu = onModOptionsApply,
+				OnApplyInGame = onModOptionsApply,
+			},
+			HideReadMeUI = {
+				name = "UI_ETW_Options_HideReadMeUI",
+				tooltip = "UI_ETW_Options_HideReadMeUI_tooltip",
 				default = false,
 				OnApplyMainMenu = onModOptionsApply,
 				OnApplyInGame = onModOptionsApply,

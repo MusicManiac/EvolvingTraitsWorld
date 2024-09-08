@@ -1,5 +1,4 @@
-ETWActionsOverride = {};
-
+local ETWCombinedTraitChecks = require("ETWCombinedTraitChecks");
 local ETWCommonFunctions = require "ETWCommonFunctions";
 local ETWCommonLogicChecks = require "ETWCommonLogicChecks";
 
@@ -13,52 +12,6 @@ local delayedNotification = function() return EvolvingTraitsWorld.settings.Enabl
 local debug = function() return EvolvingTraitsWorld.settings.GatherDebug end;
 ---@return boolean
 local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetailedDebug end;
-
----Function responsible for checking if player qualifies for Bodywork Enthusiast trait
-function ETWActionsOverride.bodyworkEnthusiastCheck()
-	local player = getPlayer();
-	local modData = ETWCommonFunctions.getETWModData(player);
-	local level = player:getPerkLevel(Perks.MetalWelding) + player:getPerkLevel(Perks.Mechanics);
-	if level >= SBvars.BodyworkEnthusiastSkill and modData.VehiclePartRepairs >= SBvars.BodyworkEnthusiastRepairs then
-		if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("BodyWorkEnthusiast") then
-			if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_BodyWorkEnthusiast"), true, HaloTextHelper.getColorGreen()) end;
-			ETWCommonFunctions.traitSound(player);
-			ETWCommonFunctions.addTraitToDelayTable(modData, "BodyWorkEnthusiast", player, true);
-		elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("BodyWorkEnthusiast")) then
-			player:getTraits():add("BodyWorkEnthusiast");
-			ETWCommonFunctions.applyXPBoost(player, Perks.MetalWelding, 1);
-			ETWCommonFunctions.applyXPBoost(player, Perks.Mechanics, 1);
-			ETWCommonFunctions.addRecipe(player, "Make Metal Walls");
-			ETWCommonFunctions.addRecipe(player, "Make Metal Fences");
-			ETWCommonFunctions.addRecipe(player, "Make Metal Containers");
-			ETWCommonFunctions.addRecipe(player, "Make Metal Sheet");
-			ETWCommonFunctions.addRecipe(player, "Make Small Metal Sheet");
-			ETWCommonFunctions.addRecipe(player, "Make Metal Roof");
-			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_BodyWorkEnthusiast"), true, HaloTextHelper.getColorGreen()) end;
-			ETWCommonFunctions.traitSound(player);
-		end
-	end
-end
-
----Function responsible for checking if player qualifies for Mechanics trait
-function ETWActionsOverride.mechanicsCheck()
-	local player = getPlayer();
-	local modData = ETWCommonFunctions.getETWModData(player);
-	if player:getPerkLevel(Perks.Mechanics) >= SBvars.MechanicsSkill and modData.VehiclePartRepairs >= SBvars.MechanicsRepairs then
-		if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Mechanics") then
-			if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_Mechanics"), true, HaloTextHelper.getColorGreen()) end;
-			ETWCommonFunctions.traitSound(player);
-			ETWCommonFunctions.addTraitToDelayTable(modData, "Mechanics", player, true);
-		elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Mechanics")) then
-			player:getTraits():add("Mechanics");
-			ETWCommonFunctions.applyXPBoost(player, Perks.Mechanics, 1);
-			ETWCommonFunctions.addRecipe(player, "Basic Mechanics");
-			ETWCommonFunctions.addRecipe(player, "Intermediate Mechanics");
-			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Mechanics"), true, HaloTextHelper.getColorGreen()) end;
-			ETWCommonFunctions.traitSound(player);
-		end
-	end
-end
 
 ---Function responsible for checking if current ISFixAction performed on a vehicle part
 ---@param action ISFixAction
@@ -94,8 +47,8 @@ function ISFixAction:perform()
 	if conditionAfter > conditionBefore and isVehiclePart(self) and (mechanicsShouldExecute or bodyWorkEnthusiastShouldExecute) then
 		modData.VehiclePartRepairs = modData.VehiclePartRepairs + (conditionAfter - conditionBefore);
 		if detailedDebug then print("ETW Logger | ISFixAction.perform(): car part " .. conditionBefore .. "->" .. conditionAfter .. " VehiclePartRepairs=" .. modData.VehiclePartRepairs) end;
-		if bodyWorkEnthusiastShouldExecute then ETWActionsOverride.bodyworkEnthusiastCheck() end;
-		if mechanicsShouldExecute then ETWActionsOverride.mechanicsCheck() end;
+		if bodyWorkEnthusiastShouldExecute then ETWCombinedTraitChecks.bodyworkEnthusiastCheck() end;
+		if mechanicsShouldExecute then ETWCombinedTraitChecks.mechanicsCheck() end;
 	end
 	if player:HasTrait("RestorationExpert") then
 		if detailedDebug then print("ETW Logger | ISFixAction.perform(): RestorationExpert present") end;
@@ -302,5 +255,3 @@ function forageSystem.addOrDropItems(_character, _inventory, _items, _discardIte
 	end
 	return (original_forageSystem_addOrDropItems(_character, _inventory, _items, _discardItems));
 end
-
-return ETWActionsOverride;

@@ -2,7 +2,9 @@
 require "ISUI/ISPanelJoypad"
 require "UI/CharacterInfoAddTab"
 require "ETWModOptions"
+require "ETWModData"
 
+local ETWCommonFunctions = require "ETWCommonFunctions";
 local ETWCommonLogicChecks = require "ETWCommonLogicChecks";
 
 local MOvars = EvolvingTraitsWorld.settings;
@@ -122,6 +124,15 @@ function ISETWProgressUI:createChildren()
 			shortBladeKills = killCountModData["SmallBlade"].count or 0;
 			spearKills = killCountModData["Spear"].count or 0;
 			firearmKills = killCountModData["Firearm"].count or 0;
+		end
+
+		if not MOvars.HideReadMeUI then
+			str = getText("UI_ETW_Options_ReadMe")
+			self.labelReadMe = ISLabel:new(WINDOW_WIDTH / 2 - strLen(textManager, str)/2, y, FONT_HGT_SMALL, str, self.TextColor.r, self.TextColor.g, self.TextColor.b, self.TextColor.a, UIFont.Small, true)
+			self.labelReadMe:setTooltip(getText("UI_ETW_Options_ReadMe_tooltip"))
+			self:addChild(self.labelReadMe)
+
+			y = y + FONT_HGT_SMALL
 		end
 
 		if ETWCommonLogicChecks.ColdIllnessSystemShouldExecute() then
@@ -959,11 +970,20 @@ function ISETWProgressUI:createChildren()
 			end
 		end
 
-		if ETWCommonLogicChecks.TailorShouldExecute() then
-			arrangeColumnsInTable();
-			self.labelTailorProgress = ISLabel:new(x, y, FONT_HGT_SMALL, getText(""), self.TextColor.r, self.TextColor.g, self.TextColor.b, self.TextColor.a, UIFont.Small, true)
-			self.labelTailorProgress:setTooltip(getText("Sandbox_ETW_SewerSkill"))
-			self:addChild(self.labelTailorProgress)
+		if ETWCommonLogicChecks.SewerShouldExecute() then
+			if tailoring < SBvars.SewerSkill then
+				arrangeColumnsInTable();
+				self.labelTailorSkillProgress = ISLabel:new(x, y, FONT_HGT_SMALL, getText(""), self.TextColor.r, self.TextColor.g, self.TextColor.b, self.TextColor.a, UIFont.Small, true)
+				self.labelTailorSkillProgress:setTooltip(getText("Sandbox_ETW_SewerSkill"))
+				self:addChild(self.labelTailorSkillProgress)
+			end
+
+			if #modData.UniqueClothingRipped < SBvars.SewerUniqueClothesRipped then
+				arrangeColumnsInTable();
+				self.labelTailorRippedClothesProgress = ISLabel:new(x, y, FONT_HGT_SMALL, getText(""), self.TextColor.r, self.TextColor.g, self.TextColor.b, self.TextColor.a, UIFont.Small, true)
+				self.labelTailorRippedClothesProgress:setTooltip(getText("Sandbox_ETW_SewerUniqueClothesRipped_tooltip"))
+				self:addChild(self.labelTailorRippedClothesProgress)
+			end
 		end
 
 		if ETWCommonLogicChecks.GunEnthusiastShouldExecute() then
@@ -1197,7 +1217,8 @@ function ISETWProgressUI:render()
 	updateLabel(self.labelBodyWorkEnthusiastRepairsProgress, getText("UI_trait_BodyWorkEnthusiast") .. ": " .. modData.VehiclePartRepairs .. "/" .. SBvars.BodyworkEnthusiastRepairs)
 	updateLabel(self.labelMechanicsSkillProgress, getText("UI_trait_Mechanics") .. ": " .. mechanics .. "/" .. SBvars.MechanicsSkill)
 	updateLabel(self.labelMechanicsRepairsProgress, getText("UI_trait_Mechanics") .. ": " .. math.floor(modData.VehiclePartRepairs) .. "/" .. SBvars.MechanicsRepairs)
-	updateLabel(self.labelTailorProgress, getText("UI_trait_Tailor") .. ": " .. tailoring .. "/" .. SBvars.SewerSkill)
+	updateLabel(self.labelTailorSkillProgress, getText("UI_trait_Tailor") .. ": " .. tailoring .. "/" .. SBvars.SewerSkill)
+	updateLabel(self.labelTailorRippedClothesProgress, getText("UI_trait_Tailor") .. ": " .. #modData.UniqueClothingRipped .. "/" .. SBvars.SewerUniqueClothesRipped)
 	updateLabel(self.labelGunEnthusiastSkillProgress, getText("UI_trait_GunEnthusiast") .. ": " .. aiming + reloading .. "/" .. SBvars.GunEnthusiastSkill)
 	updateLabel(self.labelGunEnthusiastKillsProgress, getText("UI_trait_GunEnthusiast") .. ": " .. firearmKills .. "/" .. SBvars.GunEnthusiastKills)
 	updateLabel(self.labelAnglerProgress, getText("UI_trait_Fishing") .. ": " .. fishing .. "/" .. SBvars.FishingSkill)

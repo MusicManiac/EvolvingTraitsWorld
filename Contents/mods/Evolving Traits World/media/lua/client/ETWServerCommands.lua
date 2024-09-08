@@ -1,6 +1,7 @@
 if not isClient() then return end;
 
 require "ETWModData";
+local ETWCombinedTraitChecks = require("ETWCombinedTraitChecks");
 local ETWCommonLogicChecks = require "ETWCommonLogicChecks";
 
 ---@return boolean
@@ -20,21 +21,9 @@ Commands.ETW.carRepairCheck = function(args)
 	---@cast modData EvolvingTraitsWorldModData
 	if detailedDebug() then print("ETW Logger | Commands.ETW.carRepairCheck: args.repairedPercentage: " .. args.repairedPercentage) end;
 	modData.VehiclePartRepairs = modData.VehiclePartRepairs + args.repairedPercentage;
-	if ETWCommonLogicChecks.BodyWorkEnthusiastShouldExecute() then ETWActionsOverride.bodyworkEnthusiastCheck() end;
-	if ETWCommonLogicChecks.MechanicsShouldExecute() then ETWActionsOverride.mechanicsCheck() end;
+	if ETWCommonLogicChecks.BodyWorkEnthusiastShouldExecute() then ETWCombinedTraitChecks.bodyworkEnthusiastCheck() end;
+	if ETWCommonLogicChecks.MechanicsShouldExecute() then ETWCombinedTraitChecks.mechanicsCheck() end;
 end
-
------@class AddClothingToUniqueRippedClothingListArgs
------@field item Clothing
---
------comment
------@param args AddClothingToUniqueRippedClothingListArgs
---Commands.ETW.addClothingToUniqueRippedClothingList = function(args)
---	local player = getPlayer();
---	local modData = player:getModData().EvolvingTraitsWorld;
---	---@cast modData EvolvingTraitsWorldModData
---	print("ETW Logger | Commands.ETW.addClothingToUniqueRippedClothingList: args.item: " .. args.item:getName());
---end
 
 Commands.OnServerCommand = function(module, command, args)
     if Commands[module] and Commands[module][command] then
