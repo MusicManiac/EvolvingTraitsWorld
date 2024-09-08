@@ -978,7 +978,8 @@ function ISETWProgressUI:createChildren()
 				self:addChild(self.labelTailorSkillProgress)
 			end
 
-			if #modData.UniqueClothingRipped < SBvars.SewerUniqueClothesRipped then
+			local uniqueClothingRipped = (modData and modData.UniqueClothingRipped and #modData.UniqueClothingRipped) or 0;
+			if uniqueClothingRipped < SBvars.SewerUniqueClothesRipped then
 				arrangeColumnsInTable();
 				self.labelTailorRippedClothesProgress = ISLabel:new(x, y, FONT_HGT_SMALL, getText(""), self.TextColor.r, self.TextColor.g, self.TextColor.b, self.TextColor.a, UIFont.Small, true)
 				self.labelTailorRippedClothesProgress:setTooltip(getText("Sandbox_ETW_SewerUniqueClothesRipped_tooltip"))
