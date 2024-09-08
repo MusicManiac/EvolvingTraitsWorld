@@ -23,5 +23,11 @@ UI.txt
 	changed:
 
 	new:
+		UI_ETW_Options_HideReadMeUI = "[UI] Hide Read Me section in UI",
+		UI_ETW_Options_HideReadMeUI_tooltip = "Hides Read Me section in UI. Requires reloading the save or rejoining the server.",
+
+		UI_ETW_Options_ReadMe = "------------ READ ME (tooltip) ------------",
+		UI_ETW_Options_ReadMe_tooltip = "Please not that there are both sandbox settings and mod option settings in this mod. In 99% of the cases whatever you want to enable/disable/change can be changed. This includes sound notifications, hotkeys, this UI adjustments, and a hundred of other settings. Sandbox settings are in sandbox settings, obviously. Mod Options can be found Esc -> Options -> (Mods) -> Evolving Traits World. Hotkeys can be found in Keybinds in Esc -> Options -> Key Bindings.",
+
 		UI_ETW_Options_EnableSoundNotifications = "Enable Sound Notifications",
 		UI_ETW_Options_EnableSoundNotifications_tooltip = "Play a sound whenever you gain/lose a trait or have a trait added to Delayed Traits System",
