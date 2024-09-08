@@ -1,9 +1,5 @@
-local ETWActionsOverride;
-local ETWCommonLogicChecks;
-if not isClient() and not isServer() then
-	ETWActionsOverride = require "TimedActions/ETWActionsOverride";
-	ETWCommonLogicChecks = require "ETWCommonLogicChecks";
-end
+local ETWCombinedTraitChecks = require "ETWCombinedTraitChecks";
+local ETWCommonLogicChecks = require "ETWCommonLogicChecks";
 
 local Commands = {}
 
@@ -27,14 +23,14 @@ function Commands.checkEngineCondition(player, args)
 		---@cast modData EvolvingTraitsWorldModData
 		modData.VehiclePartRepairs = modData.VehiclePartRepairs + repairedPercentage;
 		if args.detailedDebug then print("ETW Logger | Commands.checkEngineCondition(): modData.VehiclePartRepairs: " .. modData.VehiclePartRepairs) end;
-		if ETWCommonLogicChecks.BodyWorkEnthusiastShouldExecute() then ETWActionsOverride.bodyworkEnthusiastCheck() end;
-		if ETWCommonLogicChecks.MechanicsShouldExecute() then ETWActionsOverride.mechanicsCheck() end;
+		if ETWCommonLogicChecks.BodyWorkEnthusiastShouldExecute() then ETWCombinedTraitChecks.bodyworkEnthusiastCheck() end;
+		if ETWCommonLogicChecks.MechanicsShouldExecute() then ETWCombinedTraitChecks.mechanicsCheck() end;
 	else
 		local serverArgs = { repairedPercentage = repairedPercentage };
 		sendServerCommand(player, "ETW", "carRepairCheck", serverArgs)
 	end
 end
--- terst
+
 Commands.OnClientCommand = function(module, command, player, args)
 	if module == 'ETW' and Commands[command] then
 		local argStr = ''

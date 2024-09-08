@@ -29,6 +29,9 @@ Sandbox.txt
 		Sandbox_ETW_LearnerSystemSkill = "Learner System Skill requirement",
 		Sandbox_ETW_LearnerSystemSkill_tooltip = "Allows to lose Slow Learner and earn Fast Learner. Upon reaching half of levels you lose Slow learner, upon reaching set amount of levels you gain Fast Learner. Maintenance + Carpentry + Cooking + Farming + First Aid + Electrical + Metalworking + Mechanics + Tailoring",
 
+		Sandbox_ETW_SewerUniqueClothesRipped = "Sewer Unique Clothes Ripped",
+		Sandbox_ETW_SewerUniqueClothesRipped_tooltip = "Amount of unique clothing you need to rip to qualify for Sewer. If you are running with modded clothes, increase this respectively. AuthenticZ or Brita Armor Pack all add A LOT of clothing to rip, as an example.",
+
 		Sandbox_ETW_TraitsLockSystemCanLosePositive = "Traits Lock: Can Lose Positive",
 		Sandbox_ETW_TraitsLockSystemCanLosePositive_tooltip = "If this is enabled, you can lose positive traits during gameplay. This mostly applies to trait systems like love/fear of weather/locations or weight system as not a lot of positive traits can be lost.",
 		Sandbox_ETW_TraitsLockSystemCanGainPositive = "Traits Lock: Can Gain Positive",

@@ -1284,6 +1284,15 @@ option EvolvingTraitsWorld.SewerSkill
 	page = ETWSimplePerks,
 	translation = ETW_SewerSkill,
 }
+option EvolvingTraitsWorld.SewerUniqueClothesRipped
+{
+	type = integer,
+	min = 0,
+	max = 1000,
+	default = 50,
+	page = ETWSimplePerks,
+	translation = ETW_SewerUniqueClothesRipped,
+}
 option EvolvingTraitsWorld.Sojutsu
 {
 	type = boolean,

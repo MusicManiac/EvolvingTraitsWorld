@@ -5,6 +5,7 @@
 --- @field FoodSicknessWeathered number
 --- @field TreesChopped number
 --- @field PainToleranceCounter number
+--- @field UniqueClothingRipped string[]
 --- @field MentalStateInLast60Min number[]
 --- @field MentalStateInLast24Hours number[]
 --- @field MentalStateInLast31Days number[]

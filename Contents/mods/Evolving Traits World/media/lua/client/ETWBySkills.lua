@@ -1,5 +1,5 @@
 require "ETWModData";
-local ETWActionsOverride = require "TimedActions/ETWActionsOverride";
+local ETWCombinedTraitChecks = require("ETWCombinedTraitChecks");
 local ETWCommonFunctions = require "ETWCommonFunctions";
 local ETWCommonLogicChecks = require "ETWCommonLogicChecks";
 
@@ -604,28 +604,17 @@ local function traitsGainsBySkill(player, perk)
 		-- Metalworking
 			-- Bodywork Enthusiast
 				if (perk == "characterInitialization" or perk == Perks.MetalWelding  or perk == Perks.Mechanics or perk == "BodyWorkEnthusiast") and ETWCommonLogicChecks.BodyWorkEnthusiastShouldExecute() then
-					ETWActionsOverride.bodyworkEnthusiastCheck();
+					ETWCombinedTraitChecks.bodyworkEnthusiastCheck();
 				end
 		-- Mechanics
 			-- Amateur Mechanic
 				if (perk == "characterInitialization" or perk == Perks.Mechanics or perk == "Mechanics") and ETWCommonLogicChecks.MechanicsShouldExecute() then
-					ETWActionsOverride.mechanicsCheck();
+					ETWCombinedTraitChecks.mechanicsCheck();
 				end
 		-- Tailoring
 			-- Sewer
-				if (perk == "characterInitialization" or perk == Perks.Tailoring or perk == "Tailor") and ETWCommonLogicChecks.TailorShouldExecute() then
-					if tailoring >= SBvars.SewerSkill then
-						if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Tailor") then
-							if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_Tailor"), true, HaloTextHelper.getColorGreen()) end;
-							ETWCommonFunctions.traitSound(player);
-							ETWCommonFunctions.addTraitToDelayTable(modData, "Tailor", player, true);
-						elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Tailor")) then
-							player:getTraits():add("Tailor");
-							ETWCommonFunctions.applyXPBoost(player, Perks.Tailoring, 1);
-							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Tailor"), true, HaloTextHelper.getColorGreen()) end;
-							ETWCommonFunctions.traitSound(player);
-						end
-					end
+				if (perk == "characterInitialization" or perk == Perks.Tailoring or perk == "Tailor") and ETWCommonLogicChecks.SewerShouldExecute() then
+					ETWCombinedTraitChecks.sewerCheck();
 				end
 	-- Firearms
 		-- Aiming

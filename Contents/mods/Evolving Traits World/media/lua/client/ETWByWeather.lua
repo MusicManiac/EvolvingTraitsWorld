@@ -1,5 +1,8 @@
 require "ETWModData";
 
+local ETWCommonFunctions = require "ETWCommonFunctions";
+local ETWCommonLogicChecks = require "ETWCommonLogicChecks";
+
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld;
 

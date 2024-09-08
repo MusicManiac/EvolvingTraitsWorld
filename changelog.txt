@@ -1,8 +1,5 @@
-v.8.2.2
+v.8.3.0
 
-Fixes:
-	- Fixed Bloodlust bar on UI having labels in incorrect position
-Mod Conflicts:
-	- Fixed error when zombie killed by someone else than a player (like NPC from Bandits mod)
-Translations:
-	- KO update, looking for more maintainers of existing languages, they are lagging behind a bit. Ping me on discord if someone wants to help.
+General:
+	- Sewer now also requires you to rip unique clothing. Probably compatible with modded clothes (tested with AuthenticZ and Britas Armor Pack)
+	- Added a Readme in UI to save people trouble of asking for things that are already in the mod.

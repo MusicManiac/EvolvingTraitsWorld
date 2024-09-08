@@ -1,9 +1,5 @@
-local ETWActionsOverride;
-local ETWCommonLogicChecks;
-if not isClient() and not isServer() then
-	ETWActionsOverride = require "TimedActions/ETWActionsOverride";
-	ETWCommonLogicChecks = require "ETWCommonLogicChecks";
-end
+local ETWCommonFunctions = require "ETWCommonFunctions";
+local ETWCommonLogicChecks = require "ETWCommonLogicChecks"
 
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld;
@@ -14,7 +10,7 @@ local debug = function() return EvolvingTraitsWorld.settings.GatherDebug end;
 local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetailedDebug end;
 
 local original_OnEat_Cigarettes = OnEat_Cigarettes;
----Overwriting OnEat_Cigarettes here to insert ETW logic catching player interaction with cigarettes
+---Overwriting OnEat_Cigarettes here to insert ETW logic catching player smoking
 ---@param food any
 ---@param character IsoGameCharacter
 ---@param percent number
@@ -38,22 +34,19 @@ function OnEat_Cigarettes(food, character, percent)
 	original_OnEat_Cigarettes(food, character, percent);
 end
 
---local original_Recipe_OnCreate_RipClothing = Recipe.OnCreate.RipClothing;
------comment
------@param items any
------@param result any
------@param player IsoPlayer
------@param selectedItem any
---function Recipe.OnCreate.RipClothing(items, result, player, selectedItem)
---	local item = items:get(0)
---	---@cast item Clothing
---	print("ETW Logger | Recipe.OnCreate.RipClothing() item: " .. item:getName());
---	if not isClient() and not isServer() then
---		ETWCommonFunctions.addClothingToUniqueRippedClothingList(player, item);
---    else
---    	print("ETW Logger | Recipe.OnCreate.RipClothing() sending command");
---		local serverArgs = { item = item };
---		sendServerCommand(player, "ETW", "addClothingToUniqueRippedClothingList", serverArgs)
---    end
---    original_Recipe_OnCreate_RipClothing(items, result, player, selectedItem);
---end
+local original_Recipe_OnCreate_RipClothing = Recipe.OnCreate.RipClothing;
+---Overwriting Recipe.OnCreate.RipClothing() here to insert ETW logic catching player ripping clothing
+---@param items any
+---@param result any
+---@param player IsoPlayer
+---@param selectedItem any
+function Recipe.OnCreate.RipClothing(items, result, player, selectedItem)
+	local modData = ETWCommonFunctions.getETWModData(player)
+	if #modData.UniqueClothingRipped < SBvars.SewerUniqueClothesRipped and ETWCommonLogicChecks.SewerShouldExecute() then
+		local item = items:get(0)
+		---@cast item Clothing
+		if detailedDebug() then print("ETW Logger | Recipe.OnCreate.RipClothing() item: " .. item:getName()) end;
+		ETWCommonFunctions.addClothingToUniqueRippedClothingList(player, item);
+	end
+    original_Recipe_OnCreate_RipClothing(items, result, player, selectedItem);
+end

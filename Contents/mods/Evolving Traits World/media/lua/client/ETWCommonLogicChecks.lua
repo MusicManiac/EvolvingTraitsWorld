@@ -1,6 +1,6 @@
 require "ETWModData";
 
-ETWCommonLogicChecks = {};
+local ETWCommonLogicChecks = {};
 
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld;
@@ -433,7 +433,7 @@ function ETWCommonLogicChecks.MechanicsShouldExecute()
 	end
 end
 
-function ETWCommonLogicChecks.TailorShouldExecute()
+function ETWCommonLogicChecks.SewerShouldExecute()
 	local player = getPlayer();
 	if SBvars.Sewer == true and not player:HasTrait("Tailor") and SBvars.TraitsLockSystemCanGainPositive then
 		return true

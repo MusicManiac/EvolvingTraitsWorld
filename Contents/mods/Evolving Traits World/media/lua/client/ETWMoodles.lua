@@ -1,6 +1,10 @@
 ---@diagnostic disable: undefined-global
-ETWMoodles = {};
 require "MF_ISMoodle";
+ETWMoodles = {};
+
+local ETWCommonFunctions = require "ETWCommonFunctions";
+
+
 
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld;
