@@ -16,8 +16,11 @@
     <file url="file://$PROJECT_DIR$/Contents/mods/Evolving Traits World/media/lua/shared/Translate/RU/Moodles_RU.txt" charset="windows-1251" />
     <file url="file://$PROJECT_DIR$/Contents/mods/Evolving Traits World/media/lua/shared/Translate/RU/Sandbox_RU.txt" charset="windows-1251" />
     <file url="file://$PROJECT_DIR$/Contents/mods/Evolving Traits World/media/lua/shared/Translate/RU/UI_RU.txt" charset="windows-1251" />
-    <file url="file://$PROJECT_DIR$/Contents/mods/Evolving Traits World/media/lua/shared/Translate/TR/Moodles_TR.txt" charset="ISO-8859-9" />
-    <file url="file://$PROJECT_DIR$/Contents/mods/Evolving Traits World/media/lua/shared/Translate/TR/Sandbox_TR.txt" charset="ISO-8859-9" />
-    <file url="file://$PROJECT_DIR$/Contents/mods/Evolving Traits World/media/lua/shared/Translate/TR/UI_TR.txt" charset="ISO-8859-9" />
+    <file url="file://$PROJECT_DIR$/Contents/mods/Evolving Traits World/media/lua/shared/Translate/TR/Moodles_TR.txt" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/Contents/mods/Evolving Traits World/media/lua/shared/Translate/TR/Sandbox_TR.txt" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/Contents/mods/Evolving Traits World/media/lua/shared/Translate/TR/UI_TR.txt" charset="ISO-8859-1" />
+    <file url="jar://$PROJECT_DIR$/../../decompiled-zomboid/41.78/zdoc-lua-41.78.jar!/media/lua/shared/Translate/RU/ContextMenu_RU.txt" charset="windows-1251" />
+    <file url="jar://$PROJECT_DIR$/../../decompiled-zomboid/41.78/zdoc-lua-41.78.jar!/media/lua/shared/Translate/TR/Challenge_TR.txt" charset="ISO-8859-9" />
+    <file url="jar://$PROJECT_DIR$/../../decompiled-zomboid/41.78/zdoc-lua-41.78.jar!/media/lua/shared/Translate/TR/ContextMenu_TR.txt" charset="ISO-8859-9" />
   </component>
 </project>

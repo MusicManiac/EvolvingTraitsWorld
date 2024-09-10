@@ -79,4 +79,17 @@ function ETWCombinedTraitChecks.sewerCheck()
 	end
 end
 
+---Adds item name to the table of unique ripped clothes
+---@param player IsoPlayer
+---@param item Clothing
+function ETWCombinedTraitChecks.addClothingToUniqueRippedClothingList(player, item)
+	local itemName = item:getName();
+	local modData = ETWCommonFunctions.getETWModData(player);
+	if detailedDebug() then print("ETW Logger | ETWCommonFunctions.addClothingToUniqueRippedClothingList() item: " .. itemName) end;
+	if ETWCommonFunctions.indexOf(modData.UniqueClothingRipped, itemName) == -1 then
+	    table.insert(modData.UniqueClothingRipped, itemName)
+	    ETWCombinedTraitChecks.sewerCheck();
+	end
+end
+
 return ETWCombinedTraitChecks;

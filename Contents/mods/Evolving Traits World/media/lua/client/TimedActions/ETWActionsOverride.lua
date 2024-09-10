@@ -112,7 +112,7 @@ function ISInventoryTransferAction:perform()
 			if detailedDebug then print("ETW Logger | ISInventoryTransferAction.perform(): Player") end;
 			local player = self.character;
 			local item = self.item;
-			local itemWeight = item:getWeight();
+			local itemWeight = math.max(0, item:getWeight());
 			local modData = ETWCommonFunctions.getETWModData(player);
 			local transferModData = modData.TransferSystem;
 			transferModData.ItemsTransferred = transferModData.ItemsTransferred + 1;

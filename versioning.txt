@@ -6,6 +6,8 @@ General:
 	-
 Moodles:
 	-
+Balancing:
+	-
 Fixes:
 	-
 Mod Conflicts:
@@ -18,6 +20,7 @@ Overhauls: X.x.x
 General: x.X.x
 Moodles (new): x.X.x
 Submod update: x.x.X
+Balancing (defaults/real): x.x.X
 Moodles (improvements): x.x.X
 Fixes: x.x.X
 Mod Conflicts: x.x.X

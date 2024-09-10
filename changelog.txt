@@ -1,4 +1,15 @@
-v.8.3.1
+v.8.4.0
 
+General:
+	- Refactored weather functions a bit
+	- Making kills while in the rain or in the fog now gives progress to Fog System and Rain System traits
+	- Moved a bunch of stuff around, looks like everything is still working
+Balancing:
+	- Lowered defaults for Item Transfer System
+	- Slightly adjusted the distance at which you get maximum Bloodlust meter fill
 Fixes:
-	- Fixed UI breaking on first character load
+	- Fixed Bloodlust system being reset to 0 if player wears no clothes
+	- (Possible) Fix on some client-side code being run on server in MP and throwing errors every now in then in server console.
+	- Fixed Sewer/Tailor trait check not being triggered on ripping enough clothes.
+Mod Conflicts:
+	- When moving items with negative weight (for example, mod items used to artificially increase size of containers) it no longer reduces your Item Weight Moved progress in Inventory Transfer System

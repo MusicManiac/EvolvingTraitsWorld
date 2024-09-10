@@ -32,7 +32,7 @@ If you want to submit translation files, make suggestions or report bugs, the ea
 
 [h1]Credits and Translations[/h1]
 List of credits, contributors and translators can be found in [url=https://steamcommunity.com/workshop/filedetails/discussion/2914075159/3785877016603169742/]this discussion[/url] (hitting description limit so had to move it).
-Currently mod supports following languages:
+Currently mod supports following languages (note that not all translations are 100% complete as mod is getting updates):
 [list]
 [*]English
 [*]Italiano / Italian

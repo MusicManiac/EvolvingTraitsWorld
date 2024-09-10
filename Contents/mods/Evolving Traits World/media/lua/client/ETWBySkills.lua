@@ -1,5 +1,5 @@
 require "ETWModData";
-local ETWCombinedTraitChecks = require("ETWCombinedTraitChecks");
+local ETWCombinedTraitChecks = require "ETWCombinedTraitChecks";
 local ETWCommonFunctions = require "ETWCommonFunctions";
 local ETWCommonLogicChecks = require "ETWCommonLogicChecks";
 
