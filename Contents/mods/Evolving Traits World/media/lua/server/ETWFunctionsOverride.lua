@@ -1,5 +1,12 @@
-local ETWCommonFunctions = require "ETWCommonFunctions";
-local ETWCommonLogicChecks = require "ETWCommonLogicChecks"
+local ETWCommonFunctions;
+local ETWCommonLogicChecks;
+local ETWCombinedTraitChecks;
+
+--if not isServer() then
+	ETWCommonFunctions = require "ETWCommonFunctions";
+    ETWCommonLogicChecks = require "ETWCommonLogicChecks";
+    ETWCombinedTraitChecks = require "ETWCombinedTraitChecks";
+--end
 
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld;
@@ -41,12 +48,14 @@ local original_Recipe_OnCreate_RipClothing = Recipe.OnCreate.RipClothing;
 ---@param player IsoPlayer
 ---@param selectedItem any
 function Recipe.OnCreate.RipClothing(items, result, player, selectedItem)
-	local modData = ETWCommonFunctions.getETWModData(player)
-	if #modData.UniqueClothingRipped < SBvars.SewerUniqueClothesRipped and ETWCommonLogicChecks.SewerShouldExecute() then
-		local item = items:get(0)
-		---@cast item Clothing
-		if detailedDebug() then print("ETW Logger | Recipe.OnCreate.RipClothing() item: " .. item:getName()) end;
-		ETWCommonFunctions.addClothingToUniqueRippedClothingList(player, item);
+	if not isServer() then
+		local modData = ETWCommonFunctions.getETWModData(player)
+		if #modData.UniqueClothingRipped < SBvars.SewerUniqueClothesRipped and ETWCommonLogicChecks.SewerShouldExecute() then
+			local item = items:get(0)
+			---@cast item Clothing
+			if detailedDebug() then print("ETW Logger | Recipe.OnCreate.RipClothing() item: " .. item:getName()) end;
+			ETWCombinedTraitChecks.addClothingToUniqueRippedClothingList(player, item);
+		end
 	end
     original_Recipe_OnCreate_RipClothing(items, result, player, selectedItem);
 end

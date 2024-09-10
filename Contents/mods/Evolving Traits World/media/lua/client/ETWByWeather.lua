@@ -17,7 +17,9 @@ local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetai
 local desensitized = function(player) return player:HasTrait("Desensitized") and SBvars.BraverySystemRemovesOtherFearPerks end;
 
 ---Function responsible for managing Rain System traits
-local function rainTraits()
+---@param isKill boolean
+local function rainTraits(isKill)
+	local isKill = isKill or false;
 	local player = getPlayer();
 	local rainIntensity = getClimateManager():getRainIntensity();
 	if rainIntensity > 0 and player:isOutside() and player:getVehicle() == nil then
@@ -25,22 +27,23 @@ local function rainTraits()
 		local primaryItem = player:getPrimaryHandItem();
 		local secondaryItem = player:getSecondaryHandItem();
 		local rainProtection = (primaryItem and primaryItem:isProtectFromRainWhileEquipped()) or (secondaryItem and secondaryItem:isProtectFromRainWhileEquipped());
-		local rainGain = rainIntensity * (rainProtection and 0.5 or 1);
 		local modData = ETWCommonFunctions.getETWModData(player);
 		local SBCounter = SBvars.RainSystemCounter
 		local lowerBoundary = -SBCounter * 2;
 		local upperBoundary = SBCounter * 2;
-		if panic <= 25 then
-			rainGain = rainGain / ((SBvars.AffinitySystem and modData.StartingTraits.Pluviophobia) and SBvars.AffinitySystemLoseDivider or 1);
-			rainGain = rainGain * ((SBvars.AffinitySystem and modData.StartingTraits.Pluviophile) and SBvars.AffinitySystemGainMultiplier or 1) * SBvars.RainSystemCounterIncreaseMultiplier;
-			if debug() then print("ETW Logger | rainTraits(): rainTraits rainGain=" .. rainGain .. ". RainCounter=" .. modData.RainCounter) end;
-			modData.RainCounter = math.min(upperBoundary, modData.RainCounter + rainGain);
-		else
-			local rainDecrease = rainGain * (panic / 100) * SBvars.RainSystemCounterDecreaseMultiplier;
-			rainDecrease = rainDecrease / ((SBvars.AffinitySystem and modData.StartingTraits.Pluviophile) and SBvars.AffinitySystemLoseDivider or 1);
-			rainDecrease = rainDecrease * ((SBvars.AffinitySystem and modData.StartingTraits.Pluviophobia) and SBvars.AffinitySystemGainMultiplier or 1);
-			if debug() then print("ETW Logger | rainTraits(): rainTraits rainDecrease=" .. rainDecrease .. ". RainCounter=" .. modData.RainCounter) end;
-			modData.RainCounter = math.max(lowerBoundary, modData.RainCounter - rainDecrease);
+		local rainGain = rainIntensity * (rainProtection and 0.5 or 1) * SBvars.RainSystemCounterIncreaseMultiplier;
+		rainGain = rainGain / ((SBvars.AffinitySystem and modData.StartingTraits.Pluviophobia) and SBvars.AffinitySystemLoseDivider or 1);
+		rainGain = rainGain * ((SBvars.AffinitySystem and modData.StartingTraits.Pluviophile) and SBvars.AffinitySystemGainMultiplier or 1);
+		local rainDecrease = rainGain * (panic / 100) * 0.9 * SBvars.RainSystemCounterDecreaseMultiplier * (isKill and 0.25 or 1);
+		rainDecrease = rainDecrease / ((SBvars.AffinitySystem and modData.StartingTraits.Pluviophile) and SBvars.AffinitySystemLoseDivider or 1);
+		rainDecrease = rainDecrease * ((SBvars.AffinitySystem and modData.StartingTraits.Pluviophobia) and SBvars.AffinitySystemGainMultiplier or 1);
+		local finalRainCounter = modData.FogCounter + rainGain - rainDecrease;
+		modData.RainCounter = math.min(upperBoundary, finalRainCounter);
+		modData.RainCounter = math.max(lowerBoundary, finalRainCounter);
+		modData.RainCounter = finalRainCounter;
+		if debug() then
+			if isKill then print("ETW Logger | rainTraits(): was triggered by a kill") end;
+			print("ETW Logger | rainTraits(): modData.RainCounter=" .. modData.RainCounter);
 		end
 		if not player:HasTrait("Pluviophobia") and modData.RainCounter <= -SBCounter and not desensitized(player) and SBvars.TraitsLockSystemCanGainNegative then
 			player:getTraits():add("Pluviophobia");
@@ -63,7 +66,9 @@ local function rainTraits()
 end
 
 ---Function responsible for managing Fog system traits
-local function fogTraits()
+---@param isKill boolean
+local function fogTraits(isKill)
+	local isKill = isKill or false;
 	local player = getPlayer();
 	local fogIntensity = getClimateManager():getFogIntensity();
 	if fogIntensity > 0 and player:isOutside() and player:getVehicle() == nil then
@@ -72,7 +77,7 @@ local function fogTraits()
 		local fogGain = fogIntensity * SBvars.FogSystemCounterIncreaseMultiplier;
 		fogGain = fogGain / ((SBvars.AffinitySystem and modData.StartingTraits.Homichlophobia) and SBvars.AffinitySystemLoseDivider or 1);
 		fogGain = fogGain * ((SBvars.AffinitySystem and modData.StartingTraits.Homichlophile) and SBvars.AffinitySystemGainMultiplier or 1);
-		local fogDecrease = fogIntensity * (panic / 100) * 0.9 * SBvars.FogSystemCounterDecreaseMultiplier;
+		local fogDecrease = fogIntensity * (panic / 100) * 0.9 * SBvars.FogSystemCounterDecreaseMultiplier * (isKill and 0.25 or 1);
 		fogDecrease = fogDecrease / ((SBvars.AffinitySystem and modData.StartingTraits.Homichlophile) and SBvars.AffinitySystemLoseDivider or 1);
 		fogDecrease = fogDecrease * ((SBvars.AffinitySystem and modData.StartingTraits.Homichlophobia) and SBvars.AffinitySystemGainMultiplier or 1);
 		local SBCounter = SBvars.FogSystemCounter
@@ -82,7 +87,10 @@ local function fogTraits()
 		finalFogCounter = math.max(finalFogCounter, lowerBoundary);
 		finalFogCounter = math.min(finalFogCounter, upperBoundary);
 		modData.FogCounter = finalFogCounter;
-		if debug() then print("ETW Logger | fogTraits(): modData.FogCounter=" .. modData.FogCounter) end;
+		if debug() then
+			if isKill then print("ETW Logger | fogTraits(): was triggered by a kill") end;
+			print("ETW Logger | fogTraits(): modData.FogCounter=" .. modData.FogCounter);
+		end
 		if not player:HasTrait("Homichlophobia") and modData.FogCounter <= -SBCounter and not desensitized(player) and SBvars.TraitsLockSystemCanGainNegative then
 			player:getTraits():add("Homichlophobia");
 			ETWCommonFunctions.traitSound(player);
@@ -103,14 +111,46 @@ local function fogTraits()
 	end
 end
 
+---Helper function to fire rainTraits() on zombie kill
+---@param zombie IsoZombie
+local function rainTraitsKill(zombie)
+    local player = zombie:getAttackedBy()
+	---@cast player IsoPlayer
+    if not player or not instanceof(player, "IsoPlayer") or not player:isLocalPlayer() then
+		return;
+	else
+		rainTraits(true);
+	end
+end
+
+---Helper function to fire fogTraits() on zombie kill
+---@param zombie IsoZombie
+local function fogTraitsKill(zombie)
+    local player = zombie:getAttackedBy()
+	---@cast player IsoPlayer
+    if not player or not instanceof(player, "IsoPlayer") or not player:isLocalPlayer() then
+		return;
+	else
+		fogTraits(true);
+	end
+end
+
 ---Function responsible for setting up events
 ---@param playerIndex number
 ---@param player IsoPlayer
 local function initializeEventsETW(playerIndex, player)
 	Events.EveryOneMinute.Remove(rainTraits);
-	if ETWCommonLogicChecks.RainSystemShouldExecute() then Events.EveryOneMinute.Add(rainTraits) end;
+	Events.OnZombieDead.Remove(rainTraitsKill);
+	if ETWCommonLogicChecks.RainSystemShouldExecute() then
+		Events.EveryOneMinute.Add(rainTraits)
+		Events.OnZombieDead.Add(rainTraitsKill);
+	end
 	Events.EveryOneMinute.Remove(fogTraits);
-	if ETWCommonLogicChecks.RainSystemShouldExecute() then Events.EveryOneMinute.Add(fogTraits) end;
+	Events.OnZombieDead.Remove(fogTraitsKill);
+	if ETWCommonLogicChecks.RainSystemShouldExecute() then
+		Events.EveryOneMinute.Add(fogTraits)
+		Events.OnZombieDead.Add(fogTraitsKill);
+	end
 end
 
 ---Function responsible for clearing events

@@ -43,13 +43,13 @@ Sandbox_EN = {
 	Sandbox_ETW_BaseballPlayerKills = "Baseball Player Kills with Long Blunt requirement",
 
 	Sandbox_ETW_Bloodlust = "Bloodlust",
-	Sandbox_ETW_Bloodlust_tooltip = "This allows you to gain a benefit by filling and maintaining a bloodlust meter. The bloodlust meter is soft-capped at 36 hours and can be filled by killing zombies. The closer the zombies are, the more quickly the meter will fill. When you're above half of the meter, every hour it will give you progress towards the bloodlust perk; when it's below, it'll remove progress. The bloodlust meter naturally decays by 1 every hour. Having bloodied clothes helps the process",
+	Sandbox_ETW_Bloodlust_tooltip = "This allows you to gain a benefit by filling and maintaining a bloodlust meter. The bloodlust meter is soft-capped at 72 hours and can be filled by killing zombies. The closer the zombies are, the more quickly the meter will fill. When you're above half of the meter, every hour it will give you progress towards the bloodlust perk; when it's below, it'll remove progress. The bloodlust meter naturally decays by 1 every hour. Having bloodied clothes helps the process",
 	Sandbox_ETW_BloodlustMeterFillMultiplier = "Bloodlust Meter Fill Multiplier",
 	Sandbox_ETW_BloodlustMeterFillMultiplier_tooltip = "How fast you fill your bloodlust meter",
 	Sandbox_ETW_BloodlustMeterMaxCapMultiplier = "Bloodlust Meter Max Cap Multiplier",
 	Sandbox_ETW_BloodlustMeterMaxCapMultiplier_tooltip = "By how much you can overfill your Bloodlust Meter. This is a multiplier. 2 means you can fill your Bloodlust Meter to 200%, for example",
 	Sandbox_ETW_BloodlustProgress = "Bloodlust Progress",
-	Sandbox_ETW_BloodlustProgress_tooltip = "How much total bloodlust progress you need to get the trait. Keeping your bloodlust meter full would earn you 3.6 points in 1 hour. Be aware that you also lose bloodlust if this meter ever falls below 50%. So if you set it low, it's going to be easy to earn but also easy to lose the perk. Progress is capped at 2x the Bloodlust Progress value",
+	Sandbox_ETW_BloodlustProgress_tooltip = "How much total bloodlust progress you need to get the trait. Be aware that you also lose bloodlust if this meter ever falls below 50%. So if you set it low, it's going to be easy to earn but also easy to lose the perk. Progress is capped at 2x the Bloodlust Progress value",
 	Sandbox_ETW_BloodlustMoodle = "Enable Bloodlust Moodle",
 	Sandbox_ETW_BloodlustMoodle_tooltip = "If this option is disabled, the moodle won't show up. For single-player, leave this on and change moodles you see with Mod Options. If it's a server setting, players won't be able to enable the moodle client-sided",
 	Sandbox_ETW_BloodlustMoodleVisibilityHours = "Bloodlust Moodle Visibility Hours",
@@ -125,7 +125,7 @@ Sandbox_EN = {
 
 	Sandbox_ETW_FogSystem = "Fog System",
 	Sandbox_ETW_FogSystemCounter = "Fog System Counter",
-	Sandbox_ETW_FogSystemCounter_tooltip = "You gain fogIntensity * FogSystemCounterIncreaseMultiplier every minute you spend in fog. Simultaneously, you lose fogIntensity * panic * 0.9 * FogSystemCounterDecreaseMultiplier. The counter has maximum and minimum boundaries set at -2 * counter and 2 * counter. If the counter is below -counter, you gain Homichlophobia; when reaching counter, you gain Homichlophile. If the counter is between these values, there is no effect",
+	Sandbox_ETW_FogSystemCounter_tooltip = "You gain progress every minute you spend in fog. Being panicked can slow down the process or even revert it. If the counter is below -counter, you gain Homichlophobia; when reaching counter, you gain Homichlophile. If the counter is between these values, there is no effect. Making a kill at during fog triggers extra execution of function responsible for gaining/losing progress (so instead of getting progress 1 time / minute you can get progress 3 times per minute, for example)",
 	Sandbox_ETW_FogSystemCounterIncreaseMultiplier = "Fog Counter Increase Multiplier",
 	Sandbox_ETW_FogSystemCounterIncreaseMultiplier_tooltip = "Adjusts the rate at which your counter increases. See tooltip for details in Fog System Counter",
 	Sandbox_ETW_FogSystemCounterDecreaseMultiplier = "Fog Counter Decrease Multiplier",
@@ -242,7 +242,7 @@ Sandbox_EN = {
 
 	Sandbox_ETW_RainSystem = "Rain System",
 	Sandbox_ETW_RainSystemCounter = "Rain System Counter",
-	Sandbox_ETW_RainSystemCounter_tooltip = "You gain progress every minute you spend in rain. If your panic is above 25%, you instead lose progress. Counter has upper boundary of 2x the set value here and lower boundary of -2x the set value here. Reaching -counter will gain you Pluviophobia. Reaching +counter will gain you Pluviophile. Being in between will give you nothing",
+	Sandbox_ETW_RainSystemCounter_tooltip = "You gain progress every minute you spend in rain while outside. Being panicked can slow down the process or even revert it. If the counter is below -counter, you gain Pluviophobia; when reaching counter, you gain Pluviophile. If the counter is between these values, there is no effect. Making a kill at during rain triggers extra execution of function responsible for gaining/losing progress (so instead of getting progress 1 time / minute you can get progress 3 times per minute, for example)",
 	Sandbox_ETW_RainSystemCounterIncreaseMultiplier = "Rain System Increase Multiplier",
 	Sandbox_ETW_RainSystemCounterIncreaseMultiplier_tooltip = "Adjusts the rate at which your Rain System Counter increases, detailed in Rain System Counter tooltip",
 	Sandbox_ETW_RainSystemCounterDecreaseMultiplier = "Rain System Decrease Multiplier",

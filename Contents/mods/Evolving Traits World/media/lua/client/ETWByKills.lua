@@ -38,6 +38,9 @@ local function bloodiedClothesLevel(player)
 				end
 			end
 		end
+		if amountOfWornItems == 0 then
+		    return 0;
+		end
 		local avg = totalBloodLevelPercentage / 100 / amountOfWornItems;
 		if detailedDebug then print("ETW Logger | bloodiedClothesLevel(): avg = " .. avg) end;
 		return avg;
@@ -61,10 +64,10 @@ local function bloodlustKillETW(zombie)
 			local bloodlust = modData.BloodlustSystem;
 			bloodlust.LastKillTimestamp = player:getHoursSurvived();
 			if bloodlust.BloodlustMeter <= bloodlustMeterCapacity then
-				bloodlust.BloodlustMeter = bloodlust.BloodlustMeter + math.min(2 / distance, 1) * SBvars.BloodlustMeterFillMultiplier * (1 + bloodiedClothesLevel(player));
+				bloodlust.BloodlustMeter = bloodlust.BloodlustMeter + math.min(1.4 / distance, 1) * SBvars.BloodlustMeterFillMultiplier * (1 + bloodiedClothesLevel(player));
 				if detailedDebug then print("ETW Logger | bloodlustKillETW(): BloodlustMeter=" .. bloodlust.BloodlustMeter) end;
 			elseif bloodlust.BloodlustMeter < bloodlustMeterCapacity * SBvars.BloodlustMeterMaxCapMultiplier then
-				bloodlust.BloodlustMeter = bloodlust.BloodlustMeter + math.min(2 / distance, 1) * SBvars.BloodlustMeterFillMultiplier * (1 + bloodiedClothesLevel(player)) * 0.5;
+				bloodlust.BloodlustMeter = bloodlust.BloodlustMeter + math.min(1.4 / distance, 1) * SBvars.BloodlustMeterFillMultiplier * (1 + bloodiedClothesLevel(player)) * 0.5;
 				if detailedDebug then print("ETW Logger | bloodlustKillETW(): BloodlustMeter (soft-capped)=" .. bloodlust.BloodlustMeter) end;
 			end
 			ETWMoodles.bloodlustMoodleUpdate(player, false);
@@ -87,7 +90,7 @@ local function bloodlustTimeETW()
         if debug() then print("ETW Logger | bloodlustTimeETW(): BloodlustMeter is above 50%, BloodlustProgress =" .. bloodlustModData.BloodlustProgress) end;
     else -- lose if below 50%
         local bloodLustProgressDecrease = bloodlustModData.BloodlustMeter * 0.1 * (1 - bloodiedClothesLevel(player)) / ((SBvars.AffinitySystem and modData.StartingTraits.Bloodlust) and SBvars.AffinitySystemLoseDivider or 1);
-        bloodlustModData.BloodlustProgress = math.max(0, bloodlustModData.BloodlustProgress - (3.6 - bloodLustProgressDecrease));
+        bloodlustModData.BloodlustProgress = math.max(0, bloodlustModData.BloodlustProgress - (bloodlustMeterCapacity / 10 - bloodLustProgressDecrease));
         if debug() then print("ETW Logger | bloodlustTimeETW(): BloodlustMeter is below 50%, BloodlustProgress =" .. bloodlustModData.BloodlustProgress) end;
     end
 	if player:HasTrait("Bloodlust") and bloodlustModData.BloodlustProgress <= SBvars.BloodlustProgress / 2 and SBvars.TraitsLockSystemCanLosePositive then

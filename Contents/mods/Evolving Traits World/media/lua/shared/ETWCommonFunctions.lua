@@ -1,5 +1,6 @@
-require "ETWModData";
 local ETWCommonFunctions = {};
+
+local ETWCombinedTraitChecks = require "ETWCombinedTraitChecks";
 
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld;
@@ -26,7 +27,7 @@ end
 ---@param tbl table
 ---@param value any
 ---@return integer
-local function indexOf(tbl, value)
+function ETWCommonFunctions.indexOf(tbl, value)
     for i = 1, #tbl do
         if tbl[i] == value then
             return i
@@ -150,18 +151,6 @@ function ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(name)
 	end
 	if detailedDebug() then print("ETW Logger | Delayed Traits System: checking if " .. name .. " is already in the table, it is not.") end;
 	return false;
-end
-
----Adds item name to the table of unique ripped clothes
----@param player IsoPlayer
----@param item Clothing
-function ETWCommonFunctions.addClothingToUniqueRippedClothingList(player, item)
-	local itemName = item:getName();
-	local modData = ETWCommonFunctions.getETWModData(player);
-	if detailedDebug() then print("ETW Logger | ETWCommonFunctions.addClothingToUniqueRippedClothingList() item: " .. itemName) end;
-	if indexOf(modData.UniqueClothingRipped, itemName) == -1 then
-	    table.insert(modData.UniqueClothingRipped, itemName)
-	end
 end
 
 return ETWCommonFunctions;

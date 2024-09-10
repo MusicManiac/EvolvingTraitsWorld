@@ -226,7 +226,7 @@ option EvolvingTraitsWorld.InventoryTransferSystemItems
 	type = integer,
 	min = 0,
 	max = 2500000,
-	default = 50000,
+	default = 40000,
 	page = ETWSystems,
 	translation = ETW_InventoryTransferSystemItems,
 }
@@ -235,7 +235,7 @@ option EvolvingTraitsWorld.InventoryTransferSystemWeight
 	type = integer,
 	min = 0,
 	max = 2500000,
-	default = 50000,
+	default = 30000,
 	page = ETWSystems,
 	translation = ETW_InventoryTransferSystemWeight,
 }

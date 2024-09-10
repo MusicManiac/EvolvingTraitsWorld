@@ -1,5 +1,3 @@
-require "ETWModData";
-
 local ETWCommonLogicChecks = {};
 
 ---@type EvolvingTraitsWorldSandboxVars
@@ -9,7 +7,7 @@ local activatedMods = getActivatedMods();
 local strength;
 local fitness;
 local sprinting;
-local lightfooted ;
+local lightfooted;
 local nimble;
 local sneaking;
 local axe;
