@@ -48,6 +48,8 @@ UI_CN = {
 	UI_ETW_Options_GatherDebug_tooltip = "将除错资料纪录于console.txt.侦错时很有用,也能用来检视内部特质基准统计值.于文件中搜寻'ETW'来找到相关资讯.",
 	UI_ETW_Options_GatherDetailedDebug = "收集详细除错报告",
 	UI_ETW_Options_GatherDetailedDebug_tooltip = "启用额外的除错讯息纪录,不会对特质进度条有额外纪录,对于错误回报或精准判断错误点相当有用<br>增加许多非必须的资料到报告里,若启用此选项则必须要定期重启游戏,避免纪录档太大并(可能)使游戏崩溃, 搜寻'ETW'来找到相关报告条目",
+	UI_ETW_Options_EnableSoundNotifications = "启用音效通知",
+	UI_ETW_Options_EnableSoundNotifications_tooltip = "当你获得/失去一个特质 或 获得/失去的特质被加入延迟系统中时拨放音效通知.",
 	UI_ETW_Options_EnableNotifications = "启用 特质 通知",
 	UI_ETW_Options_EnableNotifications_tooltip = "当获得/失去特质时在角色头上显示讯息",
 	UI_ETW_Options_EnableDelayedNotifications = "启用特质延迟系统通知",
@@ -59,11 +61,19 @@ UI_CN = {
 	UI_ETW_Options_EnableBloodLustMoodle_tooltip = "变更此选项后需要一个游戏天来刷新",
 	UI_ETW_Options_EnableSleepHealthMoodle = "启用 睡眠品质 图示 ",
 	UI_ETW_Options_EnableSleepHealthMoodle_tooltip = "显示角色目前睡眠时间状况,只会在角色睡眠时出现",
-
 	UI_ETW_Options_UIWidth = "[UI] 角色页面长度",
 	UI_ETW_Options_UIWidth_tooltip = "角色页面的设定长度. 预设数值只适用于英文介面, 其使用其他语言(包含中文)时可能需要在此增加或减少数值来符合使用.",
 	UI_ETW_Options_TraitColumns = "[UI] 特质行列",
-	UI_ETW_Options_TraitColumns_tooltip = "决定了在角色页面能够显示几行特质. 预设数值只适用于英文介面, 其使用其他语言(包含中文)时发生文字重叠状况,可能需要在此减少数值来符合使用"
+	UI_ETW_Options_TraitColumns_tooltip = "决定了在角色页面能够显示几行特质. 预设数值只适用于英文介面, 其使用其他语言(包含中文)时发生文字重叠状况,可能需要在此减少数值来符合使用",
+	UI_ETW_Options_HideSmokerUI = "[UI] 隐藏老烟枪进度条",
+	UI_ETW_Options_HideSmokerUI_tooltip = "在ETW使用者介面中隐藏老烟枪进度条(举例来说,如果你没有这个特质或没打算抽菸). 更动后须重新读档或重新进入伺服器.",
+	UI_ETW_Options_HideReadMeUI = "[UI] 隐藏在使用者介面中的说明区块",
+	UI_ETW_Options_HideReadMeUI_tooltip = "隐藏在使用者介面中的说明区块. 更动后须重新读档或重新进入伺服器.",
+
+	UI_ETW_Options_ReadMe = "------------ 说明 ------------",
+	UI_ETW_Options_ReadMe_tooltip = "请注意这个模组分别有沙盒设置 跟 模组设置两个部分. 在99%的例子裏你想要 开启/关闭/改动 甚麽都是可以做到的.<br>包括了音效通知, 模组相关热键, 模组UI的调整, 还有其他几百种的设定.<br>沙盒设置可以再开始新档前或使用模组来进入. 任何改动都推荐您在完成改动后重新读档或重开伺服器. 模组设置可以在 Esc -> 选项 -> (Mods) -> 进化特质世界 里找到. 热键可以在Esc -> Options -> Key Bindings里找到.",
+
+	UI_optionscreen_binding_ETW_UI_Toggle = "开关ETW使用者介面",
 
 	UI_ETW_GainTooltip = "在计数达到指示条的这里之后即可获得特质 (如果技能延迟系统有启动则是得到获得的门槛)",
 	UI_ETW_LooseTooltip = "在计数达到指示条的这里之后即可失去特质 (如果技能延迟系统有启动则是得到失去的门槛)",

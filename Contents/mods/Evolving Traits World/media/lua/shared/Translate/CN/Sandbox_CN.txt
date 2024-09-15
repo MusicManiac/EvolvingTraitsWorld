@@ -43,11 +43,13 @@ Sandbox_CN = {
 	Sandbox_ETW_BaseballPlayerKills = "棒球球员:获得特质所需长棍武器击杀数",
 
 	Sandbox_ETW_Bloodlust = "嗜血",
-	Sandbox_ETW_Bloodlust_tooltip = "---通常说明---<br>这个特质让你可以藉由增加并维持嗜血量表来获得特定增益.藉由击杀特定距离内的僵尸<br>嗜血量表在72小时内可达到上限.击杀距离越近增加速度越快.当量表超过一半时,每小时都会增加嗜血特质进程,当低于一半时每小时则移除进程<br>嗜血量表每小时自动降低1%<br>---技术性说明(不想做太多设定请无视)---<br>特过击杀特定距离内僵尸可填充嗜血量表.实际填充量取决于乘数及距离.公式如下: math.min(1 / 距离, 1) * 乘数.每小时量表自然下降1%<br>如果量表超过50%则每小时嗜血进程增加10%. 若量表低于50%则每小时失去 0.1-3.6进程<br>举例来说若你量表只是稍微低于50%，那大约每小时减0.1进程值, 若量表为0则每小时扣3.6进程值.<br>进程值上限为两倍当前量表值",
+	Sandbox_ETW_Bloodlust_tooltip = "藉由获得及维持嗜血计量来获得增益. 计量可藉由击杀殭尸获得并于72时内达到软上限.<br>击杀时殭尸离你越近获得量越多. 当计量超过一半时, 每个小时都会在增加嗜血特质进度; 在一半以下时则减少进度. 计量表每小时会自然衰减.<br>身着血迹斑斑的衣物有助于此效率.",
 	Sandbox_ETW_BloodlustMeterFillMultiplier = "嗜血量表乘数",
 	Sandbox_ETW_BloodlustMeterFillMultiplier_tooltip = "决定嗜血量表的填充速度",
+	Sandbox_ETW_BloodlustMeterMaxCapMultiplier = "嗜血计量表极限乘数",
+	Sandbox_ETW_BloodlustMeterMaxCapMultiplier_tooltip = "设定你可以超量累积你的嗜血计量表多少. 这是乘数而非加成. 举例来说, 2 代表你可以超量累积你的嗜血计量到 200%.",
 	Sandbox_ETW_BloodlustProgress = "嗜血特质进程",
-	Sandbox_ETW_BloodlustProgress_tooltip = "决定当进程数值达到多少时会获得嗜血特质. 量表值满的情况下每小时会增加3.6进程值. 但当量表低于50%时也会失去进程值. 如果这项树值设定太低,代表你会很容易得到嗜血特质,但也一样容易失去,进程值上限为两倍当前量表值",
+	Sandbox_ETW_BloodlustProgress_tooltip = "获得嗜血特质所需嗜血计量数值. 需注意的是你在低于此数值设定的50%以下也会失去特质. 所以若此数值设定低, 获得跟失去会同样变得容易. 进度最大可到两倍所设定数值.",
 	Sandbox_ETW_BloodlustMoodle = "启用嗜血特质",
 	Sandbox_ETW_BloodlustMoodle_tooltip = "如果不启用则嗜血量表不会显示. 单人模式下可随自身需求于模组选项开关. 如果为多人伺服器则玩家无法自行启用量表显示.",
 	Sandbox_ETW_BloodlustMoodleVisibilityHours = "嗜血量表显示持续时间",
@@ -63,7 +65,7 @@ Sandbox_CN = {
 
 	Sandbox_ETW_BraverySystem = "勇气特质系统",
 	Sandbox_ETW_BraverySystemKills = "获得最高特质等级所需击杀总数",
-	Sandbox_ETW_BraverySystemKills_tooltip = "设定所需上升至最高勇猛特质等级所需的击杀数.进战击杀两倍计算.特质进程变化依序为: 畏首畏尾 -> 恐血症 -> 和平主义者 -> 肾上腺素上瘾 -> 勇猛 -> 麻木不仁<br>每个阶段的标准为:<br>胆小:10%设定击杀数<br>恐血症:20%设定击杀数<br>和平主义者:30%设定击杀数<br>肾上腺数上瘾:40%设定击杀数<br>勇猛:60%设定击杀数<br>麻木不仁:100%设定击杀数<br>举例:最大击杀数设定为1000.起始特质选择胆小.则需要100击杀来移除.或50进战击杀.或40进战击杀+20枪械击杀",
+	Sandbox_ETW_BraverySystemKills_tooltip = "设置你获得勇猛特质所需的最大击杀数. 进战击杀两倍计算. 特质获取的阶段如下: 胆小 -> 血液恐惧 -> 和平主义者 -> 肾上腺素成瘾 -> 勇猛 -> 麻木不仁<br>你需要前一阶段的特质消失(若为负面)或获得(若为正面)才能在特质阶段上进入下一阶.<br>每一阶段所需击杀数为下:<br>胆小: 10%所设最大击杀数<br>血液恐惧: 20%所设最大击杀数<br>和平主义者: 30%所设最大击杀数<br>肾上腺素成瘾: 40%所设最大击杀数<br>勇猛: 60%所设最大击杀数<br>麻木不仁: 100%所设最大击杀数<br>举例: 最大击杀设为1000. 你角色起始选择胆小. 你需要100次击杀来移除胆小特质, 50次进战击杀或40次进战击杀(x2 = 80击杀计数)加20次枪械击杀.",
 	Sandbox_ETW_BraverySystemRemovesOtherFearPerks = "勇猛特质:恐惧相关特质移除",
 	Sandbox_ETW_BraverySystemRemovesOtherFearPerks_tooltip = "若启用此选项,透过勇气系统得到麻木不仁将移除恐惧相关特质,如恐雨症/密室恐惧/恐雾症,并防止再度获得.",
 
@@ -79,7 +81,8 @@ Sandbox_CN = {
 
 	Sandbox_ETW_CatEyes = "猫眼",
 	Sandbox_ETW_CatEyesCounter = "猫眼计量基准",
-	Sandbox_ETW_CatEyesCounter_tooltip = "---通常说明---<br>透过观察角色周围特定半径的环境来获得该特质.点数获得的基准视观察当时早晚/黑暗区块比例/室内或室外而定.可视距离内的可见区块越多,光度越暗,所得到的点数越多<br>---技术说明(不想做太多设定请无视)---<br>为获得此特质，你需要观察周围半径30格的区域.根据所观察到的每一格实际上所得到的点数计算方式为: 0.01 * 方格黑暗度 * 2 (如果玩家及被观察方格皆为室内) * 日照时间. 平均计算,整晚待在户外可以获得大约 1.1k 点数.",
+	Sandbox_ETW_CatEyesCounter_tooltip = "使你可以藉由观察角色前方范围的地块而在猫眼特质计量上获得进度. 增加的数值取环境因素如日夜, 区块光度, 区块与你之间相度的室内外差异.<br>可见之区块愈多与光度愈低, 可获得更多进度. 若有鹰眼特质还可加倍进度获取.<br>在夜晚中中击杀殭尸会触发一个奖励判定获得额外的计量增减 (举例来说, 普通来说是每分钟+1 变成 每分钟+3).",
+
 
 	Sandbox_ETW_Clumsy = "笨手笨脚",
 	Sandbox_ETW_ClumsySkill = "笨手笨脚:获得特质所需技能等级",
@@ -123,7 +126,7 @@ Sandbox_CN = {
 
 	Sandbox_ETW_FogSystem = "雾气相关特质系统",
 	Sandbox_ETW_FogSystemCounter = "雾气特质基准",
-	Sandbox_ETW_FogSystemCounter_tooltip = "每分钟在雾中所增加的基准值计算方式:雾气浓度 * 雾气系统基准增长乘数. 同时每分钟也减少相对应恐慌:雾气浓度 * 当前恐慌值 * 0.9 * 雾气系统基准衰减乘数.<br>基准最高及最低为两倍设定值. 当基准值为正设定值时获得恐雨症, 当到达负设定值时获得雨瘾者,基准值在正负设定值之间时无变化",
+	Sandbox_ETW_FogSystemCounter_tooltip = "你在雾里的每一分钟都会增加计量. 若是处于惊恐下会减缓这个增加甚至于减少. 如果计量低于负阀值会获得恐雾症; 反之则是喜雾者.<br>如果数值在中间则两者都不会获得. 在雾气中击杀殭尸会触发一个奖励判定获得额外的计量增减 (举例来说, 普通来说是每分钟+1 变成 每分钟+3).",
 	Sandbox_ETW_FogSystemCounterIncreaseMultiplier = "雾气系统基准增长乘数",
 	Sandbox_ETW_FogSystemCounterIncreaseMultiplier_tooltip = "调整基准增长速率",
 	Sandbox_ETW_FogSystemCounterDecreaseMultiplier = "雾气系统基准衰减乘数",
@@ -240,7 +243,7 @@ Sandbox_CN = {
 
 	Sandbox_ETW_RainSystem = "降雨相关特质系统",
 	Sandbox_ETW_RainSystemCounter = "降雨系统基准,
-	Sandbox_ETW_RainSystemCounter_tooltip = "你在雨中的每1分钟都会得到 1 * 降雨程度的计量.如果在雨中当下你的恐慌已超过25%则是减少1 * 降雨程度 * 恐慌百分比 * 降雨系统乘数的计量.计量基准的上下限为2倍设定值. 当达到基准值为负设定值时时获得恐雨症,当基准值为正设定值时时获得雨瘾者.数值在两者之间时无变化",
+	Sandbox_ETW_RainSystemCounter_tooltip = "你待在户外淋雨的每一分钟都会增加计量. 若是处于惊恐下会减缓这个增加甚至于减少. 如果计量低于负阀值会获得恐雨症; 反之则是喜雨者.<br>如果数值在中间则两者都不会获得. 在雾气中击杀殭尸会触发一个奖励判定获得额外的计量增减 (举例来说, 普通来说是每分钟+1 变成 每分钟+3).",
 	Sandbox_ETW_RainSystemCounterIncreaseMultiplier = "降雨系统乘数",
 	Sandbox_ETW_RainSystemCounterIncreaseMultiplier_tooltip = "决定降雨基准的增长/衰减速率",
 	Sandbox_ETW_PluviophileMultiplier = "雨瘾者效果乘数",
@@ -255,6 +258,8 @@ Sandbox_CN = {
 
 	Sandbox_ETW_Sewer = "裁缝师",
 	Sandbox_ETW_SewerSkill = "裁缝师:获得特质所需缝纫技能等级",
+	Sandbox_ETW_SewerUniqueClothesRipped = "裁缝师衣服处理撕裂计数",
+	Sandbox_ETW_SewerUniqueClothesRipped_tooltip = "要获得裁缝师所需的不同独立衣物撕裂的数量(5件衬衫和4件牛仔裤只算'2'件衣物). 若你有安装衣物相关模组, 请适当增加这个设定. 举例来说, AuthenticZ 或 Brita Armor Pack 都增加了相当多不同种类的新衣物.",
 
 	Sandbox_ETW_SleepSystem = "睡眠相关特质系统",
 	Sandbox_ETW_SleepSystem_tooltip = "启用是否可获得/失去睡眠相关特质(辗转难眠/精神抖擞)<br>---通常说明---<br>模组记录你偏好的睡眠小时,在偏好时间段内睡眠会强化你的睡眠健康度.如果在时间段外睡眠则降低. 24小时都不睡觉也会损害你的睡眠规律.模组纪录你偏好睡眠时间段的中间值,所以调整睡眠规律是可行的<br>---技术说明(不想做太多设定请无视)---<br>每次睡眠时,模组纪录你睡眠时间段的中间值,如于 23:00 到 05:30,中点将为 03:45,这个数值就是你的最佳睡眠小时.如果你在此数值的正负6小时内睡眠将强化你的睡眠健康值.<br>从 -200 到 200. 每10分钟系统会做一次检查,并增加0.167到该计量,所以每一小时正常的睡眠都会大约+1到进度值.<br>在时间段外睡眠会从进度值每10分钟扣除 0.167. 24小时不睡眠也是相同.如果进度值低于-100, 获得辗转难眠. 高于100则获得精神抖擞.<br>若角色创建时选择了这些特质则统计值由最大/最小开始(起始辗转难眠为-200/精神抖擞为+200)",
