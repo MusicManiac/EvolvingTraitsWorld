@@ -37,9 +37,9 @@ local function rainTraits(isKill)
 		local rainDecrease = rainGain * (panic / 100) * 0.9 * SBvars.RainSystemCounterDecreaseMultiplier * (isKill and 0.25 or 1);
 		rainDecrease = rainDecrease / ((SBvars.AffinitySystem and modData.StartingTraits.Pluviophile) and SBvars.AffinitySystemLoseDivider or 1);
 		rainDecrease = rainDecrease * ((SBvars.AffinitySystem and modData.StartingTraits.Pluviophobia) and SBvars.AffinitySystemGainMultiplier or 1);
-		local finalRainCounter = modData.FogCounter + rainGain - rainDecrease;
-		modData.RainCounter = math.min(upperBoundary, finalRainCounter);
-		modData.RainCounter = math.max(lowerBoundary, finalRainCounter);
+		local finalRainCounter = modData.RainCounter + rainGain - rainDecrease;
+		finalRainCounter = math.min(upperBoundary, finalRainCounter);
+		finalRainCounter = math.max(lowerBoundary, finalRainCounter);
 		modData.RainCounter = finalRainCounter;
 		if debug() then
 			if isKill then print("ETW Logger | rainTraits(): was triggered by a kill") end;
