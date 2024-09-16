@@ -182,7 +182,7 @@ option EvolvingTraitsWorld.FoodSicknessSystemCounter
 	page = ETWSystems,
 	translation = ETW_FoodSicknessSystemCounter,
 }
-option EvolvingTraitsWorld.FoodSicknessSystemCounter
+option EvolvingTraitsWorld.FoodSicknessSystemNormalSicknessMultiplier
 {
 	type = double,
 	min = 0,

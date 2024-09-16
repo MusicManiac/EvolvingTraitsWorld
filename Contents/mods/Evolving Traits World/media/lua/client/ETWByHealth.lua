@@ -56,7 +56,7 @@ local function foodSicknessTraitsETW()
 	local normalSickness = player:getStats():getSickness(); -- 0-1
 	if detailedDebug() then print("ETW Logger | foodSicknessTraitsETW(): foodSicknessStrength = " .. foodSicknessStrength .. ", normal sickness: " .. normalSickness) end;
 	local modData = ETWCommonFunctions.getETWModData(player);
-	modData.FoodSicknessWeathered = modData.FoodSicknessWeathered + foodSicknessStrength + (normalSickness - foodSicknessStrength) * SBvars.FoodSicknessSystemNormalSicknessMultiplier;
+	modData.FoodSicknessWeathered = modData.FoodSicknessWeathered + foodSicknessStrength + math.max((normalSickness - foodSicknessStrength), 0) * SBvars.FoodSicknessSystemNormalSicknessMultiplier;
 	if player:HasTrait("WeakStomach") and modData.FoodSicknessWeathered >= SBvars.FoodSicknessSystemCounter / 2 and SBvars.TraitsLockSystemCanLoseNegative then
 		if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("WeakStomach") then
 			if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringRemove") .. getText("UI_trait_WeakStomach"), true, HaloTextHelper.getColorGreen()) end;
