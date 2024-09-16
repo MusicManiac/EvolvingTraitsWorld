@@ -86,10 +86,6 @@ Sandbox_DE = {
 	Sandbox_ETW_ClumsySkill = "Erforderliches Geschick zum Entfernen von Tollpatschig",
 	Sandbox_ETW_ClumsySkill_tooltip = "Schleichen + Leichtfüßig",
 
-	Sandbox_ETW_ColdIllnessSystem = "Erkältungskrankheiten System",
-	Sandbox_ETW_ColdIllnessSystemColdsWeathered = "Erkältungen zu Wetter",
-	Sandbox_ETW_ColdIllnessSystemColdsWeathered_tooltip = "Wie viele mittelschwere bis schwere Erkältungen Sie überstehen müssen, um entsprechende Eigenschaften zu verlieren/zu erhalten (Krankheitsanfälligkeit und Widerstandsfähigkeit). Krankheitsanfälligkeit geht verloren, wenn 50% des Zählers getroffen werden, Unverwüstlichkeit, wenn 100% getroffen werden",
-
 	Sandbox_ETW_Conspicuous = "Auffällig",
 	Sandbox_ETW_ConspicuousSkill = "Schleichen erforderlich, um Auffällig zu entfernen",
 
@@ -234,8 +230,8 @@ Sandbox_DE = {
 	Sandbox_ETW_Outdoorsman = "Naturbursche",
 	Sandbox_ETW_OutdoorsmanCounter = "Naturbursche Zähler",
 	Sandbox_ETW_OutdoorsmanCounter_tooltip = "So können Sie eine Ausdehnung erhalten, indem Sie Zeit im Freien verbringen und verschiedenen Wetterbedingungen ausgesetzt sind. Je ungünstiger die Witterungsbedingungen sind, desto schneller werden Sie die Eigenschaft erlangen. Wenn Sie sich in geschlossenen Räumen aufhalten, verlieren Sie langsam an Fortschritt. Wenn man den Zähler erreicht, erhält man die Eigenschaft, wenn man auf das Gegenteil davon fällt (z. B. -500k bei den Standardeinstellungen), verliert man sie",
-	Sandbox_ETW_OutdoorsmanCounterLoseMultiplier = "Naturbursche Zähler Verringern Multiplikator",
-	Sandbox_ETW_OutdoorsmanCounterLoseMultiplier_tooltip = "Legt die Geschwindigkeit oder Langsamkeit fest, mit der der Zähler für die Außenaktivität abnimmt; der Multiplikator von 1 ist in der obigen Beschreibung beschrieben",
+	Sandbox_ETW_OutdoorsmanCounterDecreaseMultiplier = "Naturbursche Zähler Verringern Multiplikator",
+	Sandbox_ETW_OutdoorsmanCounterDecreaseMultiplier_tooltip = "Legt die Geschwindigkeit oder Langsamkeit fest, mit der der Zähler für die Außenaktivität abnimmt; der Multiplikator von 1 ist in der obigen Beschreibung beschrieben",
 
 	Sandbox_ETW_PainTolerance = "Schmerztoleranz",
     Sandbox_ETW_PainToleranceThreshold = "Schmerztoleranz-Schwelle",

@@ -66,9 +66,9 @@ Events.OnCreatePlayer.Add(populateSkills);
 Events.LevelPerk.Remove(populateSkills);
 Events.LevelPerk.Add(populateSkills);
 
-function ETWCommonLogicChecks.ColdIllnessSystemShouldExecute()
+function ETWCommonLogicChecks.ImmuneSystemShouldExecute()
 	local player = getPlayer();
-	if SBvars.ColdIllnessSystem == true and not player:HasTrait("Resilient") and (SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLoseNegative) then
+	if SBvars.ImmuneSystem == true and not player:HasTrait("Resilient") and (SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLoseNegative) then
 		return true
 	else
 		return false

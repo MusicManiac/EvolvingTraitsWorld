@@ -86,10 +86,6 @@ Sandbox_IT = {
 	Sandbox_ETW_ClumsySkill = "Abilità richiesta per rimuovere Goffo",
 	Sandbox_ETW_ClumsySkill_tooltip = "Furtività + Passo Leggero",
 
-	Sandbox_ETW_ColdIllnessSystem = "Sistema di Malanno",
-	Sandbox_ETW_ColdIllnessSystemColdsWeathered = "Raffreddori necessari",
-	Sandbox_ETW_ColdIllnessSystemColdsWeathered_tooltip = "Quanti casi di raffreddori, leggeri o pesanti, devi sopportare per perdere/ottenere i tratti correlati (Cagionevole e resistente). Cagionevole si perde quando si raggiunge il 50% del contatore, Resistente quando si raggiunge il 100%",
-
 	Sandbox_ETW_Conspicuous = "Evidente",
 	Sandbox_ETW_ConspicuousSkill = "Furtività richiesta per rimuovere Evidente",
 
@@ -233,8 +229,8 @@ Sandbox_IT = {
 	Sandbox_ETW_Outdoorsman = "Gitante",
 	Sandbox_ETW_OutdoorsmanCounter = "Contatore Gitante",
 	Sandbox_ETW_OutdoorsmanCounter_tooltip = "Questo ti permette di ottenere un tratto passando del tempo all'aperto ed essendo esposto a varie condizioni meteorologiche. Più avverse sono le condizioni meteorologiche, più velocemente otterrai il tratto. Essere al chiuso fa perdere lentamente il progresso. Raggiungere il contatore ti farà ottenere il tratto, scendere all'opposto di esso (ad esempio, -500k con le impostazioni predefinite) lo farà perdere.",
-	Sandbox_ETW_OutdoorsmanCounterLoseMultiplier = "Moltiplicatore diminuitivo del contatore per Gitante",
-	Sandbox_ETW_OutdoorsmanCounterLoseMultiplier_tooltip = "Definisce la velocità o la lentezza con cui diminuisce il contatore di attività all'aperto, il moltiplicatore di 1 è descritto nella descrizione precedente",
+	Sandbox_ETW_OutdoorsmanCounterDecreaseMultiplier = "Moltiplicatore diminuitivo del contatore per Gitante",
+	Sandbox_ETW_OutdoorsmanCounterDecreaseMultiplier_tooltip = "Definisce la velocità o la lentezza con cui diminuisce il contatore di attività all'aperto, il moltiplicatore di 1 è descritto nella descrizione precedente",
 
 	Sandbox_ETW_PainTolerance = "Resistenza al dolore",
     Sandbox_ETW_PainToleranceThreshold = "Soglia di resistenza al dolore",

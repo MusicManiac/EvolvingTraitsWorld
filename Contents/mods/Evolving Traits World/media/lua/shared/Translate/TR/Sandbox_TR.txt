@@ -85,10 +85,6 @@ Sandbox_TR = {
 	Sandbox_ETW_ClumsySkill = "sakar özelliðini kaybetmeniz için gereken yetenek ihtiyacý",
 	Sandbox_ETW_ClumsySkill_tooltip = "gizlilik + zariflik",
 
-	Sandbox_ETW_ColdIllnessSystem = "Soðuk Algýnlýðý Sistemi",
-	Sandbox_ETW_ColdIllnessSystemColdsWeathered = "Havaya baðlý soðuk algýnlýðý sayacý",
-	Sandbox_ETW_ColdIllnessSystemColdsWeathered_tooltip = "Belirli özellikleri almak için ne kadar soðuk algýnlýðý geçirmeniz gerektiðini gösteren bir sayaçtýr (Hastalýða eðilimli ve dayanýklý). Hastalýða eðilimli sayaç %50 olduðunda kaybedilir ve %100 olduðunda dayanýklý kazanýlýr.",
-
 	Sandbox_ETW_Conspicuous = "Dikkat çekici",
 	Sandbox_ETW_ConspicuousSkill = "Dikkat çekici özelliðini kaybetmek için gereken gizlilik yeteneði ihtiyacý",
 
@@ -233,8 +229,8 @@ Sandbox_TR = {
 	Sandbox_ETW_Outdoorsman = "Doða Ýnsaný",
 	Sandbox_ETW_OutdoorsmanCounter = "Doða Ýnsaný Sayacý",
 	Sandbox_ETW_OutdoorsmanCounter_tooltip = "Bu sayaç doða insaný özelliðini dýþarýda geçirdiðiniz süre ve bu süre zarfýnda içinde bulunduðunuz ortamýn hava koþullarýný da baz alarak kazanýp kaybetmenizi saðlar. Hava durumu ne kadar yoðunluktaysa sayaç o kadar hýzlý artar. Ýçeride vakit geçirmek sayacý azaltýr. Girilen deðere eriþmek özelliði elde etmenizi saðlar, diðer yandaki deðere ulaþýldýðýnda ise (örneðin, varsayýlan ayarlarda bu deðer -500kdýr.) bu özelliði kaybedersiniz",
-	Sandbox_ETW_OutdoorsmanCounterLoseMultiplier = "Doða Ýnsaný deðiþim katsayýsý",
-	Sandbox_ETW_OutdoorsmanCounterLoseMultiplier_tooltip = "Doða insani sayacýný ne kadar hýzlý azaltacaðýnýzý belirleyen katsayý.",
+	Sandbox_ETW_OutdoorsmanCounterDecreaseMultiplier = "Doða Ýnsaný deðiþim katsayýsý",
+	Sandbox_ETW_OutdoorsmanCounterDecreaseMultiplier_tooltip = "Doða insani sayacýný ne kadar hýzlý azaltacaðýnýzý belirleyen katsayý.",
 
 	Sandbox_ETW_PainTolerance = "Aðrýya Dayanýklýlýk",
 	Sandbox_ETW_PainToleranceThreshold = "Aðrýya Dayanma Eþiði",

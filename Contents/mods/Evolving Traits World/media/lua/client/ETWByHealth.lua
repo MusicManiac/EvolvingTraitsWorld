@@ -14,48 +14,36 @@ local debug = function() return EvolvingTraitsWorld.settings.GatherDebug end;
 ---@return boolean
 local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetailedDebug end;
 
----Function responsible for managing Cold System traits
-local function coldTraitsETW()
+---Function responsible for managing Immune traits
+local function immuneSystemTraits()
 	local player = getPlayer();
-	local coldStrength = player:getBodyDamage():getColdStrength() / 100;
+	local bodyDamage = player:getBodyDamage();
+	local coldStrength = bodyDamage:getColdStrength() / 100;
+	local infectionLevel = bodyDamage:getInfectionLevel() / 100;
 	local modData = ETWCommonFunctions.getETWModData(player);
-	local coldSystemData = modData.ColdSystem;
-	local detailedDebug = detailedDebug();
-	local notification = notification();
-	if coldStrength > 0 and coldSystemData.CurrentlySick == false then coldSystemData.CurrentlySick = true end;
-	if coldSystemData.CurrentlySick == true then
-		coldSystemData.CurrentColdCounterContribution = coldSystemData.CurrentColdCounterContribution + coldStrength / 60;
-		if detailedDebug then print("ETW Logger | coldTraitsETW(): CurrentColdCounterContribution = " .. coldSystemData.CurrentColdCounterContribution) end;
-		if coldStrength == 0 then
-			coldSystemData.CurrentColdCounterContribution = math.min(10, coldSystemData.CurrentColdCounterContribution);
-			if detailedDebug then print("ETW Logger | coldTraitsETW(): Healthy now, CurrentColdCounterContribution = " .. coldSystemData.CurrentColdCounterContribution) end;
-			coldSystemData.CurrentlySick = false;
-			if coldSystemData.CurrentColdCounterContribution == 10 then
-				coldSystemData.ColdsWeathered = coldSystemData.ColdsWeathered + 1;
-				if debug() then print("ETW Logger | coldTraitsETW(): Weathered a cold, coldSystemData.ColdsWeathered = " .. coldSystemData.ColdsWeathered) end;
+	if coldStrength > 0 or infectionLevel > 0 then
+		modData.ImmunitySystemCounter = modData.ImmunitySystemCounter + coldStrength + infectionLevel * SBvars.ImmunitySystemInfectionMultiplier;
+		if detailedDebug() then print("ETW Logger | immuneSystemTraits(): modData.ImmunitySystemCounter = " .. modData.ImmunitySystemCounter) end;
+		if player:HasTrait("ProneToIllness") and modData.ImmunitySystemCounter >= SBvars.ImmunitySystemCounter / 2 and SBvars.TraitsLockSystemCanLoseNegative then
+			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("ProneToIllness") then
+				if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringRemove") .. getText("UI_trait_pronetoillness"), true, HaloTextHelper.getColorGreen()) end;
+				ETWCommonFunctions.traitSound(player);
+				ETWCommonFunctions.addTraitToDelayTable(modData, "ProneToIllness", player, false);
+			elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("ProneToIllness")) then
+				player:getTraits():remove("ProneToIllness");
+				if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_pronetoillness"), false, HaloTextHelper.getColorGreen()) end;
+				ETWCommonFunctions.traitSound(player);
 			end
-			coldSystemData.CurrentColdCounterContribution = 0;
-            if player:HasTrait("ProneToIllness") and coldSystemData.ColdsWeathered >= SBvars.ColdIllnessSystemColdsWeathered / 2 and SBvars.TraitsLockSystemCanLoseNegative then
-				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("ProneToIllness") then
-					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringRemove") .. getText("UI_trait_pronetoillness"), true, HaloTextHelper.getColorGreen()) end;
-					ETWCommonFunctions.traitSound(player);
-					ETWCommonFunctions.addTraitToDelayTable(modData, "ProneToIllness", player, false);
-				elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("ProneToIllness")) then
-					player:getTraits():remove("ProneToIllness");
-                    if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_pronetoillness"), false, HaloTextHelper.getColorGreen()) end;
-					ETWCommonFunctions.traitSound(player);
-				end
-            elseif not player:HasTrait("ProneToIllness") and not player:HasTrait("Resilient") and coldSystemData.ColdsWeathered >= SBvars.ColdIllnessSystemColdsWeathered and SBvars.TraitsLockSystemCanGainPositive then
-				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Resilient") then
-					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_resilient"), true, HaloTextHelper.getColorGreen()) end;
-					ETWCommonFunctions.traitSound(player);
-					ETWCommonFunctions.addTraitToDelayTable(modData, "Resilient", player, true);
-				elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Resilient")) then
-					player:getTraits():add("Resilient");
-					if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_resilient"), true, HaloTextHelper.getColorGreen()) end;
-					ETWCommonFunctions.traitSound(player);
-					Events.EveryOneMinute.Remove(coldTraitsETW);
-				end
+		elseif not player:HasTrait("ProneToIllness") and not player:HasTrait("Resilient") and modData.ImmunitySystemCounter >= SBvars.ImmunitySystemCounter and SBvars.TraitsLockSystemCanGainPositive then
+			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Resilient") then
+				if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_resilient"), true, HaloTextHelper.getColorGreen()) end;
+				ETWCommonFunctions.traitSound(player);
+				ETWCommonFunctions.addTraitToDelayTable(modData, "Resilient", player, true);
+			elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Resilient")) then
+				player:getTraits():add("Resilient");
+				if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_resilient"), true, HaloTextHelper.getColorGreen()) end;
+				ETWCommonFunctions.traitSound(player);
+				Events.EveryOneMinute.Remove(immuneSystemTraits);
 			end
 		end
 	end
@@ -64,30 +52,29 @@ end
 ---Function responsible for managing Food Sickness System traits
 local function foodSicknessTraitsETW()
 	local player = getPlayer();
-	local foodSicknessStrength = player:getBodyDamage():getFoodSicknessLevel() / 100;
-	if detailedDebug() then print("ETW Logger | foodSicknessTraitsETW(): foodSicknessStrength=" .. foodSicknessStrength) end;
+	local foodSicknessStrength = player:getBodyDamage():getFoodSicknessLevel() / 100; -- 0-100 -> 0-1
+	local normalSickness = player:getStats():getSickness(); -- 0-1
+	if detailedDebug() then print("ETW Logger | foodSicknessTraitsETW(): foodSicknessStrength = " .. foodSicknessStrength .. ", normal sickness: " .. normalSickness) end;
 	local modData = ETWCommonFunctions.getETWModData(player);
-	modData.FoodSicknessWeathered = modData.FoodSicknessWeathered + foodSicknessStrength;
-	local notification = notification();
-	local delayedNotification = delayedNotification();
+	modData.FoodSicknessWeathered = modData.FoodSicknessWeathered + foodSicknessStrength + (normalSickness - foodSicknessStrength) * SBvars.FoodSicknessSystemNormalSicknessMultiplier;
 	if player:HasTrait("WeakStomach") and modData.FoodSicknessWeathered >= SBvars.FoodSicknessSystemCounter / 2 and SBvars.TraitsLockSystemCanLoseNegative then
 		if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("WeakStomach") then
-			if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringRemove") .. getText("UI_trait_WeakStomach"), true, HaloTextHelper.getColorGreen()) end;
+			if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringRemove") .. getText("UI_trait_WeakStomach"), true, HaloTextHelper.getColorGreen()) end;
 			ETWCommonFunctions.traitSound(player);
 			ETWCommonFunctions.addTraitToDelayTable(modData, "WeakStomach", player, false);
 		elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("WeakStomach")) then
 			player:getTraits():remove("WeakStomach");
-			if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_WeakStomach"), false, HaloTextHelper.getColorGreen()) end;
+			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_WeakStomach"), false, HaloTextHelper.getColorGreen()) end;
 			ETWCommonFunctions.traitSound(player);
 		end
 	elseif not player:HasTrait("WeakStomach") and not player:HasTrait("IronGut") and modData.FoodSicknessWeathered >= SBvars.FoodSicknessSystemCounter and SBvars.TraitsLockSystemCanGainPositive then
 		if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("IronGut") then
-			if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_IronGut"), true, HaloTextHelper.getColorGreen()) end;
+			if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_IronGut"), true, HaloTextHelper.getColorGreen()) end;
 			ETWCommonFunctions.traitSound(player);
 			ETWCommonFunctions.addTraitToDelayTable(modData, "IronGut", player, true);
 		elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("IronGut")) then
 			player:getTraits():add("IronGut");
-			if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_IronGut"), true, HaloTextHelper.getColorGreen()) end;
+			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_IronGut"), true, HaloTextHelper.getColorGreen()) end;
 			ETWCommonFunctions.traitSound(player);
 			Events.EveryOneMinute.Remove(foodSicknessTraitsETW);
 		end
@@ -341,9 +328,9 @@ local noTraitsLock = function() return (SBvars.TraitsLockSystemCanGainNegative o
 ---@param playerIndex number
 ---@param player IsoPlayer
 local function initializeEventsETW(playerIndex, player)
-	Events.EveryOneMinute.Remove(coldTraitsETW);
-	if ETWCommonLogicChecks.ColdIllnessSystemShouldExecute() then
-		Events.EveryOneMinute.Add(coldTraitsETW);
+	Events.EveryOneMinute.Remove(immuneSystemTraits);
+	if ETWCommonLogicChecks.ImmuneSystemShouldExecute() then
+		Events.EveryOneMinute.Add(immuneSystemTraits);
 	end
 	Events.EveryOneMinute.Remove(foodSicknessTraitsETW);
 	if ETWCommonLogicChecks.FoodSicknessSystemShouldExecute() then
@@ -366,7 +353,7 @@ end
 ---Function responsible for clearing events
 ---@param character IsoPlayer
 local function clearEventsETW(character)
-	Events.EveryOneMinute.Remove(coldTraitsETW);
+	Events.EveryOneMinute.Remove(immuneSystemTraits);
 	Events.EveryOneMinute.Remove(foodSicknessTraitsETW);
 	Events.EveryTenMinutes.Remove(weightSystemETW);
 	Events.EveryTenMinutes.Remove(painToleranceTraitETW);
