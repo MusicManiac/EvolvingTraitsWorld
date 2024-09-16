@@ -51,6 +51,7 @@ local function createModData(playerIndex, player)
 	modData.TreesChopped = modData.TreesChopped or 0;
 	modData.PainToleranceCounter = modData.PainToleranceCounter or 0;
 	modData.UniqueClothingRipped = modData.UniqueClothingRipped or {};
+	modData.ImmunitySystemCounter = modData.ImmunitySystemCounter or 0;
 
 	modData.MentalStateInLast60Min = modData.MentalStateInLast60Min or {0.75};
 	modData.MentalStateInLast24Hours = modData.MentalStateInLast24Hours or {0.75};
@@ -88,8 +89,6 @@ local function createModData(playerIndex, player)
 		modData.AsthmaticCounter = SBvars.AsthmaticCounter * -2;
 	end
 	modData.AsthmaticCounter = modData.AsthmaticCounter or 0;
-
-
 
 	if modData.HerbsPickedUp == nil and startingTraits.Herbalist == true then -- start at full counter if they start with the trait
 		modData.HerbsPickedUp = SBvars.HerbalistHerbsPicked;
@@ -153,14 +152,6 @@ local function createModData(playerIndex, player)
 		smokeSystem.SmokingAddiction = smokeSystem.SmokingAddiction or 0;
 	end
 	smokeSystem.MinutesSinceLastSmoke = smokeSystem.MinutesSinceLastSmoke or 0;
-
-	modData.ColdSystem = modData.ColdSystem or {};
-	local coldSystem = modData.ColdSystem;
-	if coldSystem.CurrentlySick == nil then
-		coldSystem.CurrentlySick = false;
-	end
-	coldSystem.ColdsWeathered = coldSystem.ColdsWeathered or 0;
-	coldSystem.CurrentColdCounterContribution = coldSystem.CurrentColdCounterContribution or 0;
 
 	modData.TransferSystem = modData.TransferSystem or {};
 	local transferSystem = modData.TransferSystem;

@@ -86,10 +86,6 @@ Sandbox_ES = {
 	Sandbox_ETW_ClumsySkill = "Requisito de habilidad de Torpe",
 	Sandbox_ETW_ClumsySkill_tooltip = "Sigilo + Pies ligeros",
 
-	Sandbox_ETW_ColdIllnessSystem = "Sistema de Enfermedad por Resfriado",
-	Sandbox_ETW_ColdIllnessSystemColdsWeathered = "Resfriados al clima",
-	Sandbox_ETW_ColdIllnessSystemColdsWeathered_tooltip = "Cuántos casos de resfriados moderados a intensos tienes que conseguir para perder/obtener rasgos relacionados (Propenso a enfermedades y Resiliente). Propenso a la enfermedad se pierde al alcanzar el 50% del contador, Resiliente al alcanzar el 100%",
-
 	Sandbox_ETW_Conspicuous = "Visible",
 	Sandbox_ETW_ConspicuousSkill = "Visible Requisito de habilidad de Sigilo",
 
@@ -233,8 +229,8 @@ Sandbox_ES = {
 	Sandbox_ETW_Outdoorsman = "Amante de la naturaleza",
 	Sandbox_ETW_OutdoorsmanCounter = "Contador de Amante de la naturaleza",
 	Sandbox_ETW_OutdoorsmanCounter_tooltip = "Esto te permite obtener un rasgo por estar en el exterior y estar expuesto a varias condiciones climaticas. Entre mas adverso sean las condiciones climaticas, mas rapido vas a obtener el rasgo. Estar en el interior reduce tu progreso lentamente. Si alcanzas el contador, obtendrás el rasgo si caes al valor opuesto (por ejemplo, -500k con la configuración predeterminada), lo perderás.",
-	Sandbox_ETW_OutdoorsmanCounterLoseMultiplier = "Amante de la naturaleza Multiplicador de disminución de contador",
-	Sandbox_ETW_OutdoorsmanCounterLoseMultiplier_tooltip = "Define qué tan rápido o lento disminuye tu contador de Amantes de la Naturaleza, el multiplicador de 1 se describe en la información sobre herramientas anterior",
+	Sandbox_ETW_OutdoorsmanCounterDecreaseMultiplier = "Amante de la naturaleza Multiplicador de disminución de contador",
+	Sandbox_ETW_OutdoorsmanCounterDecreaseMultiplier_tooltip = "Define qué tan rápido o lento disminuye tu contador de Amantes de la Naturaleza, el multiplicador de 1 se describe en la información sobre herramientas anterior",
 
 	Sandbox_ETW_PainTolerance = "Tolerancia al Dolor",
 	Sandbox_ETW_PainToleranceThreshold = "Limite de Tolerancia al Dolor",

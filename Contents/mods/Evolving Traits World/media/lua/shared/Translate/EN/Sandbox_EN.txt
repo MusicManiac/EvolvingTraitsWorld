@@ -88,10 +88,6 @@ Sandbox_EN = {
 	Sandbox_ETW_ClumsySkill = "Clumsy Skill requirement",
 	Sandbox_ETW_ClumsySkill_tooltip = "Sneak + Lightfooted",
 
-	Sandbox_ETW_ColdIllnessSystem = "Cold Illness System",
-	Sandbox_ETW_ColdIllnessSystemColdsWeathered = "Colds to Weather",
-	Sandbox_ETW_ColdIllnessSystemColdsWeathered_tooltip = "How many instances of moderate to heavy colds you have to weather to lose/get related traits (Prone to Illness and Resilient). Prone to Illness is lost when hitting 50% of the counter, Resilient when hitting 100%",
-
 	Sandbox_ETW_Conspicuous = "Conspicuous",
 	Sandbox_ETW_ConspicuousSkill = "Conspicuous Sneaking Skill requirement",
 
@@ -133,7 +129,9 @@ Sandbox_EN = {
 
 	Sandbox_ETW_FoodSicknessSystem = "Food Sickness System",
 	Sandbox_ETW_FoodSicknessSystemCounter = "Food Sickness Counter",
-	Sandbox_ETW_FoodSicknessSystemCounter_tooltip = "Determines how much food sickness you need to accumulate to lose/gain Food Sickness-related traits, Weak Stomach and Iron Gut. Sickness can range from 0 to 1, where 1 can lead to death. Each minute, your current sickness level is added to the counter.
+	Sandbox_ETW_FoodSicknessSystemCounter_tooltip = "Determines how much food sickness you need to accumulate to lose/gain Food Sickness-related traits, Weak Stomach and Iron Gut. Sickness can range from 0 to 1, where 1 can lead to death. Each minute, your current food sickness level is added to the counter.",
+	Sandbox_ETW_ETW_FoodSicknessSystemNormalSicknessMultiplier = "Normal Sickness Contribution",
+	Sandbox_ETW_ETW_FoodSicknessSystemNormalSicknessMultiplier_tooltip = "Sickness gained specifically from food and general sickness are different things in the game. This multiplier allows normal sickness to count for gaining the Food Sickness System traits."
 
 	Sandbox_ETW_FurnitureAssembler = "Furniture Assembler",
 	Sandbox_ETW_FurnitureAssemblerSkill = "Furniture Assembler Carpentry Skill requirement",
@@ -197,6 +195,12 @@ Sandbox_EN = {
 	Sandbox_ETW_HunterKills = "Hunter Kills requirement",
 	Sandbox_ETW_HunterKills_tooltip = "Firearm + Small Blade",
 
+	Sandbox_ETW_ImmunitySystem = "Immunity System",
+	Sandbox_ETW_ImmunitySystemCounter = "Immunity System counter",
+	Sandbox_ETW_ImmunitySystemCounter_tooltip = "Upon reaching the half of value on this counter you lose Prone to Illness, upon reaching the value you gain Resilient. Every minute current cold strength is added to the counter. Being infected with Knox Infection also contributes to counter (so if you run mods that can help you fight infection, like Antibodies, it will help with Immunity System)",
+	Sandbox_ETW_ImmunitySystemInfectionMultiplier = "Knox Infection Multiplier",
+	Sandbox_ETW_ImmunitySystemInfectionMultiplier_tooltip = "This is multiplier how much Knox infection level contributes to Immunity System progress.",
+
 	Sandbox_ETW_Inconspicuous = "Inconspicuous",
 	Sandbox_ETW_InconspicuousSkill = "Inconspicuous Sneak Skill requirement",
 
@@ -230,9 +234,11 @@ Sandbox_EN = {
 
 	Sandbox_ETW_Outdoorsman = "Outdoorsman",
 	Sandbox_ETW_OutdoorsmanCounter = "Outdoorsman Counter",
-	Sandbox_ETW_OutdoorsmanCounter_tooltip = "---General Understanding---<br>This trait allows you to gain benefits by spending time outdoors and being exposed to various weather conditions. The harsher the weather, the faster you'll accumulate points towards gaining the trait. Conversely, staying indoors gradually reduces progress. You gain the trait when the counter reaches its specified threshold, and lose it when dropping below the opposite threshold (e.g., -500k with default settings).<br><br>---Technical Details---<br>Each minute spent outdoors adds 1 point to the counter, with the rate boosted by adverse weather like rain, snow, and wind. For instance, spending 24 hours in clear weather with one foggy morning accrues approximately 1.7k points, while a day with two foggy mornings and a midday storm yields about 5k points. Indoors, you lose 10% of what you'd gain outdoors, scaling linearly to 100% over 900 minutes. The rate of losing points while outdoors decreases by 0.3% per minute, allowing adjustment from 100% to 10% over 300 minutes. Losing the trait occurs when the counter falls to half its set value",
-	Sandbox_ETW_OutdoorsmanCounterLoseMultiplier = "Outdoorsman Counter Decrease Multiplier",
-	Sandbox_ETW_OutdoorsmanCounterLoseMultiplier_tooltip = "Adjusts the rate at which you lose points from the outdoorsman counter. A multiplier of 1 is described in the previous tooltip"
+	Sandbox_ETW_OutdoorsmanCounter_tooltip = "This allows you to earn/lose by spending time outdoors and being exposed to various weather conditions. The harsher the weather, the faster you'll accumulate points towards gaining the trait. Conversely, staying indoors gradually reduces progress. You gain the trait when the counter reaches its specified threshold, and lose it when dropping below the opposite threshold. Being inside will slowly start to decrease the counter, with maximum decrease being reached after being indoors/in-car for 900 min. Killing while outside will also progress the counter based on weather.",
+	Sandbox_ETW_OutdoorsmanCounterIncreaseMultiplier = "Outdoorsman Counter Increase Multiplier",
+	Sandbox_ETW_OutdoorsmanCounterIncreaseMultiplier_tooltip = "Adjusts the rate at which you gain points in outdoorsman counter. For example, multiplier of 2.5 means you'd be gaining 250% of points'."
+	Sandbox_ETW_OutdoorsmanCounterDecreaseMultiplier = "Outdoorsman Counter Decrease Multiplier",
+	Sandbox_ETW_OutdoorsmanCounterDecreaseMultiplier_tooltip = "Adjusts the rate at which you lose points from the outdoorsman counter. For example, multiplier of 0.25 means you'd be losing 25% of points."
 
 	Sandbox_ETW_PainTolerance = "Pain Tolerance",
 	Sandbox_ETW_PainToleranceThreshold = "Pain Tolerance Threshold",

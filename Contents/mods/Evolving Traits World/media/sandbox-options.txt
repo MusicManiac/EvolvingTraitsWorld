@@ -91,22 +91,6 @@ option EvolvingTraitsWorld.BraverySystemRemovesOtherFearPerks
 	page = ETWSystems,
 	translation = ETW_BraverySystemRemovesOtherFearPerks,
 }
-option EvolvingTraitsWorld.ColdIllnessSystem
-{
-	type = boolean,
-	default = true,
-	page = ETWSystems,
-	translation = ETW_ColdIllnessSystem,
-}
-option EvolvingTraitsWorld.ColdIllnessSystemColdsWeathered
-{
-	type = integer,
-	min = 0,
-	max = 5000,
-	default = 100,
-	page = ETWSystems,
-	translation = ETW_ColdIllnessSystemColdsWeathered,
-}
 option EvolvingTraitsWorld.FearOfLocationsSystem
 {
 	type = boolean,
@@ -198,6 +182,15 @@ option EvolvingTraitsWorld.FoodSicknessSystemCounter
 	page = ETWSystems,
 	translation = ETW_FoodSicknessSystemCounter,
 }
+option EvolvingTraitsWorld.FoodSicknessSystemCounter
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 0.1,
+	page = ETWSystems,
+	translation = ETW_FoodSicknessSystemNormalSicknessMultiplier,
+}
 option EvolvingTraitsWorld.HearingSystem
 {
 	type = boolean,
@@ -213,6 +206,31 @@ option EvolvingTraitsWorld.HearingSystemSkill
 	default = 80,
 	page = ETWSystems,
 	translation = ETW_HearingSystemSkill,
+}
+option EvolvingTraitsWorld.ImmuneSystem
+{
+	type = boolean,
+	default = true,
+	page = ETWSystems,
+	translation = ETW_ImmuneSystemSystem,
+}
+option EvolvingTraitsWorld.ImmunitySystemCounter
+{
+	type = integer,
+	min = 0,
+	max = 500000,
+	default = 9000,
+	page = ETWSystems,
+	translation = ETW_ImmunitySystemCounter,
+}
+option EvolvingTraitsWorld.ImmunitySystemInfectionMultiplier
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 10,
+	page = ETWSystems,
+	translation = ETW_ImmunitySystemInfectionMultiplier,
 }
 option EvolvingTraitsWorld.InventoryTransferSystem
 {
@@ -597,16 +615,16 @@ option EvolvingTraitsWorld.HerbalistHerbsPicked
 	type = integer,
 	min = 0,
 	max = 500000,
-	default = 1000,
+	default = 250,
 	page = ETWComplexPerks,
 	translation = ETW_HerbalistHerbsPicked,
 }
 option EvolvingTraitsWorld.HerbalistHerbsDecay
 {
-	type = integer,
+	type = double,
 	min = 0,
 	max = 500000,
-	default = 1,
+	default = 0.2,
 	page = ETWComplexPerks,
 	translation = ETW_HerbalistHerbsDecay,
 }
@@ -626,14 +644,23 @@ option EvolvingTraitsWorld.OutdoorsmanCounter
 	page = ETWComplexPerks,
 	translation = ETW_OutdoorsmanCounter,
 }
-option EvolvingTraitsWorld.OutdoorsmanCounterLoseMultiplier
+option EvolvingTraitsWorld.OutdoorsmanCounterIncreaseMultiplier
 {
 	type = double,
 	min = 0,
 	max = 100,
-	default = 1,
+	default = 3,
 	page = ETWComplexPerks,
-	translation = ETW_OutdoorsmanCounterLoseMultiplier,
+	translation = ETW_OutdoorsmanCounterIncreaseMultiplier,
+}
+option EvolvingTraitsWorld.OutdoorsmanCounterDecreaseMultiplier
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 3,
+	page = ETWComplexPerks,
+	translation = ETW_OutdoorsmanCounterDecreaseMultiplier,
 }
 option EvolvingTraitsWorld.Smoker
 {
@@ -744,7 +771,7 @@ option EvolvingTraitsWorld.AxemanTrees
 	type = integer,
 	min = 0,
 	max = 500000,
-	default = 500,
+	default = 250,
 	page = ETWSimplePerks,
 	translation = ETW_AxemanTrees,
 }

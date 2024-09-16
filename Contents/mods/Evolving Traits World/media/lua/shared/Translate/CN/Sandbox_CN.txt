@@ -88,10 +88,6 @@ Sandbox_CN = {
 	Sandbox_ETW_ClumsySkill = "笨手笨脚:获得特质所需技能等级",
 	Sandbox_ETW_ClumsySkill_tooltip = "潜行 + 轻巧",
 
-	Sandbox_ETW_ColdIllnessSystem = "风寒相关系统",
-	Sandbox_ETW_ColdIllnessSystemColdsWeathered = "风寒基准",
-	Sandbox_ETW_ColdIllnessSystemColdsWeathered_tooltip = "统计有过多少次因天气造成的轻重感冒来决定你失去/获得相关特质(易生疾病/生命强韧).易生疾病在达到50%基准后失去,达到100%后获得生命强韧",
-
 	Sandbox_ETW_Conspicuous = "万人迷",
 	Sandbox_ETW_ConspicuousSkill = "万人迷:获得特质所需潜行技能等级",
 
@@ -232,8 +228,8 @@ Sandbox_CN = {
 	Sandbox_ETW_Outdoorsman = "户外专家",
 	Sandbox_ETW_OutdoorsmanCounter = "户外专家特质基准",
 	Sandbox_ETW_OutdoorsmanCounter_tooltip = "这个选项使你能够藉由在室外经历各种天气状况还获得户外专家特质. 所经历的天气状况越多样,获得的速度就越快. 待在室内会降低进度. 达到阀值即可获得特质, 若降低到阀值相反的一端(举例来说, 预设是-500k ) 则会失去特质",
-	Sandbox_ETW_OutdoorsmanCounterLoseMultiplier = "户外专家基准衰减乘数",
-	Sandbox_ETW_OutdoorsmanCounterLoseMultiplier_tooltip = "决定你进度值的衰减速率,预设为1",
+	Sandbox_ETW_OutdoorsmanCounterDecreaseMultiplier = "户外专家基准衰减乘数",
+	Sandbox_ETW_OutdoorsmanCounterDecreaseMultiplier_tooltip = "决定你进度值的衰减速率,预设为1",
 
 	Sandbox_ETW_PainTolerance = "痛觉耐受性",
 	Sandbox_ETW_PainToleranceThreshold = "痛觉耐受性上限",

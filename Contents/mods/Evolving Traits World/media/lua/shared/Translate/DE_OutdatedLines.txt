@@ -18,10 +18,21 @@ Sandbox.txt
 
 		Sandbox_ETW_FogSystemCounter_tooltip = "You gain progress every minute you spend in fog. Being panicked can slow down the process or even revert it. If the counter is below -counter, you gain Homichlophobia; when reaching counter, you gain Homichlophile. If the counter is between these values, there is no effect. Making a kill at during fog triggers extra execution of function responsible for gaining/losing progress (so instead of getting progress 1 time / minute you can get progress 3 times per minute, for example)",
 
+		Sandbox_ETW_FoodSicknessSystemCounter_tooltip = "Determines how much food sickness you need to accumulate to lose/gain Food Sickness-related traits, Weak Stomach and Iron Gut. Sickness can range from 0 to 1, where 1 can lead to death. Each minute, your current food sickness level is added to the counter.",
+
 		Sandbox_ETW_RainSystemCounter_tooltip = "You gain progress every minute you spend in rain while outside. Being panicked can slow down the process or even revert it. If the counter is below -counter, you gain Pluviophobia; when reaching counter, you gain Pluviophile. If the counter is between these values, there is no effect. Making a kill at during rain triggers extra execution of function responsible for gaining/losing progress (so instead of getting progress 1 time / minute you can get progress 3 times per minute, for example)",
 	new:
 		Sandbox_ETW_BloodlustMeterMaxCapMultiplier = "Bloodlust Meter Max Cap Multiplier",
 		Sandbox_ETW_BloodlustMeterMaxCapMultiplier_tooltip = "By how much you can overfill your Bloodlust Meter. This is a multiplier. 2 means you can fill your Bloodlust Meter to 200%, for example",
+
+		Sandbox_ETW_ETW_FoodSicknessSystemNormalSicknessMultiplier = "Normal Sickness Contribution",
+		Sandbox_ETW_ETW_FoodSicknessSystemNormalSicknessMultiplier_tooltip = "Sickness gained specifically from food and general sickness are different things in the game. This multiplier allows normal sickness to count for gaining the Food Sickness System traits.",
+
+		Sandbox_ETW_ImmunitySystem = "Immunity System",
+    	Sandbox_ETW_ImmunitySystemCounter = "Immunity System counter",
+		Sandbox_ETW_ImmunitySystemCounter_tooltip = "Upon reaching the half of value on this counter you lose Prone to Illness, upon reaching the value you gain Resilient. Every minute current cold strength is added to the counter. Being infected with Knox Infection also contributes to counter (so if you run mods that can help you fight infection, like Antibodies, it will help with Immunity System)",
+		Sandbox_ETW_ImmunitySystemInfectionMultiplier = "Knox Infection Multiplier",
+		Sandbox_ETW_ImmunitySystemInfectionMultiplier_tooltip = "This is multiplier how much Knox infection level contributes to Immunity System progress.",
 
 		Sandbox_ETW_SewerUniqueClothesRipped = "Sewer Unique Clothes Ripped",
 		Sandbox_ETW_SewerUniqueClothesRipped_tooltip = "Amount of unique clothing you need to rip to qualify for Sewer. If you are running with modded clothes, increase this respectively. AuthenticZ or Brita Armor Pack all add A LOT of clothing to rip, as an example.",

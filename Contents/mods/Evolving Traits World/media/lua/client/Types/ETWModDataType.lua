@@ -6,6 +6,7 @@
 --- @field TreesChopped number
 --- @field PainToleranceCounter number
 --- @field UniqueClothingRipped string[]
+--- @field ImmunitySystemCounter number
 --- @field MentalStateInLast60Min number[]
 --- @field MentalStateInLast24Hours number[]
 --- @field MentalStateInLast31Days number[]
@@ -21,7 +22,6 @@
 --- @field LocationFearSystem LocationFearSystem
 --- @field SleepSystem SleepSystem
 --- @field SmokeSystem SmokeSystem
---- @field ColdSystem ColdSystem
 --- @field TransferSystem TransferSystem
 --- @field BloodlustSystem BloodlustSystem
 --- @field KillCount KillCount
@@ -44,11 +44,6 @@
 --- @class SmokeSystem
 --- @field SmokingAddiction number
 --- @field MinutesSinceLastSmoke number
-
---- @class ColdSystem
---- @field CurrentlySick boolean
---- @field ColdsWeathered number
---- @field CurrentColdCounterContribution number
 
 --- @class TransferSystem
 --- @field ItemsTransferred number

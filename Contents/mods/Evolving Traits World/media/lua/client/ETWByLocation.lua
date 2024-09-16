@@ -14,7 +14,9 @@ local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetai
 local desensitized = function(player) return player:HasTrait("Desensitized") and SBvars.BraverySystemRemovesOtherFearPerks end;
 
 ---Function responsible for managing Outdoorsman trait
-local function outdoorsman()
+---@param isKill boolean
+local function outdoorsman(isKill)
+	local isKill = isKill or false;
 	local player = getPlayer();
 	local modData = ETWCommonFunctions.getETWModData(player);
 	local outdoorsmanModData = modData.OutdoorsmanSystem;
@@ -31,17 +33,20 @@ local function outdoorsman()
 	local fogGain = fogIntensity * (player:HasTrait("Homichlophile") and 1.2 or 1) * (player:HasTrait("Homichlophobia") and 0.8 or 1);
 	local totalGain = baseGain + (rainGain + snowGain + windGain + fogGain) * (player:HasTrait("Hiker") and 1.1 or 1);
 	if player:isOutside() and player:getVehicle() == nil then
-		totalGain = totalGain * ((SBvars.AffinitySystem and modData.StartingTraits.Outdoorsman) and SBvars.AffinitySystemGainMultiplier or 1);
+		totalGain = totalGain * ((SBvars.AffinitySystem and modData.StartingTraits.Outdoorsman) and SBvars.AffinitySystemGainMultiplier or 1) * SBvars.OutdoorsmanCounterIncreaseMultiplier;
 		outdoorsmanModData.MinutesSinceOutside = math.max(0, outdoorsmanModData.MinutesSinceOutside - 3);
 		outdoorsmanModData.OutdoorsmanCounter = math.min(outdoorsmanModData.OutdoorsmanCounter + totalGain, SBvars.OutdoorsmanCounter * 2);
-		if debug() then print("ETW Logger | outdoorsman(): totalGain=" .. totalGain .. ". OutdoorsmanCounter=" .. outdoorsmanModData.OutdoorsmanCounter) end;
+		if debug() then
+			if isKill then print("ETW Logger | outdoorsman(): was triggered by a kill") end;
+			print("ETW Logger | outdoorsman(): totalGain=" .. totalGain .. ". OutdoorsmanCounter=" .. outdoorsmanModData.OutdoorsmanCounter);
+		end;
 		if not player:HasTrait("Outdoorsman") and outdoorsmanModData.OutdoorsmanCounter >= SBvars.OutdoorsmanCounter and SBvars.TraitsLockSystemCanGainPositive then
 			player:getTraits():add("Outdoorsman");
 			ETWCommonFunctions.traitSound(player);
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_outdoorsman"), true, HaloTextHelper.getColorGreen()) end;
 		end
-	elseif outdoorsmanModData.OutdoorsmanCounter > 0 then
-		local totalLose = totalGain * 0.1 * (1 + outdoorsmanModData.MinutesSinceOutside / 100) * SBvars.OutdoorsmanCounterLoseMultiplier;
+	elseif outdoorsmanModData.OutdoorsmanCounter > 0 and not isKill then
+		local totalLose = totalGain * 0.1 * (1 + outdoorsmanModData.MinutesSinceOutside / 100) * SBvars.OutdoorsmanCounterDecreaseMultiplier;
 		totalLose = totalLose / ((SBvars.AffinitySystem and modData.StartingTraits.Outdoorsman) and SBvars.AffinitySystemLoseDivider or 1);
 		outdoorsmanModData.MinutesSinceOutside = math.min(900, outdoorsmanModData.MinutesSinceOutside + 1);
 		outdoorsmanModData.OutdoorsmanCounter = math.max(SBvars.OutdoorsmanCounter * -2, outdoorsmanModData.OutdoorsmanCounter - totalLose);
@@ -55,7 +60,9 @@ local function outdoorsman()
 end
 
 ---Function responsible for managing Fear of Locations System traits
-local function fearOfLocations()
+---@param isKill boolean
+local function fearOfLocations(isKill)
+	local isKill = isKill or false;
 	local player = getPlayer();
 	local modData = ETWCommonFunctions.getETWModData(player);
 	local fearOfLocationsModData = modData.LocationFearSystem;
@@ -70,14 +77,14 @@ local function fearOfLocations()
 	if counterDecrease == 1 then counterDecrease = 0 end;
 	counterDecrease = counterDecrease * SBvars.FearOfLocationsSystemCounterLoseMultiplier;
 	if player:isOutside() then
-		counterDecrease = counterDecrease * ((SBvars.AffinitySystem and modData.StartingTraits.Agoraphobic) and SBvars.AffinitySystemGainMultiplier or 1);
+		counterDecrease = counterDecrease * ((SBvars.AffinitySystem and modData.StartingTraits.Agoraphobic) and SBvars.AffinitySystemGainMultiplier or 1) * (isKill and 0.25 or 1);
 		local resultingCounter = fearOfLocationsModData.FearOfOutside - counterDecrease + ((SBvars.AffinitySystem and modData.StartingTraits.Agoraphobic) and 1 / SBvars.AffinitySystemLoseDivider or 1); -- +1/divider passive ticking of just being outside
 		resultingCounter = math.min(upperCounterBoundary, resultingCounter);
 		resultingCounter = math.max(lowerCounterBoundary, resultingCounter);
 		fearOfLocationsModData.FearOfOutside = resultingCounter;
 		fearOfLocationsModData.FearOfInside = math.min(upperCounterBoundary, fearOfLocationsModData.FearOfInside + SBvars.FearOfLocationsSystemPassiveCounterDecay);
 	elseif not player:isOutside() or player:getVehicle() ~= nil then
-		counterDecrease = counterDecrease * ((SBvars.AffinitySystem and modData.StartingTraits.Claustrophobic) and SBvars.AffinitySystemGainMultiplier or 1);
+		counterDecrease = counterDecrease * ((SBvars.AffinitySystem and modData.StartingTraits.Claustrophobic) and SBvars.AffinitySystemGainMultiplier or 1) * (isKill and 0.25 or 1);
 		local resultingCounter = fearOfLocationsModData.FearOfInside - counterDecrease + ((SBvars.AffinitySystem and modData.StartingTraits.Claustrophobic) and 1 / SBvars.AffinitySystemLoseDivider or 1); -- +1/divider passive ticking of just being inside
 		resultingCounter = math.min(upperCounterBoundary, resultingCounter);
 		resultingCounter = math.max(lowerCounterBoundary, resultingCounter);
@@ -85,6 +92,7 @@ local function fearOfLocations()
 		fearOfLocationsModData.FearOfOutside = math.min(upperCounterBoundary, fearOfLocationsModData.FearOfOutside + SBvars.FearOfLocationsSystemPassiveCounterDecay);
 	end
 	if debug() then
+		if isKill then print("ETW Logger | fearOfLocations(): was triggered by a kill") end;
 		print("ETW Logger | fearOfLocations(): modData.FearOfOutside: " .. fearOfLocationsModData.FearOfOutside);
 		print("ETW Logger | fearOfLocations(): modData.FearOfInside: " .. fearOfLocationsModData.FearOfInside);
 	end
@@ -127,21 +135,55 @@ local function fearOfLocations()
 	end
 end
 
+---Helper function to fire fearOfLocations() on zombie kill
+---@param zombie IsoZombie
+local function outdoorsmanKill(zombie)
+    local player = zombie:getAttackedBy()
+	---@cast player IsoPlayer
+    if not player or not instanceof(player, "IsoPlayer") or not player:isLocalPlayer() then
+		return;
+	else
+		outdoorsman(true);
+	end
+end
+
+---Helper function to fire fearOfLocations() on zombie kill
+---@param zombie IsoZombie
+local function fearOfLocationsKill(zombie)
+    local player = zombie:getAttackedBy()
+	---@cast player IsoPlayer
+    if not player or not instanceof(player, "IsoPlayer") or not player:isLocalPlayer() then
+		return;
+	else
+		fearOfLocations(true);
+	end
+end
+
 ---Function responsible for setting up events
 ---@param playerIndex number
 ---@param player IsoPlayer
 local function initializeEventsETW(playerIndex, player)
 	Events.EveryOneMinute.Remove(outdoorsman);
-	if ETWCommonLogicChecks.OutdoorsmanShouldExecute() then Events.EveryOneMinute.Add(outdoorsman) end;
+	Events.OnZombieDead.Remove(outdoorsmanKill);
+	if ETWCommonLogicChecks.OutdoorsmanShouldExecute() then
+		Events.EveryOneMinute.Add(outdoorsman)
+		Events.OnZombieDead.Add(outdoorsmanKill);
+	end;
 	Events.EveryOneMinute.Remove(fearOfLocations);
-	if ETWCommonLogicChecks.FearOfLocationsSystemShouldExecute() then Events.EveryOneMinute.Add(fearOfLocations) end;
+	Events.OnZombieDead.Remove(fearOfLocationsKill);
+	if ETWCommonLogicChecks.FearOfLocationsSystemShouldExecute() then
+		Events.EveryOneMinute.Add(fearOfLocations);
+		Events.OnZombieDead.Add(fearOfLocationsKill);
+	end;
 end
 
 ---Function responsible for clearing events
 ---@param character IsoPlayer
 local function clearEventsETW(character)
 	Events.EveryOneMinute.Remove(outdoorsman);
+	Events.OnZombieDead.Remove(outdoorsmanKill);
 	Events.EveryOneMinute.Remove(fearOfLocations);
+	Events.OnZombieDead.Remove(fearOfLocationsKill);
 	if detailedDebug() then print("ETW Logger | System: clearEventsETW in ETWByLocation.lua") end;
 end
 
