@@ -1,11 +1,6 @@
-v.8.5.0
+v.8.5.1
 
-General:
-	- Reworked Cold Illness System into Immune System, now it's just a counter that you increase by having cold. Additionally, having Knox infection also contributes to it now. So running  mods that let you fight infection (for example, Antibodies) can help with this
-	- Added Outdoorsman counter increase multiplier which was missing from sandbox, now added
-	- Outdoorsman System and Fear of Locations System now get progress when killing stuff (read sandbox description for more details)
-	- Normal sickness now contributes to Food Sickness System. Sandbox options are present, default contribution multiplier is 25%
-Balancing:
-	- Reduced default Herbalist counter and decay (1000 -> 250 and 1 -> 0.2)
-	- Reduced default Axeman counter (500 -> 250)
-	- Reminder that defaults changes do not apply to existing saves, use mods to change them, if you want
+Fixes:
+	- Fixed error in food sickness function (ETWByHealth.lua line # 59)
+Translations:
+	- KO update
