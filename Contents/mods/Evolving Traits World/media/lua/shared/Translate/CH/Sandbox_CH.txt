@@ -128,7 +128,9 @@ Sandbox_CH = {
 
 	Sandbox_ETW_FoodSicknessSystem = "食物中毒相關特質系統",
 	Sandbox_ETW_FoodSicknessSystemCounter = "食物中毒基準",
-	Sandbox_ETW_FoodSicknessSystemCounter_tooltip = "要累積多少食物中毒值才會失去/獲得相關特質(脾胃虛弱/鐵胃).食物中毒值在0至1中間,而到達1角色會死亡.每分鐘視其目前食物中毒值加到基準中.",
+	Sandbox_ETW_FoodSicknessSystemCounter_tooltip = "決定了需要累積多少食物中毒值來失去/取得相關特質(腸胃虛弱/鐵胃). 疾病值可以為0到1(1代表死亡). 每分鐘會將你目前的中毒值加到進度中",
+	Sandbox_ETW_ETW_FoodSicknessSystemNormalSicknessMultiplier = "普通疾病貢獻",
+	Sandbox_ETW_ETW_FoodSicknessSystemNormalSicknessMultiplier_tooltip = "從食物中獲得的疾病值與統通感冒所得到的疾病值是不同的. 這個乘數設定讓你可以決定是否讓普通感冒的疾病值同時貢獻到食物中毒相關的特質進度中",
 
 	Sandbox_ETW_FurnitureAssembler = "家具組裝工",
 	Sandbox_ETW_FurnitureAssemblerSkill = "家具組裝工:獲得特質所需木工技能等級",
@@ -191,6 +193,12 @@ Sandbox_CH = {
 	Sandbox_ETW_HunterSkill_tooltip = "潛行 + 瞄準 + 短刀 + 陷阱",
 	Sandbox_ETW_HunterKills = "獵人:獲得特質所需擊殺數",
 	Sandbox_ETW_HunterKills_tooltip = "槍械類武器 + 短刀",
+
+	Sandbox_ETW_ImmunitySystem = "免疫系統",
+	Sandbox_ETW_ImmunitySystemCounter = "免疫系統計數",
+	Sandbox_ETW_ImmunitySystemCounter_tooltip = "達到設定值一半可失去'體弱多病', 達到設定值可達到'生命強韌'. 每分鐘所感受到的寒冷度都會增加到計數中. 受到Knox病毒影響也會對進度有所貢獻 (舉例:如果你有安裝像Antibodies模組, 可以讓你自行抵抗Knox病毒的, 那就會對進度有幫助)",
+	Sandbox_ETW_ImmunitySystemInfectionMultiplier = "Knox病毒感染乘數",
+	Sandbox_ETW_ImmunitySystemInfectionMultiplier_tooltip = "病毒感染的程度影響你的免疫系統進度的貢獻乘數, 設定越大影響越大",
 
 	Sandbox_ETW_Inconspicuous = "毫不起眼",
 	Sandbox_ETW_InconspicuousSkill = "豪不起眼:獲得特質所需潛行技能等級",

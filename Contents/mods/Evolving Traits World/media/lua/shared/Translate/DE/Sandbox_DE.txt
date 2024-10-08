@@ -47,8 +47,11 @@ Sandbox_DE = {
 	Sandbox_ETW_Bloodlust_tooltip = "---Allgemeine Erläuterung---<br>Mit dieser Eigenschaft kannst du dir einen Vorteil verschaffen, indem du die Blutdurstanzeige füllst und voll hältst. Dieser Indikator hat ein Richtlimit von 72 Stunden und kann durch das Töten von Zombies in einer bestimmten Entfernung gefüllt werden. Je näher die Zombies sind, desto schneller füllt sich der Indikator. Wenn der Indikator über der Hälfte ist, gibt es jede Stunde Fortschritt für die Blutdurst-Eigenschaft, wenn er unter der Hälfte ist, wird der Fortschritt entfernt. Der Blutdurst-Indikator nimmt automatisch jede Stunde um 1 ab.<br>---Technische Beschreibung, nicht lesen, wenn Sie nicht Meta-Game--<br>Die genaue Höhe der Füllung des Zählers wird durch eine Formel bestimmt, die die Entfernung der Zombies und einen Multiplikator berücksichtigt. Die genaue Formel lautet: math.min(1 / Entfernung, 1) * Multiplikator. Jede Stunde wird der Zähler um eins verringert. Wenn dein Blutrauschzähler über der Hälfte liegt, erhältst du jede Stunde 10 % als Fortschritt für die Eigenschaft. Liegt er unter 50%, verliert man 3,6-0,1*Blutrauschbalken, d.h. wenn man knapp unter 50% liegt, verliert man etwa 1,8, aber wenn man bei 0% liegt, verliert man 3,6 des Fortschritts. Der Fortschritt ist auf das 2-fache des Fortschrittswertes des Blutrausches begrenzt.",
 	Sandbox_ETW_BloodlustMeterFillMultiplier = "Blutrausch-Meter-Füllmultiplikator",
 	Sandbox_ETW_BloodlustMeterFillMultiplier_tooltip = "Wie schnell du deinen Blutrauschmeter füllst",
+	Sandbox_ETW_BloodlustMeterMaxCapMultiplier = "Blutdurst-Meter Maximaler Kapazitätsmultiplikator",
+	Sandbox_ETW_BloodlustMeterMaxCapMultiplier_tooltip = "Um wie viel du deinen Blutdurst-Meter überfüllen kannst. Dies ist ein Multiplikator. 2 bedeutet zum Beispiel, dass du deinen Blutdurst-Meter auf 200 % füllen kannst.",
 	Sandbox_ETW_BloodlustProgress = "Blutrausch Fortschritt",
-	Sandbox_ETW_BloodlustProgress_tooltip = "Wie viel Blutrausch-Fortschritt insgesamt erforderlich ist, um die Eigenschaft zu erhalten. Wenn ihr euren Blutrausch-Marker voll habt, erhaltet ihr in 1 Stunde 3,6 Punkte. Denkt daran, dass ihr die Blutrausch-Eigenschaft auch verliert, wenn dieser Parameter unter 50 % fällt. Wenn du ihn also niedrig ansetzt, kannst du den Vorteil leicht erlangen, aber auch leicht wieder verlieren. Der Fortschritt ist auf das 2-fache des Blutrausch-Fortschrittswertes begrenzt.",
+	Sandbox_ETW_BloodlustProgress_tooltip = "Wie viel Blutdurst-Fortschritt du insgesamt benötigst, um die Eigenschaft zu erhalten. Beachte, dass du auch Blutdurst verlierst, wenn dieser Zähler unter 50 % fällt. Wenn du ihn niedrig setzt, ist es einfach, die Eigenschaft zu bekommen, aber auch leicht, sie zu verlieren. Der Fortschritt ist auf das 2-fache des Blutdurst-Fortschrittswertes begrenzt.",
+
 	Sandbox_ETW_BloodlustMoodle = "Moodle Blutrausch aktivieren",
 	Sandbox_ETW_BloodlustMoodle_tooltip = "Wenn diese Option deaktiviert ist, wird das Moodle nicht angezeigt. Für Einzelspieler lassen Sie sie eingeschaltet und ändern Sie das Moodle, das Sie in den Mod-Optionen sehen. Wenn es sich um eine Server-Einstellung handelt, können Spieler das clientseitige Moodle nicht aktivieren.",
 	Sandbox_ETW_BloodlustMoodleVisibilityHours = "Stunden der Sichtbarkeit des Blutrausch-Moodle",
@@ -64,7 +67,7 @@ Sandbox_DE = {
 
 	Sandbox_ETW_BraverySystem = "Mut-System",
 	Sandbox_ETW_BraverySystemKills = "Töten, um Mut zu verbessern",
-	Sandbox_ETW_BraverySystemKills_tooltip = "Hier stellst du ein, wie viele Kills du brauchst, um dein Mutsystem auf das MAXIMUM zu verbessern. Nahkampf-Kills zählen doppelt für den Fortschritt. Die Progression ist wie folgt: Feigling -> Blutrünstig -> Pazifist -> Adrenalinsüchtig -> Mutig -> Desensibilisiert<br> Die in jedem Level zu erreichenden Mengen sind wie folgt:<br>Feigling: 10% der maximalen Kills<br>Angst vor Blut: 20% der maximalen Tötungen<br>Pazifist: 30% der maximalen Kills<br>Adrenalin-Junkie: 40% der maximalen Kills<br>Tapfer: 60% der maximalen Kills<br>Desensibilisiert: 100% der maximalen Kills< br>Beispiel: Die maximale Anzahl der Kills ist auf 1000 festgelegt. Du beginnst mit Coward. Du brauchst 100 Kills, um ihn zu entfernen. Wenn du 50 Nahkampf-Kills erzielst, wird er entfernt. Dasselbe gilt, wenn du 40 Nahkampf-Kills (x2 = 80 Kills pro Gegenangriff) und 20 Kills mit Schusswaffen erzielst.",
+	Sandbox_ETW_BraverySystemKills_tooltip = "Hier stellst du ein, wie viele Kills du benötigst, um das Mut-System vollständig zu entwickeln. Nahkampfkills zählen doppelt für den Fortschritt. Die Entwicklung ist wie folgt: Feigling -> Blutangst -> Pazifist -> Adrenalinjunkie -> Mutig -> Desensibilisiert<br>Du musst die vorherige Eigenschaft entfernt haben (wenn sie negativ ist) oder besitzen (wenn sie positiv ist), um die nächste Eigenschaft in der Entwicklung zu erlangen/zu verlieren.<br>Die Mengen, um jede Stufe zu erreichen, sind wie folgt:<br>Feigling: 10 % der maximalen Kills<br>Blutangst: 20 % der maximalen Kills<br>Pazifist: 30 % der maximalen Kills<br>Adrenalinjunkie: 40 % der maximalen Kills<br>Mutig: 60 % der maximalen Kills<br>Desensibilisiert: 100 % der maximalen Kills<br>Beispiel: Maximale Kills sind auf 1000 gesetzt. Du startest als Feigling. Du benötigst 100 Kills, um dies zu entfernen. Wenn du 50 Nahkampfkills machst, wird es entfernt. Dasselbe gilt, wenn du 40 Nahkampfkills (x2 = 80 Kills für den Zähler) und 20 Schusswaffenkills machst.",
 	Sandbox_ETW_BraverySystemRemovesOtherFearPerks = "Das Mutsystem beseitigt die anderen Merkmale der Angst",
 	Sandbox_ETW_BraverySystemRemovesOtherFearPerks_tooltip = "Wenn die Desensibilisierung aktiviert ist, werden auch andere angstbezogene Eigenschaften wie Pluviophilie, Nebulophobie, Agoraphobie und Klaustrophobie durch das Mutsystem entfernt und verhindert, dass man sie erlangt.",
 
@@ -80,7 +83,7 @@ Sandbox_DE = {
 
 	Sandbox_ETW_CatEyes = "Katzenaugen",
 	Sandbox_ETW_CatEyesCounter = "Zähler für Katzenaugen",
-	Sandbox_ETW_CatEyesCounter_tooltip = "---Allgemeine Erläuterung---<br>Dieses System ermöglicht es Ihnen, Punkte zu sammeln, indem Sie Kästchen in einem bestimmten Radius um Ihre Spielfigur herum sehen und beobachten. Die Anzahl der Punkte, die du verdienst, wird von Faktoren wie der Tageszeit, der Dunkelheit der Felder und der Tatsache, ob du und das Feld sich innerhalb oder außerhalb befinden, beeinflusst. Je mehr Kästchen du siehst und je dunkler sie sind, desto mehr Punkte erhältst du.<br>---Technische Beschreibung, nicht lesen, wenn Sie nicht meta-game wollen---<br>Um Punkte für diese Eigenschaft zu erhalten, müssen Sie die Kästchen in einem Umkreis von 30 Metern um Ihre Spielfigur sehen und beobachten. Die genaue Anzahl der Punkte, die du für jedes Kästchen erhältst, wird durch eine Formel bestimmt, die die Dunkelheit des Kästchens, die Tageszeit und die Tatsache berücksichtigt, ob du und das Kästchen sich drinnen oder draußen befinden. Die genaue Formel zur Berechnung der Punkte pro Plättchen lautet: 0,01 * Dunkelheit des Plättchens * 2 (wenn Spieler und Plättchen drinnen sind) * Tageszeit. Wenn du eine ganze Nacht im Freien verbringst, erhältst du im Durchschnitt etwa 1,1k Punkte.",
+	Sandbox_ETW_CatEyesCounter_tooltip = "Dies ermöglicht es dir, Punkte zu verdienen, indem du Felder innerhalb eines bestimmten Radius um deinen Charakter siehst und beobachtest. Die Anzahl der verdienten Punkte wird von Faktoren wie Tageszeit, Dunkelheit des Feldes und ob du und das Feld sich drinnen oder draußen befinden, beeinflusst. Je mehr Felder du siehst und je dunkler sie sind, desto mehr Punkte wirst du verdienen. Der Adlerauge-Perk verdoppelt den Gewinn. Das Töten bei Nacht löst zusätzliche Fortschritte aus (anstatt 1 Mal pro Minute Fortschritte zu machen, kannst du 3 Mal pro Minute Fortschritte erzielen, zum Beispiel).",
 
 	Sandbox_ETW_Clumsy = "Tollpatschig",
 	Sandbox_ETW_ClumsySkill = "Erforderliches Geschick zum Entfernen von Tollpatschig",
@@ -123,15 +126,17 @@ Sandbox_DE = {
 
 	Sandbox_ETW_FogSystem = "Nebelsystem",
 	Sandbox_ETW_FogSystemCounter = "Zähler des Nebelsystems",
-	Sandbox_ETW_FogSystemCounter_tooltip = "Sie gewinnen FogIntensity * FogIntensityIncreasingMultiplier für jede Minute, die Sie im Nebel verbringen. Umgekehrt verlieren Sie FogIntensity * Panic * 0.9 * FogIntensityIncreaseMultiplier bei umgekehrten Bedingungen. Der obere und untere Grenzwert des Zählers ist -2*Zähler und 2*Zähler. Wenn du unterhalb des Zählers liegst, bekommst du Nebulophobie, wenn du den Zähler erreichst, bekommst du Nebulophilie. Dazwischen erhält man nichts.",
+	Sandbox_ETW_FogSystemCounter_tooltip = "Du gewinnst Fortschritte für jede Minute, die du im Nebel verbringst. Panik kann den Prozess verlangsamen oder sogar umkehren. Wenn der Zähler unter -Zähler fällt, erhältst du Homichlophobie; wenn du den Zähler erreichst, erhältst du Homichlophilie. Wenn der Zähler dazwischen liegt, hat es keinen Effekt. Ein Kill im Nebel löst zusätzliche Fortschritte aus (anstatt 1 Mal pro Minute Fortschritte zu machen, kannst du 3 Mal pro Minute Fortschritte erzielen, zum Beispiel).",
 	Sandbox_ETW_FogSystemCounterIncreaseMultiplier = "Zählermultiplikator für Nebel erhöhen",
 	Sandbox_ETW_FogSystemCounterIncreaseMultiplier_tooltip = "Passen Sie die Geschwindigkeit an, mit der Ihr Zähler ansteigt, Einzelheiten finden Sie in der Beschreibung des Nebelsystemzählers",
 	Sandbox_ETW_FogSystemCounterDecreaseMultiplier = "Nebelverringerungszähler Multiplikator",
 	Sandbox_ETW_FogSystemCounterDecreaseMultiplier_tooltip = "Passen Sie die Geschwindigkeit an, mit der Ihr Zähler abnimmt, Einzelheiten finden Sie in der Beschreibung des Nebelsystemzählers",
 
 	Sandbox_ETW_FoodSicknessSystem = "System für Lebensmittelkrankheiten",
+	Sandbox_ETW_ETW_FoodSicknessSystemNormalSicknessMultiplier = "Normaler Krankheitsbeitrag",
+	Sandbox_ETW_ETW_FoodSicknessSystemNormalSicknessMultiplier_tooltip = "Lebensmittelvergiftung und allgemeine Krankheit sind im Spiel unterschiedliche Dinge. Dieser Multiplikator erlaubt es, dass normale Krankheiten zum Erwerb der Eigenschaften des Lebensmittelvergiftungssystems beitragen.",
 	Sandbox_ETW_FoodSicknessSystemCounter = "Systemzähler für Lebensmittelkrankheiten",
-	Sandbox_ETW_FoodSicknessSystemCounter_tooltip = "Wie lange muss man mit einer Essstörung leben, um die Merkmale Magen, schwacher Magen und eiserner Magen zu verlieren/zu gewinnen. Die Krankheit muss zwischen 0 und 1 liegen, wobei man weiß, dass man bei 1 tatsächlich sterben kann. Jede Minute, die während der Krankheit vergeht, erhöht den Zähler um 1.",
+	Sandbox_ETW_FoodSicknessSystemCounter_tooltip = "Bestimmt, wie viel Lebensmittelvergiftung du ansammeln musst, um Lebensmittelvergiftungsbezogene Eigenschaften wie Schwacher Magen und Eiserner Magen zu verlieren/zu gewinnen. Die Krankheit kann von 0 bis 1 reichen, wobei 1 tödlich sein kann. Jede Minute wird dein aktueller Lebensmittelvergiftungsgrad zum Zähler hinzugefügt.",
 
 	Sandbox_ETW_FurnitureAssembler = "Möbelbauer",
 	Sandbox_ETW_FurnitureAssemblerSkill = "Erforderliche Qualifikationen für Möbelbauer",
@@ -196,6 +201,12 @@ Sandbox_DE = {
 	Sandbox_ETW_HunterKills = "Erforderliche Tötungen für Jäger",
 	Sandbox_ETW_HunterKills_tooltip = "Zielen + Kurze Klinge",
 
+	Sandbox_ETW_ImmunitySystem = "Immunitätssystem",
+	Sandbox_ETW_ImmunitySystemCounter = "Immunitätssystem-Zähler",
+	Sandbox_ETW_ImmunitySystemCounter_tooltip = "Sobald der Wert des Zählers zur Hälfte erreicht ist, verlierst du die Eigenschaft Anfällig für Krankheiten, und sobald der Zähler vollständig erreicht ist, erhältst du die Eigenschaft Widerstandsfähig. Jede Minute wird die aktuelle Erkältungsstärke zum Zähler hinzugefügt. Eine Infektion mit der Knox-Infektion trägt ebenfalls zum Zähler bei (wenn du Mods verwendest, die dir helfen, die Infektion zu bekämpfen, wie zum Beispiel Antikörper, hilft das auch beim Immunitätssystem).",
+	Sandbox_ETW_ImmunitySystemInfectionMultiplier = "Knox-Infektionsmultiplikator",
+	Sandbox_ETW_ImmunitySystemInfectionMultiplier_tooltip = "Dies ist ein Multiplikator, wie viel der Knox-Infektionsgrad zum Fortschritt des Immunitätssystems beiträgt.",
+
 	Sandbox_ETW_Inconspicuous = "Unauffällig",
 	Sandbox_ETW_InconspicuousSkill = "Erforderliche Qualifikationen für Unauffällig",
 
@@ -241,9 +252,7 @@ Sandbox_DE = {
 
 	Sandbox_ETW_RainSystem = "Regen System",
 	Sandbox_ETW_RainSystemCounter = "Zähler des Regensystems",
-	Sandbox_ETW_RainSystemCounter_tooltip = "Du gewinnst 1 * RegenIntensität pro Minute, die du im Regen verbringst. Wenn du stattdessen mehr als 25% Panik hast, verlierst du 1 * Regenintensität * Panikprozentsatz * Regenverminderungsmultiplikator. Die Höchst- und Mindestgrenzen für den Zähler sind -2 Zähler und 2*Zähler. Wenn du unter -Zähler bist, bekommst du Pluviophobie, wenn du Zähler erreichst, bekommst du Pluviophilie. Dazwischen erhält man nichts.",
-	Sandbox_ETW_RainSystemCounterIncreaseMultiplier = "Abnehmender Multiplikator des Regensystems",
-	Sandbox_ETW_RainSystemCounterIncreaseMultiplier_tooltip = "Legt fest, wie schnell oder langsam Sie den Regensystemzähler reduzieren, erklärt im Tooltip des Regensystemzählers",
+	Sandbox_ETW_RainSystemCounter_tooltip = "Du gewinnst Fortschritte für jede Minute, die du im Regen draußen verbringst. Panik kann den Prozess verlangsamen oder sogar umkehren. Wenn der Zähler unter -Zähler fällt, erhältst du Pluviophobie; wenn du den Zähler erreichst, erhältst du Pluviophilie. Wenn der Zähler dazwischen liegt, hat es keinen Effekt. Ein Kill im Regen löst zusätzliche Fortschritte aus (anstatt 1 Mal pro Minute Fortschritte zu machen, kannst du 3 Mal pro Minute Fortschritte erzielen, zum Beispiel).",
 	Sandbox_ETW_PluviophileMultiplier = "Pluviophiler Effekt-Multiplikator",
 	Sandbox_ETW_PluviophileMultiplier_tooltip = "Alle Effekte (verminderte Unzufriedenheit, Stress und Langeweile) werden mit diesem Wert multipliziert",
 	Sandbox_ETW_PluviophobiaMultiplier = "Pluviophobie-Effekt-Multiplikator",
@@ -256,6 +265,8 @@ Sandbox_DE = {
 
 	Sandbox_ETW_Sewer = "Schneider",
 	Sandbox_ETW_SewerSkill = "Erforderliche Qualifikationen für Schneider",
+	Sandbox_ETW_SewerUniqueClothesRipped = "Einzigartige Kanal-Kleidung zerrissen",
+	Sandbox_ETW_SewerUniqueClothesRipped_tooltip = "Die Menge an einzigartiger Kleidung, die du zerreißen musst, um dich für die Kanalisation zu qualifizieren. Wenn du mit modifizierter Kleidung spielst, erhöhe diesen Wert entsprechend. AuthenticZ oder Brita Armor Pack fügen zum Beispiel eine MENGE Kleidung hinzu, die zerrissen werden kann.",
 
 	Sandbox_ETW_SleepSystem = "Schlafsystem",
 	Sandbox_ETW_SleepSystem_tooltip = "Ermöglicht das Erhalten/Verlieren von schlafbezogenen Eigenschaften, Wachsam und Schlafmütze.<br>---Allgemeine Beschreibung---<br>Mod verfolgt, zu welchen Stunden du gerne schläfst, und solange du innerhalb dieser Stunden schläfst, verstärkst du deinen gesunden Schlafrhythmus.Wenn du außerhalb davon schläfst, verlierst du die Integrität deines Schlafrhythmus. Wenn du länger als 24 Stunden nicht schläfst, fängt dein Schlafrhythmus an, Schaden zu nehmen. Mod verfolgt, zu welchen Stunden du gerne schläfst, indem er den Mittelpunkt deines letzten Schlafes überprüft, so dass es möglich ist, deinen Schlafrhythmus auf andere Stunden zu verschieben.<br>---Technische Beschreibung, lest das nicht, wenn ihr nicht meta-game spielen wollt ---<br>Jedes Mal, wenn ihr schlaft, verfolgt der Mod den Mittelpunkt eures Schlafes, also wenn ihr zwischen 23:00 und 05:30 schlaft, wäre der Mittelpunkt 03:45 und das wäre die optimale Zeit zum Schlafen. von -200 bis 200. Alle 10 Minuten wird der Balken um 0,167 erhöht, d. h. 1 Stunde Schlaf im richtigen Zyklus erhöht den Balken um +1. Wenn man draußen schläft, werden alle 10 Minuten 0,167 vom Balken abgezogen. Wenn du mehr als 24 Stunden nicht geschlafen hast, bekommst du alle zehn Minuten -0,167. Wenn dein Balken unter -100 liegt, wirst du schläfrig. Liegt er über 100, erhältst du Schlaflos. Wenn du mit einer der Eigenschaften beginnst, wird der anfängliche Balkenwert auf den Maximal-/Minimalwert gesetzt, also für Schlaflos +200 und für Schlafmütze -200.",

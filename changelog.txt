@@ -1,6 +1,7 @@
-v.8.5.1
+v.8.5.2
 
 Fixes:
-	- Fixed error in food sickness function (ETWByHealth.lua line # 59)
+	- Fixed error in ETWCommonLogicChecks.lua
+	- Fixed a harmless warn on server requiring "ETWModData"
 Translations:
-	- KO update
+	- DE, CN, CH translations updates

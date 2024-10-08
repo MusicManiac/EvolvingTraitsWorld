@@ -48,6 +48,8 @@ UI_DE = {
 	UI_ETW_Options_GatherDebug_tooltip = "Ermöglicht Ausdrucke in die Datei console.txt. Nützlich für Debugging-Zwecke, ermöglicht auch die Suche nach Daten über interne Zähler. Strg+F für 'ETW', um die Logger zu finden.",
 	UI_ETW_Options_GatherDetailedDebug = "Sammeln detaillierter Fehlersuchdaten",
 	UI_ETW_Options_GatherDetailedDebug_tooltip = "Ermöglicht zusätzliche Ausdrucke in der Datei console.txt. Nur nützlich für Debugging-Zwecke, zeigt keine zusätzlichen Zählerdaten an, NUR nützlich für Fehlerberichte oder um herauszufinden, was falsch ist. Fügt eine Menge unnötiger Informationen zur console.txt hinzu, daher sollte man das Spiel von Zeit zu Zeit neu starten, um zu verhindern, dass die Datei zu groß wird, damit sie das Spiel nicht (möglicherweise) verlangsamt. Strg+F für 'ETW', um die Logger zu finden.",
+	UI_ETW_Options_EnableSoundNotifications = "Tonbenachrichtigungen aktivieren",
+	UI_ETW_Options_EnableSoundNotifications_tooltip = "Spielt einen Ton ab, wann immer du eine Eigenschaft gewinnst/verlierst oder eine Eigenschaft zum System der verzögerten Eigenschaften hinzugefügt wird.",
 	UI_ETW_Options_EnableNotifications = "Eigenschaftsbenachrichtigungen einschalten",
 	UI_ETW_Options_EnableNotifications_tooltip = "Zeige farbige Pfeile auf deinem Charakter, wenn du eine Eigenschaft gewinnst oder verlierst",
 	UI_ETW_Options_EnableDelayedNotifications = "Verzögerte Merkmalsbenachrichtigungen einschalten",
@@ -63,6 +65,15 @@ UI_DE = {
     UI_ETW_Options_UIWidth_tooltip = "Breite der Zeichenseite in Pixeln. Wenn Sie auf Englisch spielen, sollte die Standardeinstellung in Ordnung sein, aber in anderen Sprachen könnte es seltsam sein, also wenn Sie mehr Platz brauchen, erhöhen Sie ihn hier.",
     UI_ETW_Options_TraitColumns = "[UI] Eigenschaftsspalten",
     UI_ETW_Options_TraitColumns_tooltip = "Wie viele Spalten die Benutzeroberfläche auf der Charakterseite hat. Die Standardeinstellung sollte in Ordnung sein, wenn Sie auf Englisch spielen, aber wenn sich der Text in anderen Sprachen überschneidet, sollten Sie diesen Wert verringern."
+	UI_ETW_Options_HideSmokerUI = "[UI] Verstecke Raucherleiste",
+	UI_ETW_Options_HideSmokerUI_tooltip = "Versteckt den Fortschritt der Raucher-Eigenschaft in der ETW-Benutzeroberfläche (zum Beispiel, wenn du sie nicht hast und nicht planst zu rauchen). Erfordert das Neuladen des Spiels oder das erneute Beitreten zum Server.",
+	UI_ETW_Options_HideReadMeUI = "[UI] Verstecke Read Me-Sektion in der Benutzeroberfläche",
+	UI_ETW_Options_HideReadMeUI_tooltip = "Versteckt die Read Me-Sektion in der Benutzeroberfläche. Erfordert das Neuladen des Spiels oder das erneute Beitreten zum Server.",
+
+	UI_ETW_Options_ReadMe = "------------ README (Tooltip) ------------",
+	UI_ETW_Options_ReadMe_tooltip = "Bitte beachte, dass es in diesem Mod sowohl Sandbox-Einstellungen als auch Mod-Optionseinstellungen gibt. In 99 % der Fälle kann alles, was du aktivieren/deaktivieren/ändern möchtest, geändert werden. Dazu gehören Tonbenachrichtigungen, Hotkeys, Anpassungen dieser Benutzeroberfläche und hunderte andere Einstellungen. Sandbox-Einstellungen befinden sich in den Sandbox-Einstellungen, offensichtlich. Mod-Optionen findest du unter Esc -> Optionen -> (Mods) -> Evolving Traits World. Hotkeys findest du unter Tastenkombinationen in Esc -> Optionen -> Tastenbelegungen.",
+
+	UI_optionscreen_binding_ETW_UI_Toggle = "Evolving Traits World UI umschalten"
 
     UI_ETW_GainTooltip = "Du erhältst die Eigenschaft, wenn der Balken da ist (oder du qualifizierst dich, um sie zu erhalten, wenn das System für verzögerte Eigenschaften aktiv ist und diese Eigenschaft in diesem System enthalten ist)",
     UI_ETW_LooseTooltip = "Du verlierst die Eigenschaft, wenn der Balken in der Nähe ist (oder qualifizierst dich dafür, sie zu verlieren, wenn das System für verzögerte Eigenschaften aktiv ist und diese Eigenschaft in diesem System enthalten ist)",
