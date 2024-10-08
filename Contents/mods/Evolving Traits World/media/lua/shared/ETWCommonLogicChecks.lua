@@ -4,68 +4,6 @@ local ETWCommonLogicChecks = {};
 local SBvars = SandboxVars.EvolvingTraitsWorld;
 local activatedMods = getActivatedMods();
 
-local strength;
-local fitness;
-local sprinting;
-local lightfooted;
-local nimble;
-local sneaking;
-local axe;
-local longBlunt;
-local shortBlunt;
-local longBlade;
-local shortBlade;
-local spear;
-local maintenance;
-local carpentry;
-local cooking;
-local farming;
-local firstAid;
-local electrical;
-local metalworking;
-local mechanics;
-local tailoring;
-local aiming;
-local reloading;
-local fishing;
-local trapping;
-local foraging;
-
-local function populateSkills()
-	local player = getPlayer();
-	strength = player:getPerkLevel(Perks.Strength);
-	fitness = player:getPerkLevel(Perks.Fitness);
-	sprinting = player:getPerkLevel(Perks.Sprinting);
-	lightfooted = player:getPerkLevel(Perks.Lightfoot);
-	nimble = player:getPerkLevel(Perks.Nimble);
-	sneaking = player:getPerkLevel(Perks.Sneak);
-	axe = player:getPerkLevel(Perks.Axe);
-	longBlunt = player:getPerkLevel(Perks.Blunt);
-	shortBlunt = player:getPerkLevel(Perks.SmallBlunt);
-	longBlade = player:getPerkLevel(Perks.LongBlade);
-	shortBlade = player:getPerkLevel(Perks.SmallBlade);
-	spear = player:getPerkLevel(Perks.Spear);
-	maintenance = player:getPerkLevel(Perks.Maintenance);
-	carpentry = player:getPerkLevel(Perks.Woodwork);
-	cooking = player:getPerkLevel(Perks.Cooking);
-	farming = player:getPerkLevel(Perks.Farming);
-	firstAid = player:getPerkLevel(Perks.Doctor);
-	electrical = player:getPerkLevel(Perks.Electricity);
-	metalworking = player:getPerkLevel(Perks.MetalWelding);
-	mechanics = player:getPerkLevel(Perks.Mechanics);
-	tailoring = player:getPerkLevel(Perks.Tailoring);
-	aiming = player:getPerkLevel(Perks.Aiming);
-	reloading = player:getPerkLevel(Perks.Reloading);
-	fishing = player:getPerkLevel(Perks.Fishing);
-	trapping = player:getPerkLevel(Perks.Trapping);
-	foraging = player:getPerkLevel(Perks.PlantScavenging);
-end
-
-Events.OnCreatePlayer.Remove(populateSkills);
-Events.OnCreatePlayer.Add(populateSkills);
-Events.LevelPerk.Remove(populateSkills);
-Events.LevelPerk.Add(populateSkills);
-
 function ETWCommonLogicChecks.ImmuneSystemShouldExecute()
 	local player = getPlayer();
 	if SBvars.ImmuneSystem == true and not player:HasTrait("Resilient") and (SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLoseNegative) then
