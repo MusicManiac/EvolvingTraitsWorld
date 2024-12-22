@@ -1,3 +1,4 @@
+--require "ETWModOptions";
 local ETWCommonFunctions;
 local ETWCommonLogicChecks;
 local ETWCombinedTraitChecks;
@@ -11,10 +12,16 @@ local ETWCombinedTraitChecks;
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld;
 
+local modOptions;
+
 ---@return boolean
-local debug = function() return EvolvingTraitsWorld.settings.GatherDebug end;
+local notification = function() return modOptions:getOption("EnableNotifications"):getValue() end;
 ---@return boolean
-local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetailedDebug end;
+local delayedNotification = function() return modOptions:getOption("EnableDelayedNotifications"):getValue() end;
+---@return boolean
+local debug = function() return modOptions:getOption("GatherDebug"):getValue() end;
+---@return boolean
+local detailedDebug = function() return modOptions:getOption("GatherDetailedDebug"):getValue() end;
 
 local original_OnEat_Cigarettes = OnEat_Cigarettes;
 ---Overwriting OnEat_Cigarettes here to insert ETW logic catching player smoking
@@ -23,6 +30,7 @@ local original_OnEat_Cigarettes = OnEat_Cigarettes;
 ---@param percent number
 function OnEat_Cigarettes(food, character, percent)
 	if not isServer() then
+		modOptions = PZAPI.ModOptions:getOptions("ETWModOptions");
 		if detailedDebug() then print("ETW Logger | OnEat_Cigarettes(): detected smoking") end;
 		local modData = character:getModData().EvolvingTraitsWorld;
 		local smokerModData = modData.SmokeSystem; -- SmokingAddiction MinutesSinceLastSmoke
@@ -43,19 +51,21 @@ end
 
 local original_Recipe_OnCreate_RipClothing = Recipe.OnCreate.RipClothing;
 ---Overwriting Recipe.OnCreate.RipClothing() here to insert ETW logic catching player ripping clothing
----@param items any
----@param result any
----@param player IsoPlayer
----@param selectedItem any
-function Recipe.OnCreate.RipClothing(items, result, player, selectedItem)
+---@param craftRecipeData 
+---@param character IsoPlayer
+function Recipe.OnCreate.RipClothing(craftRecipeData, character)
 	if not isServer() then
-		local modData = ETWCommonFunctions.getETWModData(player)
+		local modData = ETWCommonFunctions.getETWModData(character)
 		if #modData.UniqueClothingRipped < SBvars.SewerUniqueClothesRipped and ETWCommonLogicChecks.SewerShouldExecute() then
+			local items = craftRecipeData:getAllConsumedItems();
 			local item = items:get(0)
+			modOptions = PZAPI.ModOptions:getOptions("ETWModOptions");
+			---@type DebugAndNotificationArgs
+			local DebugAndNotificationArgs = {debug = debug(), detailedDebug = detailedDebug(), notification = notification(), delayedNotification = delayedNotification()};
 			---@cast item Clothing
 			if detailedDebug() then print("ETW Logger | Recipe.OnCreate.RipClothing() item: " .. item:getName()) end;
-			ETWCombinedTraitChecks.addClothingToUniqueRippedClothingList(player, item);
+			ETWCombinedTraitChecks.addClothingToUniqueRippedClothingList(character, item, DebugAndNotificationArgs);
 		end
 	end
-    original_Recipe_OnCreate_RipClothing(items, result, player, selectedItem);
+    original_Recipe_OnCreate_RipClothing(craftRecipeData, character);
 end

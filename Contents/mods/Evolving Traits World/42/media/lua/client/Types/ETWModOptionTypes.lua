@@ -1,12 +1,12 @@
---- @class EvolvingTraitsWorldModOptions
---- @field UIToggleKeybind
---- @field GatherDebugCheckbox
---- @field GatherDetailedDebugCheckbox
---- @field EnableSoundNotificationsCheckbox
---- @field EnableDelayedNotificationsCheckbox
---- @field EnableBloodLustMoodleCheckbox
---- @field EnableSleepHealthMoodleCheckbox
---- @field UIWidthSlider
---- @field TraitColumnsSlider
---- @field HideSmokerUICheckbox
---- @field HideReadMeUICheckbox
+-- - @class EvolvingTraitsWorldModOptions
+-- - @field UIToggleKeybind
+-- - @field GatherDebugCheckbox
+-- - @field GatherDetailedDebugCheckbox
+-- - @field EnableSoundNotificationsCheckbox
+-- - @field EnableDelayedNotificationsCheckbox
+-- - @field EnableBloodLustMoodleCheckbox
+-- - @field EnableSleepHealthMoodleCheckbox
+-- - @field UIWidthSlider
+-- - @field TraitColumnsSlider
+-- - @field HideSmokerUICheckbox
+-- - @field HideReadMeUICheckbox

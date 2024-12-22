@@ -1,18 +1,22 @@
 require "ETWModData";
+require "ETWModOptions";
+
 local ETWCommonFunctions = require "ETWCommonFunctions";
 local ETWCommonLogicChecks = require "ETWCommonLogicChecks";
 
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld;
 
+local modOptions;
+
 ---@return boolean
-local notification = function() return EvolvingTraitsWorld.settings.EnableNotifications end;
+local notification = function() return modOptions:getOption("EnableNotifications"):getValue() end;
 ---@return boolean
-local delayedNotification = function() return EvolvingTraitsWorld.settings.EnableDelayedNotifications end;
+local delayedNotification = function() return modOptions:getOption("EnableDelayedNotifications"):getValue() end;
 ---@return boolean
-local debug = function() return EvolvingTraitsWorld.settings.GatherDebug end;
+local debug = function() return modOptions:getOption("GatherDebug"):getValue() end;
 ---@return boolean
-local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetailedDebug end;
+local detailedDebug = function() return modOptions:getOption("GatherDetailedDebug"):getValue() end;
 
 ---Function responsible for managing Immune traits
 local function immuneSystemTraits()
@@ -328,6 +332,7 @@ local noTraitsLock = function() return (SBvars.TraitsLockSystemCanGainNegative o
 ---@param playerIndex number
 ---@param player IsoPlayer
 local function initializeEventsETW(playerIndex, player)
+	modOptions = PZAPI.ModOptions:getOptions("ETWModOptions");
 	Events.EveryOneMinute.Remove(immuneSystemTraits);
 	if ETWCommonLogicChecks.ImmuneSystemShouldExecute() then
 		Events.EveryOneMinute.Add(immuneSystemTraits);
@@ -366,3 +371,13 @@ Events.OnCreatePlayer.Remove(initializeEventsETW);
 Events.OnCreatePlayer.Add(initializeEventsETW);
 Events.OnPlayerDeath.Remove(clearEventsETW);
 Events.OnPlayerDeath.Add(clearEventsETW);
+
+---Function responsible for setting up events
+---@param playerIndex number
+---@param player IsoPlayer
+local function initializeModOptions(playerIndex, player)
+	modOptions = PZAPI.ModOptions:getOptions("ETWModOptions");
+end
+
+Events.OnCreatePlayer.Remove(initializeModOptions);
+Events.OnCreatePlayer.Add(initializeModOptions);

@@ -1,0 +1,1372 @@
+VERSION = 1,
+
+option EvolvingTraitsWorld.SETTINGS
+{
+	translation = ---------------------------------------------SETTINGS-------------------------------------------------------------------,
+}
+
+option EvolvingTraitsWorld.AffinitySystem
+{
+	type = boolean,
+	default = true,
+	page = ETWSettings,
+	translation = ETW_AffinitySystem,
+}
+option EvolvingTraitsWorld.AffinitySystemLoseDivider
+{
+	type = double,
+	min = 1,
+	max = 100,
+	default = 2,
+	page = ETWSettings,
+	translation = ETW_AffinitySystemLoseDivider,
+}
+option EvolvingTraitsWorld.AffinitySystemGainMultiplier
+{
+	type = double,
+	min = 1,
+	max = 100,
+	default = 2,
+	page = ETWSettings,
+	translation = ETW_AffinitySystemGainMultiplier,
+}
+option EvolvingTraitsWorld.DelayedTraitsSystem
+{
+	type = boolean,
+	default = true,
+	page = ETWSettings,
+	translation = ETW_DelayedTraitsSystem,
+}
+option EvolvingTraitsWorld.DelayedTraitsSystemDefaultDelay
+{
+	type = integer,
+	min = 1,
+	max = 5000,
+	default = 336,
+	page = ETWSettings,
+	translation = ETW_DelayedTraitsSystemDefaultDelay,
+}
+option EvolvingTraitsWorld.DelayedTraitsSystemDefaultStartingDelay
+{
+	type = integer,
+	min = 1,
+	max = 5000,
+	default = 504,
+	page = ETWSettings,
+	translation = ETW_DelayedTraitsSystemDefaultStartingDelay,
+}
+option EvolvingTraitsWorld.UIPage
+{
+	type = boolean,
+	default = true,
+	page = ETWSettings,
+	translation = ETW_UIPage,
+}
+
+option EvolvingTraitsWorld.SYSTEMS
+{
+	translation = ---------------------------------------------SYSTEMS-------------------------------------------------------------------,
+}
+
+option EvolvingTraitsWorld.BraverySystem
+{
+	type = boolean,
+	default = true,
+	page = ETWSystems,
+	translation = ETW_BraverySystem,
+}
+option EvolvingTraitsWorld.BraverySystemKills
+{
+	type = integer,
+	min = 0,
+	max = 500000,
+	default = 20000,
+	page = ETWSystems,
+	translation = ETW_BraverySystemKills,
+}
+option EvolvingTraitsWorld.BraverySystemRemovesOtherFearPerks
+{
+	type = boolean,
+	default = false,
+	page = ETWSystems,
+	translation = ETW_BraverySystemRemovesOtherFearPerks,
+}
+option EvolvingTraitsWorld.FearOfLocationsSystem
+{
+	type = boolean,
+	default = true,
+	page = ETWSystems,
+	translation = ETW_FearOfLocationsSystem,
+}
+option EvolvingTraitsWorld.FearOfLocationsExclusiveFears
+{
+	type = boolean,
+	default = true,
+	page = ETWSystems,
+	translation = ETW_FearOfLocationsExclusiveFears,
+}
+option EvolvingTraitsWorld.FearOfLocationsSystemPassiveCounterDecay
+{
+	type = double,
+	min = 0,
+	max = 8,
+	default = 0,
+	page = ETWSystems,
+	translation = ETW_FearOfLocationsSystemPassiveCounterDecay,
+}
+option EvolvingTraitsWorld.FearOfLocationsSystemCounter
+{
+	type = integer,
+	min = 0,
+	max = 500000,
+	default = 12000,
+	page = ETWSystems,
+	translation = ETW_FearOfLocationsSystemCounter,
+}
+option EvolvingTraitsWorld.FearOfLocationsSystemCounterLoseMultiplier
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 1,
+	page = ETWSystems,
+	translation = ETW_FearOfLocationsSystemCounterLoseMultiplier,
+}
+option EvolvingTraitsWorld.FogSystem
+{
+	type = boolean,
+	default = true,
+	page = ETWSystems,
+	translation = ETW_FogSystem,
+}
+option EvolvingTraitsWorld.FogSystemCounter
+{
+	type = integer,
+	min = 0,
+	max = 500000,
+	default = 20000,
+	page = ETWSystems,
+	translation = ETW_FogSystemCounter,
+}
+option EvolvingTraitsWorld.FogSystemCounterIncreaseMultiplier
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 10,
+	page = ETWSystems,
+	translation = ETW_FogSystemCounterIncreaseMultiplier,
+}
+option EvolvingTraitsWorld.FogSystemCounterDecreaseMultiplier
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 10,
+	page = ETWSystems,
+	translation = ETW_FogSystemCounterDecreaseMultiplier,
+}
+option EvolvingTraitsWorld.FoodSicknessSystem
+{
+	type = boolean,
+	default = true,
+	page = ETWSystems,
+	translation = ETW_FoodSicknessSystem,
+}
+option EvolvingTraitsWorld.FoodSicknessSystemCounter
+{
+	type = integer,
+	min = 0,
+	max = 500000,
+	default = 40000,
+	page = ETWSystems,
+	translation = ETW_FoodSicknessSystemCounter,
+}
+option EvolvingTraitsWorld.FoodSicknessSystemNormalSicknessMultiplier
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 0.1,
+	page = ETWSystems,
+	translation = ETW_FoodSicknessSystemNormalSicknessMultiplier,
+}
+option EvolvingTraitsWorld.HearingSystem
+{
+	type = boolean,
+	default = true,
+	page = ETWSystems,
+	translation = ETW_HearingSystem,
+}
+option EvolvingTraitsWorld.HearingSystemSkill
+{
+	type = integer,
+	min = 0,
+	max = 100,
+	default = 80,
+	page = ETWSystems,
+	translation = ETW_HearingSystemSkill,
+}
+option EvolvingTraitsWorld.ImmuneSystem
+{
+	type = boolean,
+	default = true,
+	page = ETWSystems,
+	translation = ETW_ImmuneSystemSystem,
+}
+option EvolvingTraitsWorld.ImmunitySystemCounter
+{
+	type = integer,
+	min = 0,
+	max = 500000,
+	default = 9000,
+	page = ETWSystems,
+	translation = ETW_ImmunitySystemCounter,
+}
+option EvolvingTraitsWorld.ImmunitySystemInfectionMultiplier
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 10,
+	page = ETWSystems,
+	translation = ETW_ImmunitySystemInfectionMultiplier,
+}
+option EvolvingTraitsWorld.InventoryTransferSystem
+{
+	type = boolean,
+	default = true,
+	page = ETWSystems,
+	translation = ETW_InventoryTransferSystem,
+}
+option EvolvingTraitsWorld.InventoryTransferSystemItems
+{
+	type = integer,
+	min = 0,
+	max = 2500000,
+	default = 40000,
+	page = ETWSystems,
+	translation = ETW_InventoryTransferSystemItems,
+}
+option EvolvingTraitsWorld.InventoryTransferSystemWeight
+{
+	type = integer,
+	min = 0,
+	max = 2500000,
+	default = 30000,
+	page = ETWSystems,
+	translation = ETW_InventoryTransferSystemWeight,
+}
+option EvolvingTraitsWorld.LearnerSystem
+{
+	type = boolean,
+	default = true,
+	page = ETWSystems,
+	translation = ETW_LearnerSystem,
+}
+option EvolvingTraitsWorld.LearnerSystemSkill
+{
+	type = integer,
+	min = 0,
+	max = 90,
+	default = 60,
+	page = ETWSystems,
+	translation = ETW_LearnerSystemSkill,
+}
+option EvolvingTraitsWorld.LuckSystem
+{
+	type = boolean,
+	default = true,
+	page = ETWSystems,
+	translation = ETW_LuckSystem,
+}
+option EvolvingTraitsWorld.LuckSystemSkill
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 66,
+	page = ETWSystems,
+	translation = ETW_LuckSystemSkill,
+}
+option EvolvingTraitsWorld.RainSystem
+{
+	type = boolean,
+	default = true,
+	page = ETWSystems,
+	translation = ETW_RainSystem,
+}
+option EvolvingTraitsWorld.RainSystemCounter
+{
+	type = integer,
+	min = 0,
+	max = 500000,
+	default = 40000,
+	page = ETWSystems,
+	translation = ETW_RainSystemCounter,
+}
+option EvolvingTraitsWorld.RainSystemCounterIncreaseMultiplier
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 10,
+	page = ETWSystems,
+	translation = ETW_RainSystemCounterIncreaseMultiplier,
+}
+option EvolvingTraitsWorld.RainSystemCounterDecreaseMultiplier
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 10,
+	page = ETWSystems,
+	translation = ETW_RainSystemCounterDecreaseMultiplier,
+}
+option EvolvingTraitsWorld.SleepSystem
+{
+	type = boolean,
+	default = true,
+	page = ETWSystems,
+	translation = ETW_SleepSystem,
+}
+option EvolvingTraitsWorld.SleepSystemMultiplier
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 1,
+	page = ETWSystems,
+	translation = ETW_SleepSystemMultiplier,
+}
+option EvolvingTraitsWorld.TraitsLockSystemCanLosePositive
+{
+	type = boolean,
+	default = true,
+	page = ETWSystems,
+	translation = ETW_TraitsLockSystemCanLosePositive,
+}
+option EvolvingTraitsWorld.TraitsLockSystemCanGainPositive
+{
+	type = boolean,
+	default = true,
+	page = ETWSystems,
+	translation = ETW_TraitsLockSystemCanGainPositive,
+}
+option EvolvingTraitsWorld.TraitsLockSystemCanLoseNegative
+{
+	type = boolean,
+	default = true,
+	page = ETWSystems,
+	translation = ETW_TraitsLockSystemCanLoseNegative,
+}
+option EvolvingTraitsWorld.TraitsLockSystemCanGainNegative
+{
+	type = boolean,
+	default = true,
+	page = ETWSystems,
+	translation = ETW_TraitsLockSystemCanGainNegative,
+}
+option EvolvingTraitsWorld.WeightSystem
+{
+	type = boolean,
+	default = true,
+	page = ETWSystems,
+	translation = ETW_WeightSystem,
+}
+option EvolvingTraitsWorld.WeightSystemSkill
+{
+	type = integer,
+	min = 0,
+	max = 20,
+	default = 16,
+	page = ETWSystems,
+	translation = ETW_WeightSystemSkill,
+}
+option EvolvingTraitsWorld.WeightSystemLowerMentalThreshold
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 60,
+	page = ETWSystems,
+	translation = ETW_WeightSystemLowerMentalThreshold,
+}
+option EvolvingTraitsWorld.WeightSystemUpperMentalThreshold
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 80,
+	page = ETWSystems,
+	translation = ETW_WeightSystemUpperMentalThreshold,
+}
+
+option EvolvingTraitsWorld.MOODLES
+{
+	translation = -----------------------------------------------MOODLES-----------------------------------------------------------------,
+}
+
+option EvolvingTraitsWorld.BloodlustMoodle
+{
+	type = boolean,
+	default = true,
+	page = ETWMoodles,
+	translation = ETW_BloodlustMoodle,
+}
+option EvolvingTraitsWorld.BloodlustMoodleVisibilityHours
+{
+	type = integer,
+	min = 1,
+	max = 480,
+	default = 6,
+	page = ETWMoodles,
+	translation = ETW_BloodlustMoodleVisibilityHours,
+}
+option EvolvingTraitsWorld.SleepMoodle
+{
+	type = boolean,
+	default = true,
+	page = ETWMoodles,
+	translation = ETW_SleepMoodle,
+}
+option EvolvingTraitsWorld.TRAITS
+{
+	translation = --------------------------------------------------TRAITS-----------------------------------------------------------------,
+}
+option EvolvingTraitsWorld.BloodlustMultiplier
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 1,
+	page = ETWTraitsSettings,
+	translation = ETW_BloodlustMultiplier,
+}
+option EvolvingTraitsWorld.HoarderWeight
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 0.5,
+	page = ETWTraitsSettings,
+	translation = ETW_HoarderWeight,
+}
+option EvolvingTraitsWorld.HomichlophileMultiplier
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 1,
+	page = ETWTraitsSettings,
+	translation = ETW_HomichlophileMultiplier,
+}
+option EvolvingTraitsWorld.HomichlophobiaMultiplier
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 1,
+	page = ETWTraitsSettings,
+	translation = ETW_HomichlophobiaMultiplier,
+}
+option EvolvingTraitsWorld.PainToleranceThreshold
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 60,
+	page = ETWTraitsSettings,
+	translation = ETW_PainToleranceThreshold,
+}
+option EvolvingTraitsWorld.PluviophileMultiplier
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 1,
+	page = ETWTraitsSettings,
+	translation = ETW_PluviophileMultiplier,
+}
+option EvolvingTraitsWorld.PluviophobiaMultiplier
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 1,
+	page = ETWTraitsSettings,
+	translation = ETW_PluviophobiaMultiplier,
+}
+option EvolvingTraitsWorld.RestorationExpertChance
+{
+	type = integer,
+	min = 1,
+	max = 100,
+	default = 75,
+	page = ETWTraitsSettings,
+	translation = ETW_RestorationExpertChance,
+}
+
+option EvolvingTraitsWorld.COMPLEX_PERKS
+{
+	translation = --------------------------------------------COMPLEX_PERKS-----------------------------------------------------------------,
+}
+
+option EvolvingTraitsWorld.Asthmatic
+{
+	type = boolean,
+	default = true,
+	page = ETWComplexPerks,
+	translation = ETW_Asthmatic,
+}
+option EvolvingTraitsWorld.AsthmaticCounter
+{
+	type = integer,
+	min = 0,
+	max = 500000,
+	default = 20000,
+	page = ETWComplexPerks,
+	translation = ETW_AsthmaticCounter,
+}
+option EvolvingTraitsWorld.Bloodlust
+{
+	type = boolean,
+	default = true,
+	page = ETWComplexPerks,
+	translation = ETW_Bloodlust,
+}
+option EvolvingTraitsWorld.BloodlustMeterFillMultiplier
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 0.5,
+	page = ETWComplexPerks,
+	translation = ETW_BloodlustMeterFillMultiplier,
+}
+option EvolvingTraitsWorld.BloodlustMeterMaxCapMultiplier
+{
+	type = integer,
+	min = 1,
+	max = 100,
+	default = 2,
+	page = ETWComplexPerks,
+	translation = ETW_BloodlustMeterMaxCapMultiplier,
+}
+option EvolvingTraitsWorld.BloodlustProgress
+{
+	type = integer,
+	min = 1,
+	max = 500000,
+	default = 1000,
+	page = ETWComplexPerks,
+	translation = ETW_BloodlustProgress,
+}
+option EvolvingTraitsWorld.CatEyes
+{
+	type = boolean,
+	default = true,
+	page = ETWComplexPerks,
+	translation = ETW_CatEyes,
+}
+option EvolvingTraitsWorld.CatEyesCounter
+{
+	type = integer,
+	min = 0,
+	max = 2500000,
+	default = 250000,
+	page = ETWComplexPerks,
+	translation = ETW_CatEyesCounter,
+}
+option EvolvingTraitsWorld.EagleEyed
+{
+	type = boolean,
+	default = true,
+	page = ETWComplexPerks,
+	translation = ETW_EagleEyed,
+}
+option EvolvingTraitsWorld.EagleEyedDistance
+{
+	type = integer,
+	min = 0,
+	max = 50,
+	default = 20,
+	page = ETWComplexPerks,
+	translation = ETW_EagleEyedDistance,
+}
+option EvolvingTraitsWorld.EagleEyedKills
+{
+	type = integer,
+	min = 0,
+	max = 500000,
+	default = 200,
+	page = ETWComplexPerks,
+	translation = ETW_EagleEyedKills,
+}
+option EvolvingTraitsWorld.Herbalist
+{
+	type = boolean,
+	default = true,
+	page = ETWComplexPerks,
+	translation = ETW_Herbalist,
+}
+option EvolvingTraitsWorld.HerbalistHerbsPicked
+{
+	type = integer,
+	min = 0,
+	max = 500000,
+	default = 250,
+	page = ETWComplexPerks,
+	translation = ETW_HerbalistHerbsPicked,
+}
+option EvolvingTraitsWorld.HerbalistHerbsDecay
+{
+	type = double,
+	min = 0,
+	max = 500000,
+	default = 0.2,
+	page = ETWComplexPerks,
+	translation = ETW_HerbalistHerbsDecay,
+}
+option EvolvingTraitsWorld.Outdoorsman
+{
+	type = boolean,
+	default = true,
+	page = ETWComplexPerks,
+	translation = ETW_Outdoorsman,
+}
+option EvolvingTraitsWorld.OutdoorsmanCounter
+{
+	type = integer,
+	min = 0,
+	max = 2500000,
+	default = 500000,
+	page = ETWComplexPerks,
+	translation = ETW_OutdoorsmanCounter,
+}
+option EvolvingTraitsWorld.OutdoorsmanCounterIncreaseMultiplier
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 3,
+	page = ETWComplexPerks,
+	translation = ETW_OutdoorsmanCounterIncreaseMultiplier,
+}
+option EvolvingTraitsWorld.OutdoorsmanCounterDecreaseMultiplier
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 3,
+	page = ETWComplexPerks,
+	translation = ETW_OutdoorsmanCounterDecreaseMultiplier,
+}
+option EvolvingTraitsWorld.Smoker
+{
+	type = boolean,
+	default = true,
+	page = ETWComplexPerks,
+	translation = ETW_Smoker,
+}
+option EvolvingTraitsWorld.SmokerCounter
+{
+	type = integer,
+	min = 0,
+	max = 500000,
+	default = 500,
+	page = ETWComplexPerks,
+	translation = ETW_SmokerCounter,
+}
+option EvolvingTraitsWorld.SmokingAddictionDecay
+{
+	type = double,
+	min = 0,
+	max = 1000,
+	default = 12,
+	page = ETWComplexPerks,
+	translation = ETW_SmokingAddictionDecay,
+}
+option EvolvingTraitsWorld.SmokingAddictionMultiplier
+{
+	type = double,
+	min = 0,
+	max = 1000,
+	default = 1,
+	page = ETWComplexPerks,
+	translation = ETW_SmokingAddictionMultiplier,
+}
+
+option EvolvingTraitsWorld.SIMPLE_PERKS
+{
+	translation = --------------------------------------------SIMPLE_PERKS-----------------------------------------------------------------,
+}
+
+option EvolvingTraitsWorld.Mechanics
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_Mechanics,
+}
+option EvolvingTraitsWorld.MechanicsSkill
+{
+	type = integer,
+	min = 0,
+	max = 10,
+	default = 4,
+	page = ETWSimplePerks,
+	translation = ETW_MechanicsSkill,
+}
+option EvolvingTraitsWorld.MechanicsRepairs
+{
+	type = integer,
+	min = 0,
+	max = 500000,
+	default = 1000,
+	page = ETWSimplePerks,
+	translation = ETW_MechanicsRepairs,
+}
+option EvolvingTraitsWorld.Fishing
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_Fishing,
+}
+option EvolvingTraitsWorld.FishingSkill
+{
+	type = integer,
+	min = 0,
+	max = 10,
+	default = 4,
+	page = ETWSimplePerks,
+	translation = ETW_FishingSkill,
+}
+option EvolvingTraitsWorld.AVClub
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_AVClub,
+}
+option EvolvingTraitsWorld.AVClubSkill
+{
+	type = integer,
+	min = 0,
+	max = 10,
+	default = 4,
+	page = ETWSimplePerks,
+	translation = ETW_AVClubSkill,
+}
+option EvolvingTraitsWorld.Axeman
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_Axeman,
+}
+option EvolvingTraitsWorld.AxemanTrees
+{
+	type = integer,
+	min = 0,
+	max = 500000,
+	default = 250,
+	page = ETWSimplePerks,
+	translation = ETW_AxemanTrees,
+}
+option EvolvingTraitsWorld.AxeThrower
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_AxeThrower,
+}
+option EvolvingTraitsWorld.AxeThrowerSkill
+{
+	type = integer,
+	min = 0,
+	max = 10,
+	default = 4,
+	page = ETWSimplePerks,
+	translation = ETW_AxeThrowerSkill,
+}
+option EvolvingTraitsWorld.AxeThrowerKills
+{
+	type = integer,
+	min = 0,
+	max = 500000,
+	default = 200,
+	page = ETWSimplePerks,
+	translation = ETW_AxeThrowerKills,
+}
+option EvolvingTraitsWorld.BaseballPlayer
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_BaseballPlayer,
+}
+option EvolvingTraitsWorld.BaseballPlayerSkill
+{
+	type = integer,
+	min = 0,
+	max = 10,
+	default = 4,
+	page = ETWSimplePerks,
+	translation = ETW_BaseballPlayerSkill,
+}
+option EvolvingTraitsWorld.BaseballPlayerKills
+{
+	type = integer,
+	min = 0,
+	max = 500000,
+	default = 200,
+	page = ETWSimplePerks,
+	translation = ETW_BaseballPlayerKills,
+}
+option EvolvingTraitsWorld.BodyworkEnthusiast
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_BodyworkEnthusiast,
+}
+option EvolvingTraitsWorld.BodyworkEnthusiastSkill
+{
+	type = integer,
+	min = 0,
+	max = 20,
+	default = 12,
+	page = ETWSimplePerks,
+	translation = ETW_BodyworkEnthusiastSkill,
+}
+option EvolvingTraitsWorld.BodyworkEnthusiastRepairs
+{
+	type = integer,
+	min = 0,
+	max = 500000,
+	default = 6000,
+	page = ETWSimplePerks,
+	translation = ETW_BodyworkEnthusiastRepairs,
+}
+option EvolvingTraitsWorld.Brawler
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_Brawler,
+}
+option EvolvingTraitsWorld.BrawlerSkill
+{
+	type = integer,
+	min = 0,
+	max = 20,
+	default = 12,
+	page = ETWSimplePerks,
+	translation = ETW_BrawlerSkill,
+}
+option EvolvingTraitsWorld.BrawlerKills
+{
+	type = integer,
+	min = 0,
+	max = 500000,
+	default = 600,
+	page = ETWSimplePerks,
+	translation = ETW_BrawlerKills,
+}
+option EvolvingTraitsWorld.Burglar
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_Burglar,
+}
+option EvolvingTraitsWorld.BurglarSkill
+{
+	type = integer,
+	min = 4,
+	max = 30,
+	default = 7,
+	page = ETWSimplePerks,
+	translation = ETW_BurglarSkill,
+}
+option EvolvingTraitsWorld.Clumsy
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_Clumsy,
+}
+option EvolvingTraitsWorld.ClumsySkill
+{
+	type = integer,
+	min = 0,
+	max = 20,
+	default = 12,
+	page = ETWSimplePerks,
+	translation = ETW_ClumsySkill,
+}
+option EvolvingTraitsWorld.Conspicuous
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_Conspicuous,
+}
+option EvolvingTraitsWorld.ConspicuousSkill
+{
+	type = integer,
+	min = 0,
+	max = 10,
+	default = 4,
+	page = ETWSimplePerks,
+	translation = ETW_ConspicuousSkill,
+}
+option EvolvingTraitsWorld.Cook
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_Cook,
+}
+option EvolvingTraitsWorld.CookSkill
+{
+	type = integer,
+	min = 0,
+	max = 10,
+	default = 8,
+	page = ETWSimplePerks,
+	translation = ETW_CookSkill,
+}
+option EvolvingTraitsWorld.FirstAid
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_FirstAid,
+}
+option EvolvingTraitsWorld.FirstAidSkill
+{
+	type = integer,
+	min = 0,
+	max = 10,
+	default = 4,
+	page = ETWSimplePerks,
+	translation = ETW_FirstAidSkill,
+}
+option EvolvingTraitsWorld.FurnitureAssembler
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_FurnitureAssembler,
+}
+option EvolvingTraitsWorld.FurnitureAssemblerSkill
+{
+	type = integer,
+	min = 0,
+	max = 10,
+	default = 4,
+	page = ETWSimplePerks,
+	translation = ETW_FurnitureAssemblerSkill,
+}
+option EvolvingTraitsWorld.Gardener
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_Gardener,
+}
+option EvolvingTraitsWorld.GardenerSkill
+{
+	type = integer,
+	min = 0,
+	max = 10,
+	default = 4,
+	page = ETWSimplePerks,
+	translation = ETW_GardenerSkill,
+}
+option EvolvingTraitsWorld.Graceful
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_Graceful,
+}
+option EvolvingTraitsWorld.GracefulSkill
+{
+	type = integer,
+	min = 0,
+	max = 30,
+	default = 9,
+	page = ETWSimplePerks,
+	translation = ETW_GracefulSkill,
+}
+option EvolvingTraitsWorld.GunEnthusiast
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_GunEnthusiast,
+}
+option EvolvingTraitsWorld.GunEnthusiastSkill
+{
+	type = integer,
+	min = 0,
+	max = 20,
+	default = 12,
+	page = ETWSimplePerks,
+	translation = ETW_GunEnthusiastSkill,
+}
+option EvolvingTraitsWorld.GunEnthusiastKills
+{
+	type = integer,
+	min = 0,
+	max = 500000,
+	default = 600,
+	page = ETWSimplePerks,
+	translation = ETW_GunEnthusiastKills,
+}
+option EvolvingTraitsWorld.Gymnast
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_Gymnast,
+}
+option EvolvingTraitsWorld.GymnastSkill
+{
+	type = integer,
+	min = 0,
+	max = 20,
+	default = 15,
+	page = ETWSimplePerks,
+	translation = ETW_GymnastSkill,
+}
+option EvolvingTraitsWorld.GymRat
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_GymRat,
+}
+option EvolvingTraitsWorld.GymRatSkill
+{
+	type = integer,
+	min = 0,
+	max = 20,
+	default = 14,
+	page = ETWSimplePerks,
+	translation = ETW_GymRatSkill,
+}
+option EvolvingTraitsWorld.Handy
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_Handy,
+}
+option EvolvingTraitsWorld.HandySkill
+{
+	type = integer,
+	min = 0,
+	max = 20,
+	default = 13,
+	page = ETWSimplePerks,
+	translation = ETW_HandySkill,
+}
+option EvolvingTraitsWorld.Hiker
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_Hiker,
+}
+option EvolvingTraitsWorld.HikerSkill
+{
+	type = integer,
+	min = 0,
+	max = 20,
+	default = 10,
+	page = ETWSimplePerks,
+	translation = ETW_HikerSkill,
+}
+option EvolvingTraitsWorld.Hoarder
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_Hoarder,
+}
+option EvolvingTraitsWorld.HoarderSkill
+{
+	type = integer,
+	min = 0,
+	max = 10,
+	default = 8,
+	page = ETWSimplePerks,
+	translation = ETW_HoarderSkill,
+}
+option EvolvingTraitsWorld.HomeCook
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_HomeCook,
+}
+option EvolvingTraitsWorld.HomeCookSkill
+{
+	type = integer,
+	min = 0,
+	max = 10,
+	default = 4,
+	page = ETWSimplePerks,
+	translation = ETW_HomeCookSkill,
+}
+option EvolvingTraitsWorld.Hunter
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_Hunter,
+}
+option EvolvingTraitsWorld.HunterSkill
+{
+	type = integer,
+	min = 8,
+	max = 40,
+	default = 24,
+	page = ETWSimplePerks,
+	translation = ETW_HunterSkill,
+}
+option EvolvingTraitsWorld.HunterKills
+{
+	type = integer,
+	min = 0,
+	max = 500000,
+	default = 200,
+	page = ETWSimplePerks,
+	translation = ETW_HunterKills,
+}
+option EvolvingTraitsWorld.Inconspicuous
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_Inconspicuous,
+}
+option EvolvingTraitsWorld.InconspicuousSkill
+{
+	type = integer,
+	min = 0,
+	max = 10,
+	default = 7,
+	page = ETWSimplePerks,
+	translation = ETW_InconspicuousSkill,
+}
+option EvolvingTraitsWorld.Kenshi
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_Kenshi,
+}
+option EvolvingTraitsWorld.KenshiSkill
+{
+	type = integer,
+	min = 0,
+	max = 10,
+	default = 5,
+	page = ETWSimplePerks,
+	translation = ETW_KenshiSkill,
+}
+option EvolvingTraitsWorld.KenshiKills
+{
+	type = integer,
+	min = 0,
+	max = 500000,
+	default = 250,
+	page = ETWSimplePerks,
+	translation = ETW_KenshiKills,
+}
+option EvolvingTraitsWorld.KnifeFighter
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_KnifeFighter,
+}
+option EvolvingTraitsWorld.KnifeFighterSkill
+{
+	type = integer,
+	min = 0,
+	max = 10,
+	default = 4,
+	page = ETWSimplePerks,
+	translation = ETW_KnifeFighterSkill,
+}
+option EvolvingTraitsWorld.KnifeFighterKills
+{
+	type = integer,
+	min = 0,
+	max = 500000,
+	default = 200,
+	page = ETWSimplePerks,
+	translation = ETW_KnifeFighterKills,
+}
+option EvolvingTraitsWorld.LightStep
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_LightStep,
+}
+option EvolvingTraitsWorld.LightStepSkill
+{
+	type = integer,
+	min = 0,
+	max = 10,
+	default = 4,
+	page = ETWSimplePerks,
+	translation = ETW_LightStepSkill,
+}
+option EvolvingTraitsWorld.LowProfile
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_LowProfile,
+}
+option EvolvingTraitsWorld.LowProfileSkill
+{
+	type = integer,
+	min = 0,
+	max = 10,
+	default = 4,
+	page = ETWSimplePerks,
+	translation = ETW_LowProfileSkill,
+}
+option EvolvingTraitsWorld.PainTolerance
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_PainTolerance,
+}
+option EvolvingTraitsWorld.PainToleranceCounter
+{
+	type = integer,
+	min = 0,
+	max = 500000,
+	default = 30000,
+	page = ETWSimplePerks,
+	translation = ETW_PainToleranceCounter,
+}
+option EvolvingTraitsWorld.RestorationExpert
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_RestorationExpert,
+}
+option EvolvingTraitsWorld.RestorationExpertSkill
+{
+	type = integer,
+	min = 0,
+	max = 10,
+	default = 9,
+	page = ETWSimplePerks,
+	translation = ETW_RestorationExpertSkill,
+}
+option EvolvingTraitsWorld.Runner
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_Runner,
+}
+option EvolvingTraitsWorld.RunnerSkill
+{
+	type = integer,
+	min = 0,
+	max = 10,
+	default = 4,
+	page = ETWSimplePerks,
+	translation = ETW_RunnerSkill,
+}
+option EvolvingTraitsWorld.Sewer
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_Sewer,
+}
+option EvolvingTraitsWorld.SewerSkill
+{
+	type = integer,
+	min = 0,
+	max = 10,
+	default = 4,
+	page = ETWSimplePerks,
+	translation = ETW_SewerSkill,
+}
+option EvolvingTraitsWorld.SewerUniqueClothesRipped
+{
+	type = integer,
+	min = 0,
+	max = 1000,
+	default = 50,
+	page = ETWSimplePerks,
+	translation = ETW_SewerUniqueClothesRipped,
+}
+option EvolvingTraitsWorld.Sojutsu
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_Sojutsu,
+}
+option EvolvingTraitsWorld.SojutsuSkill
+{
+	type = integer,
+	min = 0,
+	max = 10,
+	default = 4,
+	page = ETWSimplePerks,
+	translation = ETW_SojutsuSkill,
+}
+option EvolvingTraitsWorld.SojutsuKills
+{
+	type = integer,
+	min = 0,
+	max = 500000,
+	default = 200,
+	page = ETWSimplePerks,
+	translation = ETW_SojutsuKills,
+}
+option EvolvingTraitsWorld.StickFighter
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_StickFighter,
+}
+option EvolvingTraitsWorld.StickFighterSkill
+{
+	type = integer,
+	min = 0,
+	max = 10,
+	default = 4,
+	page = ETWSimplePerks,
+	translation = ETW_StickFighterSkill,
+}
+option EvolvingTraitsWorld.StickFighterKills
+{
+	type = integer,
+	min = 0,
+	max = 500000,
+	default = 200,
+	page = ETWSimplePerks,
+	translation = ETW_StickFighterKills,
+}

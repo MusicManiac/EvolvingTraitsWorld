@@ -1,16 +1,22 @@
 require "ETWModData";
+require "ETWModOptions";
 local ETWCombinedTraitChecks = require "ETWCombinedTraitChecks";
 local ETWCommonFunctions = require "ETWCommonFunctions";
 local ETWCommonLogicChecks = require "ETWCommonLogicChecks";
 
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld;
+
+local modOptions;
+
 ---@return boolean
-local notification = function() return EvolvingTraitsWorld.settings.EnableNotifications end;
+local notification = function() return modOptions:getOption("EnableNotifications"):getValue() end;
 ---@return boolean
-local delayedNotification = function() return EvolvingTraitsWorld.settings.EnableDelayedNotifications end;
+local delayedNotification = function() return modOptions:getOption("EnableDelayedNotifications"):getValue() end;
 ---@return boolean
-local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetailedDebug end;
+local debug = function() return modOptions:getOption("GatherDebug"):getValue() end;
+---@return boolean
+local detailedDebug = function() return modOptions:getOption("GatherDetailedDebug"):getValue() end;
 
 ---Gain traits by skills (in majority cases)
 ---@param player IsoPlayer
@@ -61,6 +67,9 @@ local function traitsGainsBySkill(player, perk)
 	local detailedDebug = detailedDebug();
 	local notification = notification();
 	local delayedNotification = delayedNotification();
+
+	---@type DebugAndNotificationArgs
+	local DebugAndNotificationArgs = {debug = debug(), detailedDebug = detailedDebug, notification = notification, delayedNotification = delayedNotification};
 
 	-- All Perks
 		-- Unlucky/Lucky
@@ -604,17 +613,17 @@ local function traitsGainsBySkill(player, perk)
 		-- Metalworking
 			-- Bodywork Enthusiast
 				if (perk == "characterInitialization" or perk == Perks.MetalWelding  or perk == Perks.Mechanics or perk == "BodyWorkEnthusiast") and ETWCommonLogicChecks.BodyWorkEnthusiastShouldExecute() then
-					ETWCombinedTraitChecks.bodyworkEnthusiastCheck();
+					ETWCombinedTraitChecks.bodyworkEnthusiastCheck(DebugAndNotificationArgs);
 				end
 		-- Mechanics
 			-- Amateur Mechanic
 				if (perk == "characterInitialization" or perk == Perks.Mechanics or perk == "Mechanics") and ETWCommonLogicChecks.MechanicsShouldExecute() then
-					ETWCombinedTraitChecks.mechanicsCheck();
+					ETWCombinedTraitChecks.mechanicsCheck(DebugAndNotificationArgs);
 				end
 		-- Tailoring
 			-- Sewer
 				if (perk == "characterInitialization" or perk == Perks.Tailoring or perk == "Tailor") and ETWCommonLogicChecks.SewerShouldExecute() then
-					ETWCombinedTraitChecks.sewerCheck();
+					ETWCombinedTraitChecks.sewerCheck(DebugAndNotificationArgs);
 				end
 	-- Firearms
 		-- Aiming
@@ -715,6 +724,7 @@ end
 ---@param playerIndex number
 ---@param player IsoPlayer
 local function initializeEventsETW(playerIndex, player)
+	modOptions = PZAPI.ModOptions:getOptions("ETWModOptions");
 	traitsGainsBySkill(player, "characterInitialization");
 	Events.LevelPerk.Remove(traitsGainsBySkill);
 	if SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLoseNegative then Events.LevelPerk.Add(traitsGainsBySkill) end;
@@ -736,3 +746,13 @@ Events.OnCreatePlayer.Remove(initializeEventsETW);
 Events.OnCreatePlayer.Add(initializeEventsETW);
 Events.OnPlayerDeath.Remove(clearEventsETW);
 Events.OnPlayerDeath.Add(clearEventsETW);
+
+---Function responsible for setting up events
+---@param playerIndex number
+---@param player IsoPlayer
+local function initializeModOptions(playerIndex, player)
+	modOptions = PZAPI.ModOptions:getOptions("ETWModOptions");
+end
+
+Events.OnCreatePlayer.Remove(initializeModOptions);
+Events.OnCreatePlayer.Add(initializeModOptions);

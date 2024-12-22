@@ -6,7 +6,7 @@ local Commands = {}
 ---@class EngineCheckArgs
 ---@field vehicleID number
 ---@field conditionBefore number
----@field detailedDebug boolean
+---@field DebugAndNotificationArgs DebugAndNotificationArgs
 
 ---Function to check by how much engine was repaired. If SP - updates relative moddata and checks traits. If MP - sends command back to client
 ---@param player IsoPlayer
@@ -17,14 +17,14 @@ function Commands.checkEngineCondition(player, args)
 	if not part then return; end
 	local condition = part:getCondition();
 	local repairedPercentage = condition - args.conditionBefore
-	if args.detailedDebug then print("ETW Logger | Commands.checkEngineCondition(): args.condition: " .. condition) end;
+	if args.DebugAndNotificationArgs.detailedDebug then print("ETW Logger | Commands.checkEngineCondition(): args.condition: " .. condition) end;
 	if not isClient() and not isServer() then
 		local modData = player:getModData().EvolvingTraitsWorld;
 		---@cast modData EvolvingTraitsWorldModData
 		modData.VehiclePartRepairs = modData.VehiclePartRepairs + repairedPercentage;
-		if args.detailedDebug then print("ETW Logger | Commands.checkEngineCondition(): modData.VehiclePartRepairs: " .. modData.VehiclePartRepairs) end;
-		if ETWCommonLogicChecks.BodyWorkEnthusiastShouldExecute() then ETWCombinedTraitChecks.bodyworkEnthusiastCheck() end;
-		if ETWCommonLogicChecks.MechanicsShouldExecute() then ETWCombinedTraitChecks.mechanicsCheck() end;
+		if args.DebugAndNotificationArgs.detailedDebug then print("ETW Logger | Commands.checkEngineCondition(): modData.VehiclePartRepairs: " .. modData.VehiclePartRepairs) end;
+		if ETWCommonLogicChecks.BodyWorkEnthusiastShouldExecute() then ETWCombinedTraitChecks.bodyworkEnthusiastCheck(args.DebugAndNotificationArgs) end;
+		if ETWCommonLogicChecks.MechanicsShouldExecute() then ETWCombinedTraitChecks.mechanicsCheck(args.DebugAndNotificationArgs) end;
 	else
 		local serverArgs = { repairedPercentage = repairedPercentage };
 		sendServerCommand(player, "ETW", "carRepairCheck", serverArgs)

@@ -1,13 +1,18 @@
 local ETWCommonFunctions = {};
 
-local ETWCombinedTraitChecks = require "ETWCombinedTraitChecks";
-
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld;
+
+local modOptions;
+
 ---@return boolean
-local debug = function() return EvolvingTraitsWorld.settings.GatherDebug end;
+local notification = function() return modOptions:getOption("EnableNotifications"):getValue() end;
 ---@return boolean
-local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetailedDebug end;
+local delayedNotification = function() return modOptions:getOption("EnableDelayedNotifications"):getValue() end;
+---@return boolean
+local debug = function() return modOptions:getOption("GatherDebug"):getValue() end;
+---@return boolean
+local detailedDebug = function() return modOptions:getOption("GatherDetailedDebug"):getValue() end;
 
 ---Function responsible for finding index of delayed trait in Delayed Traits Table
 ---@param tbl table
@@ -39,7 +44,7 @@ end
 ---Plays a sound if enabled in settings
 ---@param player IsoPlayer
 function ETWCommonFunctions.traitSound(player)
-	if EvolvingTraitsWorld.settings.EnableSoundNotifications then
+	if modOptions:getOption("EnableSoundNotifications"):getValue() then
 		player:playSoundLocal("ETWGainTrait");
 	end
 end
@@ -152,5 +157,15 @@ function ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(name)
 	if detailedDebug() then print("ETW Logger | Delayed Traits System: checking if " .. name .. " is already in the table, it is not.") end;
 	return false;
 end
+
+---Function responsible for setting up events
+---@param playerIndex number
+---@param player IsoPlayer
+local function initializeModOptions(playerIndex, player)
+	modOptions = PZAPI.ModOptions:getOptions("ETWModOptions");
+end
+
+Events.OnCreatePlayer.Remove(initializeModOptions);
+Events.OnCreatePlayer.Add(initializeModOptions);
 
 return ETWCommonFunctions;

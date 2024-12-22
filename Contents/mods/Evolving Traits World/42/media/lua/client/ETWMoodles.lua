@@ -4,13 +4,19 @@ ETWMoodles = {};
 
 local ETWCommonFunctions = require "ETWCommonFunctions";
 
-
-
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld;
 
+local modOptions;
+
 ---@return boolean
-local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetailedDebug end;
+local notification = function() return modOptions:getOption("EnableNotifications"):getValue() end;
+---@return boolean
+local delayedNotification = function() return modOptions:getOption("EnableDelayedNotifications"):getValue() end;
+---@return boolean
+local debug = function() return modOptions:getOption("GatherDebug"):getValue() end;
+---@return boolean
+local detailedDebug = function() return modOptions:getOption("GatherDetailedDebug"):getValue() end;
 
 MF.createMoodle("BloodlustMoodle");
 MF.createMoodle("SleepHealthMoodle");
@@ -22,7 +28,7 @@ local bloodlustMeterCapacity = 72;
 ---@param hide boolean
 function ETWMoodles.bloodlustMoodleUpdate(player, hide)
 	if SBvars.BloodlustMoodle == true then
-		local modOptions = PZAPI.ModOptions:getOptions("ETWModOptions");
+		modOptions = PZAPI.ModOptions:getOptions("ETWModOptions");
 		local moodle = MF.getMoodle("BloodlustMoodle");
 		local modData = ETWCommonFunctions.getETWModData(player)
 		local BloodLustModData = modData.BloodlustSystem;
@@ -46,7 +52,7 @@ end
 ---@param hide boolean
 function ETWMoodles.sleepHealthMoodleUpdate(player, hoursAwayFromPreferredHour, hide)
 	if SBvars.SleepMoodle == true then
-		local modOptions = PZAPI.ModOptions:getOptions("ETWModOptions");
+		modOptions = PZAPI.ModOptions:getOptions("ETWModOptions");
 		local moodle = MF.getMoodle("SleepHealthMoodle");
 		moodle:setThresholds(1.5, 3, 4.5, 5.999, 6.001, 7.5, 9, 10.5);
 		if player == getPlayer() and modOptions:getOption(EnableSleepHealthMoodle) == true and hide == false then
