@@ -6,6 +6,7 @@ local ETW_config = {
     GatherDebugCheckbox = nil,
     GatherDetailedDebugCheckbox = nil,
     EnableSoundNotificationsCheckbox = nil,
+    EnableNotifications = nil,
     EnableDelayedNotificationsCheckbox = nil,
     EnableBloodLustMoodleCheckbox = nil,
     EnableSleepHealthMoodleCheckbox = nil,
@@ -19,7 +20,7 @@ local function ExampleConfig()
     -- Create the options! This is required when adding the new Mod Options
     local options = PZAPI.ModOptions:create("ETWModOptions", "ETW - Evolving Traits World")
     options:addTitle("Evolving Traits World")
-    options:addDescription("A small description can be placed here")
+    -- options:addDescription("A small description can be placed here")
 
     -- Add a Separator
     ---- Not required, just adds a horizontal line.
@@ -41,14 +42,18 @@ local function ExampleConfig()
 	-- Get value by calling ETW_config.GatherDebugCheckbox:getValue()
     ETW_config.GatherDebugCheckbox = options:addTickBox("GatherDebug", getText("UI_ETW_Options_GatherDebug"), false, getText("UI_ETW_Options_GatherDebug_tooltip"))
 	ETW_config.GatherDetailedDebugCheckbox = options:addTickBox("GatherDetailedDebug", getText("UI_ETW_Options_GatherDetailedDebug"), false, getText("UI_ETW_Options_GatherDetailedDebug_tooltip"))
-	ETW_config.EnableSoundNotificationsCheckbox = options:addTickBox("EnableSoundNotifications", getText("UI_ETW_Options_EnableSoundNotifications"), true, getText("UI_ETW_Options_EnableSoundNotifications_tooltip"))
+    ETW_config.EnableSoundNotificationsCheckbox = options:addTickBox("EnableSoundNotifications", getText("UI_ETW_Options_EnableSoundNotifications"), true, getText("UI_ETW_Options_EnableSoundNotifications_tooltip"))
+    ETW_config.EnableNotificationsCheckbox = options:addTickBox("EnableNotifications", getText("UI_ETW_Options_EnableNotifications"), true, getText("UI_ETW_Options_EnableNotifications_tooltip"))
 	ETW_config.EnableDelayedNotificationsCheckbox = options:addTickBox("EnableDelayedNotifications", getText("UI_ETW_Options_EnableDelayedNotifications"), true, getText("UI_ETW_Options_EnableDelayedNotifications_tooltip"))
 	ETW_config.EnableBloodLustMoodleCheckbox = options:addTickBox("EnableBloodLustMoodle", getText("UI_ETW_Options_EnableBloodLustMoodle"), true, getText("UI_ETW_Options_EnableBloodLustMoodle_tooltip"))
 	ETW_config.EnableSleepHealthMoodleCheckbox = options:addTickBox("EnableSleepHealthMoodle", getText("UI_ETW_Options_EnableSleepHealthMoodle"), true, getText("UI_ETW_Options_EnableSleepHealthMoodle_tooltip"))
 	
 	-- addSlider(ID, name, min, max, step, value, _tooltip)
 	-- Get value by calling ETW_config.UIWidthSlider:getValue()
-    ETW_config.UIWidthSlider = options:addSlider("UIWidth", getText("UI_ETW_Options_UIWidth"), 500, 1000, 10, 700, getText("UI_ETW_Options_UIWidth_tooltip"))
+    options:addSeparator()
+    options:addDescription("Slders in new mod options don't properly display tooltip yet, so I'll put description here in the meantime.\n"..getText("UI_ETW_Options_UIWidth_tooltip").."\n"..getText("UI_ETW_Options_TraitColumns_tooltip"))
+
+    ETW_config.UIWidthSlider = options:addSlider("UIWidth", getText("UI_ETW_Options_UIWidth"), 500, 1920, 10, 700, getText("UI_ETW_Options_UIWidth_tooltip"))
 	ETW_config.TraitColumnsSlider = options:addSlider("TraitColumns", getText("UI_ETW_Options_TraitColumns"), 1, 10, 1, 4, getText("UI_ETW_Options_TraitColumns_tooltip"))
 
 	ETW_config.HideSmokerUICheckbox = options:addTickBox("HideSmokerUI", getText("UI_ETW_Options_HideSmokerUI"), false, getText("UI_ETW_Options_HideSmokerUI_tooltip"))
@@ -92,15 +97,3 @@ local function ExampleConfig()
 end
 
 ExampleConfig()
-
----Function responsible for opening up ETW UI
----@param keynum number
-local function ETWShowUI(keynum)
-	if keynum == ETW_config.UIToggleKeybind:getValue() and getPlayer() then
-		local playerObj = getSpecificPlayer(0)
-		xpUpdate.characterInfo = getPlayerInfoPanel(playerObj:getPlayerNum());
-		xpUpdate.characterInfo:toggleView(xpSystemText.ETW);
-	end
-end
-
-Events.OnKeyPressed.Add(ETWShowUI);

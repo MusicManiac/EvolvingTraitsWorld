@@ -1,10 +1,19 @@
 require "ETWModData";
+require "ETWModOptions";
 
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld;
 
+local modOptions;
+
 ---@return boolean
-local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetailedDebug end;
+local notification = function() return modOptions:getOption("EnableNotifications"):getValue() end;
+---@return boolean
+local delayedNotification = function() return modOptions:getOption("EnableDelayedNotifications"):getValue() end;
+---@return boolean
+local debug = function() return modOptions:getOption("GatherDebug"):getValue() end;
+---@return boolean
+local detailedDebug = function() return modOptions:getOption("GatherDetailedDebug"):getValue() end;
 
 ---Function responsible for processing Bloodlust trait execution logic
 ---@param zombie IsoZombie
@@ -163,6 +172,7 @@ end
 ---@param playerIndex number
 ---@param player IsoPlayer
 local function initializeTraitsLogic(playerIndex, player)
+	modOptions = PZAPI.ModOptions:getOptions("ETWModOptions");
 	Events.OnZombieDead.Remove(OnZombieDeadETW);
 	Events.OnZombieDead.Add(OnZombieDeadETW);
 	Events.EveryOneMinute.Remove(oneMinuteUpdate);
@@ -187,3 +197,13 @@ Events.OnCreatePlayer.Remove(initializeTraitsLogic);
 Events.OnCreatePlayer.Add(initializeTraitsLogic);
 Events.OnPlayerDeath.Remove(clearEventsETW);
 Events.OnPlayerDeath.Add(clearEventsETW);
+
+---Function responsible for setting up events
+---@param playerIndex number
+---@param player IsoPlayer
+local function initializeModOptions(playerIndex, player)
+	modOptions = PZAPI.ModOptions:getOptions("ETWModOptions");
+end
+
+Events.OnCreatePlayer.Remove(initializeModOptions);
+Events.OnCreatePlayer.Add(initializeModOptions);

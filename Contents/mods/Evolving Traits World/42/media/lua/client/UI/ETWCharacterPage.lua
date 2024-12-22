@@ -7,7 +7,7 @@ require "ETWModData"
 local ETWCommonFunctions = require "ETWCommonFunctions";
 local ETWCommonLogicChecks = require "ETWCommonLogicChecks";
 
-local modOptions = PZAPI.ModOptions:getOptions("ETWModOptions");
+local modOptions;
 
 local FONT_HGT_SMALL = getTextManager():getFontHeight(UIFont.Small)
 local FONT_HGT_MEDIUM = getTextManager():getFontHeight(UIFont.Medium)
@@ -22,7 +22,7 @@ local y = 12;
 
 local columnGap;
 
-local nonBarsEntriesPerRow = modOptions:getOption("TraitColumnsSlider"):getValue() or 4;
+local nonBarsEntriesPerRow = 4;
 local nonBarsEntryNumber = 0;
 
 ---@type EvolvingTraitsWorldSandboxVars
@@ -51,7 +51,7 @@ local function arrangeColumnsInTable()
 end
 
 function ISETWProgressUI:initialise()
-
+	--ISPanelJoypad.initialise(self);
 end
 
 function ISETWProgressUI:createChildren()
@@ -126,13 +126,13 @@ function ISETWProgressUI:createChildren()
 			firearmKills = killCountModData["Firearm"].count or 0;
 		end
 
-		if not modOptions.HideReadMeUICheckbox:getValue() then
+		if (not modOptions and true) or modOptions:getOption("HideReadMeUI"):getValue() then
 			str = getText("UI_ETW_Options_ReadMe")
-			self.labelReadMe = ISLabel:new(WINDOW_WIDTH / 2 - strLen(textManager, str)/2, y, FONT_HGT_SMALL, str, self.TextColor.r, self.TextColor.g, self.TextColor.b, self.TextColor.a, UIFont.Small, true)
+			self.labelReadMe = ISLabel:new(WINDOW_WIDTH / 2 - strLen(textManager, str)/2, y, FONT_HGT_MEDIUM, str, self.TextColor.r, self.TextColor.g, self.TextColor.b, self.TextColor.a, UIFont.Small, true)
 			self.labelReadMe:setTooltip(getText("UI_ETW_Options_ReadMe_tooltip"))
 			self:addChild(self.labelReadMe)
 
-			y = y + FONT_HGT_SMALL
+			y = y + FONT_HGT_MEDIUM
 		end
 
 		if ETWCommonLogicChecks.ImmuneSystemShouldExecute() then
@@ -670,7 +670,7 @@ function ISETWProgressUI:createChildren()
 			y = y + FONT_HGT_SMALL
 		end
 
-		if ETWCommonLogicChecks.SmokerShouldExecute() and not modOptions:getOption(HideSmokerUICheckbox):getValue() then
+		if ETWCommonLogicChecks.SmokerShouldExecute() and ((not modOptions and true) or not modOptions:getOption("HideSmokerUI"):getValue()) then
 			y = y + FONT_HGT_SMALL / 2
 
 			str = "- " .. getText("UI_trait_Smoker")
@@ -1055,6 +1055,10 @@ function ISETWProgressUI:createChildren()
 	end
 end
 
+function ISCharacterKills:setVisible(visible)
+    self.javaObject:setVisible(visible);
+end
+
 function ISETWProgressUI:prerender()
 	ISPanelJoypad.prerender(self);
 	self:setStencilRect(0, 0, self.width, self.height)
@@ -1268,8 +1272,9 @@ function ISETWProgressUI:render()
 	end
 	self:clearStencilRect();
 
-	if WINDOW_WIDTH ~= modOptions:getOption(UIWidth):getValue() then
-		nonBarsEntriesPerRow = modOptions:getOption(TraitColumns):getValue()
+	if modOptions and (WINDOW_WIDTH ~= modOptions:getOption("UIWidth"):getValue() or nonBarsEntriesPerRow ~= modOptions:getOption("TraitColumns"):getValue()) then
+		WINDOW_WIDTH = modOptions:getOption("UIWidth"):getValue()
+		nonBarsEntriesPerRow = modOptions:getOption("TraitColumns"):getValue()
 		self:clearChildren()
 		self:createChildren()
 	end
@@ -1347,54 +1352,15 @@ end
 function ISETWProgressUI:onJoypadDirRight()
 end
 
-local function addCharacterPageTab(tabName,pageType)
+addCharacterPageTab("ETW", ISETWProgressUI:new(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0))
 
-    local viewName = tabName.."View"
-
-    local upperLayer_ISCharacterInfoWindow_createChildren = ISCharacterInfoWindow.createChildren
-    function ISCharacterInfoWindow:createChildren()
-        upperLayer_ISCharacterInfoWindow_createChildren(self)
-        
-        self[viewName] = pageType:new(0, 8, self.width, self.height-8, self.playerNum)
-        self[viewName]:initialise()
-        self[viewName].infoText = getText("UI_"..tabName.."Panel");--UI_<tabName>Panel is full text of tooltip
-        self.panel:addView(getText("UI_"..tabName), self[viewName])--UI_<tabName> is short text of tab
-    end
-
-    local upperLayer_ISCharacterInfoWindow_onTabTornOff = ISCharacterInfoWindow.onTabTornOff
-    function ISCharacterInfoWindow:onTabTornOff(view, window)
-        if self.playerNum == 0 and view == self[viewName] then
-            ISLayoutManager.RegisterWindow('charinfowindow.'..tabName, ISCollapsableWindow, window)
-        end
-        upperLayer_ISCharacterInfoWindow_onTabTornOff(self, view, window)
-
-    end
-
-    --RestoreLayout does not work for porotection, I guess this is no big deal. let's test without.
-    --anyway it is not modder friendly (needs a lot of overwrite) so I'll give up on it for now
-    --function ISCharacterInfoWindow:RestoreLayout(name, layout)
-    --end
-
-    local upperLayer_ISCharacterInfoWindow_SaveLayout = ISCharacterInfoWindow.SaveLayout
-    function ISCharacterInfoWindow:SaveLayout(name, layout)
-        upperLayer_ISCharacterInfoWindow_SaveLayout(self,name,layout)
-        
-        local addTabName = false
-        local subSelf = self[viewName]
-        if subSelf and subSelf.parent == self.panel then
-            addTabName = true
-            if subSelf == self.panel:getActiveView() then
-                layout.current = tabName
-            end
-        end
-        if addTabName then
-            if not layout.tabs then
-                layout.tabs = tabName 
-            else
-                layout.tabs = layout.tabs .. ',' .. tabName
-            end
-        end
-    end
+---Function responsible for setting up events
+---@param playerIndex number
+---@param player IsoPlayer
+local function initializeModOptions(playerIndex, player)
+	modOptions = PZAPI.ModOptions:getOptions("ETWModOptions");
+	nonBarsEntriesPerRow = modOptions:getOption("TraitColumns"):getValue();
 end
 
-addCharacterPageTab("ETW", ISETWProgressUI:new(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0))
+Events.OnCreatePlayer.Remove(initializeModOptions);
+Events.OnCreatePlayer.Add(initializeModOptions);

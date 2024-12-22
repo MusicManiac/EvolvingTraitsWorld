@@ -1,5 +1,3 @@
-require "ETWModOptions";
-
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld;
 

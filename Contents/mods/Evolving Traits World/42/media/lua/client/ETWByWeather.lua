@@ -1,4 +1,5 @@
 require "ETWModData";
+require "ETWModOptions";
 
 local ETWCommonFunctions = require "ETWCommonFunctions";
 local ETWCommonLogicChecks = require "ETWCommonLogicChecks";
@@ -6,12 +7,17 @@ local ETWCommonLogicChecks = require "ETWCommonLogicChecks";
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld;
 
+local modOptions;
+
 ---@return boolean
-local notification = function() return EvolvingTraitsWorld.settings.EnableNotifications end;
+local notification = function() return modOptions:getOption("EnableNotifications"):getValue() end;
 ---@return boolean
-local debug = function() return EvolvingTraitsWorld.settings.GatherDebug end;
+local delayedNotification = function() return modOptions:getOption("EnableDelayedNotifications"):getValue() end;
 ---@return boolean
-local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetailedDebug end;
+local debug = function() return modOptions:getOption("GatherDebug"):getValue() end;
+---@return boolean
+local detailedDebug = function() return modOptions:getOption("GatherDetailedDebug"):getValue() end;
+
 ---@param player IsoPlayer
 ---@return boolean
 local desensitized = function(player) return player:HasTrait("Desensitized") and SBvars.BraverySystemRemovesOtherFearPerks end;
@@ -139,6 +145,7 @@ end
 ---@param playerIndex number
 ---@param player IsoPlayer
 local function initializeEventsETW(playerIndex, player)
+	modOptions = PZAPI.ModOptions:getOptions("ETWModOptions");
 	Events.EveryOneMinute.Remove(rainTraits);
 	Events.OnZombieDead.Remove(rainTraitsKill);
 	if ETWCommonLogicChecks.RainSystemShouldExecute() then
@@ -165,3 +172,13 @@ Events.OnCreatePlayer.Remove(initializeEventsETW);
 Events.OnCreatePlayer.Add(initializeEventsETW);
 Events.OnPlayerDeath.Remove(clearEventsETW);
 Events.OnPlayerDeath.Add(clearEventsETW);
+
+---Function responsible for setting up events
+---@param playerIndex number
+---@param player IsoPlayer
+local function initializeModOptions(playerIndex, player)
+	modOptions = PZAPI.ModOptions:getOptions("ETWModOptions");
+end
+
+Events.OnCreatePlayer.Remove(initializeModOptions);
+Events.OnCreatePlayer.Add(initializeModOptions);
