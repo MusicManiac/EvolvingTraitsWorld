@@ -1,5 +1,6 @@
 [h1][b]B42 INFORMATION[/b][/h1]
-Can be found in this thread ->>> [url=https://steamcommunity.com/workshop/filedetails/discussion/2914075159/595136072544954599/]CLICK ME[/url] <<<-
+[h3]Can be found in this thread ->>> [url=https://steamcommunity.com/workshop/filedetails/discussion/2914075159/595136072544954599/]CLICK ME[/url] <<<-
+TLDR: there will be bugs, I'm fixing it but it's slow 'cuz I'm not home.[/h3]
 
 [h1]Welcome to the world of Evolving Traits[/h1]
 This mod allows you to get really ripped in PZ and see an actual character progression besides getting your skills from lvl 0 to lvl10. You'll be able to purge the majority of negative traits and earn a lot of positive ones (but also earn some negative ones as well). This would help you to go from your average Joe to actual GigaChad in-game. You repair a lot of cars? You get better at it. You train yourself to take long-range kills with proper rifles? Why wouldn't it warranty getting Eagle-Eyed? You pick up thousands of plants through your lifetime and still can't call yourself Herbalist? Yea, that doesn't sound right to me. You maintain great sleeping schedule but for some reason you still need same amount of sleep as when you were sleeping whenever? Not anymore. Welcome to the Dynamic Traits World, ladies and gentlemen!
@@ -57,6 +58,12 @@ If you like this mod, check out collection on top of page for other mods I made 
 Redistribution of this mod without explicit permission from the creator is prohibited under any circumstances. This includes, but not limited to, uploading this mod to the Steam Workshop or any other site, distribution as part of another mod or modpack, distribution of modified versions.
 © 2024 [url=https://steamcommunity.com/profiles/76561198152820942]MusicManiac[/url] (SteamID64: 76561198152820942)[/quote]
 
+For B41
 Workshop ID: 2914075159
 Mod ID: EvolvingTraitsWorld
 Mod ID: EvolvingTraitsWorldMarkDynamicTraits
+
+For B42+
+Workshop ID: 2914075159
+Mod ID: 2914075159/EvolvingTraitsWorld
+Mod ID: 2914075159/EvolvingTraitsWorldMarkDynamicTraits
