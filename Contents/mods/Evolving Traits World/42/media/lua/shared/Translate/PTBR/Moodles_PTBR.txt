@@ -1,24 +1,24 @@
 Moodles_PTBR {
 	___note_to_translators = "(Don't translate this, this is just info for you guys) If a field has %1 in it, it's replaced with value later on when the code is run",
-	___note_to_PTBR_translators = "Make sure file is saved in Windows-1252 / ISO-8859-1 encoding, so game display correct characters",
+	___note_to_PTBR_translators = "Make sure file is saved in UTF-8 encoding, so game display correct characters",
 
 	Moodles_BloodlustMoodle_Good_lvl4 = "Meu Deus! Eu amo matar zumbis",
-	Moodles_BloodlustMoodle_Good_lvl3 = "Isso È definitivamente um tempo bem gasto",
-	Moodles_BloodlustMoodle_Good_lvl2 = "N„o È a pior forma de passar o tempo.",
-	Moodles_BloodlustMoodle_Good_lvl1 = "Isso È um pouco divertido",
-	Moodles_BloodlustMoodle_Bad_lvl1 = "Isso n„o È muito divertido",
-	Moodles_BloodlustMoodle_Bad_lvl2 = "Isso È um trabalho chato, mas alguÈm tem que fazer isso",
-	Moodles_BloodlustMoodle_Bad_lvl3 = "N„o È t„o ruim matar zumbis",
-	Moodles_BloodlustMoodle_Bad_lvl4 = "Eu realmente n„o queria matar zumbis",
-	Moodles_BloodlustMoodle_Custom = "Meu medidor de Sede de Sangue est· %1 porcento cheio.<br>Ficar acima de 50% vai, eventualmente, me fazer ganhar o traÁo de Sede de Sangue,<br>ficar abaixo de 50% vai diminuir meu progresso<br>(Isso È um indicador se vocÍ est· ganhando ou perdendo o traÁo de Sede de Sangue)",
+	Moodles_BloodlustMoodle_Good_lvl3 = "Isso √© definitivamente um tempo bem gasto",
+	Moodles_BloodlustMoodle_Good_lvl2 = "N√£o √© a pior forma de passar o tempo.",
+	Moodles_BloodlustMoodle_Good_lvl1 = "Isso √© um pouco divertido",
+	Moodles_BloodlustMoodle_Bad_lvl1 = "Isso n√£o √© muito divertido",
+	Moodles_BloodlustMoodle_Bad_lvl2 = "Isso √© um trabalho chato, mas algu√©m tem que fazer isso",
+	Moodles_BloodlustMoodle_Bad_lvl3 = "N√£o √© t√£o ruim matar zumbis",
+	Moodles_BloodlustMoodle_Bad_lvl4 = "Eu realmente n√£o queria matar zumbis",
+	Moodles_BloodlustMoodle_Custom = "Meu medidor de Sede de Sangue est√° %1 porcento cheio.<br>Ficar acima de 50% vai, eventualmente, me fazer ganhar o tra√ßo de Sede de Sangue,<br>ficar abaixo de 50% vai diminuir meu progresso<br>(Isso √© um indicador se voc√™ est√° ganhando ou perdendo o tra√ßo de Sede de Sangue)",
 
 	Moodles_SleepHealthMoodle_Good_lvl4 = "Na hora certa!",
-	Moodles_SleepHealthMoodle_Good_lvl3 = "”timo momento para dormir",
+	Moodles_SleepHealthMoodle_Good_lvl3 = "√ìtimo momento para dormir",
 	Moodles_SleepHealthMoodle_Good_lvl2 = "Bom momento para dormir",
 	Moodles_SleepHealthMoodle_Good_lvl1 = "Perto da minha hora de dormir.",
 	Moodles_SleepHealthMoodle_Bad_lvl1 = "Longe da minha hora de dormir",
-	Moodles_SleepHealthMoodle_Bad_lvl2 = "N„o È um bom momento para dormir",
+	Moodles_SleepHealthMoodle_Bad_lvl2 = "N√£o √© um bom momento para dormir",
 	Moodles_SleepHealthMoodle_Bad_lvl3 = "Muito longe da minha hora de dormir",
-	Moodles_SleepHealthMoodle_Bad_lvl4 = "Minha rotina de sono est· uma merda!",
-	Moodles_SleepHealthMoodle_Custom = "Dormindo a %1 h do hor·rio ideal"
+	Moodles_SleepHealthMoodle_Bad_lvl4 = "Minha rotina de sono est√° uma merda!",
+	Moodles_SleepHealthMoodle_Custom = "Dormindo a %1 h do hor√°rio ideal"
 }
