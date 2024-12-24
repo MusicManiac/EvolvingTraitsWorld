@@ -1,5 +1,7 @@
-v.9.0.0 - b42 update
+v.9.0.1
 
-General:
-	- Compatability update for b42
-	- Mod options are no longer needed for b42, same for TchernoLib
+Fixes:
+	- Fixed all repairing-related code. Means now repairing cars gives progress to earning traits that require it. Also means Restoration Expert is actually working now.
+	- Fixed submod breaking auto-sort in mod menu.
+Translations:
+	- Fixed old translation files for b42 (also you should use english while b42 is unstable, I will not be asking translators to update translatons until b42 is out)

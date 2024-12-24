@@ -17,6 +17,48 @@ local debug = function() return modOptions:getOption("GatherDebug"):getValue() e
 ---@return boolean
 local detailedDebug = function() return modOptions:getOption("GatherDetailedDebug"):getValue() end;
 
+local carPartStartingCondition;
+
+local original_ISFixVehiclePartAction_perform = ISFixVehiclePartAction.perform;
+---Overwriting ISFixVehiclePartAction:perform() here to insert ETW logic catching player doing any kind of repairs
+---@diagnostic disable-next-line: duplicate-set-field
+function ISFixVehiclePartAction:perform()
+	local player = self.character;
+	local modData = ETWCommonFunctions.getETWModData(player);
+	---@type DebugAndNotificationArgs
+	if detailedDebug() then print("ETW Logger | ISFixVehiclePartAction:perform(): caught") end;
+	local conditionBefore = self.item:getCondition();
+	carPartStartingCondition = conditionBefore;
+	if detailedDebug() then print("ETW Logger | ISFixVehiclePartAction.perform(): car part conditon: " .. conditionBefore .. " VehiclePartRepairs=" .. modData.VehiclePartRepairs) end;
+	original_ISFixVehiclePartAction_perform(self);
+end
+
+local original_ISFixVehiclePartAction_complete = ISFixVehiclePartAction.complete;
+function ISFixVehiclePartAction:complete()
+	if detailedDebug() then print("ETW Logger | ISFixVehiclePartAction:complete(): caught") end;
+	original_ISFixVehiclePartAction_complete(self);
+	local player = self.character;
+	local modData = ETWCommonFunctions.getETWModData(player);
+	local conditionAfter = self.item:getCondition();
+	local mechanicsShouldExecute = ETWCommonLogicChecks.MechanicsShouldExecute();
+	local bodyWorkEnthusiastShouldExecute = ETWCommonLogicChecks.BodyWorkEnthusiastShouldExecute();
+	if conditionAfter > carPartStartingCondition and (mechanicsShouldExecute or bodyWorkEnthusiastShouldExecute) then
+		modData.VehiclePartRepairs = modData.VehiclePartRepairs + (conditionAfter - carPartStartingCondition);
+		local DebugAndNotificationArgs = {debug = debug(), detailedDebug = detailedDebug(), notification = notification(), delayedNotification = delayedNotification()};
+		if detailedDebug() then print("ETW Logger | ISFixVehiclePartAction.complete(): car part " .. carPartStartingCondition .. "->" .. conditionAfter .. " VehiclePartRepairs=" .. modData.VehiclePartRepairs) end;
+		if bodyWorkEnthusiastShouldExecute then ETWCombinedTraitChecks.bodyworkEnthusiastCheck(DebugAndNotificationArgs) end;
+		if mechanicsShouldExecute then ETWCombinedTraitChecks.mechanicsCheck(DebugAndNotificationArgs) end;
+	end
+	if player:HasTrait("RestorationExpert") then
+		if detailedDebug() then print("ETW Logger | ISFixVehiclePartAction.complete(): RestorationExpert present") end;
+		local chance = SBvars.RestorationExpertChance - 1;
+		if ZombRand(100) <= chance then
+			self.item:setHaveBeenRepaired(self.item:getHaveBeenRepaired() - 1);
+		end
+	end
+	carPartStartingCondition = nil;
+end
+
 ---Function responsible for checking if current ISFixAction performed on a vehicle part
 ---@param action ISFixAction
 ---@return boolean

@@ -1,24 +1,24 @@
 Moodles_TR {
 	___note_to_translators = "(Don't translate this, this is just info for you guys) If a field has %1 in it, it's replaced with value later on when the code is run",
-	note_to_TR_translators = "Make sure file is saved in ISO 8859-1 encoding, so game display correct characters"
+	note_to_TR_translators = "Make sure file is saved in UTF-8 encoding, so game display correct characters"
 
-	Moodles_BloodlustMoodle_Good_lvl4 = "Tanrım, zombilerin kökünü kurutmaya bayılıyorum",
-	Moodles_BloodlustMoodle_Good_lvl3 = "Bu gayet kaliteli bir zaman geçirme yöntemi.",
-	Moodles_BloodlustMoodle_Good_lvl2 = "Zaman geçirmek  için idare eder bir şey.",
-	Moodles_BloodlustMoodle_Good_lvl1 = "Biraz eğlenceli olmaya başladı",
-	Moodles_BloodlustMoodle_Bad_lvl1 = "Çok zevkli bir şey değil",
-	Moodles_BloodlustMoodle_Bad_lvl2 = "Bu sıkıcı bir iş ama birilerinin yapması gerekiyor",
-	Moodles_BloodlustMoodle_Bad_lvl3 = "Sanırım birkaç tanesini yok etmek çok da kötü bir fikir değil.",
-	Moodles_BloodlustMoodle_Bad_lvl4 = "İçimden hiç zombi öldürmek gelmiyor",
-	Moodles_BloodlustMoodle_Custom = "Kanasusamışlığım %1 dolu.<br> Bu yüzdeyi 50% üzerinde tutmak bana eninde sonunda kanasusamışlık özelliğini kazandıracak,<br> fakat 50%'nin altında olursam çabam boşa gidecek<br>(Bu sizin kanasusamış özelliğini kazanıp kaybettiğinizi anlamanız için bir göstergedir.)",
+	Moodles_BloodlustMoodle_Good_lvl4 = "TanrÃ½m, zombilerin kÃ¶kÃ¼nÃ¼ kurutmaya bayÃ½lÃ½yorum",
+	Moodles_BloodlustMoodle_Good_lvl3 = "Bu gayet kaliteli bir zaman geÃ§irme yÃ¶ntemi.",
+	Moodles_BloodlustMoodle_Good_lvl2 = "Zaman geÃ§irmek  iÃ§in idare eder bir Ã¾ey.",
+	Moodles_BloodlustMoodle_Good_lvl1 = "Biraz eÃ°lenceli olmaya baÃ¾ladÃ½",
+	Moodles_BloodlustMoodle_Bad_lvl1 = "Ã‡ok zevkli bir Ã¾ey deÃ°il",
+	Moodles_BloodlustMoodle_Bad_lvl2 = "Bu sÃ½kÃ½cÃ½ bir iÃ¾ ama birilerinin yapmasÃ½ gerekiyor",
+	Moodles_BloodlustMoodle_Bad_lvl3 = "SanÃ½rÃ½m birkaÃ§ tanesini yok etmek Ã§ok da kÃ¶tÃ¼ bir fikir deÃ°il.",
+	Moodles_BloodlustMoodle_Bad_lvl4 = "ÃÃ§imden hiÃ§ zombi Ã¶ldÃ¼rmek gelmiyor",
+	Moodles_BloodlustMoodle_Custom = "KanasusamÃ½Ã¾lÃ½Ã°Ã½m %1 dolu.<br> Bu yÃ¼zdeyi 50% Ã¼zerinde tutmak bana eninde sonunda kanasusamÃ½Ã¾lÃ½k Ã¶zelliÃ°ini kazandÃ½racak,<br> fakat 50%'nin altÃ½nda olursam Ã§abam boÃ¾a gidecek<br>(Bu sizin kanasusamÃ½Ã¾ Ã¶zelliÃ°ini kazanÃ½p kaybettiÃ°inizi anlamanÃ½z iÃ§in bir gÃ¶stergedir.)",
 
-	Moodles_SleepHealthMoodle_Good_lvl4 = "Tamda uyku zamanım",
-	Moodles_SleepHealthMoodle_Good_lvl3 = "Gayet iyi bir uyku zamanı",
-	Moodles_SleepHealthMoodle_Good_lvl2 = "uyumak için güzel bir saat",
+	Moodles_SleepHealthMoodle_Good_lvl4 = "Tamda uyku zamanÃ½m",
+	Moodles_SleepHealthMoodle_Good_lvl3 = "Gayet iyi bir uyku zamanÃ½",
+	Moodles_SleepHealthMoodle_Good_lvl2 = "uyumak iÃ§in gÃ¼zel bir saat",
 	Moodles_SleepHealthMoodle_Good_lvl1 = "normalden biraz iyi bir uyku saati.",
-	Moodles_SleepHealthMoodle_Bad_lvl1 = "uyku programımdan biraz uzak bir saat",
-	Moodles_SleepHealthMoodle_Bad_lvl2 = "uyumak için iyi bir zaman değil",
-	Moodles_SleepHealthMoodle_Bad_lvl3 = "uyku programımdan baya uzak bir zaman",
-	Moodles_SleepHealthMoodle_Bad_lvl4 = "uyku düzenim altüst oldu",
+	Moodles_SleepHealthMoodle_Bad_lvl1 = "uyku programÃ½mdan biraz uzak bir saat",
+	Moodles_SleepHealthMoodle_Bad_lvl2 = "uyumak iÃ§in iyi bir zaman deÃ°il",
+	Moodles_SleepHealthMoodle_Bad_lvl3 = "uyku programÃ½mdan baya uzak bir zaman",
+	Moodles_SleepHealthMoodle_Bad_lvl4 = "uyku dÃ¼zenim altÃ¼st oldu",
 	Moodles_SleepHealthMoodle_Custom = "uyku %1 ideal saatten uzak bir vakitte"
 }

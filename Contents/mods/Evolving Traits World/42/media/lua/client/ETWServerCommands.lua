@@ -37,6 +37,14 @@ Commands.ETW.carRepairCheck = function(args)
 	if ETWCommonLogicChecks.MechanicsShouldExecute() then ETWCombinedTraitChecks.mechanicsCheck(DebugAndNotificationArgs) end;
 end
 
+---Send debug settingsto server
+Commands.ETW.debugInfoRequest = function()
+	local player = getPlayer();
+	if detailedDebug() then print("ETW Logger | Commands.ETW.debugInfoRequest recieved") end;
+	local args = {debug = debug(), detailedDebug = detailedDebug(), notification = notification(), delayedNotification = delayedNotification()};
+	sendClientCommand(player, 'ETW', 'debugInfoReply', args);
+end
+
 Commands.OnServerCommand = function(module, command, args)
     if Commands[module] and Commands[module][command] then
         local argStr = ''

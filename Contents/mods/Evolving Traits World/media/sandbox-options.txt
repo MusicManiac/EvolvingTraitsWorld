@@ -207,12 +207,12 @@ option EvolvingTraitsWorld.HearingSystemSkill
 	page = ETWSystems,
 	translation = ETW_HearingSystemSkill,
 }
-option EvolvingTraitsWorld.ImmuneSystem
+option EvolvingTraitsWorld.ImmunitySystem
 {
 	type = boolean,
 	default = true,
 	page = ETWSystems,
-	translation = ETW_ImmuneSystemSystem,
+	translation = ETW_ImmunitySystem,
 }
 option EvolvingTraitsWorld.ImmunitySystemCounter
 {
