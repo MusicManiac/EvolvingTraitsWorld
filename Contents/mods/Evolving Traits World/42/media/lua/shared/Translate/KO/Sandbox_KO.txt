@@ -215,9 +215,9 @@ Sandbox_KO = {
 	Sandbox_ETW_InventoryTransferSystemWeight = "무게 카운터",
 	Sandbox_ETW_InventoryTransferSystemWeight_tooltip = "얼만큼의 무게를 옮겨야 관련 특성(비체계적인, 정리쟁이)을 얻거나 잃는지 설정합니다<br>비체계적인: 무게 카운터의 66%와 아이템 카운터의 33%<br>정리쟁이: 무게 카운터의 100% 와 아이템 카운터의 66%",
 
-	Sandbox_ETW_Kenshi = "검사",
-	Sandbox_ETW_KenshiSkill = "검사 특성을 얻기 위한 장검 스킬 요구치",
-	Sandbox_ETW_KenshiKills = "검사 특성을 얻기 위한 장검류 사용 처치 수",
+	Sandbox_ETW_BladeEnthusiast = "검사",
+	Sandbox_ETW_BladeEnthusiastSkill = "검사 특성을 얻기 위한 장검 스킬 요구치",
+	Sandbox_ETW_BladeEnthusiastKills = "검사 특성을 얻기 위한 장검류 사용 처치 수",
 
 	Sandbox_ETW_KnifeFighter = "단검 격투술",
 	Sandbox_ETW_KnifeFighterSkill = "단검 격투술 특성을 얻기 위한 단검 스킬 요구치",
@@ -287,10 +287,6 @@ Sandbox_KO = {
 	Sandbox_ETW_SmokingAddictionDecay_tooltip = "카운터가 줄어드는 속도를 조절합니다",
 	Sandbox_ETW_SmokingAddictionMultiplier = "흡연 중독 증가율",
 	Sandbox_ETW_SmokingAddictionMultiplier_tooltip = "카운터가 늘어나는 속도를 조절합니다",
-
-	Sandbox_ETW_Sojutsu = "창술가",
-	Sandbox_ETW_SojutsuSkill = "창술가 특성을 얻기 위한 창 스킬 요구치",
-	Sandbox_ETW_SojutsuKills = "창술가 특성을 얻기 위한 창류 사용 처치 수",
 
 	Sandbox_ETW_StickFighter = "단봉술 수련자",
 	Sandbox_ETW_StickFighterSkill = "단봉술 수련자 특성을 얻기 위한 짧은 둔기 스킬 요구치",

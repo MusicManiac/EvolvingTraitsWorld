@@ -167,6 +167,11 @@ local function createModData(playerIndex, player)
 		bloodlustSystem.BloodlustMeter = bloodlustSystem.BloodlustMeter or 0;
 	end
 
+	modData.AnimalsSystem = modData.AnimalsSystem or {};
+	local AnimalsSystem = modData.AnimalsSystem;
+	AnimalsSystem.UniqueAnimalsPetted = AnimalsSystem.UniqueAnimalsPetted or {};
+	AnimalsSystem.MinutesSinceLastPettingWithMoodBoost = AnimalsSystem.MinutesSinceLastPettingWithMoodBoost or 0;
+
 	player:getModData().KillCount = player:getModData().KillCount or {};
 	player:getModData().KillCount.WeaponCategory = player:getModData().KillCount.WeaponCategory or {};
 	local killCount = player:getModData().KillCount.WeaponCategory;
@@ -183,5 +188,14 @@ local function createModData(playerIndex, player)
 	killCount["Explosives"] = killCount["Explosives"] or { count = 0, WeaponType = {} };
 end
 
+---Function responsible for resetting modData on character death
+---@param character IsoPlayer
+local function clearETWModData(character)
+	character:getModData().EvolvingTraitsWorld = {};
+	print("ETW Logger | System: character died, clearing it's ETW modData")
+end
+
 Events.OnCreatePlayer.Remove(createModData);
 Events.OnCreatePlayer.Add(createModData);
+Events.OnPlayerDeath.Remove(clearETWModData);
+Events.OnPlayerDeath.Add(clearETWModData);

@@ -10,13 +10,11 @@ local SBvars = SandboxVars.EvolvingTraitsWorld;
 local modOptions;
 
 ---@return boolean
-local notification = function() return modOptions:getOption("EnableNotifications"):getValue() end;
+local notification = function() return modOptions:getOption("EnableNotifications"):getValue() end
 ---@return boolean
-local delayedNotification = function() return modOptions:getOption("EnableDelayedNotifications"):getValue() end;
+local delayedNotification = function() return modOptions:getOption("EnableDelayedNotifications"):getValue() end
 ---@return boolean
-local debug = function() return modOptions:getOption("GatherDebug"):getValue() end;
----@return boolean
-local detailedDebug = function() return modOptions:getOption("GatherDetailedDebug"):getValue() end;
+local detailedDebug = function() return modOptions:getOption("GatherDetailedDebug"):getValue() end
 
 MF.createMoodle("BloodlustMoodle");
 MF.createMoodle("SleepHealthMoodle");
@@ -56,7 +54,7 @@ function ETWMoodles.sleepHealthMoodleUpdate(player, hoursAwayFromPreferredHour, 
 		local moodle = MF.getMoodle("SleepHealthMoodle");
 		moodle:setThresholds(1.5, 3, 4.5, 5.999, 6.001, 7.5, 9, 10.5);
 		if player == getPlayer() and modOptions:getOption(EnableSleepHealthMoodle) == true and hide == false then
-			if detailedDebug() then print("ETW Logger | ETWMoodles.sleepHealthMoodleUpdate(): hoursAwayFromPreferredHour: " .. hoursAwayFromPreferredHour) end;
+			if detailedDebug() then print("ETW Logger | ETWMoodles.sleepHealthMoodleUpdate(): hoursAwayFromPreferredHour: " .. hoursAwayFromPreferredHour) end
 			local displayedDifference = string.format("%.2f", hoursAwayFromPreferredHour);
 			moodle:setValue(12 - hoursAwayFromPreferredHour);
 			moodle:setDescription(moodle:getGoodBadNeutral(), moodle:getLevel(), getText("Moodles_SleepHealthMoodle_Custom", displayedDifference));

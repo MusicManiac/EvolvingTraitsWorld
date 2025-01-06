@@ -62,6 +62,7 @@ if getActivatedMods():contains('\\2914075159/EvolvingTraitsWorld')then
 	altNames.Outdoorsman = true;
 	altNames.Pacifist = true;
 	altNames.PainTolerance = true;
+	altNames.PetTherapy = true;
 	altNames.ProneToIllness = true;
 	altNames.Resilient = true;
 	altNames.SlowLearner = true;

@@ -42,6 +42,10 @@ Sandbox_EN = {
 	Sandbox_ETW_BaseballPlayerSkill = "Baseball Player Long Blunt Skill requirement",
 	Sandbox_ETW_BaseballPlayerKills = "Baseball Player Kills with Long Blunt requirement",
 
+	Sandbox_ETW_BladeEnthusiast = "Blade Enthusiast",
+	Sandbox_ETW_BladeEnthusiastSkill = "Blade Enthusiast Long Blade Skill requirement",
+	Sandbox_ETW_BladeEnthusiastKills = "Blade Enthusiast Long Blade Kills requirement",
+
 	Sandbox_ETW_Bloodlust = "Bloodlust",
 	Sandbox_ETW_Bloodlust_tooltip = "This allows you to gain a benefit by filling and maintaining a bloodlust meter. The bloodlust meter is soft-capped at 72 hours and can be filled by killing zombies. The closer the zombies are, the more quickly the meter will fill. When you're above half of the meter, every hour it will give you progress towards the bloodlust perk; when it's below, it'll remove progress. The bloodlust meter naturally decays by 1 every hour. Having bloodied clothes helps the process",
 	Sandbox_ETW_BloodlustMeterFillMultiplier = "Bloodlust Meter Fill Multiplier",
@@ -210,10 +214,6 @@ Sandbox_EN = {
 	Sandbox_ETW_InventoryTransferSystemWeight = "Weight Counter",
 	Sandbox_ETW_InventoryTransferSystemWeight_tooltip = "Specifies how much weight (and how many items) you need to transfer to earn/lose traits related to item transfer: Disorganized, Organized, All Thumbs, Dexterous, Butterfingers (More Traits).<br>Disorganized: 66% of Weight counter and 33% of Items counter<br>Organized: 100% of Weight counter and 66% of Items counter<br>All Thumbs: 33% of Weight counter and 66% of Items counter<br>Dexterous: 66% of Weight counter and 100% of Items counter<br>Butterfingers (More Traits): 150% of Weight counter and 150% of Items counter"
 
-	Sandbox_ETW_Kenshi = "Kenshi",
-	Sandbox_ETW_KenshiSkill = "Kenshi Long Blade Skill requirement",
-	Sandbox_ETW_KenshiKills = "Kenshi Long Blade Kills requirement",
-
 	Sandbox_ETW_KnifeFighter = "Knife Fighter",
 	Sandbox_ETW_KnifeFighterSkill = "Knife Fighter Short Blade Skill requirement",
 	Sandbox_ETW_KnifeFighterKills = "Knife Fighter Short Blade Kills requirement",
@@ -245,6 +245,19 @@ Sandbox_EN = {
 	Sandbox_ETW_PainToleranceThreshold_tooltip = "Sets the maximum pain level your character can reach while benefiting from this perk",
 	Sandbox_ETW_PainToleranceCounter = "Pain Tolerance Counter",
 	Sandbox_ETW_PainToleranceCounter_tooltip = "Every 10 minutes your pain (0-100) is added to counter. Upon reaching counter you'll get Pain Tolerance trait",
+
+	Sandbox_ETW_PetTherapy = "Pet Therapy",
+	Sandbox_ETW_PetTherapySkill = "Pet Therapy Husbandry Skill Requirement",
+	Sandbox_ETW_PetTherapyUniqueAnimalsPetted = "Pet Therapy Unique Animals Petted",
+	Sandbox_ETW_PetTherapyUniqueAnimalsPetted_tooltip = "How many different animals you have to pet to qualify for gaining Pet Therapy",
+	Sandbox_ETW_PetTherapyMoodBoostMultiplier = "Pet Therapy Mood Boost Multiplier",
+	Sandbox_ETW_PetTherapyMoodBoostMultiplier_tooltip = "Multiplier to Pet Therapy mood boost. By default, petting decreases Panic, Stress, Boredom and Unhappiness by 1%. Setting this to, for example, 4 would make it so decrease is 1% * 4 = 4%",
+	Sandbox_ETW_PetTherapyMinutesBetweenPets = "Pet Therapy time between mood boost",
+	Sandbox_ETW_PetTherapyMinutesBetweenPets_tooltip = "Time in minutes that players have to wait since last petting action that gave mood boost for new boost to be applied. Petting animals in this time window will not give mood boost but it will also not reset the timer, so you don't have to manually keep track when can you pet again.",
+
+	Sandbox_ETW_PolearmFighter = "Polearm Fighter",
+	Sandbox_ETW_PolearmFighterSkill = "Polearm Fighter Spear Skill requirement",
+	Sandbox_ETW_PolearmFighterKills = "Polearm Fighter Spear Kills requirement",
 
 	Sandbox_ETW_RainSystem = "Rain System",
 	Sandbox_ETW_RainSystemCounter = "Rain System Counter",
@@ -282,10 +295,6 @@ Sandbox_EN = {
 	Sandbox_ETW_SmokingAddictionDecay_tooltip = "Determines how fast your addiction decays",
 	Sandbox_ETW_SmokingAddictionMultiplier = "Smoker Addiction Increase Multiplier",
 	Sandbox_ETW_SmokingAddictionMultiplier_tooltip = "Determines how fast your addiction increases",
-
-	Sandbox_ETW_Sojutsu = "Sojutsu Martial Artist",
-	Sandbox_ETW_SojutsuSkill = "Sojutsu Martial Artist Spear Skill requirement",
-	Sandbox_ETW_SojutsuKills = "Sojutsu Martial Artist Spear Kills requirement",
 
 	Sandbox_ETW_StickFighter = "Stick Fighter",
 	Sandbox_ETW_StickFighterSkill = "Stick Fighter Short Blunt Skill requirement",

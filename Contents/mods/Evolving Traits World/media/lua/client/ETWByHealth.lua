@@ -14,8 +14,8 @@ local debug = function() return EvolvingTraitsWorld.settings.GatherDebug end;
 ---@return boolean
 local detailedDebug = function() return EvolvingTraitsWorld.settings.GatherDetailedDebug end;
 
----Function responsible for managing Immune traits
-local function immuneSystemTraits()
+---Function responsible for managing Immunity traits
+local function immunitySystemTraits()
 	local player = getPlayer();
 	local bodyDamage = player:getBodyDamage();
 	local coldStrength = bodyDamage:getColdStrength() / 100;
@@ -23,7 +23,7 @@ local function immuneSystemTraits()
 	local modData = ETWCommonFunctions.getETWModData(player);
 	if coldStrength > 0 or infectionLevel > 0 then
 		modData.ImmunitySystemCounter = modData.ImmunitySystemCounter + coldStrength + infectionLevel * SBvars.ImmunitySystemInfectionMultiplier;
-		if detailedDebug() then print("ETW Logger | immuneSystemTraits(): modData.ImmunitySystemCounter = " .. modData.ImmunitySystemCounter) end;
+		if detailedDebug() then print("ETW Logger | immunitySystemTraits(): modData.ImmunitySystemCounter = " .. modData.ImmunitySystemCounter) end;
 		if player:HasTrait("ProneToIllness") and modData.ImmunitySystemCounter >= SBvars.ImmunitySystemCounter / 2 and SBvars.TraitsLockSystemCanLoseNegative then
 			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("ProneToIllness") then
 				if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringRemove") .. getText("UI_trait_pronetoillness"), true, HaloTextHelper.getColorGreen()) end;
@@ -43,7 +43,7 @@ local function immuneSystemTraits()
 				player:getTraits():add("Resilient");
 				if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_resilient"), true, HaloTextHelper.getColorGreen()) end;
 				ETWCommonFunctions.traitSound(player);
-				Events.EveryOneMinute.Remove(immuneSystemTraits);
+				Events.EveryOneMinute.Remove(immunitySystemTraits);
 			end
 		end
 	end
@@ -328,9 +328,9 @@ local noTraitsLock = function() return (SBvars.TraitsLockSystemCanGainNegative o
 ---@param playerIndex number
 ---@param player IsoPlayer
 local function initializeEventsETW(playerIndex, player)
-	Events.EveryOneMinute.Remove(immuneSystemTraits);
-	if ETWCommonLogicChecks.ImmuneSystemShouldExecute() then
-		Events.EveryOneMinute.Add(immuneSystemTraits);
+	Events.EveryOneMinute.Remove(immunitySystemTraits);
+	if ETWCommonLogicChecks.ImmunitySystemShouldExecute() then
+		Events.EveryOneMinute.Add(immunitySystemTraits);
 	end
 	Events.EveryOneMinute.Remove(foodSicknessTraitsETW);
 	if ETWCommonLogicChecks.FoodSicknessSystemShouldExecute() then
@@ -353,7 +353,7 @@ end
 ---Function responsible for clearing events
 ---@param character IsoPlayer
 local function clearEventsETW(character)
-	Events.EveryOneMinute.Remove(immuneSystemTraits);
+	Events.EveryOneMinute.Remove(immunitySystemTraits);
 	Events.EveryOneMinute.Remove(foodSicknessTraitsETW);
 	Events.EveryTenMinutes.Remove(weightSystemETW);
 	Events.EveryTenMinutes.Remove(painToleranceTraitETW);

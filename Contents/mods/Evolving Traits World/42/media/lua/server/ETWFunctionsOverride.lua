@@ -16,14 +16,24 @@ local SBvars = SandboxVars.EvolvingTraitsWorld;
 
 local modOptions;
 
+if not isClient() and not isServer() then
+	---Function responsible for setting up mod options on character load
+	---@param playerIndex number
+	---@param player IsoPlayer
+	local function initializeModOptions(playerIndex, player)
+		modOptions = PZAPI.ModOptions:getOptions("ETWModOptions");
+	end
+
+	Events.OnCreatePlayer.Remove(initializeModOptions);
+	Events.OnCreatePlayer.Add(initializeModOptions);
+end
+
 ---@return boolean
-local notification = function() return modOptions:getOption("EnableNotifications"):getValue() end;
+local notification = function() return modOptions:getOption("EnableNotifications"):getValue() end
 ---@return boolean
-local delayedNotification = function() return modOptions:getOption("EnableDelayedNotifications"):getValue() end;
+local delayedNotification = function() return modOptions:getOption("EnableDelayedNotifications"):getValue() end
 ---@return boolean
-local debug = function() return modOptions:getOption("GatherDebug"):getValue() end;
----@return boolean
-local detailedDebug = function() return modOptions:getOption("GatherDetailedDebug"):getValue() end;
+local detailedDebug = function() return modOptions:getOption("GatherDetailedDebug"):getValue() end
 
 local original_OnEat_Cigarettes = OnEat_Cigarettes;
 ---Overwriting OnEat_Cigarettes here to insert ETW logic catching player smoking
@@ -33,11 +43,11 @@ local original_OnEat_Cigarettes = OnEat_Cigarettes;
 function OnEat_Cigarettes(food, character, percent)
 	if not isServer() then
 		modOptions = PZAPI.ModOptions:getOptions("ETWModOptions");
-		if detailedDebug() then print("ETW Logger | OnEat_Cigarettes(): detected smoking") end;
+		if detailedDebug() then print("ETW Logger | OnEat_Cigarettes(): detected smoking") end
 		local modData = character:getModData().EvolvingTraitsWorld;
 		local smokerModData = modData.SmokeSystem; -- SmokingAddiction MinutesSinceLastSmoke
 		local timeSinceLastSmoke = character:getTimeSinceLastSmoke() * 60;
-		if detailedDebug() then print("ETW Logger | OnEat_Cigarettes(): timeSinceLastSmoke: " .. timeSinceLastSmoke .. ", modData.MinutesSinceLastSmoke: " .. smokerModData.MinutesSinceLastSmoke) end;
+		if detailedDebug() then print("ETW Logger | OnEat_Cigarettes(): timeSinceLastSmoke: " .. timeSinceLastSmoke .. ", modData.MinutesSinceLastSmoke: " .. smokerModData.MinutesSinceLastSmoke) end
 		local stress = character:getStats():getStress(); -- stress is 0-1, may be higher with stress from cigarettes
 		local panic = character:getStats():getPanic(); -- 0-100
 		local addictionGain = SBvars.SmokingAddictionMultiplier * (1 + stress) * (1 + panic / 100) * 1000 / (math.max(timeSinceLastSmoke, smokerModData.MinutesSinceLastSmoke) + 100);
@@ -45,7 +55,7 @@ function OnEat_Cigarettes(food, character, percent)
 			addictionGain = addictionGain * SBvars.AffinitySystemGainMultiplier;
 		end
 		smokerModData.SmokingAddiction = math.min(SBvars.SmokerCounter * 2, smokerModData.SmokingAddiction + addictionGain);
-		if debug() then print("ETW Logger | OnEat_Cigarettes(): addictionGain: " .. addictionGain .. ", modData.SmokingAddiction: " .. smokerModData.SmokingAddiction) end;
+		if detailedDebug() then print("ETW Logger | OnEat_Cigarettes(): addictionGain: " .. addictionGain .. ", modData.SmokingAddiction: " .. smokerModData.SmokingAddiction) end
 		smokerModData.MinutesSinceLastSmoke = 0;
 	end
 	original_OnEat_Cigarettes(food, character, percent);
@@ -63,9 +73,9 @@ function Recipe.OnCreate.RipClothing(craftRecipeData, character)
 			local item = items:get(0)
 			modOptions = PZAPI.ModOptions:getOptions("ETWModOptions");
 			---@type DebugAndNotificationArgs
-			local DebugAndNotificationArgs = {debug = debug(), detailedDebug = detailedDebug(), notification = notification(), delayedNotification = delayedNotification()};
+			local DebugAndNotificationArgs = {detailedDebug = detailedDebug(), notification = notification(), delayedNotification = delayedNotification()};
 			---@cast item Clothing
-			if detailedDebug() then print("ETW Logger | Recipe.OnCreate.RipClothing() item: " .. item:getName()) end;
+			if detailedDebug() then print("ETW Logger | Recipe.OnCreate.RipClothing() item: " .. item:getName()) end
 			ETWCombinedTraitChecks.addClothingToUniqueRippedClothingList(character, item, DebugAndNotificationArgs);
 		end
 	end
@@ -107,8 +117,8 @@ function CraftRecipeCode.GenericFixer(craftRecipeData, player, factor, item, ski
 	local modData = ETWCommonFunctions.getETWModData(player);
 	sendClientCommand(player, 'ETW', 'debugInfoRequest', args);
 	---@type DebugAndNotificationArgs
-	local DebugAndNotificationArgs = {debug = debug(), detailedDebug = detailedDebug(), notification = notification(), delayedNotification = delayedNotification()};
-	if DebugAndNotificationArgs.detailedDebug then print("ETW Logger | CraftRecipeCode.GenericFixer(): caught") end;
+	local DebugAndNotificationArgs = {detailedDebug = detailedDebug(), notification = notification(), delayedNotification = delayedNotification()};
+	if DebugAndNotificationArgs.detailedDebug then print("ETW Logger | CraftRecipeCode.GenericFixer(): caught") end
 
 	local conditionBefore = item:getCondition();
 
@@ -119,12 +129,12 @@ function CraftRecipeCode.GenericFixer(craftRecipeData, player, factor, item, ski
 	local bodyWorkEnthusiastShouldExecute = ETWCommonLogicChecks.BodyWorkEnthusiastShouldExecute();
 	if conditionAfter > conditionBefore and isVehiclePart(craftRecipeData, item, skill) and (mechanicsShouldExecute or bodyWorkEnthusiastShouldExecute) then
 		modData.VehiclePartRepairs = modData.VehiclePartRepairs + (conditionAfter - conditionBefore);
-		if detailedDebug() then print("ETW Logger | ISFixAction.perform(): car part " .. conditionBefore .. "->" .. conditionAfter .. " VehiclePartRepairs=" .. modData.VehiclePartRepairs) end;
-		if bodyWorkEnthusiastShouldExecute then ETWCombinedTraitChecks.bodyworkEnthusiastCheck(DebugAndNotificationArgs) end;
-		if mechanicsShouldExecute then ETWCombinedTraitChecks.mechanicsCheck(DebugAndNotificationArgs) end;
+		if detailedDebug() then print("ETW Logger | ISFixAction.perform(): car part " .. conditionBefore .. "->" .. conditionAfter .. " VehiclePartRepairs=" .. modData.VehiclePartRepairs) end
+		if bodyWorkEnthusiastShouldExecute then ETWCombinedTraitChecks.bodyworkEnthusiastCheck(DebugAndNotificationArgs) end
+		if mechanicsShouldExecute then ETWCombinedTraitChecks.mechanicsCheck(DebugAndNotificationArgs) end
 	end
 	if player:HasTrait("RestorationExpert") then
-		if detailedDebug() then print("ETW Logger | ISFixAction.perform(): RestorationExpert present") end;
+		if detailedDebug() then print("ETW Logger | ISFixAction.perform(): RestorationExpert present") end
 		local chance = SBvars.RestorationExpertChance - 1;
 		if ZombRand(100) <= chance then
 			item:setHaveBeenRepaired(item:getHaveBeenRepaired() - 1);
@@ -138,26 +148,24 @@ end
 ---@param args
 function Commands.checkEngineCondition(player, args)
 	---@return boolean
-	notification = function() return args.notification end;
+	notification = function() return args.notification end
 	---@return boolean
-	delayedNotification = function() return args.delayedNotification end;
+	delayedNotification = function() return args.delayedNotification end
 	---@return boolean
-	debug = function() return args.debug end;
-	---@return boolean
-	detailedDebug = function() return args.detailedDebug end;
+	detailedDebug = function() return args.detailedDebug end
 	-- local vehicle = getVehicleById(args.vehicleID)
 	-- local part = vehicle:getPartById("Engine")
 	-- if not part then return; end
 	-- local condition = part:getCondition();
 	-- local repairedPercentage = condition - args.conditionBefore
-	-- if args.DebugAndNotificationArgs.detailedDebug then print("ETW Logger | Commands.checkEngineCondition(): args.condition: " .. condition) end;
+	-- if args.DebugAndNotificationArgs.detailedDebug then print("ETW Logger | Commands.checkEngineCondition(): args.condition: " .. condition) end
 	-- if not isClient() and not isServer() then
 	-- 	local modData = player:getModData().EvolvingTraitsWorld;
 	-- 	---@cast modData EvolvingTraitsWorldModData
 	-- 	modData.VehiclePartRepairs = modData.VehiclePartRepairs + repairedPercentage;
-	-- 	if args.DebugAndNotificationArgs.detailedDebug then print("ETW Logger | Commands.checkEngineCondition(): modData.VehiclePartRepairs: " .. modData.VehiclePartRepairs) end;
-	-- 	if ETWCommonLogicChecks.BodyWorkEnthusiastShouldExecute() then ETWCombinedTraitChecks.bodyworkEnthusiastCheck(args.DebugAndNotificationArgs) end;
-	-- 	if ETWCommonLogicChecks.MechanicsShouldExecute() then ETWCombinedTraitChecks.mechanicsCheck(args.DebugAndNotificationArgs) end;
+	-- 	if args.DebugAndNotificationArgs.detailedDebug then print("ETW Logger | Commands.checkEngineCondition(): modData.VehiclePartRepairs: " .. modData.VehiclePartRepairs) end
+	-- 	if ETWCommonLogicChecks.BodyWorkEnthusiastShouldExecute() then ETWCombinedTraitChecks.bodyworkEnthusiastCheck(args.DebugAndNotificationArgs) end
+	-- 	if ETWCommonLogicChecks.MechanicsShouldExecute() then ETWCombinedTraitChecks.mechanicsCheck(args.DebugAndNotificationArgs) end
 	-- end
 end
 
@@ -174,16 +182,3 @@ Commands.OnClientCommand = function(module, command, player, args)
 end
 
 Events.OnClientCommand.Add(Commands.OnClientCommand)
-
-
-if not isClient() and not isServer() then
-	---Function responsible for setting up events
-	---@param playerIndex number
-	---@param player IsoPlayer
-	local function initializeModOptions(playerIndex, player)
-		modOptions = PZAPI.ModOptions:getOptions("ETWModOptions");
-	end
-
-	Events.OnCreatePlayer.Remove(initializeModOptions);
-	Events.OnCreatePlayer.Add(initializeModOptions);
-end;

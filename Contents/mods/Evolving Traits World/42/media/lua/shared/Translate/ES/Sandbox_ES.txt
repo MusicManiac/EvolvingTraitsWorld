@@ -43,11 +43,9 @@ Sandbox_ES = {
 	Sandbox_ETW_BaseballPlayerKills = "Jugador de beisbol Requisito de asesinatos con Arma larga contundente",
 
 	Sandbox_ETW_Bloodlust = "Sed de sangre",
-	Sandbox_ETW_Bloodlust_tooltip = "---Comprensión general---<br>Esta ventaja le permite obtener un beneficio al llenar y mantener un medidor de sed de sangre. El medidor de sed de sangre tiene un límite a las 72 horas y se puede llenar matando zombis dentro de una cierta distancia. Cuanto más cerca estén los zombis, más rápido se llenará el medidor. Cuando estés por encima de la mitad del medidor, cada hora te dará progreso hacia el beneficio de sed de sangre, cuando esté por debajo, eliminará el progreso. El medidor de sed de sangre decae naturalmente en 1 cada hora.<br>---Descripción técnica, no leas esto si no quieres jugar tan en serio---<br>Para llenar el medidor de sed de sangre, debes matar zombis dentro de una cierta distancia de ti. La cantidad exacta que llena el medidor está determinada por una fórmula que tiene en cuenta la distancia de los zombis y un multiplicador. La fórmula precisa es: math.min(1 / distancia, 1) * multiplicador. Cada hora, el contador se reduce una hora. Si tu medidor de sed de sangre está por encima de la mitad, cada hora ganarás un 10% como progreso para obtener el beneficio de sed de sangre. Si estás por debajo del 50%, perderás 3.6-0.1*BloodlustBar, por lo que si estás ligeramente por debajo del 50 %, perderás alrededor de 1.8, pero si estás en el 0%, perderás 3.6 de tu progreso. El progreso tiene un límite de 2x del valor de progreso de Bloodlust",
 	Sandbox_ETW_BloodlustMeterFillMultiplier = "Multiplicador de llenado del medidor de sed de sangre",
 	Sandbox_ETW_BloodlustMeterFillMultiplier_tooltip = "Qué tan rápido llenas tu medidor de sed de sangre",
 	Sandbox_ETW_BloodlustProgress = "Progreso de la sed de sangre",
-	Sandbox_ETW_BloodlustProgress_tooltip = "Cuánto progreso total de sed de sangre necesitas para obtener el rasgo. Mantener lleno tu medidor de sed de sangre te otorgaría 3.6 puntos en 1 hora. Ten en cuenta que también perderás la sed de sangre si este medidor alguna vez cae por debajo del 50%. Entonces, si lo estableces bajo, será fácil ganarlo, pero también será fácil perderlo. El progreso tiene un límite de 2 veces el valor de progreso de Bloodlust.",
 	Sandbox_ETW_BloodlustMoodle = "Habilitar estado de Sed de sangre",
 	Sandbox_ETW_BloodlustMoodle_tooltip = "Si esta opción está deshabilitada, el estado no aparecerá. Para un jugador, déjalo activado y cambia los estados de ánimo que ves con Mod Options. Si se trata de una configuración de servidor, los jugadores no podrán habilitar el estado del lado del cliente.",
 	Sandbox_ETW_BloodlustMoodleVisibilityHours = "Horas de visibilidad del estado de Sed de Sangre",
@@ -64,7 +62,6 @@ Sandbox_ES = {
 
 	Sandbox_ETW_BraverySystem = "Sistema de valentía",
 	Sandbox_ETW_BraverySystemKills = "Asesinatos para maximizar las ventajas de Valentía",
-	Sandbox_ETW_BraverySystemKills_tooltip = "Aquí configuras cuántas muertes necesitas para llegar al MÁXIMO de tu sistema de valentía. Las muertes cuerpo a cuerpo cuentan dos veces para el progreso. La progresión es la siguiente: Cobarde -> Miedo a la sangre -> Pacifista -> Adicto a la adrenalina -> Valiente -> Insensible<br> Los montos para llegar a cada etapa son los siguientes:<br>Cobarde: 10% del máximo de muertes<br>Miedo a la sangre: 20 % del máximo de muertes<br>Pacifista: 30 % del máximo de muertes<br>Adicto a la adrenalina: 40 % del máximo de muertes<br>Valiente: 60 % del máximo de muertes<br>Insensible: 100 % del máximo de muertes<br>Ejemplo: El máximo de muertes se establece en 1000. Empiezas con Cobarde. Necesitas 100 muertes para eliminarlo. Si consigues 50 muertes cuerpo a cuerpo, se eliminará. Lo mismo es cierto si obtienes 40 muertes cuerpo a cuerpo (x2 = 80 muertes por contraataque) y 20 muertes con armas de fuego",
 	Sandbox_ETW_BraverySystemRemovesOtherFearPerks = "El sistema de Valentia remueve otros rasgos relacionados con el miedo",
 	Sandbox_ETW_BraverySystemRemovesOtherFearPerks_tooltip = "Si es habilitado, tener insensibilidad mediante el sistema de Valentia tambien eliminara otros rasgos como Pluviofobia, Homiclofobia, Agorafobia, Claustrofobia y previene ganar esos rasgos.",
 
@@ -80,8 +77,7 @@ Sandbox_ES = {
 
 	Sandbox_ETW_CatEyes = "Ojos de gato",
 	Sandbox_ETW_CatEyesCounter = "Contador de ojos de gato",
-	Sandbox_ETW_CatEyesCounter_tooltip = "---Comprensión general---<br>Este beneficio te permite ganar puntos al ver y observar cuadrados dentro de un cierto radio de tu personaje. La cantidad de puntos que ganas está influenciada por factores como la hora del día, la oscuridad del cuadrado y si tú y el cuadrado están adentro o afuera. Cuantos más cuadrados veas y más oscuros sean, más puntos ganarás.<br>---Descripción técnica, no leas esto si no quieres jugar tan en serio---<br>Para ganar puntos por este beneficio, debes ver y observar cuadrados dentro de un radio de 30 de tu personaje. La cantidad exacta de puntos que ganas por cada cuadrado está determinada por una fórmula que tiene en cuenta la oscuridad del cuadrado, la hora del día y si tú y el cuadrado están dentro o fuera. La fórmula detallada para calcular los puntos de cada cuadrado es: 0.01 * oscuridad del cuadrado * 2 (si tanto el jugador como el cuadrado están dentro) * hora del día. En promedio, pasar una noche completa al aire libre te otorgará aproximadamente 1100 puntos.",
-
+	
 	Sandbox_ETW_Clumsy = "Torpe",
 	Sandbox_ETW_ClumsySkill = "Requisito de habilidad de Torpe",
 	Sandbox_ETW_ClumsySkill_tooltip = "Sigilo + Pies ligeros",
@@ -123,7 +119,6 @@ Sandbox_ES = {
 
 	Sandbox_ETW_FogSystem = "Sistema de niebla",
 	Sandbox_ETW_FogSystemCounter = "Contador del sistema de niebla",
-	Sandbox_ETW_FogSystemCounter_tooltip = "Obtienes fogIntensity*fogSystemCounterIncreaseMultiplier cada minuto que pasas en la niebla. También pierdes fogIntensity*panic*0.9*FogSystemCounterDecreaseMultiplier al mismo tiempo. Los límites máximo y mínimo del contador son -2*contador y 2*contador. Al estar debajo de -contador, ganas Homiclofobia, al llegar al contador, ganas Homiclofilo. Cuando estás en el medio, no obtienes nada.",
 	Sandbox_ETW_FogSystemCounterIncreaseMultiplier = "Multiplicador de aumento del contador de niebla",
 	Sandbox_ETW_FogSystemCounterIncreaseMultiplier_tooltip = "Ajusta qué tan rápido aumenta tu contador, detalles en la información sobre herramientas del contador del sistema de niebla",
 	Sandbox_ETW_FogSystemCounterDecreaseMultiplier = "Multiplicador de disminución del contador de niebla",
@@ -131,8 +126,7 @@ Sandbox_ES = {
 
 	Sandbox_ETW_FoodSicknessSystem = "Sistema de enfermedades alimentarias",
 	Sandbox_ETW_FoodSicknessSystemCounter = "Contador de enfermedades alimentarias",
-	Sandbox_ETW_FoodSicknessSystemCounter_tooltip = "Cuánta enfermedad alimentaria tienes que acumular para perder/ganar rasgos relacionados con la enfermedad alimentaria, Estómago Débil e Intestino de Hierro. La enfermedad puede estar entre 0 y 1, donde en uno puedes morir. Cada minuto, tu enfermedad actual se agrega al contador, así de simple.",
-
+	
 	Sandbox_ETW_FurnitureAssembler = "Ensamblador de muebles",
 	Sandbox_ETW_FurnitureAssemblerSkill = "Ensamblador de muebles Requisito de habilidad de Carpintería",
 
@@ -204,9 +198,9 @@ Sandbox_ES = {
 	Sandbox_ETW_InventoryTransferSystemWeight = "Contador de peso",
 	Sandbox_ETW_InventoryTransferSystemWeight_tooltip = "Cuánto peso (y objetos) tienes que transferir para ganar/perder rasgos relacionados con la transferencia de objetos: Desordenado, Ordenado, Dedos gordos, Hábil, Dedos de mantequilla (More Traits)<br>Desordenado: 66 % del contador de peso y 33 % de los artículos contador<br>Ordenado: 100 % del contador de peso y 66 % del contador de elementos<br>Dedos gordos: 33 % del contador de peso y 66 % del contador de elementos<br>Hábil: 66 % del contador de peso y 100 % del contador de elementos .<br>Dedos de mantequilla (More Traits): 150% del contador de Peso y 150% del contador de Objetos.",
 
-	Sandbox_ETW_Kenshi = "Kenshi",
-	Sandbox_ETW_KenshiSkill = "Kenshi Requisito de habilidad de Arma de hoja larga",
-	Sandbox_ETW_KenshiKills = "Kenshi Requisito de asesinatos con Arma de hoja larga",
+	Sandbox_ETW_BladeEnthusiast = "BladeEnthusiast",
+	Sandbox_ETW_BladeEnthusiastSkill = "BladeEnthusiast Requisito de habilidad de Arma de hoja larga",
+	Sandbox_ETW_BladeEnthusiastKills = "BladeEnthusiast Requisito de asesinatos con Arma de hoja larga",
 
 	Sandbox_ETW_KnifeFighter = "Luchador de cuchillos",
 	Sandbox_ETW_KnifeFighterSkill = "Luchador de cuchillos Requisito de habilidad de Arma de hoja corta",
@@ -240,7 +234,6 @@ Sandbox_ES = {
 
 	Sandbox_ETW_RainSystem = "Sistema de lluvia",
 	Sandbox_ETW_RainSystemCounter = "Contador de Sistema de lluvia",
-	Sandbox_ETW_RainSystemCounter_tooltip = "Obtienes 1*rainIntensity cada minuto que pasas bajo la lluvia. Si tienes más del 25% de pánico, perderás 1*rainIntensity*panicPercentage*RainSystemDecreaseMultiplier. Los límites máximo y mínimo del contador son -2*contador y 2*contador. Al estar debajo del contador, ganas Pluviofobia, al llegar al contador, ganas Pluviofilo. Cuando estás en el medio, no obtienes nada.",
 	Sandbox_ETW_RainSystemCounterIncreaseMultiplier = "Multiplicador de disminución del Sistema de lluvia",
 	Sandbox_ETW_RainSystemCounterIncreaseMultiplier_tooltip = "Define qué tan rápido o lento disminuye su Contador del sistema de lluvia, explicado en la información sobre herramientas del Contador del sistema de lluvia",
 	Sandbox_ETW_PluviophileMultiplier = "Multiplicador de efecto de Pluviofilo",
@@ -274,10 +267,6 @@ Sandbox_ES = {
 	Sandbox_ETW_SmokingAddictionDecay_tooltip = "Qué tan rápido decae tu adicción",
 	Sandbox_ETW_SmokingAddictionMultiplier = "Fumador Multiplicador de aumento de adicción",
 	Sandbox_ETW_SmokingAddictionMultiplier_tooltip = "Qué tan rápido está aumentando su adicción",
-
-	Sandbox_ETW_Sojutsu = "Artista marcial de sojutsu",
-	Sandbox_ETW_SojutsuSkill = "Artista marcial de sojutsu Requisito de habilidad de Lanza",
-	Sandbox_ETW_SojutsuKills = "Artista marcial de sojutsu Requisito de asesinatos con Lanza",
 
 	Sandbox_ETW_StickFighter = "Luchador de palo",
 	Sandbox_ETW_StickFighterSkill = "Luchador de palo Requisito de habilidad de Arma corta contundente",

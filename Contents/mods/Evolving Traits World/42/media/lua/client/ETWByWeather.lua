@@ -9,18 +9,26 @@ local SBvars = SandboxVars.EvolvingTraitsWorld;
 
 local modOptions;
 
+---Function responsible for setting up mod options on character load
+---@param playerIndex number
+---@param player IsoPlayer
+local function initializeModOptions(playerIndex, player)
+	modOptions = PZAPI.ModOptions:getOptions("ETWModOptions");
+end
+
+Events.OnCreatePlayer.Remove(initializeModOptions);
+Events.OnCreatePlayer.Add(initializeModOptions);
+
 ---@return boolean
-local notification = function() return modOptions:getOption("EnableNotifications"):getValue() end;
+local notification = function() return modOptions:getOption("EnableNotifications"):getValue() end
 ---@return boolean
-local delayedNotification = function() return modOptions:getOption("EnableDelayedNotifications"):getValue() end;
+local delayedNotification = function() return modOptions:getOption("EnableDelayedNotifications"):getValue() end
 ---@return boolean
-local debug = function() return modOptions:getOption("GatherDebug"):getValue() end;
----@return boolean
-local detailedDebug = function() return modOptions:getOption("GatherDetailedDebug"):getValue() end;
+local detailedDebug = function() return modOptions:getOption("GatherDetailedDebug"):getValue() end
 
 ---@param player IsoPlayer
 ---@return boolean
-local desensitized = function(player) return player:HasTrait("Desensitized") and SBvars.BraverySystemRemovesOtherFearPerks end;
+local desensitized = function(player) return player:HasTrait("Desensitized") and SBvars.BraverySystemRemovesOtherFearPerks end
 
 ---Function responsible for managing Rain System traits
 ---@param isKill boolean
@@ -47,26 +55,26 @@ local function rainTraits(isKill)
 		finalRainCounter = math.min(upperBoundary, finalRainCounter);
 		finalRainCounter = math.max(lowerBoundary, finalRainCounter);
 		modData.RainCounter = finalRainCounter;
-		if debug() then
-			if isKill then print("ETW Logger | rainTraits(): was triggered by a kill") end;
+		if detailedDebug() then
+			if isKill then print("ETW Logger | rainTraits(): was triggered by a kill") end
 			print("ETW Logger | rainTraits(): modData.RainCounter=" .. modData.RainCounter);
 		end
 		if not player:HasTrait("Pluviophobia") and modData.RainCounter <= -SBCounter and not desensitized(player) and SBvars.TraitsLockSystemCanGainNegative then
 			player:getTraits():add("Pluviophobia");
 			ETWCommonFunctions.traitSound(player);
-			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Pluviophobia"), true, HaloTextHelper.getColorRed()) end;
+			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Pluviophobia"), true, HaloTextHelper.getColorRed()) end
 		elseif player:HasTrait("Pluviophobia") and modData.RainCounter > -SBCounter and SBvars.TraitsLockSystemCanLoseNegative then
 			player:getTraits():remove("Pluviophobia");
 			ETWCommonFunctions.traitSound(player);
-			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Pluviophobia"), false, HaloTextHelper.getColorGreen()) end;
+			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Pluviophobia"), false, HaloTextHelper.getColorGreen()) end
 		elseif player:HasTrait("Pluviophile") and modData.RainCounter <= SBCounter and SBvars.TraitsLockSystemCanLosePositive then
 			player:getTraits():remove("Pluviophile");
 			ETWCommonFunctions.traitSound(player);
-			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Pluviophile"), false, HaloTextHelper.getColorRed()) end;
+			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Pluviophile"), false, HaloTextHelper.getColorRed()) end
 		elseif not player:HasTrait("Pluviophile") and modData.RainCounter > SBCounter and SBvars.TraitsLockSystemCanGainPositive then
 			player:getTraits():add("Pluviophile");
 			ETWCommonFunctions.traitSound(player);
-			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Pluviophile"), true, HaloTextHelper.getColorGreen()) end;
+			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Pluviophile"), true, HaloTextHelper.getColorGreen()) end
 		end
 	end
 end
@@ -93,26 +101,26 @@ local function fogTraits(isKill)
 		finalFogCounter = math.max(finalFogCounter, lowerBoundary);
 		finalFogCounter = math.min(finalFogCounter, upperBoundary);
 		modData.FogCounter = finalFogCounter;
-		if debug() then
-			if isKill then print("ETW Logger | fogTraits(): was triggered by a kill") end;
+		if detailedDebug() then
+			if isKill then print("ETW Logger | fogTraits(): was triggered by a kill") end
 			print("ETW Logger | fogTraits(): modData.FogCounter=" .. modData.FogCounter);
 		end
 		if not player:HasTrait("Homichlophobia") and modData.FogCounter <= -SBCounter and not desensitized(player) and SBvars.TraitsLockSystemCanGainNegative then
 			player:getTraits():add("Homichlophobia");
 			ETWCommonFunctions.traitSound(player);
-			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Homichlophobia"), true, HaloTextHelper.getColorRed()) end;
+			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Homichlophobia"), true, HaloTextHelper.getColorRed()) end
 		elseif player:HasTrait("Homichlophobia") and modData.FogCounter > -SBCounter and SBvars.TraitsLockSystemCanLoseNegative then
 			player:getTraits():remove("Homichlophobia");
 			ETWCommonFunctions.traitSound(player);
-			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Homichlophobia"), false, HaloTextHelper.getColorGreen()) end;
+			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Homichlophobia"), false, HaloTextHelper.getColorGreen()) end
 		elseif player:HasTrait("Homichlophile") and modData.FogCounter <= SBCounter and SBvars.TraitsLockSystemCanLosePositive then
 			player:getTraits():remove("Homichlophile");
 			ETWCommonFunctions.traitSound(player);
-			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Homichlophile"), false, HaloTextHelper.getColorRed()) end;
+			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Homichlophile"), false, HaloTextHelper.getColorRed()) end
 		elseif not player:HasTrait("Homichlophile") and modData.FogCounter > SBCounter and SBvars.TraitsLockSystemCanGainPositive then
 			player:getTraits():add("Homichlophile");
 			ETWCommonFunctions.traitSound(player);
-			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Homichlophile"), true, HaloTextHelper.getColorGreen()) end;
+			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Homichlophile"), true, HaloTextHelper.getColorGreen()) end
 		end
 	end
 end
@@ -165,20 +173,10 @@ end
 local function clearEventsETW(character)
 	Events.EveryOneMinute.Remove(rainTraits);
 	Events.EveryOneMinute.Remove(fogTraits);
-	if detailedDebug() then print("ETW Logger | System: clearEventsETW in ETWByWeather.lua") end;
+	if detailedDebug() then print("ETW Logger | System: clearEventsETW in ETWByWeather.lua") end
 end
 
 Events.OnCreatePlayer.Remove(initializeEventsETW);
 Events.OnCreatePlayer.Add(initializeEventsETW);
 Events.OnPlayerDeath.Remove(clearEventsETW);
 Events.OnPlayerDeath.Add(clearEventsETW);
-
----Function responsible for setting up events
----@param playerIndex number
----@param player IsoPlayer
-local function initializeModOptions(playerIndex, player)
-	modOptions = PZAPI.ModOptions:getOptions("ETWModOptions");
-end
-
-Events.OnCreatePlayer.Remove(initializeModOptions);
-Events.OnCreatePlayer.Add(initializeModOptions);

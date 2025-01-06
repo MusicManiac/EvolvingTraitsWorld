@@ -216,9 +216,9 @@ Sandbox_DE = {
 	Sandbox_ETW_InventoryTransferSystemWeight = "Gewichtszähler",
 	Sandbox_ETW_InventoryTransferSystemWeight_tooltip = "Wie viel Gewicht (und Objekte) man transferieren muss, um Eigenschaften in Bezug auf das Transferieren von Objekten zu gewinnen/zu verlieren: Desorganisiert, Organisiert, Ungeschickt, Geschickt, Butterfinger (Weitere Eigenschaften)<br>Desorganisiert: 66% des Gewichtszählers und 33% des Objektzählers<br>Organisiert: 100% des Gewichtszählers und 66% des Objektzählers<br>Alle Daumen: 33% des Gewichtszählers und 66% des Objektzählers<br>Geschicklichkeit: 66% des Gewichtszählers und 100% des Objektzählers.<br>Butterfinger (Weitere Eigenschaften): 150% des Gewichtszählers und 150% des Gegenstandszählers.",
 
-	Sandbox_ETW_Kenshi = "Kenshi",
-	Sandbox_ETW_KenshiSkill = "Erforderliche Qualifikationen für Kenshi Lange Klinge",
-	Sandbox_ETW_KenshiKills = "Erforderliche Lange Klinge Tötungen für Kenshi",
+	Sandbox_ETW_BladeEnthusiast = "BladeEnthusiast",
+	Sandbox_ETW_BladeEnthusiastSkill = "Erforderliche Qualifikationen für BladeEnthusiast Lange Klinge",
+	Sandbox_ETW_BladeEnthusiastKills = "Erforderliche Lange Klinge Tötungen für BladeEnthusiast",
 
 	Sandbox_ETW_KnifeFighter = "Messerkämpfer",
 	Sandbox_ETW_KnifeFighterSkill = "Erforderliche Qualifikationen für Messerkämpfer Kurze Klinge",
@@ -286,10 +286,6 @@ Sandbox_DE = {
 	Sandbox_ETW_SlowLearner = "Langsamer Lerner",
 	Sandbox_ETW_SlowLearnerSkill = "Erforderliche Qualifikationen für Langsamer Lerner",
 	Sandbox_ETW_SlowLearnerSkill_tooltip = "Instandhaltung + Schreinerei + Kochen + Landwirtschaft + Erste Hilfe + Elektrotechnik + Metallbearbeitung + Mechanik + Schneiderei",
-
-	Sandbox_ETW_Sojutsu = "Sojutsu-Kampfsportler",
-	Sandbox_ETW_SojutsuSkill = "Erforderliche Qualifikationen für Sojutsu-Kampfsportler",
-	Sandbox_ETW_SojutsuKills = "Erforderliche Speer Tötungen für Sojutsu-Kampfsportler",
 
 	Sandbox_ETW_StickFighter = "Stockkämpfer",
 	Sandbox_ETW_StickFighterSkill = "Erforderliche Qualifikationen für Stockkämpfer",

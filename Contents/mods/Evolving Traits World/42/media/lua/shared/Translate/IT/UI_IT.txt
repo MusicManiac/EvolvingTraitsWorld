@@ -23,8 +23,6 @@ UI_IT = {
 	UI_trait_HomichlophileDesc = "Ami la nebbia, qualcosa in essa ti fa sentire a tuo agio. Diventi più calmo mentre sei in giro col tempo nebbioso. Perdi lentamente lo stress e il panico a seconda dell'intensità della nebbia.",
 	UI_trait_Homichlophobia = "Nebulofobia",
 	UI_trait_HomichlophobiaDesc = "Detesti la nebbia, qualcosa in essa ti fa sentire allarmato e stressato. Ti senti a disagio mentre sei in giro col tempo nebbioso. Guadagni lentamente stress e panico a seconda dell'intensità della nebbia (limitata al 50%).",
-	UI_trait_Kenshi = "Kenshi",
-	UI_trait_KenshiDesc = "Ki-ken-tai-ichi. Perseguirò l'unità di Mente, Corpo e Lama.",
 	UI_trait_KnifeFighter = "Combattente da Coltello",
 	UI_trait_KnifeFighterDesc = "Sai bene come si combatte con un coltello.",
 	UI_trait_LightStep = "Piede Leggero",
@@ -39,13 +37,10 @@ UI_IT = {
 	UI_trait_PluviophobiaDesc = "Detesti la pioggia. Ottieni lentamente infelicità, stress e noia mentre sei fuori in caso di pioggia. L'effetto è dimezzato se sei sotto l'ombrello.<br>You can stand under my umbrella, ella, ella, eh, eh, eh<br>Under my umbrella, ella, ella, eh, eh, eh<br>Under my umbrella, ella, ella, eh, eh, eh<br>Under my umbrella, ella, ella, eh, eh, eh, eh, eh, eh<br>These fancy things will never come in between<br>You're part of my entity, here for infinity<br>When the world has took its part<br>When the world has dealt its cards<br>If the hand is hard, together we'll mend your heart",
 	UI_trait_RestorationExpert = "Esperto di Restauro",
 	UI_trait_RestorationExpertDesc = "Sai come ripristinare i vecchi oggetti in condizioni originarie. Hai la possibilità di non ottenere penalità per riparazioni multiple.<br>+1 Manutenzione",
-	UI_trait_Sojutsu = "Praticante di Sojutsu",
-	UI_trait_SojutsuDesc = "Pratichi il Sojutsu, l'antica arte della lancia.",
+
 	UI_trait_StickFighter = "Combattente da Contundente",
 	UI_trait_StickFighterDesc = "Hai praticato arti marziali che contemplano l'utilizzo del bastone.",
 
-	UI_ETW_Options_GatherDebug = "Raccogliere i dati di debug",
-	UI_ETW_Options_GatherDebug_tooltip = "Abilita la stampa dei Log in console.txt. Utile per scopi di debug, permette anche di trovare dati sui contatori interni. Ctrl+F inserendo 'ETW' Per trovare i Log.",
 	UI_ETW_Options_GatherDetailedDebug = "Raccogli dati dettagliati di debug",
 	UI_ETW_Options_GatherDetailedDebug_tooltip = "Abilita stampe aggiuntive in console.txt. Utile solo per scopi di debug, non mostra dati aggiuntivi sui contatori, utile SOLO per segnalazioni di bug o per cercare di capire cosa c'è che non va. Aggiunge molte informazioni non necessarie in console.txt , quindi riavvia il gioco di tanto in tanto per evitare che diventi troppo grande in modo da non (possibilmente) rallentare il gioco. Ctrl+F per 'ETW' per trovare i logger.",
 	UI_ETW_Options_EnableNotifications = "Abilita le notifiche sui tratti",

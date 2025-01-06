@@ -470,6 +470,24 @@ option EvolvingTraitsWorld.HomichlophobiaMultiplier
 	page = ETWTraitsSettings,
 	translation = ETW_HomichlophobiaMultiplier,
 }
+option EvolvingTraitsWorld.PetTherapyMoodBoostMultiplier
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 5,
+	page = ETWTraitsSettings,
+	translation = ETW_PetTherapyMoodBoostMultiplier,
+}
+option EvolvingTraitsWorld.PetTherapyMinutesBetweenPets
+{
+	type = integer,
+	min = 1,
+	max = 60000,
+	default = 5,
+	page = ETWTraitsSettings,
+	translation = ETW_PetTherapyMinutesBetweenPets,
+}
 option EvolvingTraitsWorld.PainToleranceThreshold
 {
 	type = double,
@@ -825,6 +843,31 @@ option EvolvingTraitsWorld.BaseballPlayerKills
 	page = ETWSimplePerks,
 	translation = ETW_BaseballPlayerKills,
 }
+option EvolvingTraitsWorld.BladeEnthusiast
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_BladeEnthusiast,
+}
+option EvolvingTraitsWorld.BladeEnthusiastSkill
+{
+	type = integer,
+	min = 0,
+	max = 10,
+	default = 5,
+	page = ETWSimplePerks,
+	translation = ETW_BladeEnthusiastSkill,
+}
+option EvolvingTraitsWorld.BladeEnthusiastKills
+{
+	type = integer,
+	min = 0,
+	max = 500000,
+	default = 250,
+	page = ETWSimplePerks,
+	translation = ETW_BladeEnthusiastKills,
+}
 option EvolvingTraitsWorld.BodyworkEnthusiast
 {
 	type = boolean,
@@ -1165,31 +1208,6 @@ option EvolvingTraitsWorld.InconspicuousSkill
 	page = ETWSimplePerks,
 	translation = ETW_InconspicuousSkill,
 }
-option EvolvingTraitsWorld.Kenshi
-{
-	type = boolean,
-	default = true,
-	page = ETWSimplePerks,
-	translation = ETW_Kenshi,
-}
-option EvolvingTraitsWorld.KenshiSkill
-{
-	type = integer,
-	min = 0,
-	max = 10,
-	default = 5,
-	page = ETWSimplePerks,
-	translation = ETW_KenshiSkill,
-}
-option EvolvingTraitsWorld.KenshiKills
-{
-	type = integer,
-	min = 0,
-	max = 500000,
-	default = 250,
-	page = ETWSimplePerks,
-	translation = ETW_KenshiKills,
-}
 option EvolvingTraitsWorld.KnifeFighter
 {
 	type = boolean,
@@ -1263,6 +1281,56 @@ option EvolvingTraitsWorld.PainToleranceCounter
 	page = ETWSimplePerks,
 	translation = ETW_PainToleranceCounter,
 }
+option EvolvingTraitsWorld.PetTherapy
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_PetTherapy,
+}
+option EvolvingTraitsWorld.PetTherapySkill
+{
+	type = integer,
+	min = 0,
+	max = 10,
+	default = 4,
+	page = ETWSimplePerks,
+	translation = ETW_PetTherapySkill,
+}
+option EvolvingTraitsWorld.PetTherapyUniqueAnimalsPetted
+{
+	type = integer,
+	min = 0,
+	max = 50000,
+	default = 50,
+	page = ETWSimplePerks,
+	translation = ETW_PetTherapyUniqueAnimalsPetted,
+}
+option EvolvingTraitsWorld.PolearmFighter
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_PolearmFighter,
+}
+option EvolvingTraitsWorld.PolearmFighterSkill
+{
+	type = integer,
+	min = 0,
+	max = 10,
+	default = 4,
+	page = ETWSimplePerks,
+	translation = ETW_PolearmFighterSkill,
+}
+option EvolvingTraitsWorld.PolearmFighterKills
+{
+	type = integer,
+	min = 0,
+	max = 500000,
+	default = 200,
+	page = ETWSimplePerks,
+	translation = ETW_PolearmFighterKills,
+}
 option EvolvingTraitsWorld.RestorationExpert
 {
 	type = boolean,
@@ -1319,31 +1387,6 @@ option EvolvingTraitsWorld.SewerUniqueClothesRipped
 	default = 50,
 	page = ETWSimplePerks,
 	translation = ETW_SewerUniqueClothesRipped,
-}
-option EvolvingTraitsWorld.Sojutsu
-{
-	type = boolean,
-	default = true,
-	page = ETWSimplePerks,
-	translation = ETW_Sojutsu,
-}
-option EvolvingTraitsWorld.SojutsuSkill
-{
-	type = integer,
-	min = 0,
-	max = 10,
-	default = 4,
-	page = ETWSimplePerks,
-	translation = ETW_SojutsuSkill,
-}
-option EvolvingTraitsWorld.SojutsuKills
-{
-	type = integer,
-	min = 0,
-	max = 500000,
-	default = 200,
-	page = ETWSimplePerks,
-	translation = ETW_SojutsuKills,
 }
 option EvolvingTraitsWorld.StickFighter
 {

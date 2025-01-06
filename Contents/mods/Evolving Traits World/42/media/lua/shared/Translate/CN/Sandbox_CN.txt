@@ -211,9 +211,9 @@ Sandbox_CN = {
 	Sandbox_ETW_InventoryTransferSystemWeight = "物品计重基准",
 	Sandbox_ETW_InventoryTransferSystemWeight_tooltip = "依据你传输的物品总数(及总重)来决定获得/失去相对应特质(杂乱无章/井井有条/笨手笨脚/眼疾手快,奶油手(More Traits模组)<br>杂乱无章: 66% 所设定总重及 33%所设定总数<br>井井有条: 100% 所设定总重及 66%所设定总数<br>笨手笨脚: 33% 所设定总重及 60%所设定总数<br>眼疾手快: 66% 所设定总重及 100%所设定总数<br>奶油手: 150% 所设定总重及 150%所设定总数",
 
-	Sandbox_ETW_Kenshi = "剑士",
-	Sandbox_ETW_KenshiSkill = "剑士:获得特质所需长刀技能等级",
-	Sandbox_ETW_KenshiKills = "剑士:获得特质所需长刀击杀数",
+	Sandbox_ETW_BladeEnthusiast = "剑士",
+	Sandbox_ETW_BladeEnthusiastSkill = "剑士:获得特质所需长刀技能等级",
+	Sandbox_ETW_BladeEnthusiastKills = "剑士:获得特质所需长刀击杀数",
 
 	Sandbox_ETW_KnifeFighter = "刀客",
 	Sandbox_ETW_KnifeFighterSkill = "刀客:获得特质所需短刀技能等级",
@@ -280,9 +280,9 @@ Sandbox_CN = {
 	Sandbox_ETW_SmokingAddictionMultiplier = "烟瘾成长乘数",
 	Sandbox_ETW_SmokingAddictionMultiplier_tooltip = "决定你上瘾的速率",
 
-	Sandbox_ETW_Sojutsu = "武枪大师",
-	Sandbox_ETW_SojutsuSkill = "武枪大师:获得特质所需长矛技能等级",
-	Sandbox_ETW_SojutsuKills = "武枪大师:获得特质所需长矛击杀数",
+	Sandbox_ETW_PolearmFighter = "武枪大师",
+	Sandbox_ETW_PolearmFighterSkill = "武枪大师:获得特质所需长矛技能等级",
+	Sandbox_ETW_PolearmFighterKills = "武枪大师:获得特质所需长矛击杀数",
 
 	Sandbox_ETW_StickFighter = "使棍武者",
 	Sandbox_ETW_StickFighterSkill = "使棍武者:获得特质所需长棍技能等级",

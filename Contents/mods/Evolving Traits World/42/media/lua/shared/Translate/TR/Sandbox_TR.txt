@@ -203,9 +203,9 @@ Sandbox_TR = {
 	Sandbox_ETW_InventoryTransferSystemWeight = "Aðýrlýk Sayacý",
 	Sandbox_ETW_InventoryTransferSystemWeight_tooltip = "Transfer özellikleri için kaç aðýrlýk (ve eþya) transferi gerektiðini gösterir, kazanýlan/kaybedilen özellikler þunlardýr: Daðýnýk-Düzenli, Beceriksiz-Becerikli, Sakar (More Traits)<br>Daðýnýk: Aðýrlýk sayacýnýn %66'ý ve Eþya sayacýnýn %33'u<br>Düzenli: Aðýrlýk sayacýnýn %100'ü ve Eþya sayacýnýn %66'ý<br>Beceriksiz: Aðýrlýk sayacýnýn %33'u ve Eþya sayacýnýn %66'ý<br>Becerikli: Aðýrlýk sayacýnýn %66'ý ve Eþya sayacýnýn %100'ü<br>Sakar(More Traits): Aðýrlýk sayacýnýn %150'si ve Eþya sayacýnýn %150'si",
 
-	Sandbox_ETW_Kenshi = "Kenshi Ustasý",
-	Sandbox_ETW_KenshiSkill = "Kenshi Ustasý için gereken Uzun Kesici yeteneði ihtiyacý",
-	Sandbox_ETW_KenshiKills = "Kenshi Ustasý için gereken Uzun Kesici yeteneði ihtiyacý",
+	Sandbox_ETW_BladeEnthusiast = "BladeEnthusiast Ustasý",
+	Sandbox_ETW_BladeEnthusiastSkill = "BladeEnthusiast Ustasý için gereken Uzun Kesici yeteneði ihtiyacý",
+	Sandbox_ETW_BladeEnthusiastKills = "BladeEnthusiast Ustasý için gereken Uzun Kesici yeteneði ihtiyacý",
 
 	Sandbox_ETW_KnifeFighter = "Býçak Dövüþçüsü",
 	Sandbox_ETW_KnifeFighterSkill = "Býçak Dövüþçüsü için gereken Kýsa Kesici yeteneði ihtiyacý",
@@ -275,9 +275,6 @@ Sandbox_TR = {
 	Sandbox_ETW_SmokingAddictionMultiplier = "Sigara Baðýmlýlýðý Artýþ Oraný Çarpaný",
 	Sandbox_ETW_SmokingAddictionMultiplier_tooltip = "Baðýmlýlýðýnýzýn ne kadar hýzlý arttýðý",
 
-	Sandbox_ETW_Sojutsu = "Sojutsu dövüþ stili ustasý",
-	Sandbox_ETW_SojutsuSkill = "Sojutsu dövüþ stili ustasý için gereken Mýzrak yeteneði ihtiyacý",
-	Sandbox_ETW_SojutsuKills = "Sojutsu dövüþ stili ustasý için gereken öldürme sayýsý",
 
 	Sandbox_ETW_StickFighter = "Sopa Dövüþçüsü",
 	Sandbox_ETW_StickFighterSkill = "Sopa Dövüþçüsü için gereken Kýsa künt(kýsa yakýn dövüþ silahlarý) yeteneði ihtiyacý",

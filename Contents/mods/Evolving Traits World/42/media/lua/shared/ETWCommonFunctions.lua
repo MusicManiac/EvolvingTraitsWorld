@@ -5,14 +5,22 @@ local SBvars = SandboxVars.EvolvingTraitsWorld;
 
 local modOptions;
 
+---Function responsible for setting up mod options on character load
+---@param playerIndex number
+---@param player IsoPlayer
+local function initializeModOptions(playerIndex, player)
+	modOptions = PZAPI.ModOptions:getOptions("ETWModOptions");
+end
+
+Events.OnCreatePlayer.Remove(initializeModOptions);
+Events.OnCreatePlayer.Add(initializeModOptions);
+
 ---@return boolean
-local notification = function() return modOptions:getOption("EnableNotifications"):getValue() end;
+local notification = function() return modOptions:getOption("EnableNotifications"):getValue() end
 ---@return boolean
-local delayedNotification = function() return modOptions:getOption("EnableDelayedNotifications"):getValue() end;
+local delayedNotification = function() return modOptions:getOption("EnableDelayedNotifications"):getValue() end
 ---@return boolean
-local debug = function() return modOptions:getOption("GatherDebug"):getValue() end;
----@return boolean
-local detailedDebug = function() return modOptions:getOption("GatherDetailedDebug"):getValue() end;
+local detailedDebug = function() return modOptions:getOption("GatherDetailedDebug"):getValue() end
 
 ---Function responsible for finding index of delayed trait in Delayed Traits Table
 ---@param tbl table
@@ -97,19 +105,19 @@ end
 ---@param player IsoPlayer|IsoGameCharacter
 ---@param positiveTrait boolean
 function ETWCommonFunctions.addTraitToDelayTable(modData, traitName, player, positiveTrait)
-	if not SBvars.DelayedTraitsSystem then return end;
-	if detailedDebug() then print("ETW Logger | Delayed Traits System: modData.DelayedStartingTraitsFilled =  " .. tostring(modData.DelayedStartingTraitsFilled)) end;
+	if not SBvars.DelayedTraitsSystem then return end
+	if detailedDebug() then print("ETW Logger | Delayed Traits System: modData.DelayedStartingTraitsFilled =  " .. tostring(modData.DelayedStartingTraitsFilled)) end
 	if not modData.DelayedStartingTraitsFilled then
-		if debug() then print("ETW Logger | Delayed Traits System: player qualifies for " .. traitName .. " from the start of the game, adding it to delayed traits table") end;
+		if detailedDebug() then print("ETW Logger | Delayed Traits System: player qualifies for " .. traitName .. " from the start of the game, adding it to delayed traits table") end
 		table.insert(modData.DelayedTraits, {traitName, SBvars.DelayedTraitsSystemDefaultDelay + SBvars.DelayedTraitsSystemDefaultStartingDelay, false})
 	elseif indexOfDelayedTrait(modData.DelayedTraits, traitName) == -1 and not player:HasTrait(traitName) and positiveTrait then
-		if debug() then print("ETW Logger | Delayed Traits System: player qualifies for positive trait " .. traitName .. ", adding it to delayed traits table") end;
+		if detailedDebug() then print("ETW Logger | Delayed Traits System: player qualifies for positive trait " .. traitName .. ", adding it to delayed traits table") end
 		table.insert(modData.DelayedTraits, {traitName, SBvars.DelayedTraitsSystemDefaultDelay, false})
 	elseif indexOfDelayedTrait(modData.DelayedTraits, traitName) == -1 and player:HasTrait(traitName) and not positiveTrait then
-		if debug() then print("ETW Logger | Delayed Traits System: player qualifies for removing negative trait " .. traitName .. ", adding it to delayed traits table") end;
+		if detailedDebug() then print("ETW Logger | Delayed Traits System: player qualifies for removing negative trait " .. traitName .. ", adding it to delayed traits table") end
 		table.insert(modData.DelayedTraits, {traitName, SBvars.DelayedTraitsSystemDefaultDelay, false})
 	else
-		if debug() then print("ETW Logger | Delayed Traits System: player qualifies for " .. traitName .. ", but it's already in delayed traits table or player already has the trait") end;
+		if detailedDebug() then print("ETW Logger | Delayed Traits System: player qualifies for " .. traitName .. ", but it's already in delayed traits table or player already has the trait") end
 	end
 	if detailedDebug() then
 		print("ETW Logger | Delayed Traits System | Data Dump after ETWCommonFunctions.addTraitToDelayTable(); ------------");
@@ -122,16 +130,16 @@ end
 ---@param name string
 ---@return boolean
 function ETWCommonFunctions.checkDelayedTraits(name)
-	if not SBvars.DelayedTraitsSystem then return true end;
+	if not SBvars.DelayedTraitsSystem then return true end
 	local player = getPlayer();
 	local modData = ETWCommonFunctions.getETWModData(player);
 	local traitTable = modData.DelayedTraits;
 	for index = 1, #traitTable do
 		local traitEntry = traitTable[index]
 		local traitName, gained = traitEntry[1], traitEntry[3]
-		if detailedDebug() then print("ETW Logger | Delayed Traits System: caught check on " .. traitName) end;
+		if detailedDebug() then print("ETW Logger | Delayed Traits System: caught check on " .. traitName) end
 		if traitName == name and gained then
-			if detailedDebug() then print("ETW Logger | Delayed Traits System: caught check on " .. traitName .. ": player qualifies for it; removing it from the table") end;
+			if detailedDebug() then print("ETW Logger | Delayed Traits System: caught check on " .. traitName .. ": player qualifies for it; removing it from the table") end
 			table.remove(traitTable, index);
 			return true;
 		end
@@ -150,22 +158,12 @@ function ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(name)
 		local traitEntry = traitTable[index]
 		local traitName = traitEntry[1]
 		if traitName == name then
-			if detailedDebug() then print("ETW Logger | Delayed Traits System: checking if " .. name .. " is already in the table, it is.") end;
+			if detailedDebug() then print("ETW Logger | Delayed Traits System: checking if " .. name .. " is already in the table, it is.") end
 			return true;
 		end
 	end
-	if detailedDebug() then print("ETW Logger | Delayed Traits System: checking if " .. name .. " is already in the table, it is not.") end;
+	if detailedDebug() then print("ETW Logger | Delayed Traits System: checking if " .. name .. " is already in the table, it is not.") end
 	return false;
 end
-
----Function responsible for setting up events
----@param playerIndex number
----@param player IsoPlayer
-local function initializeModOptions(playerIndex, player)
-	modOptions = PZAPI.ModOptions:getOptions("ETWModOptions");
-end
-
-Events.OnCreatePlayer.Remove(initializeModOptions);
-Events.OnCreatePlayer.Add(initializeModOptions);
 
 return ETWCommonFunctions;

@@ -4,9 +4,9 @@ local ETWCommonLogicChecks = {};
 local SBvars = SandboxVars.EvolvingTraitsWorld;
 local activatedMods = getActivatedMods();
 
-function ETWCommonLogicChecks.ImmuneSystemShouldExecute()
+function ETWCommonLogicChecks.ImmunitySystemShouldExecute()
 	local player = getPlayer();
-	if SBvars.ImmuneSystem == true and not player:HasTrait("Resilient") and (SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLoseNegative) then
+	if SBvars.ImmunitySystem == true and not player:HasTrait("Resilient") and (SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLoseNegative) then
 		return true
 	else
 		return false

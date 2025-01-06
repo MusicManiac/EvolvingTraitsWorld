@@ -24,6 +24,7 @@
 --- @field SmokeSystem SmokeSystem
 --- @field TransferSystem TransferSystem
 --- @field BloodlustSystem BloodlustSystem
+--- @field AnimalsSystem AnimalsSystem
 --- @field KillCount KillCount
 
 --- @class OutdoorsmanSystem
@@ -54,6 +55,10 @@
 --- @field BloodlustProgress number
 --- @field BloodlustMeter number
 
+--- @class AnimalsSystem
+--- @field UniqueAnimalsPetted integer[]
+--- @field MinutesSinceLastPettingWithMoodBoost integer
+
 --- @class KillCount
 --- @field WeaponCategory table<string, WeaponCategory>
 
@@ -64,5 +69,4 @@
 ---@class DebugAndNotificationArgs
 ---@field notification boolean|nil
 ---@field delayedNotification boolean|nil
----@field debug boolean|nil
 ---@field detailedDebug boolean|nil
