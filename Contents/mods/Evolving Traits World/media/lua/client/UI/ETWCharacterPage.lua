@@ -135,7 +135,7 @@ function ISETWProgressUI:createChildren()
 			y = y + FONT_HGT_SMALL
 		end
 
-		if ETWCommonLogicChecks.ImmuneSystemShouldExecute() then
+		if ETWCommonLogicChecks.ImmunitySystemShouldExecute() then
 			str = "- " .. getText("UI_trait_pronetoillness")
 			self.labelProneToIllness = ISLabel:new(barMidPosition - strLen(textManager, str)/2, y, FONT_HGT_SMALL, str, self.DimmedTextColor.r, self.DimmedTextColor.g, self.DimmedTextColor.b, self.DimmedTextColor.a, UIFont.Small, true)
 			self.labelProneToIllness:setTooltip(getText("UI_ETW_LooseTooltip"))
@@ -147,15 +147,15 @@ function ISETWProgressUI:createChildren()
 
 			y = y + FONT_HGT_SMALL
 
-			self.labelImmuneSystem = ISLabel:new(barStartPosition - lineStartPosition, y, FONT_HGT_SMALL, getText("Sandbox_ETW_ImmunitySystem"), self.TextColor.r, self.TextColor.g, self.TextColor.b, self.TextColor.a, UIFont.Small, false)
-			self.labelImmuneSystem:setTooltip(getText("Sandbox_ETW_ImmunitySystemCounter_tooltip"))
-			self:addChild(self.labelImmuneSystem)
+			self.labelImmunitySystem = ISLabel:new(barStartPosition - lineStartPosition, y, FONT_HGT_SMALL, getText("Sandbox_ETW_ImmunitySystem"), self.TextColor.r, self.TextColor.g, self.TextColor.b, self.TextColor.a, UIFont.Small, false)
+			self.labelImmunitySystem:setTooltip(getText("Sandbox_ETW_ImmunitySystemCounter_tooltip"))
+			self:addChild(self.labelImmunitySystem)
 
-			self.barImmuneSystem = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
-			self.barImmuneSystem:setGradientTexture(redYellowGreenGradient)
-			self.barImmuneSystem:setHighlightRadius(highlightRadius)
-			self.barImmuneSystem:setDoKnob(false)
-			self:addChild(self.barImmuneSystem)
+			self.barImmunitySystem = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
+			self.barImmunitySystem:setGradientTexture(redYellowGreenGradient)
+			self.barImmunitySystem:setHighlightRadius(highlightRadius)
+			self.barImmunitySystem:setDoKnob(false)
+			self:addChild(self.barImmunitySystem)
 
 			y = y + FONT_HGT_SMALL
 		end
@@ -1116,7 +1116,7 @@ function ISETWProgressUI:render()
 	local spearKills = killCountModData["Spear"].count;
 	local firearmKills = killCountModData["Firearm"].count;
 
-	updateBar(self.barImmuneSystem, percentile(0, SBvars.ImmunitySystemCounter, modData.ImmunitySystemCounter), modData.ImmunitySystemCounter)
+	updateBar(self.barImmunitySystem, percentile(0, SBvars.ImmunitySystemCounter, modData.ImmunitySystemCounter), modData.ImmunitySystemCounter)
 	updateBar(self.barSicknessSystem, percentile(0, SBvars.FoodSicknessSystemCounter, modData.FoodSicknessWeathered), modData.FoodSicknessWeathered)
 	updateBar(self.barPainTolerance, percentile(0, SBvars.PainToleranceCounter, modData.PainToleranceCounter), modData.PainToleranceCounter)
 	updateBar(self.barAsthmatic, percentile(SBvars.AsthmaticCounter * -2, SBvars.AsthmaticCounter * 2, modData.AsthmaticCounter), modData.AsthmaticCounter)

@@ -23,8 +23,6 @@ UI_KO = {
 	UI_trait_HomichlophileDesc = "안개 속이 아늑하게 느껴집니다. 안개 낀 날씨의 실외에서 안정감을 느낍니다. 안개농도에 따라 스트레스와 공황이 천천히 줄어듭니다.",
 	UI_trait_Homichlophobia = "안개공포증",
 	UI_trait_HomichlophobiaDesc = "안개 속에서 긴장을 풀 수 없고 스트레스가 느껴집니다. 안개 낀 날씨에서 실외로 나가는 것이 두렵습니다. 안개농도에 따라 천천히 스트레스와 공황상태가 증가합니다(50% 까지).",
-	UI_trait_Kenshi = "검사",
-	UI_trait_KenshiDesc = "기검체일치. 육체와 정신과 검의 합일을 추구합니다.",
 	UI_trait_KnifeFighter = "단검 격투술",
 	UI_trait_KnifeFighterDesc = "나이프 파이팅의 기본을 배웠습니다.",
 	UI_trait_LightStep = "가벼운 발걸음",
@@ -39,13 +37,10 @@ UI_KO = {
 	UI_trait_PluviophobiaDesc = "비오는 날씨와 비맞는것이 싫습니다. 비가 오는 실외에 있을 때 서서히 불행, 스트레스, 지루함이 늘어납니다. 우산을 착용하면 효과가 반으로 줄어듭니다.",
 	UI_trait_RestorationExpert = "복원전문가",
 	UI_trait_RestorationExpertDesc = "오래된 물건을 원래 상태로 복원하는 방법을 알고 있습니다. 아이템을 여러번 수리할 때, 일정확률로 수리 페널티가 무효화됩니다.",
-	UI_trait_Sojutsu = "창술가",
-	UI_trait_SojutsuDesc = "창술을 연마했습니다.",
+
 	UI_trait_StickFighter = "단봉술 수련자",
 	UI_trait_StickFighterDesc = "단봉을 이용하여 호신술을 배웠습니다.",
 
-	UI_ETW_Options_GatherDebug = "디버그 데이터 수집",
-	UI_ETW_Options_GatherDebug_tooltip = "console.txt 기록을 활성화합니다. 디버그에 사용되며 내부카운터 데이터를 확인할 수 있습니다. 관련 로그를 검색하려면 Ctrl+F 창에 'ETW'를 입력하세요.",
 	UI_ETW_Options_GatherDetailedDebug = "디버그 데이터 상세 수집",
 	UI_ETW_Options_GatherDetailedDebug_tooltip = "console.txt에 추가정보를 기록합니다. 디버그에 사용됩니다. 내부카운터에 대한 추가정보는 제공하지 않습니다. 버그 리포팅과 정확히 어떤 지점에서 문제가 생기는지 찾는데만 사용됩니다. console.txt에 쓸모없는 많은 추가데이터가 기록될 수 있으므로 렉을 유발하면 게임을 재시작하는것이 좋습니다. 관련 로그를 검색하려면 Ctrl+F 창에 'ETW'를 입력하세요.",
 	UI_ETW_Options_EnableSoundNotifications = "특성 획득 지연 시스템 알림 활성화",

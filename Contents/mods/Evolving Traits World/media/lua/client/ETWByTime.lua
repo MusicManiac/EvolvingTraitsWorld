@@ -238,7 +238,7 @@ local function initializeEventsETW(playerIndex, player)
 	Events.EveryOneMinute.Remove(smoker);
 	if ETWCommonLogicChecks.SmokerShouldExecute() then Events.EveryOneMinute.Add(smoker) end;
 	Events.EveryDays.Remove(herbalist);
-	if ETWCommonLogicChecks.HerbalistShouldExecute() then Events.EveryDays.Add(herbalist) end;
+	if ETWCommonLogicChecks.HerbalistShouldExecute() and SBvars.TraitsLockSystemCanLosePositive then Events.EveryDays.Add(herbalist) end;
 end
 
 ---Function responsible for clearing events

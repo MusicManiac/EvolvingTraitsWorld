@@ -23,8 +23,7 @@ UI_PTBR = {
 	UI_trait_HomichlophileDesc = "Você gosta de neblina, algo nela te faz sentir confortável. Você fica mais calmo em clima nebuloso. ALém disso, lentamente perde pânico e estresse dependendo da intensidade da neblina.",
 	UI_trait_Homichlophobia = "Medo de Nevoeiros",
 	UI_trait_HomichlophobiaDesc = "Você odeia a neblina, alguma coisa nela te faz ansioso e estressado. Você fica nervoso quando está em um clima nebuloso.Além disso, lentamente ganha pânico e estresse dependendo da intensidade da neblina (limitado a 50%).",
-	UI_trait_Kenshi = "Kenshi",
-	UI_trait_KenshiDesc = "Ki-ken-tai-ichi. Você busca o equilíbrio entre mente, corpo e lâmina.",
+
 	UI_trait_KnifeFighter = "Lutador de Facas",
 	UI_trait_KnifeFighterDesc = "Você praticou a luta com facas.",
 	UI_trait_LightStep = "Passos Leves",
@@ -39,13 +38,9 @@ UI_PTBR = {
 	UI_trait_PluviophobiaDesc = "Você odeia a chuva e estar nela. Lentamente ganha tristeza, estresse e tédio enquanto estiver tomando chuva. O efeito é diminuído pela metade se estiver usando um guarda-chuva.<br>You can stand under my umbrella, ella, ella, eh, eh, eh<br>Under my umbrella, ella, ella, eh, eh, eh<br>Under my umbrella, ella, ella, eh, eh, eh<br>Under my umbrella, ella, ella, eh, eh, eh, eh, eh, eh<br>These fancy things will never come in between<br>You're part of my entity, here for infinity<br>When the world has took its part<br>When the world has dealt its cards<br>If the hand is hard, together we'll mend your heart",
 	UI_trait_RestorationExpert = "Especialista em Restauração",
 	UI_trait_RestorationExpertDesc = "Você sabe como restaurar um item. Tem a chance de não tomar penalidade por reparações múltiplas.<br>+1 Manutenção",
-	UI_trait_Sojutsu = "Artista Marcial Sojutsu",
-	UI_trait_SojutsuDesc = "Você pratica Sojutsu, a arte da lança.",
 	UI_trait_StickFighter = "Lutador de Bastão",
 	UI_trait_StickFighterDesc = "Você praticou a luta com bastões.",
 
-	UI_ETW_Options_GatherDebug = "Reunir dados de depuração",
-	UI_ETW_Options_GatherDebug_tooltip = "Permite log no console.txt. Útil para depuração, também permite encontrar informações de contadores internos. Ctrl+F e escreva 'ETW' para encontrar os registros.",
 	UI_ETW_Options_GatherDetailedDebug = "Reunir dados de depuração detalhados",
 	UI_ETW_Options_GatherDetailedDebug_tooltip = "Permite logs adicionais no console.txt. Útil apenas para debug, não mostra nenhum dado adicional sobre contadores, APENAS útil para reporte de bug ou tentar encontra o que está errado. Adiciona muitas informações não necessárias no console.txt, Então reinicie o jogo as vezes para não deixar ficar muito grande e não (possivelmente) travar o jogo. Ctrl+F e escreva 'ETW' para encontrar os registros.",
 	UI_ETW_Options_EnableNotifications = "Habilitar Notificação de Traços",

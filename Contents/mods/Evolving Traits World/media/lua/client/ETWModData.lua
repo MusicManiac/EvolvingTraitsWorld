@@ -185,5 +185,14 @@ local function createModData(playerIndex, player)
 	killCount["Explosives"] = killCount["Explosives"] or { count = 0, WeaponType = {} };
 end
 
+---Function responsible for resetting modData on character death
+---@param character IsoPlayer
+local function clearETWModData(character)
+	character:getModData().EvolvingTraitsWorld = {};
+	print("ETW Logger | System: character died, clearing it's ETW modData")
+end
+
 Events.OnCreatePlayer.Remove(createModData);
 Events.OnCreatePlayer.Add(createModData);
+Events.OnPlayerDeath.Remove(clearETWModData);
+Events.OnPlayerDeath.Add(clearETWModData);

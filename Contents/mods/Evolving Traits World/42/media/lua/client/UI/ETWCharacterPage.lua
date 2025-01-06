@@ -9,6 +9,16 @@ local ETWCommonLogicChecks = require "ETWCommonLogicChecks";
 
 local modOptions;
 
+---Function responsible for setting up mod options on character load
+---@param playerIndex number
+---@param player IsoPlayer
+local function initializeModOptions(playerIndex, player)
+	modOptions = PZAPI.ModOptions:getOptions("ETWModOptions");
+end
+
+Events.OnCreatePlayer.Remove(initializeModOptions);
+Events.OnCreatePlayer.Add(initializeModOptions);
+
 local FONT_HGT_SMALL = getTextManager():getFontHeight(UIFont.Small)
 local FONT_HGT_MEDIUM = getTextManager():getFontHeight(UIFont.Medium)
 local WINDOW_WIDTH = 700;
@@ -106,6 +116,7 @@ function ISETWProgressUI:createChildren()
 		local fishing = player:getPerkLevel(Perks.Fishing);
 		local trapping = player:getPerkLevel(Perks.Trapping);
 		local foraging = player:getPerkLevel(Perks.PlantScavenging);
+		local husbandry = player:getPerkLevel(Perks.Husbandry);
 
 		local killCountModData;
 		local axeKills = 0;
@@ -135,7 +146,7 @@ function ISETWProgressUI:createChildren()
 			y = y + FONT_HGT_MEDIUM
 		end
 
-		if ETWCommonLogicChecks.ImmuneSystemShouldExecute() then
+		if ETWCommonLogicChecks.ImmunitySystemShouldExecute() then
 			str = "- " .. getText("UI_trait_pronetoillness")
 			self.labelProneToIllness = ISLabel:new(barMidPosition - strLen(textManager, str)/2, y, FONT_HGT_SMALL, str, self.DimmedTextColor.r, self.DimmedTextColor.g, self.DimmedTextColor.b, self.DimmedTextColor.a, UIFont.Small, true)
 			self.labelProneToIllness:setTooltip(getText("UI_ETW_LooseTooltip"))
@@ -147,15 +158,15 @@ function ISETWProgressUI:createChildren()
 
 			y = y + FONT_HGT_SMALL
 
-			self.labelImmuneSystem = ISLabel:new(barStartPosition - lineStartPosition, y, FONT_HGT_SMALL, getText("Sandbox_ETW_ImmunitySystem"), self.TextColor.r, self.TextColor.g, self.TextColor.b, self.TextColor.a, UIFont.Small, false)
-			self.labelImmuneSystem:setTooltip(getText("Sandbox_ETW_ImmunitySystemCounter_tooltip"))
-			self:addChild(self.labelImmuneSystem)
+			self.labelImmunitySystem = ISLabel:new(barStartPosition - lineStartPosition, y, FONT_HGT_SMALL, getText("Sandbox_ETW_ImmunitySystem"), self.TextColor.r, self.TextColor.g, self.TextColor.b, self.TextColor.a, UIFont.Small, false)
+			self.labelImmunitySystem:setTooltip(getText("Sandbox_ETW_ImmunitySystemCounter_tooltip"))
+			self:addChild(self.labelImmunitySystem)
 
-			self.barImmuneSystem = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
-			self.barImmuneSystem:setGradientTexture(redYellowGreenGradient)
-			self.barImmuneSystem:setHighlightRadius(highlightRadius)
-			self.barImmuneSystem:setDoKnob(false)
-			self:addChild(self.barImmuneSystem)
+			self.barImmunitySystem = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
+			self.barImmunitySystem:setGradientTexture(redYellowGreenGradient)
+			self.barImmunitySystem:setHighlightRadius(highlightRadius)
+			self.barImmunitySystem:setDoKnob(false)
+			self:addChild(self.barImmunitySystem)
 
 			y = y + FONT_HGT_SMALL
 		end
@@ -798,6 +809,21 @@ function ISETWProgressUI:createChildren()
 			end
 		end
 
+		if ETWCommonLogicChecks.BladeEnthusiastShouldExecute() then
+			if longBlade < SBvars.BladeEnthusiastSkill then
+				arrangeColumnsInTable();
+				self.labelBladeEnthusiastSkillProgress = ISLabel:new(x, y, FONT_HGT_SMALL, getText(""), self.TextColor.r, self.TextColor.g, self.TextColor.b, self.TextColor.a, UIFont.Small, true)
+				self.labelBladeEnthusiastSkillProgress:setTooltip(getText("Sandbox_ETW_BladeEnthusiastSkill"))
+				self:addChild(self.labelBladeEnthusiastSkillProgress)
+			end
+			if longBladeKills < SBvars.BladeEnthusiastKills then
+				arrangeColumnsInTable();
+				self.labelBladeEnthusiastKillsProgress = ISLabel:new(x, y, FONT_HGT_SMALL, getText(""), self.TextColor.r, self.TextColor.g, self.TextColor.b, self.TextColor.a, UIFont.Small, true)
+				self.labelBladeEnthusiastKillsProgress:setTooltip(getText("Sandbox_ETW_BladeEnthusiastKills"))
+				self:addChild(self.labelBladeEnthusiastKillsProgress)
+			end
+		end
+
 		if ETWCommonLogicChecks.BrawlerShouldExecute() then
 			if (axe + longBlunt) < SBvars.BrawlerSkill then
 				arrangeColumnsInTable();
@@ -844,21 +870,6 @@ function ISETWProgressUI:createChildren()
 			end
 		end
 
-		if ETWCommonLogicChecks.KenshiShouldExecute() then
-			if longBlade < SBvars.KenshiSkill then
-				arrangeColumnsInTable();
-				self.labelKenshiSkillProgress = ISLabel:new(x, y, FONT_HGT_SMALL, getText(""), self.TextColor.r, self.TextColor.g, self.TextColor.b, self.TextColor.a, UIFont.Small, true)
-				self.labelKenshiSkillProgress:setTooltip(getText("Sandbox_ETW_KenshiSkill"))
-				self:addChild(self.labelKenshiSkillProgress)
-			end
-			if longBladeKills < SBvars.KenshiKills then
-				arrangeColumnsInTable();
-				self.labelKenshiKillsProgress = ISLabel:new(x, y, FONT_HGT_SMALL, getText(""), self.TextColor.r, self.TextColor.g, self.TextColor.b, self.TextColor.a, UIFont.Small, true)
-				self.labelKenshiKillsProgress:setTooltip(getText("Sandbox_ETW_KenshiKills"))
-				self:addChild(self.labelKenshiKillsProgress)
-			end
-		end
-
 		if ETWCommonLogicChecks.KnifeFighterShouldExecute() then
 			if shortBlade < SBvars.KnifeFighterSkill then
 				arrangeColumnsInTable();
@@ -874,18 +885,18 @@ function ISETWProgressUI:createChildren()
 			end
 		end
 
-		if ETWCommonLogicChecks.SojutsuShouldExecute() then
-			if spear < SBvars.SojutsuSkill then
+		if ETWCommonLogicChecks.PolearmFighterShouldExecute() then
+			if spear < SBvars.PolearmFighterSkill then
 				arrangeColumnsInTable();
-				self.labelSojutsuSkillProgress = ISLabel:new(x, y, FONT_HGT_SMALL, getText(""), self.TextColor.r, self.TextColor.g, self.TextColor.b, self.TextColor.a, UIFont.Small, true)
-				self.labelSojutsuSkillProgress:setTooltip(getText("Sandbox_ETW_SojutsuSkill"))
-				self:addChild(self.labelSojutsuSkillProgress)
+				self.labelPolearmFighterSkillProgress = ISLabel:new(x, y, FONT_HGT_SMALL, getText(""), self.TextColor.r, self.TextColor.g, self.TextColor.b, self.TextColor.a, UIFont.Small, true)
+				self.labelPolearmFighterSkillProgress:setTooltip(getText("Sandbox_ETW_PolearmFighterSkill"))
+				self:addChild(self.labelPolearmFighterSkillProgress)
 			end
-			if spearKills < SBvars.SojutsuKills then
+			if spearKills < SBvars.PolearmFighterKills then
 				arrangeColumnsInTable();
-				self.labelSojutsuKillsProgress = ISLabel:new(x, y, FONT_HGT_SMALL, getText(""), self.TextColor.r, self.TextColor.g, self.TextColor.b, self.TextColor.a, UIFont.Small, true)
-				self.labelSojutsuKillsProgress:setTooltip(getText("Sandbox_ETW_SojutsuKills"))
-				self:addChild(self.labelSojutsuKillsProgress)
+				self.labelPolearmFighterKillsProgress = ISLabel:new(x, y, FONT_HGT_SMALL, getText(""), self.TextColor.r, self.TextColor.g, self.TextColor.b, self.TextColor.a, UIFont.Small, true)
+				self.labelPolearmFighterKillsProgress:setTooltip(getText("Sandbox_ETW_PolearmFighterKills"))
+				self:addChild(self.labelPolearmFighterKillsProgress)
 			end
 		end
 
@@ -984,6 +995,23 @@ function ISETWProgressUI:createChildren()
 				self.labelTailorRippedClothesProgress = ISLabel:new(x, y, FONT_HGT_SMALL, getText(""), self.TextColor.r, self.TextColor.g, self.TextColor.b, self.TextColor.a, UIFont.Small, true)
 				self.labelTailorRippedClothesProgress:setTooltip(getText("Sandbox_ETW_SewerUniqueClothesRipped_tooltip"))
 				self:addChild(self.labelTailorRippedClothesProgress)
+			end
+		end
+
+		if ETWCommonLogicChecks.PetTherapyShouldExecute() then
+			if husbandry < SBvars.PetTherapySkill then
+				arrangeColumnsInTable();
+				self.labelPetTherapySkillProgress = ISLabel:new(x, y, FONT_HGT_SMALL, getText(""), self.TextColor.r, self.TextColor.g, self.TextColor.b, self.TextColor.a, UIFont.Small, true)
+				self.labelPetTherapySkillProgress:setTooltip(getText("Sandbox_ETW_PetTherapySkill"))
+				self:addChild(self.labelPetTherapySkillProgress)
+			end
+
+			local uniqueAnimalsPetted = (modData and modData.AnimalsSystem and modData.AnimalsSystem.UniqueAnimalsPetted and #modData.AnimalsSystem.UniqueAnimalsPetted) or 0;
+			if uniqueAnimalsPetted < SBvars.PetTherapyUniqueAnimalsPetted then
+				arrangeColumnsInTable();
+				self.labelPetTherapyPettingProgress = ISLabel:new(x, y, FONT_HGT_SMALL, getText(""), self.TextColor.r, self.TextColor.g, self.TextColor.b, self.TextColor.a, UIFont.Small, true)
+				self.labelPetTherapyPettingProgress:setTooltip(getText("Sandbox_ETW_PetTherapyUniqueAnimalsPetted_tooltip"))
+				self:addChild(self.labelPetTherapyPettingProgress)
 			end
 		end
 
@@ -1110,6 +1138,7 @@ function ISETWProgressUI:render()
 	local fishing = player:getPerkLevel(Perks.Fishing);
 	local trapping = player:getPerkLevel(Perks.Trapping);
 	local foraging = player:getPerkLevel(Perks.PlantScavenging);
+	local husbandry = player:getPerkLevel(Perks.Husbandry);
 
 	local killCountModData = player:getModData().KillCount.WeaponCategory;
 	local axeKills = killCountModData["Axe"].count;
@@ -1120,7 +1149,7 @@ function ISETWProgressUI:render()
 	local spearKills = killCountModData["Spear"].count;
 	local firearmKills = killCountModData["Firearm"].count;
 
-	updateBar(self.barImmuneSystem, percentile(0, SBvars.ImmunitySystemCounter, modData.ImmunitySystemCounter), modData.ImmunitySystemCounter)
+	updateBar(self.barImmunitySystem, percentile(0, SBvars.ImmunitySystemCounter, modData.ImmunitySystemCounter), modData.ImmunitySystemCounter)
 	updateBar(self.barSicknessSystem, percentile(0, SBvars.FoodSicknessSystemCounter, modData.FoodSicknessWeathered), modData.FoodSicknessWeathered)
 	updateBar(self.barPainTolerance, percentile(0, SBvars.PainToleranceCounter, modData.PainToleranceCounter), modData.PainToleranceCounter)
 	updateBar(self.barAsthmatic, percentile(SBvars.AsthmaticCounter * -2, SBvars.AsthmaticCounter * 2, modData.AsthmaticCounter), modData.AsthmaticCounter)
@@ -1205,12 +1234,12 @@ function ISETWProgressUI:render()
 	updateLabel(self.labelAxeThrowerKillsProgress, getText("UI_trait_AxeThrower") .. ": " .. axeKills .. "/" .. SBvars.AxeThrowerKills)
 	updateLabel(self.labelStickFighterSkillProgress, getText("UI_trait_StickFighter") .. ": " .. shortBlunt .. "/" .. SBvars.StickFighterSkill)
 	updateLabel(self.labelStickFighterKillsProgress, getText("UI_trait_StickFighter") .. ": " .. shortBluntKills .. "/" .. SBvars.StickFighterKills)
-	updateLabel(self.labelKenshiSkillProgress, getText("UI_trait_Kenshi") .. ": " .. longBlade .. "/" .. SBvars.KenshiSkill)
-	updateLabel(self.labelKenshiKillsProgress, getText("UI_trait_Kenshi") .. ": " .. longBladeKills .. "/" .. SBvars.KenshiKills)
+	updateLabel(self.labelBladeEnthusiastSkillProgress, getText("UI_trait_BladeEnthusiast") .. ": " .. longBlade .. "/" .. SBvars.BladeEnthusiastSkill)
+	updateLabel(self.labelBladeEnthusiastKillsProgress, getText("UI_trait_BladeEnthusiast") .. ": " .. longBladeKills .. "/" .. SBvars.BladeEnthusiastKills)
 	updateLabel(self.labelKnifeFighterSkillProgress, getText("UI_trait_KnifeFighter") .. ": " .. shortBlade .. "/" .. SBvars.KnifeFighterSkill)
 	updateLabel(self.labelKnifeFighterKillsProgress, getText("UI_trait_KnifeFighter") .. ": " .. shortBladeKills .. "/" .. SBvars.KnifeFighterKills)
-	updateLabel(self.labelSojutsuSkillProgress, getText("UI_trait_Sojutsu") .. ": " .. spear .. "/" .. SBvars.SojutsuSkill)
-	updateLabel(self.labelSojutsuKillsProgress, getText("UI_trait_Sojutsu") .. ": " .. spearKills .. "/" .. SBvars.SojutsuKills)
+	updateLabel(self.labelPolearmFighterSkillProgress, getText("UI_trait_PolearmFighter") .. ": " .. spear .. "/" .. SBvars.PolearmFighterSkill)
+	updateLabel(self.labelPolearmFighterKillsProgress, getText("UI_trait_PolearmFighter") .. ": " .. spearKills .. "/" .. SBvars.PolearmFighterKills)
 	updateLabel(self.labelRestorationExpertSkillProgress, getText("UI_trait_RestorationExpert") .. ": " .. maintenance .. "/" .. SBvars.RestorationExpertSkill)
 	updateLabel(self.labelHandySkillProgress, getText("UI_trait_handy") .. ": " .. maintenance + carpentry .. "/" .. SBvars.HandySkill)
 	updateLabel(self.labelFurnitureAssemblerProgress, getText("UI_trait_FurnitureAssembler") .. ": " .. carpentry .. "/" .. SBvars.FurnitureAssemblerSkill)
@@ -1224,6 +1253,8 @@ function ISETWProgressUI:render()
 	updateLabel(self.labelMechanicsRepairsProgress, getText("UI_trait_Mechanics") .. ": " .. math.floor(modData.VehiclePartRepairs) .. "/" .. SBvars.MechanicsRepairs)
 	updateLabel(self.labelTailorSkillProgress, getText("UI_trait_Tailor") .. ": " .. tailoring .. "/" .. SBvars.SewerSkill)
 	updateLabel(self.labelTailorRippedClothesProgress, getText("UI_trait_Tailor") .. ": " .. #modData.UniqueClothingRipped .. "/" .. SBvars.SewerUniqueClothesRipped)
+	updateLabel(self.labelPetTherapySkillProgress, getText("UI_trait_PetTherapy") .. ": " .. husbandry .. "/" .. SBvars.PetTherapySkill)
+	updateLabel(self.labelPetTherapyPettingProgress, getText("UI_trait_PetTherapy") .. ": " .. #modData.AnimalsSystem.UniqueAnimalsPetted .. "/" .. SBvars.PetTherapyUniqueAnimalsPetted)
 	updateLabel(self.labelGunEnthusiastSkillProgress, getText("UI_trait_GunEnthusiast") .. ": " .. aiming + reloading .. "/" .. SBvars.GunEnthusiastSkill)
 	updateLabel(self.labelGunEnthusiastKillsProgress, getText("UI_trait_GunEnthusiast") .. ": " .. firearmKills .. "/" .. SBvars.GunEnthusiastKills)
 	updateLabel(self.labelAnglerProgress, getText("UI_trait_Fishing") .. ": " .. fishing .. "/" .. SBvars.FishingSkill)
@@ -1353,14 +1384,3 @@ function ISETWProgressUI:onJoypadDirRight()
 end
 
 addCharacterPageTab("ETW", ISETWProgressUI:new(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0))
-
----Function responsible for setting up events
----@param playerIndex number
----@param player IsoPlayer
-local function initializeModOptions(playerIndex, player)
-	modOptions = PZAPI.ModOptions:getOptions("ETWModOptions");
-	nonBarsEntriesPerRow = modOptions:getOption("TraitColumns"):getValue();
-end
-
-Events.OnCreatePlayer.Remove(initializeModOptions);
-Events.OnCreatePlayer.Add(initializeModOptions);

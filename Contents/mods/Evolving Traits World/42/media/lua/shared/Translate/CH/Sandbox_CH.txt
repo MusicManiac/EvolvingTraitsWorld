@@ -128,7 +128,6 @@ Sandbox_CH = {
 
 	Sandbox_ETW_FoodSicknessSystem = "食物中毒相關特質系統",
 	Sandbox_ETW_FoodSicknessSystemCounter = "食物中毒基準",
-	Sandbox_ETW_FoodSicknessSystemCounter_tooltip = "決定了需要累積多少食物中毒值來失去/取得相關特質(腸胃虛弱/鐵胃). 疾病值可以為0到1(1代表死亡). 每分鐘會將你目前的中毒值加到進度中",
 	Sandbox_ETW_ETW_FoodSicknessSystemNormalSicknessMultiplier = "普通疾病貢獻",
 	Sandbox_ETW_ETW_FoodSicknessSystemNormalSicknessMultiplier_tooltip = "從食物中獲得的疾病值與統通感冒所得到的疾病值是不同的. 這個乘數設定讓你可以決定是否讓普通感冒的疾病值同時貢獻到食物中毒相關的特質進度中",
 
@@ -209,9 +208,9 @@ Sandbox_CH = {
 	Sandbox_ETW_InventoryTransferSystemWeight = "物品計重基準",
 	Sandbox_ETW_InventoryTransferSystemWeight_tooltip = "依據你傳輸的物品總數(及總重)來決定獲得/失去相對應特質(雜亂無章/井井有條/笨手笨腳/眼疾手快,奶油手(More Traits模組)<br>雜亂無章: 66% 所設定總重及 30%所設定總數<br>井井有條: 100% 所設定總重及 66%所設定總數<br>笨手笨腳: 33% 所設定總重及 66%所設定總數<br>眼疾手快: 66% 所設定總重及 100%所設定總數<br>奶油手: 150% 所設定總重及 150%所設定總數",
 
-	Sandbox_ETW_Kenshi = "劍士",
-	Sandbox_ETW_KenshiSkill = "劍士:獲得特質所需長刀技能等級",
-	Sandbox_ETW_KenshiKills = "劍士:獲得特質所需長刀擊殺數",
+	Sandbox_ETW_BladeEnthusiast = "劍士",
+	Sandbox_ETW_BladeEnthusiastSkill = "劍士:獲得特質所需長刀技能等級",
+	Sandbox_ETW_BladeEnthusiastKills = "劍士:獲得特質所需長刀擊殺數",
 
 	Sandbox_ETW_KnifeFighter = "刀客",
 	Sandbox_ETW_KnifeFighterSkill = "刀客:獲得特質所需短刀技能等級",
@@ -279,9 +278,9 @@ Sandbox_CH = {
 	Sandbox_ETW_SmokingAddictionMultiplier = "煙癮成長乘數",
 	Sandbox_ETW_SmokingAddictionMultiplier_tooltip = "決定你上癮的速率",
 
-	Sandbox_ETW_Sojutsu = "武槍大師",
-	Sandbox_ETW_SojutsuSkill = "武槍大師:獲得特質所需長槍技能等級",
-	Sandbox_ETW_SojutsuKills = "武槍大師:獲得特質所需長槍擊殺數",
+	Sandbox_ETW_PolearmFighter = "武槍大師",
+	Sandbox_ETW_PolearmFighterSkill = "武槍大師:獲得特質所需長槍技能等級",
+	Sandbox_ETW_PolearmFighterKills = "武槍大師:獲得特質所需長槍擊殺數",
 
 	Sandbox_ETW_StickFighter = "使棍武者",
 	Sandbox_ETW_StickFighterSkill = "使棍武者:獲得特質所需長棍技能等級",

@@ -9,14 +9,22 @@ local SBvars = SandboxVars.EvolvingTraitsWorld;
 
 local modOptions;
 
+---Function responsible for setting up mod options on character load
+---@param playerIndex number
+---@param player IsoPlayer
+local function initializeModOptions(playerIndex, player)
+	modOptions = PZAPI.ModOptions:getOptions("ETWModOptions");
+end
+
+Events.OnCreatePlayer.Remove(initializeModOptions);
+Events.OnCreatePlayer.Add(initializeModOptions);
+
 ---@return boolean
-local notification = function() return modOptions:getOption("EnableNotifications"):getValue() end;
+local notification = function() return modOptions:getOption("EnableNotifications"):getValue() end
 ---@return boolean
-local delayedNotification = function() return modOptions:getOption("EnableDelayedNotifications"):getValue() end;
+local delayedNotification = function() return modOptions:getOption("EnableDelayedNotifications"):getValue() end
 ---@return boolean
-local debug = function() return modOptions:getOption("GatherDebug"):getValue() end;
----@return boolean
-local detailedDebug = function() return modOptions:getOption("GatherDetailedDebug"):getValue() end;
+local detailedDebug = function() return modOptions:getOption("GatherDetailedDebug"):getValue() end
 
 local bloodlustMeterCapacity = 72;
 
@@ -37,7 +45,7 @@ local function bloodiedClothesLevel(player)
 					local bloodLevel = item:getBloodLevel() or 0;
 					amountOfWornItems = amountOfWornItems + 1;
 					totalBloodLevelPercentage = totalBloodLevelPercentage + bloodLevel;
-					if detailedDebug then print("ETW Logger | bloodiedClothesLevel(): Clothing = " .. item:getClothingItemName() .. " | blood clothing type = " .. tostring(item:getBloodClothingType()) .. " | blood level = " .. bloodLevel) end;
+					if detailedDebug then print("ETW Logger | bloodiedClothesLevel(): Clothing = " .. item:getClothingItemName() .. " | blood clothing type = " .. tostring(item:getBloodClothingType()) .. " | blood level = " .. bloodLevel) end
 				end
 			end
 		end
@@ -45,7 +53,7 @@ local function bloodiedClothesLevel(player)
 		    return 0;
 		end
 		local avg = totalBloodLevelPercentage / 100 / amountOfWornItems;
-		if detailedDebug then print("ETW Logger | bloodiedClothesLevel(): avg = " .. avg) end;
+		if detailedDebug then print("ETW Logger | bloodiedClothesLevel(): avg = " .. avg) end
 		return avg;
 	end
 	return 0;
@@ -57,21 +65,21 @@ local function bloodlustKillETW(zombie)
 	local player = getPlayer();
 	local detailedDebug = detailedDebug();
 	if player:isLocalPlayer() == false then -- checks if it's NPC doing stuff
-		if detailedDebug then print("ETW Logger | bloodlustKillETW(): kill by NPC") end;
+		if detailedDebug then print("ETW Logger | bloodlustKillETW(): kill by NPC") end
 	else
-		if detailedDebug then print("ETW Logger | bloodlustKillETW(): kill by player") end;
+		if detailedDebug then print("ETW Logger | bloodlustKillETW(): kill by player") end
 		local distance = player:DistTo(zombie);
-		if detailedDebug then print("ETW Logger | bloodlustKillETW(): distance=" .. distance) end;
+		if detailedDebug then print("ETW Logger | bloodlustKillETW(): distance=" .. distance) end
 		if distance <= 10 then
 			local modData = ETWCommonFunctions.getETWModData(player);
 			local bloodlust = modData.BloodlustSystem;
 			bloodlust.LastKillTimestamp = player:getHoursSurvived();
 			if bloodlust.BloodlustMeter <= bloodlustMeterCapacity then
 				bloodlust.BloodlustMeter = bloodlust.BloodlustMeter + math.min(1.4 / distance, 1) * SBvars.BloodlustMeterFillMultiplier * (1 + bloodiedClothesLevel(player));
-				if detailedDebug then print("ETW Logger | bloodlustKillETW(): BloodlustMeter=" .. bloodlust.BloodlustMeter) end;
+				if detailedDebug then print("ETW Logger | bloodlustKillETW(): BloodlustMeter=" .. bloodlust.BloodlustMeter) end
 			elseif bloodlust.BloodlustMeter < bloodlustMeterCapacity * SBvars.BloodlustMeterMaxCapMultiplier then
 				bloodlust.BloodlustMeter = bloodlust.BloodlustMeter + math.min(1.4 / distance, 1) * SBvars.BloodlustMeterFillMultiplier * (1 + bloodiedClothesLevel(player)) * 0.5;
-				if detailedDebug then print("ETW Logger | bloodlustKillETW(): BloodlustMeter (soft-capped)=" .. bloodlust.BloodlustMeter) end;
+				if detailedDebug then print("ETW Logger | bloodlustKillETW(): BloodlustMeter (soft-capped)=" .. bloodlust.BloodlustMeter) end
 			end
 			ETWMoodles.bloodlustMoodleUpdate(player, false);
 		end
@@ -86,24 +94,24 @@ local function bloodlustTimeETW()
 	bloodlustModData.BloodlustMeter = math.min(bloodlustModData.BloodlustMeter, bloodlustMeterCapacity * SBvars.BloodlustMeterMaxCapMultiplier)
     bloodlustModData.BloodlustMeter = math.max(bloodlustModData.BloodlustMeter - 1, 0); -- hourly decay
 	ETWMoodles.bloodlustMoodleUpdate(player, false);
-	if detailedDebug() then print("ETW Logger | bloodlustTimeETW(): Bloodlust Meter: ".. bloodlustModData.BloodlustMeter) end;
+	if detailedDebug() then print("ETW Logger | bloodlustTimeETW(): Bloodlust Meter: ".. bloodlustModData.BloodlustMeter) end
     if bloodlustModData.BloodlustMeter >= bloodlustMeterCapacity / 2 then -- gain if above 50%
         local bloodLustProgressIncrease = bloodlustModData.BloodlustMeter * 0.1 * (1 + bloodiedClothesLevel(player)) * ((SBvars.AffinitySystem and modData.StartingTraits.Bloodlust) and SBvars.AffinitySystemGainMultiplier or 1);
         bloodlustModData.BloodlustProgress = math.min(SBvars.BloodlustProgress * 2, bloodlustModData.BloodlustProgress + bloodLustProgressIncrease);
-        if debug() then print("ETW Logger | bloodlustTimeETW(): BloodlustMeter is above 50%, BloodlustProgress =" .. bloodlustModData.BloodlustProgress) end;
+        if detailedDebug() then print("ETW Logger | bloodlustTimeETW(): BloodlustMeter is above 50%, BloodlustProgress =" .. bloodlustModData.BloodlustProgress) end
     else -- lose if below 50%
         local bloodLustProgressDecrease = bloodlustModData.BloodlustMeter * 0.1 * (1 - bloodiedClothesLevel(player)) / ((SBvars.AffinitySystem and modData.StartingTraits.Bloodlust) and SBvars.AffinitySystemLoseDivider or 1);
         bloodlustModData.BloodlustProgress = math.max(0, bloodlustModData.BloodlustProgress - (bloodlustMeterCapacity / 10 - bloodLustProgressDecrease));
-        if debug() then print("ETW Logger | bloodlustTimeETW(): BloodlustMeter is below 50%, BloodlustProgress =" .. bloodlustModData.BloodlustProgress) end;
+        if detailedDebug() then print("ETW Logger | bloodlustTimeETW(): BloodlustMeter is below 50%, BloodlustProgress =" .. bloodlustModData.BloodlustProgress) end
     end
 	if player:HasTrait("Bloodlust") and bloodlustModData.BloodlustProgress <= SBvars.BloodlustProgress / 2 and SBvars.TraitsLockSystemCanLosePositive then
 		player:getTraits():remove("Bloodlust");
 		ETWCommonFunctions.traitSound(player);
-		if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Bloodlust"), false, HaloTextHelper.getColorRed()) end;
+		if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Bloodlust"), false, HaloTextHelper.getColorRed()) end
 	elseif not player:HasTrait("Bloodlust") and bloodlustModData.BloodlustProgress >= SBvars.BloodlustProgress and SBvars.TraitsLockSystemCanGainPositive then
 		player:getTraits():add("Bloodlust");
 		ETWCommonFunctions.traitSound(player);
-		if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Bloodlust"), true, HaloTextHelper.getColorGreen()) end;
+		if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Bloodlust"), true, HaloTextHelper.getColorGreen()) end
 	end
 end
 
@@ -122,15 +130,15 @@ local function eagleEyedETW(wielder, character, handWeapon, damage)
 		local modData = ETWCommonFunctions.getETWModData(player);
 		if distance >= SBvars.EagleEyedDistance and zHealth <= damage then
 			modData.EagleEyedKills = modData.EagleEyedKills + 1;
-			if debug() then print("ETW Logger | eagleEyedETW(): Caught a kill on following distance: " .. distance .. ", current eagle eyed kills:" .. player:getModData().EvolvingTraitsWorld.EagleEyedKills) end;
+			if detailedDebug() then print("ETW Logger | eagleEyedETW(): Caught a kill on following distance: " .. distance .. ", current eagle eyed kills:" .. player:getModData().EvolvingTraitsWorld.EagleEyedKills) end
 			if player:getModData().EvolvingTraitsWorld.EagleEyedKills >= SBvars.EagleEyedKills then
 				if not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("EagleEyed")) then
 					player:getTraits():add("EagleEyed");
 					ETWCommonFunctions.traitSound(player);
-					if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_eagleeyed"), true, HaloTextHelper.getColorGreen()) end;
+					if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_eagleeyed"), true, HaloTextHelper.getColorGreen()) end
 				end
 				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("EagleEyed") then
-					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_eagleeyed"), true, HaloTextHelper.getColorGreen()) end;
+					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_eagleeyed"), true, HaloTextHelper.getColorGreen()) end
 					ETWCommonFunctions.addTraitToDelayTable(modData, "EagleEyed", player, true);
 					ETWCommonFunctions.traitSound(player);
 				end
@@ -172,41 +180,41 @@ local function braverySystemETW(zombie)
 		if (totalKills + meleeKills) >= threshold then -- melee kills counted double
             if player:HasTrait(trait) and negativeTrait and (not cantHaveTrait or not player:HasTrait(cantHaveTrait)) and SBvars.TraitsLockSystemCanLoseNegative then
 				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(trait) then
-					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringRemove") .. getText("UI_trait_" .. (trait == "Cowardly" and "cowardly" or trait)), true, HaloTextHelper.getColorGreen()) end;
+					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringRemove") .. getText("UI_trait_" .. (trait == "Cowardly" and "cowardly" or trait)), true, HaloTextHelper.getColorGreen()) end
 					ETWCommonFunctions.addTraitToDelayTable(ETWModData, trait, player, false);
 					ETWCommonFunctions.traitSound(player);
 				elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(trait)) then
 					player:getTraits():remove(trait);
 					ETWCommonFunctions.traitSound(player);
-					if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_" .. (trait == "Cowardly" and "cowardly" or trait)), false, HaloTextHelper.getColorGreen()) end;
+					if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_" .. (trait == "Cowardly" and "cowardly" or trait)), false, HaloTextHelper.getColorGreen()) end
 				end
             elseif not player:HasTrait(trait) and positiveTrait and (not cantHaveTrait or not player:HasTrait(cantHaveTrait)) and (not requiredTrait or player:HasTrait(requiredTrait)) and SBvars.TraitsLockSystemCanGainPositive then
 				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(trait) then
-					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_" .. (trait == "Brave" and "brave" or trait)), true, HaloTextHelper.getColorGreen()) end;
+					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_" .. (trait == "Brave" and "brave" or trait)), true, HaloTextHelper.getColorGreen()) end
 					ETWCommonFunctions.addTraitToDelayTable(ETWModData, trait, player, true);
 					ETWCommonFunctions.traitSound(player);
 				elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(trait)) then
 					player:getTraits():add(trait);
 					ETWCommonFunctions.traitSound(player);
-					if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_" .. (trait == "Brave" and "brave" or trait)), true, HaloTextHelper.getColorGreen()) end;
+					if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_" .. (trait == "Brave" and "brave" or trait)), true, HaloTextHelper.getColorGreen()) end
 					if trait == "Desensitized" then
 						Events.OnZombieDead.Remove(braverySystemETW);
 						if SBvars.BraverySystemRemovesOtherFearPerks == true and SBvars.TraitsLockSystemCanLoseNegative then
 							if player:HasTrait("Agoraphobic") then
 								player:getTraits():remove("Agoraphobic");
-								if notification() then HaloTextHelper.addTextWithArrow(player, "UI_trait_agoraphobic", false, HaloTextHelper.getColorGreen()) end;
+								if notification() then HaloTextHelper.addTextWithArrow(player, "UI_trait_agoraphobic", false, HaloTextHelper.getColorGreen()) end
 							end
 							if player:HasTrait("Claustophobic") then
 								player:getTraits():remove("Claustophobic");
-								if notification() then HaloTextHelper.addTextWithArrow(player, "UI_trait_claustro", false, HaloTextHelper.getColorGreen()) end;
+								if notification() then HaloTextHelper.addTextWithArrow(player, "UI_trait_claustro", false, HaloTextHelper.getColorGreen()) end
 							end
 							if player:HasTrait("Pluviophobia") then
 								player:getTraits():remove("Pluviophobia");
-								if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Pluviophobia"), false, HaloTextHelper.getColorGreen()) end;
+								if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Pluviophobia"), false, HaloTextHelper.getColorGreen()) end
 							end
 							if player:HasTrait("Homichlophobia") then
 								player:getTraits():remove("Homichlophobia");
-								if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Homichlophobia"), false, HaloTextHelper.getColorGreen()) end;
+								if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Homichlophobia"), false, HaloTextHelper.getColorGreen()) end
 							end
 						end
 					end
@@ -229,9 +237,9 @@ local function initializeEventsETW(playerIndex, player)
 		Events.EveryHours.Add(bloodlustTimeETW);
 	end
 	Events.OnWeaponHitCharacter.Remove(eagleEyedETW);
-	if ETWCommonLogicChecks.EagleEyedShouldExecute() then Events.OnWeaponHitCharacter.Add(eagleEyedETW) end;
+	if ETWCommonLogicChecks.EagleEyedShouldExecute() then Events.OnWeaponHitCharacter.Add(eagleEyedETW) end
 	Events.OnZombieDead.Remove(braverySystemETW);
-	if ETWCommonLogicChecks.BraverySystemShouldExecute() then Events.OnZombieDead.Add(braverySystemETW) end;
+	if ETWCommonLogicChecks.BraverySystemShouldExecute() then Events.OnZombieDead.Add(braverySystemETW) end
 end
 
 ---Function responsible for clearing events
@@ -241,20 +249,10 @@ local function clearEventsETW(character)
 	Events.EveryHours.Remove(bloodlustTimeETW)
 	Events.OnWeaponHitCharacter.Remove(eagleEyedETW);
 	Events.OnZombieDead.Remove(braverySystemETW);
-	if detailedDebug() then print("ETW Logger | System: clearEventsETW in ETWByKills.lua") end;
+	if detailedDebug() then print("ETW Logger | System: clearEventsETW in ETWByKills.lua") end
 end
 
 Events.OnCreatePlayer.Remove(initializeEventsETW);
 Events.OnCreatePlayer.Add(initializeEventsETW);
 Events.OnPlayerDeath.Remove(clearEventsETW);
 Events.OnPlayerDeath.Add(clearEventsETW);
-
----Function responsible for setting up events
----@param playerIndex number
----@param player IsoPlayer
-local function initializeModOptions(playerIndex, player)
-	modOptions = PZAPI.ModOptions:getOptions("ETWModOptions");
-end
-
-Events.OnCreatePlayer.Remove(initializeModOptions);
-Events.OnCreatePlayer.Add(initializeModOptions);

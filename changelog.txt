@@ -1,7 +1,27 @@
-v.9.0.1
+v.9.1.0
+
+General:
+	- Kenshi and Sojutsu Martial Artist traits were removed as they were not fitting Zomboid setting
+	- Added Blade Enthusiast trait to fill the place of Kenshi
+	- Added Polearm Specialist trait to fill the place of Sojutsu Martial Artist
+	- Added new trait Pet Therapy which gives mood boost when petting animals and gives +1 Husbandry
+	- Removed dubug option from mod options since its no longer needed after UI was added. All debug outprints are not in detailed debug option.
+Balancing:
+	- I am looking to balance the initial sandbox values and new traits costs to be good for plug-and-play. If you have suggestions regarding initial sandbox values please let me know.
+	- Reminder that defaults changes do not apply to existing saves, use mods to change them, if you want
+Fixes:
+	- Fixed Herbalist not abiding by Traits Lock System
+	- Fixed Immunity Bar not showing up in UI
+	- Fixed ETW modData staying after character died so when creating new character after death without leaving to main menu first would keep old modData
+	- Updated Herbalist to track new herbs added in b42
+Mod Conflicts:
+	- Added Dynamic Traits and Expanded Moodles to incompatblilies, now that game supports it (finally no more questions "why am I getting spammed with weight traits?" from people incapable of reading incompatabilities list)
+Translations:
+	- RU translation was removed. It was done by machine (which is fine by me as long as it's at least chekced after by a human and fixed errors, which it wasn't) and was heavily outdated. The way most of the things where phrased in translation was terrible and very clearly not checked. Around only 40% of translation was usable. If someone wants to provide an actual translation, let me know on discord.
+
+v.8.5.3 - for b41 version of the mod
 
 Fixes:
-	- Fixed all repairing-related code. Means now repairing cars gives progress to earning traits that require it. Also means Restoration Expert is actually working now.
-	- Fixed submod breaking auto-sort in mod menu.
-Translations:
-	- Fixed old translation files for b42 (also you should use english while b42 is unstable, I will not be asking translators to update translatons until b42 is out)
+	- Fixed Herbalist not abiding by Traits Lock System
+	- Fixed Immunity Bar not showing up in UI
+	- Fixed ETW modData staying after character died so when creating new character after death without leaving to main menu first would keep old modData

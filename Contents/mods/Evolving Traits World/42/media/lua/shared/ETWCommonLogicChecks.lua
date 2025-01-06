@@ -4,9 +4,9 @@ local ETWCommonLogicChecks = {};
 local SBvars = SandboxVars.EvolvingTraitsWorld;
 local activatedMods = getActivatedMods();
 
-function ETWCommonLogicChecks.ImmuneSystemShouldExecute()
+function ETWCommonLogicChecks.ImmunitySystemShouldExecute()
 	local player = getPlayer();
-	if SBvars.ImmuneSystem == true and not player:HasTrait("Resilient") and (SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLoseNegative) then
+	if SBvars.ImmunitySystem == true and not player:HasTrait("Resilient") and (SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLoseNegative) then
 		return true
 	else
 		return false
@@ -40,7 +40,7 @@ function ETWCommonLogicChecks.PainToleranceShouldExecute()
 end
 
 function ETWCommonLogicChecks.BloodlustShouldExecute()
-	if not getActivatedMods():contains("EvolvingTraitsWorldDisableBloodlust") and SBvars.Bloodlust == true and (SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLosePositive) then
+	if not getActivatedMods():contains("\\2934686936/EvolvingTraitsWorldDisableBloodlust") and SBvars.Bloodlust == true and (SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLosePositive) then
 		return true
 	else
 		return false
@@ -92,7 +92,7 @@ end
 
 function ETWCommonLogicChecks.HoarderShouldExecute()
 	local player = getPlayer();
-	if not activatedMods:contains("EvolvingTraitsWorldDisableHoarder") and SBvars.Hoarder == true and not player:HasTrait("Hoarder") and SBvars.TraitsLockSystemCanGainPositive then
+	if not activatedMods:contains("\\2934686936/EvolvingTraitsWorldDisableHoarder") and SBvars.Hoarder == true and not player:HasTrait("Hoarder") and SBvars.TraitsLockSystemCanGainPositive then
 		return true
 	else
 		return false
@@ -101,7 +101,7 @@ end
 
 function ETWCommonLogicChecks.GymRatShouldExecute()
 	local player = getPlayer();
-	if not activatedMods:contains("EvolvingTraitsWorldDisableGymRat") and SBvars.GymRat == true and not player:HasTrait("GymRat") and SBvars.TraitsLockSystemCanGainPositive then
+	if not activatedMods:contains("\\2934686936/EvolvingTraitsWorldDisableGymRat") and SBvars.GymRat == true and not player:HasTrait("GymRat") and SBvars.TraitsLockSystemCanGainPositive then
 		return true
 	else
 		return false
@@ -128,7 +128,7 @@ end
 
 function ETWCommonLogicChecks.LightStepShouldExecute()
 	local player = getPlayer();
-	if not activatedMods:contains("EvolvingTraitsWorldDisableLightStep") and SBvars.LightStep == true and not player:HasTrait("LightStep") and SBvars.TraitsLockSystemCanGainPositive then
+	if not activatedMods:contains("\\2934686936/EvolvingTraitsWorldDisableLightStep") and SBvars.LightStep == true and not player:HasTrait("LightStep") and SBvars.TraitsLockSystemCanGainPositive then
 		return true
 	else
 		return false
@@ -173,7 +173,7 @@ end
 
 function ETWCommonLogicChecks.LowProfileShouldExecute()
 	local player = getPlayer();
-	if not activatedMods:contains("EvolvingTraitsWorldDisableLowProfile") and SBvars.LowProfile == true and not player:HasTrait("LowProfile") and SBvars.TraitsLockSystemCanGainPositive then
+	if not activatedMods:contains("\\2934686936/EvolvingTraitsWorldDisableLowProfile") and SBvars.LowProfile == true and not player:HasTrait("LowProfile") and SBvars.TraitsLockSystemCanGainPositive then
 		return true
 	else
 		return false
@@ -218,7 +218,7 @@ end
 
 function ETWCommonLogicChecks.AxeThrowerShouldExecute()
 	local player = getPlayer();
-	if not activatedMods:contains("EvolvingTraitsWorldDisableAxeThrower") and SBvars.AxeThrower == true and not player:HasTrait("AxeThrower") and SBvars.TraitsLockSystemCanGainPositive then
+	if not activatedMods:contains("\\2934686936/EvolvingTraitsWorldDisableAxeThrower") and SBvars.AxeThrower == true and not player:HasTrait("AxeThrower") and SBvars.TraitsLockSystemCanGainPositive then
 		return true
 	else
 		return false
@@ -236,16 +236,16 @@ end
 
 function ETWCommonLogicChecks.StickFighterShouldExecute()
 	local player = getPlayer();
-	if not activatedMods:contains("EvolvingTraitsWorldDisableStickFighter") and SBvars.StickFighter == true and not player:HasTrait("StickFighter") and SBvars.TraitsLockSystemCanGainPositive then
+	if not activatedMods:contains("\\2934686936/EvolvingTraitsWorldDisableStickFighter") and SBvars.StickFighter == true and not player:HasTrait("StickFighter") and SBvars.TraitsLockSystemCanGainPositive then
 		return true
 	else
 		return false
 	end
 end
 
-function ETWCommonLogicChecks.KenshiShouldExecute()
+function ETWCommonLogicChecks.BladeEnthusiastShouldExecute()
 	local player = getPlayer();
-	if not activatedMods:contains("EvolvingTraitsWorldDisableKenshi") and SBvars.Kenshi == true and not player:HasTrait("Kenshi") and SBvars.TraitsLockSystemCanGainPositive then
+	if not activatedMods:contains("\\2934686936/EvolvingTraitsWorldDisableBladeEnthusiast") and SBvars.BladeEnthusiast == true and not player:HasTrait("BladeEnthusiast") and SBvars.TraitsLockSystemCanGainPositive then
 		return true
 	else
 		return false
@@ -254,16 +254,16 @@ end
 
 function ETWCommonLogicChecks.KnifeFighterShouldExecute()
 	local player = getPlayer();
-	if not activatedMods:contains("EvolvingTraitsWorldDisableKnifeFighter") and SBvars.KnifeFighter == true and not player:HasTrait("KnifeFighter") and SBvars.TraitsLockSystemCanGainPositive then
+	if not activatedMods:contains("\\2934686936/EvolvingTraitsWorldDisableKnifeFighter") and SBvars.KnifeFighter == true and not player:HasTrait("KnifeFighter") and SBvars.TraitsLockSystemCanGainPositive then
 		return true
 	else
 		return false
 	end
 end
 
-function ETWCommonLogicChecks.SojutsuShouldExecute()
+function ETWCommonLogicChecks.PolearmFighterShouldExecute()
 	local player = getPlayer();
-	if not activatedMods:contains("EvolvingTraitsWorldDisableSojutsu") and SBvars.Sojutsu == true and not player:HasTrait("Sojutsu") and SBvars.TraitsLockSystemCanGainPositive then
+	if not activatedMods:contains("\\2934686936/EvolvingTraitsWorldDisablePolearmFighter") and SBvars.PolearmFighter == true and not player:HasTrait("PolearmFighter") and SBvars.TraitsLockSystemCanGainPositive then
 		return true
 	else
 		return false
@@ -272,7 +272,7 @@ end
 
 function ETWCommonLogicChecks.RestorationExpertShouldExecute()
 	local player = getPlayer();
-	if not activatedMods:contains("EvolvingTraitsWorldDisableRestorationExpert") and SBvars.RestorationExpert == true and not player:HasTrait("RestorationExpert") and SBvars.TraitsLockSystemCanGainPositive then
+	if not activatedMods:contains("\\2934686936/EvolvingTraitsWorldDisableRestorationExpert") and SBvars.RestorationExpert == true and not player:HasTrait("RestorationExpert") and SBvars.TraitsLockSystemCanGainPositive then
 		return true
 	else
 		return false
@@ -299,7 +299,7 @@ end
 
 function ETWCommonLogicChecks.FurnitureAssemblerShouldExecute()
 	local player = getPlayer();
-	if not activatedMods:contains("EvolvingTraitsWorldDisableFurnitureAssembler") and SBvars.FurnitureAssembler == true and not player:HasTrait("FurnitureAssembler") and SBvars.TraitsLockSystemCanGainPositive then
+	if not activatedMods:contains("\\2934686936/EvolvingTraitsWorldDisableFurnitureAssembler") and SBvars.FurnitureAssembler == true and not player:HasTrait("FurnitureAssembler") and SBvars.TraitsLockSystemCanGainPositive then
 		return true
 	else
 		return false
@@ -308,7 +308,7 @@ end
 
 function ETWCommonLogicChecks.HomeCookShouldExecute()
 	local player = getPlayer();
-	if not activatedMods:contains("EvolvingTraitsWorldDisableHomeCook") and SBvars.HomeCook == true and not player:HasTrait("HomeCook") and SBvars.TraitsLockSystemCanGainPositive then
+	if not activatedMods:contains("\\2934686936/EvolvingTraitsWorldDisableHomeCook") and SBvars.HomeCook == true and not player:HasTrait("HomeCook") and SBvars.TraitsLockSystemCanGainPositive then
 		return true
 	else
 		return false
@@ -344,7 +344,7 @@ end
 
 function ETWCommonLogicChecks.AVClubShouldExecute()
 	local player = getPlayer();
-	if not activatedMods:contains("EvolvingTraitsWorldDisableAVClub") and SBvars.AVClub == true and not player:HasTrait("AVClub") and SBvars.TraitsLockSystemCanGainPositive then
+	if not activatedMods:contains("\\2934686936/EvolvingTraitsWorldDisableAVClub") and SBvars.AVClub == true and not player:HasTrait("AVClub") and SBvars.TraitsLockSystemCanGainPositive then
 		return true
 	else
 		return false
@@ -353,7 +353,7 @@ end
 
 function ETWCommonLogicChecks.BodyWorkEnthusiastShouldExecute()
 	local player = getPlayer();
-	if not activatedMods:contains("EvolvingTraitsWorldDisableBodyWorkEnthusiast") and SBvars.BodyworkEnthusiast == true and not player:HasTrait("BodyWorkEnthusiast") and SBvars.TraitsLockSystemCanGainPositive then
+	if not activatedMods:contains("\\2934686936/EvolvingTraitsWorldDisableBodyWorkEnthusiast") and SBvars.BodyworkEnthusiast == true and not player:HasTrait("BodyWorkEnthusiast") and SBvars.TraitsLockSystemCanGainPositive then
 		return true
 	else
 		return false
@@ -380,7 +380,7 @@ end
 
 function ETWCommonLogicChecks.GunEnthusiastShouldExecute()
 	local player = getPlayer();
-	if not activatedMods:contains("EvolvingTraitsWorldDisableGunEnthusiast") and SBvars.GunEnthusiast == true and not player:HasTrait("GunEnthusiast") and SBvars.TraitsLockSystemCanGainPositive then
+	if not activatedMods:contains("\\2934686936/EvolvingTraitsWorldDisableGunEnthusiast") and SBvars.GunEnthusiast == true and not player:HasTrait("GunEnthusiast") and SBvars.TraitsLockSystemCanGainPositive then
 		return true
 	else
 		return false
@@ -439,7 +439,7 @@ function ETWCommonLogicChecks.HerbalistShouldExecute()
 end
 
 function ETWCommonLogicChecks.RainSystemShouldExecute()
-	if not activatedMods:contains("EvolvingTraitsWorldDisableRainTraits") and SBvars.RainSystem == true and (SBvars.TraitsLockSystemCanGainNegative or SBvars.TraitsLockSystemCanLoseNegative or SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLosePositive) then
+	if not activatedMods:contains("\\2934686936/EvolvingTraitsWorldDisableRainTraits") and SBvars.RainSystem == true and (SBvars.TraitsLockSystemCanGainNegative or SBvars.TraitsLockSystemCanLoseNegative or SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLosePositive) then
 		return true
 	else
 		return false
@@ -447,7 +447,15 @@ function ETWCommonLogicChecks.RainSystemShouldExecute()
 end
 
 function ETWCommonLogicChecks.FogSystemShouldExecute()
-	if not activatedMods:contains("EvolvingTraitsWorldDisableFogTraits") and SBvars.FogSystem == true and (SBvars.TraitsLockSystemCanGainNegative or SBvars.TraitsLockSystemCanLoseNegative or SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLosePositive) then
+	if not activatedMods:contains("\\2934686936/EvolvingTraitsWorldDisableFogTraits") and SBvars.FogSystem == true and (SBvars.TraitsLockSystemCanGainNegative or SBvars.TraitsLockSystemCanLoseNegative or SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLosePositive) then
+		return true
+	else
+		return false
+	end
+end
+
+function ETWCommonLogicChecks.PetTherapyShouldExecute()
+	if not activatedMods:contains("\\2934686936/EvolvingTraitsWorldDisablePetTherapy") and SBvars.PetTherapy == true and (SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLosePositive) then
 		return true
 	else
 		return false

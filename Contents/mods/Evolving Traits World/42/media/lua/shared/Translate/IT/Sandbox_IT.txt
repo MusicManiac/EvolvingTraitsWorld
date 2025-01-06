@@ -44,11 +44,9 @@ Sandbox_IT = {
 	Sandbox_ETW_BaseballPlayerKills = "Quante uccisioni servono per diventare Giocatore di Baseball",
 
 	Sandbox_ETW_Bloodlust = "Sete di Sangue",
-	Sandbox_ETW_Bloodlust_tooltip = "---Spiegazione generale---<br>Questo tratto ti consente di ottenere un vantaggio riempiendo e mantenendo pieno l'indicatore della sete di sangue. Questo indicatore ha un limite orientativo di 72 ore e può essere riempito uccidendo gli zombie entro una certa distanza. Più gli zombie sono vicini, più velocemente si riempirà l'indicatore. Quando l'indicatore è sopra la metà, ogni ora ti darà progressi verso il tratto Sete di sangue, quando è sotto la metà, rimuoverà i progressi. L'indicatore di Sete di sangue diminuisce automaticamente di 1 ogni ora.<br>---Descrizione tecnica, non leggerla se non vuoi fare meta-game---<br>Per riempire l'indicatore di sete di sangue, devi uccidere gli zombie entro una certa distanza. La quantità esatta di riempimento del misuratore è determinata da una formula che tiene conto della distanza degli zombie e di un moltiplicatore. La formula precisa è: math.min(1 / distance, 1) * moltiplicatore. Ogni ora il contatore si riduce di uno. Se il tuo indicatore di sete di sangue è superiore alla metà, ogni ora ne guadagnerai il 10% come progresso verso l'ottenimento del tratto. Se è inferiore al 50%, perderai 3,6-0,1*BloodlustBar, quindi se sei leggermente al di sotto del 50%, perdi circa l'1,8 ma se sei allo 0%, perderai 3,6 dei tuoi progressi. Il progresso è limitato a 2 volte il valore del progresso di Sete di sangue",
 	Sandbox_ETW_BloodlustMeterFillMultiplier = "Moltiplicatore di riempimento dell'indicatore di Sete di sangue",
 	Sandbox_ETW_BloodlustMeterFillMultiplier_tooltip = "Quanto velocemente riempi l'indicatore di Sete di sangue",
 	Sandbox_ETW_BloodlustProgress = "Progresso di sete di sangue",
-	Sandbox_ETW_BloodlustProgress_tooltip = "Quanto progresso totale di Sete di sangue è necessario per ottenere il tratto. Mantenere pieno il tuo indicatore di Sete di sangue ti farebbe guadagnare 3,6 punti in 1 ora. Tieni presente che perdi anche il tratto Sete di sangue se questo parametro scende sotto il 50%. Quindi, se lo imposti basso, sarà facile guadagnare ma anche facile perdere il vantaggio. Il progresso è limitato a 2 volte il valore del progresso di sete di sangue.",
 	Sandbox_ETW_BloodlustMoodle = "Abilita moodle Sete di sangue",
 	Sandbox_ETW_BloodlustMoodle_tooltip = "Se questa opzione è disabilitata, il Moodle non verrà visualizzato. Per giocatore singolo, lascialo attivo e cambia il moodle che vedi nelle opzioni mod. Se si tratta di un'impostazione del server, i giocatori non saranno in grado di abilitare il Moodle lato client.",
 	Sandbox_ETW_BloodlustMoodleVisibilityHours = "Ore di visibilità del moodle di Sete di sangue",
@@ -64,7 +62,6 @@ Sandbox_IT = {
 
 	Sandbox_ETW_BraverySystem = "Sistema di Coraggio",
 	Sandbox_ETW_BraverySystemKills = "Uccisioni per migliorare i tratti sul coraggio",
-	Sandbox_ETW_BraverySystemKills_tooltip = "Qui imposti quante uccisioni ti servono per migliorare al MASSIMO il tuo sistema di coraggio. Le uccisioni in mischia contano due volte per il progresso. La progressione è la seguente: Codardo -> Paura del sangue -> Pacifista -> Drogato di adrenalina -> Coraggioso -> Desensibilizzato<br> Gli importi da raggiungere in ogni livello sono i seguenti:<br>Codardo: 10% delle uccisioni massime<br>Paura del sangue: 20% delle uccisioni massime<br>Pacifista: 30% delle uccisioni massime<br>Drogato di adrenalina: 40% delle uccisioni massime<br>Coraggioso: 60% delle uccisioni massime<br>Desensibilizzato: 100% delle uccisioni massime< br>Esempio: il numero massimo di uccisioni è impostato su 1000. Inizi con Codardo. Hai bisogno di 100 uccisioni per rimuoverlo. Se ottieni 50 uccisioni in mischia, verrà rimosso. Lo stesso vale se ottieni 40 uccisioni corpo a corpo (x2 = 80 uccisioni per contrattacco) e 20 uccisioni con armi da fuoco",
 	Sandbox_ETW_BraverySystemRemovesOtherFearPerks = "Il sistema di coraggio rimuove gli altri tratti della paura",
 	Sandbox_ETW_BraverySystemRemovesOtherFearPerks_tooltip = "Se abilitato, essere desensibilizzato rimuoverà anche altri tratti inerenti alla paura attraverso il sistema di coraggio come Pluviofilia, Nebulofobia, Agorafobico, Claustrofobico e ti impedirà di ottenerli.",
 
@@ -80,8 +77,7 @@ Sandbox_IT = {
 
 	Sandbox_ETW_CatEyes = "Occhi di Gatto",
 	Sandbox_ETW_CatEyesCounter = "Contatore per Occhi di Gatto",
-	Sandbox_ETW_CatEyesCounter_tooltip = "---Spiegazione generale---<br>Questo sistema ti consente di guadagnare punti vedendo e osservando nelle caselle entro un certo raggio dal tuo personaggio. Il numero di punti che guadagni è influenzato da fattori come l'ora del giorno, l'oscurità delle caselle e se tu e la casella siete all'interno o all'esterno. Più caselle vedi e più sono scure, più punti guadagnerai.<br>---Descrizione tecnica, non leggerla se non vuoi fare meta-game---<br>Per guadagnare punti per questo tratto, devi vedere e osservare le caselle entro un raggio di 30 dal tuo personaggio. Il numero esatto di punti che guadagni per ogni casella è determinato da una formula che tiene conto dell'oscurità del tile, dell'ora del giorno e se tu e la casella siete all'interno o all'esterno. La formula dettagliata per il calcolo dei punti per ogni casella è: 0,01 * oscurità della casella * 2 (se sia il giocatore che la casella sono all'interno) * ora del giorno. In media, trascorrere un'intera notte all'aperto ti farà guadagnare circa 1,1k punti.",
-
+	
 	Sandbox_ETW_Clumsy = "Goffo",
 	Sandbox_ETW_ClumsySkill = "Abilità richiesta per rimuovere Goffo",
 	Sandbox_ETW_ClumsySkill_tooltip = "Furtività + Passo Leggero",
@@ -122,7 +118,6 @@ Sandbox_IT = {
 
 	Sandbox_ETW_FogSystem = "Sistema di nebbia",
 	Sandbox_ETW_FogSystemCounter = "Contatore del sistema di nebbia",
-	Sandbox_ETW_FogSystemCounter_tooltip = "Ottieni IntensitaNebbia * MoltiplicatoreDiAumentoDelSistemaDiIntensitàDiNebbia ogni minuto che trascorri nella nebbia. Al contrario, perdi InstensitàDiNebbia * Panico * 0.9 * MoltiplicatoreDiAumentoDelSistemaDiIntensitàDiNebbia con condizioni opposte. I limiti massimo e minimo del contatore sono -2*contatore e 2*contatore. Quando sei sotto-contatore, ottieni Nebulofobia, quando raggiungi il contatore, ottieni Nebulofilia. Nel mezzo, non ottieni nulla.",
 	Sandbox_ETW_FogSystemCounterIncreaseMultiplier = "Moltiplicatore del contatore di aumento della nebbia",
 	Sandbox_ETW_FogSystemCounterIncreaseMultiplier_tooltip = "Regola la velocità con cui aumenta il tuo contatore, trovi i dettagli nella descrizione del contatore del sistema di nebbia",
 	Sandbox_ETW_FogSystemCounterDecreaseMultiplier = "Moltiplicatore del contatore di diminuzione della nebbia",
@@ -130,8 +125,7 @@ Sandbox_IT = {
 
 	Sandbox_ETW_FoodSicknessSystem = "Sistema di malattie alimentari",
 	Sandbox_ETW_FoodSicknessSystemCounter = "Contatore del sistema di malattie alimentari",
-	Sandbox_ETW_FoodSicknessSystemCounter_tooltip = "Quanto tempo devi trascorrere con una malattia alimentare per perdere/guadagnare i tratti relativi allo stomaco, Stomaco Debole e Stomaco di Ferro. La malattia deve essere compresa tra 0 e 1, sapendo che a 1 puoi effettivamente morire. Ogni minuto che passa durante la malattia aggiunge 1 al contatore.",
-
+	
 	Sandbox_ETW_FurnitureAssembler = "Assemblatore di Mobilio",
 	Sandbox_ETW_FurnitureAssemblerSkill = "Abilità di Carpenteria richiesta per Assemblatore di Mobilio",
 
@@ -204,9 +198,9 @@ Sandbox_IT = {
 	Sandbox_ETW_InventoryTransferSystemWeight = "Contatore del peso",
 	Sandbox_ETW_InventoryTransferSystemWeight_tooltip = "Quanto peso (e oggetti) devi trasferire per guadagnare/perdere i tratti relativi al trasferimento degli oggetti: Disorganizzato, Organizzato, Impacciato, Abile, Dita di Burro (More Traits)<br>Disorganizzato: 66% del contatore del peso e 33% del contatore degli oggetti<br>Organizzato: 100% del contatore del peso e 66% del contatore degli oggetti<br>Tutti i pollici: 33% del contatore del peso e 66% del contatore degli oggetti<br>Abile: 66% del contatore del peso e 100% del contatore degli oggetti .<br>Dita di Burro (More Traits): 150% del contatore del peso e 150% del contatore degli oggetti.",
 
-	Sandbox_ETW_Kenshi = "Kenshi",
-	Sandbox_ETW_KenshiSkill = "Abilità di Lama Lunga richiesta per Kenshi",
-	Sandbox_ETW_KenshiKills = "Uccisioni con Lama Lunga richieste per Kenshi",
+	Sandbox_ETW_BladeEnthusiast = "BladeEnthusiast",
+	Sandbox_ETW_BladeEnthusiastSkill = "Abilità di Lama Lunga richiesta per BladeEnthusiast",
+	Sandbox_ETW_BladeEnthusiastKills = "Uccisioni con Lama Lunga richieste per BladeEnthusiast",
 
 	Sandbox_ETW_KnifeFighter = "Combattente da Coltello",
 	Sandbox_ETW_KnifeFighterSkill = "Abilità di Lama Corta richiesta per Combattente da Coltello",
@@ -240,8 +234,7 @@ Sandbox_IT = {
 
 	Sandbox_ETW_RainSystem = "Rain System",
 	Sandbox_ETW_RainSystemCounter = "Contatore del sistema di pioggia",
-	Sandbox_ETW_RainSystemCounter_tooltip = "Ottieni 1 * IntensitaDiPioggia ogni minuto che trascorri sotto la pioggia. Se hai oltre il 25% di panico invece, perdi 1 * IntensitàDiPioggia * PercentualeDiPanico * MoltiplicatoreDiminuitivoDelSistemaDiPioggia. I limiti max e min del contatore sono -2contatore e 2*contatore. Quando sei sotto -contatore, ottieni Pluviofobia, quando raggiungi il contatore, ottieni Pluviofilia. Nel mezzo, non ottieni nulla.",
-		Sandbox_ETW_RainSystemCounterIncreaseMultiplier = "Moltiplicatore diminuitivo del Sistema di pioggia",
+	Sandbox_ETW_RainSystemCounterIncreaseMultiplier = "Moltiplicatore diminuitivo del Sistema di pioggia",
 	Sandbox_ETW_RainSystemCounterIncreaseMultiplier_tooltip = "Definisce la velocità o la lentezza con cui riduci il contatore del sistema di pioggia, spiegato nel tooltip del contatore del sistema di pioggia",
 	Sandbox_ETW_PluviophileMultiplier = "Moltiplicatore dell'effetto di pluviofilia",
 	Sandbox_ETW_PluviophileMultiplier_tooltip = "Tutti gli effetti (diminuzione di infelicità, stress e noia) vengono moltiplicati per questo valore.",
@@ -274,10 +267,6 @@ Sandbox_IT = {
 	Sandbox_ETW_SlowLearner = "Allievo Distratto",
 	Sandbox_ETW_SlowLearnerSkill = "Abilità richieste per rimuovere Allievo Distratto",
 	Sandbox_ETW_SlowLearnerSkill_tooltip = "Manutenzione + Carpenteria + Cucinare + Coltivazione + Pronto Soccorso + Elettrica + Lavorazione Metalli + Meccanica + Sartoria",
-
-	Sandbox_ETW_Sojutsu = "Praticante di Sojutsu",
-	Sandbox_ETW_SojutsuSkill = "Abilità di Lancia richiesta per Praticante di Sojutsu",
-	Sandbox_ETW_SojutsuKills = "Uccisioni con Lancia richieste per Praticante di Sojutsu",
 
 	Sandbox_ETW_StickFighter = "Combattente da Contundente",
 	Sandbox_ETW_StickFighterSkill = "Abilità di Contundente richiesta per Combattente da Contundente",

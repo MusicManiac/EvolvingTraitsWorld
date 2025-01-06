@@ -1,5 +1,3 @@
--- -- EvolvingTraitsWorld = EvolvingTraitsWorld or {};
-
 xpSystemText.ETW = getText("UI_ETW");
 
 ---Function responsible for opening up ETW UI
