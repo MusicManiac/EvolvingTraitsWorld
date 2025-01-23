@@ -50,10 +50,11 @@ function ETWCommonFunctions.indexOf(tbl, value)
 end
 
 ---Plays a sound if enabled in settings
----@param player IsoPlayer
+---@param player IsoPlayer|IsoGameCharacter
 function ETWCommonFunctions.traitSound(player)
 	if modOptions:getOption("EnableSoundNotifications"):getValue() then
-		player:playSoundLocal("ETWGainTrait");
+		local soundTable = {"ETW_b42", "ETW_b41", "ETW_TLOU", "ETW_SkyrimSkill", "ETW_SkyrimLevel", "ETW_Oblivion", "ETW_Diablo2", "ETW_Witcher3", "ETW_FalloutNV", "ETW_AoE3", "ETW_WoW"};
+		player:playSoundLocal(soundTable[modOptions:getOption("SoundNotificationSoundSelect"):getValue()]);
 	end
 end
 
@@ -76,27 +77,80 @@ function ETWCommonFunctions.delayedTraitsDataDump()
 	end
 end
 
----Set new XP boost
----@param player IsoPlayer
----@param perk Perk
----@param boostLevel number
-function ETWCommonFunctions.applyXPBoost(player, perk, boostLevel)
-	local newBoost = player:getXp():getPerkBoost(perk) + boostLevel;
-	if newBoost > 3 then
-		player:getXp():setPerkBoost(perk, 3);
-	else
-		player:getXp():setPerkBoost(perk, newBoost);
+---Adds xp boosts from a trait to a player
+---@param traitName string
+local function addXPBoostsFromTrait(traitName)
+	local player = getPlayer();
+	local trait = TraitFactory.getTrait(traitName);
+	local xpBoostMap = trait:getXPBoostMap();
+	if xpBoostMap then
+		print("--------  XP Boost Map: ", xpBoostMap, type(xpBoostMap));
+		local table = transformIntoKahluaTable(xpBoostMap);
+		print("--------  XP Boost Map (table): ", table, type(table));
+		for perkName, boostLevel in pairs(table) do
+			print("-------- applying boost to traitname: ", perkName, " boostLevel: ", boostLevel, type(boostLevel));
+			local perk = PerkFactory.getPerkFromName(tostring(perkName));
+			local currentBoost = player:getXp():getPerkBoost(perk);
+			local newBoost = math.min(currentBoost + tonumber(tostring(boostLevel)), 3);
+			---@cast newBoost integer
+			player:getXp():setPerkBoost(perk, newBoost);
+		end
 	end
 end
 
----Add recipe to a player
----@param player IsoPlayer
----@param recipe string
-function ETWCommonFunctions.addRecipe(player, recipe)
+---Add recipes from a trait to player
+---@param traitName string
+local function addRecipes(traitName)
+	local player = getPlayer();
+	local trait = TraitFactory.getTrait(traitName);
+	local freeRecipes = trait:getFreeRecipes();
 	local playerRecipes = player:getKnownRecipes();
-	if not playerRecipes:contains(recipe) then
-		playerRecipes:add(recipe);
+	if detailedDebug then print("ETW Logger | ETWCommonFunctions.addRecipes(): adding recipes for trait " .. traitName) end
+	for i = 0, freeRecipes:size() - 1 do
+		local recipe = freeRecipes:get(i);
+		if not playerRecipes:contains(recipe) then
+			if detailedDebug then print("ETW Logger | ETWCommonFunctions.addRecipes(): player doesn't have " .. recipe .. ", adding it to known recipes") end
+			playerRecipes:add(recipe);
+		end
 	end
+end
+
+---Removes recipes from a trait from a player
+---@param traitName string
+local function removeRecipes(traitName)
+	local player = getPlayer();
+	local trait = TraitFactory.getTrait(traitName);
+	local freeRecipes = trait:getFreeRecipes();
+	local playerRecipes = player:getKnownRecipes();
+	if detailedDebug then print("ETW Logger | ETWCommonFunctions.removeRecipes(): removing recipies for trait " .. traitName) end
+	for i = 0, freeRecipes:size() - 1 do
+		local recipe = freeRecipes:get(i);
+		if playerRecipes:contains(recipe) then
+			if detailedDebug then print("ETW Logger | ETWCommonFunctions.removeRecipes(): player has " .. recipe .. ", removing it from known recipies") end
+			playerRecipes:remove(recipe);
+		end
+	end
+end
+
+---Adds trait to a player, it's exp boosts, recipes and plays the sound
+---@param traitName string
+function ETWCommonFunctions.addTraitToPlayer(traitName)
+	local player = getPlayer();
+	if detailedDebug then print("ETW Logger | addTraitToPlayer() : adding trait ", traitName) end
+	player:getTraits():add(traitName);
+	addRecipes(traitName);
+	addXPBoostsFromTrait(traitName);
+	ETWCommonFunctions.traitSound(player)
+end
+
+---Remvoes trait from a player, it's recipes and plays the sound
+---@param traitName string
+function ETWCommonFunctions.removeTraitFromPlayer(traitName)
+	local player = getPlayer();
+	if detailedDebug then print("ETW Logger | removeTraitFromPlayer() : removing trait ", traitName) end
+	player:getTraits():remove(traitName);
+	removeRecipes(traitName);
+	ETWCommonFunctions.traitSound(player)
 end
 
 ---Function responsible for adding a trait to a Delayed Traits System
@@ -105,6 +159,8 @@ end
 ---@param player IsoPlayer|IsoGameCharacter
 ---@param positiveTrait boolean
 function ETWCommonFunctions.addTraitToDelayTable(modData, traitName, player, positiveTrait)
+	---@cast player IsoPlayer
+	ETWCommonFunctions.traitSound(player);
 	if not SBvars.DelayedTraitsSystem then return end
 	if detailedDebug() then print("ETW Logger | Delayed Traits System: modData.DelayedStartingTraitsFilled =  " .. tostring(modData.DelayedStartingTraitsFilled)) end
 	if not modData.DelayedStartingTraitsFilled then
@@ -164,6 +220,16 @@ function ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(name)
 	end
 	if detailedDebug() then print("ETW Logger | Delayed Traits System: checking if " .. name .. " is already in the table, it is not.") end
 	return false;
+end
+
+---Prints out debugs inside console if detailedDebug is enabled
+---@param ... string Strings to log
+function ETWCommonFunctions.log(...)
+	if detailedDebug() then
+		for _, str in ipairs({...}) do
+			print(str)
+		end
+	end
 end
 
 return ETWCommonFunctions;

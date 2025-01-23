@@ -24,6 +24,10 @@ local delayedNotification = function() return modOptions:getOption("EnableDelaye
 ---@return boolean
 local detailedDebug = function() return modOptions:getOption("GatherDetailedDebug"):getValue() end
 
+---Prints out debugs inside console if detailedDebug is enabled
+---@param ... string Strings to log
+local logETW = function(...) ETWCommonFunctions.log(...) end
+
 ---Function responsible for processing Bloodlust trait execution logic
 ---@param zombie IsoZombie
 local function OnZombieDeadETW(zombie)
@@ -38,7 +42,10 @@ local function OnZombieDeadETW(zombie)
 		bodyDamage:setUnhappynessLevel(math.max(0, unhappiness - 4 * SBvars.BloodlustMultiplier));
 		stats:setStress(math.max(0, stress - 0.04 * SBvars.BloodlustMultiplier));
 		stats:setPanic(math.max(0, panic - 4 * SBvars.BloodlustMultiplier));
-		if detailedDebug() then print("ETW Logger | OnZombieDeadETW(): Bloodlust kill. Unhappiness:" .. unhappiness .. "->" .. bodyDamage:getUnhappynessLevel() .. ", stress: " .. math.min(1, stress + stressFromCigarettes) .. "->" .. stats:getStress() .. ", panic: " .. panic .. "->" .. stats:getPanic()) end
+		logETW("ETW Logger | OnZombieDeadETW(): Bloodlust kill. Unhappiness:" .. unhappiness .. "->" .. bodyDamage:getUnhappynessLevel()
+			.. ", stress: " .. math.min(1, stress + stressFromCigarettes) .. "->" .. stats:getStress()
+			.. ", panic: " .. panic .. "->" .. stats:getPanic()
+		);
 	end
 end
 
@@ -53,7 +60,7 @@ local function checkWeightLimit(player)
 		if player:HasTrait("packmouse") then maxWeightBase = SandboxVars.MoreTraits.WeightPackMouse end
 		if not player:HasTrait("packmule") and not player:HasTrait("packmouse") then maxWeightBase = SandboxVars.MoreTraits.WeightDefault end
 		maxWeightBase = maxWeightBase + SandboxVars.MoreTraits.WeightGlobalMod;
-		if detailedDebug() then print("ETW Logger | checkWeightLimit(): [ToadTraits present] Set maxWeightBase to " .. maxWeightBase) end
+		logETW("ETW Logger | checkWeightLimit(): [ToadTraits present] Set maxWeightBase to " .. maxWeightBase);
 	end
 
 	if getActivatedMods():contains("SimpleOverhaulTraitsAndOccupations") or getActivatedMods():contains("AliceSPack") then
@@ -65,19 +72,19 @@ local function checkWeightLimit(player)
 		if player:HasTrait("Metalstrongback") or player:HasTrait("Metalstrongback2") then
 			maxWeightBase = maxWeightBase + 4;
 		end
-		if detailedDebug() then print("ETW Logger | checkWeightLimit(): [SOTO/AlicePack compatibility] Set maxWeightBase to " .. tostring(maxWeightBase)) end
+		logETW("ETW Logger | checkWeightLimit(): [SOTO/AlicePack compatibility] Set maxWeightBase to " .. tostring(maxWeightBase));
 	end
 
 	if player:HasTrait("Hoarder") then
 		maxWeightBase = maxWeightBase + strength * SBvars.HoarderWeight;
-		if detailedDebug() then print("ETW Logger | checkWeightLimit(): Set Hoarder maxWeightBase to " .. maxWeightBase) end
+		logETW("ETW Logger | checkWeightLimit(): Set Hoarder maxWeightBase to " .. maxWeightBase);
 	end
 
 	if getActivatedMods():contains("zReArmorPackBYKK") and player:getWornItem("zReExoskeleton") then
 		maxWeightBase = math.floor(maxWeightBase * 1.5)
-		if detailedDebug() then print("ETW Logger | checkWeightLimit(): [zReArmorPackBYKK compatibility] Set maxWeightBase to " .. maxWeightBase) end
+		logETW("ETW Logger | checkWeightLimit(): [zReArmorPackBYKK compatibility] Set maxWeightBase to " .. maxWeightBase);
 	end
-
+	---@cast maxWeightBase integer
 	player:setMaxWeightBase(maxWeightBase);
 end
 
@@ -97,23 +104,25 @@ local function rainTraits(player, rainIntensity)
 		if Pluviophobia then
 			local unhappinessIncrease = 0.1 * rainIntensity * (rainProtection and 0.5 or 1) * SBvars.PluviophobiaMultiplier;
 			bodyDamage:setUnhappynessLevel(math.min(100, bodyDamage:getUnhappynessLevel() + unhappinessIncrease));
-			if detailedDebug() then print("ETW Logger | rainTraits(): unhappinessIncrease:" .. unhappinessIncrease) end
 			local boredomIncrease = 0.02 * rainIntensity * (rainProtection and 0.5 or 1) * SBvars.PluviophobiaMultiplier;
 			stats:setBoredom(math.min(100, stats:getBoredom() + boredomIncrease));
-			if detailedDebug() then print("ETW Logger | rainTraits(): boredomIncrease:" .. boredomIncrease) end
 			local stressIncrease = 0.04 * rainIntensity * (rainProtection and 0.5 or 1) * SBvars.PluviophobiaMultiplier;
 			stats:setStress(math.min(1, stats:getStress() - stressFromCigarettes + stressIncrease));
-			if detailedDebug() then print("ETW Logger | rainTraits(): stressIncrease:" .. stressIncrease) end
+			logETW("ETW Logger | rainTraits(): unhappinessIncrease:" .. unhappinessIncrease,
+				"ETW Logger | rainTraits(): boredomIncrease:" .. boredomIncrease,
+				"ETW Logger | rainTraits(): stressIncrease:" .. stressIncrease
+			);
 		elseif Pluviophile then
 			local unhappinessDecrease = 0.1 * rainIntensity * (rainProtection and 0.5 or 1) * SBvars.PluviophileMultiplier;
 			bodyDamage:setUnhappynessLevel(math.max(0, bodyDamage:getUnhappynessLevel() - unhappinessDecrease));
-			if detailedDebug() then print("ETW Logger | rainTraits(): unhappinessDecrease:" .. unhappinessDecrease) end
 			local boredomDecrease = 0.02 * rainIntensity * (rainProtection and 0.5 or 1) * SBvars.PluviophileMultiplier;
 			stats:setBoredom(math.max(0, stats:getBoredom() - boredomDecrease));
-			if detailedDebug() then print("ETW Logger | rainTraits(): boredomDecrease:" .. boredomDecrease) end
 			local stressDecrease = 0.04 * rainIntensity * (rainProtection and 0.5 or 1) * SBvars.PluviophileMultiplier;
 			stats:setStress(math.max(0, stats:getStress() - stressFromCigarettes - stressDecrease));
-			if detailedDebug() then print("ETW Logger | rainTraits(): stressDecrease:" .. stressDecrease) end
+			logETW("ETW Logger | rainTraits(): unhappinessDecrease:" .. unhappinessDecrease,
+				"ETW Logger | rainTraits(): boredomDecrease:" .. boredomDecrease,
+				"ETW Logger | rainTraits(): stressDecrease:" .. stressDecrease
+			);
 		end
 	end
 end
@@ -132,20 +141,20 @@ local function fogTraits(player, fogIntensity)
 			local resultingPanic = stats:getPanic() + panicIncrease;
 			if resultingPanic <= 50 then
 				stats:setPanic(math.max(0, resultingPanic));
-				if detailedDebug() then print("ETW Logger | fogTraits(): panicIncrease:" .. panicIncrease) end
+				logETW("ETW Logger | fogTraits(): panicIncrease:" .. panicIncrease);
 			end
 			local stressIncrease = 0.04 * fogIntensity * SBvars.HomichlophobiaMultiplier;
 			local resultingStress = math.min(1, stats:getStress() + stressIncrease);
 			if resultingStress <= 0.5 then
 				stats:setStress(math.min(1, resultingStress - stressFromCigarettes));
-				if detailedDebug() then print("ETW Logger | fogTraits(): stressIncrease:" .. stressIncrease) end
+				logETW("ETW Logger | fogTraits(): stressIncrease:" .. stressIncrease);
 			end
 		elseif Homichlophile then
 			local panicDecrease = 4 * fogIntensity * SBvars.HomichlophileMultiplier;
 			stats:setPanic(math.max(0, stats:getPanic() - panicDecrease));
 			local stressDecrease = 0.04 * fogIntensity * SBvars.HomichlophileMultiplier;
 			stats:setStress(math.max(0, stats:getStress() - stressFromCigarettes - stressDecrease));
-			if detailedDebug() then print("ETW Logger | fogTraits(): panicDecrease:" .. panicDecrease .. "stressDecrease: " .. stressDecrease) end
+			logETW("ETW Logger | fogTraits(): panicDecrease:" .. panicDecrease .. "stressDecrease: " .. stressDecrease);
 		end
 	end
 end
@@ -174,7 +183,7 @@ if not getActivatedMods():contains("\\2934686936/EvolvingTraitsWorldDisablePetTh
 			local animalsSystemModData = modData.AnimalsSystem;
 			if animalsSystemModData.MinutesSinceLastPettingWithMoodBoost >= SBvars.PetTherapyMinutesBetweenPets then
 				local animalID = self.animal:getAnimalID()
-				if detailedDebug() then print("ETW Logger | ISPetAnimal:animEvent(pettingFinished): caught, petting animal with ID "..animalID) end
+				logETW("ETW Logger | ISPetAnimal:animEvent(pettingFinished): caught, petting animal with ID "..animalID);
 				if player:HasTrait("PetTherapy") then
 					animalsSystemModData.MinutesSinceLastPettingWithMoodBoost = 0;
 					local bodyDamage = player:getBodyDamage();
@@ -189,23 +198,30 @@ if not getActivatedMods():contains("\\2934686936/EvolvingTraitsWorldDisablePetTh
 					stats:setStress(math.max(0, stress - 0.01 * moodMultiplier));
 					stats:setPanic(math.max(0, panic - 1 * moodMultiplier));
 					stats:setBoredom(math.max(0, boredom - 1 * moodMultiplier));
-					if detailedDebug() then print("ETW Logger | ISPetAnimal:animEvent(): Petting Animal. Unhappiness:" .. unhappiness .. "->" .. bodyDamage:getUnhappynessLevel() .. ", stress: " .. math.min(1, stress + stressFromCigarettes) .. "->" .. stats:getStress() .. ", panic: " .. panic .. "->" .. stats:getPanic() .. ", boredom: " .. boredom .. "->" .. stats:getBoredom()) end
+					logETW("ETW Logger | ISPetAnimal:animEvent(): Petting Animal. Unhappiness:" .. unhappiness .. "->" .. bodyDamage:getUnhappynessLevel()
+						.. ", stress: " .. math.min(1, stress + stressFromCigarettes) .. "->" .. stats:getStress()
+						.. ", panic: " .. panic .. "->" .. stats:getPanic() .. ", boredom: " .. boredom .. "->" .. stats:getBoredom()
+					);
 				elseif not player:HasTrait("PetTherapy") then
 					if ETWCommonFunctions.indexOf(animalsSystemModData.UniqueAnimalsPetted, animalID) == -1 then
 						table.insert(animalsSystemModData.UniqueAnimalsPetted, animalID);
-						if detailedDebug() then print("ETW Logger | ISPetAnimal:animEvent(pettingFinished): petting animal that's not in UniqueAnimalsPetted, added it") end
+						logETW("ETW Logger | ISPetAnimal:animEvent(pettingFinished): petting animal that's not in UniqueAnimalsPetted, added it");
 					end
 					local husbandry = player:getPerkLevel(Perks.Husbandry);
 					if #animalsSystemModData.UniqueAnimalsPetted >= SBvars.PetTherapyUniqueAnimalsPetted and husbandry >= SBvars.PetTherapySkill then
 						if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("PetTherapy") then
-							if delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_PetTherapy"), true, HaloTextHelper.getColorGreen()) end
-							ETWCommonFunctions.traitSound(player);
+							if delayedNotification then
+								HaloTextHelper.addTextWithArrow(
+									player,
+									getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_PetTherapy"),
+									true,
+									HaloTextHelper.getColorGreen()
+								);
+							end
 							ETWCommonFunctions.addTraitToDelayTable(modData, "PetTherapy", player, true);
 						elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("PetTherapy")) then
 							player:getTraits():add("PetTherapy");
-							ETWCommonFunctions.applyXPBoost(player, Perks.Husbandry, 1);
 							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_PetTherapy"), true, HaloTextHelper.getColorGreen()) end
-							ETWCommonFunctions.traitSound(player);
 						end
 					end
 				end
@@ -232,7 +248,9 @@ end
 ---@param player IsoPlayer
 function ETW_InitiatePainToleranceTrait(player)
 	Events.OnTick.Remove(painTolerance);
-	if not getActivatedMods():contains("\\2934686936/EvolvingTraitsWorldDisablePainTolerance") and player:HasTrait("PainTolerance") then Events.OnTick.Add(painTolerance) end
+	if not getActivatedMods():contains("\\2934686936/EvolvingTraitsWorldDisablePainTolerance") and player:HasTrait("PainTolerance") then
+		Events.OnTick.Add(painTolerance)
+	end
 end
 
 ---Function responsible for initializing all traits logic
@@ -245,7 +263,9 @@ local function initializeTraitsLogic(playerIndex, player)
 	Events.EveryOneMinute.Remove(oneMinuteUpdate);
 	Events.EveryOneMinute.Add(oneMinuteUpdate);
 	Events.OnTick.Remove(painTolerance);
-	if not getActivatedMods():contains("\\2934686936/EvolvingTraitsWorldDisablePainTolerance") and getPlayer():HasTrait("PainTolerance") then Events.OnTick.Add(painTolerance) end
+	if not getActivatedMods():contains("\\2934686936/EvolvingTraitsWorldDisablePainTolerance") and getPlayer():HasTrait("PainTolerance") then
+		Events.OnTick.Add(painTolerance)
+	end
 end
 
 ---Function responsible for clearing events
@@ -254,7 +274,7 @@ local function clearEventsETW(character)
 	Events.OnZombieDead.Remove(OnZombieDeadETW);
 	Events.EveryOneMinute.Remove(oneMinuteUpdate);
 	Events.OnTick.Remove(painTolerance);
-	if detailedDebug() then print("ETW Logger | System: clearEventsETW in ETWTraitsLogic.lua") end
+	logETW("ETW Logger | System: clearEventsETW in ETWTraitsLogic.lua");
 end
 
 ---@diagnostic disable-next-line: undefined-global

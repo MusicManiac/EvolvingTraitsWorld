@@ -48,10 +48,10 @@ local function strLen(textManager, str)
 	return textManager:MeasureStringX(UIFont.Small, str)
 end
 
-local function arrangeColumnsInTable()
+local function arrangeColumnsInTable(newLine)
 	x = lineStartPosition;
 	nonBarsEntryNumber = nonBarsEntryNumber + 1;
-	if (nonBarsEntryNumber > nonBarsEntriesPerRow) then
+	if (nonBarsEntryNumber > nonBarsEntriesPerRow) or newLine then
 		y = y + FONT_HGT_SMALL;
 		nonBarsEntryNumber = 1;
 	end
@@ -117,6 +117,9 @@ function ISETWProgressUI:createChildren()
 		local trapping = player:getPerkLevel(Perks.Trapping);
 		local foraging = player:getPerkLevel(Perks.PlantScavenging);
 		local husbandry = player:getPerkLevel(Perks.Husbandry);
+		local carving = player:getPerkLevel(Perks.Carving);
+		local blacksmith = player:getPerkLevel(Perks.Blacksmith);
+		local knapping = player:getPerkLevel(Perks.FlintKnapping);
 
 		local killCountModData;
 		local axeKills = 0;
@@ -646,13 +649,13 @@ function ISETWProgressUI:createChildren()
 
 			str = "+ " .. getText("UI_trait_brave")
 			self.labelBraveryGain = ISLabel:new(barStartPosition + (barLength / 6) * 5 - strLen(textManager, str)/2, y, FONT_HGT_SMALL, str, self.DimmedTextColor.r, self.DimmedTextColor.g, self.DimmedTextColor.b, self.DimmedTextColor.a, UIFont.Small, true)
-			self.labelBraveryGain:setTooltip(getText("Sandbox_ETW_BraverySystemKills_tooltip"))
+			self.labelBraveryGain:setTooltip(getText("UI_ETW_GainTooltip"))
 			self:addChild(self.labelBraveryGain)
 
 			y = y + FONT_HGT_SMALL
 
 			self.labelBraveryBarName = ISLabel:new(barStartPosition - lineStartPosition, y, FONT_HGT_SMALL, getText("Sandbox_ETW_BraverySystem"), self.TextColor.r, self.TextColor.g, self.TextColor.b, self.TextColor.a, UIFont.Small, false)
-			self.labelBraveryBarName:setTooltip(getText("UI_ETW_GainTooltip"))
+			self.labelBraveryBarName:setTooltip(getText("Sandbox_ETW_BraverySystemKills_tooltip"))
 			self:addChild(self.labelBraveryBarName)
 
 			self.barBravery = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
@@ -1062,8 +1065,32 @@ function ISETWProgressUI:createChildren()
 		if ETWCommonLogicChecks.AxemanShouldExecute() then
 			arrangeColumnsInTable();
 			self.labelAxemanProgress = ISLabel:new(x, y, FONT_HGT_SMALL, getText(""), self.TextColor.r, self.TextColor.g, self.TextColor.b, self.TextColor.a, UIFont.Small, true)
-			self.labelAxemanProgress:setTooltip(getText("Sandbox_ETW_AxemanTrees_tooltip"))
+			self.labelAxemanProgress:setTooltip(getText("Sandbox_ETW_AxpertTrees_tooltip"))
 			self:addChild(self.labelAxemanProgress)
+		end
+
+		if ETWCommonLogicChecks.WhittlerShouldExecute() then
+			arrangeColumnsInTable();
+			self.labelWhittlerProgress = ISLabel:new(x, y, FONT_HGT_SMALL, getText(""), self.TextColor.r, self.TextColor.g, self.TextColor.b, self.TextColor.a, UIFont.Small, true)
+			self.labelWhittlerProgress:setTooltip(getText("Sandbox_ETW_WhittlerSkill"))
+			self:addChild(self.labelWhittlerProgress)
+        end
+
+		if ETWCommonLogicChecks.BlacksmithShouldExecute() then
+			arrangeColumnsInTable();
+			self.labelBlacksmithProgress = ISLabel:new(x, y, FONT_HGT_SMALL, getText(""), self.TextColor.r, self.TextColor.g, self.TextColor.b, self.TextColor.a, UIFont.Small, true)
+			self.labelBlacksmithProgress:setTooltip(getText("Sandbox_ETW_BlacksmithSkill"))
+			self:addChild(self.labelBlacksmithProgress)
+        end
+
+		if ETWCommonLogicChecks.WildernessKnowledgeShouldExecute() then
+			local levels = foraging + knapping + maintenance + carving;
+			if foraging < 2 or knapping < 2 or maintenance < 2 or carving < 2 or levels < SBvars.WildernessKnowledgeSkill then
+				arrangeColumnsInTable(true);
+				self.labelWildernessKnowledgeSkillProgress = ISLabel:new(x, y, FONT_HGT_SMALL, getText(""), self.TextColor.r, self.TextColor.g, self.TextColor.b, self.TextColor.a, UIFont.Small, true)
+				self.labelWildernessKnowledgeSkillProgress:setTooltip(getText("Sandbox_ETW_WildernessKnowledgeSkill_tooltip"))
+				self:addChild(self.labelWildernessKnowledgeSkillProgress)
+			end
 		end
 
 		if SBvars.DelayedTraitsSystem then
@@ -1139,6 +1166,9 @@ function ISETWProgressUI:render()
 	local trapping = player:getPerkLevel(Perks.Trapping);
 	local foraging = player:getPerkLevel(Perks.PlantScavenging);
 	local husbandry = player:getPerkLevel(Perks.Husbandry);
+	local carving = player:getPerkLevel(Perks.Carving);
+	local blacksmith = player:getPerkLevel(Perks.Blacksmith);
+	local knapping = player:getPerkLevel(Perks.FlintKnapping);
 
 	local killCountModData = player:getModData().KillCount.WeaponCategory;
 	local axeKills = killCountModData["Axe"].count;
@@ -1228,6 +1258,7 @@ function ISETWProgressUI:render()
 	updateLabel(self.labelInconspicuousProgress, getText("UI_trait_Inconspicuous") .. ": " .. sneaking .. "/" .. SBvars.InconspicuousSkill)
 	updateLabel(self.labelHunterSkillProgress, getText("UI_trait_Hunter") .. ": " .. sneaking + aiming + trapping + shortBlade .. "/" .. SBvars.HunterSkill .. " | " .. sneaking .. "/2 | " .. aiming .. "/2 | " .. trapping .. "/2 | " .. shortBlade .. "/2")
 	updateLabel(self.labelHunterKillsProgress, getText("UI_trait_Hunter") .. ": " .. shortBladeKills + firearmKills .. "/" .. SBvars.HunterKills)
+	updateLabel(self.labelWildernessKnowledgeSkillProgress, getText("UI_trait_WildernessKnowledge") .. ": " .. foraging + knapping + maintenance + carving .. "/" .. SBvars.WildernessKnowledgeSkill .. " | " .. foraging .. "/2 | " .. knapping .. "/2 | " .. maintenance .. "/2 | " .. carving .. "/2")
 	updateLabel(self.labelBrawlerSkillProgress, getText("UI_trait_BarFighter") .. ": " .. axe + longBlunt .. "/" .. SBvars.BrawlerSkill)
 	updateLabel(self.labelBrawlerKillsProgress, getText("UI_trait_BarFighter") .. ": " .. axeKills + longBluntKills .. "/" .. SBvars.BrawlerKills)
 	updateLabel(self.labelAxeThrowerSkillProgress, getText("UI_trait_AxeThrower") .. ": " .. axe .. "/" .. SBvars.AxeThrowerSkill)
@@ -1262,6 +1293,8 @@ function ISETWProgressUI:render()
 	updateLabel(self.labelCatEyesProgress, getText("UI_trait_NightVision") .. ": " .. math.floor(modData.CatEyesCounter) .. "/" .. SBvars.CatEyesCounter)
 	updateLabel(self.labelHerbalistProgress, getText("UI_trait_Herbalist") .. ": " .. math.floor(modData.HerbsPickedUp) .. "/" .. SBvars.HerbalistHerbsPicked)
 	updateLabel(self.labelAxemanProgress, getText("UI_trait_axeman") .. ": " .. modData.TreesChopped .. "/" .. SBvars.AxemanTrees)
+	updateLabel(self.labelWhittlerProgress, getText("UI_trait_Whittler") .. ": " .. carving .. "/" .. SBvars.WhittlerSkill)
+	updateLabel(self.labelBlacksmithProgress, getText("UI_trait_Blacksmith") .. ": " .. blacksmith .. "/" .. SBvars.BlacksmithSkill)
 
 	if self.labelDelayedTraitsSystem ~= nil then
 		local textManager = getTextManager()

@@ -156,7 +156,7 @@ local function braverySystemETW(zombie)
 		{ trait = "Pacifist", threshold = braveryKills * 0.3, remove = true, cantHaveTrait = "Hemophobic"},
 		{ trait = "AdrenalineJunkie", threshold = braveryKills * 0.4, add = true, cantHaveTrait = "Pacifist"},
 		{ trait = "Brave", threshold = braveryKills * 0.6, add = true, requiredTrait = "AdrenalineJunkie" },
-		{ trait = "Desensitized", threshold = braveryKills, add = true }
+		{ trait = "Desensitized", threshold = braveryKills, add = true, requiredTrait = "Brave" }
 	};
 	for i = 1, #traitInfo do
 		local info = traitInfo[i]
@@ -177,6 +177,7 @@ local function braverySystemETW(zombie)
 					ETWCommonFunctions.traitSound(player);
 					if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_" .. (trait == "Cowardly" and "cowardly" or trait)), false, HaloTextHelper.getColorGreen()) end;
 				end
+				return
             elseif not player:HasTrait(trait) and positiveTrait and (not cantHaveTrait or not player:HasTrait(cantHaveTrait)) and (not requiredTrait or player:HasTrait(requiredTrait)) and SBvars.TraitsLockSystemCanGainPositive then
 				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(trait) then
 					if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_" .. (trait == "Brave" and "brave" or trait)), true, HaloTextHelper.getColorGreen()) end;
@@ -208,6 +209,7 @@ local function braverySystemETW(zombie)
 						end
 					end
 				end
+				return
 			end
 		end
 	end

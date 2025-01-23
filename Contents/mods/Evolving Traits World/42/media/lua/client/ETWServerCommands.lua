@@ -1,9 +1,8 @@
-if not isClient() then return end
-
 require "ETWModData";
 require "ETWModOptions";
 local ETWCombinedTraitChecks = require("ETWCombinedTraitChecks");
-local ETWCommonLogicChecks = require "ETWCommonLogicChecks";
+local ETWCommonLogicChecks = require("ETWCommonLogicChecks");
+local ETWCommonFunctions = require("ETWCommonFunctions");
 
 local modOptions;
 
@@ -24,6 +23,10 @@ local delayedNotification = function() return modOptions:getOption("EnableDelaye
 ---@return boolean
 local detailedDebug = function() return modOptions:getOption("GatherDetailedDebug"):getValue() end
 
+---Prints out debugs inside console if detailedDebug is enabled
+---@param ... string Strings to log
+local logETW = function(...) ETWCommonFunctions.log(...) end
+
 local Commands = {}
 Commands.ETW = {}
 
@@ -39,7 +42,7 @@ Commands.ETW.carRepairCheck = function(args)
 	---@type DebugAndNotificationArgs
 	local DebugAndNotificationArgs = {detailedDebug = detailedDebug(), notification = notification(), delayedNotification = delayedNotification()};
 	---@cast modData EvolvingTraitsWorldModData
-	if detailedDebug() then print("ETW Logger | Commands.ETW.carRepairCheck: args.repairedPercentage: " .. args.repairedPercentage) end
+	logETW("ETW Logger | Commands.ETW.carRepairCheck: args.repairedPercentage: " .. args.repairedPercentage);
 	modData.VehiclePartRepairs = modData.VehiclePartRepairs + args.repairedPercentage;
 	if ETWCommonLogicChecks.BodyWorkEnthusiastShouldExecute() then ETWCombinedTraitChecks.bodyworkEnthusiastCheck(DebugAndNotificationArgs) end
 	if ETWCommonLogicChecks.MechanicsShouldExecute() then ETWCombinedTraitChecks.mechanicsCheck(DebugAndNotificationArgs) end
@@ -48,7 +51,7 @@ end
 ---Send debug settings to server
 Commands.ETW.debugInfoRequest = function()
 	local player = getPlayer();
-	if detailedDebug() then print("ETW Logger | Commands.ETW.debugInfoRequest recieved") end
+	logETW("ETW Logger | Commands.ETW.debugInfoRequest recieved");
 	local args = {detailedDebug = detailedDebug(), notification = notification(), delayedNotification = delayedNotification()};
 	sendClientCommand(player, 'ETW', 'debugInfoReply', args);
 end

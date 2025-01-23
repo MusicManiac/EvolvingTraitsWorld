@@ -47,15 +47,23 @@ function OnEat_Cigarettes(food, character, percent)
 		local modData = character:getModData().EvolvingTraitsWorld;
 		local smokerModData = modData.SmokeSystem; -- SmokingAddiction MinutesSinceLastSmoke
 		local timeSinceLastSmoke = character:getTimeSinceLastSmoke() * 60;
-		if detailedDebug() then print("ETW Logger | OnEat_Cigarettes(): timeSinceLastSmoke: " .. timeSinceLastSmoke .. ", modData.MinutesSinceLastSmoke: " .. smokerModData.MinutesSinceLastSmoke) end
+		if detailedDebug() then
+			print(
+				"ETW Logger | OnEat_Cigarettes(): timeSinceLastSmoke: " .. timeSinceLastSmoke
+				.. ", modData.MinutesSinceLastSmoke: " .. smokerModData.MinutesSinceLastSmoke
+			);
+		end
 		local stress = character:getStats():getStress(); -- stress is 0-1, may be higher with stress from cigarettes
 		local panic = character:getStats():getPanic(); -- 0-100
-		local addictionGain = SBvars.SmokingAddictionMultiplier * (1 + stress) * (1 + panic / 100) * 1000 / (math.max(timeSinceLastSmoke, smokerModData.MinutesSinceLastSmoke) + 100);
+		local addictionGain = SBvars.SmokingAddictionMultiplier * (1 + stress) * (1 + panic / 100)
+			* 1000 / (math.max(timeSinceLastSmoke, smokerModData.MinutesSinceLastSmoke) + 100);
 		if SBvars.AffinitySystem and modData.StartingTraits.Smoker then
 			addictionGain = addictionGain * SBvars.AffinitySystemGainMultiplier;
 		end
 		smokerModData.SmokingAddiction = math.min(SBvars.SmokerCounter * 2, smokerModData.SmokingAddiction + addictionGain);
-		if detailedDebug() then print("ETW Logger | OnEat_Cigarettes(): addictionGain: " .. addictionGain .. ", modData.SmokingAddiction: " .. smokerModData.SmokingAddiction) end
+		if detailedDebug() then
+			print("ETW Logger | OnEat_Cigarettes(): addictionGain: " .. addictionGain .. ", modData.SmokingAddiction: " .. smokerModData.SmokingAddiction);
+		end
 		smokerModData.MinutesSinceLastSmoke = 0;
 	end
 	original_OnEat_Cigarettes(food, character, percent);
@@ -63,7 +71,7 @@ end
 
 local original_Recipe_OnCreate_RipClothing = Recipe.OnCreate.RipClothing;
 ---Overwriting Recipe.OnCreate.RipClothing() here to insert ETW logic catching player ripping clothing
----@param craftRecipeData 
+---@param craftRecipeData
 ---@param character IsoPlayer
 function Recipe.OnCreate.RipClothing(craftRecipeData, character)
 	if not isServer() then
@@ -129,7 +137,12 @@ function CraftRecipeCode.GenericFixer(craftRecipeData, player, factor, item, ski
 	local bodyWorkEnthusiastShouldExecute = ETWCommonLogicChecks.BodyWorkEnthusiastShouldExecute();
 	if conditionAfter > conditionBefore and isVehiclePart(craftRecipeData, item, skill) and (mechanicsShouldExecute or bodyWorkEnthusiastShouldExecute) then
 		modData.VehiclePartRepairs = modData.VehiclePartRepairs + (conditionAfter - conditionBefore);
-		if detailedDebug() then print("ETW Logger | ISFixAction.perform(): car part " .. conditionBefore .. "->" .. conditionAfter .. " VehiclePartRepairs=" .. modData.VehiclePartRepairs) end
+		if detailedDebug() then
+			print(
+				"ETW Logger | ISFixAction.perform(): car part " .. conditionBefore .. "->" .. conditionAfter
+				.. " VehiclePartRepairs=" .. modData.VehiclePartRepairs
+			);
+		end
 		if bodyWorkEnthusiastShouldExecute then ETWCombinedTraitChecks.bodyworkEnthusiastCheck(DebugAndNotificationArgs) end
 		if mechanicsShouldExecute then ETWCombinedTraitChecks.mechanicsCheck(DebugAndNotificationArgs) end
 	end

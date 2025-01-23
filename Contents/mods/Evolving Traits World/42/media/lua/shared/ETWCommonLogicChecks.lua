@@ -252,6 +252,15 @@ function ETWCommonLogicChecks.BladeEnthusiastShouldExecute()
 	end
 end
 
+function ETWCommonLogicChecks.BlacksmithShouldExecute()
+	local player = getPlayer();
+	if SBvars.Blacksmith == true and not player:HasTrait("Blacksmith") and SBvars.TraitsLockSystemCanGainPositive then
+		return true
+	else
+		return false
+	end
+end
+
 function ETWCommonLogicChecks.KnifeFighterShouldExecute()
 	local player = getPlayer();
 	if not activatedMods:contains("\\2934686936/EvolvingTraitsWorldDisableKnifeFighter") and SBvars.KnifeFighter == true and not player:HasTrait("KnifeFighter") and SBvars.TraitsLockSystemCanGainPositive then
@@ -456,6 +465,24 @@ end
 
 function ETWCommonLogicChecks.PetTherapyShouldExecute()
 	if not activatedMods:contains("\\2934686936/EvolvingTraitsWorldDisablePetTherapy") and SBvars.PetTherapy == true and (SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLosePositive) then
+		return true
+	else
+		return false
+	end
+end
+
+function ETWCommonLogicChecks.WildernessKnowledgeShouldExecute()
+	local player = getPlayer();
+	if SBvars.Blacksmith == true and not player:HasTrait("WildernessKnowledge") and SBvars.TraitsLockSystemCanGainPositive then
+		return true
+	else
+		return false
+	end
+end
+
+function ETWCommonLogicChecks.WhittlerShouldExecute()
+	local player = getPlayer();
+	if SBvars.Whittler == true and not player:HasTrait("Whittler") and SBvars.TraitsLockSystemCanGainPositive then
 		return true
 	else
 		return false

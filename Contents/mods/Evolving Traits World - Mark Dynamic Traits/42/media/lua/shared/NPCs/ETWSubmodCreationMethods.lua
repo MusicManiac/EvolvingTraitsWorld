@@ -26,6 +26,7 @@ if getActivatedMods():contains('\\2914075159/EvolvingTraitsWorld')then
 	altNames.AllThumbs = true;
 	altNames.Axeman = true;
 	altNames.BaseballPlayer = true;
+	altNames.Blacksmith = true;
 	altNames.Brave = true;
 	altNames.Brawler = true;
 	altNames.Burgler = true;
@@ -70,6 +71,8 @@ if getActivatedMods():contains('\\2914075159/EvolvingTraitsWorld')then
 	altNames.Tailor = true;
 	altNames.Unlucky = true;
 	altNames.WeakStomach = true;
+	altNames.WildernessKnowledge = true;
+	altNames.Whittler = true;
 	altNamesSpecial.Asthmatic = true;
 	altNamesSpecial.FastHealer = true;
 	altNamesSpecial.HeartyAppitite = true;

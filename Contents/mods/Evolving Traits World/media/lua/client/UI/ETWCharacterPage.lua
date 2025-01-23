@@ -635,13 +635,13 @@ function ISETWProgressUI:createChildren()
 
 			str = "+ " .. getText("UI_trait_brave")
 			self.labelBraveryGain = ISLabel:new(barStartPosition + (barLength / 6) * 5 - strLen(textManager, str)/2, y, FONT_HGT_SMALL, str, self.DimmedTextColor.r, self.DimmedTextColor.g, self.DimmedTextColor.b, self.DimmedTextColor.a, UIFont.Small, true)
-			self.labelBraveryGain:setTooltip(getText("Sandbox_ETW_BraverySystemKills_tooltip"))
+			self.labelBraveryGain:setTooltip(getText("UI_ETW_GainTooltip"))
 			self:addChild(self.labelBraveryGain)
 
 			y = y + FONT_HGT_SMALL
 
 			self.labelBraveryBarName = ISLabel:new(barStartPosition - lineStartPosition, y, FONT_HGT_SMALL, getText("Sandbox_ETW_BraverySystem"), self.TextColor.r, self.TextColor.g, self.TextColor.b, self.TextColor.a, UIFont.Small, false)
-			self.labelBraveryBarName:setTooltip(getText("UI_ETW_GainTooltip"))
+			self.labelBraveryBarName:setTooltip(getText("Sandbox_ETW_BraverySystemKills_tooltip"))
 			self:addChild(self.labelBraveryBarName)
 
 			self.barBravery = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)

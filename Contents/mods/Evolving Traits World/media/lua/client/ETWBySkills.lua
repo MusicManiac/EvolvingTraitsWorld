@@ -142,7 +142,7 @@ local function traitsGainsBySkill(player, perk)
 							ETWCommonFunctions.addTraitToDelayTable(modData, "Jogger", player, true);
 						elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Jogger")) then
 							player:getTraits():add("Jogger");
-							ETWCommonFunctions.applyXPBoost(player, Perks.Sprinting, 1);
+							ETWCommonFunctions.addXPBoostsFromTrait(player, Perks.Sprinting, 1);
 							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Jogger"), true, HaloTextHelper.getColorGreen()) end;
 							ETWCommonFunctions.traitSound(player);
 						end
@@ -183,7 +183,7 @@ local function traitsGainsBySkill(player, perk)
 							ETWCommonFunctions.addTraitToDelayTable(modData, "LightStep", player, true);
 						elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("LightStep")) then
 							player:getTraits():add("LightStep");
-							ETWCommonFunctions.applyXPBoost(player, Perks.Lightfoot, 1);
+							ETWCommonFunctions.addXPBoostsFromTrait(player, Perks.Lightfoot, 1);
 							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_LightStep"), true, HaloTextHelper.getColorGreen()) end;
 							ETWCommonFunctions.traitSound(player);
 						end
@@ -198,8 +198,8 @@ local function traitsGainsBySkill(player, perk)
 							ETWCommonFunctions.addTraitToDelayTable(modData, "Gymnast", player, true);
 						elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Gymnast")) then
 							player:getTraits():add("Gymnast");
-							ETWCommonFunctions.applyXPBoost(player, Perks.Lightfoot, 1);
-							ETWCommonFunctions.applyXPBoost(player, Perks.Nimble, 1);
+							ETWCommonFunctions.addXPBoostsFromTrait(player, Perks.Lightfoot, 1);
+							ETWCommonFunctions.addXPBoostsFromTrait(player, Perks.Nimble, 1);
 							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Gymnast"), true, HaloTextHelper.getColorGreen()) end;
 							ETWCommonFunctions.traitSound(player);
 						end
@@ -259,7 +259,7 @@ local function traitsGainsBySkill(player, perk)
 							ETWCommonFunctions.addTraitToDelayTable(modData, "LowProfile", player, true);
 						elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("LowProfile")) then
 							player:getTraits():add("LowProfile");
-							ETWCommonFunctions.applyXPBoost(player, Perks.Sneak, 1);
+							ETWCommonFunctions.addXPBoostsFromTrait(player, Perks.Sneak, 1);
 							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_LowProfile"), true, HaloTextHelper.getColorGreen()) end;
 							ETWCommonFunctions.traitSound(player);
 						end
@@ -299,15 +299,15 @@ local function traitsGainsBySkill(player, perk)
 							ETWCommonFunctions.addTraitToDelayTable(modData, "Hunter", player, true);
 						elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Hunter")) then
 							player:getTraits():add("Hunter");
-							ETWCommonFunctions.applyXPBoost(player, Perks.Aiming, 1);
-							ETWCommonFunctions.applyXPBoost(player, Perks.Trapping, 1);
-							ETWCommonFunctions.applyXPBoost(player, Perks.Sneak, 1);
-							ETWCommonFunctions.applyXPBoost(player, Perks.SmallBlade, 1);
-							ETWCommonFunctions.addRecipe(player, "Make Stick Trap");
-							ETWCommonFunctions.addRecipe(player, "Make Snare Trap");
-							ETWCommonFunctions.addRecipe(player, "Make Wooden Box Trap");
-							ETWCommonFunctions.addRecipe(player, "Make Trap Box");
-							ETWCommonFunctions.addRecipe(player, "Make Cage Trap");
+							ETWCommonFunctions.addXPBoostsFromTrait(player, Perks.Aiming, 1);
+							ETWCommonFunctions.addXPBoostsFromTrait(player, Perks.Trapping, 1);
+							ETWCommonFunctions.addXPBoostsFromTrait(player, Perks.Sneak, 1);
+							ETWCommonFunctions.addXPBoostsFromTrait(player, Perks.SmallBlade, 1);
+							ETWCommonFunctions.addRecipes(player, "Make Stick Trap");
+							ETWCommonFunctions.addRecipes(player, "Make Snare Trap");
+							ETWCommonFunctions.addRecipes(player, "Make Wooden Box Trap");
+							ETWCommonFunctions.addRecipes(player, "Make Trap Box");
+							ETWCommonFunctions.addRecipes(player, "Make Cage Trap");
 							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Hunter"), true, HaloTextHelper.getColorGreen()) end;
 							ETWCommonFunctions.traitSound(player);
 						end
@@ -324,8 +324,8 @@ local function traitsGainsBySkill(player, perk)
 							ETWCommonFunctions.addTraitToDelayTable(modData, "Brawler", player, true);
 						elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Brawler")) then
 							player:getTraits():add("Brawler");
-							ETWCommonFunctions.applyXPBoost(player, Perks.Axe, 1);
-							ETWCommonFunctions.applyXPBoost(player, Perks.Blunt, 1);
+							ETWCommonFunctions.addXPBoostsFromTrait(player, Perks.Axe, 1);
+							ETWCommonFunctions.addXPBoostsFromTrait(player, Perks.Blunt, 1);
 							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_BarFighter"), true, HaloTextHelper.getColorGreen()) end;
 							ETWCommonFunctions.traitSound(player);
 						end
@@ -340,7 +340,7 @@ local function traitsGainsBySkill(player, perk)
 							ETWCommonFunctions.addTraitToDelayTable(modData, "AxeThrower", player, true);
 						elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("AxeThrower")) then
 							player:getTraits():add("AxeThrower");
-							ETWCommonFunctions.applyXPBoost(player, Perks.Axe, 1);
+							ETWCommonFunctions.addXPBoostsFromTrait(player, Perks.Axe, 1);
 							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_AxeThrower"), true, HaloTextHelper.getColorGreen()) end;
 							ETWCommonFunctions.traitSound(player);
 						end
@@ -356,7 +356,7 @@ local function traitsGainsBySkill(player, perk)
 							ETWCommonFunctions.addTraitToDelayTable(modData, "BaseballPlayer", player, true);
 						elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("BaseballPlayer")) then
 							player:getTraits():add("BaseballPlayer");
-							ETWCommonFunctions.applyXPBoost(player, Perks.Blunt, 1);
+							ETWCommonFunctions.addXPBoostsFromTrait(player, Perks.Blunt, 1);
 							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_PlaysBaseball"), true, HaloTextHelper.getColorGreen()) end;
 							ETWCommonFunctions.traitSound(player);
 						end
@@ -372,7 +372,7 @@ local function traitsGainsBySkill(player, perk)
 							ETWCommonFunctions.addTraitToDelayTable(modData, "StickFighter", player, true);
 						elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("StickFighter")) then
 							player:getTraits():add("StickFighter");
-							ETWCommonFunctions.applyXPBoost(player, Perks.SmallBlunt, 1);
+							ETWCommonFunctions.addXPBoostsFromTrait(player, Perks.SmallBlunt, 1);
 							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_StickFighter"), true, HaloTextHelper.getColorGreen()) end;
 							ETWCommonFunctions.traitSound(player);
 						end
@@ -388,7 +388,7 @@ local function traitsGainsBySkill(player, perk)
 							ETWCommonFunctions.addTraitToDelayTable(modData, "Kenshi", player, true);
 						elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Kenshi")) then
 							player:getTraits():add("Kenshi");
-							ETWCommonFunctions.applyXPBoost(player, Perks.LongBlade, 1);
+							ETWCommonFunctions.addXPBoostsFromTrait(player, Perks.LongBlade, 1);
 							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Kenshi"), true, HaloTextHelper.getColorGreen()) end;
 							ETWCommonFunctions.traitSound(player);
 						end
@@ -404,7 +404,7 @@ local function traitsGainsBySkill(player, perk)
 							ETWCommonFunctions.addTraitToDelayTable(modData, "KnifeFighter", player, true);
 						elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("KnifeFighter")) then
 							player:getTraits():add("KnifeFighter");
-							ETWCommonFunctions.applyXPBoost(player, Perks.SmallBlade, 1);
+							ETWCommonFunctions.addXPBoostsFromTrait(player, Perks.SmallBlade, 1);
 							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_KnifeFighter"), true, HaloTextHelper.getColorGreen()) end;
 							ETWCommonFunctions.traitSound(player);
 						end
@@ -420,7 +420,7 @@ local function traitsGainsBySkill(player, perk)
 							ETWCommonFunctions.addTraitToDelayTable(modData, "Sojutsu", player, true);
 						elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Sojutsu")) then
 							player:getTraits():add("Sojutsu");
-							ETWCommonFunctions.applyXPBoost(player, Perks.Spear, 1);
+							ETWCommonFunctions.addXPBoostsFromTrait(player, Perks.Spear, 1);
 							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Sojutsu"), true, HaloTextHelper.getColorGreen()) end;
 							ETWCommonFunctions.traitSound(player);
 						end
@@ -436,7 +436,7 @@ local function traitsGainsBySkill(player, perk)
 							ETWCommonFunctions.addTraitToDelayTable(modData, "RestorationExpert", player, true);
 						elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("RestorationExpert")) then
 							player:getTraits():add("RestorationExpert");
-							ETWCommonFunctions.applyXPBoost(player, Perks.Maintenance, 1);
+							ETWCommonFunctions.addXPBoostsFromTrait(player, Perks.Maintenance, 1);
 							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_RestorationExpert"), true, HaloTextHelper.getColorGreen()) end;
 							ETWCommonFunctions.traitSound(player);
 						end
@@ -451,8 +451,8 @@ local function traitsGainsBySkill(player, perk)
 							ETWCommonFunctions.addTraitToDelayTable(modData, "Handy", player, true);
 						elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Handy")) then
 							player:getTraits():add("Handy");
-							ETWCommonFunctions.applyXPBoost(player, Perks.Maintenance, 1);
-							ETWCommonFunctions.applyXPBoost(player, Perks.Woodwork, 1);
+							ETWCommonFunctions.addXPBoostsFromTrait(player, Perks.Maintenance, 1);
+							ETWCommonFunctions.addXPBoostsFromTrait(player, Perks.Woodwork, 1);
 							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_handy"), true, HaloTextHelper.getColorGreen()) end;
 							ETWCommonFunctions.traitSound(player);
 						end
@@ -494,7 +494,7 @@ local function traitsGainsBySkill(player, perk)
 							ETWCommonFunctions.addTraitToDelayTable(modData, "FurnitureAssembler", player, true);
 						elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("FurnitureAssembler")) then
 							player:getTraits():add("FurnitureAssembler");
-							ETWCommonFunctions.applyXPBoost(player, Perks.Woodwork, 1);
+							ETWCommonFunctions.addXPBoostsFromTrait(player, Perks.Woodwork, 1);
 							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_FurnitureAssembler"), true, HaloTextHelper.getColorGreen()) end;
 							ETWCommonFunctions.traitSound(player);
 						end
@@ -510,8 +510,8 @@ local function traitsGainsBySkill(player, perk)
 							ETWCommonFunctions.addTraitToDelayTable(modData, "HomeCook", player, true);
 						elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("HomeCook")) then
 							player:getTraits():add("HomeCook");
-							ETWCommonFunctions.addRecipe(player, "Make Cake Batter");
-							ETWCommonFunctions.applyXPBoost(player, Perks.Cooking, 1);
+							ETWCommonFunctions.addRecipes(player, "Make Cake Batter");
+							ETWCommonFunctions.addXPBoostsFromTrait(player, Perks.Cooking, 1);
 							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_HomeCook"), true, HaloTextHelper.getColorGreen()) end;
 							ETWCommonFunctions.traitSound(player);
 						end
@@ -526,17 +526,17 @@ local function traitsGainsBySkill(player, perk)
 							ETWCommonFunctions.addTraitToDelayTable(modData, "Cook", player, true);
 						elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Cook")) then
 							player:getTraits():add("Cook");
-							ETWCommonFunctions.addRecipe(player, "Make Cake Batter");
-							ETWCommonFunctions.addRecipe(player, "Make Pie Dough");
-							ETWCommonFunctions.addRecipe(player, "Make Bread Dough");
-							ETWCommonFunctions.addRecipe(player, "Make Biscuits");
-							ETWCommonFunctions.addRecipe(player, "Make Cookie Dough");
-							ETWCommonFunctions.addRecipe(player, "Make Chocolate Chip Cookie Dough");
-							ETWCommonFunctions.addRecipe(player, "Make Oatmeal Cookie Dough");
-							ETWCommonFunctions.addRecipe(player, "Make Shortbread Cookie Dough");
-							ETWCommonFunctions.addRecipe(player, "Make Sugar Cookie Dough");
-							ETWCommonFunctions.addRecipe(player, "Make Pizza");
-							ETWCommonFunctions.applyXPBoost(player, Perks.Cooking, 1);
+							ETWCommonFunctions.addRecipes(player, "Make Cake Batter");
+							ETWCommonFunctions.addRecipes(player, "Make Pie Dough");
+							ETWCommonFunctions.addRecipes(player, "Make Bread Dough");
+							ETWCommonFunctions.addRecipes(player, "Make Biscuits");
+							ETWCommonFunctions.addRecipes(player, "Make Cookie Dough");
+							ETWCommonFunctions.addRecipes(player, "Make Chocolate Chip Cookie Dough");
+							ETWCommonFunctions.addRecipes(player, "Make Oatmeal Cookie Dough");
+							ETWCommonFunctions.addRecipes(player, "Make Shortbread Cookie Dough");
+							ETWCommonFunctions.addRecipes(player, "Make Sugar Cookie Dough");
+							ETWCommonFunctions.addRecipes(player, "Make Pizza");
+							ETWCommonFunctions.addXPBoostsFromTrait(player, Perks.Cooking, 1);
 							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Cook"), true, HaloTextHelper.getColorGreen()) end;
 							ETWCommonFunctions.traitSound(player);
 						end
@@ -552,9 +552,9 @@ local function traitsGainsBySkill(player, perk)
 							ETWCommonFunctions.addTraitToDelayTable(modData, "Gardener", player, true);
 						elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Gardener")) then
 							player:getTraits():add("Gardener");
-							ETWCommonFunctions.applyXPBoost(player, Perks.Farming, 1);
-							ETWCommonFunctions.addRecipe(player, "Make Mildew Cure");
-							ETWCommonFunctions.addRecipe(player, "Make Flies Cure");
+							ETWCommonFunctions.addXPBoostsFromTrait(player, Perks.Farming, 1);
+							ETWCommonFunctions.addRecipes(player, "Make Mildew Cure");
+							ETWCommonFunctions.addRecipes(player, "Make Flies Cure");
 							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Gardener"), true, HaloTextHelper.getColorGreen()) end;
 							ETWCommonFunctions.traitSound(player);
 						end
@@ -570,7 +570,7 @@ local function traitsGainsBySkill(player, perk)
 							ETWCommonFunctions.addTraitToDelayTable(modData, "FirstAid", player, true);
 						elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("FirstAid")) then
 							player:getTraits():add("FirstAid");
-							ETWCommonFunctions.applyXPBoost(player, Perks.Doctor, 1);
+							ETWCommonFunctions.addXPBoostsFromTrait(player, Perks.Doctor, 1);
 							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_FirstAid"), true, HaloTextHelper.getColorGreen()) end;
 							ETWCommonFunctions.traitSound(player);
 						end
@@ -586,16 +586,16 @@ local function traitsGainsBySkill(player, perk)
 							ETWCommonFunctions.addTraitToDelayTable(modData, "AVClub", player, true);
 						elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("AVClub")) then
 							player:getTraits():add("AVClub");
-							ETWCommonFunctions.addRecipe(player, "Make Remote Controller V1");
-							ETWCommonFunctions.addRecipe(player, "Make Remote Controller V2");
-							ETWCommonFunctions.addRecipe(player, "Make Remote Controller V3");
-							ETWCommonFunctions.addRecipe(player, "Make Remote Trigger");
-							ETWCommonFunctions.addRecipe(player, "Make Timer");
-							ETWCommonFunctions.addRecipe(player, "Craft Makeshift Radio");
-							ETWCommonFunctions.addRecipe(player, "Craft Makeshift HAM Radio");
-							ETWCommonFunctions.addRecipe(player, "Craft Makeshift Walkie Talkie");
-							ETWCommonFunctions.addRecipe(player, "Make Noise generator");
-							ETWCommonFunctions.applyXPBoost(player, Perks.Electricity, 1);
+							ETWCommonFunctions.addRecipes(player, "Make Remote Controller V1");
+							ETWCommonFunctions.addRecipes(player, "Make Remote Controller V2");
+							ETWCommonFunctions.addRecipes(player, "Make Remote Controller V3");
+							ETWCommonFunctions.addRecipes(player, "Make Remote Trigger");
+							ETWCommonFunctions.addRecipes(player, "Make Timer");
+							ETWCommonFunctions.addRecipes(player, "Craft Makeshift Radio");
+							ETWCommonFunctions.addRecipes(player, "Craft Makeshift HAM Radio");
+							ETWCommonFunctions.addRecipes(player, "Craft Makeshift Walkie Talkie");
+							ETWCommonFunctions.addRecipes(player, "Make Noise generator");
+							ETWCommonFunctions.addXPBoostsFromTrait(player, Perks.Electricity, 1);
 							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_AVClub"), true, HaloTextHelper.getColorGreen()) end;
 							ETWCommonFunctions.traitSound(player);
 						end
@@ -627,8 +627,8 @@ local function traitsGainsBySkill(player, perk)
 							ETWCommonFunctions.addTraitToDelayTable(modData, "GunEnthusiast", player, true);
 						elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("GunEnthusiast")) then
 							player:getTraits():add("GunEnthusiast");
-							ETWCommonFunctions.applyXPBoost(player, Perks.Aiming, 1);
-							ETWCommonFunctions.applyXPBoost(player, Perks.Reloading, 1);
+							ETWCommonFunctions.addXPBoostsFromTrait(player, Perks.Aiming, 1);
+							ETWCommonFunctions.addXPBoostsFromTrait(player, Perks.Reloading, 1);
 							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_GunEnthusiast"), true, HaloTextHelper.getColorGreen()) end;
 							ETWCommonFunctions.traitSound(player);
 						end
@@ -645,9 +645,9 @@ local function traitsGainsBySkill(player, perk)
 							ETWCommonFunctions.addTraitToDelayTable(modData, "Fishing", player, true);
 						elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Fishing")) then
 							player:getTraits():add("Fishing");
-							ETWCommonFunctions.addRecipe(player, "Make Fishing Rod");
-							ETWCommonFunctions.addRecipe(player, "Fix Fishing Rod");
-							ETWCommonFunctions.applyXPBoost(player, Perks.Fishing, 1);
+							ETWCommonFunctions.addRecipes(player, "Make Fishing Rod");
+							ETWCommonFunctions.addRecipes(player, "Fix Fishing Rod");
+							ETWCommonFunctions.addXPBoostsFromTrait(player, Perks.Fishing, 1);
 							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Fishing"), true, HaloTextHelper.getColorGreen()) end;
 							ETWCommonFunctions.traitSound(player);
 						end
@@ -663,11 +663,11 @@ local function traitsGainsBySkill(player, perk)
 							ETWCommonFunctions.addTraitToDelayTable(modData, "Hiker", player, true);
 						elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Hiker")) then
 							player:getTraits():add("Hiker");
-							ETWCommonFunctions.addRecipe(player, "Make Stick Trap");
-							ETWCommonFunctions.addRecipe(player, "Make Snare Trap");
-							ETWCommonFunctions.addRecipe(player, "Make Wooden Box Trap");
-							ETWCommonFunctions.applyXPBoost(player, Perks.PlantScavenging, 1);
-							ETWCommonFunctions.applyXPBoost(player, Perks.Trapping, 1);
+							ETWCommonFunctions.addRecipes(player, "Make Stick Trap");
+							ETWCommonFunctions.addRecipes(player, "Make Snare Trap");
+							ETWCommonFunctions.addRecipes(player, "Make Wooden Box Trap");
+							ETWCommonFunctions.addXPBoostsFromTrait(player, Perks.PlantScavenging, 1);
+							ETWCommonFunctions.addXPBoostsFromTrait(player, Perks.Trapping, 1);
 							if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Hiker"), true, HaloTextHelper.getColorGreen()) end;
 							ETWCommonFunctions.traitSound(player);
 						end

@@ -80,7 +80,7 @@ option EvolvingTraitsWorld.BraverySystemKills
 	type = integer,
 	min = 0,
 	max = 500000,
-	default = 20000,
+	default = 14000,
 	page = ETWSystems,
 	translation = ETW_BraverySystemKills,
 }
@@ -843,6 +843,22 @@ option EvolvingTraitsWorld.BaseballPlayerKills
 	page = ETWSimplePerks,
 	translation = ETW_BaseballPlayerKills,
 }
+option EvolvingTraitsWorld.Blacksmith
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_Blacksmith,
+}
+option EvolvingTraitsWorld.BlacksmithSkill
+{
+	type = integer,
+	min = 0,
+	max = 20,
+	default = 12,
+	page = ETWSimplePerks,
+	translation = ETW_BlacksmithSkill,
+}
 option EvolvingTraitsWorld.BladeEnthusiast
 {
 	type = boolean,
@@ -1412,4 +1428,36 @@ option EvolvingTraitsWorld.StickFighterKills
 	default = 200,
 	page = ETWSimplePerks,
 	translation = ETW_StickFighterKills,
+}
+option EvolvingTraitsWorld.WildernessKnowledge
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_WildernessKnowledge,
+}
+option EvolvingTraitsWorld.WildernessKnowledgeSkill
+{
+	type = integer,
+	min = 8,
+	max = 40,
+	default = 24,
+	page = ETWSimplePerks,
+	translation = ETW_WildernessKnowledgeSkill,
+}
+option EvolvingTraitsWorld.Whittler
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_Whittler,
+}
+option EvolvingTraitsWorld.WhittlerSkill
+{
+	type = integer,
+	min = 0,
+	max = 10,
+	default = 4,
+	page = ETWSimplePerks,
+	translation = ETW_WhittlerSkill,
 }

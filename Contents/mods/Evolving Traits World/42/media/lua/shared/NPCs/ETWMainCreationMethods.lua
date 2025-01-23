@@ -89,9 +89,8 @@ local function addTraits()
 	end
 
 	if not activatedMods:contains("\\2934686936/EvolvingTraitsWorldDisableHomeCook") then
-		local HomeCook = createTrait("HomeCook", 3);
+		local HomeCook = createTrait("HomeCook", 2);
 		HomeCook:addXPBoost(Perks.Cooking, 1);
-		HomeCook:getFreeRecipes():add("Make Cake Batter");
 		table.insert(newTraits, HomeCook);
 	end
 

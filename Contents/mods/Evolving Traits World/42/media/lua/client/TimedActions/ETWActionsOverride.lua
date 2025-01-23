@@ -15,6 +15,8 @@ local function initializeModOptions(playerIndex, player)
 	modOptions = PZAPI.ModOptions:getOptions("ETWModOptions");
 end
 
+Events.OnMainMenuEnter.Remove(initializeModOptions);
+Events.OnMainMenuEnter.Add(initializeModOptions);
 Events.OnCreatePlayer.Remove(initializeModOptions);
 Events.OnCreatePlayer.Add(initializeModOptions);
 
@@ -26,6 +28,10 @@ local delayedNotification = function() return modOptions:getOption("EnableDelaye
 ---@return boolean
 local detailedDebug = function() return modOptions:getOption("GatherDetailedDebug"):getValue() end
 
+---Prints out debugs inside console if detailedDebug is enabled
+---@param ... string Strings to log
+local logETW = function(...) ETWCommonFunctions.log(...) end
+
 local carPartStartingCondition;
 
 local original_ISFixVehiclePartAction_perform = ISFixVehiclePartAction.perform;
@@ -35,16 +41,16 @@ function ISFixVehiclePartAction:perform()
 	local player = self.character;
 	local modData = ETWCommonFunctions.getETWModData(player);
 	---@type DebugAndNotificationArgs
-	if detailedDebug() then print("ETW Logger | ISFixVehiclePartAction:perform(): caught") end
+	logETW("ETW Logger | ISFixVehiclePartAction:perform(): caught");
 	local conditionBefore = self.item:getCondition();
 	carPartStartingCondition = conditionBefore;
-	if detailedDebug() then print("ETW Logger | ISFixVehiclePartAction.perform(): car part conditon: " .. conditionBefore .. " VehiclePartRepairs=" .. modData.VehiclePartRepairs) end
+	logETW("ETW Logger | ISFixVehiclePartAction.perform(): car part conditon: " .. conditionBefore .. " VehiclePartRepairs=" .. modData.VehiclePartRepairs);
 	original_ISFixVehiclePartAction_perform(self);
 end
 
 local original_ISFixVehiclePartAction_complete = ISFixVehiclePartAction.complete;
 function ISFixVehiclePartAction:complete()
-	if detailedDebug() then print("ETW Logger | ISFixVehiclePartAction:complete(): caught") end
+	logETW("ETW Logger | ISFixVehiclePartAction:complete(): caught");
 	original_ISFixVehiclePartAction_complete(self);
 	local player = self.character;
 	local modData = ETWCommonFunctions.getETWModData(player);
@@ -54,14 +60,15 @@ function ISFixVehiclePartAction:complete()
 	if conditionAfter > carPartStartingCondition and (mechanicsShouldExecute or bodyWorkEnthusiastShouldExecute) then
 		modData.VehiclePartRepairs = modData.VehiclePartRepairs + (conditionAfter - carPartStartingCondition);
 		local DebugAndNotificationArgs = {detailedDebug = detailedDebug(), notification = notification(), delayedNotification = delayedNotification()};
-		if detailedDebug() then
-			print("ETW Logger | ISFixVehiclePartAction.complete(): car part " .. carPartStartingCondition .. "->" .. conditionAfter .. " VehiclePartRepairs=" .. modData.VehiclePartRepairs);
-		end
+		logETW(
+			"ETW Logger | ISFixVehiclePartAction.complete(): car part " .. carPartStartingCondition .. "->" .. conditionAfter ..
+			" VehiclePartRepairs=" .. modData.VehiclePartRepairs
+		);
 		if bodyWorkEnthusiastShouldExecute then ETWCombinedTraitChecks.bodyworkEnthusiastCheck(DebugAndNotificationArgs) end
 		if mechanicsShouldExecute then ETWCombinedTraitChecks.mechanicsCheck(DebugAndNotificationArgs) end
 	end
 	if player:HasTrait("RestorationExpert") then
-		if detailedDebug() then print("ETW Logger | ISFixVehiclePartAction.complete(): RestorationExpert present") end
+		logETW("ETW Logger | ISFixVehiclePartAction.complete(): RestorationExpert present");
 		local chance = SBvars.RestorationExpertChance - 1;
 		if ZombRand(100) <= chance then
 			self.item:setHaveBeenRepaired(self.item:getHaveBeenRepaired() - 1);
@@ -96,7 +103,7 @@ function ISFixAction:perform()
 	local modData = ETWCommonFunctions.getETWModData(player);
 	---@type DebugAndNotificationArgs
 	local DebugAndNotificationArgs = {detailedDebug = detailedDebug(), notification = notification(), delayedNotification = delayedNotification()};
-	if detailedDebug() then print("ETW Logger | ISFixAction:perform(): caught") end
+	logETW("ETW Logger | ISFixAction:perform(): caught");
 	local conditionBefore = self.item:getCondition();
 	original_ISFixAction_perform(self);
 	local conditionAfter = self.item:getCondition();
@@ -104,12 +111,15 @@ function ISFixAction:perform()
 	local bodyWorkEnthusiastShouldExecute = ETWCommonLogicChecks.BodyWorkEnthusiastShouldExecute();
 	if conditionAfter > conditionBefore and isVehiclePart(self) and (mechanicsShouldExecute or bodyWorkEnthusiastShouldExecute) then
 		modData.VehiclePartRepairs = modData.VehiclePartRepairs + (conditionAfter - conditionBefore);
-		if detailedDebug() then print("ETW Logger | ISFixAction.perform(): car part " .. conditionBefore .. "->" .. conditionAfter .. " VehiclePartRepairs=" .. modData.VehiclePartRepairs) end
+		logETW(
+			"ETW Logger | ISFixAction.perform(): car part " .. conditionBefore .. "->" .. conditionAfter ..
+			" VehiclePartRepairs=" .. modData.VehiclePartRepairs
+		);
 		if bodyWorkEnthusiastShouldExecute then ETWCombinedTraitChecks.bodyworkEnthusiastCheck(DebugAndNotificationArgs) end
 		if mechanicsShouldExecute then ETWCombinedTraitChecks.mechanicsCheck(DebugAndNotificationArgs) end
 	end
 	if player:HasTrait("RestorationExpert") then
-		if detailedDebug() then print("ETW Logger | ISFixAction.perform(): RestorationExpert present") end
+		logETW("ETW Logger | ISFixAction.perform(): RestorationExpert present");
 		local chance = SBvars.RestorationExpertChance - 1;
 		if ZombRand(100) <= chance then
 			self.item:setHaveBeenRepaired(self.item:getHaveBeenRepaired() - 1);
@@ -122,7 +132,7 @@ local original_ISRepairEngine_perform = ISRepairEngine.perform;
 ---@diagnostic disable-next-line: duplicate-set-field
 function ISRepairEngine:perform()
 	local conditionBefore = self.part:getCondition();
-	if detailedDebug() then print("ETW Logger | ISRepairEngine:perform(): caught. conditionBefore " .. conditionBefore) end
+	logETW("ETW Logger | ISRepairEngine:perform(): caught. conditionBefore " .. conditionBefore);
 	original_ISRepairEngine_perform(self);
 	---@type DebugAndNotificationArgs
 	local DebugAndNotificationArgs = {detailedDebug = detailedDebug(), notification = notification(), delayedNotification = delayedNotification()};
@@ -135,15 +145,20 @@ local original_ISChopTreeAction_perform = ISChopTreeAction.perform;
 ---@diagnostic disable-next-line: duplicate-set-field
 function ISChopTreeAction:perform()
 	if ETWCommonLogicChecks.AxemanShouldExecute() then
-		if detailedDebug() then print("ETW Logger | ISChopTreeAction.perform(): caught") end
+		logETW("ETW Logger | ISChopTreeAction.perform(): caught");
 		local player = self.character;
 		local modData = ETWCommonFunctions.getETWModData(player);
 		modData.TreesChopped = modData.TreesChopped + 1;
-		if detailedDebug() then print("ETW Logger | ISChopTreeAction.perform(): modData.TreesChopped = " .. modData.TreesChopped) end
+		logETW("ETW Logger | ISChopTreeAction.perform(): modData.TreesChopped = " .. modData.TreesChopped);
 		if modData.TreesChopped >= SBvars.AxemanTrees then
 			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Axeman") then
 				if delayedNotification() then
-					HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_axeman"), true, HaloTextHelper.getColorGreen());
+					HaloTextHelper.addTextWithArrow(
+						player,
+						getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_axeman"),
+						true,
+						HaloTextHelper.getColorGreen()
+					);
 				end
 				ETWCommonFunctions.traitSound(player);
 				ETWCommonFunctions.addTraitToDelayTable(modData, "Axeman", player, true);
@@ -163,10 +178,10 @@ local original_ISInventoryTransferAction_perform = ISInventoryTransferAction.per
 function ISInventoryTransferAction:perform()
 	if ETWCommonLogicChecks.InventoryTransferSystemShouldExecute() then
 		if self.character:isLocalPlayer() == false then -- checks if it's NPC doing stuff
-			if detailedDebug() then print("ETW Logger | ISInventoryTransferAction.perform(): NPC") end
+			logETW("ETW Logger | ISInventoryTransferAction.perform(): NPC");
 			original_ISInventoryTransferAction_perform(self);
 		elseif self.character == getPlayer() then
-			if detailedDebug() then print("ETW Logger | ISInventoryTransferAction.perform(): Player") end
+			logETW("ETW Logger | ISInventoryTransferAction.perform(): Player");
 			local player = self.character;
 			local item = self.item;
 			local itemWeight = math.max(0, item:getWeight());
@@ -174,16 +189,21 @@ function ISInventoryTransferAction:perform()
 			local transferModData = modData.TransferSystem;
 			transferModData.ItemsTransferred = transferModData.ItemsTransferred + 1;
 			transferModData.WeightTransferred = transferModData.WeightTransferred + itemWeight;
-			if detailedDebug() then 
-				print("ETW Logger | ISInventoryTransferAction.perform(): Moving an item with weight of " .. itemWeight)
-				print("ETW Logger | ISInventoryTransferAction.perform(): Moved weight: " .. transferModData.WeightTransferred .. ", Moved Items: " .. transferModData.ItemsTransferred);
-			end
+			logETW(
+				"ETW Logger | ISInventoryTransferAction.perform(): Moving an item with weight of " .. itemWeight,
+				"ETW Logger | ISInventoryTransferAction.perform(): Moved weight: " .. transferModData.WeightTransferred .. ", Moved Items: " .. transferModData.ItemsTransferred
+			)
 			original_ISInventoryTransferAction_perform(self);
 			if player:HasTrait("Disorganized") and transferModData.WeightTransferred >= SBvars.InventoryTransferSystemWeight * 0.66
 			and transferModData.ItemsTransferred >= SBvars.InventoryTransferSystemItems * 0.33 and SBvars.TraitsLockSystemCanLoseNegative then
 				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Disorganized") then
 					if delayedNotification() then
-						HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringRemove") .. getText("UI_trait_Disorganized"), false, HaloTextHelper.getColorGreen());
+						HaloTextHelper.addTextWithArrow(
+							player,
+							getText("UI_ETW_DelayedNotificationsStringRemove") .. getText("UI_trait_Disorganized"),
+							false,
+							HaloTextHelper.getColorGreen()
+						);
 					end
 					ETWCommonFunctions.traitSound(player);
 					ETWCommonFunctions.addTraitToDelayTable(modData, "Disorganized", player, false);
@@ -198,7 +218,12 @@ function ISInventoryTransferAction:perform()
 				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Organized") then
 					-- UI_trait_Packmule is internal string name
 					if delayedNotification() then
-						HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_Packmule"), true, HaloTextHelper.getColorGreen());
+						HaloTextHelper.addTextWithArrow(
+							player,
+							getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_Packmule"),
+							true,
+							HaloTextHelper.getColorGreen()
+						);
 					end
 					ETWCommonFunctions.traitSound(player);
 					ETWCommonFunctions.addTraitToDelayTable(modData, "Organized", player, true);
@@ -213,7 +238,12 @@ function ISInventoryTransferAction:perform()
 			and transferModData.ItemsTransferred >= SBvars.InventoryTransferSystemItems * 0.66 and SBvars.TraitsLockSystemCanLoseNegative then
 				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("AllThumbs") then
 					if delayedNotification() then
-						HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringRemove") .. getText("UI_trait_AllThumbs"), false, HaloTextHelper.getColorGreen());
+						HaloTextHelper.addTextWithArrow(
+							player,
+							getText("UI_ETW_DelayedNotificationsStringRemove") .. getText("UI_trait_AllThumbs"),
+							false,
+							HaloTextHelper.getColorGreen()
+						);
 					end
 					ETWCommonFunctions.traitSound(player);
 					ETWCommonFunctions.addTraitToDelayTable(modData, "AllThumbs", player, false);
@@ -227,7 +257,12 @@ function ISInventoryTransferAction:perform()
 			and transferModData.ItemsTransferred >= SBvars.InventoryTransferSystemItems and SBvars.TraitsLockSystemCanGainPositive then
                 if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Dextrous") then
 					if notification() then
-						HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_Dexterous"), true, HaloTextHelper.getColorGreen());
+						HaloTextHelper.addTextWithArrow(
+							player,
+							getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_Dexterous"),
+							true,
+							HaloTextHelper.getColorGreen()
+						);
 					end
 					ETWCommonFunctions.addTraitToDelayTable(modData, "Dextrous", player, true);
 					ETWCommonFunctions.traitSound(player);
@@ -241,7 +276,12 @@ function ISInventoryTransferAction:perform()
 			and transferModData.ItemsTransferred >= SBvars.InventoryTransferSystemItems * 1.5 and SBvars.TraitsLockSystemCanLoseNegative then
 				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("butterfingers") then
 					if delayedNotification() then
-						HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_AllThumbs"), false, HaloTextHelper.getColorGreen());
+						HaloTextHelper.addTextWithArrow(
+							player,
+							getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_AllThumbs"),
+							false,
+							HaloTextHelper.getColorGreen()
+						);
 					end
 					ETWCommonFunctions.traitSound(player);
 					ETWCommonFunctions.addTraitToDelayTable(modData, "butterfingers", player, false);
@@ -252,7 +292,7 @@ function ISInventoryTransferAction:perform()
 				end
 			end
 		else
-			if detailedDebug() then print("ETW Logger | ISInventoryTransferAction.perform(): not NPC or player?") end
+			logETW("ETW Logger | ISInventoryTransferAction.perform(): not NPC or player?");
 			original_ISInventoryTransferAction_perform(self);
 		end
 	else
@@ -275,8 +315,41 @@ local function iterList(_list)
 	end
 end
 
+local filteredForageHashMap;
+
+---Generates a list of herb types based on valid categories
+local function generateHerbsList()
+	local validCategories = { WildHerbs = true, WildPlants = true, MedicinalPlants = true };
+	local filteredTypes = {};
+	for key, value in pairs(forageDefs or {}) do
+		if type(value) == "table" and value.type and value.categories then
+			for _, category in ipairs(value.categories) do
+				if validCategories[category] then
+					table.insert(filteredTypes, value.type);
+					break
+				end
+			end
+		end
+	end
+	local filteredTypesMap = {}
+    for _, herbType in ipairs(filteredTypes) do
+    	filteredTypesMap[herbType] = true;
+    end
+    if detailedDebug() then
+		print("ETW Logger | Filtered Types Map:")
+		for herbType, _ in pairs(filteredTypesMap) do
+			print(herbType)
+		end
+    end
+	filteredForageHashMap = filteredTypesMap;
+end
+
+
+Events.onAddForageDefs.Remove(generateHerbsList)
+Events.onAddForageDefs.Add(generateHerbsList)
+
 local original_forageSystem_addOrDropItems = forageSystem.addOrDropItems;
----Overwriting forageSystem.addOrDropItems() here to insert ETW logic catching player picking up herbs while foraging
+---Decorating forageSystem.addOrDropItems() here to insert ETW logic catching player picking up herbs while foraging
 ---@diagnostic disable-next-line: duplicate-set-field
 function forageSystem.addOrDropItems(_character, _inventory, _items, _discardItems)
 	if ETWCommonLogicChecks.HerbalistShouldExecute() and SBvars.TraitsLockSystemCanGainPositive then
@@ -284,51 +357,17 @@ function forageSystem.addOrDropItems(_character, _inventory, _items, _discardIte
 		local detailedDebug = detailedDebug();
 		if not _discardItems then
 			for item in iterList(_items) do
-				if detailedDebug then print("ETW Logger | forageSystem.addOrDropItems(): picking up foraging item: " .. item:getFullType()) end
-				local herbs = {
-					-- Medical herbs
-					"Base.Plantain",
-					"Base.Comfrey",
-					"Base.WildGarlic",
-					"Base.WildGarlic2",
-					"Base.CommonMallow",
-					"Base.LemonGrass",
-					"Base.BlackSage",
-					"Base.Ginseng",
-					-- Wild Plants
-					"Base.Violets",
-					"Base.SunflowerSeeds",
-					"Base.GrapeLeaves",
-					"Base.Rosehips",
-					"Base.Acorn",
-					"Base.Dandelions",
-					"Base.Nettles",
-					"Base.GingerRoot",
-					"Base.Thistle",
-					-- Wild Herbs
-					"Base.Basil",
-					"Base.Chives",
-					"Base.Cilantro",
-					"Base.Oregano",
-					"Base.Parsley",
-					"Base.Rosemary",
-					"Base.Sage",
-					"Base.Thyme",
-				}
-				for _, herb in pairs(herbs) do
-					if herb == item:getFullType() then
-						local modData = ETWCommonFunctions.getETWModData(player);
-						modData.HerbsPickedUp = modData.HerbsPickedUp + ((SBvars.AffinitySystem and modData.StartingTraits.Herbalist) and 1 * SBvars.AffinitySystemGainMultiplier or 1);
-						if detailedDebug then
-							print("ETW Logger | forageSystem.addOrDropItems(): confirmed that it's a herb: " .. item:getFullType());
-							print("ETW Logger | forageSystem.addOrDropItems(): modData.HerbsPickedUp: " .. modData.HerbsPickedUp);
-						end
-						if not player:HasTrait("Herbalist") and modData.HerbsPickedUp >= SBvars.HerbalistHerbsPicked and SBvars.TraitsLockSystemCanGainPositive then
-							player:getTraits():add("Herbalist");
-							ETWCommonFunctions.addRecipe(player, "Herbalist");
-							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Herbalist"), true, HaloTextHelper.getColorGreen()) end
-							ETWCommonFunctions.traitSound(player);
-						end
+				logETW("ETW Logger | forageSystem.addOrDropItems(): picking up foraging item: " .. item:getFullType());
+				if filteredForageHashMap[item:getFullType()] then
+					local modData = ETWCommonFunctions.getETWModData(player);
+					modData.HerbsPickedUp = modData.HerbsPickedUp +
+						((SBvars.AffinitySystem and modData.StartingTraits.Herbalist) and 1 * SBvars.AffinitySystemGainMultiplier or 1);
+					logETW("ETW Logger | forageSystem.addOrDropItems(): modData.HerbsPickedUp: " .. modData.HerbsPickedUp);
+					if not player:HasTrait("Herbalist") and modData.HerbsPickedUp >= SBvars.HerbalistHerbsPicked and SBvars.TraitsLockSystemCanGainPositive then
+						player:getTraits():add("Herbalist");
+						ETWCommonFunctions.addRecipes("Herbalist");
+						if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Herbalist"), true, HaloTextHelper.getColorGreen()) end
+						ETWCommonFunctions.traitSound(player);
 					end
 				end
 			end
