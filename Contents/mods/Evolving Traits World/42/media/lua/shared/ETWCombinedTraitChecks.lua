@@ -22,21 +22,25 @@ function ETWCombinedTraitChecks.bodyworkEnthusiastCheck(DebugAndNotificationArgs
 	local level = player:getPerkLevel(Perks.MetalWelding) + player:getPerkLevel(Perks.Mechanics);
 	if level >= SBvars.BodyworkEnthusiastSkill and modData.VehiclePartRepairs >= SBvars.BodyworkEnthusiastRepairs then
 		if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("BodyWorkEnthusiast") then
-			if DebugAndNotificationArgs.delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_BodyWorkEnthusiast"), true, HaloTextHelper.getColorGreen()) end
-			ETWCommonFunctions.traitSound(player);
 			ETWCommonFunctions.addTraitToDelayTable(modData, "BodyWorkEnthusiast", player, true);
+			if DebugAndNotificationArgs.delayedNotification then
+				HaloTextHelper.addTextWithArrow(
+					player,
+					getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_BodyWorkEnthusiast"),
+					true,
+					HaloTextHelper.getColorGreen()
+				)
+			end
 		elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("BodyWorkEnthusiast")) then
-			player:getTraits():add("BodyWorkEnthusiast");
-			ETWCommonFunctions.applyXPBoost(player, Perks.MetalWelding, 1);
-			ETWCommonFunctions.applyXPBoost(player, Perks.Mechanics, 1);
-			ETWCommonFunctions.addRecipe(player, "Make Metal Walls");
-			ETWCommonFunctions.addRecipe(player, "Make Metal Fences");
-			ETWCommonFunctions.addRecipe(player, "Make Metal Containers");
-			ETWCommonFunctions.addRecipe(player, "Make Metal Sheet");
-			ETWCommonFunctions.addRecipe(player, "Make Small Metal Sheet");
-			ETWCommonFunctions.addRecipe(player, "Make Metal Roof");
-			if DebugAndNotificationArgs.notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_BodyWorkEnthusiast"), true, HaloTextHelper.getColorGreen()) end
-			ETWCommonFunctions.traitSound(player);
+			ETWCommonFunctions.addTraitToPlayer("BodyWorkEnthusiast");
+			if DebugAndNotificationArgs.notification then
+				HaloTextHelper.addTextWithArrow(
+					player,
+					getText("UI_trait_BodyWorkEnthusiast"),
+					true,
+					HaloTextHelper.getColorGreen()
+				);
+			end
 		end
 	end
 end
@@ -48,16 +52,25 @@ function ETWCombinedTraitChecks.mechanicsCheck(DebugAndNotificationArgs)
 	local modData = ETWCommonFunctions.getETWModData(player);
 	if player:getPerkLevel(Perks.Mechanics) >= SBvars.MechanicsSkill and modData.VehiclePartRepairs >= SBvars.MechanicsRepairs then
 		if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Mechanics") then
-			if DebugAndNotificationArgs.delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_Mechanics"), true, HaloTextHelper.getColorGreen()) end
-			ETWCommonFunctions.traitSound(player);
 			ETWCommonFunctions.addTraitToDelayTable(modData, "Mechanics", player, true);
+			if DebugAndNotificationArgs.delayedNotification then
+				HaloTextHelper.addTextWithArrow(
+					player,
+					getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_Mechanics"),
+					true,
+					HaloTextHelper.getColorGreen()
+				);
+			end
 		elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Mechanics")) then
-			player:getTraits():add("Mechanics");
-			ETWCommonFunctions.applyXPBoost(player, Perks.Mechanics, 1);
-			ETWCommonFunctions.addRecipe(player, "Basic Mechanics");
-			ETWCommonFunctions.addRecipe(player, "Intermediate Mechanics");
-			if DebugAndNotificationArgs.notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Mechanics"), true, HaloTextHelper.getColorGreen()) end
-			ETWCommonFunctions.traitSound(player);
+			ETWCommonFunctions.addTraitToPlayer("Mechanics");
+			if DebugAndNotificationArgs.notification then
+				HaloTextHelper.addTextWithArrow(
+					player,
+					getText("UI_trait_Mechanics"),
+					true,
+					HaloTextHelper.getColorGreen()
+				);
+			end
 		end
 	end
 end
@@ -69,14 +82,18 @@ function ETWCombinedTraitChecks.sewerCheck(DebugAndNotificationArgs)
 	local modData = ETWCommonFunctions.getETWModData(player);
 	if player:getPerkLevel(Perks.Tailoring) >= SBvars.SewerSkill and #modData.UniqueClothingRipped >= SBvars.SewerUniqueClothesRipped then
 		if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Tailor") then
-			if DebugAndNotificationArgs.delayedNotification then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_Tailor"), true, HaloTextHelper.getColorGreen()) end
-			ETWCommonFunctions.traitSound(player);
 			ETWCommonFunctions.addTraitToDelayTable(modData, "Tailor", player, true);
+			if DebugAndNotificationArgs.delayedNotification then
+				HaloTextHelper.addTextWithArrow(
+					player,
+					getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_Tailor"),
+					true,
+					HaloTextHelper.getColorGreen()
+				);
+			end
 		elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Tailor")) then
-			player:getTraits():add("Tailor");
-			ETWCommonFunctions.applyXPBoost(player, Perks.Tailoring, 1);
+			ETWCommonFunctions.addTraitToPlayer("Tailor");
 			if DebugAndNotificationArgs.notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Tailor"), true, HaloTextHelper.getColorGreen()) end
-			ETWCommonFunctions.traitSound(player);
 		end
 	end
 end
@@ -90,7 +107,7 @@ function ETWCombinedTraitChecks.addClothingToUniqueRippedClothingList(player, it
 	local modData = ETWCommonFunctions.getETWModData(player);
 	if DebugAndNotificationArgs.detailedDebug then print("ETW Logger | ETWCommonFunctions.addClothingToUniqueRippedClothingList() item: " .. itemName) end
 	if ETWCommonFunctions.indexOf(modData.UniqueClothingRipped, itemName) == -1 then
-	    table.insert(modData.UniqueClothingRipped, itemName)
+	    table.insert(modData.UniqueClothingRipped, itemName);
 	    ETWCombinedTraitChecks.sewerCheck(DebugAndNotificationArgs);
 	end
 end

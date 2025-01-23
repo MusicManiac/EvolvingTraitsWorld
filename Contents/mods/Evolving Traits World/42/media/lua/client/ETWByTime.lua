@@ -26,6 +26,10 @@ local delayedNotification = function() return modOptions:getOption("EnableDelaye
 ---@return boolean
 local detailedDebug = function() return modOptions:getOption("GatherDetailedDebug"):getValue() end
 
+---Prints out debugs inside console if detailedDebug is enabled
+---@param ... string Strings to log
+local logETW = function(...) ETWCommonFunctions.log(...) end
+
 ---Function responsible for managing Cat Eyes trait
 ---@param isKill boolean
 local function catEyes(isKill)
@@ -48,28 +52,33 @@ local function catEyes(isKill)
 				square = getCell():getGridSquare(plX + x, plY + y, plZ);
 				checkedSquares = checkedSquares + 1;
 				if square and square:isCanSee(playerNum) then
-					local squareDarknessLevel = nightStrength * (1 - square:getLightLevel(playerNum)) * 0.01 * (square:isInARoom() and playerIsInside and 2 or 1) * (hasEagleEyed and 2 or 1);
+					local squareDarknessLevel = nightStrength * (1 - square:getLightLevel(playerNum)) * 0.01
+						* (square:isInARoom() and playerIsInside and 2 or 1) * (hasEagleEyed and 2 or 1);
 					squaresVisible = squaresVisible + 1;
 					thisMinuteIncrease = thisMinuteIncrease + squareDarknessLevel;
 				end
 			end
 		end
         modData.CatEyesCounter = modData.CatEyesCounter + thisMinuteIncrease;
-		if detailedDebug() then
-			if isKill then print("ETW Logger | catEyes(): was triggered by a kill") end
-			print("ETW Logger | catEyes(): Checked squares: " .. checkedSquares .. ", visible squares: " .. squaresVisible .. " with total darkness level of " .. thisMinuteIncrease)
-		end
-		if detailedDebug() then print("ETW Logger | catEyes(): CatEyesCounter: " .. modData.CatEyesCounter) end
+		if isKill then logETW("ETW Logger | catEyes(): was triggered by a kill") end
+		logETW("ETW Logger | catEyes(): Checked squares: " .. checkedSquares .. ", visible squares: "
+			.. squaresVisible .. " with total darkness level of " .. thisMinuteIncrease,
+			"ETW Logger | catEyes(): CatEyesCounter: " .. modData.CatEyesCounter)
 		if not player:HasTrait("NightVision") and modData.CatEyesCounter >= SBvars.CatEyesCounter then
 			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("NightVision") then
-				if delayedNotification() then HaloTextHelper.addTextWithArrow(player, getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_NightVision"), true, HaloTextHelper.getColorGreen()) end
 				ETWCommonFunctions.addTraitToDelayTable(modData, "NightVision", player, true);
-				ETWCommonFunctions.traitSound(player);
+				if delayedNotification() then
+					HaloTextHelper.addTextWithArrow(
+						player,
+						getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_NightVision"),
+						true,
+						HaloTextHelper.getColorGreen()
+					);
+				end
 			elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("NightVision")) then
-				player:getTraits():add("NightVision");
-				ETWCommonFunctions.traitSound(player);
-				if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_NightVision"), true, HaloTextHelper.getColorGreen()) end
+				ETWCommonFunctions.addTraitToPlayer("NightVision");
 				Events.EveryOneMinute.Remove(catEyes);
+				if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_NightVision"), true, HaloTextHelper.getColorGreen()) end
 			end
 		end
 	end
@@ -132,10 +141,10 @@ local function sleepSystem()
 		sleepModData.LastMidpoint = findMidpoint(sleepModData.WentToSleepAt, timeOfDay);
 		sleepModData.CurrentlySleeping = false;
 		sleepModData.HoursSinceLastSleep = 0;
-		if detailedDebug() then
-			print("ETW Logger | sleepSystem(): SleepHealthinessBar: ".. sleepModData.SleepHealthinessBar);
-			print("ETW Logger | sleepSystem(): new sleepModData.LastMidpoint: " .. sleepModData.LastMidpoint .. ", calculated from " .. sleepModData.WentToSleepAt .. " and " .. timeOfDay);
-		end
+		logETW("ETW Logger | sleepSystem(): SleepHealthinessBar: ".. sleepModData.SleepHealthinessBar,
+			"ETW Logger | sleepSystem(): new sleepModData.LastMidpoint: " .. sleepModData.LastMidpoint
+			.. ", calculated from " .. sleepModData.WentToSleepAt .. " and " .. timeOfDay
+		);
 	end
 	if not player:isAsleep() then
 		sleepModData.HoursSinceLastSleep = sleepModData.HoursSinceLastSleep + 1 / 6;
@@ -153,29 +162,25 @@ local function sleepSystem()
 	end
 	if sleepModData.SleepHealthinessBar > 100 then
 		if not player:HasTrait("NeedsLessSleep") and SBvars.TraitsLockSystemCanGainPositive then
-			player:getTraits():add("NeedsLessSleep");
-			ETWCommonFunctions.traitSound(player);
+			ETWCommonFunctions.addTraitToPlayer("NeedsLessSleep");
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_LessSleep"), true, HaloTextHelper.getColorGreen()) end
 		end
 	elseif sleepModData.SleepHealthinessBar < -100 then
 		if not player:HasTrait("NeedsMoreSleep") and SBvars.TraitsLockSystemCanGainNegative then
-			player:getTraits():add("NeedsMoreSleep");
-			ETWCommonFunctions.traitSound(player);
+			ETWCommonFunctions.addTraitToPlayer("NeedsMoreSleep");
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_MoreSleep"), true, HaloTextHelper.getColorRed()) end
 		end
 	else
 		if player:HasTrait("NeedsLessSleep") and SBvars.TraitsLockSystemCanLosePositive then
-			player:getTraits():remove("NeedsLessSleep");
-			ETWCommonFunctions.traitSound(player);
+			ETWCommonFunctions.removeTraitFromPlayer("NeedsLessSleep");
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_LessSleep"), false, HaloTextHelper.getColorRed()) end
 		end
 		if player:HasTrait("NeedsMoreSleep") and SBvars.TraitsLockSystemCanLoseNegative then
-			player:getTraits():remove("NeedsMoreSleep");
-			ETWCommonFunctions.traitSound(player);
+			ETWCommonFunctions.removeTraitFromPlayer("NeedsMoreSleep");
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_MoreSleep"), true, HaloTextHelper.getColorGreen()) end
 		end
 	end
-	if detailedDebug() then print("ETW Logger | sleepSystem(): modData.SleepHealthinessBar: ".. sleepModData.SleepHealthinessBar) end
+	logETW("ETW Logger | sleepSystem(): modData.SleepHealthinessBar: ".. sleepModData.SleepHealthinessBar);
 end
 
 ---Function responsible for managing hourly Smoker trait decay
@@ -185,7 +190,7 @@ local function smoker()
 	local smokerModData = modData.SmokeSystem;
 	local timeSinceLastSmoke = player:getTimeSinceLastSmoke() * 60;
 	smokerModData.MinutesSinceLastSmoke = smokerModData.MinutesSinceLastSmoke + 1;
-	if detailedDebug() then print("ETW Logger | smoker(): timeSinceLastSmoke: " .. timeSinceLastSmoke .. ", modData.MinutesSinceLastSmoke: ".. smokerModData.MinutesSinceLastSmoke) end
+	logETW("ETW Logger | smoker(): timeSinceLastSmoke: " .. timeSinceLastSmoke .. ", modData.MinutesSinceLastSmoke: ".. smokerModData.MinutesSinceLastSmoke);
 	local stats = player:getStats();
 	local stress = stats:getStress(); -- stress is 0-1, may be higher with stress from cigarettes
 	local panic = stats:getPanic(); -- 0-100
@@ -195,29 +200,26 @@ local function smoker()
 		addictionDecay = addictionDecay / SBvars.AffinitySystemLoseDivider;
 	end
 	smokerModData.SmokingAddiction = math.max(SBvars.SmokerCounter * -2, smokerModData.SmokingAddiction - addictionDecay);
-	if detailedDebug() then print("ETW Logger | smoker(): smoking addictionDecay: " .. addictionDecay .. ", modData.SmokingAddiction: ".. smokerModData.SmokingAddiction) end
+	logETW("ETW Logger | smoker(): smoking addictionDecay: " .. addictionDecay .. ", modData.SmokingAddiction: ".. smokerModData.SmokingAddiction);
 	if smokerModData.SmokingAddiction >= SBvars.SmokerCounter and not player:HasTrait("Smoker") and SBvars.TraitsLockSystemCanGainNegative then
-		player:getTraits():add("Smoker");
-		ETWCommonFunctions.traitSound(player);
+		ETWCommonFunctions.addTraitToPlayer("Smoker");
 		if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Smoker"), true, HaloTextHelper.getColorRed()) end
 	elseif smokerModData.SmokingAddiction <= -SBvars.SmokerCounter and player:HasTrait("Smoker") and SBvars.TraitsLockSystemCanLoseNegative then
 		stats:setStressFromCigarettes(0);
-		player:getTraits():remove("Smoker");
-		ETWCommonFunctions.traitSound(player);
+		ETWCommonFunctions.removeTraitFromPlayer("Smoker");
 		if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Smoker"), false, HaloTextHelper.getColorGreen()) end
 	end
 end
 
----Function responsible for managing hourly Herbalist trait decay
+---Function responsible for managing daily Herbalist trait decay
 local function herbalist()
 	local player = getPlayer();
 	local modData = ETWCommonFunctions.getETWModData(player);
-	modData.HerbsPickedUp = math.max(0, modData.HerbsPickedUp - ((SBvars.AffinitySystem and modData.StartingTraits.Herbalist) and 1 / SBvars.AffinitySystemLoseDivider or 1));
-	if detailedDebug() then print("ETW Logger | herbalist(): modData.HerbsPickedUp: " .. modData.HerbsPickedUp) end
+	modData.HerbsPickedUp = math.max(0,
+		modData.HerbsPickedUp - ((SBvars.AffinitySystem and modData.StartingTraits.Herbalist) and 1 / SBvars.AffinitySystemLoseDivider or 1));
+	logETW("ETW Logger | herbalist(): modData.HerbsPickedUp: " .. modData.HerbsPickedUp);
 	if modData.HerbsPickedUp < SBvars.HerbalistHerbsPicked / 2 and player:HasTrait("Herbalist") then
-		player:getTraits():remove("Herbalist");
-		ETWCommonFunctions.traitSound(player);
-		player:getKnownRecipes():remove("Herbalist");
+		ETWCommonFunctions.removeTraitFromPlayer("Herbalist");
 		if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Herbalist"), false, HaloTextHelper.getColorRed()) end
 	end
 end

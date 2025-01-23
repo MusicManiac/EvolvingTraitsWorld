@@ -1,11 +1,101 @@
 module Base
-{	
-	sound ETWGainTrait
+{
+	sound ETW_b42
 	{
 		category = Player,
 		clip
 		{
-			file = media/sound/TraitNotification.wav,
+			file = media/sound/levelup.wav,
+		}
+	}
+
+	sound ETW_b41
+	{
+		category = Player,
+		clip
+		{
+			file = media/sound/b41.wav,
+		}
+	}
+
+	sound ETW_TLOU
+	{
+		category = Player,
+		clip
+		{
+			file = media/sound/TLOU.wav,
+		}
+	}
+
+	sound ETW_SkyrimSkill
+	{
+		category = Player,
+		clip
+		{
+			file = media/sound/SkyrimSkill.wav,
+		}
+	}
+
+	sound ETW_SkyrimLevel
+	{
+		category = Player,
+		clip
+		{
+			file = media/sound/SkyrimLevel.wav,
+		}
+	}
+
+	sound ETW_Oblivion
+	{
+		category = Player,
+		clip
+		{
+			file = media/sound/Oblivion.wav,
+		}
+	}
+
+	sound ETW_Diablo2
+	{
+		category = Player,
+		clip
+		{
+			file = media/sound/Diablo2.wav,
+		}
+	}
+
+	sound ETW_Witcher3
+	{
+		category = Player,
+		clip
+		{
+			file = media/sound/Witcher3.wav,
+		}
+	}
+
+	sound ETW_FalloutNV
+	{
+		category = Player,
+		clip
+		{
+			file = media/sound/FalloutNV.wav,
+		}
+	}
+
+	sound ETW_AoE3
+	{
+		category = Player,
+		clip
+		{
+			file = media/sound/TLOU.wav,
+		}
+	}
+
+	sound ETW_WoW
+	{
+		category = Player,
+		clip
+		{
+			file = media/sound/WoW.wav,
 		}
 	}
 }

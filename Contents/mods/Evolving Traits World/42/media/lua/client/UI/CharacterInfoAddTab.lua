@@ -6,7 +6,6 @@ function addCharacterPageTab(tabName,pageType)
     local upperLayer_ISCharacterInfoWindow_createChildren = ISCharacterInfoWindow.createChildren
     function ISCharacterInfoWindow:createChildren()
         upperLayer_ISCharacterInfoWindow_createChildren(self)
-        
         self[viewName] = pageType:new(0, 8, self.width, self.height-8, self.playerNum)
         self[viewName]:initialise()
         self[viewName].infoText = getText("UI_"..tabName.."Panel");--UI_<tabName>Panel is full text of tooltip
@@ -30,7 +29,6 @@ function addCharacterPageTab(tabName,pageType)
     local upperLayer_ISCharacterInfoWindow_SaveLayout = ISCharacterInfoWindow.SaveLayout
     function ISCharacterInfoWindow:SaveLayout(name, layout)
         upperLayer_ISCharacterInfoWindow_SaveLayout(self,name,layout)
-        
         local addTabName = false
         local subSelf = self[viewName]
         if subSelf and subSelf.parent == self.panel then
@@ -41,7 +39,7 @@ function addCharacterPageTab(tabName,pageType)
         end
         if addTabName then
             if not layout.tabs then
-                layout.tabs = tabName 
+                layout.tabs = tabName
             else
                 layout.tabs = layout.tabs .. ',' .. tabName
             end

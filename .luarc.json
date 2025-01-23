@@ -155,7 +155,7 @@
         ],
         "library": [
             "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid/media/lua",
-            "C:/Users/Slava/AppData/Roaming/Code/User/globalStorage/sumneko.lua/addonManager/addons/umbrella/module/library"
+            "C:/Users/Slava/AppData/Roaming/Code/User/globalStorage/sumneko.lua/addonManager/addons/umbrella-unstable/module/library"
         ],
         "maxPreload": 10000,
         "preloadFileSize": 800
