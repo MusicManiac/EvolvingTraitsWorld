@@ -1,26 +1,8 @@
-[url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md]Properly formatted changelog can be found here[/url]
+[url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)
 
-v.9.2.0 - Sounds Fiesta
+v.9.2.1
+
 General:
-	- Added a levelup sound selection, can be changed from mod options, have fun
-	- Traits that add recipes are no longer hardcoded and instead fetch list of recipes directly from the trait so now when earning trait with recipes it's always going to be up-to-date, so if any mod or game update changes recipes it's going to be accounted for.
-	- Traits that apply XP boost are no longer hardcoded either, now list of exp boosts is fetched from the trait itself so it's always up-do-date too.
-	- Guess what, list of herbs for Herbalist is also not hardcoded anymore. So if mods adds new herbs that are Medical Herbs or Wild Herbs or Wild Plants, they will be accounted for. Same goes for game updates.
-	- Losing a trait that unlocks recipes now locks them back until you acquire the trait again
-	- Added support for new traits added in b42: Whittler, Blacksmith Knowledge, Wilderness Knowledge
-	- Added proper changelog
-	- A bit of internal code refactoring. I think I didn't break anything, but I'm not sure
-Balancing:
-	- Bravery System default kills value is lowered (20k -> 14k)
-	- Home Cook trait price lowered from 3 to 2
-	- I am looking to balance the initial sandbox values to be good for plug-and-play. If you have suggestions regarding initial sandbox values please let me know.
-	- Reminder that defaults changes do not apply to existing saves, use mods to change them, if you want
+	- Changed all audio from .wav to .ogg which cuts the size by like 80%
 Fixes:
-	- Fixed Bravery System incorrect behaviour with a very specific set of conditions
-	- Fixed Bravery part of UI displaying incorrect tooltip on 2 of its elements
-	- Fixed sandbox value display for one of the settings
-
-v8.5.4 - for b41 version of the mod
-Fixes:
-	- Fixed Bravery System incorrect behaviour with a very specific set of conditions
-	- Fixed Bravery part of UI displaying incorrect tooltip on 2 of its elements
+	- Fixed submod not showing up in mod list

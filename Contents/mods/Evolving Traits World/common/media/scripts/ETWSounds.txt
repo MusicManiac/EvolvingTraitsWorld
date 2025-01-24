@@ -14,7 +14,7 @@ module Base
 		category = Player,
 		clip
 		{
-			file = media/sound/b41.wav,
+			file = media/sound/b41.ogg,
 		}
 	}
 
@@ -23,7 +23,7 @@ module Base
 		category = Player,
 		clip
 		{
-			file = media/sound/TLOU.wav,
+			file = media/sound/TLOU.ogg,
 		}
 	}
 
@@ -32,7 +32,7 @@ module Base
 		category = Player,
 		clip
 		{
-			file = media/sound/SkyrimSkill.wav,
+			file = media/sound/SkyrimSkill.ogg,
 		}
 	}
 
@@ -41,7 +41,7 @@ module Base
 		category = Player,
 		clip
 		{
-			file = media/sound/SkyrimLevel.wav,
+			file = media/sound/SkyrimLevel.ogg,
 		}
 	}
 
@@ -50,7 +50,7 @@ module Base
 		category = Player,
 		clip
 		{
-			file = media/sound/Oblivion.wav,
+			file = media/sound/Oblivion.ogg,
 		}
 	}
 
@@ -59,7 +59,7 @@ module Base
 		category = Player,
 		clip
 		{
-			file = media/sound/Diablo2.wav,
+			file = media/sound/Diablo2.ogg,
 		}
 	}
 
@@ -68,7 +68,7 @@ module Base
 		category = Player,
 		clip
 		{
-			file = media/sound/Witcher3.wav,
+			file = media/sound/Witcher3.ogg,
 		}
 	}
 
@@ -77,7 +77,7 @@ module Base
 		category = Player,
 		clip
 		{
-			file = media/sound/FalloutNV.wav,
+			file = media/sound/FalloutNV.ogg,
 		}
 	}
 
@@ -86,7 +86,7 @@ module Base
 		category = Player,
 		clip
 		{
-			file = media/sound/AoE3.wav,
+			file = media/sound/AoE3.ogg,
 		}
 	}
 
@@ -95,7 +95,7 @@ module Base
 		category = Player,
 		clip
 		{
-			file = media/sound/WoW.wav,
+			file = media/sound/WoW.ogg,
 		}
 	}
 }

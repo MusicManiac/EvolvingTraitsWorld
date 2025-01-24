@@ -1,5 +1,14 @@
+## v.9.2.1
+###### 24 Jan 2025
+
+- General:
+  - Changed all audio from .wav to .ogg which cuts the size of sounds from 11 MB to 800 kB
+- Fixes:
+  - Fixed submod not showing up in mod list
+
+
 ## v.9.2.0 - Sounds Fiesta
-###### 25 Jan 2025
+###### 24 Jan 2025
 
 - General:
   - Added a trait sound selection, can be changed from mod options, have fun
@@ -19,7 +28,7 @@
   - Fixed sandbox value display for one of the settings
 
 ## v.8.5.4 - for b41 version of the mod
-###### 25 Jan 2025
+###### 24 Jan 2025
 - Fixes:
   - Fixed Bravery System incorrect behaviour with a very specific set of conditions
   - Fixed Bravery part of UI displaying incorrect tooltip on 2 of its elements
