@@ -2,7 +2,7 @@
 ###### 25 Jan 2025
 
 - General:
-  - Added a levelup sound selection, can be changed from mod options, have fun
+  - Added a trait sound selection, can be changed from mod options, have fun
   - Traits that add recipes are no longer hardcoded and instead fetch list of recipes directly from the trait so now when earning trait with recipes it's always going to be up-to-date, so if any mod or game update changes recipes it's going to be accounted for.
   - Traits that apply XP boost are no longer hardcoded either, now list of exp boosts is fetched from the trait itself so it's always up-do-date too.
   - Guess what, list of herbs for Herbalist is also not hardcoded anymore. So if mods adds new herbs that are Medical Herbs or Wild Herbs or Wild Plants, they will be accounted for. Same goes for game updates.
@@ -18,7 +18,7 @@
   - Fixed Bravery part of UI displaying incorrect tooltip on 2 of its elements
   - Fixed sandbox value display for one of the settings
 
-## v8.5.4 - for b41 version of the mod
+## v.8.5.4 - for b41 version of the mod
 ###### 25 Jan 2025
 - Fixes:
   - Fixed Bravery System incorrect behaviour with a very specific set of conditions

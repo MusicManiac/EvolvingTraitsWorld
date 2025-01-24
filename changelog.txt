@@ -1,3 +1,5 @@
+[url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md]Properly formatted changelog can be found here[/url]
+
 v.9.2.0 - Sounds Fiesta
 General:
 	- Added a levelup sound selection, can be changed from mod options, have fun
@@ -18,7 +20,7 @@ Fixes:
 	- Fixed Bravery part of UI displaying incorrect tooltip on 2 of its elements
 	- Fixed sandbox value display for one of the settings
 
-v8.5.4
+v8.5.4 - for b41 version of the mod
 Fixes:
 	- Fixed Bravery System incorrect behaviour with a very specific set of conditions
 	- Fixed Bravery part of UI displaying incorrect tooltip on 2 of its elements
