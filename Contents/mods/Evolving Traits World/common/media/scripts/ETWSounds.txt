@@ -86,7 +86,7 @@ module Base
 		category = Player,
 		clip
 		{
-			file = media/sound/TLOU.wav,
+			file = media/sound/AoE3.wav,
 		}
 	}
 
