@@ -1,6 +1,9 @@
 # EvolvingTraitsWorld
 Repo for PZ mod "Evolving Traits World"
 
+### [Changelog can be found here](https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md)
+
+
 Mod page with detailed description along with permissions can be found here: [Evolving Traits World (ETW)](https://steamcommunity.com/sharedfiles/filedetails/?id=2914075159)
 
 >⛔ Permissions
