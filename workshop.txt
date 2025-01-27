@@ -1,6 +1,6 @@
 version=1
 id=2914075159
-title=[B41/B42] Evolving Traits World (ETW) - alternative to "Dynamic Traits"
+title=Evolving Traits World (ETW) [B41/B42] - alternative to "Dynamic Traits"
 description=[h1][b]B42 INFORMATION[/b][/h1]
 description=Can be found in this thread ->>> [url=https://steamcommunity.com/workshop/filedetails/discussion/2914075159/595136072544954599/]CLICK ME[/url] <<<-
 description=

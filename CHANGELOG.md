@@ -1,3 +1,15 @@
+## v.9.3.0
+###### 27 Jan 2025
+
+- General:
+  - Changed trait sound from a single selection to multi-selection, it's going to be random from selected if selected more than 1
+- Fixes:
+  - Fixed bug added in v.9.2.0 with player not geting ANY exp boosts when earning traits (ups)
+  - Fixed moodles not showing
+- Translations:
+  - I am looking for PTBR language maintainer, my current one vanished without a trace??? If maintainer not found, translation will be removed in few updates.
+  - Other languages maintainers are also always welcome. Please join Discord if you're interested.
+
 ## v.9.2.1
 ###### 24 Jan 2025
 
