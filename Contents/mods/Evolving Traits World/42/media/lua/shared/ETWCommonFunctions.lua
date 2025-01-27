@@ -22,6 +22,34 @@ local delayedNotification = function() return modOptions:getOption("EnableDelaye
 ---@return boolean
 local detailedDebug = function() return modOptions:getOption("GatherDetailedDebug"):getValue() end
 
+---Prints out debugs inside console if detailedDebug is enabled
+---@param ... any Optional boolean followed by strings to log
+function ETWCommonFunctions.log(...)
+	if detailedDebug() then
+	    local args = { ... };
+		if #args == 0 then
+			return
+		end
+		if type(args[1]) == "boolean" then
+			local singleLine = args[1];
+			table.remove(args, 1);
+			if singleLine then
+				print(table.concat(args, " "))
+			else
+				for _, str in ipairs(args) do
+					print(str);
+				end
+			end
+		else
+			for _, str in ipairs(args) do
+				print(str);
+			end
+		end
+	end
+end
+
+local logETW = function(...) ETWCommonFunctions.log(...) end
+
 ---Function responsible for finding index of delayed trait in Delayed Traits Table
 ---@param tbl table
 ---@param value any
@@ -54,7 +82,13 @@ end
 function ETWCommonFunctions.traitSound(player)
 	if modOptions:getOption("EnableSoundNotifications"):getValue() then
 		local soundTable = {"ETW_b42", "ETW_b41", "ETW_TLOU", "ETW_SkyrimSkill", "ETW_SkyrimLevel", "ETW_Oblivion", "ETW_Diablo2", "ETW_Witcher3", "ETW_FalloutNV", "ETW_AoE3", "ETW_WoW"};
-		player:playSoundLocal(soundTable[modOptions:getOption("SoundNotificationSoundSelect"):getValue()]);
+		local filteredSoundTable = {};
+		for index = 1, #soundTable do
+			if modOptions:getOption("SoundNotificationSoundSelect"):getValue(index) then
+				table.insert(filteredSoundTable, soundTable[index]);
+			end
+		end
+		player:playSoundLocal(filteredSoundTable[ZombRand(#filteredSoundTable) + 1]);
 	end
 end
 
@@ -72,7 +106,7 @@ function ETWCommonFunctions.delayedTraitsDataDump()
 		for index = 1, #traitTable do
 			local traitEntry = traitTable[index]
 			local traitName, roll, gained = traitEntry[1], traitEntry[2], traitEntry[3]
-			print("ETW Logger | Delayed Traits System | Data Dump: " .. traitName.. ", " .. roll .. ", " .. tostring(gained))
+			logETW("ETW Logger | Delayed Traits System | Data Dump: " .. traitName.. ", " .. roll .. ", " .. tostring(gained))
 		end
 	end
 end
@@ -84,16 +118,14 @@ local function addXPBoostsFromTrait(traitName)
 	local trait = TraitFactory.getTrait(traitName);
 	local xpBoostMap = trait:getXPBoostMap();
 	if xpBoostMap then
-		print("--------  XP Boost Map: ", xpBoostMap, type(xpBoostMap));
 		local table = transformIntoKahluaTable(xpBoostMap);
-		print("--------  XP Boost Map (table): ", table, type(table));
-		for perkName, boostLevel in pairs(table) do
-			print("-------- applying boost to traitname: ", perkName, " boostLevel: ", boostLevel, type(boostLevel));
-			local perk = PerkFactory.getPerkFromName(tostring(perkName));
-			local currentBoost = player:getXp():getPerkBoost(perk);
-			local newBoost = math.min(currentBoost + tonumber(tostring(boostLevel)), 3);
+		for perk, boostLevel in pairs(table) do
+			logETW(true, "ETW Logger | ETWCommonFunctions.addXPBoostsFromTrait(): perk:", tostring(perk), ", boostLevel:", tostring(boostLevel));
+			local oldBoost = player:getXp():getPerkBoost(perk);
+			local newBoost = math.min(oldBoost + tonumber(tostring(boostLevel)), 3);
 			---@cast newBoost integer
 			player:getXp():setPerkBoost(perk, newBoost);
+			logETW(true, "ETW Logger | ETWCommonFunctions.addXPBoostsFromTrait(): ", tostring(perk), "old/new boost level:", oldBoost, player:getXp():getPerkBoost(perk));
 		end
 	end
 end
@@ -220,16 +252,6 @@ function ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(name)
 	end
 	if detailedDebug() then print("ETW Logger | Delayed Traits System: checking if " .. name .. " is already in the table, it is not.") end
 	return false;
-end
-
----Prints out debugs inside console if detailedDebug is enabled
----@param ... string Strings to log
-function ETWCommonFunctions.log(...)
-	if detailedDebug() then
-		for _, str in ipairs({...}) do
-			print(str)
-		end
-	end
 end
 
 return ETWCommonFunctions;

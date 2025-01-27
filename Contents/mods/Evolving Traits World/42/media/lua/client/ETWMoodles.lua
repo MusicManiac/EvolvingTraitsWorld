@@ -36,8 +36,8 @@ function ETWMoodles.bloodlustMoodleUpdate(player, hide)
 		local BloodLustModData = modData.BloodlustSystem;
 		local timeSinceLastKill = player:getHoursSurvived() - BloodLustModData.LastKillTimestamp;
 		moodle:setThresholds(0.1, 0.2, 0.35, 0.4999, 0.5001, 0.65, 0.8, 0.9);
-		if player == getPlayer() and modOptions:getOption(EnableBloodLustMoodle) == true
-		and hide == false and timeSinceLastKill <= SBvars.BloodlustMoodleVisibilityHours then
+		if player == getPlayer() and modOptions:getOption("EnableBloodLustMoodle"):getValue()
+		and not hide and timeSinceLastKill <= SBvars.BloodlustMoodleVisibilityHours then
 			local percentage = BloodLustModData.BloodlustMeter / bloodlustMeterCapacity;
 			local displayedPercentage = string.format("%.2f", percentage * 100);
 			moodle:setValue(percentage);
@@ -58,7 +58,7 @@ function ETWMoodles.sleepHealthMoodleUpdate(player, hoursAwayFromPreferredHour, 
 		modOptions = PZAPI.ModOptions:getOptions("ETWModOptions");
 		local moodle = MF.getMoodle("SleepHealthMoodle");
 		moodle:setThresholds(1.5, 3, 4.5, 5.999, 6.001, 7.5, 9, 10.5);
-		if player == getPlayer() and modOptions:getOption(EnableSleepHealthMoodle) == true and hide == false then
+		if player == getPlayer() and modOptions:getOption("EnableSleepHealthMoodle"):getValue() and not hide then
 			logETW("ETW Logger | ETWMoodles.sleepHealthMoodleUpdate(): hoursAwayFromPreferredHour: " .. hoursAwayFromPreferredHour);
 			local displayedDifference = string.format("%.2f", hoursAwayFromPreferredHour);
 			moodle:setValue(12 - hoursAwayFromPreferredHour);
