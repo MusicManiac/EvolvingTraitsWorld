@@ -87,7 +87,7 @@ local function traitsGainsBySkill(player, perk)
 	---@type DebugAndNotificationArgs
 	local DebugAndNotificationArgs = {detailedDebug = detailedDebug, notification = notification, delayedNotification = delayedNotification};
 
-	if ETWCommonLogicChecks.LuckSystemShouldExecute() then
+	if perk ~= "kill" and ETWCommonLogicChecks.LuckSystemShouldExecute() then
 		local totalPerkLevel = 0;
 		local totalMaxPerkLevel = 0;
 		for i = 1, Perks.getMaxIndex() - 1 do
@@ -843,7 +843,6 @@ local function progressDelayedTraits()
 	local player = getPlayer();
 	local modData = ETWCommonFunctions.getETWModData(player);
 	local traitTable = modData.DelayedTraits;
-	local detailedDebug = detailedDebug();
 	logETW("ETW Logger | Delayed Traits System: new progressDelayedTraits() execution ----------");
 	for index, traitEntry in ipairs(traitTable) do
 		local traitName, traitValue, gained = traitEntry[1], traitEntry[2], traitEntry[3];
@@ -862,7 +861,7 @@ local function progressDelayedTraits()
 			end
 		end
 	end
-	if detailedDebug then print("ETW Logger | Delayed Traits System: finished progressDelayedTraits() execution ----------") end
+	logETW("ETW Logger | Delayed Traits System: finished progressDelayedTraits() execution ----------");
 end
 
 ---Function responsible for firing check on all kill-related traits

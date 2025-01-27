@@ -1,6 +1,6 @@
 REMINDER: Don't forget to update mod.info with new mod version
 
-[url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)
+[url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
 
 v.9.x.x
 
@@ -29,3 +29,7 @@ Moodles (improvements): x.x.X
 Fixes: x.x.X
 Mod Conflicts: x.x.X
 Translations: x.x.X
+
+[url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md]Changelog can be found here[/url]
+
+v.9.x.x

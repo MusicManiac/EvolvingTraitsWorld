@@ -1,8 +1,29 @@
-[url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)
+REMINDER: Don't forget to update mod.info with new mod version
 
-v.9.2.1
+[url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
+
+v.9.3.0
 
 General:
-	- Changed all audio from .wav to .ogg which cuts the size by like 80%
+	- Changed trait sound from a single selection to multi-selection, it's going to be random from selected if selected more than 1
 Fixes:
-	- Fixed submod not showing up in mod list
+	- Fixed bug added in last update with player not geting ANY exp boosts when earning traits (ups)
+	- Fixed moodles not showing
+Translations:
+	- I am looking for PTBR language maintainer, my current one vanished without a trace??? If maintainer not found, translation will be removed in few updates.
+	- Other languages maintainers are also always welcome. Please join Discord if you're interested.
+
+Numbers to increase:
+Overhauls: X.x.x
+General: x.X.x
+Moodles (new): x.X.x
+Submod update: x.x.X
+Balancing (defaults/real): x.x.X
+Moodles (improvements): x.x.X
+Fixes: x.x.X
+Mod Conflicts: x.x.X
+Translations: x.x.X
+
+[url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md]Changelog can be found here[/url]
+
+v.9.3.0
