@@ -1,3 +1,9 @@
+## v.8.5.5 - for b41 version of the mod
+###### 28 Jan 2025
+
+Fixes:
+- Fixed broken exp boost gain
+
 ## v.9.3.0
 ###### 27 Jan 2025
 
