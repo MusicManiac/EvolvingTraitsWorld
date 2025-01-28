@@ -25,8 +25,8 @@ function ETWCombinedTraitChecks.bodyworkEnthusiastCheck()
 			ETWCommonFunctions.addTraitToDelayTable(modData, "BodyWorkEnthusiast", player, true);
 		elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("BodyWorkEnthusiast")) then
 			player:getTraits():add("BodyWorkEnthusiast");
-			ETWCommonFunctions.addXPBoostsFromTrait(player, Perks.MetalWelding, 1);
-			ETWCommonFunctions.addXPBoostsFromTrait(player, Perks.Mechanics, 1);
+			ETWCommonFunctions.applyXPBoost(player, Perks.MetalWelding, 1);
+			ETWCommonFunctions.applyXPBoost(player, Perks.Mechanics, 1);
 			ETWCommonFunctions.addRecipes(player, "Make Metal Walls");
 			ETWCommonFunctions.addRecipes(player, "Make Metal Fences");
 			ETWCommonFunctions.addRecipes(player, "Make Metal Containers");
@@ -50,7 +50,7 @@ function ETWCombinedTraitChecks.mechanicsCheck()
 			ETWCommonFunctions.addTraitToDelayTable(modData, "Mechanics", player, true);
 		elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Mechanics")) then
 			player:getTraits():add("Mechanics");
-			ETWCommonFunctions.addXPBoostsFromTrait(player, Perks.Mechanics, 1);
+			ETWCommonFunctions.applyXPBoost(player, Perks.Mechanics, 1);
 			ETWCommonFunctions.addRecipes(player, "Basic Mechanics");
 			ETWCommonFunctions.addRecipes(player, "Intermediate Mechanics");
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Mechanics"), true, HaloTextHelper.getColorGreen()) end;
@@ -70,7 +70,7 @@ function ETWCombinedTraitChecks.sewerCheck()
 			ETWCommonFunctions.addTraitToDelayTable(modData, "Tailor", player, true);
 		elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Tailor")) then
 			player:getTraits():add("Tailor");
-			ETWCommonFunctions.addXPBoostsFromTrait(player, Perks.Tailoring, 1);
+			ETWCommonFunctions.applyXPBoost(player, Perks.Tailoring, 1);
 			if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Tailor"), true, HaloTextHelper.getColorGreen()) end;
 			ETWCommonFunctions.traitSound(player);
 		end
