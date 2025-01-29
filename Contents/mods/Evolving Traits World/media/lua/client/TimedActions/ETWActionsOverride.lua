@@ -244,7 +244,7 @@ function forageSystem.addOrDropItems(_character, _inventory, _items, _discardIte
 						if debug() then print("ETW Logger | forageSystem.addOrDropItems(): modData.HerbsPickedUp: " .. modData.HerbsPickedUp) end;
 						if not player:HasTrait("Herbalist") and modData.HerbsPickedUp >= SBvars.HerbalistHerbsPicked and SBvars.TraitsLockSystemCanGainPositive then
 							player:getTraits():add("Herbalist");
-							ETWCommonFunctions.addRecipes(player, "Herbalist");
+							ETWCommonFunctions.addRecipe(player, "Herbalist");
 							if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Herbalist"), true, HaloTextHelper.getColorGreen()) end;
 							ETWCommonFunctions.traitSound(player);
 						end

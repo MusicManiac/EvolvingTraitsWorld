@@ -130,8 +130,8 @@ Sandbox_EN = {
 	Sandbox_ETW_FoodSicknessSystem = "Food Sickness System",
 	Sandbox_ETW_FoodSicknessSystemCounter = "Food Sickness Counter",
 	Sandbox_ETW_FoodSicknessSystemCounter_tooltip = "Determines how much food sickness you need to accumulate to lose/gain Food Sickness-related traits, Weak Stomach and Iron Gut. Sickness can range from 0 to 1, where 1 can lead to death. Each minute, your current food sickness level is added to the counter.",
-	Sandbox_ETW_ETW_FoodSicknessSystemNormalSicknessMultiplier = "Normal Sickness Contribution",
-	Sandbox_ETW_ETW_FoodSicknessSystemNormalSicknessMultiplier_tooltip = "Sickness gained specifically from food and general sickness are different things in the game. This multiplier allows normal sickness to count for gaining the Food Sickness System traits."
+	Sandbox_ETW_FoodSicknessSystemNormalSicknessMultiplier = "Normal Sickness Contribution",
+	Sandbox_ETW_FoodSicknessSystemNormalSicknessMultiplier_tooltip = "Sickness gained specifically from food and general sickness are different things in the game. This multiplier allows normal sickness to count for gaining the Food Sickness System traits."
 
 	Sandbox_ETW_FurnitureAssembler = "Furniture Assembler",
 	Sandbox_ETW_FurnitureAssemblerSkill = "Furniture Assembler Carpentry Skill requirement",
