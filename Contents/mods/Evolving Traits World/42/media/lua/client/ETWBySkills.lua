@@ -34,6 +34,11 @@ local logETW = function(...) ETWCommonFunctions.log(...) end
 ---@param player IsoPlayer
 ---@param perk Perk|string
 local function traitsGainsBySkill(player, perk)
+	if player ~= getPlayer() then
+		logETW("ETW Logger | traitsGainsBySkill(player, perk) triggered not by a player, skipping");
+		return
+	end
+
 	local modData = ETWCommonFunctions.getETWModData(player);
 
 	-- locals for perk levels
@@ -715,7 +720,7 @@ local function traitsGainsBySkill(player, perk)
 	if (perk == "characterInitialization" or perk == Perks.PlantScavenging or perk == Perks.FlintKnapping or perk == Perks.Maintenance
 	or perk == Perks.Carving or perk == "WildernessKnowledge") and ETWCommonLogicChecks.WildernessKnowledgeShouldExecute() then
     		if foraging >= 2 and knapping >= 2 and maintenance >= 2 and carving >= 2
-    		and (foraging + knapping + maintenance + carving) >= SBvars.WildernessKnowledge then
+    		and (foraging + knapping + maintenance + carving) >= SBvars.WildernessKnowledgeSkill then
     			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("WildernessKnowledge") then
     				ETWCommonFunctions.addTraitToDelayTable(modData, "WildernessKnowledge", player, true);
     				if delayedNotification then

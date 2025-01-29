@@ -129,8 +129,8 @@ Sandbox_CH = {
 	Sandbox_ETW_FoodSicknessSystem = "食物中毒相關特質系統",
 	Sandbox_ETW_FoodSicknessSystemCounter = "食物中毒基準",
 	Sandbox_ETW_FoodSicknessSystemCounter_tooltip = "決定了需要累積多少食物中毒值來失去/取得相關特質(腸胃虛弱/鐵胃). 疾病值可以為0到1(1代表死亡). 每分鐘會將你目前的中毒值加到進度中",
-	Sandbox_ETW_ETW_FoodSicknessSystemNormalSicknessMultiplier = "普通疾病貢獻",
-	Sandbox_ETW_ETW_FoodSicknessSystemNormalSicknessMultiplier_tooltip = "從食物中獲得的疾病值與統通感冒所得到的疾病值是不同的. 這個乘數設定讓你可以決定是否讓普通感冒的疾病值同時貢獻到食物中毒相關的特質進度中",
+	Sandbox_ETW_FoodSicknessSystemNormalSicknessMultiplier = "普通疾病貢獻",
+	Sandbox_ETW_FoodSicknessSystemNormalSicknessMultiplier_tooltip = "從食物中獲得的疾病值與統通感冒所得到的疾病值是不同的. 這個乘數設定讓你可以決定是否讓普通感冒的疾病值同時貢獻到食物中毒相關的特質進度中",
 
 	Sandbox_ETW_FurnitureAssembler = "家具組裝工",
 	Sandbox_ETW_FurnitureAssemblerSkill = "家具組裝工:獲得特質所需木工技能等級",

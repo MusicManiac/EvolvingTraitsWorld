@@ -47,8 +47,8 @@ Sandbox.txt
 		Sandbox_ETW_PolearmFighterSkill = "Polearm Fighter Spear Skill requirement",
 		Sandbox_ETW_PolearmFighterKills = "Polearm Fighter Spear Kills requirement",
 
-		Sandbox_ETW_ETW_FoodSicknessSystemNormalSicknessMultiplier = "Normal Sickness Contribution",
-		Sandbox_ETW_ETW_FoodSicknessSystemNormalSicknessMultiplier_tooltip = "Sickness gained specifically from food and general sickness are different things in the game. This multiplier allows normal sickness to count for gaining the Food Sickness System traits.",
+		Sandbox_ETW_FoodSicknessSystemNormalSicknessMultiplier = "Normal Sickness Contribution",
+		Sandbox_ETW_FoodSicknessSystemNormalSicknessMultiplier_tooltip = "Sickness gained specifically from food and general sickness are different things in the game. This multiplier allows normal sickness to count for gaining the Food Sickness System traits.",
 
 		Sandbox_ETW_ImmunitySystem = "Immunity System",
     	Sandbox_ETW_ImmunitySystemCounter = "Immunity System counter",

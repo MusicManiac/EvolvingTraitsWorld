@@ -27,12 +27,12 @@ function ETWCombinedTraitChecks.bodyworkEnthusiastCheck()
 			player:getTraits():add("BodyWorkEnthusiast");
 			ETWCommonFunctions.applyXPBoost(player, Perks.MetalWelding, 1);
 			ETWCommonFunctions.applyXPBoost(player, Perks.Mechanics, 1);
-			ETWCommonFunctions.addRecipes(player, "Make Metal Walls");
-			ETWCommonFunctions.addRecipes(player, "Make Metal Fences");
-			ETWCommonFunctions.addRecipes(player, "Make Metal Containers");
-			ETWCommonFunctions.addRecipes(player, "Make Metal Sheet");
-			ETWCommonFunctions.addRecipes(player, "Make Small Metal Sheet");
-			ETWCommonFunctions.addRecipes(player, "Make Metal Roof");
+			ETWCommonFunctions.addRecipe(player, "Make Metal Walls");
+			ETWCommonFunctions.addRecipe(player, "Make Metal Fences");
+			ETWCommonFunctions.addRecipe(player, "Make Metal Containers");
+			ETWCommonFunctions.addRecipe(player, "Make Metal Sheet");
+			ETWCommonFunctions.addRecipe(player, "Make Small Metal Sheet");
+			ETWCommonFunctions.addRecipe(player, "Make Metal Roof");
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_BodyWorkEnthusiast"), true, HaloTextHelper.getColorGreen()) end;
 			ETWCommonFunctions.traitSound(player);
 		end
@@ -51,8 +51,8 @@ function ETWCombinedTraitChecks.mechanicsCheck()
 		elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Mechanics")) then
 			player:getTraits():add("Mechanics");
 			ETWCommonFunctions.applyXPBoost(player, Perks.Mechanics, 1);
-			ETWCommonFunctions.addRecipes(player, "Basic Mechanics");
-			ETWCommonFunctions.addRecipes(player, "Intermediate Mechanics");
+			ETWCommonFunctions.addRecipe(player, "Basic Mechanics");
+			ETWCommonFunctions.addRecipe(player, "Intermediate Mechanics");
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Mechanics"), true, HaloTextHelper.getColorGreen()) end;
 			ETWCommonFunctions.traitSound(player);
 		end

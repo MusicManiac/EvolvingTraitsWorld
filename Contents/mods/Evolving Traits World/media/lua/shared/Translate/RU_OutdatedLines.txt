@@ -31,8 +31,8 @@ Sandbox.txt
 		Sandbox_ETW_BloodlustMeterMaxCapMultiplier = "Bloodlust Meter Max Cap Multiplier",
 		Sandbox_ETW_BloodlustMeterMaxCapMultiplier_tooltip = "By how much you can overfill your Bloodlust Meter. This is a multiplier. 2 means you can fill your Bloodlust Meter to 200%, for example",
 
-		Sandbox_ETW_ETW_FoodSicknessSystemNormalSicknessMultiplier = "Normal Sickness Contribution",
-		Sandbox_ETW_ETW_FoodSicknessSystemNormalSicknessMultiplier_tooltip = "Sickness gained specifically from food and general sickness are different things in the game. This multiplier allows normal sickness to count for gaining the Food Sickness System traits.",
+		Sandbox_ETW_FoodSicknessSystemNormalSicknessMultiplier = "Normal Sickness Contribution",
+		Sandbox_ETW_FoodSicknessSystemNormalSicknessMultiplier_tooltip = "Sickness gained specifically from food and general sickness are different things in the game. This multiplier allows normal sickness to count for gaining the Food Sickness System traits.",
 
 
 		Sandbox_ETW_ImmunitySystem = "Immunity System",

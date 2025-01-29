@@ -133,8 +133,8 @@ Sandbox_DE = {
 	Sandbox_ETW_FogSystemCounterDecreaseMultiplier_tooltip = "Passen Sie die Geschwindigkeit an, mit der Ihr Zähler abnimmt, Einzelheiten finden Sie in der Beschreibung des Nebelsystemzählers",
 
 	Sandbox_ETW_FoodSicknessSystem = "System für Lebensmittelkrankheiten",
-	Sandbox_ETW_ETW_FoodSicknessSystemNormalSicknessMultiplier = "Normaler Krankheitsbeitrag",
-	Sandbox_ETW_ETW_FoodSicknessSystemNormalSicknessMultiplier_tooltip = "Lebensmittelvergiftung und allgemeine Krankheit sind im Spiel unterschiedliche Dinge. Dieser Multiplikator erlaubt es, dass normale Krankheiten zum Erwerb der Eigenschaften des Lebensmittelvergiftungssystems beitragen.",
+	Sandbox_ETW_FoodSicknessSystemNormalSicknessMultiplier = "Normaler Krankheitsbeitrag",
+	Sandbox_ETW_FoodSicknessSystemNormalSicknessMultiplier_tooltip = "Lebensmittelvergiftung und allgemeine Krankheit sind im Spiel unterschiedliche Dinge. Dieser Multiplikator erlaubt es, dass normale Krankheiten zum Erwerb der Eigenschaften des Lebensmittelvergiftungssystems beitragen.",
 	Sandbox_ETW_FoodSicknessSystemCounter = "Systemzähler für Lebensmittelkrankheiten",
 	Sandbox_ETW_FoodSicknessSystemCounter_tooltip = "Bestimmt, wie viel Lebensmittelvergiftung du ansammeln musst, um Lebensmittelvergiftungsbezogene Eigenschaften wie Schwacher Magen und Eiserner Magen zu verlieren/zu gewinnen. Die Krankheit kann von 0 bis 1 reichen, wobei 1 tödlich sein kann. Jede Minute wird dein aktueller Lebensmittelvergiftungsgrad zum Zähler hinzugefügt.",
 

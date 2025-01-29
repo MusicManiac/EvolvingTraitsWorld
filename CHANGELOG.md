@@ -1,8 +1,24 @@
+## v.9.3.1
+###### 29 Jan 2025
+
+- Fixes:
+  - Fixed not being able to get Wilderness Knowledge (and related error)
+- Mod Conflicts:
+  - Possible fix for occasional error when running NPC mods
+- Translations:
+  - IT translation update
+
+## v.8.5.6 - for b41 version of the mod
+###### 29 Jan 2025
+
+- Fixes:
+  - Fixed recipes not being unlocked
+
 ## v.8.5.5 - for b41 version of the mod
 ###### 28 Jan 2025
 
-Fixes:
-- Fixed broken exp boost gain
+- Fixes:
+  - Fixed broken exp boost gain
 
 ## v.9.3.0
 ###### 27 Jan 2025

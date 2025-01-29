@@ -176,117 +176,110 @@ local original_ISInventoryTransferAction_perform = ISInventoryTransferAction.per
 ---Overwriting ISInventoryTransferAction:perform() here to insert ETW logic catching player transferring items
 ---@diagnostic disable-next-line: duplicate-set-field
 function ISInventoryTransferAction:perform()
-	if ETWCommonLogicChecks.InventoryTransferSystemShouldExecute() then
-		if self.character:isLocalPlayer() == false then -- checks if it's NPC doing stuff
-			logETW("ETW Logger | ISInventoryTransferAction.perform(): NPC");
-			original_ISInventoryTransferAction_perform(self);
-		elseif self.character == getPlayer() then
-			logETW("ETW Logger | ISInventoryTransferAction.perform(): Player");
-			local player = self.character;
-			local item = self.item;
-			local itemWeight = math.max(0, item:getWeight());
-			local modData = ETWCommonFunctions.getETWModData(player);
-			local transferModData = modData.TransferSystem;
-			transferModData.ItemsTransferred = transferModData.ItemsTransferred + 1;
-			transferModData.WeightTransferred = transferModData.WeightTransferred + itemWeight;
-			logETW(
-				"ETW Logger | ISInventoryTransferAction.perform(): Moving an item with weight of " .. itemWeight,
-				"ETW Logger | ISInventoryTransferAction.perform(): Moved weight: " .. transferModData.WeightTransferred .. ", Moved Items: " .. transferModData.ItemsTransferred
-			)
-			original_ISInventoryTransferAction_perform(self);
-			if player:HasTrait("Disorganized") and transferModData.WeightTransferred >= SBvars.InventoryTransferSystemWeight * 0.66
-			and transferModData.ItemsTransferred >= SBvars.InventoryTransferSystemItems * 0.33 and SBvars.TraitsLockSystemCanLoseNegative then
-				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Disorganized") then
-					if delayedNotification() then
-						HaloTextHelper.addTextWithArrow(
-							player,
-							getText("UI_ETW_DelayedNotificationsStringRemove") .. getText("UI_trait_Disorganized"),
-							false,
-							HaloTextHelper.getColorGreen()
-						);
-					end
-					ETWCommonFunctions.addTraitToDelayTable(modData, "Disorganized", player, false);
-				elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Disorganized")) then
-					player:getTraits():remove("Disorganized");
-					if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Disorganized"), false, HaloTextHelper.getColorGreen()) end
+	if ETWCommonLogicChecks.InventoryTransferSystemShouldExecute() and self.character == getPlayer() then
+		logETW("ETW Logger | ISInventoryTransferAction.perform(): Player");
+		local player = self.character;
+		local item = self.item;
+		local itemWeight = math.max(0, item:getWeight());
+		local modData = ETWCommonFunctions.getETWModData(player);
+		local transferModData = modData.TransferSystem;
+		transferModData.ItemsTransferred = transferModData.ItemsTransferred + 1;
+		transferModData.WeightTransferred = transferModData.WeightTransferred + itemWeight;
+		logETW(
+			"ETW Logger | ISInventoryTransferAction.perform(): Moving an item with weight of " .. itemWeight,
+			"ETW Logger | ISInventoryTransferAction.perform(): Moved weight: " .. transferModData.WeightTransferred .. ", Moved Items: " .. transferModData.ItemsTransferred
+		)
+		original_ISInventoryTransferAction_perform(self);
+		if player:HasTrait("Disorganized") and transferModData.WeightTransferred >= SBvars.InventoryTransferSystemWeight * 0.66
+		and transferModData.ItemsTransferred >= SBvars.InventoryTransferSystemItems * 0.33 and SBvars.TraitsLockSystemCanLoseNegative then
+			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Disorganized") then
+				if delayedNotification() then
+					HaloTextHelper.addTextWithArrow(
+						player,
+						getText("UI_ETW_DelayedNotificationsStringRemove") .. getText("UI_trait_Disorganized"),
+						false,
+						HaloTextHelper.getColorGreen()
+					);
 				end
+				ETWCommonFunctions.addTraitToDelayTable(modData, "Disorganized", player, false);
+			elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Disorganized")) then
+				player:getTraits():remove("Disorganized");
+				if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Disorganized"), false, HaloTextHelper.getColorGreen()) end
 			end
-			if not player:HasTrait("Disorganized") and not player:HasTrait("Organized") and transferModData.WeightTransferred >= SBvars.InventoryTransferSystemWeight
-			and transferModData.ItemsTransferred >= SBvars.InventoryTransferSystemItems * 0.66 and SBvars.TraitsLockSystemCanGainPositive then
-				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Organized") then
-					-- UI_trait_Packmule is internal string name
-					ETWCommonFunctions.addTraitToDelayTable(modData, "Organized", player, true);
-					if delayedNotification() then
-						HaloTextHelper.addTextWithArrow(
-							player,
-							getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_Packmule"),
-							true,
-							HaloTextHelper.getColorGreen()
-						);
-					end
-				elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Organized")) then
-					player:getTraits():add("Organized");
-					-- UI_trait_Packmule is internal string name
-					if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Packmule"), true, HaloTextHelper.getColorGreen()) end
+		end
+		if not player:HasTrait("Disorganized") and not player:HasTrait("Organized") and transferModData.WeightTransferred >= SBvars.InventoryTransferSystemWeight
+		and transferModData.ItemsTransferred >= SBvars.InventoryTransferSystemItems * 0.66 and SBvars.TraitsLockSystemCanGainPositive then
+			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Organized") then
+				-- UI_trait_Packmule is internal string name
+				ETWCommonFunctions.addTraitToDelayTable(modData, "Organized", player, true);
+				if delayedNotification() then
+					HaloTextHelper.addTextWithArrow(
+						player,
+						getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_Packmule"),
+						true,
+						HaloTextHelper.getColorGreen()
+					);
 				end
+			elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Organized")) then
+				player:getTraits():add("Organized");
+				-- UI_trait_Packmule is internal string name
+				if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Packmule"), true, HaloTextHelper.getColorGreen()) end
 			end
-			if player:HasTrait("AllThumbs") and transferModData.WeightTransferred >= SBvars.InventoryTransferSystemWeight * 0.33
-			and transferModData.ItemsTransferred >= SBvars.InventoryTransferSystemItems * 0.66 and SBvars.TraitsLockSystemCanLoseNegative then
-				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("AllThumbs") then
-					ETWCommonFunctions.addTraitToDelayTable(modData, "AllThumbs", player, false);
-					if delayedNotification() then
-						HaloTextHelper.addTextWithArrow(
-							player,
-							getText("UI_ETW_DelayedNotificationsStringRemove") .. getText("UI_trait_AllThumbs"),
-							false,
-							HaloTextHelper.getColorGreen()
-						);
-					end
-				elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("AllThumbs")) then
-					player:getTraits():remove("AllThumbs");
-					if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_AllThumbs"), false, HaloTextHelper.getColorGreen()) end
-					ETWCommonFunctions.traitSound(player);
+		end
+		if player:HasTrait("AllThumbs") and transferModData.WeightTransferred >= SBvars.InventoryTransferSystemWeight * 0.33
+		and transferModData.ItemsTransferred >= SBvars.InventoryTransferSystemItems * 0.66 and SBvars.TraitsLockSystemCanLoseNegative then
+			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("AllThumbs") then
+				ETWCommonFunctions.addTraitToDelayTable(modData, "AllThumbs", player, false);
+				if delayedNotification() then
+					HaloTextHelper.addTextWithArrow(
+						player,
+						getText("UI_ETW_DelayedNotificationsStringRemove") .. getText("UI_trait_AllThumbs"),
+						false,
+						HaloTextHelper.getColorGreen()
+					);
 				end
+			elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("AllThumbs")) then
+				player:getTraits():remove("AllThumbs");
+				if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_AllThumbs"), false, HaloTextHelper.getColorGreen()) end
+				ETWCommonFunctions.traitSound(player);
 			end
-            if not player:HasTrait("Dextrous") and transferModData.WeightTransferred >= SBvars.InventoryTransferSystemWeight * 0.66
-			and transferModData.ItemsTransferred >= SBvars.InventoryTransferSystemItems and SBvars.TraitsLockSystemCanGainPositive then
-                if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Dextrous") then
-					if notification() then
-						ETWCommonFunctions.addTraitToDelayTable(modData, "Dextrous", player, true);
-						HaloTextHelper.addTextWithArrow(
-							player,
-							getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_Dexterous"),
-							true,
-							HaloTextHelper.getColorGreen()
-						);
-					end
-				elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Dextrous")) then
-					player:getTraits():add("Dextrous");
-					if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Dexterous"), true, HaloTextHelper.getColorGreen()) end
+		end
+		if not player:HasTrait("Dextrous") and transferModData.WeightTransferred >= SBvars.InventoryTransferSystemWeight * 0.66
+		and transferModData.ItemsTransferred >= SBvars.InventoryTransferSystemItems and SBvars.TraitsLockSystemCanGainPositive then
+			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("Dextrous") then
+				if notification() then
+					ETWCommonFunctions.addTraitToDelayTable(modData, "Dextrous", player, true);
+					HaloTextHelper.addTextWithArrow(
+						player,
+						getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_Dexterous"),
+						true,
+						HaloTextHelper.getColorGreen()
+					);
 				end
+			elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("Dextrous")) then
+				player:getTraits():add("Dextrous");
+				if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Dexterous"), true, HaloTextHelper.getColorGreen()) end
 			end
-			if player:HasTrait("butterfingers") and transferModData.WeightTransferred >= SBvars.InventoryTransferSystemWeight * 1.5
-			and transferModData.ItemsTransferred >= SBvars.InventoryTransferSystemItems * 1.5 and SBvars.TraitsLockSystemCanLoseNegative then
-				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("butterfingers") then
-					if delayedNotification() then
-						ETWCommonFunctions.addTraitToDelayTable(modData, "butterfingers", player, false);
-						HaloTextHelper.addTextWithArrow(
-							player,
-							getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_AllThumbs"),
-							false,
-							HaloTextHelper.getColorGreen()
-						);
-					end
-				elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("butterfingers")) then
-					player:getTraits():remove("butterfingers");
-					if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_AllThumbs"), false, HaloTextHelper.getColorGreen()) end
+		end
+		if player:HasTrait("butterfingers") and transferModData.WeightTransferred >= SBvars.InventoryTransferSystemWeight * 1.5
+		and transferModData.ItemsTransferred >= SBvars.InventoryTransferSystemItems * 1.5 and SBvars.TraitsLockSystemCanLoseNegative then
+			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable("butterfingers") then
+				if delayedNotification() then
+					ETWCommonFunctions.addTraitToDelayTable(modData, "butterfingers", player, false);
+					HaloTextHelper.addTextWithArrow(
+						player,
+						getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_AllThumbs"),
+						false,
+						HaloTextHelper.getColorGreen()
+					);
 				end
+			elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits("butterfingers")) then
+				player:getTraits():remove("butterfingers");
+				if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_AllThumbs"), false, HaloTextHelper.getColorGreen()) end
 			end
-		else
-			logETW("ETW Logger | ISInventoryTransferAction.perform(): not NPC or player?");
-			original_ISInventoryTransferAction_perform(self);
 		end
 	else
+		logETW("ETW Logger | ISInventoryTransferAction.perform(): not a player or not running ITS");
 		original_ISInventoryTransferAction_perform(self);
 	end
 end

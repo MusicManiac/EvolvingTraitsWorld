@@ -1,13 +1,44 @@
 REMINDER: Don't forget to update mod.info with new mod version
 
-[url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
+[url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md]Properly formatted changelog can be found here[/url]
 
-v.8.5.5 - for b41 version of the mod
+v.9.3.1
 
 Fixes:
-	- Fixed broken exp boost gain
+	- Fixed not being able to get Wilderness Knowledge (and related error)
+Mod Conflicts:
+	- Possible fix for occasional error when running NPC mods
+Translations:
+	- IT translation update
 
+v.8.5.6
+
+Fixes:
+	- Fixed recipes not being unlocked
+
+Numbers to increase:
+Overhauls: X.x.x
+General: x.X.x
+Moodles (new): x.X.x
+Submod update: x.x.X
+Balancing (defaults/real): x.x.X
+Moodles (improvements): x.x.X
+Fixes: x.x.X
+Mod Conflicts: x.x.X
+Translations: x.x.X
 
 [url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md]Changelog can be found here[/url]
 
-v.8.5.5 - for b41 version of the mod
+v.9.3.1
+
+Fixes:
+	- Fixed not being able to get Wilderness Knowledge (and related error)
+Mod Conflicts:
+	- Possible fix for occasional error when running NPC mods
+Translations:
+	- IT translation update
+
+v.8.5.6
+
+Fixes:
+	- Fixed recipes not being unlocked
