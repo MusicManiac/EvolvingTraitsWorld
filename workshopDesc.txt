@@ -46,6 +46,7 @@ Currently mod supports following languages (note that not all translations are 1
 [*]한국어 / Korean
 [*]Türkçe / Turkish
 [*]Deutsch / German
+[*]Українська / Ukrainian
 [/list]
 
 [h1]Afterword and Permission[/h1]

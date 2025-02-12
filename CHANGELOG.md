@@ -11,7 +11,7 @@
 - Fixes:
   - Smoking system wasn't doing anything when smoking Cigarillo, Cigar and Smoking Tobacco. Now it works.
 - Translations:
-  - Added UA translation thanks to [Art Tippet](https://steamcommunity.com/profiles/76561198282198370)
+  - Added UA translation thanks to new translator [Бен](<https://steamcommunity.com/profiles/76561199012330317>)
 
 ## v.9.3.1
 ###### 29 Jan 2025
@@ -21,7 +21,7 @@
 - Mod Conflicts:
   - Possible fix for occasional error when running NPC mods
 - Translations:
-  - IT translation update
+  - IT translation update thanks to new maintainer [Art Tippet](<https://steamcommunity.com/profiles/76561198282198370>)
 
 ## v.8.5.6 - for b41 version of the mod
 ###### 29 Jan 2025
