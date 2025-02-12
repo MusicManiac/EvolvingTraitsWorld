@@ -85,10 +85,10 @@ local function fearOfLocations(isKill)
 	local SBCounter = SBvars.FearOfLocationsSystemCounter;
 	local upperCounterBoundary = SBCounter * 2;
 	local lowerCounterBoundary = -2 * SBCounter;
-	local counterDecrease = 1;
-	if stress > 0 then counterDecrease = counterDecrease * (2 * stress) end
-	if unhappiness > 0 then counterDecrease = counterDecrease * (2 * unhappiness / 100) end
-	if counterDecrease == 1 then counterDecrease = 0 end
+	local counterDecrease = 0;
+	if stress > 0 or unhappiness > 0 then
+		counterDecrease = (2 * stress) + (2 * unhappiness / 100);
+	end
 	counterDecrease = counterDecrease * SBvars.FearOfLocationsSystemCounterLoseMultiplier;
 	if player:isOutside() then
 		counterDecrease = counterDecrease * ((SBvars.AffinitySystem and modData.StartingTraits.Agoraphobic) and SBvars.AffinitySystemGainMultiplier or 1) * (isKill and 0.25 or 1);

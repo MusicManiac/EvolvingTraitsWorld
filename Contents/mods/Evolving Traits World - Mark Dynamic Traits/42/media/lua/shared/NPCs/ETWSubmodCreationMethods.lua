@@ -20,7 +20,7 @@ if true then
 	altNames["Very Underweight"] = true;
 end
 
-if getActivatedMods():contains('\\2914075159/EvolvingTraitsWorld')then
+if getActivatedMods():contains('\\2914075159/EvolvingTraitsWorld') then
 	altNames.AdrenalineJunkie = true;
 	altNames.Agoraphobic = true;
 	altNames.AllThumbs = true;

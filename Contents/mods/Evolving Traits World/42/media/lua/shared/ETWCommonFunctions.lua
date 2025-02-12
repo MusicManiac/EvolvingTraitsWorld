@@ -5,15 +5,17 @@ local SBvars = SandboxVars.EvolvingTraitsWorld;
 
 local modOptions;
 
----Function responsible for setting up mod options on character load
----@param playerIndex number
----@param player IsoPlayer
-local function initializeModOptions(playerIndex, player)
-	modOptions = PZAPI.ModOptions:getOptions("ETWModOptions");
-end
+if not isClient() and not isServer() then
+	---Function responsible for setting up mod options on character load
+	---@param playerIndex number
+	---@param player IsoPlayer
+	local function initializeModOptions(playerIndex, player)
+		modOptions = PZAPI.ModOptions:getOptions("ETWModOptions");
+	end
 
-Events.OnCreatePlayer.Remove(initializeModOptions);
-Events.OnCreatePlayer.Add(initializeModOptions);
+	Events.OnCreatePlayer.Remove(initializeModOptions);
+	Events.OnCreatePlayer.Add(initializeModOptions);
+end
 
 ---@return boolean
 local notification = function() return modOptions:getOption("EnableNotifications"):getValue() end
