@@ -2,11 +2,13 @@
 local ETWCommonFunctions;
 local ETWCommonLogicChecks;
 local ETWCombinedTraitChecks;
+local ETWExportedFunctions;
 
 --if not isServer() then
 	ETWCommonFunctions = require "ETWCommonFunctions";
     ETWCommonLogicChecks = require "ETWCommonLogicChecks";
     ETWCombinedTraitChecks = require "ETWCombinedTraitChecks";
+    ETWExportedFunctions = require "ETWExportedFunctions";
 --end
 
 local Commands = {}
@@ -23,7 +25,6 @@ if not isClient() and not isServer() then
 	local function initializeModOptions(playerIndex, player)
 		modOptions = PZAPI.ModOptions:getOptions("ETWModOptions");
 	end
-
 	Events.OnCreatePlayer.Remove(initializeModOptions);
 	Events.OnCreatePlayer.Add(initializeModOptions);
 end
@@ -41,32 +42,38 @@ local original_OnEat_Cigarettes = OnEat_Cigarettes;
 ---@param character IsoGameCharacter
 ---@param percent number
 function OnEat_Cigarettes(food, character, percent)
-	if not isServer() then
-		modOptions = PZAPI.ModOptions:getOptions("ETWModOptions");
-		if detailedDebug() then print("ETW Logger | OnEat_Cigarettes(): detected smoking") end
-		local modData = character:getModData().EvolvingTraitsWorld;
-		local smokerModData = modData.SmokeSystem; -- SmokingAddiction MinutesSinceLastSmoke
-		local timeSinceLastSmoke = character:getTimeSinceLastSmoke() * 60;
-		if detailedDebug() then
-			print(
-				"ETW Logger | OnEat_Cigarettes(): timeSinceLastSmoke: " .. timeSinceLastSmoke
-				.. ", modData.MinutesSinceLastSmoke: " .. smokerModData.MinutesSinceLastSmoke
-			);
-		end
-		local stress = character:getStats():getStress(); -- stress is 0-1, may be higher with stress from cigarettes
-		local panic = character:getStats():getPanic(); -- 0-100
-		local addictionGain = SBvars.SmokingAddictionMultiplier * (1 + stress) * (1 + panic / 100)
-			* 1000 / (math.max(timeSinceLastSmoke, smokerModData.MinutesSinceLastSmoke) + 100);
-		if SBvars.AffinitySystem and modData.StartingTraits.Smoker then
-			addictionGain = addictionGain * SBvars.AffinitySystemGainMultiplier;
-		end
-		smokerModData.SmokingAddiction = math.min(SBvars.SmokerCounter * 2, smokerModData.SmokingAddiction + addictionGain);
-		if detailedDebug() then
-			print("ETW Logger | OnEat_Cigarettes(): addictionGain: " .. addictionGain .. ", modData.SmokingAddiction: " .. smokerModData.SmokingAddiction);
-		end
-		smokerModData.MinutesSinceLastSmoke = 0;
-	end
+	ETWExportedFunctions.smokingAddictionMath(character)
 	original_OnEat_Cigarettes(food, character, percent);
+end
+
+local original_OnEat_Cigarillo = OnEat_Cigarillo;
+---Overwriting OnEat_Cigarillo here to insert ETW logic catching player smoking
+---@param food any
+---@param character IsoGameCharacter
+---@param percent number
+function OnEat_Cigarillo(food, character, percent)
+	ETWExportedFunctions.smokingAddictionMath(character)
+	original_OnEat_Cigarillo(food, character, percent);
+end
+
+local original_OnEat_Cigar = OnEat_Cigar;
+---Overwriting OnEat_Cigar here to insert ETW logic catching player smoking
+---@param food any
+---@param character IsoGameCharacter
+---@param percent number
+function OnEat_Cigar(food, character, percent)
+	ETWExportedFunctions.smokingAddictionMath(character)
+	original_OnEat_Cigar(food, character, percent);
+end
+
+local original_OnEat_ChewingTobacco = OnEat_ChewingTobacco;
+---Overwriting OnEat_ChewingTobacco here to insert ETW logic catching player smoking
+---@param food any
+---@param character IsoGameCharacter
+---@param percent number
+function OnEat_ChewingTobacco(food, character, percent)
+	ETWExportedFunctions.smokingAddictionMath(character)
+	original_OnEat_ChewingTobacco(food, character, percent);
 end
 
 local original_Recipe_OnCreate_RipClothing = Recipe.OnCreate.RipClothing;

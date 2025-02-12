@@ -1,3 +1,18 @@
+## v.9.4.0
+###### 12 Feb 2025
+
+- General:
+  - Added b42 Moodle Framework to requirements. It's only required for b42. They also share same modID, so I'm not even sure if it matters which one you use, b41 or b42 version.
+  - Added ETWExportedFunctions.lua for modders to use, it has example inside, it's in shared folder. Currently, it supports progressing ETW Smoking system as requested by one of the modders. If you are a modder, and want to cook something up, msg me on Discord.
+- Balancing:
+  - Changed a bit Fear of Locations calculations, it's slightly easier to manage it now.
+  - I am looking to balance the initial sandbox values to be good for plug-and-play. If you have suggestions regarding initial sandbox values please let me know.
+  - Reminder that defaults changes do not apply to existing saves, use mods to change them, if you want
+- Fixes:
+  - Smoking system wasn't doing anything when smoking Cigarillo, Cigar and Smoking Tobacco. Now it works.
+- Translations:
+  - Added UA translation thanks to [Art Tippet](https://steamcommunity.com/profiles/76561198282198370)
+
 ## v.9.3.1
 ###### 29 Jan 2025
 
