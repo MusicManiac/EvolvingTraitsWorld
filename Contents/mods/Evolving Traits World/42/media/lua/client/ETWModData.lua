@@ -4,7 +4,7 @@ local SBvars = SandboxVars.EvolvingTraitsWorld;
 local function checkStartingDTConflictingTrait(startingTraits, player, trait)
 	if player:getModData().DTKillscheck2 == nil then
 		-- migration from DT to ETW
-		if trait == "HeartyAppitite" and startingTraits.HeartyAppetite == nil then
+		if trait == "HeartyAppetite" and startingTraits.HeartyAppetite == nil then
 			startingTraits.HeartyAppetite = player:HasTrait(trait);
 		elseif trait == "Thinskinned" and startingTraits.ThinSkinned == nil then
 			startingTraits.ThinSkinned = player:HasTrait(trait);
@@ -12,7 +12,7 @@ local function checkStartingDTConflictingTrait(startingTraits, player, trait)
 			startingTraits[trait] = player:HasTrait(trait);
 		end
 	else
-		if trait == "HeartyAppitite" then
+		if trait == "HeartyAppetite" then
 			if startingTraits.HeartyAppetite == nil then
 				startingTraits.HeartyAppetite = false;
 			end
@@ -58,7 +58,7 @@ local function createModData(playerIndex, player)
 
 	modData.StartingTraits = modData.StartingTraits or {};
 	local startingTraits = modData.StartingTraits;
-	checkStartingDTConflictingTrait(startingTraits, player, "HeartyAppitite");
+	checkStartingDTConflictingTrait(startingTraits, player, "HeartyAppetite");
 	checkStartingDTConflictingTrait(startingTraits, player, "LightEater");
 	checkStartingDTConflictingTrait(startingTraits, player, "HighThirst");
 	checkStartingDTConflictingTrait(startingTraits, player, "LowThirst");
