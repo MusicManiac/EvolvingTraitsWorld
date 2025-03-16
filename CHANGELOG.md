@@ -1,3 +1,11 @@
+## v.9.4.1
+###### 16 Mar 2025
+
+- General:
+  - Adjusted max UI Width setting
+- Fixes:
+  - Fixed error on game start when having Hearty Appetite trait
+
 ## v.9.4.0
 ###### 12 Feb 2025
 

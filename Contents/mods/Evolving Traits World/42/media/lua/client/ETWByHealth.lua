@@ -188,8 +188,8 @@ local function weightSystemETW()
 		end
 	end
 	if (weight > 85 and weight < 100) or (weight > 65 and weight < 75) then
-		if not player:HasTrait("HeartyAppitite") and startingTraits.LightEater ~= true and SBvars.TraitsLockSystemCanGainNegative then
-			ETWCommonFunctions.addTraitToPlayer("HeartyAppitite");
+		if not player:HasTrait("HeartyAppetite") and startingTraits.LightEater ~= true and SBvars.TraitsLockSystemCanGainNegative then
+			ETWCommonFunctions.addTraitToPlayer("HeartyAppetite");
 			if notification then
 				HaloTextHelper.addTextWithArrow(
 					player,
@@ -229,8 +229,8 @@ local function weightSystemETW()
 	end
 	if weight >= 75 and weight <= 85 then
 		-- losing Hearty Appetite and High Thirst if weight 75-85
-		if player:HasTrait("HeartyAppitite") and startingTraits.HeartyAppetite ~= true and SBvars.TraitsLockSystemCanLoseNegative then
-			ETWCommonFunctions.removeTraitFromPlayer("HeartyAppitite");
+		if player:HasTrait("HeartyAppetite") and startingTraits.HeartyAppetite ~= true and SBvars.TraitsLockSystemCanLoseNegative then
+			ETWCommonFunctions.removeTraitFromPlayer("HeartyAppetite");
 			if notification then
 				HaloTextHelper.addTextWithArrow(
 					player,
