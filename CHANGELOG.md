@@ -1,3 +1,16 @@
+## v.9.4.2
+###### 21 May 2025
+
+- Fixes:
+  - Fixed herbalist system breaking after last update.
+
+## v.8.5.7 - for b41 version of the game
+###### 21 May 2025
+
+- Fixes:
+  - Fixed occasional error after dying.
+  - Fixed warning with recursive require in one of the files
+
 ## v.9.4.1
 ###### 16 Mar 2025
 
