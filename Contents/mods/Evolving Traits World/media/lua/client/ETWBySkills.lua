@@ -728,6 +728,7 @@ end
 ---@param character IsoPlayer
 local function clearEventsETW(character)
 	Events.LevelPerk.Remove(traitsGainsBySkill);
+	Events.EveryHours.Remove(progressDelayedTraits);
 	Events.OnZombieDead.Remove(OnZombieDeadETW);
 	if detailedDebug() then print("ETW Logger | System: clearEventsETW in ETWBySkills.lua") end
 end

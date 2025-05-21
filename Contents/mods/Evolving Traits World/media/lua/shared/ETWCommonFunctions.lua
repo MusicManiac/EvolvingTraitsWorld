@@ -1,7 +1,5 @@
 local ETWCommonFunctions = {};
 
-local ETWCombinedTraitChecks = require "ETWCombinedTraitChecks";
-
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld;
 ---@return boolean

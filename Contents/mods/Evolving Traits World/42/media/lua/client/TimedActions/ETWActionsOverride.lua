@@ -304,28 +304,27 @@ local filteredForageHashMap;
 ---Generates a list of herb types based on valid categories
 local function generateHerbsList()
 	local validCategories = { WildHerbs = true, WildPlants = true, MedicinalPlants = true };
-	local filteredTypes = {};
-	for key, value in pairs(forageDefs or {}) do
-		if type(value) == "table" and value.type and value.categories then
-			for _, category in ipairs(value.categories) do
+	local filteredTypesMap = {}
+
+	for itemName, defTable in pairs(forageSystem.forageDefinitions or {}) do
+		if type(defTable) == "table" and defTable.type and defTable.categories then
+			for _, category in ipairs(defTable.categories) do
 				if validCategories[category] then
-					table.insert(filteredTypes, value.type);
+					filteredTypesMap[defTable.type] = true
 					break
 				end
 			end
 		end
 	end
-	local filteredTypesMap = {}
-    for _, herbType in ipairs(filteredTypes) do
-    	filteredTypesMap[herbType] = true;
-    end
-    if detailedDebug() then
+
+	if detailedDebug() then
 		print("ETW Logger | Filtered Types Map:")
 		for herbType, _ in pairs(filteredTypesMap) do
 			print(herbType)
 		end
-    end
-	filteredForageHashMap = filteredTypesMap;
+	end
+
+	filteredForageHashMap = filteredTypesMap
 end
 
 

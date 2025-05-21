@@ -2,24 +2,13 @@ REMINDER: Don't forget to update mod.info with new mod version
 
 [url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
 
-v.9.4.1
+v.9.4.2
 
-General:
-	- Adjusted max UI Width setting
 Fixes:
-	- Fixed error on game start when player has Hearty Appetite trait (devs fixed the typo in code, it used to be "HeartyAppitite" in game files)
+	- Fixed herbalist system breaking after last update.
 
-Numbers to increase:
-Overhauls: X.x.x
-General: x.X.x
-Moodles (new): x.X.x
-Submod update: x.x.X
-Balancing (defaults/real): x.x.X
-Moodles (improvements): x.x.X
-Fixes: x.x.X
-Mod Conflicts: x.x.X
-Translations: x.x.X
+v.8.5.7 - for b41 version of the game
 
-[url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md]Changelog can be found here[/url]
-
-v.9.4.1
+Fixes:
+	- Fixed occasional error after dying.
+	- Fixed warning with recursive require in one of the files
