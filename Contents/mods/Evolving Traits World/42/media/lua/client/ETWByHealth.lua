@@ -160,13 +160,13 @@ local function weightSystemETW()
 			ETWCommonFunctions.addTraitToPlayer("SlowHealer");
 			if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_SlowHealer"), true, HaloTextHelper.getColorRed()) end
 		end
-		if not player:HasTrait("Thinskinned") and startingTraits.ThickSkinned ~= true and SBvars.TraitsLockSystemCanGainNegative then
-			ETWCommonFunctions.addTraitToPlayer("Thinskinned");
+		if not player:HasTrait("ThinSkinned") and startingTraits.ThickSkinned ~= true and SBvars.TraitsLockSystemCanGainNegative then
+			ETWCommonFunctions.addTraitToPlayer("ThinSkinned");
 			if notification then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_ThinSkinned"), true, HaloTextHelper.getColorRed()) end
 		end
 	else
-		if player:HasTrait("Thinskinned") and startingTraits.ThinSkinned ~= true and SBvars.TraitsLockSystemCanLoseNegative then
-			ETWCommonFunctions.removeTraitFromPlayer("Thinskinned");
+		if player:HasTrait("ThinSkinned") and startingTraits.ThinSkinned ~= true and SBvars.TraitsLockSystemCanLoseNegative then
+			ETWCommonFunctions.removeTraitFromPlayer("ThinSkinned");
 			if notification then
 				HaloTextHelper.addTextWithArrow(
 					player,

@@ -30,7 +30,7 @@ if getActivatedMods():contains('\\2914075159/EvolvingTraitsWorld') then
 	altNames.Brave = true;
 	altNames.Brawler = true;
 	altNames.Burgler = true;
-	altNames.Claustophobic = true;
+	altNames.Claustrophobic = true;
 	altNames.Clumsy = true;
 	altNames.Conspicuous = true;
 	altNames.Cook = true;
@@ -81,7 +81,7 @@ if getActivatedMods():contains('\\2914075159/EvolvingTraitsWorld') then
 	altNamesSpecial.LowThirst = true;
 	altNamesSpecial.SlowHealer = true;
 	altNamesSpecial.ThickSkinned = true;
-	altNamesSpecial.Thinskinned = true;
+	altNamesSpecial.ThinSkinned = true;
 end
 
 if false and getActivatedMods():contains('Literacy') then
@@ -190,7 +190,7 @@ if getActivatedMods():contains('DynamicTraits') then
 	altNames.Brave = true;
 	altNames.Brawler = true;
 	altNames.Burglar = true;
-	altNames.Claustophobic = true;
+	altNames.Claustrophobic = true;
 	altNames.Clumsy = true;
 	altNames.Conspicuous = true;
 	altNames.Cook = true;
@@ -253,7 +253,7 @@ if getActivatedMods():contains('DynamicTraits') then
 	altNames.Swordsman = true;
 	altNames.Tailor = true;
 	altNames.ThickSkinned = true;
-	altNames.Thinskinned = true;
+	altNames.ThinSkinned = true;
 	altNames.AmateurElectrician = true;
 	altNames.Herbalist = true;
 	altNames.Melancholic = true;
