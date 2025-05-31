@@ -6,7 +6,7 @@ local function checkStartingDTConflictingTrait(startingTraits, player, trait)
 		-- migration from DT to ETW
 		if trait == "HeartyAppetite" and startingTraits.HeartyAppetite == nil then
 			startingTraits.HeartyAppetite = player:HasTrait(trait);
-		elseif trait == "Thinskinned" and startingTraits.ThinSkinned == nil then
+		elseif trait == "ThinSkinned" and startingTraits.ThinSkinned == nil then
 			startingTraits.ThinSkinned = player:HasTrait(trait);
 		elseif startingTraits[trait] == nil then
 			startingTraits[trait] = player:HasTrait(trait);
@@ -16,7 +16,7 @@ local function checkStartingDTConflictingTrait(startingTraits, player, trait)
 			if startingTraits.HeartyAppetite == nil then
 				startingTraits.HeartyAppetite = false;
 			end
-		elseif trait == "Thinskinned" then
+		elseif trait == "ThinSkinned" then
 			if startingTraits.ThinSkinned == nil then
 				startingTraits.ThinSkinned = false;
 			end
@@ -27,9 +27,7 @@ local function checkStartingDTConflictingTrait(startingTraits, player, trait)
 end
 
 local function checkStartingTrait(startingTraits, player, trait)
-	if trait == "Claustophobic" and startingTraits.Claustrophobic == nil then
-		startingTraits.Claustrophobic = player:HasTrait(trait);
-	elseif startingTraits[trait] == nil then
+	if startingTraits[trait] == nil then
 		startingTraits[trait] = player:HasTrait(trait);
 	end
 end
@@ -64,10 +62,10 @@ local function createModData(playerIndex, player)
 	checkStartingDTConflictingTrait(startingTraits, player, "LowThirst");
 	checkStartingDTConflictingTrait(startingTraits, player, "SlowHealer");
 	checkStartingDTConflictingTrait(startingTraits, player, "FastHealer");
-	checkStartingDTConflictingTrait(startingTraits, player, "Thinskinned");
+	checkStartingDTConflictingTrait(startingTraits, player, "ThinSkinned");
 	checkStartingDTConflictingTrait(startingTraits, player, "ThickSkinned");
 	checkStartingDTConflictingTrait(startingTraits, player, "Agoraphobic");
-	checkStartingTrait(startingTraits, player, "Claustophobic");
+	checkStartingTrait(startingTraits, player, "Claustrophobic");
 	checkStartingTrait(startingTraits, player, "Asthmatic");
 	checkStartingTrait(startingTraits, player, "NeedsLessSleep");
 	checkStartingTrait(startingTraits, player, "NeedsMoreSleep");

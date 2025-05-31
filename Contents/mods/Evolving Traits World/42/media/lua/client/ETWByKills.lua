@@ -171,6 +171,10 @@ local function braverySystemETW(zombie)
 	local totalKills = player:getZombieKills();
 	local braveryKills = SBvars.BraverySystemKills;
 	local modDataGlobal = player:getModData();
+	if not modDataGlobal or not modDataGlobal.KillCount then
+		logETW("ETW Logger | braverySystemETW: interrupting logic on this zombie death. Probably caused by NPC kill.")
+		return
+	end
 	local killCountModData = modDataGlobal.KillCount.WeaponCategory;
 	local ETWModData = modDataGlobal.EvolvingTraitsWorld;
 	local fireKills = killCountModData["Fire"].count;
@@ -246,8 +250,8 @@ local function braverySystemETW(zombie)
 								player:getTraits():remove("Agoraphobic");
 								if notification() then HaloTextHelper.addTextWithArrow(player, "UI_trait_agoraphobic", false, HaloTextHelper.getColorGreen()) end
 							end
-							if player:HasTrait("Claustophobic") then
-								player:getTraits():remove("Claustophobic");
+							if player:HasTrait("Claustrophobic") then
+								player:getTraits():remove("Claustrophobic");
 								if notification() then HaloTextHelper.addTextWithArrow(player, "UI_trait_claustro", false, HaloTextHelper.getColorGreen()) end
 							end
 							if player:HasTrait("Pluviophobia") then

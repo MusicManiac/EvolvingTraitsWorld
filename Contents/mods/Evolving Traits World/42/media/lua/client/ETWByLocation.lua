@@ -114,21 +114,21 @@ local function fearOfLocations(isKill)
 			ETWCommonFunctions.addTraitToPlayer("Agoraphobic");
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_agoraphobic"), true, HaloTextHelper.getColorRed()) end
 		end
-		if not player:HasTrait("Claustophobic") and fearOfLocationsModData.FearOfInside <= -SBCounter and not desensitized(player) and SBvars.TraitsLockSystemCanGainNegative then
-			ETWCommonFunctions.addTraitToPlayer("Claustophobic");
+		if not player:HasTrait("Claustrophobic") and fearOfLocationsModData.FearOfInside <= -SBCounter and not desensitized(player) and SBvars.TraitsLockSystemCanGainNegative then
+			ETWCommonFunctions.addTraitToPlayer("Claustrophobic");
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_claustro"), true, HaloTextHelper.getColorRed()) end
 		end
 	elseif SBvars.TraitsLockSystemCanLoseNegative and SBvars.TraitsLockSystemCanGainNegative then
 		if fearOfLocationsModData.FearOfOutside <= -SBCounter and not desensitized(player) and fearOfLocationsModData.FearOfOutside < fearOfLocationsModData.FearOfInside and not player:HasTrait("Agoraphobic") then
-			ETWCommonFunctions.removeTraitFromPlayer("Claustophobic");
+			ETWCommonFunctions.removeTraitFromPlayer("Claustrophobic");
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_claustro"), false, HaloTextHelper.getColorGreen()) end
 			ETWCommonFunctions.addTraitToPlayer("Agoraphobic");
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_agoraphobic"), true, HaloTextHelper.getColorRed()) end
 		end
-		if fearOfLocationsModData.FearOfInside <= -SBCounter and not desensitized(player) and fearOfLocationsModData.FearOfInside < fearOfLocationsModData.FearOfOutside and not player:HasTrait("Claustophobic") then
+		if fearOfLocationsModData.FearOfInside <= -SBCounter and not desensitized(player) and fearOfLocationsModData.FearOfInside < fearOfLocationsModData.FearOfOutside and not player:HasTrait("Claustrophobic") then
 			ETWCommonFunctions.removeTraitFromPlayer("Agoraphobic");
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_agoraphobic"), false, HaloTextHelper.getColorGreen()) end
-			ETWCommonFunctions.addTraitToPlayer("Claustophobic");
+			ETWCommonFunctions.addTraitToPlayer("Claustrophobic");
 			if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_claustro"), true, HaloTextHelper.getColorRed()) end
 		end
 	end
@@ -136,8 +136,8 @@ local function fearOfLocations(isKill)
 		ETWCommonFunctions.removeTraitFromPlayer("Agoraphobic");
 		if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_agoraphobic"), false, HaloTextHelper.getColorGreen()) end
 	end
-	if player:HasTrait("Claustophobic") and fearOfLocationsModData.FearOfInside >= SBCounter and SBvars.TraitsLockSystemCanLoseNegative then
-		ETWCommonFunctions.removeTraitFromPlayer("Claustophobic");
+	if player:HasTrait("Claustrophobic") and fearOfLocationsModData.FearOfInside >= SBCounter and SBvars.TraitsLockSystemCanLoseNegative then
+		ETWCommonFunctions.removeTraitFromPlayer("Claustrophobic");
 		if notification() then HaloTextHelper.addTextWithArrow(player, getText("UI_trait_claustro"), false, HaloTextHelper.getColorGreen()) end
 	end
 end
