@@ -1,3 +1,10 @@
+## v.9.4.3
+###### 31 May 2025
+
+- Fixes:
+  - Devs finally started fixing typos in the code so few things regarding traits in my mod broke. Fixed some, probably will have to fix more, but I'll need error logs.
+  - Possible fix for errors on zombies killed by NPCs? Idk I don't play with those mods.
+
 ## v.9.4.2
 ###### 21 May 2025
 
