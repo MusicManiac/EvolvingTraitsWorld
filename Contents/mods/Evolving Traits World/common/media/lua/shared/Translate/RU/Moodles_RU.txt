@@ -1,0 +1,24 @@
+Moodles_RU {
+	___note_to_translators = "(Don't translate this, this is just info for you guys) If a field has %1 in it, it's replaced with value later on when the code is run",
+	___note_to_translators = "(Don't translate this, this is just info for you guys) Make sure file is saved in <ENCODING> encoding, so game display correct characters",
+
+	Moodles_BloodlustMoodle_Good_lvl4 = "Боже, как же я люблю очищать мир от нежити",
+	Moodles_BloodlustMoodle_Good_lvl3 = "Время, безусловно, потрачено с пользой",
+	Moodles_BloodlustMoodle_Good_lvl2 = "Не самый худший способ провести время.",
+	Moodles_BloodlustMoodle_Good_lvl1 = "Это даже немного забавно",
+	Moodles_BloodlustMoodle_Bad_lvl1 = "В этом почти нет никакого удовольствия",
+	Moodles_BloodlustMoodle_Bad_lvl2 = "Работа скучная, но кому-то ведь надо это делать",
+	Moodles_BloodlustMoodle_Bad_lvl3 = "Убить пару зомби — не самое плохое занятие",
+	Moodles_BloodlustMoodle_Bad_lvl4 = "Мне о-о-очень не хочется никого убивать",
+	Moodles_BloodlustMoodle_Custom = "Моя шкала Кровожадности заполнена на %1 процент.<br>Показатель выше 50% со временем даст мне черту «Кровожадность»,<br>а показатель ниже 50% будет снижать мой прогресс<br>(Это индикатор того, получаете вы черту Кровожадность или теряете её)",
+
+	Moodles_SleepHealthMoodle_Good_lvl4 = "Самое идеальное время",
+	Moodles_SleepHealthMoodle_Good_lvl3 = "Отличное время для сна",
+	Moodles_SleepHealthMoodle_Good_lvl2 = "Вполне подходящее время для сна",
+	Moodles_SleepHealthMoodle_Good_lvl1 = "Время для сна чуть лучше среднего.",
+	Moodles_SleepHealthMoodle_Bad_lvl1 = "Чуть-чуть не в моём графике",
+	Moodles_SleepHealthMoodle_Bad_lvl2 = "Не самое лучшее время для сна",
+	Moodles_SleepHealthMoodle_Bad_lvl3 = "Сильно выбиваюсь из графика сна",
+	Moodles_SleepHealthMoodle_Bad_lvl4 = "Мой график полностью сбит",
+	Moodles_SleepHealthMoodle_Custom = "Сон на %1 ч в стороне от оптимального времени"
+}
