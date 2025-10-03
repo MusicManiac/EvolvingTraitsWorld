@@ -1,0 +1,116 @@
+UI_RU = {
+	note_to_LANGUAGE_translators = "Make sure file is saved in <ENCODING> encoding, so game display correct characters"
+
+	UI_ETW = "ETW",
+
+	UI_ETW_Chance = "из",
+	UI_ETW_Chance___note_to_translators = "(Don't translate this, this is just info for you guys) UI_ETW_Chance is used in displaying chances, so for example '1 in 300' or '1 in 50300', etc.",
+
+	UI_ETW_CurrentValue = "Текущее значение: "
+	UI_ETW_CurrentValue___note_to_translators = "(Don't translate this, this is just info for you guys) UI_ETW_CurrentValue is shown in tooltip when hovering over gradient bars in UI page",
+
+	UI_ETW_DelayedNotificationsStringAdd = "Соответствуете условиям для получения ",
+	UI_ETW_DelayedNotificationsStringRemove = "Соответствуете условиям для потери ",
+	UI_ETW_DelayedNotificationsStringRemove___note_to_translators = "(Don't translate this, this is just info for you guys) UI_ETW_DelayedNotificationsStringAdd and UI_ETW_DelayedNotificationsStringRemove is used in combination with trait names, for example 'Qualified for gaining Hoarder' or 'Qualified for losing Unlucky'. You get the idea.",
+
+	UI_ETW_GainLoseTooltip = "Вы получите/потеряете черту, когда полоса будет здесь (или соответствуете условиям для получения/потери, если включена Система Отсроченных Черт и эта черта в неё входит)",
+	UI_ETW_GainTooltip = "Вы получите черту, когда полоса будет здесь (или соответствуете условиям для получения, если включена Система Отсроченных Черт и эта черта в неё входит)",
+	UI_ETW_LooseTooltip = "Вы потеряете черту, когда полоса будет здесь (или соответствуете условиям для потери, если включена Система Отсроченных Черт и эта черта в неё входит)",
+
+	UI_ETW_ListOfDelayedTraits = "Список отсроченных черт: ",
+
+	UI_ETW_Options_EnableBloodLustMoodle = "Включить мудл Кровожадности",
+	UI_ETW_Options_EnableBloodLustMoodle_tooltip = "Обновление займет до 1 игрового часа, так как мудлы обновляются ежечасно.",
+
+	UI_ETW_Options_EnableDelayedNotifications = "Включить уведомления об отсроченных чертах",
+	UI_ETW_Options_EnableDelayedNotifications_tooltip = "Эта опция работает только при включенной 'Системе Отсроченных Черт'. Если система и опция включены, вы будете получать уведомление, когда соответствуете условиям для черты, и она добавляется в список отсроченных черт.",
+
+	UI_ETW_Options_EnableNotifications = "Включить уведомления о чертах",
+	UI_ETW_Options_EnableNotifications_tooltip = "Показывать цветную стрелку над персонажем при получении или потере черты.",
+
+	UI_ETW_Options_EnableSleepHealthMoodle = "Включить мудл Здорового Сна",
+	UI_ETW_Options_EnableSleepHealthMoodle_tooltip = "Показывает, спите вы в оптимальное для вас время или нет. Активен только пока персонаж спит.",
+
+	UI_ETW_Options_EnableSoundNotifications = "Включить звуковые уведомления",
+	UI_ETW_Options_EnableSoundNotifications_tooltip = "Проигрывать звук при получении/потере черты или при добавлении черты в Систему Отсроченных Черт.",
+
+	UI_ETW_Options_GatherDetailedDebug = "Собирать детальную отладочную информацию",
+	UI_ETW_Options_GatherDetailedDebug_tooltip = "Включает вывод записей в console.txt. Полезно для отладки, также позволяет увидеть данные о внутренних счетчиках. Используйте Ctrl+F для поиска 'ETW' в логах. Добавляет много ненужной (для игроков) информации в console.txt, что может повлиять на производительность с течением времени; включайте только для отчёта об ошибках с логами консоли.",
+
+	UI_ETW_Options_HideReadMeUI = "[Интерфейс] Скрыть раздел 'Прочти Меня'",
+	UI_ETW_Options_HideReadMeUI_tooltip = "Скрывает раздел 'Прочти Меня' в интерфейсе. Для применения требуется перезагрузить сохранение или перезайти на сервер.",
+
+	UI_ETW_Options_HideSmokerUI = "[Интерфейс] Скрыть полосу Курильщика",
+	UI_ETW_Options_HideSmokerUI_tooltip = "Скрывает прогресс черты Курильщик в интерфейсе ETW (например, если у вас её нет и вы не планируете курить). Для применения требуется перезагрузить сохранение или перезайти на сервер.",
+
+	UI_ETW_Options_ReadMe = "------------ ПРОЧТИ (tooltip) ------------",
+	UI_ETW_Options_ReadMe_tooltip = "Обратите внимание, что этот мод содержит как настройки песочницы, так и настройки опций мода. В 99% случаев вы можете включить/отключить/изменить всё что угодно. Это включает звуковые уведомления, горячие клавиши, настройки интерфейса и сотни других параметров. Настройки песочницы находятся в соответствующих настройках песочницы. Клиентские настройки мода и горячие клавиши можно найти в Esc -> Опции -> Моды -> Evolving Traits World.",
+
+	UI_ETW_Options_SoundNotificationSoundSelect = "Звук черты",
+	UI_ETW_Options_Sound_AgeOfEmpires3 = "Age of Empires 3",
+	UI_ETW_Options_Sound_B41 = "Project Zomboid B41",
+	UI_ETW_Options_Sound_B42 = "Project Zomboid B42",
+	UI_ETW_Options_Sound_Diablo2 = "Diablo 2",
+	UI_ETW_Options_Sound_FalloutNV = "Fallout New Vegas",
+	UI_ETW_Options_Sound_Oblivion = "Oblivion",
+	UI_ETW_Options_Sound_SkyrimLevel = "Skyrim Level",
+	UI_ETW_Options_Sound_SkyrimSkill = "Skyrim Skill",
+	UI_ETW_Options_Sound_TheLastOfUs = "The Last of Us",
+	UI_ETW_Options_Sound_Witcher3 = "Witcher 3",
+	UI_ETW_Options_Sound_WorldOfWarcraft = "World Of Warcraft",
+
+	UI_ETW_Options_TraitColumns = "[UI] Колонки черт",
+	UI_ETW_Options_TraitColumns_tooltip = "Количество колонок в интерфейсе на странице персонажа. Стандартная настройка оптимальна для английского языка, но если в других языках текст накладывается, уменьшите это значение",
+
+	UI_ETW_Options_UIWidth = "[UI] Ширина страницы персонажа",
+	UI_ETW_Options_UIWidth_tooltip = "Ширина страницы персонажа в пикселях. Для английского языка стандартное значение подходит оптимально, но для других языков может потребоваться увеличение места",
+
+	UI_ETW_ProgressPageDisabled = "Страница ETW отключена в настройках песочницы",
+
+	UI_optionscreen_binding_ETW_UI_Toggle = "Переключить интерфейс Evolving Traits World"
+
+	UI_trait_AVClub = "Член аудио-видео клуба",
+	UI_trait_AVClubDesc = "Вы состоите в аудио-видео клубе",
+	UI_trait_AxeThrower = "Метатель топоров",
+	UI_trait_AxeThrowerDesc = "Вы участвовали в соревнованиях по метанию топоров",
+	UI_trait_BladeEnthusiast = "Фанат клинков",
+	UI_trait_BladeEnthusiastDesc = "Глубокое понимание клинкового оружия и дисциплины для его эффективного применения. Вы отточили своё мастерство с длинными клинками, делая каждый удар точным.",
+	UI_trait_Bloodlust = "Кровожадность",
+	UI_trait_BloodlustDesc = "Вы получаете огромное удовольствие от истребления нежити.<br>Вы получаете счастье и теряете стресс и панику за убийство зомби.",
+	UI_trait_BodyWorkEnthusiast = "Фанат кузовов",
+	UI_trait_BodyWorkEnthusiastDesc = "Вам нравится ремонтировать и восстанавливать кузова старых автомобилей",
+	UI_trait_FurnitureAssembler = "Сборщик мебели",
+	UI_trait_FurnitureAssemblerDesc = "Вы любитель самостоятельно собирать свою мебель",
+	UI_trait_GunEnthusiast = "Оружейный энтузиаст",
+	UI_trait_GunEnthusiastDesc = "Вы наслаждаетесь обращением с огнестрельным оружием и ходите на стрельбище ради развлечения",
+	UI_trait_GymRat = "Тренажёрный крыс",
+	UI_trait_GymRatDesc = "Вы провели кучу времени в спортзале, чтобы накачаться",
+	UI_trait_Hoarder = "Плюшкин",
+	UI_trait_HoarderDesc = "Вам трудно что-либо выбрасывать, и вы склонны таскать с собой кучу вещей.<br> Вы можете нести дополнительный груз за каждое очко Силы",
+	UI_trait_HomeCook = "Домашний повар",
+	UI_trait_HomeCookDesc = "Вы любите готовить еду самостоятельно и иногда печёте торты",
+	UI_trait_Homichlophile = "Гомиклофил",
+	UI_trait_HomichlophileDesc = "Вы любите туман, в нём вам уютно. Вы успокаиваетесь, находясь на улице в туманную погоду. Вы медленно теряете стресс и панику в зависимости от интенсивности тумана.",
+	UI_trait_Homichlophobia = "Гомиклофоб",
+	UI_trait_HomichlophobiaDesc = "Вы ненавидите туман, он заставляет вас чувствовать тревогу и стресс. Вы нервничаете, находясь на улице в туманную погоду. Вы медленно накапливаете стресс и панику в зависимости от интенсивности тумана (максимум 50%).",
+	UI_trait_KnifeFighter = "Боец на ножах",
+	UI_trait_KnifeFighterDesc = "Вы тренировались сражаться с ножом",
+	UI_trait_LightStep = "Лёгкая поступь",
+	UI_trait_LightStepDesc = "Вы от природы легки на ногу и производите мало шума при движении",
+	UI_trait_LowProfile = "Незаметность",
+	UI_trait_LowProfileDesc = "Вы — тёмная личность и мастер скрываться",
+	UI_trait_PainTolerance = "Переносимость боли",
+	UI_trait_PainToleranceDesc = "Вы устойчивы к боли, ваш уровень боли никогда не поднимается выше определённого процента (по умолчанию 60%)",
+	UI_trait_PetTherapy = "Зоотерапия",
+	UI_trait_PetTherapyDesc = "Вы всегда любили питомцев больше, чем людей. Глажение животных даёт вам прибавку к настроению: снижает панику, скуку, несчастье и стресс.<br> По умолчанию может происходить только раз в 5 минут и даёт 5% прибавки к настроению. Настраивается в песочнице.",
+	UI_trait_Pluviophile = "Плювиофил",
+	UI_trait_PluviophileDesc = "Вы любите дождь и находиться под ним. Медленно теряете несчастье, стресс и скуку, находясь на улице в дождливую погоду. Эффект уменьшается вдоль, если вы под зонтом.<br>Иди ко мне под зонтик (эла, эла, э, э, э)<br>Ко мне под зонтик (эла, эла, э, э, э)<br>Ко мне под зонтик (эла, эла, э, э, э)<br>Ко мне под зонтик (эла, эла, э, э, э)<br>Все эти выдумки никогда не встанут между нами.<br> Ты стал частью меня на целую вечность.<br>Если тебе досталось от этой жизни,<br>Если ты держишь в руках карты<br>И боишься сделать ход, я помогу тебе, я исцелю твоё сердце",
+	UI_trait_Pluviophobia = "Плювиофоб",
+	UI_trait_PluviophobiaDesc = "Вы ненавидите дождь и находиться под ним. Медленно накапливаете несчастье, стресс и скуку, находясь на улице в дождливую погоду. Эффект уменьшается вдоль, если вы под зонтом.<br>Иди ко мне под зонтик (эла, эла, э, э, э)<br>Ко мне под зонтик (эла, эла, э, э, э)<br>Ко мне под зонтик (эла, эла, э, э, э)<br>Ко мне под зонтик (эла, эла, э, э, э)<br>Все эти выдумки никогда не встанут между нами.<br> Ты стал частью меня на целую вечность.<br>Если тебе досталось от этой жизни,<br>Если ты держишь в руках карты<br>И боишься сделать ход, я помогу тебе, я исцелю твоё сердце",
+	UI_trait_PolearmFighter = "Боец древковым оружием",
+	UI_trait_PolearmFighterDesc = "Вы освоили искусство боя длинным древковым оружием. От вил до копий — вы знаете, как держать угрозы на расстоянии с помощью вымаха и точности.",
+	UI_trait_RestorationExpert = "Мастер реставрации",
+	UI_trait_RestorationExpertDesc = "Вы знаете, как восстановить старые вещи до первозданного состояния. У вас есть шанс не получать штрафы за множественные починки.",
+	UI_trait_StickFighter = "Боец на палках",
+	UI_trait_StickFighterDesc = "Вы практиковали боевые искусства с использованием палок",
+}

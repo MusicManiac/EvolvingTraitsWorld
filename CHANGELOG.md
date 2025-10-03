@@ -1,3 +1,9 @@
+## v.9.4.4
+###### 03 Oct 2025
+
+- Translations:
+  - Added RU translation thanks to M1ST0R
+
 ## v.9.4.3
 ###### 31 May 2025
 
