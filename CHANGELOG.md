@@ -1,3 +1,11 @@
+## v.10.0.0
+###### 05 Mar 2026
+
+- General:
+	- b42.14 compatibility, tested only on a surface level. I expect some bug reports. Not a clue how it will work in MP. My assumption is "probably works"
+- Balancing:
+	- Fixed error in Fog System math making it pretty much impossible to gain Homichlophobia
+
 ## v.9.4.4
 ###### 03 Oct 2025
 
