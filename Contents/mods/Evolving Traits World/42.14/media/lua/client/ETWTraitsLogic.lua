@@ -188,7 +188,7 @@ end
 ---Function responsible for processing Pain Tolerance execution logic
 local function painTolerance()
 	local player = getPlayer()
-	local PainTolerance = player:hasTrait("PainTolerance")
+	local PainTolerance = player:hasTrait(ETWTraitsRegistry.PAIN_TOLERANCE)
 	local stats = player:getStats()
 	local pain = stats:get(CharacterStat.PAIN)
 	if PainTolerance and pain > SBvars.PainToleranceThreshold then

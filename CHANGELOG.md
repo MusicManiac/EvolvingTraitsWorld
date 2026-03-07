@@ -4,6 +4,7 @@
 - Fixes:
 	- Fixed error on smoking cigarette from a pack.
 	- Fixed Delayed Traits System (again). As a side effect your delayed traits will get nuked and re-added.
+  - Fixed Pain Tolerance error.
 
 ## v.10.0.1
 ###### 06 Mar 2026
