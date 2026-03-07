@@ -20,11 +20,17 @@ if not isClient() and not isServer() then
 end
 
 ---@return boolean
-local notification = function() return modOptions:getOption("EnableNotifications"):getValue() end
+local notification = function()
+	return modOptions:getOption("EnableNotifications"):getValue()
+end
 ---@return boolean
-local delayedNotification = function() return modOptions:getOption("EnableDelayedNotifications"):getValue() end
+local delayedNotification = function()
+	return modOptions:getOption("EnableDelayedNotifications"):getValue()
+end
 ---@return boolean
-local detailedDebug = function() return modOptions:getOption("GatherDetailedDebug"):getValue() end
+local detailedDebug = function()
+	return modOptions:getOption("GatherDetailedDebug"):getValue()
+end
 
 ---Prints out debugs inside console if detailedDebug is enabled
 ---@param ... any Optional boolean followed by strings to log, if set to true, prints all strings in a single line otherwise prints each string in a new line
@@ -63,7 +69,9 @@ end
 
 ---Prints out debugs inside console if detailedDebug is enabled
 ---@param ... any Optional boolean followed by strings to log, if set to true, prints all strings in a single line otherwise prints each string in a new line
-local logETW = function(...) ETWCommonFunctions.log(...) end
+local logETW = function(...)
+	ETWCommonFunctions.log(...)
+end
 
 ---Function responsible for finding index of delayed trait in Delayed Traits Table
 ---@param tbl table
@@ -84,19 +92,31 @@ end
 ---@param value any
 ---@return integer
 function ETWCommonFunctions.indexOf(tbl, value)
-    for i = 1, #tbl do
-        if tbl[i] == value then
-            return i
-        end
-    end
-    return -1
+	for i = 1, #tbl do
+		if tbl[i] == value then
+			return i
+		end
+	end
+	return -1
 end
 
 ---Plays a sound if enabled in settings
 ---@param player IsoPlayer|IsoGameCharacter
 function ETWCommonFunctions.traitSound(player)
 	if modOptions:getOption("EnableSoundNotifications"):getValue() then
-		local soundTable = {"ETW_b42", "ETW_b41", "ETW_TLOU", "ETW_SkyrimSkill", "ETW_SkyrimLevel", "ETW_Oblivion", "ETW_Diablo2", "ETW_Witcher3", "ETW_FalloutNV", "ETW_AoE3", "ETW_WoW"}
+		local soundTable = {
+			"ETW_b42",
+			"ETW_b41",
+			"ETW_TLOU",
+			"ETW_SkyrimSkill",
+			"ETW_SkyrimLevel",
+			"ETW_Oblivion",
+			"ETW_Diablo2",
+			"ETW_Witcher3",
+			"ETW_FalloutNV",
+			"ETW_AoE3",
+			"ETW_WoW",
+		}
 		local filteredSoundTable = {}
 		for index = 1, #soundTable do
 			if modOptions:getOption("SoundNotificationSoundSelect"):getValue(index) then
@@ -120,8 +140,8 @@ function ETWCommonFunctions.delayedTraitsDataDump()
 		local traitTable = getPlayer():getModData().EvolvingTraitsWorld.DelayedTraits
 		for index = 1, #traitTable do
 			local traitEntry = traitTable[index]
-			local trait, roll, gained = traitEntry[1], traitEntry[2], traitEntry[3]
-			print("ETW Logger | Delayed Traits System | Data Dump: " .. tostring(trait) .. ", " .. roll .. ", " .. tostring(gained))
+			local traitRegistryId, roll, gained = traitEntry[1], traitEntry[2], traitEntry[3]
+			print("ETW Logger | Delayed Traits System | Data Dump: " .. traitRegistryId .. ", " .. roll .. ", " .. tostring(gained))
 		end
 	end
 end
@@ -134,12 +154,20 @@ local function addXPBoostsFromTrait(trait)
 	if xpBoostMap then
 		local table = transformIntoKahluaTable(xpBoostMap)
 		for perk, boostLevel in pairs(table) do
-			logETW(true, "ETW Logger | ETWCommonFunctions.addXPBoostsFromTrait(): perk:", tostring(perk), ", boostLevel:", tostring(boostLevel))
+			logETW(
+				"ETW Logger | ETWCommonFunctions.addXPBoostsFromTrait(): perk:" .. tostring(perk) .. ", boostLevel:" .. tostring(boostLevel)
+			)
 			local oldBoost = player:getXp():getPerkBoost(perk)
 			local newBoost = math.min(oldBoost + tonumber(tostring(boostLevel)), 3)
 			---@cast newBoost integer
 			player:getXp():setPerkBoost(perk, newBoost)
-			logETW(true, "ETW Logger | ETWCommonFunctions.addXPBoostsFromTrait(): ", tostring(perk), "old/new boost level:", oldBoost, player:getXp():getPerkBoost(perk))
+			logETW(
+				"ETW Logger | ETWCommonFunctions.addXPBoostsFromTrait(): "
+					.. tostring(perk)
+					.. "old/new boost level:"
+					.. oldBoost
+					.. player:getXp():getPerkBoost(perk)
+			)
 		end
 	end
 end
@@ -151,11 +179,11 @@ local function addRecipes(trait)
 	local traitDefinition = CharacterTraitDefinition.getCharacterTraitDefinition(trait)
 	local freeRecipes = traitDefinition:getGrantedRecipes()
 	local playerRecipes = player:getKnownRecipes()
-	if detailedDebug then print("ETW Logger | ETWCommonFunctions.addRecipes(): adding recipes for trait " .. tostring(trait:toString())) end
+	logETW("ETW Logger | ETWCommonFunctions.addRecipes(): adding recipes for trait " .. trait:toString())
 	for i = 0, freeRecipes:size() - 1 do
 		local recipe = freeRecipes:get(i)
 		if not playerRecipes:contains(recipe) then
-			if detailedDebug then print("ETW Logger | ETWCommonFunctions.addRecipes(): player doesn't have " .. recipe .. ", adding it to known recipes") end
+			logETW("ETW Logger | ETWCommonFunctions.addRecipes(): player doesn't have " .. recipe .. ", adding it to known recipes")
 			playerRecipes:add(recipe)
 		end
 	end
@@ -165,18 +193,18 @@ end
 ---@param trait CharacterTrait
 function ETWCommonFunctions.addTraitToPlayer(trait)
 	local player = getPlayer()
-	if detailedDebug then print("ETW Logger | addTraitToPlayer() : adding trait ", tostring(trait:toString())) end
+	logETW("ETW Logger | addTraitToPlayer() : adding trait " .. trait:toString())
 	player:getCharacterTraits():add(trait)
 	addRecipes(trait)
 	addXPBoostsFromTrait(trait)
 	ETWCommonFunctions.traitSound(player)
 end
 
----Removes trait from a player, it's recipes and plays the sound
+---Removes trait from a player and plays the sound
 ---@param trait CharacterTrait
 function ETWCommonFunctions.removeTraitFromPlayer(trait)
 	local player = getPlayer()
-	if detailedDebug then print("ETW Logger | removeTraitFromPlayer() : removing trait ", tostring(trait:toString())) end
+	logETW("ETW Logger | removeTraitFromPlayer() : removing trait " .. trait:toString())
 	player:getCharacterTraits():remove(trait)
 	ETWCommonFunctions.traitSound(player)
 end
@@ -187,21 +215,42 @@ end
 ---@param player IsoPlayer|IsoGameCharacter
 ---@param positiveTrait boolean
 function ETWCommonFunctions.addTraitToDelayTable(modData, trait, player, positiveTrait)
-	---@cast player IsoPlayer
 	ETWCommonFunctions.traitSound(player)
-	if not SBvars.DelayedTraitsSystem then return end
-	if detailedDebug() then print("ETW Logger | Delayed Traits System: modData.DelayedStartingTraitsFilled =  " .. tostring(modData.DelayedStartingTraitsFilled)) end
+	local traitRegistryId = trait:toString()
+	if not SBvars.DelayedTraitsSystem then
+		return
+	end
+	logETW("ETW Logger | Delayed Traits System: modData.DelayedStartingTraitsFilled =  " .. tostring(modData.DelayedStartingTraitsFilled))
 	if not modData.DelayedStartingTraitsFilled then
-		if detailedDebug() then print("ETW Logger | Delayed Traits System: player qualifies for " .. tostring(trait:toString()) .. " from the start of the game, adding it to delayed traits table") end
-		table.insert(modData.DelayedTraits, {trait, SBvars.DelayedTraitsSystemDefaultDelay + SBvars.DelayedTraitsSystemDefaultStartingDelay, false})
-	elseif indexOfDelayedTrait(modData.DelayedTraits, trait) == -1 and not player:hasTrait(trait) and positiveTrait then
-		if detailedDebug() then print("ETW Logger | Delayed Traits System: player qualifies for positive trait " .. tostring(trait:toString()) .. ", adding it to delayed traits table") end
-		table.insert(modData.DelayedTraits, {trait, SBvars.DelayedTraitsSystemDefaultDelay, false})
-	elseif indexOfDelayedTrait(modData.DelayedTraits, trait) == -1 and player:hasTrait(trait) and not positiveTrait then
-		if detailedDebug() then print("ETW Logger | Delayed Traits System: player qualifies for removing negative trait " .. tostring(trait:toString()) .. ", adding it to delayed traits table") end
-		table.insert(modData.DelayedTraits, {trait, SBvars.DelayedTraitsSystemDefaultDelay, false})
+		logETW(
+			"ETW Logger | Delayed Traits System: player qualifies for "
+				.. traitRegistryId
+				.. " from the start of the game, adding it to delayed traits table"
+		)
+		table.insert(
+			modData.DelayedTraits,
+			{ traitRegistryId, SBvars.DelayedTraitsSystemDefaultDelay + SBvars.DelayedTraitsSystemDefaultStartingDelay, false }
+		)
+	elseif indexOfDelayedTrait(modData.DelayedTraits, traitRegistryId) == -1 and not player:hasTrait(trait) and positiveTrait then
+		logETW(
+			"ETW Logger | Delayed Traits System: player qualifies for positive trait "
+				.. traitRegistryId
+				.. ", adding it to delayed traits table"
+		)
+		table.insert(modData.DelayedTraits, { traitRegistryId, SBvars.DelayedTraitsSystemDefaultDelay, false })
+	elseif indexOfDelayedTrait(modData.DelayedTraits, traitRegistryId) == -1 and player:hasTrait(trait) and not positiveTrait then
+		logETW(
+			"ETW Logger | Delayed Traits System: player qualifies for removing negative trait "
+				.. traitRegistryId
+				.. ", adding it to delayed traits table"
+		)
+		table.insert(modData.DelayedTraits, { traitRegistryId, SBvars.DelayedTraitsSystemDefaultDelay, false })
 	else
-		if detailedDebug() then print("ETW Logger | Delayed Traits System: player qualifies for " .. tostring(trait:toString()) .. ", but it's already in delayed traits table or player already has the trait") end
+		logETW(
+			"ETW Logger | Delayed Traits System: player qualifies for "
+				.. traitRegistryId
+				.. ", but it's already in delayed traits table or player already has the trait"
+		)
 	end
 	if detailedDebug() then
 		print("ETW Logger | Delayed Traits System | Data Dump after ETWCommonFunctions.addTraitToDelayTable() START ------------")
@@ -215,16 +264,27 @@ end
 ---@param trait CharacterTrait
 ---@return boolean
 function ETWCommonFunctions.checkDelayedTraits(traitToCheck)
-	if not SBvars.DelayedTraitsSystem then return true end
+	if not SBvars.DelayedTraitsSystem then
+		return true
+	end
+	local traitRegistryId = traitToCheck:toString()
 	local player = getPlayer()
 	local modData = ETWCommonFunctions.getETWModData(player)
 	local traitTable = modData.DelayedTraits
-	local traitEntry = traitTable[indexOfDelayedTrait(modData.DelayedTraits, traitToCheck)]
-	local trait, gained = traitEntry[1], traitEntry[3]
-	if detailedDebug() then print("ETW Logger | Delayed Traits System: caught check on " .. tostring(trait:toString())) end
-	if trait == traitToCheck and gained then
-		if detailedDebug() then print("ETW Logger | Delayed Traits System: caught check on " .. tostring(trait:toString()) .. ": player qualifies for it, removing it from the table") end
-		table.remove(traitTable, indexOfDelayedTrait(modData.DelayedTraits, trait))
+	local traitEntry = traitTable[indexOfDelayedTrait(modData.DelayedTraits, traitRegistryId)]
+	local traitNameInTable, gained = traitEntry[1], traitEntry[3]
+	if detailedDebug() then
+		print("ETW Logger | Delayed Traits System: caught check on " .. traitRegistryId)
+	end
+	if traitNameInTable == traitRegistryId and gained then
+		if detailedDebug() then
+			print(
+				"ETW Logger | Delayed Traits System: caught check on "
+					.. traitRegistryId
+					.. ": player qualifies for it, removing it from the table"
+			)
+		end
+		table.remove(traitTable, indexOfDelayedTrait(modData.DelayedTraits, traitRegistryId))
 		return true
 	end
 	return false
@@ -237,11 +297,12 @@ function ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(trait)
 	local player = getPlayer()
 	local modData = ETWCommonFunctions.getETWModData(player)
 	local traitTable = modData.DelayedTraits
-	if indexOfDelayedTrait(modData.DelayedTraits, trait) ~= -1 then
-		logETW("ETW Logger | Delayed Traits System: checking if " .. tostring(trait:toString()) .. " is already in the table, it is.")
+	local traitRegistryId = trait:toString()
+	if indexOfDelayedTrait(modData.DelayedTraits, traitRegistryId) ~= -1 then
+		logETW("ETW Logger | Delayed Traits System: checking if " .. traitRegistryId .. " is already in the table, it is.")
 		return true
 	end
-	logETW("ETW Logger | Delayed Traits System: checking if " .. tostring(trait:toString()) .. " is already in the table, it is not.")
+	logETW("ETW Logger | Delayed Traits System: checking if " .. traitRegistryId .. " is already in the table, it is not.")
 	return false
 end
 

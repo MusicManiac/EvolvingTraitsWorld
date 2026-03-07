@@ -43,14 +43,9 @@ local detailedDebug = function()
 end
 
 local original_RecipeCodeOnEat_consumeNicotine = RecipeCodeOnEat.consumeNicotine
-function RecipeCodeOnEat.consumeNicotine(item, character)
+function RecipeCodeOnEat.consumeNicotine(item, character, ...)
 	ETWExportedFunctions.smokingAddictionMath(character)
-	original_RecipeCodeOnEat_consumeNicotine(item, character)
-end
-
-function RecipeCodeOnEat.consumeNicotine(item, character, percent)
-	ETWExportedFunctions.smokingAddictionMath(character)
-	original_RecipeCodeOnEat_consumeNicotine(item, character, percent)
+	return original_RecipeCodeOnEat_consumeNicotine(item, character, ...)
 end
 
 local original_RecipeCodeOnCreate_ripClothing = RecipeCodeOnCreate.ripClothing

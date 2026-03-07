@@ -1,8 +1,7 @@
 [url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
 
-v.10.0.0
+v.10.0.2
 
-General:
-	- b42.14 compatibility, tested only on a surface level. I expect some bug reports. Not a clue how it will work in MP. My assumption is "probably works"
-Balancing:
-	- Fixed error in Fog System math making it pretty much impossible to gain Homichlophobia
+Fixes:
+	- Fixed error on smoking cigarette from a pack.
+	- Fixed Delayed Traits System (again). As a side effect your delayed traits will get nuked and re-added.
