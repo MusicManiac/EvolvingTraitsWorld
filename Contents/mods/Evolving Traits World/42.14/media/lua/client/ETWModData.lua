@@ -50,8 +50,24 @@ local function createModData(playerIndex, player)
 	checkStartingTrait(startingTraits, player, ETWTraitsRegistry.HOMICHLOPHOBIA)
 	checkStartingTrait(startingTraits, player, ETWTraitsRegistry.HOMICHLOPHILE)
 
-	modData.DelayedStartingTraitsFilled = modData.DelayedStartingTraitsFilled or true -- TODO: change!!!!!!
+	modData.DelayedStartingTraitsFilled = modData.DelayedStartingTraitsFilled or false
 	modData.DelayedTraits = modData.DelayedTraits or {}
+	for i = #modData.DelayedTraits, 1, -1 do
+		local entry = modData.DelayedTraits[i]
+		if modData.DelayedTraits[i][1] == nil then
+			print("ETW Logger | System: trait in modData.DelayedTraits at index " .. i .. " is nil, deleting it.")
+			table.remove(modData.DelayedTraits, i)
+		elseif not modData.DelayedTraits[i][1]:match("^[A-Za-z]+:[A-Za-z]+$") then
+			print(
+				"ETW Logger | System: trait "
+					.. modData.DelayedTraits[i][1]
+					.. " in modData.DelayedTraits at index "
+					.. i
+					.. " doesn't match expected format, deleting it."
+			)
+			table.remove(modData.DelayedTraits, i)
+		end
+	end
 
 	if modData.AsthmaticCounter == nil and startingTraits[CharacterTrait.ASTHMATIC] == true then -- start at full counter if they start with the trait
 		modData.AsthmaticCounter = SBvars.AsthmaticCounter * -2

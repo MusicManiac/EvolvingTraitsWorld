@@ -1243,6 +1243,50 @@ local function traitsGainsBySkill(player, perk)
 	modData.DelayedStartingTraitsFilled = true
 end
 
+local random_instance = newrandom()
+
+---Function responsible for hourly check on Delayed Traits system
+local function progressDelayedTraits()
+	local player = getPlayer()
+	local modData = ETWCommonFunctions.getETWModData(player)
+	local traitTable = modData.DelayedTraits
+	logETW("ETW Logger | Delayed Traits System: new progressDelayedTraits() execution ----------")
+	for index = 1, #traitTable do
+		local traitEntry = traitTable[index]
+		local traitRegistryId, traitValue, gained = traitEntry[1], traitEntry[2], traitEntry[3]
+		local trait = CharacterTrait.get(ResourceLocation.of(traitRegistryId))
+		if not gained then
+			local randomValue = random_instance:random(0, traitValue)
+			if randomValue == 0 then
+				traitTable[index][3] = true
+				logETW(
+					"ETW Logger | Delayed Traits System: rolled to get " .. traitRegistryId .. ": rolled 0 from 0-" .. traitTable[index][2],
+					"ETW Logger | Delayed Traits System: "
+						.. traitRegistryId
+						.. " in traitTable["
+						.. index
+						.. "][3]"
+						.. " set to "
+						.. tostring(traitTable[index][3]),
+					"ETW Logger | Delayed Traits System: running traitsGainsBySkill(player, " .. traitRegistryId .. ")"
+				)
+				traitsGainsBySkill(player, trait)
+			elseif randomValue > 0 then
+				logETW(
+					"ETW Logger | Delayed Traits System: rolled to get "
+						.. traitRegistryId
+						.. ": rolled "
+						.. randomValue
+						.. " from 0-"
+						.. traitValue
+				)
+				traitTable[index][2] = traitValue - 1
+			end
+		end
+	end
+	logETW("ETW Logger | Delayed Traits System: finished progressDelayedTraits() execution ----------")
+end
+
 ---Function responsible for firing check on all kill-related traits
 ---@param zombie IsoZombie
 local function OnZombieDeadETW(zombie)
@@ -1262,6 +1306,9 @@ local function initializeEventsETW(playerIndex, player)
 		if SBvars.TraitsLockSystemCanGainPositive then
 			Events.OnZombieDead.Add(OnZombieDeadETW)
 		end
+	end
+	if SBvars.DelayedTraitsSystem then
+		Events.EveryHours.Add(progressDelayedTraits)
 	end
 end
 

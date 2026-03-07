@@ -14,8 +14,6 @@ local ETWTraitsRegistry = ETWRegistries.traits
 
 local modOptions
 
-local random_instance = newrandom()
-
 ---Function responsible for setting up mod options on character load
 ---@param playerIndex number
 ---@param player IsoPlayer
@@ -313,46 +311,6 @@ local function catEyesKill(zombie)
 	end
 end
 
----Function responsible for hourly check on Delayed Traits system
-local function progressDelayedTraits()
-	local player = getPlayer()
-	local modData = ETWCommonFunctions.getETWModData(player)
-	local traitTable = modData.DelayedTraits
-	logETW("ETW Logger | Delayed Traits System: new progressDelayedTraits() execution ----------")
-	for index, traitEntry in ipairs(traitTable) do
-		local traitName, traitValue, gained = traitEntry[1], traitEntry[2], traitEntry[3]
-		if not gained then
-			local randomValue = random_instance(traitValue)
-			if randomValue == 1 then
-				traitTable[index][3] = true
-				logETW(
-					"ETW Logger | Delayed Traits System: rolled to get " .. traitName .. ": rolled 0 from 0-" .. traitTable[index][2],
-					"ETW Logger | Delayed Traits System: "
-						.. traitName
-						.. " in traitTable["
-						.. index
-						.. "][3]"
-						.. " set to "
-						.. tostring(traitTable[index][3]),
-					"ETW Logger | Delayed Traits System: running traitsGainsBySkill(player, " .. traitName .. ")"
-				)
-				traitsGainsBySkill(player, traitName)
-			elseif randomValue > 0 then
-				logETW(
-					"ETW Logger | Delayed Traits System: rolled to get "
-						.. traitName
-						.. ": rolled "
-						.. randomValue
-						.. " from 0-"
-						.. traitTable[index][2]
-				)
-				traitTable[index][2] = traitValue - 1
-			end
-		end
-	end
-	logETW("ETW Logger | Delayed Traits System: finished progressDelayedTraits() execution ----------")
-end
-
 ---Function responsible for setting up events
 ---@param playerIndex number
 ---@param player IsoPlayer
@@ -389,7 +347,6 @@ local function clearEventsETW(character)
 	Events.EveryTenMinutes.Remove(sleepSystem)
 	Events.EveryOneMinute.Remove(smoker)
 	Events.EveryDays.Remove(herbalist)
-	Events.EveryHours.Remove(progressDelayedTraits)
 	if detailedDebug() then
 		print("ETW Logger | System: clearEventsETW in ETWByTime.lua")
 	end

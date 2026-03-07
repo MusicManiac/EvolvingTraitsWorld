@@ -2661,7 +2661,14 @@ function ISETWProgressUI:render()
 		for index = 1, #traitTable do
 			local traitEntry = traitTable[index]
 			local trait, roll = traitEntry[1], traitEntry[2]
-			local strAddition = trait:getName() .. " (1 " .. getText("UI_ETW_Chance") .. " " .. roll .. ")"
+			local translationString = "missing translation"
+			if instanceof(trait, "CharacterTrait") then
+				translationString = CharacterTraitDefinition.getCharacterTraitDefinition(trait):getUIName()
+			else
+				translationString = CharacterTraitDefinition.getCharacterTraitDefinition(CharacterTrait.get(ResourceLocation.of(trait)))
+					:getUIName()
+			end
+			local strAddition = translationString .. " (1 " .. getText("UI_ETW_Chance") .. " " .. roll .. ")"
 			table.insert(parts, strAddition)
 		end
 		local combinedParts = table.concat(parts, ", ")

@@ -1,3 +1,10 @@
+## v.10.0.1
+###### 06 Mar 2026
+
+- Fixes:
+	- A bunch of different fixes to Delayed Traits System.
+  - Limited "Mark Dynamic Traits" to max version 42.12. It's functionality will be moved to separate mod later.
+
 ## v.10.0.0
 ###### 05 Mar 2026
 

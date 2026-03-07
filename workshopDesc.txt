@@ -3,7 +3,7 @@ This mod allows you to get really ripped in PZ and see an actual character progr
 
 [h1]Features[/h1]
 [list]
-[*]UI with all needed mod information in-game! Default hotkey is "["
+[*]UI with all needed mod information in-game! Default hotkey is "[", changeable in settings.
 [*]70+ dynamic traits (vanilla + added by the mod).
 [*][h3][b]FULL sandbox customization[/b]. Choose which perks you want to be dynamic, choose how fast you get them, choose how fast you lose them, customize anything with more than 150 sandbox options. Nothing is forced upon player, if you like 1% of the mod, you can literally set it up so you get to use that 1% and nothing else.[/h3]
 [*]Advanced systems that affect a lot of traits. Affinity system, that allows you to stick to your starting traits better. Delayed traits system, that allows you to get/remove traits with random delay.
@@ -57,4 +57,4 @@ Redistribution of this mod without explicit permission from the creator is prohi
 
 Workshop ID: 2914075159
 Mod ID: EvolvingTraitsWorld
-Mod ID: EvolvingTraitsWorldMarkDynamicTraits (doesn't work for b42)
+Mod ID: EvolvingTraitsWorldMarkDynamicTraits <--- (doesn't work for b42.13+)
