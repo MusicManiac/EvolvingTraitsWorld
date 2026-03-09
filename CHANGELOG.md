@@ -1,6 +1,16 @@
 ## v.10.0.2
 ###### 07 Mar 2026
 
+- General:
+	- Restored functionality of Hoarder. To make weight modifiers from different mods work, weight-related stuff has been moved to a separate mod, [Unified Carry Weight Framework (UCWF)](url=https://steamcommunity.com/sharedfiles/filedetails/?id=3682045254), which is now a requirement for this mod (only for 42.15 and higher, I will not be updating earlier versions).
+- Fixes:
+	- Fixes after 42.15 update.
+	- (Allegedly) Fixed Herbalist error.
+	- Fixed some errors in MP.
+
+## v.10.0.2
+###### 07 Mar 2026
+
 - Fixes:
 	- Fixed error on smoking cigarette from a pack.
 	- Fixed Delayed Traits System (again). As a side effect your delayed traits will get nuked and re-added.
