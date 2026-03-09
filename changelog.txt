@@ -1,8 +1,10 @@
 [url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
 
-v.10.0.2
+v.10.1.0
 
+General:
+	- Restored functionality of Hoarder. To make weight modifiers from different mods work, weight-related stuff has been moved to a separate mod, [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3682045254]Unified Carry Weight Framework (UCWF)[/url], which is now a requirement for this mod (only for 42.15 and higher, I will not be updating earlier versions).
 Fixes:
-	- Fixed error on smoking cigarette from a pack.
-	- Fixed Delayed Traits System (again). As a side effect your delayed traits will get nuked and re-added.
-	- Fixed Pain Tolerance error.
+	- Fixes after 42.15 update.
+	- (Allegedly) Fixed Herbalist error.
+	- Fixed some errors in MP.
