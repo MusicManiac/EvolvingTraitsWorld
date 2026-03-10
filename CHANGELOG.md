@@ -1,4 +1,10 @@
-## v.10.0.2
+## v.10.1.1
+###### 07 Mar 2026
+
+- Fixes:
+	- Fixed non-english translations.
+
+## v.10.1.0
 ###### 07 Mar 2026
 
 - General:
