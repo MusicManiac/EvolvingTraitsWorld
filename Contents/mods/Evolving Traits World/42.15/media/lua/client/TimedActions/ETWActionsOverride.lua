@@ -185,15 +185,13 @@ function ISChopTreeAction:perform()
 		logETW("ETW Logger | ISChopTreeAction.perform(): modData.TreesChopped = " .. modData.TreesChopped)
 		if modData.TreesChopped >= SBvars.AxemanTrees then
 			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.AXEMAN) then
-				ETWCommonFunctions.addTraitToDelayTable(modData, CharacterTrait.AXEMAN, player, true)
-				if delayedNotification() then
-					HaloTextHelper.addTextWithArrow(
-						player,
-						getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_axeman"),
-						true,
-						HaloTextHelper.getColorGreen()
-					)
-				end
+				ETWCommonFunctions.addTraitToDelayTable({
+					modData = modData,
+					trait = CharacterTrait.AXEMAN,
+					player = player,
+					positiveTrait = true,
+					gainingTrait = true,
+				})
 			elseif
 				not SBvars.DelayedTraitsSystem
 				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.AXEMAN))
@@ -235,15 +233,13 @@ function ISInventoryTransferAction:perform()
 			and SBvars.TraitsLockSystemCanLoseNegative
 		then
 			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.DISORGANIZED) then
-				if delayedNotification() then
-					HaloTextHelper.addTextWithArrow(
-						player,
-						getText("UI_ETW_DelayedNotificationsStringRemove") .. getText("UI_trait_Disorganized"),
-						false,
-						HaloTextHelper.getColorGreen()
-					)
-				end
-				ETWCommonFunctions.addTraitToDelayTable(modData, CharacterTrait.DISORGANIZED, player, false)
+				ETWCommonFunctions.addTraitToDelayTable({
+					modData = modData,
+					trait = CharacterTrait.DISORGANIZED,
+					player = player,
+					positiveTrait = false,
+					gainingTrait = false,
+				})
 			elseif
 				not SBvars.DelayedTraitsSystem
 				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.DISORGANIZED))
@@ -263,15 +259,13 @@ function ISInventoryTransferAction:perform()
 		then
 			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.ORGANIZED) then
 				-- UI_trait_Packmule is internal string name
-				ETWCommonFunctions.addTraitToDelayTable(modData, CharacterTrait.ORGANIZED, player, true)
-				if delayedNotification() then
-					HaloTextHelper.addTextWithArrow(
-						player,
-						getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_Packmule"),
-						true,
-						HaloTextHelper.getColorGreen()
-					)
-				end
+				ETWCommonFunctions.addTraitToDelayTable({
+					modData = modData,
+					trait = CharacterTrait.ORGANIZED,
+					player = player,
+					positiveTrait = true,
+					gainingTrait = true,
+				})
 			elseif
 				not SBvars.DelayedTraitsSystem
 				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.ORGANIZED))
@@ -290,15 +284,13 @@ function ISInventoryTransferAction:perform()
 			and SBvars.TraitsLockSystemCanLoseNegative
 		then
 			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.ALL_THUMBS) then
-				ETWCommonFunctions.addTraitToDelayTable(modData, CharacterTrait.ALL_THUMBS, player, false)
-				if delayedNotification() then
-					HaloTextHelper.addTextWithArrow(
-						player,
-						getText("UI_ETW_DelayedNotificationsStringRemove") .. getText("UI_trait_AllThumbs"),
-						false,
-						HaloTextHelper.getColorGreen()
-					)
-				end
+				ETWCommonFunctions.addTraitToDelayTable({
+					modData = modData,
+					trait = CharacterTrait.ALL_THUMBS,
+					player = player,
+					positiveTrait = false,
+					gainingTrait = false,
+				})
 			elseif
 				not SBvars.DelayedTraitsSystem
 				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.ALL_THUMBS))
@@ -317,15 +309,13 @@ function ISInventoryTransferAction:perform()
 			and SBvars.TraitsLockSystemCanGainPositive
 		then
 			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.DEXTROUS) then
-				if notification() then
-					ETWCommonFunctions.addTraitToDelayTable(modData, CharacterTrait.DEXTROUS, player, true)
-					HaloTextHelper.addTextWithArrow(
-						player,
-						getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_Dexterous"),
-						true,
-						HaloTextHelper.getColorGreen()
-					)
-				end
+				ETWCommonFunctions.addTraitToDelayTable({
+					modData = modData,
+					trait = CharacterTrait.DEXTROUS,
+					player = player,
+					positiveTrait = true,
+					gainingTrait = true,
+				})
 			elseif
 				not SBvars.DelayedTraitsSystem
 				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.DEXTROUS))

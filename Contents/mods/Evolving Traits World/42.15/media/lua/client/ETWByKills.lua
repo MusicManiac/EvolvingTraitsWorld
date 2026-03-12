@@ -190,15 +190,13 @@ local function eagleEyedETW(wielder, character, handWeapon, damage)
 					end
 				end
 				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.EAGLE_EYED) then
-					if delayedNotification() then
-						HaloTextHelper.addTextWithArrow(
-							player,
-							getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_eagleeyed"),
-							true,
-							HaloTextHelper.getColorGreen()
-						)
-					end
-					ETWCommonFunctions.addTraitToDelayTable(modData, CharacterTrait.EAGLE_EYED, player, true)
+					ETWCommonFunctions.addTraitToDelayTable({
+						modData = modData,
+						trait = CharacterTrait.EAGLE_EYED,
+						player = player,
+						positiveTrait = true,
+						gainingTrait = true,
+					})
 				end
 			end
 		end
@@ -284,15 +282,13 @@ local function braverySystemETW(zombie)
 				and SBvars.TraitsLockSystemCanLoseNegative
 			then
 				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(trait) then
-					ETWCommonFunctions.addTraitToDelayTable(ETWModData, trait, player, false)
-					if delayedNotification() then
-						HaloTextHelper.addTextWithArrow(
-							player,
-							getText("UI_ETW_DelayedNotificationsStringRemove") .. translationString,
-							true,
-							HaloTextHelper.getColorGreen()
-						)
-					end
+					ETWCommonFunctions.addTraitToDelayTable({
+						modData = ETWModData,
+						trait = trait,
+						player = player,
+						positiveTrait = false,
+						gainingTrait = false,
+					})
 				elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(trait)) then
 					ETWCommonFunctions.removeTraitFromPlayer(trait)
 					if notification() then
@@ -308,37 +304,35 @@ local function braverySystemETW(zombie)
 				and SBvars.TraitsLockSystemCanGainPositive
 			then
 				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(trait) then
-					ETWCommonFunctions.addTraitToDelayTable(ETWModData, trait, player, true)
-					if delayedNotification() then
-						HaloTextHelper.addTextWithArrow(
-							player,
-							getText("UI_ETW_DelayedNotificationsStringAdd") .. translationString,
-							true,
-							HaloTextHelper.getColorGreen()
-						)
-					end
+					ETWCommonFunctions.addTraitToDelayTable({
+						modData = ETWModData,
+						trait = trait,
+						player = player,
+						positiveTrait = true,
+						gainingTrait = true,
+					})
 				elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(trait)) then
 					ETWCommonFunctions.addTraitToPlayer(trait)
 					if notification() then
 						HaloTextHelper.addTextWithArrow(player, translationString, true, HaloTextHelper.getColorGreen())
 					end
-					if trait == "Desensitized" then
+					if trait == CharacterTrait.DESENSITIZED then
 						Events.OnZombieDead.Remove(braverySystemETW)
 						if SBvars.BraverySystemRemovesOtherFearPerks == true and SBvars.TraitsLockSystemCanLoseNegative then
-							if player:hasTrait("Agoraphobic") then
-								player:getTraits():remove("Agoraphobic")
+							if player:hasTrait(CharacterTrait.AGORAPHOBIC) then
+								ETWCommonFunctions.removeTraitFromPlayer(CharacterTrait.AGORAPHOBIC)
 								if notification() then
 									HaloTextHelper.addTextWithArrow(player, "UI_trait_agoraphobic", false, HaloTextHelper.getColorGreen())
 								end
 							end
-							if player:hasTrait("Claustrophobic") then
-								player:getTraits():remove("Claustrophobic")
+							if player:hasTrait(CharacterTrait.CLAUSTROPHOBIC) then
+								ETWCommonFunctions.removeTraitFromPlayer(CharacterTrait.CLAUSTROPHOBIC)
 								if notification() then
 									HaloTextHelper.addTextWithArrow(player, "UI_trait_claustro", false, HaloTextHelper.getColorGreen())
 								end
 							end
-							if player:hasTrait("Pluviophobia") then
-								player:getTraits():remove("Pluviophobia")
+							if player:hasTrait(ETWTraitsRegistry.PLUVIOPHOBIA) then
+								ETWCommonFunctions.removeTraitFromPlayer(ETWTraitsRegistry.PLUVIOPHOBIA)
 								if notification() then
 									HaloTextHelper.addTextWithArrow(
 										player,
@@ -348,8 +342,8 @@ local function braverySystemETW(zombie)
 									)
 								end
 							end
-							if player:hasTrait("Homichlophobia") then
-								player:getTraits():remove("Homichlophobia")
+							if player:hasTrait(ETWTraitsRegistry.HOMICHLOPHOBIA) then
+								ETWCommonFunctions.removeTraitFromPlayer(ETWTraitsRegistry.HOMICHLOPHOBIA)
 								if notification() then
 									HaloTextHelper.addTextWithArrow(
 										player,
