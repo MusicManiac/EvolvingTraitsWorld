@@ -27,17 +27,17 @@ function ETWCombinedTraitChecks.bodyworkEnthusiastCheck(DebugAndNotificationArgs
 	local level = player:getPerkLevel(Perks.MetalWelding) + player:getPerkLevel(Perks.Mechanics)
 	if level >= SBvars.BodyworkEnthusiastSkill and modData.VehiclePartRepairs >= SBvars.BodyworkEnthusiastRepairs then
 		if
-			SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(ETWTraitsRegistry.BODY_WORK_ENTHUSIAST)
+			SBvars.DelayedTraitsSystem
+			and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(ETWTraitsRegistry.BODY_WORK_ENTHUSIAST)
 		then
-			ETWCommonFunctions.addTraitToDelayTable(modData, ETWTraitsRegistry.BODY_WORK_ENTHUSIAST, player, true)
-			if DebugAndNotificationArgs.delayedNotification then
-				HaloTextHelper.addTextWithArrow(
-					player,
-					getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_BodyWorkEnthusiast"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
-			end
+			ETWCommonFunctions.addTraitToDelayTable({
+				modData = modData,
+				trait = ETWTraitsRegistry.BODY_WORK_ENTHUSIAST,
+				player = player,
+				positiveTrait = true,
+				gainingTrait = true,
+				delayedNotification = DebugAndNotificationArgs.delayedNotification,
+			})
 		elseif
 			not SBvars.DelayedTraitsSystem
 			or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(ETWTraitsRegistry.BODY_WORK_ENTHUSIAST))
@@ -57,15 +57,14 @@ function ETWCombinedTraitChecks.mechanicsCheck(DebugAndNotificationArgs)
 	local modData = ETWCommonFunctions.getETWModData(player)
 	if player:getPerkLevel(Perks.Mechanics) >= SBvars.MechanicsSkill and modData.VehiclePartRepairs >= SBvars.MechanicsRepairs then
 		if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.MECHANICS) then
-			ETWCommonFunctions.addTraitToDelayTable(modData, CharacterTrait.MECHANICS, player, true)
-			if DebugAndNotificationArgs.delayedNotification then
-				HaloTextHelper.addTextWithArrow(
-					player,
-					getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_Mechanics"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
-			end
+			ETWCommonFunctions.addTraitToDelayTable({
+				modData = modData,
+				trait = CharacterTrait.MECHANICS,
+				player = player,
+				positiveTrait = true,
+				gainingTrait = true,
+				delayedNotification = DebugAndNotificationArgs.delayedNotification,
+			})
 		elseif
 			not SBvars.DelayedTraitsSystem
 			or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.MECHANICS))
@@ -85,15 +84,14 @@ function ETWCombinedTraitChecks.sewerCheck(DebugAndNotificationArgs)
 	local modData = ETWCommonFunctions.getETWModData(player)
 	if player:getPerkLevel(Perks.Tailoring) >= SBvars.SewerSkill and #modData.UniqueClothingRipped >= SBvars.SewerUniqueClothesRipped then
 		if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.TAILOR) then
-			ETWCommonFunctions.addTraitToDelayTable(modData, ETWTraitsRegistry.TAILOR, player, true)
-			if DebugAndNotificationArgs.delayedNotification then
-				HaloTextHelper.addTextWithArrow(
-					player,
-					getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_Tailor"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
-			end
+			ETWCommonFunctions.addTraitToDelayTable({
+				modData = modData,
+				trait = CharacterTrait.TAILOR,
+				player = player,
+				positiveTrait = true,
+				gainingTrait = true,
+				delayedNotification = DebugAndNotificationArgs.delayedNotification,
+			})
 		elseif
 			not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.TAILOR))
 		then
