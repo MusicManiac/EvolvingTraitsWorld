@@ -66,15 +66,13 @@ local function immunitySystemTraits()
 				SBvars.DelayedTraitsSystem
 				and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.PRONE_TO_ILLNESS)
 			then
-				ETWCommonFunctions.addTraitToDelayTable(modData, CharacterTrait.PRONE_TO_ILLNESS, player, false)
-				if delayedNotification() then
-					HaloTextHelper.addTextWithArrow(
-						player,
-						getText("UI_ETW_DelayedNotificationsStringRemove") .. getText("UI_trait_pronetoillness"),
-						true,
-						HaloTextHelper.getColorGreen()
-					)
-				end
+				ETWCommonFunctions.addTraitToDelayTable({
+					modData = modData,
+					trait = CharacterTrait.PRONE_TO_ILLNESS,
+					player = player,
+					positiveTrait = false,
+					gainingTrait = false,
+				})
 			elseif
 				not SBvars.DelayedTraitsSystem
 				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.PRONE_TO_ILLNESS))
@@ -91,15 +89,13 @@ local function immunitySystemTraits()
 			and SBvars.TraitsLockSystemCanGainPositive
 		then
 			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.RESILIENT) then
-				ETWCommonFunctions.addTraitToDelayTable(modData, CharacterTrait.RESILIENT, player, true)
-				if delayedNotification() then
-					HaloTextHelper.addTextWithArrow(
-						player,
-						getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_resilient"),
-						true,
-						HaloTextHelper.getColorGreen()
-					)
-				end
+				ETWCommonFunctions.addTraitToDelayTable({
+					modData = modData,
+					trait = CharacterTrait.RESILIENT,
+					player = player,
+					positiveTrait = true,
+					gainingTrait = true,
+				})
 			elseif
 				not SBvars.DelayedTraitsSystem
 				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.RESILIENT))
@@ -135,15 +131,13 @@ local function foodSicknessTraitsETW()
 		and SBvars.TraitsLockSystemCanLoseNegative
 	then
 		if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.WEAK_STOMACH) then
-			ETWCommonFunctions.addTraitToDelayTable(modData, CharacterTrait.WEAK_STOMACH, player, false)
-			if delayedNotification() then
-				HaloTextHelper.addTextWithArrow(
-					player,
-					getText("UI_ETW_DelayedNotificationsStringRemove") .. getText("UI_trait_WeakStomach"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
-			end
+			ETWCommonFunctions.addTraitToDelayTable({
+				modData = modData,
+				trait = CharacterTrait.WEAK_STOMACH,
+				player = player,
+				positiveTrait = false,
+				gainingTrait = false,
+			})
 		elseif
 			not SBvars.DelayedTraitsSystem
 			or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.WEAK_STOMACH))
@@ -160,15 +154,13 @@ local function foodSicknessTraitsETW()
 		and SBvars.TraitsLockSystemCanGainPositive
 	then
 		if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.IRON_GUT) then
-			ETWCommonFunctions.addTraitToDelayTable(modData, CharacterTrait.IRON_GUT, player, true)
-			if delayedNotification() then
-				HaloTextHelper.addTextWithArrow(
-					player,
-					getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_IronGut"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
-			end
+			ETWCommonFunctions.addTraitToDelayTable({
+				modData = modData,
+				trait = CharacterTrait.IRON_GUT,
+				player = player,
+				positiveTrait = true,
+				gainingTrait = true,
+			})
 		elseif
 			not SBvars.DelayedTraitsSystem
 			or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.IRON_GUT))
@@ -527,15 +519,13 @@ local function painToleranceTraitETW()
 	logETW("ETW Logger | painToleranceTraitETW(): pain counter: " .. modData.PainToleranceCounter)
 	if modData.PainToleranceCounter >= SBvars.PainToleranceCounter then
 		if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(ETWTraitsRegistry.PAIN_TOLERANCE) then
-			ETWCommonFunctions.addTraitToDelayTable(modData, ETWTraitsRegistry.PAIN_TOLERANCE, player, true)
-			if delayedNotification() then
-				HaloTextHelper.addTextWithArrow(
-					player,
-					getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_PainTolerance"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
-			end
+			ETWCommonFunctions.addTraitToDelayTable({
+				modData = modData,
+				trait = ETWTraitsRegistry.PAIN_TOLERANCE,
+				player = player,
+				positiveTrait = true,
+				gainingTrait = true,
+			})
 		elseif
 			not SBvars.DelayedTraitsSystem
 			or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(ETWTraitsRegistry.PAIN_TOLERANCE))
