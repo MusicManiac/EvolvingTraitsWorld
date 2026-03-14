@@ -90,15 +90,13 @@ local function catEyes(isKill)
 		)
 		if not player:hasTrait(CharacterTrait.NIGHT_VISION) and modData.CatEyesCounter >= SBvars.CatEyesCounter then
 			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.NIGHT_VISION) then
-				ETWCommonFunctions.addTraitToDelayTable(modData, CharacterTrait.NIGHT_VISION, player, true)
-				if delayedNotification() then
-					HaloTextHelper.addTextWithArrow(
-						player,
-						getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_NightVision"),
-						true,
-						HaloTextHelper.getColorGreen()
-					)
-				end
+				ETWCommonFunctions.addTraitToDelayTable({
+					modData = modData,
+					trait = CharacterTrait.NIGHT_VISION,
+					player = player,
+					positiveTrait = true,
+					gainingTrait = true,
+				})
 			elseif
 				not SBvars.DelayedTraitsSystem
 				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.NIGHT_VISION))
@@ -274,7 +272,7 @@ local function smoker()
 		and player:hasTrait(CharacterTrait.SMOKER)
 		and SBvars.TraitsLockSystemCanLoseNegative
 	then
-		stats:setStressFromCigarettes(0)
+		stats:set(CharacterStat.NICOTINE_WITHDRAWAL, 0)
 		ETWCommonFunctions.removeTraitFromPlayer(CharacterTrait.SMOKER)
 		if notification() then
 			HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Smoker"), false, HaloTextHelper.getColorGreen())

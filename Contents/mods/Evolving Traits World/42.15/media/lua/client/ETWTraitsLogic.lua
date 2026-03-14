@@ -1,6 +1,5 @@
 require("ETWModData")
 require("ETWModOptions")
-require("UnifiedCarryWeightFramework")
 local ETWCommonFunctions = require("ETWCommonFunctions")
 local ETWRegistries = require("ETWRegistry")
 
@@ -70,21 +69,6 @@ local function OnZombieDeadETW(zombie)
 		)
 	end
 end
-
-UnifiedCarryWeightFramework.registerMaxModifier({
-	id = "ETW.HoarderTraitCarryWeight",
-
-	resolve = function(ctx)
-		local player = ctx.player
-
-		if player:hasTrait(ETWTraitsRegistry.HOARDER) then
-			return {
-				add = player:getPerkLevel(Perks.Strength) * SBvars.HoarderWeight,
-			}
-		end
-		return {}
-	end,
-})
 
 ---Function responsible for processing Rain traits execution logic
 ---@param player IsoPlayer
@@ -233,15 +217,13 @@ if not getActivatedMods():contains("\\2934686936/EvolvingTraitsWorldDisablePetTh
 							SBvars.DelayedTraitsSystem
 							and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(ETWTraitsRegistry.PET_THERAPY)
 						then
-							if delayedNotification then
-								HaloTextHelper.addTextWithArrow(
-									player,
-									getText("UI_ETW_DelayedNotificationsStringAdd") .. getText("UI_trait_PetTherapy"),
-									true,
-									HaloTextHelper.getColorGreen()
-								)
-							end
-							ETWCommonFunctions.addTraitToDelayTable(modData, ETWTraitsRegistry.PET_THERAPY, player, true)
+							ETWCommonFunctions.addTraitToDelayTable({
+								modData = modData,
+								trait = ETWTraitsRegistry.PET_THERAPY,
+								player = player,
+								positiveTrait = true,
+								gainingTrait = true,
+							})
 						elseif
 							not SBvars.DelayedTraitsSystem
 							or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(ETWTraitsRegistry.PET_THERAPY))
