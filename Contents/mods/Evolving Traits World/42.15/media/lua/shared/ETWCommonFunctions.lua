@@ -1,3 +1,4 @@
+---@class ETWCommonFunctions
 local ETWCommonFunctions = {}
 
 ---@type EvolvingTraitsWorldSandboxVars
@@ -7,7 +8,28 @@ local modOptions
 
 local random_instance = newrandom()
 
-if not isServer() then
+---Enum-like table for game mode
+---@return boolean
+ETWCommonFunctions.GameMode = {
+	SP = "SP",
+	MP_CLIENT = "MP_Client",
+	MP_SERVER = "MP_Server",
+}
+
+---Function responsible for determining the current game mode, returns "SP" for single player, "MP_Client" for multiplayer client and "MP_Server" for multiplayer server
+---@return '"SP"'|'"MP_Client"'|'"MP_Server"'
+function ETWCommonFunctions.gameMode()
+	if not isClient() and not isServer() then
+		return ETWCommonFunctions.GameMode.SP
+	elseif isClient() then
+		return ETWCommonFunctions.GameMode.MP_CLIENT
+	end
+	return ETWCommonFunctions.GameMode.MP_SERVER
+end
+
+local gameMode = ETWCommonFunctions.gameMode()
+
+if gameMode ~= ETWCommonFunctions.GameMode.MP_SERVER then
 	---Function responsible for setting up mod options on character load
 	---@param playerIndex number
 	---@param player IsoPlayer
@@ -33,7 +55,7 @@ local detailedDebug = function()
 end
 
 ---Prints out debugs inside console if detailedDebug is enabled
----@param ... any Optional boolean followed by strings to log, if set to true, prints all strings in a single line otherwise prints each string in a new line
+---@param ... any Optional boolean followed by strings to log, if boolean is set to true, prints all strings in a single line otherwise prints each string in a new line
 function ETWCommonFunctions.log(...)
 	if detailedDebug() then
 		local args = { ... }
@@ -273,17 +295,13 @@ function ETWCommonFunctions.checkDelayedTraits(traitToCheck)
 	local traitTable = modData.DelayedTraits
 	local traitEntry = traitTable[indexOfDelayedTrait(modData.DelayedTraits, traitRegistryId)]
 	local traitNameInTable, gained = traitEntry[1], traitEntry[3]
-	if detailedDebug() then
-		print("ETW Logger | Delayed Traits System: caught check on " .. traitRegistryId)
-	end
+	logETW("ETW Logger | Delayed Traits System: caught check on " .. traitRegistryId)
 	if traitNameInTable == traitRegistryId and gained then
-		if detailedDebug() then
-			print(
-				"ETW Logger | Delayed Traits System: caught check on "
-					.. traitRegistryId
-					.. ": player qualifies for it, removing it from the table"
-			)
-		end
+		logETW(
+			"ETW Logger | Delayed Traits System: caught check on "
+				.. traitRegistryId
+				.. ": player qualifies for it, removing it from the table"
+		)
 		table.remove(traitTable, indexOfDelayedTrait(modData.DelayedTraits, traitRegistryId))
 		return true
 	end
