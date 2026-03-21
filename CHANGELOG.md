@@ -1,3 +1,20 @@
+## v.10.2.1
+###### 21 Mar 2026
+
+- Fixes:
+  - Fixed error with qualifying for Eagle Eyed
+
+## v.10.2.0
+###### 14 Mar 2026
+
+- General:
+  - Some technical debt cleanup, may have broke something in the process.
+  - Some code refactoring for Unified Carry Weight Framework
+- Fixes:
+  - Random error in bravery system that i stumbled upon.
+  - Fixed rain traits costs being flipped.
+  - Fixed errors when trying to remove smoker trait.
+
 ## v.10.1.1
 ###### 10 Mar 2026
 

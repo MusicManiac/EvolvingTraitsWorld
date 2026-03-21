@@ -180,15 +180,6 @@ local function eagleEyedETW(wielder, character, handWeapon, damage)
 					.. modData.EagleEyedKills
 			)
 			if modData.EagleEyedKills >= SBvars.EagleEyedKills then
-				if
-					not SBvars.DelayedTraitsSystem
-					or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.EAGLE_EYED))
-				then
-					ETWCommonFunctions.addTraitToPlayer(CharacterTrait.EAGLE_EYED)
-					if notification() then
-						HaloTextHelper.addTextWithArrow(player, getText("UI_trait_eagleeyed"), true, HaloTextHelper.getColorGreen())
-					end
-				end
 				if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.EAGLE_EYED) then
 					ETWCommonFunctions.addTraitToDelayTable({
 						modData = modData,
@@ -197,6 +188,14 @@ local function eagleEyedETW(wielder, character, handWeapon, damage)
 						positiveTrait = true,
 						gainingTrait = true,
 					})
+				elseif
+					not SBvars.DelayedTraitsSystem
+					or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.EAGLE_EYED))
+				then
+					ETWCommonFunctions.addTraitToPlayer(CharacterTrait.EAGLE_EYED)
+					if notification() then
+						HaloTextHelper.addTextWithArrow(player, getText("UI_trait_eagleeyed"), true, HaloTextHelper.getColorGreen())
+					end
 				end
 			end
 		end
