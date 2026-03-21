@@ -231,18 +231,36 @@ function ETWCommonFunctions.removeTraitFromPlayer(trait)
 	ETWCommonFunctions.traitSound(player)
 end
 
+---@class ETWAddTraitToDelayTableContext
+---@field player IsoPlayer|IsoGameCharacter
+---@field trait CharacterTrait
+---@field modData EvolvingTraitsWorldModData
+---@field positiveTrait boolean whether the trait is positive or negative, used for notifications
+---@field gainingTrait boolean whether the trait is being gained or lost, used for notifications
+---@field delayedNotification boolean whether to show delayed notification, used for notifications
+
 ---Function responsible for adding a trait to a Delayed Traits System. Plays a sound as well.
----@param modData EvolvingTraitsWorldModData
----@param trait CharacterTrait
----@param player IsoPlayer|IsoGameCharacter
----@param positiveTrait boolean
-function ETWCommonFunctions.addTraitToDelayTable(modData, trait, player, positiveTrait)
-	ETWCommonFunctions.traitSound(player)
-	local traitRegistryId = trait:toString()
+---@param context ETWAddTraitToDelayTableContext
+function ETWCommonFunctions.addTraitToDelayTable(context)
 	if not SBvars.DelayedTraitsSystem then
 		return
 	end
+	local player = context.player
+	local trait = context.trait
+	local modData = context.modData
+	local positiveTrait = context.positiveTrait
+	local gainingTrait = context.gainingTrait
+	local delayedNotification = context.delayedNotification ~= nil and context.delayedNotification or delayedNotification()
+	local traitRegistryId = trait:toString()
+	local traitDisplayName = CharacterTraitDefinition.getCharacterTraitDefinition(trait):getUIName()
+	local textColor = (positiveTrait and gainingTrait)
+		or (not positiveTrait and not gainingTrait) and HaloTextHelper.getColorGreen()
+		or HaloTextHelper.getColorRed()
+	local gainingOrLosingString = gainingTrait and getText("UI_ETW_DelayedNotificationsStringGain")
+		or getText("UI_ETW_DelayedNotificationsStringRemove")
 	logETW("ETW Logger | Delayed Traits System: modData.DelayedStartingTraitsFilled =  " .. tostring(modData.DelayedStartingTraitsFilled))
+
+	ETWCommonFunctions.traitSound(player)
 	if not modData.DelayedStartingTraitsFilled then
 		logETW(
 			"ETW Logger | Delayed Traits System: player qualifies for "
@@ -260,6 +278,9 @@ function ETWCommonFunctions.addTraitToDelayTable(modData, trait, player, positiv
 				.. ", adding it to delayed traits table"
 		)
 		table.insert(modData.DelayedTraits, { traitRegistryId, SBvars.DelayedTraitsSystemDefaultDelay, false })
+		if delayedNotification then
+			HaloTextHelper.addTextWithArrow(player, gainingOrLosingString .. traitDisplayName, gainingTrait, textColor)
+		end
 	elseif indexOfDelayedTrait(modData.DelayedTraits, traitRegistryId) == -1 and player:hasTrait(trait) and not positiveTrait then
 		logETW(
 			"ETW Logger | Delayed Traits System: player qualifies for removing negative trait "
@@ -267,6 +288,9 @@ function ETWCommonFunctions.addTraitToDelayTable(modData, trait, player, positiv
 				.. ", adding it to delayed traits table"
 		)
 		table.insert(modData.DelayedTraits, { traitRegistryId, SBvars.DelayedTraitsSystemDefaultDelay, false })
+		if delayedNotification then
+			HaloTextHelper.addTextWithArrow(player, gainingOrLosingString .. traitDisplayName, gainingTrait, textColor)
+		end
 	else
 		logETW(
 			"ETW Logger | Delayed Traits System: player qualifies for "

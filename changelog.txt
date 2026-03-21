@@ -1,6 +1,11 @@
 [url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
 
-v.10.1.1
+v.10.2.0
 
+General:
+	- Some technical debt cleanup, may have broke something in the process.
+	- Some code refactoring for Unified Carry Weight Framework
 Fixes:
-	- Fixed non-english translations.
+	- Random error in bravery system that i stumbled upon.
+	- Fixed rain traits costs being flipped.
+	- Fixed errors when trying to remove smoker trait.
