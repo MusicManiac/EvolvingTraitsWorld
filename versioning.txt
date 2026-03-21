@@ -18,18 +18,3 @@ Mod Conflicts:
 	-
 Translations:
 	-
-
-Numbers to increase:
-Overhauls: X.x.x
-General: x.X.x
-Moodles (new): x.X.x
-Submod update: x.x.X
-Balancing (defaults/real): x.x.X
-Moodles (improvements): x.x.X
-Fixes: x.x.X
-Mod Conflicts: x.x.X
-Translations: x.x.X
-
-[url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md]Changelog can be found here[/url]
-
-v.9.x.x
