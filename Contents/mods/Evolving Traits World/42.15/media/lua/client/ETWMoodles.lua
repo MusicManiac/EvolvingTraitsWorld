@@ -1,8 +1,8 @@
 ---@diagnostic disable: undefined-global
-require "MF_ISMoodle"
+require("MF_ISMoodle")
 ETWMoodles = {}
 
-local ETWCommonFunctions = require "ETWCommonFunctions"
+local ETWCommonFunctions = require("ETWCommonFunctions")
 
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld
@@ -10,15 +10,23 @@ local SBvars = SandboxVars.EvolvingTraitsWorld
 local modOptions
 
 ---@return boolean
-local notification = function() return modOptions:getOption("EnableNotifications"):getValue() end
+local notification = function()
+	return modOptions:getOption("EnableNotifications"):getValue()
+end
 ---@return boolean
-local delayedNotification = function() return modOptions:getOption("EnableDelayedNotifications"):getValue() end
+local delayedNotification = function()
+	return modOptions:getOption("EnableDelayedNotifications"):getValue()
+end
 ---@return boolean
-local detailedDebug = function() return modOptions:getOption("GatherDetailedDebug"):getValue() end
+local detailedDebug = function()
+	return modOptions:getOption("GatherDetailedDebug"):getValue()
+end
 
 ---Prints out debugs inside console if detailedDebug is enabled
 ---@param ... string Strings to log
-local logETW = function(...) ETWCommonFunctions.log(...) end
+local logETW = function(...)
+	ETWCommonFunctions.log(...)
+end
 
 MF.createMoodle("BloodlustMoodle")
 MF.createMoodle("SleepHealthMoodle")
@@ -36,13 +44,21 @@ function ETWMoodles.bloodlustMoodleUpdate(player, hide)
 		local BloodLustModData = modData.BloodlustSystem
 		local timeSinceLastKill = player:getHoursSurvived() - BloodLustModData.LastKillTimestamp
 		moodle:setThresholds(0.1, 0.2, 0.35, 0.4999, 0.5001, 0.65, 0.8, 0.9)
-		if player == getPlayer() and modOptions:getOption("EnableBloodLustMoodle"):getValue()
-		and not hide and timeSinceLastKill <= SBvars.BloodlustMoodleVisibilityHours then
+		if
+			player == getPlayer()
+			and modOptions:getOption("EnableBloodLustMoodle"):getValue()
+			and not hide
+			and timeSinceLastKill <= SBvars.BloodlustMoodleVisibilityHours
+		then
 			local percentage = BloodLustModData.BloodlustMeter / bloodlustMeterCapacity
 			local displayedPercentage = string.format("%.2f", percentage * 100)
 			moodle:setValue(percentage)
-			moodle:setDescription(moodle:getGoodBadNeutral(), moodle:getLevel(), getText("Moodles_BloodlustMoodle_Custom", displayedPercentage))
-			moodle:setPicture(moodle:getGoodBadNeutral(), moodle:getLevel(),getTexture("media/ui/Moodles/BloodlustMoodle.png"))
+			moodle:setDescription(
+				moodle:getGoodBadNeutral(),
+				moodle:getLevel(),
+				getText("Moodles_BloodlustMoodle_Custom", displayedPercentage)
+			)
+			moodle:setPicture(moodle:getGoodBadNeutral(), moodle:getLevel(), getTexture("media/ui/Moodles/BloodlustMoodle.png"))
 		else
 			moodle:setValue(0.5)
 		end
@@ -62,8 +78,12 @@ function ETWMoodles.sleepHealthMoodleUpdate(player, hoursAwayFromPreferredHour, 
 			logETW("ETW Logger | ETWMoodles.sleepHealthMoodleUpdate(): hoursAwayFromPreferredHour: " .. hoursAwayFromPreferredHour)
 			local displayedDifference = string.format("%.2f", hoursAwayFromPreferredHour)
 			moodle:setValue(12 - hoursAwayFromPreferredHour)
-			moodle:setDescription(moodle:getGoodBadNeutral(), moodle:getLevel(), getText("Moodles_SleepHealthMoodle_Custom", displayedDifference))
-			moodle:setPicture(moodle:getGoodBadNeutral(), moodle:getLevel(),getTexture("media/ui/Moodles/SleepHealthMoodle.png"))
+			moodle:setDescription(
+				moodle:getGoodBadNeutral(),
+				moodle:getLevel(),
+				getText("Moodles_SleepHealthMoodle_Custom", displayedDifference)
+			)
+			moodle:setPicture(moodle:getGoodBadNeutral(), moodle:getLevel(), getTexture("media/ui/Moodles/SleepHealthMoodle.png"))
 		else
 			moodle:setValue(6)
 		end
