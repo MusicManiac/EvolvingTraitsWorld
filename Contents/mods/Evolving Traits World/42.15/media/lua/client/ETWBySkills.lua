@@ -89,7 +89,7 @@ local validGymnastPerks = {
 	["characterInitialization"] = true,
 	[Perks.Lightfoot] = true,
 	[Perks.Nimble] = true,
-	[ETWTraitsRegistry.GYMNAST] = true,
+	[CharacterTrait.GYMNAST] = true,
 }
 
 local validClumsyPerks = {
@@ -158,6 +158,171 @@ local validHunterPerks = {
 	[Perks.Trapping] = true,
 	[Perks.SmallBlade] = true,
 	[CharacterTrait.HUNTER] = true,
+}
+
+local validStickFighterPerks = {
+	["characterInitialization"] = true,
+	["kill"] = true,
+	[Perks.SmallBlunt] = true,
+	[ETWTraitsRegistry.STICK_FIGHTER] = true,
+}
+
+local validBladeEnthusiastPerks = {
+	["characterInitialization"] = true,
+	["kill"] = true,
+	[Perks.LongBlade] = true,
+	[ETWTraitsRegistry.BLADE_ENTHUSIAST] = true,
+}
+
+local validKnifeFighterPerks = {
+	["characterInitialization"] = true,
+	["kill"] = true,
+	[Perks.SmallBlade] = true,
+	[ETWTraitsRegistry.KNIFE_FIGHTER] = true,
+}
+
+local validPolearmPerks = {
+	["characterInitialization"] = true,
+	["kill"] = true,
+	[Perks.Spear] = true,
+	[ETWTraitsRegistry.POLEARM_FIGHTER] = true,
+}
+
+local validRestorationExpertPerks = {
+	["characterInitialization"] = true,
+	[Perks.Maintenance] = true,
+	[ETWTraitsRegistry.RESTORATION_EXPERT] = true,
+}
+
+local validHandyPerks = {
+	["characterInitialization"] = true,
+	[Perks.Maintenance] = true,
+	[Perks.Woodwork] = true,
+	[CharacterTrait.HANDY] = true,
+}
+
+local validLearnerPerks = {
+	["characterInitialization"] = true,
+	[Perks.Maintenance] = true,
+	[Perks.Woodwork] = true,
+	[Perks.Cooking] = true,
+	[Perks.Farming] = true,
+	[Perks.Doctor] = true,
+	[Perks.Electricity] = true,
+	[Perks.MetalWelding] = true,
+	[Perks.Mechanics] = true,
+	[Perks.Tailoring] = true,
+	[CharacterTrait.SLOW_LEARNER] = true,
+	[CharacterTrait.FAST_LEARNER] = true,
+}
+
+local validFurnitureAssemblerPerks = {
+	["characterInitialization"] = true,
+	[Perks.Woodwork] = true,
+	[ETWTraitsRegistry.FURNITURE_ASSEMBLER] = true,
+}
+
+local validHomeCookPerks = {
+	["characterInitialization"] = true,
+	[Perks.Cooking] = true,
+	[ETWTraitsRegistry.HOME_COOK] = true,
+}
+
+local validCookPerks = {
+	["characterInitialization"] = true,
+	[Perks.Cooking] = true,
+	[CharacterTrait.COOK] = true,
+}
+
+local validGardenerPerks = {
+	["characterInitialization"] = true,
+	[Perks.Farming] = true,
+	[CharacterTrait.GARDENER] = true,
+}
+
+local validPetTherapyPerks = {
+	["characterInitialization"] = true,
+	[Perks.Husbandry] = true,
+	[ETWTraitsRegistry.PET_THERAPY] = true,
+}
+
+local validWhittlerPerks = {
+	["characterInitialization"] = true,
+	[Perks.Carving] = true,
+	[CharacterTrait.WHITTLER] = true,
+}
+
+local validBlacksmithPerks = {
+	["characterInitialization"] = true,
+	[Perks.Blacksmith] = true,
+	[CharacterTrait.BLACKSMITH] = true,
+}
+
+local validWildernessKnowledgePerks = {
+	["characterInitialization"] = true,
+	[Perks.PlantScavenging] = true,
+	[Perks.FlintKnapping] = true,
+	[Perks.Maintenance] = true,
+	[Perks.Carving] = true,
+	[CharacterTrait.WILDERNESS_KNOWLEDGE] = true,
+}
+
+local validFirstAidPerks = {
+	["characterInitialization"] = true,
+	[Perks.Doctor] = true,
+	[CharacterTrait.FIRST_AID] = true,
+}
+
+local validAVClubPerks = {
+	["characterInitialization"] = true,
+	[Perks.Electricity] = true,
+	[ETWTraitsRegistry.AV_CLUB] = true,
+}
+
+local validBodyWorkEnthusiastPerks = {
+	["characterInitialization"] = true,
+	[Perks.MetalWelding] = true,
+	[Perks.Mechanics] = true,
+	[ETWTraitsRegistry.BODYWORK_ENTHUSIAST] = true,
+}
+
+local validMechanicsPerks = {
+	["characterInitialization"] = true,
+	[Perks.Mechanics] = true,
+	[CharacterTrait.MECHANICS] = true,
+}
+
+local validSewerPerks = {
+	["characterInitialization"] = true,
+	[Perks.Tailoring] = true,
+	[CharacterTrait.TAILOR] = true,
+}
+
+local validGunEnthusiastPerks = {
+	["characterInitialization"] = true,
+	["kill"] = true,
+	[Perks.Aiming] = true,
+	[Perks.Reloading] = true,
+	[ETWTraitsRegistry.GUN_ENTHUSIAST] = true,
+}
+
+local validAnglerPerks = {
+	["characterInitialization"] = true,
+	[Perks.Fishing] = true,
+	[ETWTraitsRegistry.ANGLER] = true,
+}
+
+local validHikerPerks = {
+	["characterInitialization"] = true,
+	[Perks.Trapping] = true,
+	[Perks.PlantScavenging] = true,
+	[CharacterTrait.HIKER] = true,
+}
+
+local validFishingPerks = {
+	["characterInitialization"] = true,
+	[Perks.Fishing] = true,
+	[CharacterTrait.FISHING] = true,
 }
 
 ---Gain traits by skills (in majority cases)
@@ -596,10 +761,7 @@ local function traitsGainsBySkill(player, perk)
 			end
 		end
 	end
-	if
-		(perk == "characterInitialization" or perk == "kill" or perk == Perks.SmallBlunt or perk == ETWTraitsRegistry.STICK_FIGHTER)
-		and ETWCommonLogicChecks.StickFighterShouldExecute()
-	then
+	if validStickFighterPerks[perk] and ETWCommonLogicChecks.StickFighterShouldExecute() then
 		if shortBlunt >= SBvars.StickFighterSkill and shortBluntKills >= SBvars.StickFighterKills then
 			if
 				SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(ETWTraitsRegistry.STICK_FIGHTER)
@@ -622,10 +784,7 @@ local function traitsGainsBySkill(player, perk)
 			end
 		end
 	end
-	if
-		(perk == "characterInitialization" or perk == "kill" or perk == Perks.LongBlade or perk == ETWTraitsRegistry.BLADE_ENTHUSIAST)
-		and ETWCommonLogicChecks.BladeEnthusiastShouldExecute()
-	then
+	if validBladeEnthusiastPerks[perk] and ETWCommonLogicChecks.BladeEnthusiastShouldExecute() then
 		if longBlade >= SBvars.BladeEnthusiastSkill and longBladeKills >= SBvars.BladeEnthusiastKills then
 			if
 				SBvars.DelayedTraitsSystem
@@ -649,10 +808,7 @@ local function traitsGainsBySkill(player, perk)
 			end
 		end
 	end
-	if
-		(perk == "characterInitialization" or perk == "kill" or perk == Perks.SmallBlade or perk == ETWTraitsRegistry.KNIFE_FIGHTER)
-		and ETWCommonLogicChecks.KnifeFighterShouldExecute()
-	then
+	if validKnifeFighterPerks[perk] and ETWCommonLogicChecks.KnifeFighterShouldExecute() then
 		if shortBlade >= SBvars.KnifeFighterSkill and shortBladeKills >= SBvars.KnifeFighterKills then
 			if
 				SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(ETWTraitsRegistry.KNIFE_FIGHTER)
@@ -675,10 +831,7 @@ local function traitsGainsBySkill(player, perk)
 			end
 		end
 	end
-	if
-		(perk == "characterInitialization" or perk == "kill" or perk == Perks.Spear or perk == ETWTraitsRegistry.POLEARM_FIGHTER)
-		and ETWCommonLogicChecks.PolearmFighterShouldExecute()
-	then
+	if validPolearmPerks[perk] and ETWCommonLogicChecks.PolearmFighterShouldExecute() then
 		if spear >= SBvars.PolearmFighterSkill and spearKills >= SBvars.PolearmFighterKills then
 			if
 				SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(ETWTraitsRegistry.POLEARM_FIGHTER)
@@ -701,10 +854,7 @@ local function traitsGainsBySkill(player, perk)
 			end
 		end
 	end
-	if
-		(perk == "characterInitialization" or perk == Perks.Maintenance or perk == ETWTraitsRegistry.RESTORATION_EXPERT)
-		and ETWCommonLogicChecks.RestorationExpertShouldExecute()
-	then
+	if validRestorationExpertPerks[perk] and ETWCommonLogicChecks.RestorationExpertShouldExecute() then
 		if maintenance >= SBvars.RestorationExpertSkill then
 			if
 				SBvars.DelayedTraitsSystem
@@ -728,10 +878,7 @@ local function traitsGainsBySkill(player, perk)
 			end
 		end
 	end
-	if
-		(perk == "characterInitialization" or perk == Perks.Maintenance or perk == Perks.Woodwork or perk == CharacterTrait.HANDY)
-		and ETWCommonLogicChecks.HandyShouldExecute()
-	then
+	if validHandyPerks[perk] and ETWCommonLogicChecks.HandyShouldExecute() then
 		if (maintenance + carpentry) >= SBvars.HandySkill then
 			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.HANDY) then
 				ETWCommonFunctions.addTraitToDelayTable({
@@ -752,22 +899,7 @@ local function traitsGainsBySkill(player, perk)
 			end
 		end
 	end
-	if
-		(
-			perk == "characterInitialization"
-			or perk == Perks.Maintenance
-			or perk == Perks.Woodwork
-			or perk == Perks.Cooking
-			or perk == Perks.Farming
-			or perk == Perks.Doctor
-			or perk == Perks.Electricity
-			or perk == Perks.MetalWelding
-			or perk == Perks.Mechanics
-			or perk == Perks.Tailoring
-			or perk == CharacterTrait.SLOW_LEARNER
-			or perk == CharacterTrait.FAST_LEARNER
-		) and ETWCommonLogicChecks.LearnerSystemShouldExecute()
-	then
+	if validLearnerPerks[perk] and ETWCommonLogicChecks.LearnerSystemShouldExecute() then
 		local levels = maintenance + carpentry + farming + firstAid + electrical + metalworking + mechanics + tailoring + cooking
 		if
 			player:hasTrait(CharacterTrait.SLOW_LEARNER)
@@ -815,10 +947,7 @@ local function traitsGainsBySkill(player, perk)
 			end
 		end
 	end
-	if
-		(perk == "characterInitialization" or perk == Perks.Woodwork or perk == ETWTraitsRegistry.FURNITURE_ASSEMBLER)
-		and ETWCommonLogicChecks.FurnitureAssemblerShouldExecute()
-	then
+	if validFurnitureAssemblerPerks[perk] and ETWCommonLogicChecks.FurnitureAssemblerShouldExecute() then
 		if carpentry >= SBvars.FurnitureAssemblerSkill then
 			if
 				SBvars.DelayedTraitsSystem
@@ -842,10 +971,7 @@ local function traitsGainsBySkill(player, perk)
 			end
 		end
 	end
-	if
-		(perk == "characterInitialization" or perk == Perks.Cooking or perk == ETWTraitsRegistry.HOME_COOK)
-		and ETWCommonLogicChecks.HomeCookShouldExecute()
-	then
+	if validHomeCookPerks[perk] and ETWCommonLogicChecks.HomeCookShouldExecute() then
 		if cooking >= SBvars.HomeCookSkill then
 			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(ETWTraitsRegistry.HOME_COOK) then
 				ETWCommonFunctions.addTraitToDelayTable({
@@ -866,10 +992,7 @@ local function traitsGainsBySkill(player, perk)
 			end
 		end
 	end
-	if
-		(perk == "characterInitialization" or perk == Perks.Cooking or perk == CharacterTrait.COOK)
-		and ETWCommonLogicChecks.CookShouldExecute()
-	then
+	if validCookPerks[perk] and ETWCommonLogicChecks.CookShouldExecute() then
 		if cooking >= SBvars.CookSkill then
 			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.COOK) then
 				ETWCommonFunctions.addTraitToDelayTable({
@@ -890,10 +1013,7 @@ local function traitsGainsBySkill(player, perk)
 			end
 		end
 	end
-	if
-		(perk == "characterInitialization" or perk == Perks.Farming or perk == CharacterTrait.GARDENER)
-		and ETWCommonLogicChecks.GardenerShouldExecute()
-	then
+	if validGardenerPerks[perk] and ETWCommonLogicChecks.GardenerShouldExecute() then
 		if farming >= SBvars.GardenerSkill then
 			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.GARDENER) then
 				ETWCommonFunctions.addTraitToDelayTable({
@@ -914,10 +1034,7 @@ local function traitsGainsBySkill(player, perk)
 			end
 		end
 	end
-	if
-		(perk == "characterInitialization" or perk == Perks.Husbandry or perk == ETWTraitsRegistry.PET_THERAPY)
-		and ETWCommonLogicChecks.PetTherapyShouldExecute()
-	then
+	if validPetTherapyPerks[perk] and ETWCommonLogicChecks.PetTherapyShouldExecute() then
 		if husbandry >= SBvars.PetTherapySkill and #modData.AnimalsSystem.UniqueAnimalsPetted >= SBvars.PetTherapyUniqueAnimalsPetted then
 			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(ETWTraitsRegistry.PET_THERAPY) then
 				ETWCommonFunctions.addTraitToDelayTable({
@@ -938,10 +1055,7 @@ local function traitsGainsBySkill(player, perk)
 			end
 		end
 	end
-	if
-		(perk == "characterInitialization" or perk == Perks.Carving or perk == CharacterTrait.WHITTLER)
-		and ETWCommonLogicChecks.WhittlerShouldExecute()
-	then
+	if validWhittlerPerks[perk] and ETWCommonLogicChecks.WhittlerShouldExecute() then
 		if carving >= SBvars.WhittlerSkill then
 			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.WHITTLER) then
 				ETWCommonFunctions.addTraitToDelayTable({
@@ -962,10 +1076,7 @@ local function traitsGainsBySkill(player, perk)
 			end
 		end
 	end
-	if
-		(perk == "characterInitialization" or perk == Perks.Blacksmith or perk == Perks.Maintenance or perk == "Blacksmith")
-		and ETWCommonLogicChecks.BlacksmithShouldExecute()
-	then
+	if validBlacksmithPerks[perk] and ETWCommonLogicChecks.BlacksmithShouldExecute() then
 		if blacksmith + maintenance >= SBvars.BlacksmithSkill then
 			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.BLACKSMITH) then
 				ETWCommonFunctions.addTraitToDelayTable({
@@ -986,16 +1097,7 @@ local function traitsGainsBySkill(player, perk)
 			end
 		end
 	end
-	if
-		(
-			perk == "characterInitialization"
-			or perk == Perks.PlantScavenging
-			or perk == Perks.FlintKnapping
-			or perk == Perks.Maintenance
-			or perk == Perks.Carving
-			or perk == CharacterTrait.WILDERNESS_KNOWLEDGE
-		) and ETWCommonLogicChecks.WildernessKnowledgeShouldExecute()
-	then
+	if validWildernessKnowledgePerks[perk] and ETWCommonLogicChecks.WildernessKnowledgeShouldExecute() then
 		if
 			foraging >= 2
 			and knapping >= 2
@@ -1025,10 +1127,7 @@ local function traitsGainsBySkill(player, perk)
 			end
 		end
 	end
-	if
-		(perk == "characterInitialization" or perk == Perks.Doctor or perk == CharacterTrait.FIRST_AID)
-		and ETWCommonLogicChecks.FirstAidShouldExecute()
-	then
+	if validFirstAidPerks[perk] and ETWCommonLogicChecks.FirstAidShouldExecute() then
 		if firstAid >= SBvars.FirstAidSkill then
 			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.FIRST_AID) then
 				ETWCommonFunctions.addTraitToDelayTable({
@@ -1049,10 +1148,7 @@ local function traitsGainsBySkill(player, perk)
 			end
 		end
 	end
-	if
-		(perk == "characterInitialization" or perk == Perks.Electricity or perk == ETWTraitsRegistry.AV_CLUB)
-		and ETWCommonLogicChecks.AVClubShouldExecute()
-	then
+	if validAVClubPerks[perk] and ETWCommonLogicChecks.AVClubShouldExecute() then
 		if electrical >= SBvars.AVClubSkill then
 			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(ETWTraitsRegistry.AV_CLUB) then
 				ETWCommonFunctions.addTraitToDelayTable({
@@ -1073,37 +1169,16 @@ local function traitsGainsBySkill(player, perk)
 			end
 		end
 	end
-	if
-		(
-			perk == "characterInitialization"
-			or perk == Perks.MetalWelding
-			or perk == Perks.Mechanics
-			or perk == ETWTraitsRegistry.BODYWORK_ENTHUSIAST
-		) and ETWCommonLogicChecks.BodyWorkEnthusiastShouldExecute()
-	then
+	if validBodyWorkEnthusiastPerks[perk] and ETWCommonLogicChecks.BodyWorkEnthusiastShouldExecute() then
 		ETWCombinedTraitChecks.bodyworkEnthusiastCheck(DebugAndNotificationArgs)
 	end
-	if
-		(perk == "characterInitialization" or perk == Perks.Mechanics or perk == CharacterTrait.MECHANICS)
-		and ETWCommonLogicChecks.MechanicsShouldExecute()
-	then
+	if validMechanicsPerks[perk] and ETWCommonLogicChecks.MechanicsShouldExecute() then
 		ETWCombinedTraitChecks.mechanicsCheck(DebugAndNotificationArgs)
 	end
-	if
-		(perk == "characterInitialization" or perk == Perks.Tailoring or perk == CharacterTrait.TAILORED)
-		and ETWCommonLogicChecks.SewerShouldExecute()
-	then
+	if validSewerPerks[perk] and ETWCommonLogicChecks.SewerShouldExecute() then
 		ETWCombinedTraitChecks.sewerCheck(DebugAndNotificationArgs)
 	end
-	if
-		(
-			perk == "characterInitialization"
-			or perk == "kill"
-			or perk == Perks.Aiming
-			or perk == Perks.Reloading
-			or perk == ETWTraitsRegistry.GUN_ENTHUSIAST
-		) and ETWCommonLogicChecks.GunEnthusiastShouldExecute()
-	then
+	if validGunEnthusiastPerks[perk] and ETWCommonLogicChecks.GunEnthusiastShouldExecute() then
 		if (aiming + reloading) >= SBvars.GunEnthusiastSkill and firearmKills >= SBvars.GunEnthusiastKills then
 			if
 				SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(ETWTraitsRegistry.GUN_ENTHUSIAST)
@@ -1126,34 +1201,28 @@ local function traitsGainsBySkill(player, perk)
 			end
 		end
 	end
-	if
-		(perk == "characterInitialization" or perk == "kill" or perk == Perks.Fishing or perk == CharacterTrait.FISHING)
-		and ETWCommonLogicChecks.AnglerShouldExecute()
-	then
+	if validAnglerPerks[perk] and ETWCommonLogicChecks.AnglerShouldExecute() then
 		if fishing >= SBvars.FishingSkill then
 			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.FISHING) then
 				ETWCommonFunctions.addTraitToDelayTable({
 					modData = modData,
-					trait = CharacterTrait.Fishing,
+					trait = CharacterTrait.FISHING,
 					player = player,
 					positiveTrait = true,
 					gainingTrait = true,
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.Fishing))
+				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.FISHING))
 			then
-				ETWCommonFunctions.addTraitToPlayer(CharacterTrait.Fishing)
+				ETWCommonFunctions.addTraitToPlayer(CharacterTrait.FISHING)
 				if notification then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Fishing"), true, HaloTextHelper.getColorGreen())
 				end
 			end
 		end
 	end
-	if
-		(perk == "characterInitialization" or perk == Perks.Trapping or perk == Perks.PlantScavenging or perk == CharacterTrait.HIKER)
-		and ETWCommonLogicChecks.HikerShouldExecute()
-	then
+	if validHikerPerks[perk] and ETWCommonLogicChecks.HikerShouldExecute() then
 		if (trapping + foraging) >= SBvars.HikerSkill then
 			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.HIKER) then
 				ETWCommonFunctions.addTraitToDelayTable({

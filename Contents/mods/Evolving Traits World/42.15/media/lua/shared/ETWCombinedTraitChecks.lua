@@ -28,11 +28,11 @@ function ETWCombinedTraitChecks.bodyworkEnthusiastCheck(DebugAndNotificationArgs
 	if level >= SBvars.BodyworkEnthusiastSkill and modData.VehiclePartRepairs >= SBvars.BodyworkEnthusiastRepairs then
 		if
 			SBvars.DelayedTraitsSystem
-			and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(ETWTraitsRegistry.BODY_WORK_ENTHUSIAST)
+			and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(ETWTraitsRegistry.BODYWORK_ENTHUSIAST)
 		then
 			ETWCommonFunctions.addTraitToDelayTable({
 				modData = modData,
-				trait = ETWTraitsRegistry.BODY_WORK_ENTHUSIAST,
+				trait = ETWTraitsRegistry.BODYWORK_ENTHUSIAST,
 				player = player,
 				positiveTrait = true,
 				gainingTrait = true,
@@ -40,9 +40,9 @@ function ETWCombinedTraitChecks.bodyworkEnthusiastCheck(DebugAndNotificationArgs
 			})
 		elseif
 			not SBvars.DelayedTraitsSystem
-			or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(ETWTraitsRegistry.BODY_WORK_ENTHUSIAST))
+			or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(ETWTraitsRegistry.BODYWORK_ENTHUSIAST))
 		then
-			ETWCommonFunctions.addTraitToPlayer(ETWTraitsRegistry.BODY_WORK_ENTHUSIAST)
+			ETWCommonFunctions.addTraitToPlayer(ETWTraitsRegistry.BODYWORK_ENTHUSIAST)
 			if DebugAndNotificationArgs.notification then
 				HaloTextHelper.addTextWithArrow(player, getText("UI_trait_BodyWorkEnthusiast"), true, HaloTextHelper.getColorGreen())
 			end
