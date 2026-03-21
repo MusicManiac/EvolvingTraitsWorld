@@ -1,6 +1,6 @@
 [url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
 
-v.10.2.1
+v.10.2.2
 
 Fixes:
-	- Fixed error with qualifying for Eagle Eyed
+	- Fixed error with Delayed System not being initialized (and therefore not working)

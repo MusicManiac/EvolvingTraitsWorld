@@ -454,7 +454,7 @@ function ETWCommonLogicChecks.BodyWorkEnthusiastShouldExecute()
 	if
 		not activatedMods:contains("\\2934686936/EvolvingTraitsWorldDisableBodyWorkEnthusiast")
 		and SBvars.BodyworkEnthusiast == true
-		and not player:hasTrait(ETWTraitsRegistry.BODY_WORK_ENTHUSIAST)
+		and not player:hasTrait(ETWTraitsRegistry.BODYWORK_ENTHUSIAST)
 		and SBvars.TraitsLockSystemCanGainPositive
 	then
 		return true
