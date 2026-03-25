@@ -125,7 +125,7 @@ local function fogTraits(player, fogIntensity)
 			local panicIncrease = 4 * fogIntensity * SBvars.HomichlophobiaMultiplier
 			local resultingPanic = stats:get(CharacterStat.PANIC) + panicIncrease
 			if resultingPanic <= 50 then
-				stats:setPanic(math.max(0, resultingPanic))
+				stats:set(CharacterStat.PANIC, math.max(0, resultingPanic))
 				logETW("ETW Logger | fogTraits(): panicIncrease:" .. panicIncrease)
 			end
 			local stressIncrease = 0.04 * fogIntensity * SBvars.HomichlophobiaMultiplier
