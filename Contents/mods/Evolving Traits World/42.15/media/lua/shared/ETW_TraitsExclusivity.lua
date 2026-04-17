@@ -1,4 +1,4 @@
-local ETWRegistries = require ("ETWRegistry")
+local ETWRegistries = require("ETW_Registry")
 
 ---@type EvolvingTraitsWorldTraitsRegistries
 local ETWTraitsRegistry = ETWRegistries.traits

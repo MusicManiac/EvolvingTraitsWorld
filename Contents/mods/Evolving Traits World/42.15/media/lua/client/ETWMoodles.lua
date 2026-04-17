@@ -2,7 +2,7 @@
 require("MF_ISMoodle")
 ETWMoodles = {}
 
-local ETWCommonFunctions = require("ETWCommonFunctions")
+local ETW_CommonFunctions = require("ETW_CommonFunctions")
 
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld
@@ -25,7 +25,7 @@ end
 ---Prints out debugs inside console if detailedDebug is enabled
 ---@param ... string Strings to log
 local logETW = function(...)
-	ETWCommonFunctions.log(...)
+	ETW_CommonFunctions.log(...)
 end
 
 MF.createMoodle("BloodlustMoodle")
@@ -40,7 +40,11 @@ function ETWMoodles.bloodlustMoodleUpdate(player, hide)
 	if SBvars.BloodlustMoodle == true then
 		modOptions = PZAPI.ModOptions:getOptions("ETWModOptions")
 		local moodle = MF.getMoodle("BloodlustMoodle")
-		local modData = ETWCommonFunctions.getETWModData(player)
+		local modData = ETW_CommonFunctions.getETWModData(player)
+		if not modData then
+			logETW("ETW Logger | bloodlustMoodleUpdate(): modData is nil, returning early")
+			return
+		end
 		local BloodLustModData = modData.BloodlustSystem
 		local timeSinceLastKill = player:getHoursSurvived() - BloodLustModData.LastKillTimestamp
 		moodle:setThresholds(0.1, 0.2, 0.35, 0.4999, 0.5001, 0.65, 0.8, 0.9)

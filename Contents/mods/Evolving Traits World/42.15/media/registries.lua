@@ -1,8 +1,29 @@
 ---@class EvolvingTraitsWorldRegistries
-ETWRegistry = ETWRegistry or {}
+ETW_Registry = ETW_Registry or {}
 
----@type EvolvingTraitsWorldTraitsRegistries
-ETWRegistry.traits = {
+---@class EvolvingTraitsWorldTraitsRegistries
+---@field AV_CLUB CharacterTrait
+---@field AXE_THROWER CharacterTrait
+---@field BLOODLUST CharacterTrait
+---@field BODYWORK_ENTHUSIAST CharacterTrait
+---@field FURNITURE_ASSEMBLER CharacterTrait
+---@field GUN_ENTHUSIAST CharacterTrait
+---@field GYM_RAT CharacterTrait
+---@field HOARDER CharacterTrait
+---@field HOME_COOK CharacterTrait
+---@field HOMICHLOPHOBIA CharacterTrait
+---@field HOMICHLOPHILE CharacterTrait
+---@field BLADE_ENTHUSIAST CharacterTrait
+---@field KNIFE_FIGHTER CharacterTrait
+---@field LIGHTSTEP CharacterTrait
+---@field LOW_PROFILE CharacterTrait
+---@field PLUVIOPHILE CharacterTrait
+---@field PLUVIOPHOBIA CharacterTrait
+---@field PAIN_TOLERANCE CharacterTrait
+---@field PET_THERAPY CharacterTrait
+---@field POLEARM_FIGHTER CharacterTrait
+---@field RESTORATION_EXPERT CharacterTrait
+ETW_Registry.traits = {
 	AV_CLUB = CharacterTrait.register("ETW:AVClub"),
 	AXE_THROWER = CharacterTrait.register("ETW:AxeThrower"),
 	BLOODLUST = CharacterTrait.register("ETW:Bloodlust"),

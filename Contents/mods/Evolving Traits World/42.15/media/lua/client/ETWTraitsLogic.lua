@@ -1,7 +1,7 @@
-require("ETWModData")
+require("ETW_ModData")
 require("ETWModOptions")
-local ETWCommonFunctions = require("ETWCommonFunctions")
-local ETWRegistries = require("ETWRegistry")
+local ETW_CommonFunctions = require("ETW_CommonFunctions")
+local ETWRegistries = require("ETW_Registry")
 
 ---@type EvolvingTraitsWorldTraitsRegistries
 local ETWTraitsRegistry = ETWRegistries.traits
@@ -37,7 +37,7 @@ end
 ---Prints out debugs inside console if detailedDebug is enabled
 ---@param ... string Strings to log
 local logETW = function(...)
-	ETWCommonFunctions.log(...)
+	ETW_CommonFunctions.log(...)
 end
 
 ---Function responsible for processing Bloodlust trait execution logic
@@ -164,7 +164,7 @@ if not getActivatedMods():contains("\\2934686936/EvolvingTraitsWorldDisablePetTh
 	function ISPetAnimal:animEvent(event, parameter)
 		if event == "pettingFinished" then
 			local player = self.character
-			local modData = ETWCommonFunctions.getETWModData(player)
+			local modData = ETW_CommonFunctions.getETWModData(player)
 			local animalsSystemModData = modData.AnimalsSystem
 			local currentMinute = GameTime.getInstance():getMinutesStamp()
 			if currentMinute - animalsSystemModData.LastMinuteTimestampWhenPettedWithBoost >= SBvars.PetTherapyMinutesBetweenPets then
@@ -202,7 +202,7 @@ if not getActivatedMods():contains("\\2934686936/EvolvingTraitsWorldDisablePetTh
 							.. stats:get(CharacterStat.BOREDOM)
 					)
 				elseif not player:hasTrait(ETWTraitsRegistry.PET_THERAPY) then
-					if ETWCommonFunctions.indexOf(animalsSystemModData.UniqueAnimalsPetted, animalID) == -1 then
+					if ETW_CommonFunctions.indexOf(animalsSystemModData.UniqueAnimalsPetted, animalID) == -1 then
 						table.insert(animalsSystemModData.UniqueAnimalsPetted, animalID)
 						logETW(
 							"ETW Logger | ISPetAnimal:animEvent(pettingFinished): petting animal that's not in UniqueAnimalsPetted, added it"
@@ -215,9 +215,9 @@ if not getActivatedMods():contains("\\2934686936/EvolvingTraitsWorldDisablePetTh
 					then
 						if
 							SBvars.DelayedTraitsSystem
-							and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(ETWTraitsRegistry.PET_THERAPY)
+							and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.PET_THERAPY)
 						then
-							ETWCommonFunctions.addTraitToDelayTable({
+							ETW_CommonFunctions.addTraitToDelayTable({
 								modData = modData,
 								trait = ETWTraitsRegistry.PET_THERAPY,
 								player = player,
@@ -226,9 +226,9 @@ if not getActivatedMods():contains("\\2934686936/EvolvingTraitsWorldDisablePetTh
 							})
 						elseif
 							not SBvars.DelayedTraitsSystem
-							or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(ETWTraitsRegistry.PET_THERAPY))
+							or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.PET_THERAPY))
 						then
-							ETWCommonFunctions.addTraitToPlayer(ETWTraitsRegistry.PET_THERAPY)
+							ETW_CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.PET_THERAPY)
 							if notification then
 								HaloTextHelper.addTextWithArrow(
 									player,

@@ -1,36 +1,25 @@
 local ETWCombinedTraitChecks = {}
 
-local ETWCommonFunctions = require("ETWCommonFunctions")
+local ETW_CommonFunctions = require("ETW_CommonFunctions")
 
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld
 
----@type EvolvingTraitsWorldRegistries
-local ETWRegistries = require("ETWRegistry")
----@type EvolvingTraitsWorldTraitsRegistries
+local ETWRegistries = require("ETW_Registry")
 local ETWTraitsRegistry = ETWRegistries.traits
-
--- local modOptions
-
--- ---@return boolean
--- local notification = function() return modOptions:getOption("EnableNotifications"):getValue() end
--- ---@return boolean
--- local delayedNotification = function() return modOptions:getOption("EnableDelayedNotifications"):getValue() end
--- ---@return boolean
--- local detailedDebug = function() return modOptions:getOption("GatherDetailedDebug"):getValue() end
 
 ---Function responsible for checking if player qualifies for Bodywork Enthusiast trait
 ---@param DebugAndNotificationArgs DebugAndNotificationArgs
 function ETWCombinedTraitChecks.bodyworkEnthusiastCheck(DebugAndNotificationArgs)
 	local player = getPlayer()
-	local modData = ETWCommonFunctions.getETWModData(player)
+	local modData = ETW_CommonFunctions.getETWModData(player)
 	local level = player:getPerkLevel(Perks.MetalWelding) + player:getPerkLevel(Perks.Mechanics)
 	if level >= SBvars.BodyworkEnthusiastSkill and modData.VehiclePartRepairs >= SBvars.BodyworkEnthusiastRepairs then
 		if
 			SBvars.DelayedTraitsSystem
-			and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(ETWTraitsRegistry.BODYWORK_ENTHUSIAST)
+			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.BODYWORK_ENTHUSIAST)
 		then
-			ETWCommonFunctions.addTraitToDelayTable({
+			ETW_CommonFunctions.addTraitToDelayTable({
 				modData = modData,
 				trait = ETWTraitsRegistry.BODYWORK_ENTHUSIAST,
 				player = player,
@@ -40,9 +29,9 @@ function ETWCombinedTraitChecks.bodyworkEnthusiastCheck(DebugAndNotificationArgs
 			})
 		elseif
 			not SBvars.DelayedTraitsSystem
-			or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(ETWTraitsRegistry.BODYWORK_ENTHUSIAST))
+			or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.BODYWORK_ENTHUSIAST))
 		then
-			ETWCommonFunctions.addTraitToPlayer(ETWTraitsRegistry.BODYWORK_ENTHUSIAST)
+			ETW_CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.BODYWORK_ENTHUSIAST)
 			if DebugAndNotificationArgs.notification then
 				HaloTextHelper.addTextWithArrow(player, getText("UI_trait_BodyWorkEnthusiast"), true, HaloTextHelper.getColorGreen())
 			end
@@ -54,10 +43,10 @@ end
 ---@param DebugAndNotificationArgs DebugAndNotificationArgs
 function ETWCombinedTraitChecks.mechanicsCheck(DebugAndNotificationArgs)
 	local player = getPlayer()
-	local modData = ETWCommonFunctions.getETWModData(player)
+	local modData = ETW_CommonFunctions.getETWModData(player)
 	if player:getPerkLevel(Perks.Mechanics) >= SBvars.MechanicsSkill and modData.VehiclePartRepairs >= SBvars.MechanicsRepairs then
-		if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.MECHANICS) then
-			ETWCommonFunctions.addTraitToDelayTable({
+		if SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.MECHANICS) then
+			ETW_CommonFunctions.addTraitToDelayTable({
 				modData = modData,
 				trait = CharacterTrait.MECHANICS,
 				player = player,
@@ -67,9 +56,9 @@ function ETWCombinedTraitChecks.mechanicsCheck(DebugAndNotificationArgs)
 			})
 		elseif
 			not SBvars.DelayedTraitsSystem
-			or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.MECHANICS))
+			or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.MECHANICS))
 		then
-			ETWCommonFunctions.addTraitToPlayer(CharacterTrait.MECHANICS)
+			ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.MECHANICS)
 			if DebugAndNotificationArgs.notification then
 				HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Mechanics"), true, HaloTextHelper.getColorGreen())
 			end
@@ -81,10 +70,10 @@ end
 ---@param DebugAndNotificationArgs DebugAndNotificationArgs
 function ETWCombinedTraitChecks.sewerCheck(DebugAndNotificationArgs)
 	local player = getPlayer()
-	local modData = ETWCommonFunctions.getETWModData(player)
+	local modData = ETW_CommonFunctions.getETWModData(player)
 	if player:getPerkLevel(Perks.Tailoring) >= SBvars.SewerSkill and #modData.UniqueClothingRipped >= SBvars.SewerUniqueClothesRipped then
-		if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.TAILOR) then
-			ETWCommonFunctions.addTraitToDelayTable({
+		if SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.TAILOR) then
+			ETW_CommonFunctions.addTraitToDelayTable({
 				modData = modData,
 				trait = CharacterTrait.TAILOR,
 				player = player,
@@ -93,9 +82,10 @@ function ETWCombinedTraitChecks.sewerCheck(DebugAndNotificationArgs)
 				delayedNotification = DebugAndNotificationArgs.delayedNotification,
 			})
 		elseif
-			not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.TAILOR))
+			not SBvars.DelayedTraitsSystem
+			or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.TAILOR))
 		then
-			ETWCommonFunctions.addTraitToPlayer(CharacterTrait.TAILOR)
+			ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.TAILOR)
 			if DebugAndNotificationArgs.notification then
 				HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Tailor"), true, HaloTextHelper.getColorGreen())
 			end
@@ -109,11 +99,11 @@ end
 ---@param DebugAndNotificationArgs DebugAndNotificationArgs
 function ETWCombinedTraitChecks.addClothingToUniqueRippedClothingList(player, item, DebugAndNotificationArgs)
 	local itemName = item:getName()
-	local modData = ETWCommonFunctions.getETWModData(player)
+	local modData = ETW_CommonFunctions.getETWModData(player)
 	if DebugAndNotificationArgs.detailedDebug then
-		print("ETW Logger | ETWCommonFunctions.addClothingToUniqueRippedClothingList() item: " .. itemName)
+		print("ETW Logger | ETW_CommonFunctions.addClothingToUniqueRippedClothingList() item: " .. itemName)
 	end
-	if ETWCommonFunctions.indexOf(modData.UniqueClothingRipped, itemName) == -1 then
+	if ETW_CommonFunctions.indexOf(modData.UniqueClothingRipped, itemName) == -1 then
 		table.insert(modData.UniqueClothingRipped, itemName)
 		ETWCombinedTraitChecks.sewerCheck(DebugAndNotificationArgs)
 	end

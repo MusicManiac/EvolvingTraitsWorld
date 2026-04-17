@@ -1,21 +1,38 @@
+---@class ETW_ModData
+local ETW_ModData = {}
+local Commands = {}
+
+---@type ETW_CommonFunctions
+local ETW_CommonFunctions = require("ETW_CommonFunctions")
+
+local gameMode = ETW_CommonFunctions.gameMode()
+
+print("ETW_ModData | Detected " .. gameMode .. " environment, loading the file")
+
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld
 
 ---@type EvolvingTraitsWorldRegistries
-local ETWRegistries = require("ETWRegistry")
+local ETWRegistries = require("ETW_Registry")
 ---@type EvolvingTraitsWorldTraitsRegistries
 local ETWTraitsRegistry = ETWRegistries.traits
 
-local function checkStartingTrait(startingTraits, player, trait)
-	if startingTraits[trait] == nil then
-		startingTraits[trait] = player:hasTrait(trait)
+---Checks if player has trait and adds it to modData.StartingTraits if it's not there
+---@param startingTraits table
+---@param player IsoPlayer
+---@param trait CharacterTrait
+function ETW_ModData.checkStartingTrait(startingTraits, player, trait)
+	local traitRegistryId = trait:toString()
+	if startingTraits[traitRegistryId] == nil then
+		startingTraits[traitRegistryId] = player:hasTrait(trait)
 	end
 end
 
---- @param playerIndex number -- The index of the player
---- @param player IsoPlayer   -- The player object
-local function createModData(playerIndex, player)
-	print("ETW Logger | System: initializing modData")
+---Creates modData for player if it doesn't exist and fills it with default values if they don't exist. Should be ran on character creation and loading.
+---@param playerIndex number -- The index of the player
+---@param player IsoPlayer   -- The player object
+function ETW_ModData.createETWModData(playerIndex, player)
+	print("ETW Logger | System: initializing modData for player " .. player:getUsername())
 	player:getModData().EvolvingTraitsWorld = player:getModData().EvolvingTraitsWorld or {}
 	---@type EvolvingTraitsWorldModData
 	local modData = player:getModData().EvolvingTraitsWorld
@@ -36,19 +53,19 @@ local function createModData(playerIndex, player)
 
 	modData.StartingTraits = modData.StartingTraits or {}
 	local startingTraits = modData.StartingTraits
-	checkStartingTrait(startingTraits, player, CharacterTrait.CLAUSTROPHOBIC)
-	checkStartingTrait(startingTraits, player, CharacterTrait.AGORAPHOBIC)
-	checkStartingTrait(startingTraits, player, CharacterTrait.ASTHMATIC)
-	checkStartingTrait(startingTraits, player, CharacterTrait.NEEDS_LESS_SLEEP)
-	checkStartingTrait(startingTraits, player, CharacterTrait.NEEDS_MORE_SLEEP)
-	checkStartingTrait(startingTraits, player, ETWTraitsRegistry.BLOODLUST)
-	checkStartingTrait(startingTraits, player, CharacterTrait.SMOKER)
-	checkStartingTrait(startingTraits, player, CharacterTrait.OUTDOORSMAN)
-	checkStartingTrait(startingTraits, player, CharacterTrait.HERBALIST)
-	checkStartingTrait(startingTraits, player, ETWTraitsRegistry.PLUVIOPHILE)
-	checkStartingTrait(startingTraits, player, ETWTraitsRegistry.PLUVIOPHOBIA)
-	checkStartingTrait(startingTraits, player, ETWTraitsRegistry.HOMICHLOPHOBIA)
-	checkStartingTrait(startingTraits, player, ETWTraitsRegistry.HOMICHLOPHILE)
+	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.CLAUSTROPHOBIC)
+	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.AGORAPHOBIC)
+	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.ASTHMATIC)
+	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.NEEDS_LESS_SLEEP)
+	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.NEEDS_MORE_SLEEP)
+	ETW_ModData.checkStartingTrait(startingTraits, player, ETWTraitsRegistry.BLOODLUST)
+	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.SMOKER)
+	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.OUTDOORSMAN)
+	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.HERBALIST)
+	ETW_ModData.checkStartingTrait(startingTraits, player, ETWTraitsRegistry.PLUVIOPHILE)
+	ETW_ModData.checkStartingTrait(startingTraits, player, ETWTraitsRegistry.PLUVIOPHOBIA)
+	ETW_ModData.checkStartingTrait(startingTraits, player, ETWTraitsRegistry.HOMICHLOPHOBIA)
+	ETW_ModData.checkStartingTrait(startingTraits, player, ETWTraitsRegistry.HOMICHLOPHILE)
 
 	modData.DelayedStartingTraitsFilled = modData.DelayedStartingTraitsFilled or false
 	modData.DelayedTraits = modData.DelayedTraits or {}
@@ -176,12 +193,9 @@ end
 
 ---Function responsible for resetting modData on character death
 ---@param character IsoPlayer
-local function clearETWModData(character)
+function ETW_ModData.clearETWModData(character)
+	print("ETW Logger | System: character " .. character:getUsername() .. " died, clearing its ETW modData")
 	character:getModData().EvolvingTraitsWorld = nil
-	print("ETW Logger | System: character died, clearing it's ETW modData")
 end
 
-Events.OnCreatePlayer.Remove(createModData)
-Events.OnCreatePlayer.Add(createModData)
-Events.OnPlayerDeath.Remove(clearETWModData)
-Events.OnPlayerDeath.Add(clearETWModData)
+return ETW_ModData

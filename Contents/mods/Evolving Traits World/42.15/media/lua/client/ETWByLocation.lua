@@ -1,10 +1,10 @@
-require("ETWModData")
+require("ETW_ModData")
 require("ETWModOptions")
-local ETWCommonFunctions = require("ETWCommonFunctions")
-local ETWCommonLogicChecks = require("ETWCommonLogicChecks")
+local ETW_CommonFunctions = require("ETW_CommonFunctions")
+local ETW_CommonLogicChecks = require("ETW_CommonLogicChecks")
 
 ---@type EvolvingTraitsWorldRegistries
-local ETWRegistries = require("ETWRegistry")
+local ETWRegistries = require("ETW_Registry")
 ---@type EvolvingTraitsWorldTraitsRegistries
 local ETWTraitsRegistry = ETWRegistries.traits
 
@@ -39,7 +39,7 @@ end
 ---Prints out debugs inside console if detailedDebug is enabled
 ---@param ... string Strings to log
 local logETW = function(...)
-	ETWCommonFunctions.log(...)
+	ETW_CommonFunctions.log(...)
 end
 
 local desensitized = function(player)
@@ -51,7 +51,11 @@ end
 local function outdoorsman(isKill)
 	local isKill = isKill or false
 	local player = getPlayer()
-	local modData = ETWCommonFunctions.getETWModData(player)
+	local modData = ETW_CommonFunctions.getETWModData(player)
+	if not modData then
+		logETW("ETW Logger | outdoorsman(): modData is nil, returning early")
+		return
+	end
 	local outdoorsmanModData = modData.OutdoorsmanSystem
 	local climateManager = getClimateManager()
 	local rainIntensity = climateManager:getRainIntensity()
@@ -86,7 +90,7 @@ local function outdoorsman(isKill)
 			and outdoorsmanModData.OutdoorsmanCounter >= SBvars.OutdoorsmanCounter
 			and SBvars.TraitsLockSystemCanGainPositive
 		then
-			ETWCommonFunctions.addTraitToPlayer(CharacterTrait.OUTDOORSMAN)
+			ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.OUTDOORSMAN)
 			if notification() then
 				HaloTextHelper.addTextWithArrow(player, getText("UI_trait_outdoorsman"), true, HaloTextHelper.getColorGreen())
 			end
@@ -102,7 +106,7 @@ local function outdoorsman(isKill)
 			and outdoorsmanModData.OutdoorsmanCounter <= -SBvars.OutdoorsmanCounter
 			and SBvars.TraitsLockSystemCanLosePositive
 		then
-			ETWCommonFunctions.removeTraitFromPlayer(CharacterTrait.OUTDOORSMAN)
+			ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.OUTDOORSMAN)
 			if notification() then
 				HaloTextHelper.addTextWithArrow(player, getText("UI_trait_outdoorsman"), false, HaloTextHelper.getColorRed())
 			end
@@ -115,7 +119,11 @@ end
 local function fearOfLocations(isKill)
 	local isKill = isKill or false
 	local player = getPlayer()
-	local modData = ETWCommonFunctions.getETWModData(player)
+	local modData = ETW_CommonFunctions.getETWModData(player)
+	if not modData then
+		logETW("ETW Logger | fearOfLocations(): modData is nil, returning early")
+		return
+	end
 	local fearOfLocationsModData = modData.LocationFearSystem
 	local stress = player:getStats():get(CharacterStat.STRESS) -- 0-1, may be higher with stress from cigarettes
 	local unhappiness = player:getStats():get(CharacterStat.UNHAPPINESS) -- 0-100
@@ -166,7 +174,7 @@ local function fearOfLocations(isKill)
 			and not desensitized(player)
 			and SBvars.TraitsLockSystemCanGainNegative
 		then
-			ETWCommonFunctions.addTraitToPlayer(CharacterTrait.AGORAPHOBIC)
+			ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.AGORAPHOBIC)
 			if notification() then
 				HaloTextHelper.addTextWithArrow(player, getText("UI_trait_agoraphobic"), true, HaloTextHelper.getColorRed())
 			end
@@ -177,7 +185,7 @@ local function fearOfLocations(isKill)
 			and not desensitized(player)
 			and SBvars.TraitsLockSystemCanGainNegative
 		then
-			ETWCommonFunctions.addTraitToPlayer(CharacterTrait.CLAUSTROPHOBIC)
+			ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.CLAUSTROPHOBIC)
 			if notification() then
 				HaloTextHelper.addTextWithArrow(player, getText("UI_trait_claustro"), true, HaloTextHelper.getColorRed())
 			end
@@ -189,11 +197,11 @@ local function fearOfLocations(isKill)
 			and fearOfLocationsModData.FearOfOutside < fearOfLocationsModData.FearOfInside
 			and not player:hasTrait(CharacterTrait.AGORAPHOBIC)
 		then
-			ETWCommonFunctions.removeTraitFromPlayer(CharacterTrait.CLAUSTROPHOBIC)
+			ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.CLAUSTROPHOBIC)
 			if notification() then
 				HaloTextHelper.addTextWithArrow(player, getText("UI_trait_claustro"), false, HaloTextHelper.getColorGreen())
 			end
-			ETWCommonFunctions.addTraitToPlayer(CharacterTrait.AGORAPHOBIC)
+			ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.AGORAPHOBIC)
 			if notification() then
 				HaloTextHelper.addTextWithArrow(player, getText("UI_trait_agoraphobic"), true, HaloTextHelper.getColorRed())
 			end
@@ -204,11 +212,11 @@ local function fearOfLocations(isKill)
 			and fearOfLocationsModData.FearOfInside < fearOfLocationsModData.FearOfOutside
 			and not player:hasTrait(CharacterTrait.CLAUSTROPHOBIC)
 		then
-			ETWCommonFunctions.removeTraitFromPlayer(CharacterTrait.AGORAPHOBIC)
+			ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.AGORAPHOBIC)
 			if notification() then
 				HaloTextHelper.addTextWithArrow(player, getText("UI_trait_agoraphobic"), false, HaloTextHelper.getColorGreen())
 			end
-			ETWCommonFunctions.addTraitToPlayer(CharacterTrait.CLAUSTROPHOBIC)
+			ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.CLAUSTROPHOBIC)
 			if notification() then
 				HaloTextHelper.addTextWithArrow(player, getText("UI_trait_claustro"), true, HaloTextHelper.getColorRed())
 			end
@@ -219,7 +227,7 @@ local function fearOfLocations(isKill)
 		and fearOfLocationsModData.FearOfOutside >= SBCounter
 		and SBvars.TraitsLockSystemCanLoseNegative
 	then
-		ETWCommonFunctions.removeTraitFromPlayer(CharacterTrait.AGORAPHOBIC)
+		ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.AGORAPHOBIC)
 		if notification() then
 			HaloTextHelper.addTextWithArrow(player, getText("UI_trait_agoraphobic"), false, HaloTextHelper.getColorGreen())
 		end
@@ -229,7 +237,7 @@ local function fearOfLocations(isKill)
 		and fearOfLocationsModData.FearOfInside >= SBCounter
 		and SBvars.TraitsLockSystemCanLoseNegative
 	then
-		ETWCommonFunctions.removeTraitFromPlayer(CharacterTrait.CLAUSTROPHOBIC)
+		ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.CLAUSTROPHOBIC)
 		if notification() then
 			HaloTextHelper.addTextWithArrow(player, getText("UI_trait_claustro"), false, HaloTextHelper.getColorGreen())
 		end
@@ -264,19 +272,19 @@ end
 ---@param playerIndex number
 ---@param player IsoPlayer
 local function initializeEventsETW(playerIndex, player)
-	modOptions = PZAPI.ModOptions:getOptions("ETWModOptions")
 	Events.EveryOneMinute.Remove(outdoorsman)
 	Events.OnZombieDead.Remove(outdoorsmanKill)
-	if ETWCommonLogicChecks.OutdoorsmanShouldExecute() then
+	if ETW_CommonLogicChecks.OutdoorsmanShouldExecute(player) then
 		Events.EveryOneMinute.Add(outdoorsman)
 		Events.OnZombieDead.Add(outdoorsmanKill)
 	end
 	Events.EveryOneMinute.Remove(fearOfLocations)
 	Events.OnZombieDead.Remove(fearOfLocationsKill)
-	if ETWCommonLogicChecks.FearOfLocationsSystemShouldExecute() then
-		Events.EveryOneMinute.Add(fearOfLocations)
-		Events.OnZombieDead.Add(fearOfLocationsKill)
-	end
+    if ETW_CommonLogicChecks.FearOfLocationsSystemShouldExecute(player) then
+        Events.EveryOneMinute.Add(fearOfLocations)
+        Events.OnZombieDead.Add(fearOfLocationsKill)
+    end
+	Events.OnTick.Remove(initializeEventsETW)
 end
 
 ---Function responsible for clearing events
@@ -289,7 +297,11 @@ local function clearEventsETW(character)
 	logETW("ETW Logger | System: clearEventsETW in ETWByLocation.lua")
 end
 
-Events.OnCreatePlayer.Remove(initializeEventsETW)
-Events.OnCreatePlayer.Add(initializeEventsETW)
-Events.OnPlayerDeath.Remove(clearEventsETW)
-Events.OnPlayerDeath.Add(clearEventsETW)
+if gameMode == ETW_CommonFunctions.GameMode.SP then
+	Events.OnCreatePlayer.Remove(initializeEventsETW)
+	Events.OnCreatePlayer.Add(initializeEventsETW)
+	Events.OnPlayerDeath.Remove(clearEventsETW)
+	Events.OnPlayerDeath.Add(clearEventsETW)
+elseif gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
+	Events.OnTick.Add(initializeEventsETW)
+end
