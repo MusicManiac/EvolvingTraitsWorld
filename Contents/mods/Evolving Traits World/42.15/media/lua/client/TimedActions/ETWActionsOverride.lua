@@ -1,13 +1,13 @@
 local ETWCombinedTraitChecks = require("ETWCombinedTraitChecks")
-local ETWCommonFunctions = require("ETWCommonFunctions")
-local ETWCommonLogicChecks = require("ETWCommonLogicChecks")
+local ETW_CommonFunctions = require("ETW_CommonFunctions")
+local ETW_CommonLogicChecks = require("ETW_CommonLogicChecks")
 require("ETWModOptions")
 
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld
 
 ---@type EvolvingTraitsWorldRegistries
-local ETWRegistries = require("ETWRegistry")
+local ETWRegistries = require("ETW_Registry")
 ---@type EvolvingTraitsWorldTraitsRegistries
 local ETWTraitsRegistry = ETWRegistries.traits
 
@@ -41,7 +41,7 @@ end
 ---Prints out debugs inside console if detailedDebug is enabled
 ---@param ... string Strings to log
 local logETW = function(...)
-	ETWCommonFunctions.log(...)
+	ETW_CommonFunctions.log(...)
 end
 
 local carPartStartingCondition
@@ -50,7 +50,7 @@ local original_ISFixVehiclePartAction_perform = ISFixVehiclePartAction.perform
 ---Overwriting ISFixVehiclePartAction:perform() here to insert ETW logic catching player doing any kind of repairs
 function ISFixVehiclePartAction:perform()
 	local player = self.character
-	local modData = ETWCommonFunctions.getETWModData(player)
+	local modData = ETW_CommonFunctions.getETWModData(player)
 	---@type DebugAndNotificationArgs
 	logETW("ETW Logger | ISFixVehiclePartAction:perform(): caught")
 	local conditionBefore = self.item:getCondition()
@@ -69,10 +69,10 @@ function ISFixVehiclePartAction:complete()
 	logETW("ETW Logger | ISFixVehiclePartAction:complete(): caught")
 	original_ISFixVehiclePartAction_complete(self)
 	local player = self.character
-	local modData = ETWCommonFunctions.getETWModData(player)
+	local modData = ETW_CommonFunctions.getETWModData(player)
 	local conditionAfter = self.item:getCondition()
-	local mechanicsShouldExecute = ETWCommonLogicChecks.MechanicsShouldExecute()
-	local bodyWorkEnthusiastShouldExecute = ETWCommonLogicChecks.BodyWorkEnthusiastShouldExecute()
+	local mechanicsShouldExecute = ETW_CommonLogicChecks.MechanicsShouldExecute(player)
+	local bodyWorkEnthusiastShouldExecute = ETW_CommonLogicChecks.BodyWorkEnthusiastShouldExecute(player)
 	if conditionAfter > carPartStartingCondition and (mechanicsShouldExecute or bodyWorkEnthusiastShouldExecute) then
 		modData.VehiclePartRepairs = modData.VehiclePartRepairs + (conditionAfter - carPartStartingCondition)
 		local DebugAndNotificationArgs =
@@ -124,7 +124,7 @@ local original_ISFixAction_perform = ISFixAction.perform
 ---Overwriting ISFixAction:perform() here to insert ETW logic catching player doing any kind of repairs
 function ISFixAction:perform()
 	local player = self.character
-	local modData = ETWCommonFunctions.getETWModData(player)
+	local modData = ETW_CommonFunctions.getETWModData(player)
 	---@type DebugAndNotificationArgs
 	local DebugAndNotificationArgs =
 		{ detailedDebug = detailedDebug(), notification = notification(), delayedNotification = delayedNotification() }
@@ -132,8 +132,8 @@ function ISFixAction:perform()
 	local conditionBefore = self.item:getCondition()
 	original_ISFixAction_perform(self)
 	local conditionAfter = self.item:getCondition()
-	local mechanicsShouldExecute = ETWCommonLogicChecks.MechanicsShouldExecute()
-	local bodyWorkEnthusiastShouldExecute = ETWCommonLogicChecks.BodyWorkEnthusiastShouldExecute()
+	local mechanicsShouldExecute = ETW_CommonLogicChecks.MechanicsShouldExecute(player)
+	local bodyWorkEnthusiastShouldExecute = ETW_CommonLogicChecks.BodyWorkEnthusiastShouldExecute(player)
 	if conditionAfter > conditionBefore and isVehiclePart(self) and (mechanicsShouldExecute or bodyWorkEnthusiastShouldExecute) then
 		modData.VehiclePartRepairs = modData.VehiclePartRepairs + (conditionAfter - conditionBefore)
 		logETW(
@@ -177,15 +177,15 @@ end
 local original_ISChopTreeAction_perform = ISChopTreeAction.perform
 ---Overwriting ISChopTreeAction:perform() here to insert ETW logic catching player cutting down trees
 function ISChopTreeAction:perform()
-	if ETWCommonLogicChecks.AxemanShouldExecute() then
+	local player = self.character
+	if ETW_CommonLogicChecks.AxemanShouldExecute(player) then
 		logETW("ETW Logger | ISChopTreeAction.perform(): caught")
-		local player = self.character
-		local modData = ETWCommonFunctions.getETWModData(player)
+		local modData = ETW_CommonFunctions.getETWModData(player)
 		modData.TreesChopped = modData.TreesChopped + 1
 		logETW("ETW Logger | ISChopTreeAction.perform(): modData.TreesChopped = " .. modData.TreesChopped)
 		if modData.TreesChopped >= SBvars.AxemanTrees then
-			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.AXEMAN) then
-				ETWCommonFunctions.addTraitToDelayTable({
+			if SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.AXEMAN) then
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = CharacterTrait.AXEMAN,
 					player = player,
@@ -194,9 +194,9 @@ function ISChopTreeAction:perform()
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.AXEMAN))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.AXEMAN))
 			then
-				ETWCommonFunctions.addTraitToPlayer(CharacterTrait.AXEMAN)
+				ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.AXEMAN)
 				if notification() then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_axeman"), true, HaloTextHelper.getColorGreen())
 				end
@@ -209,12 +209,12 @@ end
 local original_ISInventoryTransferAction_perform = ISInventoryTransferAction.perform
 ---Overwriting ISInventoryTransferAction:perform() here to insert ETW logic catching player transferring items
 function ISInventoryTransferAction:perform()
-	if ETWCommonLogicChecks.InventoryTransferSystemShouldExecute() and self.character == getPlayer() then
+	local player = self.character
+	if ETW_CommonLogicChecks.InventoryTransferSystemShouldExecute(player) and player == getPlayer() then
 		logETW("ETW Logger | ISInventoryTransferAction.perform(): Player")
-		local player = self.character
 		local item = self.item
 		local itemWeight = math.max(0, item:getWeight())
-		local modData = ETWCommonFunctions.getETWModData(player)
+		local modData = ETW_CommonFunctions.getETWModData(player)
 		local transferModData = modData.TransferSystem
 		transferModData.ItemsTransferred = transferModData.ItemsTransferred + 1
 		transferModData.WeightTransferred = transferModData.WeightTransferred + itemWeight
@@ -232,8 +232,8 @@ function ISInventoryTransferAction:perform()
 			and transferModData.ItemsTransferred >= SBvars.InventoryTransferSystemItems * 0.33
 			and SBvars.TraitsLockSystemCanLoseNegative
 		then
-			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.DISORGANIZED) then
-				ETWCommonFunctions.addTraitToDelayTable({
+			if SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.DISORGANIZED) then
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = CharacterTrait.DISORGANIZED,
 					player = player,
@@ -242,9 +242,9 @@ function ISInventoryTransferAction:perform()
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.DISORGANIZED))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.DISORGANIZED))
 			then
-				ETWCommonFunctions.removeTraitFromPlayer(CharacterTrait.DISORGANIZED)
+				ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.DISORGANIZED)
 				if notification() then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Disorganized"), false, HaloTextHelper.getColorGreen())
 				end
@@ -257,9 +257,9 @@ function ISInventoryTransferAction:perform()
 			and transferModData.ItemsTransferred >= SBvars.InventoryTransferSystemItems * 0.66
 			and SBvars.TraitsLockSystemCanGainPositive
 		then
-			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.ORGANIZED) then
+			if SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.ORGANIZED) then
 				-- UI_trait_Packmule is internal string name
-				ETWCommonFunctions.addTraitToDelayTable({
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = CharacterTrait.ORGANIZED,
 					player = player,
@@ -268,9 +268,9 @@ function ISInventoryTransferAction:perform()
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.ORGANIZED))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.ORGANIZED))
 			then
-				ETWCommonFunctions.addTraitToPlayer(CharacterTrait.ORGANIZED)
+				ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.ORGANIZED)
 				-- UI_trait_Packmule is internal string name
 				if notification() then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Packmule"), true, HaloTextHelper.getColorGreen())
@@ -283,8 +283,8 @@ function ISInventoryTransferAction:perform()
 			and transferModData.ItemsTransferred >= SBvars.InventoryTransferSystemItems * 0.66
 			and SBvars.TraitsLockSystemCanLoseNegative
 		then
-			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.ALL_THUMBS) then
-				ETWCommonFunctions.addTraitToDelayTable({
+			if SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.ALL_THUMBS) then
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = CharacterTrait.ALL_THUMBS,
 					player = player,
@@ -293,13 +293,13 @@ function ISInventoryTransferAction:perform()
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.ALL_THUMBS))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.ALL_THUMBS))
 			then
-				ETWCommonFunctions.removeTraitFromPlayer(CharacterTrait.ALL_THUMBS)
+				ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.ALL_THUMBS)
 				if notification() then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_AllThumbs"), false, HaloTextHelper.getColorGreen())
 				end
-				ETWCommonFunctions.traitSound(player)
+				ETW_CommonFunctions.traitSound(player)
 			end
 		end
 		if
@@ -308,8 +308,8 @@ function ISInventoryTransferAction:perform()
 			and transferModData.ItemsTransferred >= SBvars.InventoryTransferSystemItems
 			and SBvars.TraitsLockSystemCanGainPositive
 		then
-			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.DEXTROUS) then
-				ETWCommonFunctions.addTraitToDelayTable({
+			if SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.DEXTROUS) then
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = CharacterTrait.DEXTROUS,
 					player = player,
@@ -318,9 +318,9 @@ function ISInventoryTransferAction:perform()
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.DEXTROUS))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.DEXTROUS))
 			then
-				ETWCommonFunctions.addTraitToPlayer(CharacterTrait.DEXTROUS)
+				ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.DEXTROUS)
 				if notification() then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Dexterous"), true, HaloTextHelper.getColorGreen())
 				end
@@ -382,14 +382,14 @@ local original_forageSystem_addOrDropItems = forageSystem.addOrDropItems
 ---Decorating forageSystem.addOrDropItems() here to insert ETW logic catching player picking up herbs while foraging
 ---@diagnostic disable-next-line: duplicate-set-field
 function forageSystem.addOrDropItems(_character, _inventory, _items, _discardItems)
-	if ETWCommonLogicChecks.HerbalistShouldExecute() and SBvars.TraitsLockSystemCanGainPositive then
-		local player = getPlayer()
+	local player = getPlayer()
+	if ETW_CommonLogicChecks.HerbalistShouldExecute(player) and SBvars.TraitsLockSystemCanGainPositive then
 		local detailedDebug = detailedDebug()
 		if not _discardItems then
 			for item in iterList(_items) do
 				logETW("ETW Logger | forageSystem.addOrDropItems(): picking up foraging item: " .. item:getFullType())
 				if filteredForageHashMap[item:getFullType()] then
-					local modData = ETWCommonFunctions.getETWModData(player)
+					local modData = ETW_CommonFunctions.getETWModData(player)
 					modData.HerbsPickedUp = modData.HerbsPickedUp
 						+ ((SBvars.AffinitySystem and modData.StartingTraits.Herbalist) and 1 * SBvars.AffinitySystemGainMultiplier or 1)
 					logETW("ETW Logger | forageSystem.addOrDropItems(): modData.HerbsPickedUp: " .. modData.HerbsPickedUp)
@@ -398,7 +398,7 @@ function forageSystem.addOrDropItems(_character, _inventory, _items, _discardIte
 						and modData.HerbsPickedUp >= SBvars.HerbalistHerbsPicked
 						and SBvars.TraitsLockSystemCanGainPositive
 					then
-						ETWCommonFunctions.addTraitToPlayer(CharacterTrait.HERBALIST)
+						ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.HERBALIST)
 						if notification() then
 							HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Herbalist"), true, HaloTextHelper.getColorGreen())
 						end

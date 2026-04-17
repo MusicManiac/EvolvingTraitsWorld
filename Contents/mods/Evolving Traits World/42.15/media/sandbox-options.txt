@@ -62,6 +62,13 @@ option EvolvingTraitsWorld.UIPage
 	page = ETWSettings,
 	translation = ETW_UIPage,
 }
+option EvolvingTraitsWorld.ServerLogs
+{
+	type = boolean,
+	default = false,
+	page = ETWSettings,
+	translation = ETW_ServerLogs,
+}
 
 option EvolvingTraitsWorld.SYSTEMS
 {

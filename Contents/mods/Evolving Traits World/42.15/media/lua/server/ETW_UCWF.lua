@@ -1,10 +1,10 @@
----@type ETWCommonFunctions
-local ETWCommonFunctions = require("ETWCommonFunctions")
+---@type ETW_CommonFunctions
+local ETW_CommonFunctions = require("ETW_CommonFunctions")
 
-local gameMode = ETWCommonFunctions.gameMode()
+local gameMode = ETW_CommonFunctions.gameMode()
 
 -- This should be ran only if it's SP or if it's a server process
-if gameMode == ETWCommonFunctions.GameMode.MP_SERVER then
+if gameMode == ETW_CommonFunctions.GameMode.MP_CLIENT then
 	print("ETW_UCWF | Detected " .. gameMode .. " environment, skipping the file")
 	return
 else
@@ -14,7 +14,7 @@ end
 require("UnifiedCarryWeightFramework")
 
 ---@type EvolvingTraitsWorldRegistries
-local ETWRegistries = require("ETWRegistry")
+local ETWRegistries = require("ETW_Registry")
 ---@type EvolvingTraitsWorldTraitsRegistries
 local ETWTraitsRegistry = ETWRegistries.traits
 

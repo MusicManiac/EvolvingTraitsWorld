@@ -1,52 +1,28 @@
-local ETWExportedFunctions = {}
-local ETWCommonFunctions = require("ETWCommonFunctions")
+-- Separate file for functions that are exported for use in other mods, so that they can hook into ETW systems.
+
+local ETW_ExportedFunctions = {}
+local ETW_CommonFunctions = require("ETW_CommonFunctions")
 
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld
 
 local logETW = function(...)
-	ETWCommonFunctions.log(...)
-end
-
-local modOptions
-
----Function responsible for setting up mod options on character load
----@param playerIndex number
----@param player IsoPlayer
-local function initializeModOptions(playerIndex, player)
-	modOptions = PZAPI.ModOptions:getOptions("ETWModOptions")
-end
-
-Events.OnCreatePlayer.Remove(initializeModOptions)
-Events.OnCreatePlayer.Add(initializeModOptions)
-
----@return boolean
-local notification = function()
-	return modOptions:getOption("EnableNotifications"):getValue()
-end
----@return boolean
-local delayedNotification = function()
-	return modOptions:getOption("EnableDelayedNotifications"):getValue()
-end
----@return boolean
-local detailedDebug = function()
-	return modOptions:getOption("GatherDetailedDebug"):getValue()
+	ETW_CommonFunctions.log(...)
 end
 
 ---Function that adds to ETW smoking addiction as if character smoked cigarette/cigare/etc
 ---For example, if you use custom function for smoking in your mod and you want it to count for smoking addiction, you can use this.
 ---@param character IsoGameCharacter
-function ETWExportedFunctions.smokingAddictionMath(character)
+function ETW_ExportedFunctions.smokingAddictionMath(character)
 	if not isServer() then
-		modOptions = PZAPI.ModOptions:getOptions("ETWModOptions")
 		if detailedDebug() then
-			print("ETW Logger | OnEat_Cigarettes(): detected smoking")
+			print("ETW Logger | RecipeCodeOnEat.consumeNicotine: detected smoking")
 		end
-		local modData = ETWCommonFunctions.getETWModData(character)
+		local modData = ETW_CommonFunctions.getETWModData(character)
 		local smokerModData = modData.SmokeSystem -- SmokingAddiction MinutesSinceLastSmoke
 		local timeSinceLastSmoke = character:getTimeSinceLastSmoke() * 60
 		logETW(
-			"ETW Logger | OnEat_Cigarettes(): timeSinceLastSmoke:"
+			"ETW Logger | RecipeCodeOnEat.consumeNicotine: timeSinceLastSmoke:"
 				.. timeSinceLastSmoke
 				.. ", modData.MinutesSinceLastSmoke: "
 				.. smokerModData.MinutesSinceLastSmoke
@@ -63,7 +39,7 @@ function ETWExportedFunctions.smokingAddictionMath(character)
 		end
 		smokerModData.SmokingAddiction = math.min(SBvars.SmokerCounter * 2, smokerModData.SmokingAddiction + addictionGain)
 		logETW(
-			"ETW Logger | OnEat_Cigarettes(): addictionGain: "
+			"ETW Logger | RecipeCodeOnEat.consumeNicotine: addictionGain: "
 				.. addictionGain
 				.. ", modData.SmokingAddiction: "
 				.. smokerModData.SmokingAddiction
@@ -72,20 +48,21 @@ function ETWExportedFunctions.smokingAddictionMath(character)
 	end
 end
 
-return ETWExportedFunctions
+return ETW_ExportedFunctions
 
 --[=====[
 Example on how you can refresh timeSinceLastSmoke for smoking addiction math if you have your own custom smoking implementation, so that it counts for addiction gain when player smokes with your custom implementation.
 
-local ETWExportedFunctions
-if getActivatedMods():contains('\\2914075159/EvolvingTraitsWorld') then
-	local ETWExportedFunctions = require "ETWExportedFunctions"
+local ETW_ExportedFunctions
+local ETW_isLoaded = getActivatedMods():contains('EvolvingTraitsWorld')
+if ETW_isLoaded then
+	ETW_ExportedFunctions = require "ETW_ExportedFunctions"
 end
 
 local function yourFunction()
 	-- some code
-	if getActivatedMods():contains('\\2914075159/EvolvingTraitsWorld') then
-		ETWExportedFunctions.smokingAddictionMath(getPlayer())
+	if ETW_isLoaded then
+		ETW_ExportedFunctions.smokingAddictionMath(getPlayer())
 	end
 end
 

@@ -11,6 +11,7 @@
 --- @field DelayedTraitsSystemDefaultDelay integer
 --- @field DelayedTraitsSystemDefaultStartingDelay integer
 --- @field UIPage boolean
+--- @field ServerLogs boolean
 -- Systems
 --- @field BraverySystem boolean
 --- @field BraverySystemKills integer

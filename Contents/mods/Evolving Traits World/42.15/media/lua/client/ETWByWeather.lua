@@ -1,14 +1,14 @@
-require("ETWModData")
+require("ETW_ModData")
 require("ETWModOptions")
 
-local ETWCommonFunctions = require("ETWCommonFunctions")
-local ETWCommonLogicChecks = require("ETWCommonLogicChecks")
+local ETW_CommonFunctions = require("ETW_CommonFunctions")
+local ETW_CommonLogicChecks = require("ETW_CommonLogicChecks")
 
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld
 
 ---@type EvolvingTraitsWorldRegistries
-local ETWRegistries = require("ETWRegistry")
+local ETWRegistries = require("ETW_Registry")
 ---@type EvolvingTraitsWorldTraitsRegistries
 local ETWTraitsRegistry = ETWRegistries.traits
 
@@ -39,7 +39,9 @@ end
 
 ---Prints out debugs inside console if detailedDebug is enabled
 ---@param ... any Optional boolean followed by strings to log, if set to true, prints all strings in a single line otherwise prints each string in a new line
-local logETW = function(...) ETWCommonFunctions.log(...) end
+local logETW = function(...)
+	ETW_CommonFunctions.log(...)
+end
 
 ---@param player IsoPlayer
 ---@return boolean
@@ -54,12 +56,16 @@ local function rainTraits(isKill)
 	local player = getPlayer()
 	local rainIntensity = getClimateManager():getRainIntensity()
 	if rainIntensity > 0 and player:isOutside() and player:getVehicle() == nil then
+		local modData = ETW_CommonFunctions.getETWModData(player)
+		if not modData then
+			logETW("ETW Logger | rainTraits(): modData is nil, returning early")
+			return
+		end
 		local panic = player:getStats():get(CharacterStat.PANIC) -- 0-100
 		local primaryItem = player:getPrimaryHandItem()
 		local secondaryItem = player:getSecondaryHandItem()
 		local rainProtection = (primaryItem and primaryItem:isProtectFromRainWhileEquipped())
 			or (secondaryItem and secondaryItem:isProtectFromRainWhileEquipped())
-		local modData = ETWCommonFunctions.getETWModData(player)
 		local SBCounter = SBvars.RainSystemCounter
 		local lowerBoundary = -SBCounter * 2
 		local upperBoundary = SBCounter * 2
@@ -85,7 +91,7 @@ local function rainTraits(isKill)
 			and not desensitized(player)
 			and SBvars.TraitsLockSystemCanGainNegative
 		then
-			ETWCommonFunctions.addTraitToPlayer(ETWTraitsRegistry.PLUVIOPHOBIA)
+			ETW_CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.PLUVIOPHOBIA)
 			if notification() then
 				HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Pluviophobia"), true, HaloTextHelper.getColorRed())
 			end
@@ -94,7 +100,7 @@ local function rainTraits(isKill)
 			and modData.RainCounter > -SBCounter
 			and SBvars.TraitsLockSystemCanLoseNegative
 		then
-			ETWCommonFunctions.removeTraitFromPlayer(ETWTraitsRegistry.PLUVIOPHOBIA)
+			ETW_CommonFunctions.removeTraitFromPlayer(player, ETWTraitsRegistry.PLUVIOPHOBIA)
 			if notification() then
 				HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Pluviophobia"), false, HaloTextHelper.getColorGreen())
 			end
@@ -103,7 +109,7 @@ local function rainTraits(isKill)
 			and modData.RainCounter <= SBCounter
 			and SBvars.TraitsLockSystemCanLosePositive
 		then
-			ETWCommonFunctions.removeTraitFromPlayer(ETWTraitsRegistry.PLUVIOPHILE)
+			ETW_CommonFunctions.removeTraitFromPlayer(player, ETWTraitsRegistry.PLUVIOPHILE)
 			if notification() then
 				HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Pluviophile"), false, HaloTextHelper.getColorRed())
 			end
@@ -112,7 +118,7 @@ local function rainTraits(isKill)
 			and modData.RainCounter > SBCounter
 			and SBvars.TraitsLockSystemCanGainPositive
 		then
-			ETWCommonFunctions.addTraitToPlayer(ETWTraitsRegistry.PLUVIOPHILE)
+			ETW_CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.PLUVIOPHILE)
 			if notification() then
 				HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Pluviophile"), true, HaloTextHelper.getColorGreen())
 			end
@@ -127,7 +133,11 @@ local function fogTraits(isKill)
 	local player = getPlayer()
 	local fogIntensity = getClimateManager():getFogIntensity()
 	if fogIntensity > 0 and player:isOutside() and player:getVehicle() == nil then
-		local modData = ETWCommonFunctions.getETWModData(player)
+		local modData = ETW_CommonFunctions.getETWModData(player)
+		if not modData then
+			logETW("ETW Logger | fogTraits(): modData is nil, returning early")
+			return
+		end
 		local panic = player:getStats():get(CharacterStat.PANIC) -- 0-100
 		local fogGain = fogIntensity * SBvars.FogSystemCounterIncreaseMultiplier
 		fogGain = fogGain / ((SBvars.AffinitySystem and modData.StartingTraits.Homichlophobia) and SBvars.AffinitySystemLoseDivider or 1)
@@ -154,7 +164,7 @@ local function fogTraits(isKill)
 			and not desensitized(player)
 			and SBvars.TraitsLockSystemCanGainNegative
 		then
-			ETWCommonFunctions.addTraitToPlayer(ETWTraitsRegistry.HOMICHLOPHOBIA)
+			ETW_CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.HOMICHLOPHOBIA)
 			if notification() then
 				HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Homichlophobia"), true, HaloTextHelper.getColorRed())
 			end
@@ -163,7 +173,7 @@ local function fogTraits(isKill)
 			and modData.FogCounter > -SBCounter
 			and SBvars.TraitsLockSystemCanLoseNegative
 		then
-			ETWCommonFunctions.removeTraitFromPlayer(ETWTraitsRegistry.HOMICHLOPHOBIA)
+			ETW_CommonFunctions.removeTraitFromPlayer(player, ETWTraitsRegistry.HOMICHLOPHOBIA)
 			if notification() then
 				HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Homichlophobia"), false, HaloTextHelper.getColorGreen())
 			end
@@ -172,7 +182,7 @@ local function fogTraits(isKill)
 			and modData.FogCounter <= SBCounter
 			and SBvars.TraitsLockSystemCanLosePositive
 		then
-			ETWCommonFunctions.removeTraitFromPlayer(ETWTraitsRegistry.HOMICHLOPHILE)
+			ETW_CommonFunctions.removeTraitFromPlayer(player, ETWTraitsRegistry.HOMICHLOPHILE)
 			if notification() then
 				HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Homichlophile"), false, HaloTextHelper.getColorRed())
 			end
@@ -181,7 +191,7 @@ local function fogTraits(isKill)
 			and modData.FogCounter > SBCounter
 			and SBvars.TraitsLockSystemCanGainPositive
 		then
-			ETWCommonFunctions.addTraitToPlayer(ETWTraitsRegistry.HOMICHLOPHILE)
+			ETW_CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.HOMICHLOPHILE)
 			if notification() then
 				HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Homichlophile"), true, HaloTextHelper.getColorGreen())
 			end
@@ -220,13 +230,13 @@ local function initializeEventsETW(playerIndex, player)
 	modOptions = PZAPI.ModOptions:getOptions("ETWModOptions")
 	Events.EveryOneMinute.Remove(rainTraits)
 	Events.OnZombieDead.Remove(rainTraitsKill)
-	if ETWCommonLogicChecks.RainSystemShouldExecute() then
+	if ETW_CommonLogicChecks.RainSystemShouldExecute(player) then
 		Events.EveryOneMinute.Add(rainTraits)
 		Events.OnZombieDead.Add(rainTraitsKill)
 	end
 	Events.EveryOneMinute.Remove(fogTraits)
 	Events.OnZombieDead.Remove(fogTraitsKill)
-	if ETWCommonLogicChecks.RainSystemShouldExecute() then
+	if ETW_CommonLogicChecks.RainSystemShouldExecute(player) then
 		Events.EveryOneMinute.Add(fogTraits)
 		Events.OnZombieDead.Add(fogTraitsKill)
 	end

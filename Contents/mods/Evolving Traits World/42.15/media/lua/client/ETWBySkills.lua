@@ -1,12 +1,12 @@
-require("ETWModData")
+require("ETW_ModData")
 require("ETWModOptions")
 require("UnifiedCarryWeightFramework")
 local ETWCombinedTraitChecks = require("ETWCombinedTraitChecks")
-local ETWCommonFunctions = require("ETWCommonFunctions")
-local ETWCommonLogicChecks = require("ETWCommonLogicChecks")
+local ETW_CommonFunctions = require("ETW_CommonFunctions")
+local ETW_CommonLogicChecks = require("ETW_CommonLogicChecks")
 
 ---@type EvolvingTraitsWorldRegistries
-local ETWRegistries = require("ETWRegistry")
+local ETWRegistries = require("ETW_Registry")
 ---@type EvolvingTraitsWorldTraitsRegistries
 local ETWTraitsRegistry = ETWRegistries.traits
 
@@ -41,7 +41,7 @@ end
 ---Prints out debugs inside console if detailedDebug is enabled
 ---@param ... string Strings to log
 local logETW = function(...)
-	ETWCommonFunctions.log(...)
+	ETW_CommonFunctions.log(...)
 end
 
 local validHearingPerks = {
@@ -334,7 +334,11 @@ local function traitsGainsBySkill(player, perk)
 		return
 	end
 
-	local modData = ETWCommonFunctions.getETWModData(player)
+	local modData = ETW_CommonFunctions.getETWModData(player)
+	if not modData then
+		logETW("ETW Logger | traitsGainsBySkill(): modData is nil, returning early")
+		return
+	end
 
 	-- locals for perk levels
 	local strength = player:getPerkLevel(Perks.Strength)
@@ -386,15 +390,17 @@ local function traitsGainsBySkill(player, perk)
 	local DebugAndNotificationArgs =
 		{ detailedDebug = detailedDebug, notification = notification, delayedNotification = delayedNotification }
 
-	if validHearingPerks[perk] and ETWCommonLogicChecks.HearingSystemShouldExecute() then
+	if validHearingPerks[perk] and ETW_CommonLogicChecks.HearingSystemShouldExecute(player) then
 		local levels = sprinting + lightfooted + nimble + sneaking + axe + longBlunt + shortBlunt + longBlade + shortBlade + spear
 		if
 			player:hasTrait(CharacterTrait.HARD_OF_HEARING)
 			and levels >= SBvars.HearingSystemSkill / 2
 			and SBvars.TraitsLockSystemCanLoseNegative
 		then
-			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.HARD_OF_HEARING) then
-				ETWCommonFunctions.addTraitToDelayTable({
+			if
+				SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.HARD_OF_HEARING)
+			then
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = CharacterTrait.HARD_OF_HEARING,
 					player = player,
@@ -403,16 +409,16 @@ local function traitsGainsBySkill(player, perk)
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.HARD_OF_HEARING))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.HARD_OF_HEARING))
 			then
-				ETWCommonFunctions.removeTraitFromPlayer(CharacterTrait.HARD_OF_HEARING)
+				ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.HARD_OF_HEARING)
 				if notification then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_hardhear"), false, HaloTextHelper.getColorGreen())
 				end
 			end
 		elseif not player:hasTrait(CharacterTrait.HARD_OF_HEARING) and levels >= SBvars.HearingSystemSkill then
-			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.KEEN_HEARING) then
-				ETWCommonFunctions.addTraitToDelayTable({
+			if SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.KEEN_HEARING) then
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = CharacterTrait.KEEN_HEARING,
 					player = player,
@@ -421,19 +427,19 @@ local function traitsGainsBySkill(player, perk)
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.KEEN_HEARING))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.KEEN_HEARING))
 			then
-				ETWCommonFunctions.addTraitToPlayer(CharacterTrait.KEEN_HEARING)
+				ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.KEEN_HEARING)
 				if notification then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_keenhearing"), true, HaloTextHelper.getColorGreen())
 				end
 			end
 		end
 	end
-	if validHoarderPerks[perk] and ETWCommonLogicChecks.HoarderShouldExecute() then
+	if validHoarderPerks[perk] and ETW_CommonLogicChecks.HoarderShouldExecute(player) then
 		if strength >= SBvars.HoarderSkill then
-			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(ETWTraitsRegistry.HOARDER) then
-				ETWCommonFunctions.addTraitToDelayTable({
+			if SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.HOARDER) then
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = ETWTraitsRegistry.HOARDER,
 					player = player,
@@ -442,9 +448,9 @@ local function traitsGainsBySkill(player, perk)
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(ETWTraitsRegistry.HOARDER))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.HOARDER))
 			then
-				ETWCommonFunctions.addTraitToPlayer(ETWTraitsRegistry.HOARDER)
+				ETW_CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.HOARDER)
 				UnifiedCarryWeightFramework.recomputeAll(player)
 				if notification then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Hoarder"), true, HaloTextHelper.getColorGreen())
@@ -452,10 +458,10 @@ local function traitsGainsBySkill(player, perk)
 			end
 		end
 	end
-	if validGymRatPerks[perk] and ETWCommonLogicChecks.GymRatShouldExecute() then
+	if validGymRatPerks[perk] and ETW_CommonLogicChecks.GymRatShouldExecute(player) then
 		if (strength + fitness) >= SBvars.GymRatSkill then
-			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(ETWTraitsRegistry.GYM_RAT) then
-				ETWCommonFunctions.addTraitToDelayTable({
+			if SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.GYM_RAT) then
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = ETWTraitsRegistry.GYM_RAT,
 					player = player,
@@ -472,19 +478,19 @@ local function traitsGainsBySkill(player, perk)
 				end
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(ETWTraitsRegistry.GYM_RAT))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.GYM_RAT))
 			then
-				ETWCommonFunctions.addTraitToPlayer(ETWTraitsRegistry.GYM_RAT)
+				ETW_CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.GYM_RAT)
 				if notification then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_GymRat"), true, HaloTextHelper.getColorGreen())
 				end
 			end
 		end
 	end
-	if validRunnerPerks[perk] and ETWCommonLogicChecks.RunnerShouldExecute() then
+	if validRunnerPerks[perk] and ETW_CommonLogicChecks.RunnerShouldExecute(player) then
 		if sprinting >= SBvars.RunnerSkill then
-			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.JOGGER) then
-				ETWCommonFunctions.addTraitToDelayTable({
+			if SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.JOGGER) then
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = CharacterTrait.JOGGER,
 					player = player,
@@ -493,19 +499,19 @@ local function traitsGainsBySkill(player, perk)
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.JOGGER))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.JOGGER))
 			then
-				ETWCommonFunctions.addTraitToPlayer(CharacterTrait.JOGGER)
+				ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.JOGGER)
 				if notification then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Jogger"), true, HaloTextHelper.getColorGreen())
 				end
 			end
 		end
 	end
-	if validLightStepPerks[perk] and ETWCommonLogicChecks.LightStepShouldExecute() then
+	if validLightStepPerks[perk] and ETW_CommonLogicChecks.LightStepShouldExecute(player) then
 		if lightfooted >= SBvars.LightStepSkill then
-			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(ETWTraitsRegistry.LIGHTSTEP) then
-				ETWCommonFunctions.addTraitToDelayTable({
+			if SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.LIGHTSTEP) then
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = ETWTraitsRegistry.LIGHTSTEP,
 					player = player,
@@ -514,19 +520,19 @@ local function traitsGainsBySkill(player, perk)
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(ETWTraitsRegistry.LIGHTSTEP))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.LIGHTSTEP))
 			then
-				ETWCommonFunctions.addTraitToPlayer(ETWTraitsRegistry.LIGHTSTEP)
+				ETW_CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.LIGHTSTEP)
 				if notification then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_LightStep"), true, HaloTextHelper.getColorGreen())
 				end
 			end
 		end
 	end
-	if validGymnastPerks[perk] and ETWCommonLogicChecks.GymnastShouldExecute() then
+	if validGymnastPerks[perk] and ETW_CommonLogicChecks.GymnastShouldExecute(player) then
 		if (lightfooted + nimble) >= SBvars.GymnastSkill then
-			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(ETWTraitsRegistry.GYMNAST) then
-				ETWCommonFunctions.addTraitToDelayTable({
+			if SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.GYMNAST) then
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = ETWTraitsRegistry.GYMNAST,
 					player = player,
@@ -535,19 +541,19 @@ local function traitsGainsBySkill(player, perk)
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(ETWTraitsRegistry.GYMNAST))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.GYMNAST))
 			then
-				ETWCommonFunctions.addTraitToPlayer(ETWTraitsRegistry.GYMNAST)
+				ETW_CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.GYMNAST)
 				if notification then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Gymnast"), true, HaloTextHelper.getColorGreen())
 				end
 			end
 		end
 	end
-	if validClumsyPerks[perk] and ETWCommonLogicChecks.ClumsyShouldExecute() then
+	if validClumsyPerks[perk] and ETW_CommonLogicChecks.ClumsyShouldExecute(player) then
 		if (lightfooted + sneaking) >= SBvars.ClumsySkill then
-			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.CLUMSY) then
-				ETWCommonFunctions.addTraitToDelayTable({
+			if SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.CLUMSY) then
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = CharacterTrait.CLUMSY,
 					player = player,
@@ -556,20 +562,20 @@ local function traitsGainsBySkill(player, perk)
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.CLUMSY))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.CLUMSY))
 			then
-				ETWCommonFunctions.removeTraitFromPlayer(CharacterTrait.CLUMSY)
+				ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.CLUMSY)
 				if notification then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_clumsy"), false, HaloTextHelper.getColorGreen())
 				end
 			end
 		end
 	end
-	if validGracefulPerks[perk] and ETWCommonLogicChecks.GracefulShouldExecute() then
+	if validGracefulPerks[perk] and ETW_CommonLogicChecks.GracefulShouldExecute(player) then
 		local levels = nimble + sneaking + lightfooted
 		if levels >= SBvars.GracefulSkill then
-			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.GRACEFUL) then
-				ETWCommonFunctions.addTraitToDelayTable({
+			if SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.GRACEFUL) then
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = CharacterTrait.GRACEFUL,
 					player = player,
@@ -578,20 +584,20 @@ local function traitsGainsBySkill(player, perk)
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.GRACEFUL))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.GRACEFUL))
 			then
-				ETWCommonFunctions.addTraitToPlayer(CharacterTrait.GRACEFUL)
+				ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.GRACEFUL)
 				if notification then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_graceful"), true, HaloTextHelper.getColorGreen())
 				end
 			end
 		end
 	end
-	if validBurglarPerks[perk] and ETWCommonLogicChecks.BurglarShouldExecute() then
+	if validBurglarPerks[perk] and ETW_CommonLogicChecks.BurglarShouldExecute(player) then
 		local levels = nimble + mechanics + electrical
 		if electrical >= 2 and mechanics >= 2 and levels >= SBvars.BurglarSkill then
-			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.BURGLAR) then
-				ETWCommonFunctions.addTraitToDelayTable({
+			if SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.BURGLAR) then
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = CharacterTrait.BURGLAR,
 					player = player,
@@ -600,19 +606,19 @@ local function traitsGainsBySkill(player, perk)
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.BURGLAR))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.BURGLAR))
 			then
-				ETWCommonFunctions.addTraitToPlayer(CharacterTrait.BURGLAR)
+				ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.BURGLAR)
 				if notification then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Burglar"), true, HaloTextHelper.getColorGreen())
 				end
 			end
 		end
 	end
-	if validLowProfilePerks[perk] and ETWCommonLogicChecks.LowProfileShouldExecute() then
+	if validLowProfilePerks[perk] and ETW_CommonLogicChecks.LowProfileShouldExecute(player) then
 		if sneaking >= SBvars.LowProfileSkill then
-			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(ETWTraitsRegistry.LOW_PROFILE) then
-				ETWCommonFunctions.addTraitToDelayTable({
+			if SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.LOW_PROFILE) then
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = ETWTraitsRegistry.LOW_PROFILE,
 					player = player,
@@ -621,19 +627,19 @@ local function traitsGainsBySkill(player, perk)
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(ETWTraitsRegistry.LOW_PROFILE))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.LOW_PROFILE))
 			then
-				ETWCommonFunctions.addTraitToPlayer(ETWTraitsRegistry.LOW_PROFILE)
+				ETW_CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.LOW_PROFILE)
 				if notification then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_LowProfile"), true, HaloTextHelper.getColorGreen())
 				end
 			end
 		end
 	end
-	if validConspicuousPerks[perk] and ETWCommonLogicChecks.ConspicuousShouldExecute() then
-		if ETWCommonLogicChecks.ConspicuousShouldExecute() and sneaking >= SBvars.ConspicuousSkill then
-			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.CONSPICUOUS) then
-				ETWCommonFunctions.addTraitToDelayTable({
+	if validConspicuousPerks[perk] and ETW_CommonLogicChecks.ConspicuousShouldExecute(player) then
+		if ETW_CommonLogicChecks.ConspicuousShouldExecute(player) and sneaking >= SBvars.ConspicuousSkill then
+			if SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.CONSPICUOUS) then
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = CharacterTrait.CONSPICUOUS,
 					player = player,
@@ -642,16 +648,16 @@ local function traitsGainsBySkill(player, perk)
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.CONSPICUOUS))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.CONSPICUOUS))
 			then
-				ETWCommonFunctions.removeTraitFromPlayer(CharacterTrait.CONSPICUOUS)
+				ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.CONSPICUOUS)
 				if notification then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Conspicuous"), false, HaloTextHelper.getColorGreen())
 				end
 			end
-		elseif ETWCommonLogicChecks.InconspicuousShouldExecute() and sneaking >= SBvars.InconspicuousSkill then
-			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.INCONSPICUOUS) then
-				ETWCommonFunctions.addTraitToDelayTable({
+		elseif ETW_CommonLogicChecks.InconspicuousShouldExecute(player) and sneaking >= SBvars.InconspicuousSkill then
+			if SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.INCONSPICUOUS) then
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = CharacterTrait.INCONSPICUOUS,
 					player = player,
@@ -660,16 +666,16 @@ local function traitsGainsBySkill(player, perk)
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.INCONSPICUOUS))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.INCONSPICUOUS))
 			then
-				ETWCommonFunctions.addTraitToPlayer(CharacterTrait.INCONSPICUOUS)
+				ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.INCONSPICUOUS)
 				if notification then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Inconspicuous"), true, HaloTextHelper.getColorGreen())
 				end
 			end
 		end
 	end
-	if validHunterPerks[perk] and ETWCommonLogicChecks.HunterShouldExecute() then
+	if validHunterPerks[perk] and ETW_CommonLogicChecks.HunterShouldExecute(player) then
 		local levels = sneaking + aiming + trapping + shortBlade
 		if
 			sneaking >= 2
@@ -679,8 +685,8 @@ local function traitsGainsBySkill(player, perk)
 			and levels >= SBvars.HunterSkill
 			and (shortBladeKills + firearmKills) >= SBvars.HunterKills
 		then
-			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.HUNTER) then
-				ETWCommonFunctions.addTraitToDelayTable({
+			if SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.HUNTER) then
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = CharacterTrait.HUNTER,
 					player = player,
@@ -689,19 +695,19 @@ local function traitsGainsBySkill(player, perk)
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.HUNTER))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.HUNTER))
 			then
-				ETWCommonFunctions.addTraitToPlayer(CharacterTrait.HUNTER)
+				ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.HUNTER)
 				if notification then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Hunter"), true, HaloTextHelper.getColorGreen())
 				end
 			end
 		end
 	end
-	if validBrawlerPerks[perk] and ETWCommonLogicChecks.BrawlerShouldExecute() then
+	if validBrawlerPerks[perk] and ETW_CommonLogicChecks.BrawlerShouldExecute(player) then
 		if (axe + longBlunt) >= SBvars.BrawlerSkill and (axeKills + longBluntKills) >= SBvars.BrawlerKills then
-			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.BRAWLER) then
-				ETWCommonFunctions.addTraitToDelayTable({
+			if SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.BRAWLER) then
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = CharacterTrait.BRAWLER,
 					player = player,
@@ -710,19 +716,19 @@ local function traitsGainsBySkill(player, perk)
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.BRAWLER))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.BRAWLER))
 			then
-				ETWCommonFunctions.addTraitToPlayer(CharacterTrait.BRAWLER)
+				ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.BRAWLER)
 				if notification then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_BarFighter"), true, HaloTextHelper.getColorGreen())
 				end
 			end
 		end
 	end
-	if validAxeThrowerPerks[perk] and ETWCommonLogicChecks.AxeThrowerShouldExecute() then
+	if validAxeThrowerPerks[perk] and ETW_CommonLogicChecks.AxeThrowerShouldExecute(player) then
 		if axe >= SBvars.AxeThrowerSkill and axeKills >= SBvars.AxeThrowerKills then
-			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(ETWTraitsRegistry.AXE_THROWER) then
-				ETWCommonFunctions.addTraitToDelayTable({
+			if SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.AXE_THROWER) then
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = ETWTraitsRegistry.AXE_THROWER,
 					player = player,
@@ -731,19 +737,21 @@ local function traitsGainsBySkill(player, perk)
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(ETWTraitsRegistry.AXE_THROWER))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.AXE_THROWER))
 			then
-				ETWCommonFunctions.addTraitToPlayer(ETWTraitsRegistry.AXE_THROWER)
+				ETW_CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.AXE_THROWER)
 				if notification then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_AxeThrower"), true, HaloTextHelper.getColorGreen())
 				end
 			end
 		end
 	end
-	if validBaseballPlayerPerks[perk] and ETWCommonLogicChecks.BaseballPlayerShouldExecute() then
+	if validBaseballPlayerPerks[perk] and ETW_CommonLogicChecks.BaseballPlayerShouldExecute(player) then
 		if longBlunt >= SBvars.BaseballPlayerSkill and longBluntKills >= SBvars.BaseballPlayerKills then
-			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.BASEBALL_PLAYER) then
-				ETWCommonFunctions.addTraitToDelayTable({
+			if
+				SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.BASEBALL_PLAYER)
+			then
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = CharacterTrait.BASEBALL_PLAYER,
 					player = player,
@@ -752,21 +760,21 @@ local function traitsGainsBySkill(player, perk)
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.BASEBALL_PLAYER))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.BASEBALL_PLAYER))
 			then
-				ETWCommonFunctions.addTraitToPlayer(CharacterTrait.BASEBALL_PLAYER)
+				ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.BASEBALL_PLAYER)
 				if notification then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_PlaysBaseball"), true, HaloTextHelper.getColorGreen())
 				end
 			end
 		end
 	end
-	if validStickFighterPerks[perk] and ETWCommonLogicChecks.StickFighterShouldExecute() then
+	if validStickFighterPerks[perk] and ETW_CommonLogicChecks.StickFighterShouldExecute(player) then
 		if shortBlunt >= SBvars.StickFighterSkill and shortBluntKills >= SBvars.StickFighterKills then
 			if
-				SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(ETWTraitsRegistry.STICK_FIGHTER)
+				SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.STICK_FIGHTER)
 			then
-				ETWCommonFunctions.addTraitToDelayTable({
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = ETWTraitsRegistry.STICK_FIGHTER,
 					player = player,
@@ -775,22 +783,22 @@ local function traitsGainsBySkill(player, perk)
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(ETWTraitsRegistry.STICK_FIGHTER))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.STICK_FIGHTER))
 			then
-				ETWCommonFunctions.addTraitToPlayer(ETWTraitsRegistry.STICK_FIGHTER)
+				ETW_CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.STICK_FIGHTER)
 				if notification then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_StickFighter"), true, HaloTextHelper.getColorGreen())
 				end
 			end
 		end
 	end
-	if validBladeEnthusiastPerks[perk] and ETWCommonLogicChecks.BladeEnthusiastShouldExecute() then
+	if validBladeEnthusiastPerks[perk] and ETW_CommonLogicChecks.BladeEnthusiastShouldExecute(player) then
 		if longBlade >= SBvars.BladeEnthusiastSkill and longBladeKills >= SBvars.BladeEnthusiastKills then
 			if
 				SBvars.DelayedTraitsSystem
-				and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(ETWTraitsRegistry.BLADE_ENTHUSIAST)
+				and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.BLADE_ENTHUSIAST)
 			then
-				ETWCommonFunctions.addTraitToDelayTable({
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = ETWTraitsRegistry.BLADE_ENTHUSIAST,
 					player = player,
@@ -799,21 +807,21 @@ local function traitsGainsBySkill(player, perk)
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(ETWTraitsRegistry.BLADE_ENTHUSIAST))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.BLADE_ENTHUSIAST))
 			then
-				ETWCommonFunctions.addTraitToPlayer(ETWTraitsRegistry.BLADE_ENTHUSIAST)
+				ETW_CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.BLADE_ENTHUSIAST)
 				if notification then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_BladeEnthusiast"), true, HaloTextHelper.getColorGreen())
 				end
 			end
 		end
 	end
-	if validKnifeFighterPerks[perk] and ETWCommonLogicChecks.KnifeFighterShouldExecute() then
+	if validKnifeFighterPerks[perk] and ETW_CommonLogicChecks.KnifeFighterShouldExecute(player) then
 		if shortBlade >= SBvars.KnifeFighterSkill and shortBladeKills >= SBvars.KnifeFighterKills then
 			if
-				SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(ETWTraitsRegistry.KNIFE_FIGHTER)
+				SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.KNIFE_FIGHTER)
 			then
-				ETWCommonFunctions.addTraitToDelayTable({
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = ETWTraitsRegistry.KNIFE_FIGHTER,
 					player = player,
@@ -822,21 +830,22 @@ local function traitsGainsBySkill(player, perk)
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(ETWTraitsRegistry.KNIFE_FIGHTER))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.KNIFE_FIGHTER))
 			then
-				ETWCommonFunctions.addTraitToPlayer(ETWTraitsRegistry.KNIFE_FIGHTER)
+				ETW_CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.KNIFE_FIGHTER)
 				if notification then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_KnifeFighter"), true, HaloTextHelper.getColorGreen())
 				end
 			end
 		end
 	end
-	if validPolearmPerks[perk] and ETWCommonLogicChecks.PolearmFighterShouldExecute() then
+	if validPolearmPerks[perk] and ETW_CommonLogicChecks.PolearmFighterShouldExecute(player) then
 		if spear >= SBvars.PolearmFighterSkill and spearKills >= SBvars.PolearmFighterKills then
 			if
-				SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(ETWTraitsRegistry.POLEARM_FIGHTER)
+				SBvars.DelayedTraitsSystem
+				and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.POLEARM_FIGHTER)
 			then
-				ETWCommonFunctions.addTraitToDelayTable({
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = ETWTraitsRegistry.POLEARM_FIGHTER,
 					player = player,
@@ -845,22 +854,22 @@ local function traitsGainsBySkill(player, perk)
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(ETWTraitsRegistry.POLEARM_FIGHTER))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.POLEARM_FIGHTER))
 			then
-				ETWCommonFunctions.addTraitToPlayer(ETWTraitsRegistry.POLEARM_FIGHTER)
+				ETW_CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.POLEARM_FIGHTER)
 				if notification then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_PolearmFighter"), true, HaloTextHelper.getColorGreen())
 				end
 			end
 		end
 	end
-	if validRestorationExpertPerks[perk] and ETWCommonLogicChecks.RestorationExpertShouldExecute() then
+	if validRestorationExpertPerks[perk] and ETW_CommonLogicChecks.RestorationExpertShouldExecute(player) then
 		if maintenance >= SBvars.RestorationExpertSkill then
 			if
 				SBvars.DelayedTraitsSystem
-				and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(ETWTraitsRegistry.RESTORATION_EXPERT)
+				and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.RESTORATION_EXPERT)
 			then
-				ETWCommonFunctions.addTraitToDelayTable({
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = ETWTraitsRegistry.RESTORATION_EXPERT,
 					player = player,
@@ -869,19 +878,19 @@ local function traitsGainsBySkill(player, perk)
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(ETWTraitsRegistry.RESTORATION_EXPERT))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.RESTORATION_EXPERT))
 			then
-				ETWCommonFunctions.addTraitToPlayer(ETWTraitsRegistry.RESTORATION_EXPERT)
+				ETW_CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.RESTORATION_EXPERT)
 				if notification then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_RestorationExpert"), true, HaloTextHelper.getColorGreen())
 				end
 			end
 		end
 	end
-	if validHandyPerks[perk] and ETWCommonLogicChecks.HandyShouldExecute() then
+	if validHandyPerks[perk] and ETW_CommonLogicChecks.HandyShouldExecute(player) then
 		if (maintenance + carpentry) >= SBvars.HandySkill then
-			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.HANDY) then
-				ETWCommonFunctions.addTraitToDelayTable({
+			if SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.HANDY) then
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = CharacterTrait.HANDY,
 					player = player,
@@ -890,24 +899,24 @@ local function traitsGainsBySkill(player, perk)
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.HANDY))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.HANDY))
 			then
-				ETWCommonFunctions.addTraitToPlayer(CharacterTrait.HANDY)
+				ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.HANDY)
 				if notification then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_handy"), true, HaloTextHelper.getColorGreen())
 				end
 			end
 		end
 	end
-	if validLearnerPerks[perk] and ETWCommonLogicChecks.LearnerSystemShouldExecute() then
+	if validLearnerPerks[perk] and ETW_CommonLogicChecks.LearnerSystemShouldExecute(player) then
 		local levels = maintenance + carpentry + farming + firstAid + electrical + metalworking + mechanics + tailoring + cooking
 		if
 			player:hasTrait(CharacterTrait.SLOW_LEARNER)
 			and levels >= SBvars.LearnerSystemSkill / 2
 			and SBvars.TraitsLockSystemCanLoseNegative
 		then
-			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.SLOW_LEARNER) then
-				ETWCommonFunctions.addTraitToDelayTable({
+			if SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.SLOW_LEARNER) then
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = CharacterTrait.SLOW_LEARNER,
 					player = player,
@@ -916,9 +925,9 @@ local function traitsGainsBySkill(player, perk)
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.SLOW_LEARNER))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.SLOW_LEARNER))
 			then
-				ETWCommonFunctions.removeTraitFromPlayer(CharacterTrait.SLOW_LEARNER)
+				ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.SLOW_LEARNER)
 				if notification then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_SlowLearner"), false, HaloTextHelper.getColorGreen())
 				end
@@ -928,8 +937,8 @@ local function traitsGainsBySkill(player, perk)
 			and levels >= SBvars.LearnerSystemSkill
 			and SBvars.TraitsLockSystemCanGainPositive
 		then
-			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.FAST_LEARNER) then
-				ETWCommonFunctions.addTraitToDelayTable({
+			if SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.FAST_LEARNER) then
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = CharacterTrait.FAST_LEARNER,
 					player = player,
@@ -938,22 +947,22 @@ local function traitsGainsBySkill(player, perk)
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.FAST_LEARNER))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.FAST_LEARNER))
 			then
-				ETWCommonFunctions.addTraitToPlayer(CharacterTrait.FAST_LEARNER)
+				ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.FAST_LEARNER)
 				if notification then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_FastLearner"), true, HaloTextHelper.getColorGreen())
 				end
 			end
 		end
 	end
-	if validFurnitureAssemblerPerks[perk] and ETWCommonLogicChecks.FurnitureAssemblerShouldExecute() then
+	if validFurnitureAssemblerPerks[perk] and ETW_CommonLogicChecks.FurnitureAssemblerShouldExecute(player) then
 		if carpentry >= SBvars.FurnitureAssemblerSkill then
 			if
 				SBvars.DelayedTraitsSystem
-				and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(ETWTraitsRegistry.FURNITURE_ASSEMBLER)
+				and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.FURNITURE_ASSEMBLER)
 			then
-				ETWCommonFunctions.addTraitToDelayTable({
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = ETWTraitsRegistry.FURNITURE_ASSEMBLER,
 					player = player,
@@ -962,19 +971,19 @@ local function traitsGainsBySkill(player, perk)
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(ETWTraitsRegistry.FURNITURE_ASSEMBLER))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.FURNITURE_ASSEMBLER))
 			then
-				ETWCommonFunctions.addTraitToPlayer(ETWTraitsRegistry.FURNITURE_ASSEMBLER)
+				ETW_CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.FURNITURE_ASSEMBLER)
 				if notification then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_FurnitureAssembler"), true, HaloTextHelper.getColorGreen())
 				end
 			end
 		end
 	end
-	if validHomeCookPerks[perk] and ETWCommonLogicChecks.HomeCookShouldExecute() then
+	if validHomeCookPerks[perk] and ETW_CommonLogicChecks.HomeCookShouldExecute(player) then
 		if cooking >= SBvars.HomeCookSkill then
-			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(ETWTraitsRegistry.HOME_COOK) then
-				ETWCommonFunctions.addTraitToDelayTable({
+			if SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.HOME_COOK) then
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = ETWTraitsRegistry.HOME_COOK,
 					player = player,
@@ -983,19 +992,19 @@ local function traitsGainsBySkill(player, perk)
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(ETWTraitsRegistry.HOME_COOK))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.HOME_COOK))
 			then
-				ETWCommonFunctions.addTraitToPlayer(ETWTraitsRegistry.HOME_COOK)
+				ETW_CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.HOME_COOK)
 				if notification then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_HomeCook"), true, HaloTextHelper.getColorGreen())
 				end
 			end
 		end
 	end
-	if validCookPerks[perk] and ETWCommonLogicChecks.CookShouldExecute() then
+	if validCookPerks[perk] and ETW_CommonLogicChecks.CookShouldExecute(player) then
 		if cooking >= SBvars.CookSkill then
-			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.COOK) then
-				ETWCommonFunctions.addTraitToDelayTable({
+			if SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.COOK) then
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = CharacterTrait.COOK,
 					player = player,
@@ -1004,19 +1013,19 @@ local function traitsGainsBySkill(player, perk)
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.COOK))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.COOK))
 			then
-				ETWCommonFunctions.addTraitToPlayer(CharacterTrait.COOK)
+				ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.COOK)
 				if notification then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Cook"), true, HaloTextHelper.getColorGreen())
 				end
 			end
 		end
 	end
-	if validGardenerPerks[perk] and ETWCommonLogicChecks.GardenerShouldExecute() then
+	if validGardenerPerks[perk] and ETW_CommonLogicChecks.GardenerShouldExecute(player) then
 		if farming >= SBvars.GardenerSkill then
-			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.GARDENER) then
-				ETWCommonFunctions.addTraitToDelayTable({
+			if SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.GARDENER) then
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = CharacterTrait.GARDENER,
 					player = player,
@@ -1025,19 +1034,19 @@ local function traitsGainsBySkill(player, perk)
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.GARDENER))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.GARDENER))
 			then
-				ETWCommonFunctions.addTraitToPlayer(CharacterTrait.GARDENER)
+				ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.GARDENER)
 				if notification then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Gardener"), true, HaloTextHelper.getColorGreen())
 				end
 			end
 		end
 	end
-	if validPetTherapyPerks[perk] and ETWCommonLogicChecks.PetTherapyShouldExecute() then
+	if validPetTherapyPerks[perk] and ETW_CommonLogicChecks.PetTherapyShouldExecute(player) then
 		if husbandry >= SBvars.PetTherapySkill and #modData.AnimalsSystem.UniqueAnimalsPetted >= SBvars.PetTherapyUniqueAnimalsPetted then
-			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(ETWTraitsRegistry.PET_THERAPY) then
-				ETWCommonFunctions.addTraitToDelayTable({
+			if SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.PET_THERAPY) then
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = ETWTraitsRegistry.PET_THERAPY,
 					player = player,
@@ -1046,19 +1055,19 @@ local function traitsGainsBySkill(player, perk)
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(ETWTraitsRegistry.PET_THERAPY))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.PET_THERAPY))
 			then
-				ETWCommonFunctions.addTraitToPlayer(ETWTraitsRegistry.PET_THERAPY)
+				ETW_CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.PET_THERAPY)
 				if notification then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_PetTherapy"), true, HaloTextHelper.getColorGreen())
 				end
 			end
 		end
 	end
-	if validWhittlerPerks[perk] and ETWCommonLogicChecks.WhittlerShouldExecute() then
+	if validWhittlerPerks[perk] and ETW_CommonLogicChecks.WhittlerShouldExecute(player) then
 		if carving >= SBvars.WhittlerSkill then
-			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.WHITTLER) then
-				ETWCommonFunctions.addTraitToDelayTable({
+			if SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.WHITTLER) then
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = CharacterTrait.WHITTLER,
 					player = player,
@@ -1067,19 +1076,19 @@ local function traitsGainsBySkill(player, perk)
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.WHITTLER))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.WHITTLER))
 			then
-				ETWCommonFunctions.addTraitToPlayer(CharacterTrait.WHITTLER)
+				ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.WHITTLER)
 				if notification then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Whittler"), true, HaloTextHelper.getColorGreen())
 				end
 			end
 		end
 	end
-	if validBlacksmithPerks[perk] and ETWCommonLogicChecks.BlacksmithShouldExecute() then
+	if validBlacksmithPerks[perk] and ETW_CommonLogicChecks.BlacksmithShouldExecute(player) then
 		if blacksmith + maintenance >= SBvars.BlacksmithSkill then
-			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.BLACKSMITH) then
-				ETWCommonFunctions.addTraitToDelayTable({
+			if SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.BLACKSMITH) then
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = CharacterTrait.BLACKSMITH,
 					player = player,
@@ -1088,16 +1097,16 @@ local function traitsGainsBySkill(player, perk)
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.BLACKSMITH))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.BLACKSMITH))
 			then
-				ETWCommonFunctions.addTraitToPlayer(CharacterTrait.BLACKSMITH)
+				ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.BLACKSMITH)
 				if notification then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Blacksmith"), true, HaloTextHelper.getColorGreen())
 				end
 			end
 		end
 	end
-	if validWildernessKnowledgePerks[perk] and ETWCommonLogicChecks.WildernessKnowledgeShouldExecute() then
+	if validWildernessKnowledgePerks[perk] and ETW_CommonLogicChecks.WildernessKnowledgeShouldExecute(player) then
 		if
 			foraging >= 2
 			and knapping >= 2
@@ -1107,9 +1116,9 @@ local function traitsGainsBySkill(player, perk)
 		then
 			if
 				SBvars.DelayedTraitsSystem
-				and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.WILDERNESS_KNOWLEDGE)
+				and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.WILDERNESS_KNOWLEDGE)
 			then
-				ETWCommonFunctions.addTraitToDelayTable({
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = CharacterTrait.WILDERNESS_KNOWLEDGE,
 					player = player,
@@ -1118,19 +1127,19 @@ local function traitsGainsBySkill(player, perk)
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.WILDERNESS_KNOWLEDGE))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.WILDERNESS_KNOWLEDGE))
 			then
-				ETWCommonFunctions.addTraitToPlayer(CharacterTrait.WILDERNESS_KNOWLEDGE)
+				ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.WILDERNESS_KNOWLEDGE)
 				if notification then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_WildernessKnowledge"), true, HaloTextHelper.getColorGreen())
 				end
 			end
 		end
 	end
-	if validFirstAidPerks[perk] and ETWCommonLogicChecks.FirstAidShouldExecute() then
+	if validFirstAidPerks[perk] and ETW_CommonLogicChecks.FirstAidShouldExecute(player) then
 		if firstAid >= SBvars.FirstAidSkill then
-			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.FIRST_AID) then
-				ETWCommonFunctions.addTraitToDelayTable({
+			if SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.FIRST_AID) then
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = CharacterTrait.FIRST_AID,
 					player = player,
@@ -1139,19 +1148,19 @@ local function traitsGainsBySkill(player, perk)
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.FIRST_AID))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.FIRST_AID))
 			then
-				ETWCommonFunctions.addTraitToPlayer(CharacterTrait.FIRST_AID)
+				ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.FIRST_AID)
 				if notification then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_FirstAid"), true, HaloTextHelper.getColorGreen())
 				end
 			end
 		end
 	end
-	if validAVClubPerks[perk] and ETWCommonLogicChecks.AVClubShouldExecute() then
+	if validAVClubPerks[perk] and ETW_CommonLogicChecks.AVClubShouldExecute(player) then
 		if electrical >= SBvars.AVClubSkill then
-			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(ETWTraitsRegistry.AV_CLUB) then
-				ETWCommonFunctions.addTraitToDelayTable({
+			if SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.AV_CLUB) then
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = ETWTraitsRegistry.AV_CLUB,
 					player = player,
@@ -1160,30 +1169,30 @@ local function traitsGainsBySkill(player, perk)
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(ETWTraitsRegistry.AV_CLUB))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.AV_CLUB))
 			then
-				ETWCommonFunctions.addTraitToPlayer(ETWTraitsRegistry.AV_CLUB)
+				ETW_CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.AV_CLUB)
 				if notification then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_AVClub"), true, HaloTextHelper.getColorGreen())
 				end
 			end
 		end
 	end
-	if validBodyWorkEnthusiastPerks[perk] and ETWCommonLogicChecks.BodyWorkEnthusiastShouldExecute() then
+	if validBodyWorkEnthusiastPerks[perk] and ETW_CommonLogicChecks.BodyWorkEnthusiastShouldExecute(player) then
 		ETWCombinedTraitChecks.bodyworkEnthusiastCheck(DebugAndNotificationArgs)
 	end
-	if validMechanicsPerks[perk] and ETWCommonLogicChecks.MechanicsShouldExecute() then
+	if validMechanicsPerks[perk] and ETW_CommonLogicChecks.MechanicsShouldExecute(player) then
 		ETWCombinedTraitChecks.mechanicsCheck(DebugAndNotificationArgs)
 	end
-	if validSewerPerks[perk] and ETWCommonLogicChecks.SewerShouldExecute() then
+	if validSewerPerks[perk] and ETW_CommonLogicChecks.SewerShouldExecute(player) then
 		ETWCombinedTraitChecks.sewerCheck(DebugAndNotificationArgs)
 	end
-	if validGunEnthusiastPerks[perk] and ETWCommonLogicChecks.GunEnthusiastShouldExecute() then
+	if validGunEnthusiastPerks[perk] and ETW_CommonLogicChecks.GunEnthusiastShouldExecute(player) then
 		if (aiming + reloading) >= SBvars.GunEnthusiastSkill and firearmKills >= SBvars.GunEnthusiastKills then
 			if
-				SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(ETWTraitsRegistry.GUN_ENTHUSIAST)
+				SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.GUN_ENTHUSIAST)
 			then
-				ETWCommonFunctions.addTraitToDelayTable({
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = ETWTraitsRegistry.GUN_ENTHUSIAST,
 					player = player,
@@ -1192,19 +1201,19 @@ local function traitsGainsBySkill(player, perk)
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(ETWTraitsRegistry.GUN_ENTHUSIAST))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.GUN_ENTHUSIAST))
 			then
-				ETWCommonFunctions.addTraitToPlayer(ETWTraitsRegistry.GUN_ENTHUSIAST)
+				ETW_CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.GUN_ENTHUSIAST)
 				if notification then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_GunEnthusiast"), true, HaloTextHelper.getColorGreen())
 				end
 			end
 		end
 	end
-	if validAnglerPerks[perk] and ETWCommonLogicChecks.AnglerShouldExecute() then
+	if validAnglerPerks[perk] and ETW_CommonLogicChecks.AnglerShouldExecute(player) then
 		if fishing >= SBvars.FishingSkill then
-			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.FISHING) then
-				ETWCommonFunctions.addTraitToDelayTable({
+			if SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.FISHING) then
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = CharacterTrait.FISHING,
 					player = player,
@@ -1213,19 +1222,19 @@ local function traitsGainsBySkill(player, perk)
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.FISHING))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.FISHING))
 			then
-				ETWCommonFunctions.addTraitToPlayer(CharacterTrait.FISHING)
+				ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.FISHING)
 				if notification then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Fishing"), true, HaloTextHelper.getColorGreen())
 				end
 			end
 		end
 	end
-	if validHikerPerks[perk] and ETWCommonLogicChecks.HikerShouldExecute() then
+	if validHikerPerks[perk] and ETW_CommonLogicChecks.HikerShouldExecute(player) then
 		if (trapping + foraging) >= SBvars.HikerSkill then
-			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.HIKER) then
-				ETWCommonFunctions.addTraitToDelayTable({
+			if SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.HIKER) then
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = CharacterTrait.HIKER,
 					player = player,
@@ -1234,9 +1243,9 @@ local function traitsGainsBySkill(player, perk)
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.HIKER))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.HIKER))
 			then
-				ETWCommonFunctions.addTraitToPlayer(CharacterTrait.HIKER)
+				ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.HIKER)
 				if notification then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Hiker"), true, HaloTextHelper.getColorGreen())
 				end
@@ -1251,7 +1260,11 @@ local random_instance = newrandom()
 ---Function responsible for hourly check on Delayed Traits system
 local function progressDelayedTraits()
 	local player = getPlayer()
-	local modData = ETWCommonFunctions.getETWModData(player)
+	local modData = ETW_CommonFunctions.getETWModData(player)
+	if not modData then
+		logETW("ETW Logger | progressDelayedTraits(): modData is nil, returning early")
+		return
+	end
 	local traitTable = modData.DelayedTraits
 	logETW("ETW Logger | Delayed Traits System: new progressDelayedTraits() execution ----------")
 	for index = 1, #traitTable do

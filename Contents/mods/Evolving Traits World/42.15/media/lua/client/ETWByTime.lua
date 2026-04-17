@@ -1,14 +1,14 @@
-require("ETWModData")
+require("ETW_ModData")
 require("ETWModOptions")
 local ETWMoodles = require("ETWMoodles")
-local ETWCommonFunctions = require("ETWCommonFunctions")
-local ETWCommonLogicChecks = require("ETWCommonLogicChecks")
+local ETW_CommonFunctions = require("ETW_CommonFunctions")
+local ETW_CommonLogicChecks = require("ETW_CommonLogicChecks")
 
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld
 
 ---@type EvolvingTraitsWorldRegistries
-local ETWRegistries = require("ETWRegistry")
+local ETWRegistries = require("ETW_Registry")
 ---@type EvolvingTraitsWorldTraitsRegistries
 local ETWTraitsRegistry = ETWRegistries.traits
 
@@ -40,7 +40,7 @@ end
 ---Prints out debugs inside console if detailedDebug is enabled
 ---@param ... any Optional boolean followed by strings to log, if set to true, prints all strings in a single line otherwise prints each string in a new line
 local logETW = function(...)
-	ETWCommonFunctions.log(...)
+	ETW_CommonFunctions.log(...)
 end
 
 ---Function responsible for managing Cat Eyes trait
@@ -56,7 +56,11 @@ local function catEyes(isKill)
 		local square
 		local plX, plY, plZ = player:getX(), player:getY(), player:getZ()
 		local radius = 30
-		local modData = ETWCommonFunctions.getETWModData(player)
+		local modData = ETW_CommonFunctions.getETWModData(player)
+		if not modData then
+			logETW("ETW Logger | catEyes(): modData is nil, returning early")
+			return
+		end
 		local playerIsInside = player:isInARoom()
 		local hasEagleEyed = player:hasTrait(CharacterTrait.EAGLE_EYED)
 		local thisMinuteIncrease = 0
@@ -89,8 +93,8 @@ local function catEyes(isKill)
 			"ETW Logger | catEyes(): CatEyesCounter: " .. modData.CatEyesCounter
 		)
 		if not player:hasTrait(CharacterTrait.NIGHT_VISION) and modData.CatEyesCounter >= SBvars.CatEyesCounter then
-			if SBvars.DelayedTraitsSystem and not ETWCommonFunctions.checkIfTraitIsInDelayedTraitsTable(CharacterTrait.NIGHT_VISION) then
-				ETWCommonFunctions.addTraitToDelayTable({
+			if SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.NIGHT_VISION) then
+				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
 					trait = CharacterTrait.NIGHT_VISION,
 					player = player,
@@ -99,9 +103,9 @@ local function catEyes(isKill)
 				})
 			elseif
 				not SBvars.DelayedTraitsSystem
-				or (SBvars.DelayedTraitsSystem and ETWCommonFunctions.checkDelayedTraits(CharacterTrait.NIGHT_VISION))
+				or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.NIGHT_VISION))
 			then
-				ETWCommonFunctions.addTraitToPlayer(CharacterTrait.NIGHT_VISION)
+				ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.NIGHT_VISION)
 				Events.EveryOneMinute.Remove(catEyes)
 				if notification() then
 					HaloTextHelper.addTextWithArrow(player, getText("UI_trait_NightVision"), true, HaloTextHelper.getColorGreen())
@@ -132,7 +136,11 @@ end
 ---Function responsible for managing Sleep System traits
 local function sleepSystem()
 	local player = getPlayer()
-	local modData = ETWCommonFunctions.getETWModData(player)
+	local modData = ETW_CommonFunctions.getETWModData(player)
+	if not modData then
+		logETW("ETW Logger | sleepSystem(): modData is nil, returning early")
+		return
+	end
 	local startingTraitsModData = modData.StartingTraits
 	local sleepModData = modData.SleepSystem
 	local timeOfDay = getGameTime():getTimeOfDay()
@@ -201,27 +209,27 @@ local function sleepSystem()
 	end
 	if sleepModData.SleepHealthinessBar > 100 then
 		if not player:hasTrait(CharacterTrait.NEEDS_LESS_SLEEP) and SBvars.TraitsLockSystemCanGainPositive then
-			ETWCommonFunctions.addTraitToPlayer(CharacterTrait.NEEDS_LESS_SLEEP)
+			ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.NEEDS_LESS_SLEEP)
 			if notification() then
 				HaloTextHelper.addTextWithArrow(player, getText("UI_trait_LessSleep"), true, HaloTextHelper.getColorGreen())
 			end
 		end
 	elseif sleepModData.SleepHealthinessBar < -100 then
 		if not player:hasTrait(CharacterTrait.NEEDS_MORE_SLEEP) and SBvars.TraitsLockSystemCanGainNegative then
-			ETWCommonFunctions.addTraitToPlayer(CharacterTrait.NEEDS_MORE_SLEEP)
+			ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.NEEDS_MORE_SLEEP)
 			if notification() then
 				HaloTextHelper.addTextWithArrow(player, getText("UI_trait_MoreSleep"), true, HaloTextHelper.getColorRed())
 			end
 		end
 	else
 		if player:hasTrait(CharacterTrait.NEEDS_LESS_SLEEP) and SBvars.TraitsLockSystemCanLosePositive then
-			ETWCommonFunctions.removeTraitFromPlayer(CharacterTrait.NEEDS_LESS_SLEEP)
+			ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.NEEDS_LESS_SLEEP)
 			if notification() then
 				HaloTextHelper.addTextWithArrow(player, getText("UI_trait_LessSleep"), false, HaloTextHelper.getColorRed())
 			end
 		end
 		if player:hasTrait(CharacterTrait.NEEDS_MORE_SLEEP) and SBvars.TraitsLockSystemCanLoseNegative then
-			ETWCommonFunctions.removeTraitFromPlayer(CharacterTrait.NEEDS_MORE_SLEEP)
+			ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.NEEDS_MORE_SLEEP)
 			if notification() then
 				HaloTextHelper.addTextWithArrow(player, getText("UI_trait_MoreSleep"), true, HaloTextHelper.getColorGreen())
 			end
@@ -233,7 +241,11 @@ end
 ---Function responsible for managing hourly Smoker trait decay
 local function smoker()
 	local player = getPlayer()
-	local modData = ETWCommonFunctions.getETWModData(player)
+	local modData = ETW_CommonFunctions.getETWModData(player)
+	if not modData then
+		logETW("ETW Logger | smoker(): modData is nil, returning early")
+		return
+	end
 	local smokerModData = modData.SmokeSystem
 	local timeSinceLastSmoke = player:getTimeSinceLastSmoke() * 60
 	smokerModData.MinutesSinceLastSmoke = smokerModData.MinutesSinceLastSmoke + 1
@@ -263,7 +275,7 @@ local function smoker()
 		and not player:hasTrait(CharacterTrait.SMOKER)
 		and SBvars.TraitsLockSystemCanGainNegative
 	then
-		ETWCommonFunctions.addTraitToPlayer(CharacterTrait.SMOKER)
+		ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.SMOKER)
 		if notification() then
 			HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Smoker"), true, HaloTextHelper.getColorRed())
 		end
@@ -273,7 +285,7 @@ local function smoker()
 		and SBvars.TraitsLockSystemCanLoseNegative
 	then
 		stats:set(CharacterStat.NICOTINE_WITHDRAWAL, 0)
-		ETWCommonFunctions.removeTraitFromPlayer(CharacterTrait.SMOKER)
+		ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.SMOKER)
 		if notification() then
 			HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Smoker"), false, HaloTextHelper.getColorGreen())
 		end
@@ -283,14 +295,18 @@ end
 ---Function responsible for managing daily Herbalist trait decay
 local function herbalist()
 	local player = getPlayer()
-	local modData = ETWCommonFunctions.getETWModData(player)
+	local modData = ETW_CommonFunctions.getETWModData(player)
+	if not modData then
+		logETW("ETW Logger | herbalist(): modData is nil, returning early")
+		return
+	end
 	modData.HerbsPickedUp = math.max(
 		0,
 		modData.HerbsPickedUp - ((SBvars.AffinitySystem and modData.StartingTraits.Herbalist) and 1 / SBvars.AffinitySystemLoseDivider or 1)
 	)
 	logETW("ETW Logger | herbalist(): modData.HerbsPickedUp: " .. modData.HerbsPickedUp)
 	if modData.HerbsPickedUp < SBvars.HerbalistHerbsPicked / 2 and player:hasTrait(CharacterTrait.HERBALIST) then
-		ETWCommonFunctions.removeTraitFromPlayer(CharacterTrait.HERBALIST)
+		ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.HERBALIST)
 		if notification() then
 			HaloTextHelper.addTextWithArrow(player, getText("UI_trait_Herbalist"), false, HaloTextHelper.getColorRed())
 		end
@@ -316,20 +332,20 @@ local function initializeEventsETW(playerIndex, player)
 	modOptions = PZAPI.ModOptions:getOptions("ETWModOptions")
 	Events.EveryOneMinute.Remove(catEyes)
 	Events.OnZombieDead.Remove(catEyesKill)
-	if ETWCommonLogicChecks.CatEyesShouldExecute() then
+	if ETW_CommonLogicChecks.CatEyesShouldExecute(player) then
 		Events.EveryOneMinute.Add(catEyes)
 		Events.OnZombieDead.Add(catEyesKill)
 	end
 	Events.EveryTenMinutes.Remove(sleepSystem)
-	if ETWCommonLogicChecks.SleepSystemShouldExecute() then
+	if ETW_CommonLogicChecks.SleepSystemShouldExecute(player) then
 		Events.EveryTenMinutes.Add(sleepSystem)
 	end
 	Events.EveryOneMinute.Remove(smoker)
-	if ETWCommonLogicChecks.SmokerShouldExecute() then
+	if ETW_CommonLogicChecks.SmokerShouldExecute(player) then
 		Events.EveryOneMinute.Add(smoker)
 	end
 	Events.EveryDays.Remove(herbalist)
-	if ETWCommonLogicChecks.HerbalistShouldExecute() and SBvars.TraitsLockSystemCanLosePositive then
+	if ETW_CommonLogicChecks.HerbalistShouldExecute(player) and SBvars.TraitsLockSystemCanLosePositive then
 		Events.EveryDays.Add(herbalist)
 	end
 	Events.EveryHours.Remove(progressDelayedTraits)

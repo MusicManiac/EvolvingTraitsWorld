@@ -2,13 +2,13 @@
 require("ISUI/ISPanelJoypad")
 require("UI/CharacterInfoAddTab")
 require("ETWModOptions")
-require("ETWModData")
+require("ETW_ModData")
 
-local ETWCommonFunctions = require("ETWCommonFunctions")
-local ETWCommonLogicChecks = require("ETWCommonLogicChecks")
+local ETW_CommonFunctions = require("ETW_CommonFunctions")
+local ETW_CommonLogicChecks = require("ETW_CommonLogicChecks")
 
 ---@type EvolvingTraitsWorldRegistries
-local ETWRegistries = require("ETWRegistry")
+local ETWRegistries = require("ETW_Registry")
 ---@type EvolvingTraitsWorldTraitsRegistries
 local ETWTraitsRegistry = ETWRegistries.traits
 
@@ -94,7 +94,7 @@ function ISETWProgressUI:createChildren()
 		local str
 
 		local player = getPlayer()
-		local modData = ETWCommonFunctions.getETWModData(player)
+		local modData = ETW_CommonFunctions.getETWModData(player)
 		local strength = player:getPerkLevel(Perks.Strength)
 		local fitness = player:getPerkLevel(Perks.Fitness)
 		local sprinting = player:getPerkLevel(Perks.Sprinting)
@@ -165,7 +165,7 @@ function ISETWProgressUI:createChildren()
 			y = y + FONT_HGT_MEDIUM
 		end
 
-		if ETWCommonLogicChecks.ImmunitySystemShouldExecute() then
+		if ETW_CommonLogicChecks.ImmunitySystemShouldExecute(player) then
 			str = "- " .. getText("UI_trait_pronetoillness")
 			self.labelProneToIllness = ISLabel:new(
 				barMidPosition - strLen(textManager, str) / 2,
@@ -223,7 +223,7 @@ function ISETWProgressUI:createChildren()
 			y = y + FONT_HGT_SMALL
 		end
 
-		if ETWCommonLogicChecks.FoodSicknessSystemShouldExecute() then
+		if ETW_CommonLogicChecks.FoodSicknessSystemShouldExecute(player) then
 			self.labelWeakStomach = ISLabel:new(
 				barMidPosition,
 				y,
@@ -281,7 +281,7 @@ function ISETWProgressUI:createChildren()
 			y = y + FONT_HGT_SMALL
 		end
 
-		if ETWCommonLogicChecks.PainToleranceShouldExecute() then
+		if ETW_CommonLogicChecks.PainToleranceShouldExecute(player) then
 			self.labelPainTolerance = ISLabel:new(
 				barEndPosition,
 				y,
@@ -323,7 +323,7 @@ function ISETWProgressUI:createChildren()
 			y = y + FONT_HGT_SMALL
 		end
 
-		if ETWCommonLogicChecks.AsthmaticShouldExecute() then
+		if ETW_CommonLogicChecks.AsthmaticShouldExecute(player) then
 			str = "+ " .. getText("UI_trait_Asthmatic")
 			self.labelAsthmaticGain = ISLabel:new(
 				barOneFourthPosition - strLen(textManager, str) / 2,
@@ -382,7 +382,7 @@ function ISETWProgressUI:createChildren()
 			y = y + FONT_HGT_SMALL
 		end
 
-		if ETWCommonLogicChecks.BloodlustShouldExecute() then
+		if ETW_CommonLogicChecks.BloodlustShouldExecute(player) then
 			str = "- " .. getText("UI_trait_Bloodlust")
 			self.labelBloodlustLose = ISLabel:new(
 				barOneFourthPosition - strLen(textManager, str) / 2,
@@ -441,7 +441,7 @@ function ISETWProgressUI:createChildren()
 			y = y + FONT_HGT_SMALL
 		end
 
-		if ETWCommonLogicChecks.OutdoorsmanShouldExecute() then
+		if ETW_CommonLogicChecks.OutdoorsmanShouldExecute(player) then
 			str = "- " .. getText("UI_trait_outdoorsman")
 			self.labelOutdoorsmanLose = ISLabel:new(
 				barOneThirdPosition - strLen(textManager, str) / 2,
@@ -500,7 +500,7 @@ function ISETWProgressUI:createChildren()
 			y = y + FONT_HGT_SMALL
 		end
 
-		if ETWCommonLogicChecks.FearOfLocationsSystemShouldExecute() then
+		if ETW_CommonLogicChecks.FearOfLocationsSystemShouldExecute(player) then
 			str = "+ " .. getText("UI_trait_agoraphobic")
 			self.labelAgoraphobicGain = ISLabel:new(
 				barOneThirdPosition - strLen(textManager, str) / 2,
@@ -616,7 +616,7 @@ function ISETWProgressUI:createChildren()
 			y = y + FONT_HGT_SMALL
 		end
 
-		if ETWCommonLogicChecks.HearingSystemShouldExecute() then
+		if ETW_CommonLogicChecks.HearingSystemShouldExecute(player) then
 			str = "- " .. getText("UI_trait_hardhear")
 			self.labelHardOfHearingLose = ISLabel:new(
 				barMidPosition - strLen(textManager, str) / 2,
@@ -674,7 +674,7 @@ function ISETWProgressUI:createChildren()
 			y = y + FONT_HGT_SMALL
 		end
 
-		if ETWCommonLogicChecks.LearnerSystemShouldExecute() then
+		if ETW_CommonLogicChecks.LearnerSystemShouldExecute(player) then
 			str = "- " .. getText("UI_trait_SlowLearner")
 			self.labelSlowLearnerLose = ISLabel:new(
 				barMidPosition - strLen(textManager, str) / 2,
@@ -732,7 +732,7 @@ function ISETWProgressUI:createChildren()
 			y = y + FONT_HGT_SMALL
 		end
 
-		if ETWCommonLogicChecks.SleepSystemShouldExecute() then
+		if ETW_CommonLogicChecks.SleepSystemShouldExecute(player) then
 			str = "+ " .. getText("UI_trait_MoreSleep")
 			self.labelMoreSleepGain = ISLabel:new(
 				barOneFourthPosition - strLen(textManager, str) / 2,
@@ -791,7 +791,7 @@ function ISETWProgressUI:createChildren()
 			y = y + FONT_HGT_SMALL
 		end
 
-		if ETWCommonLogicChecks.RainSystemShouldExecute() then
+		if ETW_CommonLogicChecks.RainSystemShouldExecute(player) then
 			str = "+/- " .. getText("UI_trait_Pluviophobia")
 			self.labelPluviophobia = ISLabel:new(
 				barOneFourthPosition - strLen(textManager, str) / 2,
@@ -850,7 +850,7 @@ function ISETWProgressUI:createChildren()
 			y = y + FONT_HGT_SMALL
 		end
 
-		if ETWCommonLogicChecks.FogSystemShouldExecute() then
+		if ETW_CommonLogicChecks.FogSystemShouldExecute(player) then
 			str = "+/- " .. getText("UI_trait_Homichlophobia")
 			self.labelHomichlophobia = ISLabel:new(
 				barOneFourthPosition - strLen(textManager, str) / 2,
@@ -909,7 +909,7 @@ function ISETWProgressUI:createChildren()
 			y = y + FONT_HGT_SMALL
 		end
 
-		if ETWCommonLogicChecks.InventoryTransferSystemShouldExecute() then
+		if ETW_CommonLogicChecks.InventoryTransferSystemShouldExecute(player) then
 			y = y + FONT_HGT_SMALL / 2
 
 			local weightTransferred = (modData and modData.TransferSystem and modData.TransferSystem.WeightTransferred) or 0
@@ -1114,7 +1114,7 @@ function ISETWProgressUI:createChildren()
 			y = y + FONT_HGT_SMALL / 2
 		end
 
-		if ETWCommonLogicChecks.BraverySystemShouldExecute() then
+		if ETW_CommonLogicChecks.BraverySystemShouldExecute(player) then
 			str = "- " .. getText("UI_trait_cowardly")
 			self.labelCowardlyLose = ISLabel:new(
 				barStartPosition + (barLength / 6) - strLen(textManager, str) / 2,
@@ -1240,7 +1240,7 @@ function ISETWProgressUI:createChildren()
 		end
 
 		if
-			ETWCommonLogicChecks.SmokerShouldExecute()
+			ETW_CommonLogicChecks.SmokerShouldExecute(player)
 			and ((not modOptions and true) or not modOptions:getOption("HideSmokerUI"):getValue())
 		then
 			y = y + FONT_HGT_SMALL / 2
@@ -1303,7 +1303,7 @@ function ISETWProgressUI:createChildren()
 
 		y = y + FONT_HGT_SMALL * 1.5
 
-		if ETWCommonLogicChecks.EagleEyedShouldExecute() then
+		if ETW_CommonLogicChecks.EagleEyedShouldExecute(player) then
 			arrangeColumnsInTable()
 			self.labelEagleEyedProgress = ISLabel:new(
 				x,
@@ -1321,7 +1321,7 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelEagleEyedProgress)
 		end
 
-		if ETWCommonLogicChecks.HoarderShouldExecute() then
+		if ETW_CommonLogicChecks.HoarderShouldExecute(player) then
 			arrangeColumnsInTable()
 			self.labelHoarderProgress = ISLabel:new(
 				x,
@@ -1339,7 +1339,7 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelHoarderProgress)
 		end
 
-		if ETWCommonLogicChecks.GymRatShouldExecute() then
+		if ETW_CommonLogicChecks.GymRatShouldExecute(player) then
 			arrangeColumnsInTable()
 			self.labelGymRatProgress = ISLabel:new(
 				x,
@@ -1357,7 +1357,7 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelGymRatProgress)
 		end
 
-		if ETWCommonLogicChecks.RunnerShouldExecute() then
+		if ETW_CommonLogicChecks.RunnerShouldExecute(player) then
 			arrangeColumnsInTable()
 			self.labelRunnerProgress = ISLabel:new(
 				x,
@@ -1375,7 +1375,7 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelRunnerProgress)
 		end
 
-		if ETWCommonLogicChecks.LightStepShouldExecute() then
+		if ETW_CommonLogicChecks.LightStepShouldExecute(player) then
 			arrangeColumnsInTable()
 			self.labelLightStepProgress = ISLabel:new(
 				x,
@@ -1393,7 +1393,7 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelLightStepProgress)
 		end
 
-		if ETWCommonLogicChecks.GymnastShouldExecute() then
+		if ETW_CommonLogicChecks.GymnastShouldExecute(player) then
 			arrangeColumnsInTable()
 			self.labelGymnastProgress = ISLabel:new(
 				x,
@@ -1411,7 +1411,7 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelGymnastProgress)
 		end
 
-		if ETWCommonLogicChecks.ClumsyShouldExecute() then
+		if ETW_CommonLogicChecks.ClumsyShouldExecute(player) then
 			arrangeColumnsInTable()
 			self.labelClumsyProgress = ISLabel:new(
 				x,
@@ -1429,7 +1429,7 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelClumsyProgress)
 		end
 
-		if ETWCommonLogicChecks.GracefulShouldExecute() then
+		if ETW_CommonLogicChecks.GracefulShouldExecute(player) then
 			arrangeColumnsInTable()
 			self.labelGracefulProgress = ISLabel:new(
 				x,
@@ -1447,7 +1447,7 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelGracefulProgress)
 		end
 
-		if ETWCommonLogicChecks.BurglarShouldExecute() then
+		if ETW_CommonLogicChecks.BurglarShouldExecute(player) then
 			arrangeColumnsInTable()
 			self.labelBurglarProgress = ISLabel:new(
 				x,
@@ -1465,7 +1465,7 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelBurglarProgress)
 		end
 
-		if ETWCommonLogicChecks.LowProfileShouldExecute() then
+		if ETW_CommonLogicChecks.LowProfileShouldExecute(player) then
 			arrangeColumnsInTable()
 			self.labelLowProfileProgress = ISLabel:new(
 				x,
@@ -1483,7 +1483,7 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelLowProfileProgress)
 		end
 
-		if ETWCommonLogicChecks.ConspicuousShouldExecute() then
+		if ETW_CommonLogicChecks.ConspicuousShouldExecute(player) then
 			arrangeColumnsInTable()
 			self.labelConspicuousProgress = ISLabel:new(
 				x,
@@ -1501,7 +1501,7 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelConspicuousProgress)
 		end
 
-		if ETWCommonLogicChecks.InconspicuousShouldExecute() then
+		if ETW_CommonLogicChecks.InconspicuousShouldExecute(player) then
 			arrangeColumnsInTable()
 			self.labelInconspicuousProgress = ISLabel:new(
 				x,
@@ -1519,7 +1519,7 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelInconspicuousProgress)
 		end
 
-		if ETWCommonLogicChecks.HunterShouldExecute() then
+		if ETW_CommonLogicChecks.HunterShouldExecute(player) then
 			local levels = sneaking + aiming + trapping + shortBlade
 			if sneaking < 2 or aiming < 2 or trapping < 2 or shortBlade < 2 or levels < SBvars.HunterSkill then
 				arrangeColumnsInTable()
@@ -1559,7 +1559,7 @@ function ISETWProgressUI:createChildren()
 			end
 		end
 
-		if ETWCommonLogicChecks.BladeEnthusiastShouldExecute() then
+		if ETW_CommonLogicChecks.BladeEnthusiastShouldExecute(player) then
 			if longBlade < SBvars.BladeEnthusiastSkill then
 				arrangeColumnsInTable()
 				self.labelBladeEnthusiastSkillProgress = ISLabel:new(
@@ -1596,7 +1596,7 @@ function ISETWProgressUI:createChildren()
 			end
 		end
 
-		if ETWCommonLogicChecks.BrawlerShouldExecute() then
+		if ETW_CommonLogicChecks.BrawlerShouldExecute(player) then
 			if (axe + longBlunt) < SBvars.BrawlerSkill then
 				arrangeColumnsInTable()
 				self.labelBrawlerSkillProgress = ISLabel:new(
@@ -1636,7 +1636,7 @@ function ISETWProgressUI:createChildren()
 			end
 		end
 
-		if ETWCommonLogicChecks.AxeThrowerShouldExecute() then
+		if ETW_CommonLogicChecks.AxeThrowerShouldExecute(player) then
 			if axe < SBvars.AxeThrowerSkill then
 				arrangeColumnsInTable()
 				self.labelAxeThrowerSkillProgress = ISLabel:new(
@@ -1673,7 +1673,7 @@ function ISETWProgressUI:createChildren()
 			end
 		end
 
-		if ETWCommonLogicChecks.StickFighterShouldExecute() then
+		if ETW_CommonLogicChecks.StickFighterShouldExecute(player) then
 			if shortBlunt < SBvars.StickFighterSkill then
 				arrangeColumnsInTable()
 				self.labelStickFighterSkillProgress = ISLabel:new(
@@ -1710,7 +1710,7 @@ function ISETWProgressUI:createChildren()
 			end
 		end
 
-		if ETWCommonLogicChecks.KnifeFighterShouldExecute() then
+		if ETW_CommonLogicChecks.KnifeFighterShouldExecute(player) then
 			if shortBlade < SBvars.KnifeFighterSkill then
 				arrangeColumnsInTable()
 				self.labelKnifeFighterSkillProgress = ISLabel:new(
@@ -1747,7 +1747,7 @@ function ISETWProgressUI:createChildren()
 			end
 		end
 
-		if ETWCommonLogicChecks.PolearmFighterShouldExecute() then
+		if ETW_CommonLogicChecks.PolearmFighterShouldExecute(player) then
 			if spear < SBvars.PolearmFighterSkill then
 				arrangeColumnsInTable()
 				self.labelPolearmFighterSkillProgress = ISLabel:new(
@@ -1784,7 +1784,7 @@ function ISETWProgressUI:createChildren()
 			end
 		end
 
-		if ETWCommonLogicChecks.RestorationExpertShouldExecute() then
+		if ETW_CommonLogicChecks.RestorationExpertShouldExecute(player) then
 			arrangeColumnsInTable()
 			self.labelRestorationExpertSkillProgress = ISLabel:new(
 				x,
@@ -1802,7 +1802,7 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelRestorationExpertSkillProgress)
 		end
 
-		if ETWCommonLogicChecks.HandyShouldExecute() then
+		if ETW_CommonLogicChecks.HandyShouldExecute(player) then
 			arrangeColumnsInTable()
 			self.labelHandySkillProgress = ISLabel:new(
 				x,
@@ -1820,7 +1820,7 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelHandySkillProgress)
 		end
 
-		if ETWCommonLogicChecks.FurnitureAssemblerShouldExecute() then
+		if ETW_CommonLogicChecks.FurnitureAssemblerShouldExecute(player) then
 			arrangeColumnsInTable()
 			self.labelFurnitureAssemblerProgress = ISLabel:new(
 				x,
@@ -1838,7 +1838,7 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelFurnitureAssemblerProgress)
 		end
 
-		if ETWCommonLogicChecks.HomeCookShouldExecute() then
+		if ETW_CommonLogicChecks.HomeCookShouldExecute(player) then
 			arrangeColumnsInTable()
 			self.labelHomeCookProgress = ISLabel:new(
 				x,
@@ -1856,7 +1856,7 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelHomeCookProgress)
 		end
 
-		if ETWCommonLogicChecks.CookShouldExecute() then
+		if ETW_CommonLogicChecks.CookShouldExecute(player) then
 			arrangeColumnsInTable()
 			self.labelCookProgress = ISLabel:new(
 				x,
@@ -1874,7 +1874,7 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelCookProgress)
 		end
 
-		if ETWCommonLogicChecks.FirstAidShouldExecute() then
+		if ETW_CommonLogicChecks.FirstAidShouldExecute(player) then
 			arrangeColumnsInTable()
 			self.labelFirstAidProgress = ISLabel:new(
 				x,
@@ -1892,7 +1892,7 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelFirstAidProgress)
 		end
 
-		if ETWCommonLogicChecks.AVClubShouldExecute() then
+		if ETW_CommonLogicChecks.AVClubShouldExecute(player) then
 			arrangeColumnsInTable()
 			self.labelAVClubProgress = ISLabel:new(
 				x,
@@ -1910,7 +1910,7 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelAVClubProgress)
 		end
 
-		if ETWCommonLogicChecks.BodyWorkEnthusiastShouldExecute() then
+		if ETW_CommonLogicChecks.BodyWorkEnthusiastShouldExecute(player) then
 			if metalworking + mechanics < SBvars.BodyworkEnthusiastSkill then
 				arrangeColumnsInTable()
 				self.labelBodyWorkEnthusiastSkillProgress = ISLabel:new(
@@ -1948,7 +1948,7 @@ function ISETWProgressUI:createChildren()
 			end
 		end
 
-		if ETWCommonLogicChecks.MechanicsShouldExecute() then
+		if ETW_CommonLogicChecks.MechanicsShouldExecute(player) then
 			if mechanics < SBvars.MechanicsSkill then
 				arrangeColumnsInTable()
 				self.labelMechanicsSkillProgress = ISLabel:new(
@@ -1986,7 +1986,7 @@ function ISETWProgressUI:createChildren()
 			end
 		end
 
-		if ETWCommonLogicChecks.SewerShouldExecute() then
+		if ETW_CommonLogicChecks.SewerShouldExecute(player) then
 			if tailoring < SBvars.SewerSkill then
 				arrangeColumnsInTable()
 				self.labelTailorSkillProgress = ISLabel:new(
@@ -2025,7 +2025,7 @@ function ISETWProgressUI:createChildren()
 			end
 		end
 
-		if ETWCommonLogicChecks.PetTherapyShouldExecute() then
+		if ETW_CommonLogicChecks.PetTherapyShouldExecute(player) then
 			if husbandry < SBvars.PetTherapySkill then
 				arrangeColumnsInTable()
 				self.labelPetTherapySkillProgress = ISLabel:new(
@@ -2069,7 +2069,7 @@ function ISETWProgressUI:createChildren()
 			end
 		end
 
-		if ETWCommonLogicChecks.GunEnthusiastShouldExecute() then
+		if ETW_CommonLogicChecks.GunEnthusiastShouldExecute(player) then
 			if aiming + reloading < SBvars.GunEnthusiastSkill then
 				arrangeColumnsInTable()
 				self.labelGunEnthusiastSkillProgress = ISLabel:new(
@@ -2107,7 +2107,7 @@ function ISETWProgressUI:createChildren()
 			end
 		end
 
-		if ETWCommonLogicChecks.AnglerShouldExecute() then
+		if ETW_CommonLogicChecks.AnglerShouldExecute(player) then
 			arrangeColumnsInTable()
 			self.labelAnglerProgress = ISLabel:new(
 				x,
@@ -2125,7 +2125,7 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelAnglerProgress)
 		end
 
-		if ETWCommonLogicChecks.HikerShouldExecute() then
+		if ETW_CommonLogicChecks.HikerShouldExecute(player) then
 			arrangeColumnsInTable()
 			self.labelHikerProgress = ISLabel:new(
 				x,
@@ -2143,7 +2143,7 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelHikerProgress)
 		end
 
-		if ETWCommonLogicChecks.CatEyesShouldExecute() then
+		if ETW_CommonLogicChecks.CatEyesShouldExecute(player) then
 			arrangeColumnsInTable()
 			self.labelCatEyesProgress = ISLabel:new(
 				x,
@@ -2161,7 +2161,7 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelCatEyesProgress)
 		end
 
-		if ETWCommonLogicChecks.HerbalistShouldExecute() then
+		if ETW_CommonLogicChecks.HerbalistShouldExecute(player) then
 			arrangeColumnsInTable()
 			self.labelHerbalistProgress = ISLabel:new(
 				x,
@@ -2179,7 +2179,7 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelHerbalistProgress)
 		end
 
-		if ETWCommonLogicChecks.AxemanShouldExecute() then
+		if ETW_CommonLogicChecks.AxemanShouldExecute(player) then
 			arrangeColumnsInTable()
 			self.labelAxemanProgress = ISLabel:new(
 				x,
@@ -2197,7 +2197,7 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelAxemanProgress)
 		end
 
-		if ETWCommonLogicChecks.WhittlerShouldExecute() then
+		if ETW_CommonLogicChecks.WhittlerShouldExecute(player) then
 			arrangeColumnsInTable()
 			self.labelWhittlerProgress = ISLabel:new(
 				x,
@@ -2215,7 +2215,7 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelWhittlerProgress)
 		end
 
-		if ETWCommonLogicChecks.BlacksmithShouldExecute() then
+		if ETW_CommonLogicChecks.BlacksmithShouldExecute(player) then
 			arrangeColumnsInTable()
 			self.labelBlacksmithProgress = ISLabel:new(
 				x,
@@ -2233,7 +2233,7 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelBlacksmithProgress)
 		end
 
-		if ETWCommonLogicChecks.WildernessKnowledgeShouldExecute() then
+		if ETW_CommonLogicChecks.WildernessKnowledgeShouldExecute(player) then
 			local levels = foraging + knapping + maintenance + carving
 			if foraging < 2 or knapping < 2 or maintenance < 2 or carving < 2 or levels < SBvars.WildernessKnowledgeSkill then
 				arrangeColumnsInTable(true)
@@ -2309,7 +2309,7 @@ function ISETWProgressUI:render()
 	self:setHeightAndParentHeight(WINDOW_HEIGHT)
 
 	local player = getPlayer()
-	local modData = ETWCommonFunctions.getETWModData(player)
+	local modData = ETW_CommonFunctions.getETWModData(player)
 
 	local strength = player:getPerkLevel(Perks.Strength)
 	local fitness = player:getPerkLevel(Perks.Fitness)
