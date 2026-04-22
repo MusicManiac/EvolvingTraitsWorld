@@ -1,4 +1,4 @@
-local ETW_ModData = require("ETW_ModData")
+local ETW_ModDataServer = require("ETW_ModDataServer")
 local ETWMoodles = require("ETWMoodles")
 local ETW_CommonFunctions = require("ETW_CommonFunctions")
 local ETW_CommonLogicChecks = require("ETW_CommonLogicChecks")
@@ -10,26 +10,6 @@ local ETWTraitsRegistry = ETWRegistries.traits
 
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld
-
-local modOptions
-
----Function responsible for setting up mod options on character load
----@param playerIndex number
----@param player IsoPlayer
-local function initializeModOptions(playerIndex, player)
-	modOptions = PZAPI.ModOptions:getOptions("ETWModOptions")
-end
-
-Events.OnCreatePlayer.Remove(initializeModOptions)
-Events.OnCreatePlayer.Add(initializeModOptions)
-
----@return boolean
-local notification = function()
-	if modOptions then
-		return modOptions:getOption("EnableNotifications"):getValue()
-	end
-	return false
-end
 
 ---Prints out debugs inside console if detailedDebug is enabled
 ---@param ... string Strings to log
@@ -150,14 +130,14 @@ local function bloodlustTimeETW()
 			and SBvars.TraitsLockSystemCanLosePositive
 		then
 			ETW_CommonFunctions.removeTraitFromPlayer(player, ETWTraitsRegistry.BLOODLUST)
-			ETW_CommonFunctions.displayTraitNotification(getText("UI_trait_Bloodlust"), false, HaloTextHelper.getColorRed())
+			ETW_CommonFunctions.displayTraitNotification(player, getText("UI_trait_Bloodlust"), false, HaloTextHelper.getColorRed())
 		elseif
 			not player:hasTrait(ETWTraitsRegistry.BLOODLUST)
 			and bloodlustModData.BloodlustProgress >= SBvars.BloodlustProgress
 			and SBvars.TraitsLockSystemCanGainPositive
 		then
 			ETW_CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.BLOODLUST)
-			ETW_CommonFunctions.displayTraitNotification(getText("UI_trait_Bloodlust"), true, HaloTextHelper.getColorGreen())
+			ETW_CommonFunctions.displayTraitNotification(player, getText("UI_trait_Bloodlust"), true, HaloTextHelper.getColorGreen())
 		end
 	end
 end
@@ -195,9 +175,7 @@ local function eagleEyedETW(zombie, attacker, bodyPart, weapon)
 					or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(attacker, CharacterTrait.EAGLE_EYED))
 				then
 					ETW_CommonFunctions.addTraitToPlayer(attacker, CharacterTrait.EAGLE_EYED)
-					if notification() then
-						HaloTextHelper.addTextWithArrow(attacker, getText("UI_trait_eagleeyed"), true, HaloTextHelper.getColorGreen())
-					end
+					ETW_CommonFunctions.displayTraitNotification(attacker, getText("UI_trait_eagleeyed"), true, HaloTextHelper.getColorGreen())
 				end
 			end
 		end
@@ -253,8 +231,8 @@ local braverySystemTraitInfo = {
 local function braverySystemETW(zombie)
 	local playersList = ETW_CommonFunctions.playersList()
 
-	for i = 0, playersList:size() - 1 do
-		local player = playersList:get(i)
+	for playerListIndex = 0, playersList:size() - 1 do
+		local player = playersList:get(playerListIndex)
 		local totalKills = player:getZombieKills()
 		local modDataGlobal = player:getModData()
 		local killCountModData = modDataGlobal.KillCount.WeaponCategory
@@ -291,9 +269,7 @@ local function braverySystemETW(zombie)
 						})
 					elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, trait)) then
 						ETW_CommonFunctions.removeTraitFromPlayer(player, trait)
-						if notification() then
-							HaloTextHelper.addTextWithArrow(player, translationString, false, HaloTextHelper.getColorGreen())
-						end
+						ETW_CommonFunctions.displayTraitNotification(player, translationString, false, HaloTextHelper.getColorGreen())
 					end
 					return
 				elseif
@@ -313,45 +289,25 @@ local function braverySystemETW(zombie)
 						})
 					elseif not SBvars.DelayedTraitsSystem or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, trait)) then
 						ETW_CommonFunctions.addTraitToPlayer(player, trait)
-						if notification() then
-							HaloTextHelper.addTextWithArrow(player, translationString, true, HaloTextHelper.getColorGreen())
-						end
+						ETW_CommonFunctions.displayTraitNotification(player, translationString, true, HaloTextHelper.getColorGreen())
 						if trait == CharacterTrait.DESENSITIZED then
 							Events.OnZombieDead.Remove(braverySystemETW)
 							if SBvars.BraverySystemRemovesOtherFearPerks == true and SBvars.TraitsLockSystemCanLoseNegative then
 								if player:hasTrait(CharacterTrait.AGORAPHOBIC) then
 									ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.AGORAPHOBIC)
-									if notification() then
-										HaloTextHelper.addTextWithArrow(player, "UI_trait_agoraphobic", false, HaloTextHelper.getColorGreen())
-									end
+									ETW_CommonFunctions.displayTraitNotification(player, "UI_trait_agoraphobic", false, HaloTextHelper.getColorGreen())
 								end
 								if player:hasTrait(CharacterTrait.CLAUSTROPHOBIC) then
 									ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.CLAUSTROPHOBIC)
-									if notification() then
-										HaloTextHelper.addTextWithArrow(player, "UI_trait_claustro", false, HaloTextHelper.getColorGreen())
-									end
+									ETW_CommonFunctions.displayTraitNotification(player, "UI_trait_claustro", false, HaloTextHelper.getColorGreen())
 								end
 								if player:hasTrait(ETWTraitsRegistry.PLUVIOPHOBIA) then
 									ETW_CommonFunctions.removeTraitFromPlayer(player, ETWTraitsRegistry.PLUVIOPHOBIA)
-									if notification() then
-										HaloTextHelper.addTextWithArrow(
-											player,
-											getText("UI_trait_Pluviophobia"),
-											false,
-											HaloTextHelper.getColorGreen()
-										)
-									end
+									ETW_CommonFunctions.displayTraitNotification(player, getText("UI_trait_Pluviophobia"), false, HaloTextHelper.getColorGreen())
 								end
 								if player:hasTrait(ETWTraitsRegistry.HOMICHLOPHOBIA) then
 									ETW_CommonFunctions.removeTraitFromPlayer(player, ETWTraitsRegistry.HOMICHLOPHOBIA)
-									if notification() then
-										HaloTextHelper.addTextWithArrow(
-											player,
-											getText("UI_trait_Homichlophobia"),
-											false,
-											HaloTextHelper.getColorGreen()
-										)
-									end
+									ETW_CommonFunctions.displayTraitNotification(player, getText("UI_trait_Homichlophobia"), false, HaloTextHelper.getColorGreen())
 								end
 							end
 						end
