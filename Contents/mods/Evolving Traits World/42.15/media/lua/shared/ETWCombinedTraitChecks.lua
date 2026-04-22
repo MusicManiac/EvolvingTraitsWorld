@@ -9,8 +9,8 @@ local ETWRegistries = require("ETW_Registry")
 local ETWTraitsRegistry = ETWRegistries.traits
 
 ---Function responsible for checking if player qualifies for Bodywork Enthusiast trait
----@param DebugAndNotificationArgs DebugAndNotificationArgs
-function ETWCombinedTraitChecks.bodyworkEnthusiastCheck(DebugAndNotificationArgs)
+---@param player IsoPlayer
+function ETWCombinedTraitChecks.bodyworkEnthusiastCheck(player)
 	local player = getPlayer()
 	local modData = ETW_CommonFunctions.getETWModData(player)
 	local level = player:getPerkLevel(Perks.MetalWelding) + player:getPerkLevel(Perks.Mechanics)

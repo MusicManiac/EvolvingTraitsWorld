@@ -351,7 +351,7 @@ end
 ---Function responsible for checking if specific trait should be gained/lost, returns true if yes and removes it from the table. Otherwise, returns false.
 ---Function assumes that trait is in Delayed Traits table, so make sure to check that before calling this function, otherwise it will throw an error
 ---@param player IsoPlayer|IsoGameCharacter the player to check
----@param trait CharacterTrait the trait to check
+---@param traitToCheck CharacterTrait the trait to check
 ---@return boolean boolean true if trait should be gained/lost, false otherwise
 function ETW_CommonFunctions.checkDelayedTraits(player, traitToCheck)
     if not SBvars.DelayedTraitsSystem then
@@ -407,11 +407,12 @@ function ETW_CommonFunctions.displayTraitNotification(player, text, arrowIsUp, c
 end
 
 ---Shows notification for delayed trait gain/loss. If it's SP client, it's displayed trait gain/loss notification to client. If it's called on a server, it sends a command to the client to display the notification. Then the client checks if notification should be displayed based on per-client mod settings.
----@param player IsoPlayer player to show notification for
+---@param player IsoPlayer|IsoGameCharacter player to show notification for
 ---@param text string text to show in notification
 ---@param arrowIsUp boolean whether the arrow in notification should be up or down, True for up, False for down
 ---@param color HaloTextHelper.ColorRGB color of the text in notification
 function ETW_CommonFunctions.displayDelayedTraitNotification(player, text, arrowIsUp, color)
+	---@cast player IsoPlayer
 	if gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
 		sendServerCommand(player, "ETW", "displayDelayedTraitNotification", { text = text, arrowIsUp = arrowIsUp, color = color })
 	elseif delayedNotification() then

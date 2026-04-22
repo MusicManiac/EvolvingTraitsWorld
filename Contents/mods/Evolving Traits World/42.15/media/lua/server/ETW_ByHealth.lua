@@ -1,4 +1,4 @@
-local ETW_ModData = require("ETW_ModData")
+local ETW_ModDataServer = require("ETW_ModDataServer")
 local ETW_CommonFunctions = require("ETW_CommonFunctions")
 local ETW_CommonLogicChecks = require("ETW_CommonLogicChecks")
 local ETWRegistries = require("ETW_Registry")

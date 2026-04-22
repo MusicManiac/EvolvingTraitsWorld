@@ -86,7 +86,7 @@ function ISFixVehiclePartAction:complete()
 				.. modData.VehiclePartRepairs
 		)
 		if bodyWorkEnthusiastShouldExecute then
-			ETWCombinedTraitChecks.bodyworkEnthusiastCheck(DebugAndNotificationArgs)
+			ETWCombinedTraitChecks.bodyworkEnthusiastCheck(player)
 		end
 		if mechanicsShouldExecute then
 			ETWCombinedTraitChecks.mechanicsCheck(DebugAndNotificationArgs)
@@ -145,7 +145,7 @@ function ISFixAction:perform()
 				.. modData.VehiclePartRepairs
 		)
 		if bodyWorkEnthusiastShouldExecute then
-			ETWCombinedTraitChecks.bodyworkEnthusiastCheck(DebugAndNotificationArgs)
+			ETWCombinedTraitChecks.bodyworkEnthusiastCheck(player)
 		end
 		if mechanicsShouldExecute then
 			ETWCombinedTraitChecks.mechanicsCheck(DebugAndNotificationArgs)
@@ -166,12 +166,7 @@ function ISRepairEngine:perform()
 	local conditionBefore = self.part:getCondition()
 	logETW("ETW Logger | ISRepairEngine:perform(): caught. conditionBefore " .. conditionBefore)
 	original_ISRepairEngine_perform(self)
-	---@type DebugAndNotificationArgs
-	local DebugAndNotificationArgs =
-		{ detailedDebug = detailedDebug(), notification = notification(), delayedNotification = delayedNotification() }
-	local args =
-		{ vehicleID = self.vehicle:getId(), conditionBefore = conditionBefore, DebugAndNotificationArgs = DebugAndNotificationArgs }
-	sendClientCommand(self.character, "ETW", "checkEngineCondition", args)
+	sendClientCommand(self.character, "ETW", "checkEngineCondition", { vehicleID = self.vehicle:getId(), conditionBefore = conditionBefore })
 end
 
 local original_ISChopTreeAction_perform = ISChopTreeAction.perform

@@ -53,7 +53,7 @@ Commands.carRepairCheck = function(args)
 	logETW("ETW Logger | Commands.carRepairCheck: args.repairedPercentage: " .. args.repairedPercentage)
 	modData.VehiclePartRepairs = modData.VehiclePartRepairs + args.repairedPercentage
 	if ETW_CommonLogicChecks.BodyWorkEnthusiastShouldExecute(player) then
-		ETWCombinedTraitChecks.bodyworkEnthusiastCheck(DebugAndNotificationArgs)
+		ETWCombinedTraitChecks.bodyworkEnthusiastCheck(player)
 	end
 	if ETW_CommonLogicChecks.MechanicsShouldExecute(player) then
 		ETWCombinedTraitChecks.mechanicsCheck(DebugAndNotificationArgs)

@@ -1,8 +1,6 @@
 ---@class ETW_ModData
 local ETW_ModData = {}
-local Commands = {}
 
----@type ETW_CommonFunctions
 local ETW_CommonFunctions = require("ETW_CommonFunctions")
 
 local gameMode = ETW_CommonFunctions.gameMode()
@@ -14,7 +12,6 @@ local SBvars = SandboxVars.EvolvingTraitsWorld
 
 ---@type EvolvingTraitsWorldRegistries
 local ETWRegistries = require("ETW_Registry")
----@type EvolvingTraitsWorldTraitsRegistries
 local ETWTraitsRegistry = ETWRegistries.traits
 
 ---Checks if player has trait and adds it to modData.StartingTraits if it's not there

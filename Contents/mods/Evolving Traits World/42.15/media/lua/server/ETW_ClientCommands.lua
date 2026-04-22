@@ -10,7 +10,6 @@ local Commands = {}
 ---@class EngineCheckArgs
 ---@field vehicleID number
 ---@field conditionBefore number
----@field DebugAndNotificationArgs DebugAndNotificationArgs
 
 ---Function to check by how much engine was repaired. If SP - updates relative moddata and checks traits. If MP - sends command back to client
 ---@param player IsoPlayer
@@ -34,7 +33,7 @@ function Commands.checkEngineCondition(player, args)
 			print("ETW Logger | Commands.checkEngineCondition(): modData.VehiclePartRepairs: " .. modData.VehiclePartRepairs)
 		end
 		if ETW_CommonLogicChecks.BodyWorkEnthusiastShouldExecute(player) then
-			ETWCombinedTraitChecks.bodyworkEnthusiastCheck(args.DebugAndNotificationArgs)
+			ETWCombinedTraitChecks.bodyworkEnthusiastCheck(player)
 		end
 		if ETW_CommonLogicChecks.MechanicsShouldExecute(player) then
 			ETWCombinedTraitChecks.mechanicsCheck(args.DebugAndNotificationArgs)
