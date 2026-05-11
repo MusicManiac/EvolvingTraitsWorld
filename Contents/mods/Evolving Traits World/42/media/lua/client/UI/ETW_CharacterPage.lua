@@ -2535,6 +2535,22 @@ function ISETWProgressUI:createChildren()
 			)
 			self.labelDelayedTraitsSystem:setTooltip(getText("Sandbox_ETW_DelayedTraitsSystem_tooltip"))
 			self:addChild(self.labelDelayedTraitsSystem)
+
+			self.buttonDelayedTraitsTooltip = ISButton:new(
+				lineStartPosition,
+				y + FONT_HGT_SMALL,
+				WINDOW_WIDTH - lineStartPosition * 2,
+				FONT_HGT_SMALL,
+				"",
+				self,
+				nil
+			)
+			self.buttonDelayedTraitsTooltip:initialise()
+			self.buttonDelayedTraitsTooltip.borderColor.a = 0
+			self.buttonDelayedTraitsTooltip.backgroundColor.a = 0
+			self.buttonDelayedTraitsTooltip.backgroundColorMouseOver.a = 0
+			self.buttonDelayedTraitsTooltip:setTooltip(getText("Sandbox_ETW_DelayedTraitsSystem_tooltip"))
+			self:addChild(self.buttonDelayedTraitsTooltip)
 		end
 
 		WINDOW_HEIGHT = y + FONT_HGT_SMALL * 2
@@ -3174,6 +3190,12 @@ function ISETWProgressUI:render()
 				self.TextColor.b,
 				self.TextColor.a
 			)
+		end
+		if self.buttonDelayedTraitsTooltip ~= nil then
+			self.buttonDelayedTraitsTooltip:setX(lineStartPosition)
+			self.buttonDelayedTraitsTooltip:setY(delayedY + FONT_HGT_SMALL)
+			self.buttonDelayedTraitsTooltip:setWidth(WINDOW_WIDTH - lineStartPosition * 2)
+			self.buttonDelayedTraitsTooltip:setHeight(#lines * FONT_HGT_SMALL)
 		end
 		WINDOW_HEIGHT = initialWindowHeight + (#lines * FONT_HGT_SMALL)
 		self:setHeightAndParentHeight(WINDOW_HEIGHT)
