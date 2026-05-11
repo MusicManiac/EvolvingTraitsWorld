@@ -2,7 +2,7 @@ REMINDER: Don't forget to update mod.info with new mod version
 
 [url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
 
-v.10.x.x
+v.11.x.x
 
 General:
 	-
