@@ -34,13 +34,11 @@ function ETW_TimedActionsSharedLogic.checkInventoryTransferPerks(player, modData
 				and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.DISORGANIZED)
 			)
 		then
-			ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.DISORGANIZED)
-			ETW_CommonFunctions.displayTraitNotification(
-				player,
-				getText("UI_trait_Disorganized"),
-				false,
-				HaloTextHelper.getColorGreen()
-			)
+			ETW_CommonFunctions.removeTraitFromPlayer({
+				player = player,
+				trait = CharacterTrait.DISORGANIZED,
+				positiveTrait = false,
+			})
 		end
 	end
 	if
@@ -66,14 +64,11 @@ function ETW_TimedActionsSharedLogic.checkInventoryTransferPerks(player, modData
 			not SBvars.DelayedTraitsSystem
 			or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.ORGANIZED))
 		then
-			ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.ORGANIZED)
-			-- UI_trait_Packmule is internal string name
-			ETW_CommonFunctions.displayTraitNotification(
-				player,
-				getText("UI_trait_Packmule"),
-				true,
-				HaloTextHelper.getColorGreen()
-			)
+			ETW_CommonFunctions.addTraitToPlayer({
+				player = player,
+				trait = CharacterTrait.ORGANIZED,
+				positiveTrait = true,
+			})
 		end
 	end
 	if
@@ -100,13 +95,11 @@ function ETW_TimedActionsSharedLogic.checkInventoryTransferPerks(player, modData
 				and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.ALL_THUMBS)
 			)
 		then
-			ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.ALL_THUMBS)
-			ETW_CommonFunctions.displayTraitNotification(
-				player,
-				getText("UI_trait_AllThumbs"),
-				false,
-				HaloTextHelper.getColorGreen()
-			)
+			ETW_CommonFunctions.removeTraitFromPlayer({
+				player = player,
+				trait = CharacterTrait.ALL_THUMBS,
+				positiveTrait = false,
+			})
 		end
 	end
 	if
@@ -130,13 +123,11 @@ function ETW_TimedActionsSharedLogic.checkInventoryTransferPerks(player, modData
 			not SBvars.DelayedTraitsSystem
 			or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.DEXTROUS))
 		then
-			ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.DEXTROUS)
-			ETW_CommonFunctions.displayTraitNotification(
-				player,
-				getText("UI_trait_Dexterous"),
-				true,
-				HaloTextHelper.getColorGreen()
-			)
+			ETW_CommonFunctions.addTraitToPlayer({
+				player = player,
+				trait = CharacterTrait.DEXTROUS,
+				positiveTrait = true,
+			})
 		end
 	end
 end
@@ -161,13 +152,11 @@ function ETW_TimedActionsSharedLogic.checkAxemanPerk(player, modData)
 			not SBvars.DelayedTraitsSystem
 			or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.AXEMAN))
 		then
-			ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.AXEMAN)
-			ETW_CommonFunctions.displayTraitNotification(
-				player,
-				getText("UI_trait_axeman"),
-				true,
-				HaloTextHelper.getColorGreen()
-			)
+			ETW_CommonFunctions.addTraitToPlayer({
+				player = player,
+				trait = CharacterTrait.AXEMAN,
+				positiveTrait = true,
+			})
 		end
 	end
 end

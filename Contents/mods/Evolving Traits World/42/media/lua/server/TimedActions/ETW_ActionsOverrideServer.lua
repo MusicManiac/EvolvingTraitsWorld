@@ -156,15 +156,11 @@ function forageSystem.addOrDropItems(_character, _inventory, _items)
 					and modData.HerbsPickedUp >= SBvars.HerbalistHerbsPicked
 					and SBvars.TraitsLockSystemCanGainPositive
 				then
-					ETW_CommonFunctions.addTraitToPlayer(_character, CharacterTrait.HERBALIST)
-					if notification() then
-						HaloTextHelper.addTextWithArrow(
-							_character,
-							getText("UI_trait_Herbalist"),
-							true,
-							HaloTextHelper.getColorGreen()
-						)
-					end
+					ETW_CommonFunctions.addTraitToPlayer({
+						player = _character,
+						trait = CharacterTrait.HERBALIST,
+						positiveTrait = true,
+					})
 				end
 			end
 		end

@@ -96,13 +96,11 @@ local function catEyes(player, isKill)
 						and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.NIGHT_VISION)
 					)
 				then
-					ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.NIGHT_VISION)
-					ETW_CommonFunctions.displayTraitNotification(
-						player,
-						getText("UI_trait_NightVision"),
-						true,
-						HaloTextHelper.getColorGreen()
-					)
+					ETW_CommonFunctions.addTraitToPlayer({
+						player = player,
+						trait = CharacterTrait.NIGHT_VISION,
+						positiveTrait = true,
+					})
 					Events.EveryOneMinute.Remove(catEyes)
 				end
 			end
@@ -253,42 +251,34 @@ local function sleepSystem()
 		end
 		if sleepModData.SleepHealthinessBar > 100 then
 			if not player:hasTrait(CharacterTrait.NEEDS_LESS_SLEEP) and SBvars.TraitsLockSystemCanGainPositive then
-				ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.NEEDS_LESS_SLEEP)
-				ETW_CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_LessSleep"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
+				ETW_CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = CharacterTrait.NEEDS_LESS_SLEEP,
+					positiveTrait = true,
+				})
 			end
 		elseif sleepModData.SleepHealthinessBar < -100 then
 			if not player:hasTrait(CharacterTrait.NEEDS_MORE_SLEEP) and SBvars.TraitsLockSystemCanGainNegative then
-				ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.NEEDS_MORE_SLEEP)
-				ETW_CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_MoreSleep"),
-					true,
-					HaloTextHelper.getColorRed()
-				)
+				ETW_CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = CharacterTrait.NEEDS_MORE_SLEEP,
+					positiveTrait = false,
+				})
 			end
 		else
 			if player:hasTrait(CharacterTrait.NEEDS_LESS_SLEEP) and SBvars.TraitsLockSystemCanLosePositive then
-				ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.NEEDS_LESS_SLEEP)
-				ETW_CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_LessSleep"),
-					false,
-					HaloTextHelper.getColorRed()
-				)
+				ETW_CommonFunctions.removeTraitFromPlayer({
+					player = player,
+					trait = CharacterTrait.NEEDS_LESS_SLEEP,
+					positiveTrait = true,
+				})
 			end
 			if player:hasTrait(CharacterTrait.NEEDS_MORE_SLEEP) and SBvars.TraitsLockSystemCanLoseNegative then
-				ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.NEEDS_MORE_SLEEP)
-				ETW_CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_MoreSleep"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
+				ETW_CommonFunctions.removeTraitFromPlayer({
+					player = player,
+					trait = CharacterTrait.NEEDS_MORE_SLEEP,
+					positiveTrait = false,
+				})
 			end
 		end
 		logETW("ETW Logger | sleepSystem(): modData.SleepHealthinessBar: " .. sleepModData.SleepHealthinessBar)
@@ -337,26 +327,22 @@ local function smoker()
 			and not playerHasSmoker
 			and SBvars.TraitsLockSystemCanGainNegative
 		then
-			ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.SMOKER)
-			ETW_CommonFunctions.displayTraitNotification(
-				player,
-				getText("UI_trait_Smoker"),
-				true,
-				HaloTextHelper.getColorRed()
-			)
+			ETW_CommonFunctions.addTraitToPlayer({
+				player = player,
+				trait = CharacterTrait.SMOKER,
+				positiveTrait = false,
+			})
 		elseif
 			smokerModData.SmokingAddiction <= -SBvars.SmokerCounter
 			and playerHasSmoker
 			and SBvars.TraitsLockSystemCanLoseNegative
 		then
 			stats:set(CharacterStat.NICOTINE_WITHDRAWAL, 0)
-			ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.SMOKER)
-			ETW_CommonFunctions.displayTraitNotification(
-				player,
-				getText("UI_trait_Smoker"),
-				false,
-				HaloTextHelper.getColorGreen()
-			)
+			ETW_CommonFunctions.removeTraitFromPlayer({
+				player = player,
+				trait = CharacterTrait.SMOKER,
+				positiveTrait = false,
+			})
 		end
 	end
 end
@@ -379,13 +365,11 @@ local function herbalist()
 		)
 		logETW("ETW Logger | herbalist(): modData.HerbsPickedUp: " .. modData.HerbsPickedUp)
 		if modData.HerbsPickedUp < SBvars.HerbalistHerbsPicked / 2 and player:hasTrait(CharacterTrait.HERBALIST) then
-			ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.HERBALIST)
-			ETW_CommonFunctions.displayTraitNotification(
-				player,
-				getText("UI_trait_Herbalist"),
-				false,
-				HaloTextHelper.getColorRed()
-			)
+			ETW_CommonFunctions.removeTraitFromPlayer({
+				player = player,
+				trait = CharacterTrait.HERBALIST,
+				positiveTrait = true,
+			})
 		end
 	end
 end

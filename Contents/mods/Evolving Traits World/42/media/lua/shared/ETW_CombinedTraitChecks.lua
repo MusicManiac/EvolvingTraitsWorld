@@ -45,13 +45,11 @@ function ETWCombinedTraitChecks.bodyworkEnthusiastCheck(player)
 				and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.BODYWORK_ENTHUSIAST)
 			)
 		then
-			ETW_CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.BODYWORK_ENTHUSIAST)
-			ETW_CommonFunctions.displayTraitNotification(
-				player,
-				getText("UI_trait_BodyWorkEnthusiast"),
-				true,
-				HaloTextHelper.getColorGreen()
-			)
+			ETW_CommonFunctions.addTraitToPlayer({
+				player = player,
+				trait = ETWTraitsRegistry.BODYWORK_ENTHUSIAST,
+				positiveTrait = true,
+			})
 		end
 	end
 end
@@ -80,13 +78,11 @@ function ETWCombinedTraitChecks.mechanicsCheck(player)
 			not SBvars.DelayedTraitsSystem
 			or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.MECHANICS))
 		then
-			ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.MECHANICS)
-			ETW_CommonFunctions.displayTraitNotification(
-				player,
-				getText("UI_trait_Mechanics"),
-				true,
-				HaloTextHelper.getColorGreen()
-			)
+			ETW_CommonFunctions.addTraitToPlayer({
+				player = player,
+				trait = CharacterTrait.MECHANICS,
+				positiveTrait = true,
+			})
 		end
 	end
 end
@@ -115,13 +111,11 @@ function ETWCombinedTraitChecks.sewerCheck(player)
 			not SBvars.DelayedTraitsSystem
 			or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.TAILOR))
 		then
-			ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.TAILOR)
-			ETW_CommonFunctions.displayTraitNotification(
-				player,
-				getText("UI_trait_Tailor"),
-				true,
-				HaloTextHelper.getColorGreen()
-			)
+			ETW_CommonFunctions.addTraitToPlayer({
+				player = player,
+				trait = CharacterTrait.TAILOR,
+				positiveTrait = true,
+			})
 		end
 	end
 end

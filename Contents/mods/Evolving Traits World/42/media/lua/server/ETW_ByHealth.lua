@@ -65,13 +65,11 @@ local function immunitySystemTraits()
 						and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.PRONE_TO_ILLNESS)
 					)
 				then
-					ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.PRONE_TO_ILLNESS)
-					ETW_CommonFunctions.displayTraitNotification(
-						player,
-						getText("UI_trait_pronetoillness"),
-						false,
-						HaloTextHelper.getColorGreen()
-					)
+					ETW_CommonFunctions.removeTraitFromPlayer({
+						player = player,
+						trait = CharacterTrait.PRONE_TO_ILLNESS,
+						positiveTrait = false,
+					})
 				end
 			elseif
 				not player:hasTrait(CharacterTrait.PRONE_TO_ILLNESS)
@@ -97,14 +95,12 @@ local function immunitySystemTraits()
 						and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.RESILIENT)
 					)
 				then
-					ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.RESILIENT)
+					ETW_CommonFunctions.addTraitToPlayer({
+						player = player,
+						trait = CharacterTrait.RESILIENT,
+						positiveTrait = true,
+					})
 					Events.EveryOneMinute.Remove(immunitySystemTraits)
-					ETW_CommonFunctions.displayTraitNotification(
-						player,
-						getText("UI_trait_resilient"),
-						true,
-						HaloTextHelper.getColorGreen()
-					)
 				end
 			end
 		end
@@ -157,13 +153,11 @@ local function foodSicknessTraitsETW()
 					and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.WEAK_STOMACH)
 				)
 			then
-				ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.WEAK_STOMACH)
-				ETW_CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_WeakStomach"),
-					false,
-					HaloTextHelper.getColorGreen()
-				)
+				ETW_CommonFunctions.removeTraitFromPlayer({
+					player = player,
+					trait = CharacterTrait.WEAK_STOMACH,
+					positiveTrait = false,
+				})
 			end
 		elseif
 			not player:hasTrait(CharacterTrait.WEAK_STOMACH)
@@ -189,14 +183,12 @@ local function foodSicknessTraitsETW()
 					and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.IRON_GUT)
 				)
 			then
-				ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.IRON_GUT)
+				ETW_CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = CharacterTrait.IRON_GUT,
+					positiveTrait = true,
+				})
 				Events.EveryOneMinute.Remove(foodSicknessTraitsETW)
-				ETW_CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_IronGut"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
 			end
 		end
 	end
@@ -233,27 +225,22 @@ local function weightSystemETW()
 				and startingTraits.FastHealer ~= true
 				and SBvars.TraitsLockSystemCanGainNegative
 			then
-				ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.SLOW_HEALER)
-				ETW_CommonFunctions.displayTraitNotification(
-					notification,
-					player,
-					getText("UI_trait_SlowHealer"),
-					true,
-					HaloTextHelper.getColorRed()
-				)
+				ETW_CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = CharacterTrait.SLOW_HEALER,
+					positiveTrait = false,
+				})
 			end
 			if
 				not player:hasTrait(CharacterTrait.THIN_SKINNED)
 				and startingTraits.ThickSkinned ~= true
 				and SBvars.TraitsLockSystemCanGainNegative
 			then
-				ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.THIN_SKINNED)
-				ETW_CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_ThinSkinned"),
-					true,
-					HaloTextHelper.getColorRed()
-				)
+				ETW_CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = CharacterTrait.THIN_SKINNED,
+					positiveTrait = false,
+				})
 			end
 		else
 			if
@@ -261,26 +248,22 @@ local function weightSystemETW()
 				and startingTraits.ThinSkinned ~= true
 				and SBvars.TraitsLockSystemCanLoseNegative
 			then
-				ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.THIN_SKINNED)
-				ETW_CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_ThinSkinned"),
-					false,
-					HaloTextHelper.getColorGreen()
-				)
+					ETW_CommonFunctions.removeTraitFromPlayer({
+						player = player,
+						trait = CharacterTrait.THIN_SKINNED,
+						positiveTrait = false,
+					})
 			end
 			if
 				player:hasTrait(CharacterTrait.SLOW_HEALER)
 				and startingTraits.SlowHealer ~= true
 				and SBvars.TraitsLockSystemCanLoseNegative
 			then
-				ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.SLOW_HEALER)
-				ETW_CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_SlowHealer"),
-					false,
-					HaloTextHelper.getColorGreen()
-				)
+					ETW_CommonFunctions.removeTraitFromPlayer({
+						player = player,
+						trait = CharacterTrait.SLOW_HEALER,
+						positiveTrait = false,
+					})
 			end
 		end
 		if (weight > 85 and weight < 100) or (weight > 65 and weight < 75) then
@@ -289,78 +272,66 @@ local function weightSystemETW()
 				and startingTraits.LightEater ~= true
 				and SBvars.TraitsLockSystemCanGainNegative
 			then
-				ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.HEARTY_APPETITE)
-				ETW_CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_heartyappetite"),
-					true,
-					HaloTextHelper.getColorRed()
-				)
+				ETW_CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = CharacterTrait.HEARTY_APPETITE,
+					positiveTrait = false,
+				})
 			end
 			if
 				not player:hasTrait(CharacterTrait.HIGH_THIRST)
 				and startingTraits.LowThirst ~= true
 				and SBvars.TraitsLockSystemCanGainNegative
 			then
-				ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.HIGH_THIRST)
-				ETW_CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_HighThirst"),
-					true,
-					HaloTextHelper.getColorRed()
-				)
+				ETW_CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = CharacterTrait.HIGH_THIRST,
+					positiveTrait = false,
+				})
 			end
 			if
 				player:hasTrait(CharacterTrait.THICK_SKINNED)
 				and startingTraits.ThickSkinned ~= true
 				and SBvars.TraitsLockSystemCanLosePositive
 			then
-				ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.THICK_SKINNED)
-				ETW_CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_thickskinned"),
-					false,
-					HaloTextHelper.getColorRed()
-				)
+				ETW_CommonFunctions.removeTraitFromPlayer({
+					player = player,
+					trait = CharacterTrait.THICK_SKINNED,
+					positiveTrait = true,
+				})
 			end
 			if
 				player:hasTrait(CharacterTrait.FAST_HEALER)
 				and startingTraits.FastHealer ~= true
 				and SBvars.TraitsLockSystemCanLosePositive
 			then
-				ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.FAST_HEALER)
-				ETW_CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_FastHealer"),
-					false,
-					HaloTextHelper.getColorRed()
-				)
+				ETW_CommonFunctions.removeTraitFromPlayer({
+					player = player,
+					trait = CharacterTrait.FAST_HEALER,
+					positiveTrait = true,
+				})
 			end
 			if
 				player:hasTrait(CharacterTrait.LIGHT_EATER)
 				and startingTraits.LightEater ~= true
 				and SBvars.TraitsLockSystemCanLosePositive
 			then
-				ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.LIGHT_EATER)
-				ETW_CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_lighteater"),
-					false,
-					HaloTextHelper.getColorRed()
-				)
+				ETW_CommonFunctions.removeTraitFromPlayer({
+					player = player,
+					trait = CharacterTrait.LIGHT_EATER,
+					positiveTrait = true,
+				})
 			end
 			if
 				player:hasTrait(CharacterTrait.LOW_THIRST)
 				and startingTraits.LowThirst ~= true
 				and SBvars.TraitsLockSystemCanLosePositive
 			then
-				ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.LOW_THIRST)
-				ETW_CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_LowThirst"),
-					false,
-					HaloTextHelper.getColorRed()
-				)
+				ETW_CommonFunctions.removeTraitFromPlayer({
+					player = player,
+					trait = CharacterTrait.LOW_THIRST,
+					positiveTrait = true,
+				})
 			end
 		end
 		if weight >= 75 and weight <= 85 then
@@ -370,26 +341,22 @@ local function weightSystemETW()
 				and startingTraits.HeartyAppetite ~= true
 				and SBvars.TraitsLockSystemCanLoseNegative
 			then
-				ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.HEARTY_APPETITE)
-				ETW_CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_heartyappetite"),
-					false,
-					HaloTextHelper.getColorGreen()
-				)
+				ETW_CommonFunctions.removeTraitFromPlayer({
+					player = player,
+					trait = CharacterTrait.HEARTY_APPETITE,
+					positiveTrait = false,
+				})
 			end
 			if
 				player:hasTrait(CharacterTrait.HIGH_THIRST)
 				and startingTraits.HighThirst ~= true
 				and SBvars.TraitsLockSystemCanLoseNegative
 			then
-				ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.HIGH_THIRST)
-				ETW_CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_HighThirst"),
-					false,
-					HaloTextHelper.getColorGreen()
-				)
+				ETW_CommonFunctions.removeTraitFromPlayer({
+					player = player,
+					trait = CharacterTrait.HIGH_THIRST,
+					positiveTrait = false,
+				})
 			end
 			-- losing Thick Skinned and Fast Healer if mental state not good
 			if modData.RecentAverageMental <= (SBvars.WeightSystemLowerMentalThreshold / 100) then
@@ -398,26 +365,22 @@ local function weightSystemETW()
 					and startingTraits.ThickSkinned ~= true
 					and SBvars.TraitsLockSystemCanLosePositive
 				then
-					ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.THICK_SKINNED)
-					ETW_CommonFunctions.displayTraitNotification(
-						player,
-						getText("UI_trait_thickskinned"),
-						false,
-						HaloTextHelper.getColorRed()
-					)
+					ETW_CommonFunctions.removeTraitFromPlayer({
+						player = player,
+						trait = CharacterTrait.THICK_SKINNED,
+						positiveTrait = true,
+					})
 				end
 				if
 					player:hasTrait(CharacterTrait.FAST_HEALER)
 					and startingTraits.FastHealer ~= true
 					and SBvars.TraitsLockSystemCanLosePositive
 				then
-					ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.FAST_HEALER)
-					ETW_CommonFunctions.displayTraitNotification(
-						player,
-						getText("UI_trait_FastHealer"),
-						false,
-						HaloTextHelper.getColorRed()
-					)
+					ETW_CommonFunctions.removeTraitFromPlayer({
+						player = player,
+						trait = CharacterTrait.FAST_HEALER,
+						positiveTrait = true,
+					})
 				end
 			else -- gaining Thick Skinned and Fast Healer if weight 75-85, mental is good, passive levels are good and sleep health enabled
 				local passiveLevels = player:getPerkLevel(Perks.Strength) + player:getPerkLevel(Perks.Fitness)
@@ -430,26 +393,22 @@ local function weightSystemETW()
 						and startingTraits.ThinSkinned ~= true
 						and SBvars.TraitsLockSystemCanGainPositive
 					then
-						ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.THICK_SKINNED)
-						ETW_CommonFunctions.displayTraitNotification(
-							player,
-							getText("UI_trait_thickskinned"),
-							true,
-							HaloTextHelper.getColorGreen()
-						)
+						ETW_CommonFunctions.addTraitToPlayer({
+							player = player,
+							trait = CharacterTrait.THICK_SKINNED,
+							positiveTrait = true,
+						})
 					end
 					if
 						not player:hasTrait(CharacterTrait.FAST_HEALER)
 						and startingTraits.SlowHealer ~= true
 						and SBvars.TraitsLockSystemCanGainPositive
 					then
-						ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.FAST_HEALER)
-						ETW_CommonFunctions.displayTraitNotification(
-							player,
-							getText("UI_trait_FastHealer"),
-							true,
-							HaloTextHelper.getColorGreen()
-						)
+						ETW_CommonFunctions.addTraitToPlayer({
+							player = player,
+							trait = CharacterTrait.FAST_HEALER,
+							positiveTrait = true,
+						})
 					end
 				end
 			end
@@ -463,26 +422,22 @@ local function weightSystemETW()
 					and startingTraits.LightEater ~= true
 					and SBvars.TraitsLockSystemCanLosePositive
 				then
-					ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.LIGHT_EATER)
-					ETW_CommonFunctions.displayTraitNotification(
-						player,
-						getText("UI_trait_lighteater"),
-						false,
-						HaloTextHelper.getColorRed()
-					)
+					ETW_CommonFunctions.removeTraitFromPlayer({
+						player = player,
+						trait = CharacterTrait.LIGHT_EATER,
+						positiveTrait = true,
+					})
 				end
 				if
 					player:hasTrait(CharacterTrait.LOW_THIRST)
 					and startingTraits.LowThirst ~= true
 					and SBvars.TraitsLockSystemCanLosePositive
 				then
-					ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.LOW_THIRST)
-					ETW_CommonFunctions.displayTraitNotification(
-						player,
-						getText("UI_trait_LowThirst"),
-						false,
-						HaloTextHelper.getColorRed()
-					)
+					ETW_CommonFunctions.removeTraitFromPlayer({
+						player = player,
+						trait = CharacterTrait.LOW_THIRST,
+						positiveTrait = true,
+					})
 				end
 			else
 				-- gaining Light Eater and Low Thirst if mental is good, sleep is good, and weight 75-85
@@ -491,26 +446,22 @@ local function weightSystemETW()
 					and startingTraits.HeartyAppetite ~= true
 					and SBvars.TraitsLockSystemCanGainPositive
 				then
-					ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.LIGHT_EATER)
-					ETW_CommonFunctions.displayTraitNotification(
-						player,
-						getText("UI_trait_lighteater"),
-						true,
-						HaloTextHelper.getColorGreen()
-					)
+					ETW_CommonFunctions.addTraitToPlayer({
+						player = player,
+						trait = CharacterTrait.LIGHT_EATER,
+						positiveTrait = true,
+					})
 				end
 				if
 					not player:hasTrait(CharacterTrait.LOW_THIRST)
 					and startingTraits.HighThirst ~= true
 					and SBvars.TraitsLockSystemCanGainPositive
 				then
-					ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.LOW_THIRST)
-					ETW_CommonFunctions.displayTraitNotification(
-						player,
-						getText("UI_trait_LowThirst"),
-						true,
-						HaloTextHelper.getColorGreen()
-					)
+					ETW_CommonFunctions.addTraitToPlayer({
+						player = player,
+						trait = CharacterTrait.LOW_THIRST,
+						positiveTrait = true,
+					})
 				end
 			end
 		end
@@ -572,25 +523,21 @@ local function asthmaticTraitETW()
 			and not player:hasTrait(CharacterTrait.ASTHMATIC)
 			and SBvars.TraitsLockSystemCanGainNegative
 		then
-			ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.ASTHMATIC)
-			ETW_CommonFunctions.displayTraitNotification(
-				player,
-				getText("UI_trait_Asthmatic"),
-				true,
-				HaloTextHelper.getColorRed()
-			)
+			ETW_CommonFunctions.addTraitToPlayer({
+				player = player,
+				trait = CharacterTrait.ASTHMATIC,
+				positiveTrait = false,
+			})
 		elseif
 			modData.AsthmaticCounter >= SBvars.AsthmaticCounter
 			and player:hasTrait(CharacterTrait.ASTHMATIC)
 			and SBvars.TraitsLockSystemCanLoseNegative
 		then
-			ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.ASTHMATIC)
-			ETW_CommonFunctions.displayTraitNotification(
-				player,
-				getText("UI_trait_Asthmatic"),
-				false,
-				HaloTextHelper.getColorGreen()
-			)
+			ETW_CommonFunctions.removeTraitFromPlayer({
+				player = player,
+				trait = CharacterTrait.ASTHMATIC,
+				positiveTrait = false,
+			})
 		end
 	end
 end
@@ -678,15 +625,13 @@ local function painToleranceTraitETW()
 					and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.PAIN_TOLERANCE)
 				)
 			then
-				ETW_CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.PAIN_TOLERANCE)
+				ETW_CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = ETWTraitsRegistry.PAIN_TOLERANCE,
+					positiveTrait = true,
+				})
 				ETW_InitiatePainToleranceTrait(player)
 				Events.EveryTenMinutes.Remove(painToleranceTraitETW)
-				ETW_CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_PainTolerance"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
 			end
 		end
 	end

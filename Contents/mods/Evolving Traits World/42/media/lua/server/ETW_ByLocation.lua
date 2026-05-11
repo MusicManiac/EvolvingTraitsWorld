@@ -86,7 +86,11 @@ local function outdoorsman(player, isKill)
 				and outdoorsmanModData.OutdoorsmanCounter >= SBvars.OutdoorsmanCounter
 				and SBvars.TraitsLockSystemCanGainPositive
 			then
-				ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.OUTDOORSMAN)
+				ETW_CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = CharacterTrait.OUTDOORSMAN,
+					positiveTrait = true,
+				})
 			end
 		elseif outdoorsmanModData.OutdoorsmanCounter > 0 and not isKill then
 			local totalLose = totalGain
@@ -109,7 +113,11 @@ local function outdoorsman(player, isKill)
 				and outdoorsmanModData.OutdoorsmanCounter <= -SBvars.OutdoorsmanCounter
 				and SBvars.TraitsLockSystemCanLosePositive
 			then
-				ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.OUTDOORSMAN)
+				ETW_CommonFunctions.removeTraitFromPlayer({
+					player = player,
+					trait = CharacterTrait.OUTDOORSMAN,
+					positiveTrait = true,
+				})
 			end
 		end
 	end
@@ -191,13 +199,11 @@ local function fearOfLocations(player, isKill)
 				and not desensitized(player)
 				and SBvars.TraitsLockSystemCanGainNegative
 			then
-				ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.AGORAPHOBIC)
-				ETW_CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_agoraphobic"),
-					true,
-					HaloTextHelper.getColorRed()
-				)
+				ETW_CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = CharacterTrait.AGORAPHOBIC,
+					positiveTrait = false,
+				})
 			end
 			if
 				not playerHasClaustrophobia
@@ -205,13 +211,11 @@ local function fearOfLocations(player, isKill)
 				and not desensitized(player)
 				and SBvars.TraitsLockSystemCanGainNegative
 			then
-				ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.CLAUSTROPHOBIC)
-				ETW_CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_claustro"),
-					true,
-					HaloTextHelper.getColorRed()
-				)
+				ETW_CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = CharacterTrait.CLAUSTROPHOBIC,
+					positiveTrait = false,
+				})
 			end
 		elseif SBvars.TraitsLockSystemCanLoseNegative and SBvars.TraitsLockSystemCanGainNegative then
 			if
@@ -220,20 +224,16 @@ local function fearOfLocations(player, isKill)
 				and fearOfLocationsModData.FearOfOutside < fearOfLocationsModData.FearOfInside
 				and not playerHasAgoraphobia
 			then
-				ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.CLAUSTROPHOBIC)
-				ETW_CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_claustro"),
-					false,
-					HaloTextHelper.getColorGreen()
-				)
-				ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.AGORAPHOBIC)
-				ETW_CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_agoraphobic"),
-					true,
-					HaloTextHelper.getColorRed()
-				)
+				ETW_CommonFunctions.removeTraitFromPlayer({
+					player = player,
+					trait = CharacterTrait.CLAUSTROPHOBIC,
+					positiveTrait = false,
+				})
+				ETW_CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = CharacterTrait.AGORAPHOBIC,
+					positiveTrait = false,
+				})
 			end
 			if
 				fearOfLocationsModData.FearOfInside <= -SBCounter
@@ -241,20 +241,16 @@ local function fearOfLocations(player, isKill)
 				and fearOfLocationsModData.FearOfInside < fearOfLocationsModData.FearOfOutside
 				and not playerHasClaustrophobia
 			then
-				ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.AGORAPHOBIC)
-				ETW_CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_agoraphobic"),
-					false,
-					HaloTextHelper.getColorGreen()
-				)
-				ETW_CommonFunctions.addTraitToPlayer(player, CharacterTrait.CLAUSTROPHOBIC)
-				ETW_CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_claustro"),
-					true,
-					HaloTextHelper.getColorRed()
-				)
+				ETW_CommonFunctions.removeTraitFromPlayer({
+					player = player,
+					trait = CharacterTrait.AGORAPHOBIC,
+					positiveTrait = false,
+				})
+				ETW_CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = CharacterTrait.CLAUSTROPHOBIC,
+					positiveTrait = false,
+				})
 			end
 		end
 		if
@@ -262,26 +258,22 @@ local function fearOfLocations(player, isKill)
 			and fearOfLocationsModData.FearOfOutside >= SBCounter
 			and SBvars.TraitsLockSystemCanLoseNegative
 		then
-			ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.AGORAPHOBIC)
-			ETW_CommonFunctions.displayTraitNotification(
-				player,
-				getText("UI_trait_agoraphobic"),
-				false,
-				HaloTextHelper.getColorGreen()
-			)
+			ETW_CommonFunctions.removeTraitFromPlayer({
+				player = player,
+				trait = CharacterTrait.AGORAPHOBIC,
+				positiveTrait = false,
+			})
 		end
 		if
 			playerHasClaustrophobia
 			and fearOfLocationsModData.FearOfInside >= SBCounter
 			and SBvars.TraitsLockSystemCanLoseNegative
 		then
-			ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.CLAUSTROPHOBIC)
-			ETW_CommonFunctions.displayTraitNotification(
-				player,
-				getText("UI_trait_claustro"),
-				false,
-				HaloTextHelper.getColorGreen()
-			)
+			ETW_CommonFunctions.removeTraitFromPlayer({
+				player = player,
+				trait = CharacterTrait.CLAUSTROPHOBIC,
+				positiveTrait = false,
+			})
 		end
 	end
 end

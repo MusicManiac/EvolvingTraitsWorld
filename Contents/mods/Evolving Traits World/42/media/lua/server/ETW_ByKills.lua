@@ -161,25 +161,21 @@ local function bloodlustTimeETW()
 			and bloodlustModData.BloodlustProgress <= SBvars.BloodlustProgress / 2
 			and SBvars.TraitsLockSystemCanLosePositive
 		then
-			ETW_CommonFunctions.removeTraitFromPlayer(player, ETWTraitsRegistry.BLOODLUST)
-			ETW_CommonFunctions.displayTraitNotification(
-				player,
-				getText("UI_trait_Bloodlust"),
-				false,
-				HaloTextHelper.getColorRed()
-			)
+			ETW_CommonFunctions.removeTraitFromPlayer({
+				player = player,
+				trait = ETWTraitsRegistry.BLOODLUST,
+				positiveTrait = true,
+			})
 		elseif
 			not player:hasTrait(ETWTraitsRegistry.BLOODLUST)
 			and bloodlustModData.BloodlustProgress >= SBvars.BloodlustProgress
 			and SBvars.TraitsLockSystemCanGainPositive
 		then
-			ETW_CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.BLOODLUST)
-			ETW_CommonFunctions.displayTraitNotification(
-				player,
-				getText("UI_trait_Bloodlust"),
-				true,
-				HaloTextHelper.getColorGreen()
-			)
+			ETW_CommonFunctions.addTraitToPlayer({
+				player = player,
+				trait = ETWTraitsRegistry.BLOODLUST,
+				positiveTrait = true,
+			})
 		end
 	end
 end
@@ -222,13 +218,11 @@ local function eagleEyedETW(zombie, attacker, bodyPart, weapon)
 						and ETW_CommonFunctions.checkDelayedTraits(attacker, CharacterTrait.EAGLE_EYED)
 					)
 				then
-					ETW_CommonFunctions.addTraitToPlayer(attacker, CharacterTrait.EAGLE_EYED)
-					ETW_CommonFunctions.displayTraitNotification(
-						attacker,
-						getText("UI_trait_eagleeyed"),
-						true,
-						HaloTextHelper.getColorGreen()
-					)
+					ETW_CommonFunctions.addTraitToPlayer({
+						player = attacker,
+						trait = CharacterTrait.EAGLE_EYED,
+						positiveTrait = true,
+					})
 				end
 			end
 		end
@@ -326,13 +320,11 @@ local function braverySystemETW(zombie)
 						not SBvars.DelayedTraitsSystem
 						or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, trait))
 					then
-						ETW_CommonFunctions.removeTraitFromPlayer(player, trait)
-						ETW_CommonFunctions.displayTraitNotification(
-							player,
-							translationString,
-							false,
-							HaloTextHelper.getColorGreen()
-						)
+						ETW_CommonFunctions.removeTraitFromPlayer({
+							player = player,
+							trait = trait,
+							positiveTrait = false,
+						})
 					end
 					return
 				elseif
@@ -357,13 +349,11 @@ local function braverySystemETW(zombie)
 						not SBvars.DelayedTraitsSystem
 						or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, trait))
 					then
-						ETW_CommonFunctions.addTraitToPlayer(player, trait)
-						ETW_CommonFunctions.displayTraitNotification(
-							player,
-							translationString,
-							true,
-							HaloTextHelper.getColorGreen()
-						)
+						ETW_CommonFunctions.addTraitToPlayer({
+							player = player,
+							trait = trait,
+							positiveTrait = true,
+						})
 						if trait == CharacterTrait.DESENSITIZED then
 							Events.OnZombieDead.Remove(braverySystemETW)
 							if
@@ -371,40 +361,32 @@ local function braverySystemETW(zombie)
 								and SBvars.TraitsLockSystemCanLoseNegative
 							then
 								if player:hasTrait(CharacterTrait.AGORAPHOBIC) then
-									ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.AGORAPHOBIC)
-									ETW_CommonFunctions.displayTraitNotification(
-										player,
-										"UI_trait_agoraphobic",
-										false,
-										HaloTextHelper.getColorGreen()
-									)
+									ETW_CommonFunctions.removeTraitFromPlayer({
+										player = player,
+										trait = CharacterTrait.AGORAPHOBIC,
+										positiveTrait = false,
+									})
 								end
 								if player:hasTrait(CharacterTrait.CLAUSTROPHOBIC) then
-									ETW_CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.CLAUSTROPHOBIC)
-									ETW_CommonFunctions.displayTraitNotification(
-										player,
-										"UI_trait_claustro",
-										false,
-										HaloTextHelper.getColorGreen()
-									)
+									ETW_CommonFunctions.removeTraitFromPlayer({
+										player = player,
+										trait = CharacterTrait.CLAUSTROPHOBIC,
+										positiveTrait = false,
+									})
 								end
 								if player:hasTrait(ETWTraitsRegistry.PLUVIOPHOBIA) then
-									ETW_CommonFunctions.removeTraitFromPlayer(player, ETWTraitsRegistry.PLUVIOPHOBIA)
-									ETW_CommonFunctions.displayTraitNotification(
-										player,
-										getText("UI_trait_Pluviophobia"),
-										false,
-										HaloTextHelper.getColorGreen()
-									)
+									ETW_CommonFunctions.removeTraitFromPlayer({
+										player = player,
+										trait = ETWTraitsRegistry.PLUVIOPHOBIA,
+										positiveTrait = false,
+									})
 								end
 								if player:hasTrait(ETWTraitsRegistry.HOMICHLOPHOBIA) then
-									ETW_CommonFunctions.removeTraitFromPlayer(player, ETWTraitsRegistry.HOMICHLOPHOBIA)
-									ETW_CommonFunctions.displayTraitNotification(
-										player,
-										getText("UI_trait_Homichlophobia"),
-										false,
-										HaloTextHelper.getColorGreen()
-									)
+									ETW_CommonFunctions.removeTraitFromPlayer({
+										player = player,
+										trait = ETWTraitsRegistry.HOMICHLOPHOBIA,
+										positiveTrait = false,
+									})
 								end
 							end
 						end
