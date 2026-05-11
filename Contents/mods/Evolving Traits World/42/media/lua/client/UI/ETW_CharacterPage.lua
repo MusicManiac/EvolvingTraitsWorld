@@ -192,6 +192,8 @@ function ISETWProgressUI:initialise()
 end
 
 function ISETWProgressUI:createChildren()
+	local player = getSpecificPlayer(self.playerNum)
+
 	if SBvars.UIPage then
 		local barStartPosition = 150 -- TODO : add mod option to adjust this
 		local barEndPosition = WINDOW_WIDTH - lineStartPosition
@@ -215,7 +217,6 @@ function ISETWProgressUI:createChildren()
 		local textManager = getTextManager()
 		local str
 
-		local player = getPlayer()
 		local modData = ETW_CommonFunctions.getETWModData(player)
 		local strength = player:getPerkLevel(Perks.Strength)
 		local fitness = player:getPerkLevel(Perks.Fitness)
@@ -2544,7 +2545,7 @@ function ISETWProgressUI:createChildren()
 		nonBarsEntryNumber = 0
 	end
 
-	self.layoutSignature = getLayoutSignature(getPlayer())
+	self.layoutSignature = getLayoutSignature(player)
 end
 
 ---Rebuilds every ETW child widget so conditional labels and bars can appear or disappear mid-game.
