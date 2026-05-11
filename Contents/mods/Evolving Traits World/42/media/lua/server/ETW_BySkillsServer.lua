@@ -26,287 +26,24 @@ end
 
 local gameMode = CommonFunctions.gameMode()
 
-local validHearingTriggers = {
-	["characterInitialization"] = true,
-	[Perks.Sprinting] = true,
-	[Perks.Lightfoot] = true,
-	[Perks.Nimble] = true,
-	[Perks.Sneak] = true,
-	[Perks.Axe] = true,
-	[Perks.Blunt] = true,
-	[Perks.SmallBlunt] = true,
-	[Perks.LongBlade] = true,
-	[Perks.SmallBlade] = true,
-	[Perks.Spear] = true,
-	[CharacterTrait.HARD_OF_HEARING] = true,
-	[CharacterTrait.KEEN_HEARING] = true,
-}
+---Builds a lookup table used to test whether a given trigger should execute a rule.
+---Example: `makeTriggerSet("characterInitialization", Perks.Strength, CharacterTrait.JOGGER)`
+---@param ... PerkFactory.Perk|string|CharacterTrait
+---@return table<PerkFactory.Perk|string|CharacterTrait, boolean>
+local function makeTriggerSet(...)
+	local triggerSet = {}
+	local triggers = { ... }
+	for i = 1, #triggers do
+		triggerSet[triggers[i]] = true
+	end
+	return triggerSet
+end
 
-local validHoarderTriggers = {
-	["characterInitialization"] = true,
-	[Perks.Strength] = true,
-	[ETWTraitsRegistry.HOARDER] = true,
-}
-
-local validGymRatTriggers = {
-	["characterInitialization"] = true,
-	[Perks.Strength] = true,
-	[Perks.Fitness] = true,
-	[ETWTraitsRegistry.GYM_RAT] = true,
-}
-
-local validRunnerTriggers = {
-	["characterInitialization"] = true,
-	[Perks.Sprinting] = true,
-	[CharacterTrait.JOGGER] = true,
-}
-
-local validLightStepTriggers = {
-	["characterInitialization"] = true,
-	[Perks.Lightfoot] = true,
-	[ETWTraitsRegistry.LIGHTSTEP] = true,
-}
-
-local validGymnastTriggers = {
-	["characterInitialization"] = true,
-	[Perks.Lightfoot] = true,
-	[Perks.Nimble] = true,
-	[CharacterTrait.GYMNAST] = true,
-}
-
-local validClumsyTriggers = {
-	["characterInitialization"] = true,
-	[Perks.Lightfoot] = true,
-	[Perks.Sneak] = true,
-	[CharacterTrait.CLUMSY] = true,
-}
-
-local validGracefulTriggers = {
-	["characterInitialization"] = true,
-	[Perks.Nimble] = true,
-	[Perks.Sneak] = true,
-	[Perks.Lightfoot] = true,
-	[CharacterTrait.GRACEFUL] = true,
-}
-
-local validBurglarTriggers = {
-	["characterInitialization"] = true,
-	[Perks.Nimble] = true,
-	[Perks.Mechanics] = true,
-	[Perks.Electricity] = true,
-	[CharacterTrait.BURGLAR] = true,
-}
-
-local validLowProfileTriggers = {
-	["characterInitialization"] = true,
-	[Perks.Sneak] = true,
-	[ETWTraitsRegistry.LOW_PROFILE] = true,
-}
-
-local validConspicuousTriggers = {
-	["characterInitialization"] = true,
-	[Perks.Sneak] = true,
-	[CharacterTrait.CONSPICUOUS] = true,
-	[CharacterTrait.INCONSPICUOUS] = true,
-}
-
-local validBrawlerTriggers = {
-	["characterInitialization"] = true,
-	["kill"] = true,
-	[Perks.Axe] = true,
-	[Perks.Blunt] = true,
-	[CharacterTrait.BRAWLER] = true,
-}
-
-local validAxeThrowerTriggers = {
-	["characterInitialization"] = true,
-	["kill"] = true,
-	[Perks.Axe] = true,
-	[ETWTraitsRegistry.AXE_THROWER] = true,
-}
-
-local validBaseballPlayerTriggers = {
-	["characterInitialization"] = true,
-	["kill"] = true,
-	[Perks.Blunt] = true,
-	[CharacterTrait.BASEBALL_PLAYER] = true,
-}
-
-local validHunterTriggers = {
-	["characterInitialization"] = true,
-	["kill"] = true,
-	[Perks.Sneak] = true,
-	[Perks.Aiming] = true,
-	[Perks.Trapping] = true,
-	[Perks.SmallBlade] = true,
-	[CharacterTrait.HUNTER] = true,
-}
-
-local validStickFighterTriggers = {
-	["characterInitialization"] = true,
-	["kill"] = true,
-	[Perks.SmallBlunt] = true,
-	[ETWTraitsRegistry.STICK_FIGHTER] = true,
-}
-
-local validBladeEnthusiastTriggers = {
-	["characterInitialization"] = true,
-	["kill"] = true,
-	[Perks.LongBlade] = true,
-	[ETWTraitsRegistry.BLADE_ENTHUSIAST] = true,
-}
-
-local validKnifeFighterTriggers = {
-	["characterInitialization"] = true,
-	["kill"] = true,
-	[Perks.SmallBlade] = true,
-	[ETWTraitsRegistry.KNIFE_FIGHTER] = true,
-}
-
-local validPolearmTriggers = {
-	["characterInitialization"] = true,
-	["kill"] = true,
-	[Perks.Spear] = true,
-	[ETWTraitsRegistry.POLEARM_FIGHTER] = true,
-}
-
-local validRestorationExpertTriggers = {
-	["characterInitialization"] = true,
-	[Perks.Maintenance] = true,
-	[ETWTraitsRegistry.RESTORATION_EXPERT] = true,
-}
-
-local validHandyTriggers = {
-	["characterInitialization"] = true,
-	[Perks.Maintenance] = true,
-	[Perks.Woodwork] = true,
-	[CharacterTrait.HANDY] = true,
-}
-
-local validLearnerTriggers = {
-	["characterInitialization"] = true,
-	[Perks.Maintenance] = true,
-	[Perks.Woodwork] = true,
-	[Perks.Cooking] = true,
-	[Perks.Farming] = true,
-	[Perks.Doctor] = true,
-	[Perks.Electricity] = true,
-	[Perks.MetalWelding] = true,
-	[Perks.Mechanics] = true,
-	[Perks.Tailoring] = true,
-	[CharacterTrait.SLOW_LEARNER] = true,
-	[CharacterTrait.FAST_LEARNER] = true,
-}
-
-local validFurnitureAssemblerTriggers = {
-	["characterInitialization"] = true,
-	[Perks.Woodwork] = true,
-	[ETWTraitsRegistry.FURNITURE_ASSEMBLER] = true,
-}
-
-local validHomeCookTriggers = {
-	["characterInitialization"] = true,
-	[Perks.Cooking] = true,
-	[ETWTraitsRegistry.HOME_COOK] = true,
-}
-
-local validCookTriggers = {
-	["characterInitialization"] = true,
-	[Perks.Cooking] = true,
-	[CharacterTrait.COOK] = true,
-}
-
-local validGardenerTriggers = {
-	["characterInitialization"] = true,
-	[Perks.Farming] = true,
-	[CharacterTrait.GARDENER] = true,
-}
-
-local validPetTherapyTriggers = {
-	["characterInitialization"] = true,
-	[Perks.Husbandry] = true,
-	[ETWTraitsRegistry.PET_THERAPY] = true,
-}
-
-local validWhittlerTriggers = {
-	["characterInitialization"] = true,
-	[Perks.Carving] = true,
-	[CharacterTrait.WHITTLER] = true,
-}
-
-local validBlacksmithTriggers = {
-	["characterInitialization"] = true,
-	[Perks.Blacksmith] = true,
-	[CharacterTrait.BLACKSMITH] = true,
-}
-
-local validWildernessKnowledgeTriggers = {
-	["characterInitialization"] = true,
-	[Perks.PlantScavenging] = true,
-	[Perks.FlintKnapping] = true,
-	[Perks.Maintenance] = true,
-	[Perks.Carving] = true,
-	[CharacterTrait.WILDERNESS_KNOWLEDGE] = true,
-}
-
-local validFirstAidTriggers = {
-	["characterInitialization"] = true,
-	[Perks.Doctor] = true,
-	[CharacterTrait.FIRST_AID] = true,
-}
-
-local validAVClubTriggers = {
-	["characterInitialization"] = true,
-	[Perks.Electricity] = true,
-	[ETWTraitsRegistry.AV_CLUB] = true,
-}
-
-local validBodyWorkEnthusiastTriggers = {
-	["characterInitialization"] = true,
-	[Perks.MetalWelding] = true,
-	[Perks.Mechanics] = true,
-	[ETWTraitsRegistry.BODYWORK_ENTHUSIAST] = true,
-}
-
-local validMechanicsTriggers = {
-	["characterInitialization"] = true,
-	[Perks.Mechanics] = true,
-	[CharacterTrait.MECHANICS] = true,
-}
-
-local validSewerTriggers = {
-	["characterInitialization"] = true,
-	[Perks.Tailoring] = true,
-	[CharacterTrait.TAILOR] = true,
-}
-
-local validGunEnthusiastTriggers = {
-	["characterInitialization"] = true,
-	["kill"] = true,
-	[Perks.Aiming] = true,
-	[Perks.Reloading] = true,
-	[ETWTraitsRegistry.GUN_ENTHUSIAST] = true,
-}
-
-local validAnglerTriggers = {
-	["characterInitialization"] = true,
-	[Perks.Fishing] = true,
-	[ETWTraitsRegistry.ANGLER] = true,
-}
-
-local validHikerTriggers = {
-	["characterInitialization"] = true,
-	[Perks.Trapping] = true,
-	[Perks.PlantScavenging] = true,
-	[CharacterTrait.HIKER] = true,
-}
-
-local validFishingTriggers = {
-	["characterInitialization"] = true,
-	[Perks.Fishing] = true,
-	[CharacterTrait.FISHING] = true,
-}
-
+---Sums numeric values stored in the rule execution context under the provided keys.
+---Example: `sumContextValues(ctx, { "strength", "fitness" })`
+---@param ctx table<string, any>
+---@param keys string[]
+---@return number
 local function sumContextValues(ctx, keys)
 	local total = 0
 	for i = 1, #keys do
@@ -315,6 +52,11 @@ local function sumContextValues(ctx, keys)
 	return total
 end
 
+---Checks whether every required context value is at least the specified minimum.
+---Example: `hasRequiredLevels(ctx, { sneaking = 2, aiming = 2 })`
+---@param ctx table<string, any>
+---@param requirements table<string, number>
+---@return boolean
 local function hasRequiredLevels(ctx, requirements)
 	for key, minimum in pairs(requirements) do
 		if ctx[key] < minimum then
@@ -324,6 +66,13 @@ local function hasRequiredLevels(ctx, requirements)
 	return true
 end
 
+---Queues or immediately applies a trait change, depending on delayed-trait settings.
+---Example: `applyTraitChange(ctx, CharacterTrait.GRACEFUL, true, true)`
+---@param ctx table<string, any>
+---@param trait CharacterTrait
+---@param positiveTrait boolean
+---@param gainingTrait boolean
+---@param onApply? fun(ctx: table<string, any>)
 local function applyTraitChange(ctx, trait, positiveTrait, gainingTrait, onApply)
 	if SBvars.DelayedTraitsSystem and not CommonFunctions.checkIfTraitIsInDelayedTraitsTable(ctx.player, trait) then
 		CommonFunctions.addTraitToDelayTable({
@@ -350,6 +99,11 @@ local function applyTraitChange(ctx, trait, positiveTrait, gainingTrait, onApply
 	end
 end
 
+---Executes a single skill rule when the current trigger and common checks match.
+---Example: `executeTraitRule(ctx, skillTraitRules[1], trigger)`
+---@param ctx table<string, any>
+---@param rule table
+---@param trigger PerkFactory.Perk|string|CharacterTrait
 local function executeTraitRule(ctx, rule, trigger)
 	if not rule.triggers[trigger] or not rule.shouldExecute(ctx.player) then
 		return
@@ -367,9 +121,25 @@ local function executeTraitRule(ctx, rule, trigger)
 	applyTraitChange(ctx, rule.trait, rule.positiveTrait, rule.gainingTrait, rule.onApply)
 end
 
+---Rules that map skills and other progression triggers to trait changes.
+---Example rule shape: `{ triggers = makeTriggerSet(...), shouldExecute = fn, condition = fn, trait = traitId }`
 local skillTraitRules = {
 	{
-		triggers = validHearingTriggers,
+		triggers = makeTriggerSet(
+			"characterInitialization",
+			Perks.Sprinting,
+			Perks.Lightfoot,
+			Perks.Nimble,
+			Perks.Sneak,
+			Perks.Axe,
+			Perks.Blunt,
+			Perks.SmallBlunt,
+			Perks.LongBlade,
+			Perks.SmallBlade,
+			Perks.Spear,
+			CharacterTrait.HARD_OF_HEARING,
+			CharacterTrait.KEEN_HEARING
+		),
 		shouldExecute = ETW_CommonLogicChecks.HearingSystemShouldExecute,
 		run = function(ctx)
 			local levels = sumContextValues(ctx, {
@@ -397,7 +167,7 @@ local skillTraitRules = {
 		end,
 	},
 	{
-		triggers = validHoarderTriggers,
+		triggers = makeTriggerSet("characterInitialization", Perks.Strength, ETWTraitsRegistry.HOARDER),
 		shouldExecute = ETW_CommonLogicChecks.HoarderShouldExecute,
 		condition = function(ctx)
 			return ctx.strength >= SBvars.HoarderSkill
@@ -410,7 +180,7 @@ local skillTraitRules = {
 		end,
 	},
 	{
-		triggers = validGymRatTriggers,
+		triggers = makeTriggerSet("characterInitialization", Perks.Strength, Perks.Fitness, ETWTraitsRegistry.GYM_RAT),
 		shouldExecute = ETW_CommonLogicChecks.GymRatShouldExecute,
 		condition = function(ctx)
 			return sumContextValues(ctx, { "strength", "fitness" }) >= SBvars.GymRatSkill
@@ -420,7 +190,7 @@ local skillTraitRules = {
 		gainingTrait = true,
 	},
 	{
-		triggers = validRunnerTriggers,
+		triggers = makeTriggerSet("characterInitialization", Perks.Sprinting, CharacterTrait.JOGGER),
 		shouldExecute = ETW_CommonLogicChecks.RunnerShouldExecute,
 		condition = function(ctx)
 			return ctx.sprinting >= SBvars.RunnerSkill
@@ -430,7 +200,7 @@ local skillTraitRules = {
 		gainingTrait = true,
 	},
 	{
-		triggers = validLightStepTriggers,
+		triggers = makeTriggerSet("characterInitialization", Perks.Lightfoot, ETWTraitsRegistry.LIGHTSTEP),
 		shouldExecute = ETW_CommonLogicChecks.LightStepShouldExecute,
 		condition = function(ctx)
 			return ctx.lightfooted >= SBvars.LightStepSkill
@@ -440,7 +210,7 @@ local skillTraitRules = {
 		gainingTrait = true,
 	},
 	{
-		triggers = validGymnastTriggers,
+		triggers = makeTriggerSet("characterInitialization", Perks.Lightfoot, Perks.Nimble, CharacterTrait.GYMNAST),
 		shouldExecute = ETW_CommonLogicChecks.GymnastShouldExecute,
 		condition = function(ctx)
 			return sumContextValues(ctx, { "lightfooted", "nimble" }) >= SBvars.GymnastSkill
@@ -450,7 +220,7 @@ local skillTraitRules = {
 		gainingTrait = true,
 	},
 	{
-		triggers = validClumsyTriggers,
+		triggers = makeTriggerSet("characterInitialization", Perks.Lightfoot, Perks.Sneak, CharacterTrait.CLUMSY),
 		shouldExecute = ETW_CommonLogicChecks.ClumsyShouldExecute,
 		condition = function(ctx)
 			return sumContextValues(ctx, { "lightfooted", "sneaking" }) >= SBvars.ClumsySkill
@@ -460,7 +230,13 @@ local skillTraitRules = {
 		gainingTrait = false,
 	},
 	{
-		triggers = validGracefulTriggers,
+		triggers = makeTriggerSet(
+			"characterInitialization",
+			Perks.Nimble,
+			Perks.Sneak,
+			Perks.Lightfoot,
+			CharacterTrait.GRACEFUL
+		),
 		shouldExecute = ETW_CommonLogicChecks.GracefulShouldExecute,
 		condition = function(ctx)
 			return sumContextValues(ctx, { "nimble", "sneaking", "lightfooted" }) >= SBvars.GracefulSkill
@@ -470,7 +246,13 @@ local skillTraitRules = {
 		gainingTrait = true,
 	},
 	{
-		triggers = validBurglarTriggers,
+		triggers = makeTriggerSet(
+			"characterInitialization",
+			Perks.Nimble,
+			Perks.Mechanics,
+			Perks.Electricity,
+			CharacterTrait.BURGLAR
+		),
 		shouldExecute = ETW_CommonLogicChecks.BurglarShouldExecute,
 		condition = function(ctx)
 			return ctx.electrical >= 2
@@ -482,7 +264,7 @@ local skillTraitRules = {
 		gainingTrait = true,
 	},
 	{
-		triggers = validLowProfileTriggers,
+		triggers = makeTriggerSet("characterInitialization", Perks.Sneak, ETWTraitsRegistry.LOW_PROFILE),
 		shouldExecute = ETW_CommonLogicChecks.LowProfileShouldExecute,
 		condition = function(ctx)
 			return ctx.sneaking >= SBvars.LowProfileSkill
@@ -492,18 +274,37 @@ local skillTraitRules = {
 		gainingTrait = true,
 	},
 	{
-		triggers = validConspicuousTriggers,
+		triggers = makeTriggerSet(
+			"characterInitialization",
+			Perks.Sneak,
+			CharacterTrait.CONSPICUOUS,
+			CharacterTrait.INCONSPICUOUS
+		),
 		shouldExecute = ETW_CommonLogicChecks.ConspicuousShouldExecute,
 		run = function(ctx)
-			if ETW_CommonLogicChecks.ConspicuousShouldExecute(ctx.player) and ctx.sneaking >= SBvars.ConspicuousSkill then
+			if
+				ETW_CommonLogicChecks.ConspicuousShouldExecute(ctx.player)
+				and ctx.sneaking >= SBvars.ConspicuousSkill
+			then
 				applyTraitChange(ctx, CharacterTrait.CONSPICUOUS, false, false)
-			elseif ETW_CommonLogicChecks.InconspicuousShouldExecute(ctx.player) and ctx.sneaking >= SBvars.InconspicuousSkill then
+			elseif
+				ETW_CommonLogicChecks.InconspicuousShouldExecute(ctx.player)
+				and ctx.sneaking >= SBvars.InconspicuousSkill
+			then
 				applyTraitChange(ctx, CharacterTrait.INCONSPICUOUS, true, true)
 			end
 		end,
 	},
 	{
-		triggers = validHunterTriggers,
+		triggers = makeTriggerSet(
+			"characterInitialization",
+			"kill",
+			Perks.Sneak,
+			Perks.Aiming,
+			Perks.Trapping,
+			Perks.SmallBlade,
+			CharacterTrait.HUNTER
+		),
 		shouldExecute = ETW_CommonLogicChecks.HunterShouldExecute,
 		condition = function(ctx)
 			return hasRequiredLevels(ctx, {
@@ -511,16 +312,14 @@ local skillTraitRules = {
 				aiming = 2,
 				trapping = 2,
 				shortBlade = 2,
-			})
-				and sumContextValues(ctx, { "sneaking", "aiming", "trapping", "shortBlade" }) >= SBvars.HunterSkill
-				and (ctx.shortBladeKills + ctx.firearmKills) >= SBvars.HunterKills
+			}) and sumContextValues(ctx, { "sneaking", "aiming", "trapping", "shortBlade" }) >= SBvars.HunterSkill and (ctx.shortBladeKills + ctx.firearmKills) >= SBvars.HunterKills
 		end,
 		trait = CharacterTrait.HUNTER,
 		positiveTrait = true,
 		gainingTrait = true,
 	},
 	{
-		triggers = validBrawlerTriggers,
+		triggers = makeTriggerSet("characterInitialization", "kill", Perks.Axe, Perks.Blunt, CharacterTrait.BRAWLER),
 		shouldExecute = ETW_CommonLogicChecks.BrawlerShouldExecute,
 		condition = function(ctx)
 			return sumContextValues(ctx, { "axe", "longBlunt" }) >= SBvars.BrawlerSkill
@@ -531,7 +330,7 @@ local skillTraitRules = {
 		gainingTrait = true,
 	},
 	{
-		triggers = validAxeThrowerTriggers,
+		triggers = makeTriggerSet("characterInitialization", "kill", Perks.Axe, ETWTraitsRegistry.AXE_THROWER),
 		shouldExecute = ETW_CommonLogicChecks.AxeThrowerShouldExecute,
 		condition = function(ctx)
 			return ctx.axe >= SBvars.AxeThrowerSkill and ctx.axeKills >= SBvars.AxeThrowerKills
@@ -541,51 +340,52 @@ local skillTraitRules = {
 		gainingTrait = true,
 	},
 	{
-		triggers = validBaseballPlayerTriggers,
+		triggers = makeTriggerSet("characterInitialization", "kill", Perks.Blunt, CharacterTrait.BASEBALL_PLAYER),
 		shouldExecute = ETW_CommonLogicChecks.BaseballPlayerShouldExecute,
 		condition = function(ctx)
-			return ctx.longBlunt >= SBvars.BaseballPlayerSkill
-				and ctx.longBluntKills >= SBvars.BaseballPlayerKills
+			return ctx.longBlunt >= SBvars.BaseballPlayerSkill and ctx.longBluntKills >= SBvars.BaseballPlayerKills
 		end,
 		trait = CharacterTrait.BASEBALL_PLAYER,
 		positiveTrait = true,
 		gainingTrait = true,
 	},
 	{
-		triggers = validStickFighterTriggers,
+		triggers = makeTriggerSet("characterInitialization", "kill", Perks.SmallBlunt, ETWTraitsRegistry.STICK_FIGHTER),
 		shouldExecute = ETW_CommonLogicChecks.StickFighterShouldExecute,
 		condition = function(ctx)
-			return ctx.shortBlunt >= SBvars.StickFighterSkill
-				and ctx.shortBluntKills >= SBvars.StickFighterKills
+			return ctx.shortBlunt >= SBvars.StickFighterSkill and ctx.shortBluntKills >= SBvars.StickFighterKills
 		end,
 		trait = ETWTraitsRegistry.STICK_FIGHTER,
 		positiveTrait = true,
 		gainingTrait = true,
 	},
 	{
-		triggers = validBladeEnthusiastTriggers,
+		triggers = makeTriggerSet(
+			"characterInitialization",
+			"kill",
+			Perks.LongBlade,
+			ETWTraitsRegistry.BLADE_ENTHUSIAST
+		),
 		shouldExecute = ETW_CommonLogicChecks.BladeEnthusiastShouldExecute,
 		condition = function(ctx)
-			return ctx.longBlade >= SBvars.BladeEnthusiastSkill
-				and ctx.longBladeKills >= SBvars.BladeEnthusiastKills
+			return ctx.longBlade >= SBvars.BladeEnthusiastSkill and ctx.longBladeKills >= SBvars.BladeEnthusiastKills
 		end,
 		trait = ETWTraitsRegistry.BLADE_ENTHUSIAST,
 		positiveTrait = true,
 		gainingTrait = true,
 	},
 	{
-		triggers = validKnifeFighterTriggers,
+		triggers = makeTriggerSet("characterInitialization", "kill", Perks.SmallBlade, ETWTraitsRegistry.KNIFE_FIGHTER),
 		shouldExecute = ETW_CommonLogicChecks.KnifeFighterShouldExecute,
 		condition = function(ctx)
-			return ctx.shortBlade >= SBvars.KnifeFighterSkill
-				and ctx.shortBladeKills >= SBvars.KnifeFighterKills
+			return ctx.shortBlade >= SBvars.KnifeFighterSkill and ctx.shortBladeKills >= SBvars.KnifeFighterKills
 		end,
 		trait = ETWTraitsRegistry.KNIFE_FIGHTER,
 		positiveTrait = true,
 		gainingTrait = true,
 	},
 	{
-		triggers = validPolearmTriggers,
+		triggers = makeTriggerSet("characterInitialization", "kill", Perks.Spear, ETWTraitsRegistry.POLEARM_FIGHTER),
 		shouldExecute = ETW_CommonLogicChecks.PolearmFighterShouldExecute,
 		condition = function(ctx)
 			return ctx.spear >= SBvars.PolearmFighterSkill and ctx.spearKills >= SBvars.PolearmFighterKills
@@ -595,7 +395,7 @@ local skillTraitRules = {
 		gainingTrait = true,
 	},
 	{
-		triggers = validRestorationExpertTriggers,
+		triggers = makeTriggerSet("characterInitialization", Perks.Maintenance, ETWTraitsRegistry.RESTORATION_EXPERT),
 		shouldExecute = ETW_CommonLogicChecks.RestorationExpertShouldExecute,
 		condition = function(ctx)
 			return ctx.maintenance >= SBvars.RestorationExpertSkill
@@ -605,7 +405,7 @@ local skillTraitRules = {
 		gainingTrait = true,
 	},
 	{
-		triggers = validHandyTriggers,
+		triggers = makeTriggerSet("characterInitialization", Perks.Maintenance, Perks.Woodwork, CharacterTrait.HANDY),
 		shouldExecute = ETW_CommonLogicChecks.HandyShouldExecute,
 		condition = function(ctx)
 			return sumContextValues(ctx, { "maintenance", "carpentry" }) >= SBvars.HandySkill
@@ -615,7 +415,20 @@ local skillTraitRules = {
 		gainingTrait = true,
 	},
 	{
-		triggers = validLearnerTriggers,
+		triggers = makeTriggerSet(
+			"characterInitialization",
+			Perks.Maintenance,
+			Perks.Woodwork,
+			Perks.Cooking,
+			Perks.Farming,
+			Perks.Doctor,
+			Perks.Electricity,
+			Perks.MetalWelding,
+			Perks.Mechanics,
+			Perks.Tailoring,
+			CharacterTrait.SLOW_LEARNER,
+			CharacterTrait.FAST_LEARNER
+		),
 		shouldExecute = ETW_CommonLogicChecks.LearnerSystemShouldExecute,
 		run = function(ctx)
 			local levels = sumContextValues(ctx, {
@@ -646,7 +459,7 @@ local skillTraitRules = {
 		end,
 	},
 	{
-		triggers = validFurnitureAssemblerTriggers,
+		triggers = makeTriggerSet("characterInitialization", Perks.Woodwork, ETWTraitsRegistry.FURNITURE_ASSEMBLER),
 		shouldExecute = ETW_CommonLogicChecks.FurnitureAssemblerShouldExecute,
 		condition = function(ctx)
 			return ctx.carpentry >= SBvars.FurnitureAssemblerSkill
@@ -656,7 +469,7 @@ local skillTraitRules = {
 		gainingTrait = true,
 	},
 	{
-		triggers = validHomeCookTriggers,
+		triggers = makeTriggerSet("characterInitialization", Perks.Cooking, ETWTraitsRegistry.HOME_COOK),
 		shouldExecute = ETW_CommonLogicChecks.HomeCookShouldExecute,
 		condition = function(ctx)
 			return ctx.cooking >= SBvars.HomeCookSkill
@@ -666,7 +479,7 @@ local skillTraitRules = {
 		gainingTrait = true,
 	},
 	{
-		triggers = validCookTriggers,
+		triggers = makeTriggerSet("characterInitialization", Perks.Cooking, CharacterTrait.COOK),
 		shouldExecute = ETW_CommonLogicChecks.CookShouldExecute,
 		condition = function(ctx)
 			return ctx.cooking >= SBvars.CookSkill
@@ -676,7 +489,7 @@ local skillTraitRules = {
 		gainingTrait = true,
 	},
 	{
-		triggers = validGardenerTriggers,
+		triggers = makeTriggerSet("characterInitialization", Perks.Farming, CharacterTrait.GARDENER),
 		shouldExecute = ETW_CommonLogicChecks.GardenerShouldExecute,
 		condition = function(ctx)
 			return ctx.farming >= SBvars.GardenerSkill
@@ -686,7 +499,7 @@ local skillTraitRules = {
 		gainingTrait = true,
 	},
 	{
-		triggers = validPetTherapyTriggers,
+		triggers = makeTriggerSet("characterInitialization", Perks.Husbandry, ETWTraitsRegistry.PET_THERAPY),
 		shouldExecute = ETW_CommonLogicChecks.PetTherapyShouldExecute,
 		condition = function(ctx)
 			return ctx.husbandry >= SBvars.PetTherapySkill
@@ -697,7 +510,7 @@ local skillTraitRules = {
 		gainingTrait = true,
 	},
 	{
-		triggers = validWhittlerTriggers,
+		triggers = makeTriggerSet("characterInitialization", Perks.Carving, CharacterTrait.WHITTLER),
 		shouldExecute = ETW_CommonLogicChecks.WhittlerShouldExecute,
 		condition = function(ctx)
 			return ctx.carving >= SBvars.WhittlerSkill
@@ -707,7 +520,7 @@ local skillTraitRules = {
 		gainingTrait = true,
 	},
 	{
-		triggers = validBlacksmithTriggers,
+		triggers = makeTriggerSet("characterInitialization", Perks.Blacksmith, CharacterTrait.BLACKSMITH),
 		shouldExecute = ETW_CommonLogicChecks.BlacksmithShouldExecute,
 		condition = function(ctx)
 			return sumContextValues(ctx, { "blacksmith", "maintenance" }) >= SBvars.BlacksmithSkill
@@ -717,7 +530,14 @@ local skillTraitRules = {
 		gainingTrait = true,
 	},
 	{
-		triggers = validWildernessKnowledgeTriggers,
+		triggers = makeTriggerSet(
+			"characterInitialization",
+			Perks.PlantScavenging,
+			Perks.FlintKnapping,
+			Perks.Maintenance,
+			Perks.Carving,
+			CharacterTrait.WILDERNESS_KNOWLEDGE
+		),
 		shouldExecute = ETW_CommonLogicChecks.WildernessKnowledgeShouldExecute,
 		condition = function(ctx)
 			return hasRequiredLevels(ctx, {
@@ -732,7 +552,7 @@ local skillTraitRules = {
 		gainingTrait = true,
 	},
 	{
-		triggers = validFirstAidTriggers,
+		triggers = makeTriggerSet("characterInitialization", Perks.Doctor, CharacterTrait.FIRST_AID),
 		shouldExecute = ETW_CommonLogicChecks.FirstAidShouldExecute,
 		condition = function(ctx)
 			return ctx.firstAid >= SBvars.FirstAidSkill
@@ -742,7 +562,7 @@ local skillTraitRules = {
 		gainingTrait = true,
 	},
 	{
-		triggers = validAVClubTriggers,
+		triggers = makeTriggerSet("characterInitialization", Perks.Electricity, ETWTraitsRegistry.AV_CLUB),
 		shouldExecute = ETW_CommonLogicChecks.AVClubShouldExecute,
 		condition = function(ctx)
 			return ctx.electrical >= SBvars.AVClubSkill
@@ -752,28 +572,39 @@ local skillTraitRules = {
 		gainingTrait = true,
 	},
 	{
-		triggers = validBodyWorkEnthusiastTriggers,
+		triggers = makeTriggerSet(
+			"characterInitialization",
+			Perks.MetalWelding,
+			Perks.Mechanics,
+			ETWTraitsRegistry.BODYWORK_ENTHUSIAST
+		),
 		shouldExecute = ETW_CommonLogicChecks.BodyWorkEnthusiastShouldExecute,
 		run = function(ctx)
 			CombinedTraitChecks.bodyworkEnthusiastCheck(ctx.player)
 		end,
 	},
 	{
-		triggers = validMechanicsTriggers,
+		triggers = makeTriggerSet("characterInitialization", Perks.Mechanics, CharacterTrait.MECHANICS),
 		shouldExecute = ETW_CommonLogicChecks.MechanicsShouldExecute,
 		run = function(ctx)
 			CombinedTraitChecks.mechanicsCheck(ctx.player)
 		end,
 	},
 	{
-		triggers = validSewerTriggers,
+		triggers = makeTriggerSet("characterInitialization", Perks.Tailoring, CharacterTrait.TAILOR),
 		shouldExecute = ETW_CommonLogicChecks.SewerShouldExecute,
 		run = function(ctx)
 			CombinedTraitChecks.sewerCheck(ctx.player)
 		end,
 	},
 	{
-		triggers = validGunEnthusiastTriggers,
+		triggers = makeTriggerSet(
+			"characterInitialization",
+			"kill",
+			Perks.Aiming,
+			Perks.Reloading,
+			ETWTraitsRegistry.GUN_ENTHUSIAST
+		),
 		shouldExecute = ETW_CommonLogicChecks.GunEnthusiastShouldExecute,
 		condition = function(ctx)
 			return sumContextValues(ctx, { "aiming", "reloading" }) >= SBvars.GunEnthusiastSkill
@@ -784,7 +615,7 @@ local skillTraitRules = {
 		gainingTrait = true,
 	},
 	{
-		triggers = validAnglerTriggers,
+		triggers = makeTriggerSet("characterInitialization", Perks.Fishing, ETWTraitsRegistry.ANGLER),
 		shouldExecute = ETW_CommonLogicChecks.AnglerShouldExecute,
 		condition = function(ctx)
 			return ctx.fishing >= SBvars.FishingSkill
@@ -794,7 +625,12 @@ local skillTraitRules = {
 		gainingTrait = true,
 	},
 	{
-		triggers = validHikerTriggers,
+		triggers = makeTriggerSet(
+			"characterInitialization",
+			Perks.Trapping,
+			Perks.PlantScavenging,
+			CharacterTrait.HIKER
+		),
 		shouldExecute = ETW_CommonLogicChecks.HikerShouldExecute,
 		condition = function(ctx)
 			return sumContextValues(ctx, { "trapping", "foraging" }) >= SBvars.HikerSkill
