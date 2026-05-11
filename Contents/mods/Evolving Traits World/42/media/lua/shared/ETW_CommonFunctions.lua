@@ -295,11 +295,16 @@ local function addRecipes(player, trait)
 	end
 end
 
----Adds trait to a player, it's exp boosts, recipes and plays the sound
----@param player IsoPlayer the player to add trait to
----@param trait CharacterTrait the trait to add
-function ETW_CommonFunctions.addTraitToPlayer(player, trait)
-	--- TODO: rework this to recieve args like delayed trait and embedd notification here instead of calling it every time which is stupid
+---@class ETWAddTraitToPlayerContext
+---@field player IsoPlayer|IsoGameCharacter the player to add trait to
+---@field trait CharacterTrait the trait to add
+---@field positiveTrait boolean whether the trait is positive or negative, used for notifications
+
+---Adds trait to a player, its exp boosts, recipes, sound and notification.
+---@param context ETWAddTraitToPlayerContext
+function ETW_CommonFunctions.addTraitToPlayer(context)
+	local player = context.player
+	local trait = context.trait
 	ETW_CommonFunctions.log(
 		"ETW Logger | addTraitToPlayer() : adding trait " .. trait:toString() .. " to player " .. player:getUsername()
 	)
@@ -307,12 +312,21 @@ function ETW_CommonFunctions.addTraitToPlayer(player, trait)
 	addRecipes(player, trait)
 	addXPBoostsFromTrait(player, trait)
 	ETW_CommonFunctions.traitSound(player)
+	local gainingTrait = true
+	local color = context.positiveTrait == gainingTrait and "GREEN" or "RED"
+	ETW_CommonFunctions.displayTraitNotification(player, trait:toString(), gainingTrait, color)
 end
 
----Removes trait from a player and plays the sound
----@param player IsoPlayer the player to remove trait from
----@param trait CharacterTrait the trait to remove
-function ETW_CommonFunctions.removeTraitFromPlayer(player, trait)
+---@class ETWRemoveTraitFromPlayerContext
+---@field player IsoPlayer|IsoGameCharacter the player to remove trait from
+---@field trait CharacterTrait the trait to remove
+---@field positiveTrait boolean whether the trait is positive or negative, used for notifications
+
+---Removes trait from a player, plays the sound and shows notification.
+---@param context ETWRemoveTraitFromPlayerContext
+function ETW_CommonFunctions.removeTraitFromPlayer(context)
+	local player = context.player
+	local trait = context.trait
 	ETW_CommonFunctions.log(
 		"ETW Logger | removeTraitFromPlayer() : removing trait "
 			.. trait:toString()
@@ -321,6 +335,9 @@ function ETW_CommonFunctions.removeTraitFromPlayer(player, trait)
 	)
 	player:getCharacterTraits():remove(trait)
 	ETW_CommonFunctions.traitSound(player)
+	local gainingTrait = false
+	local color = context.positiveTrait == gainingTrait and "GREEN" or "RED"
+	ETW_CommonFunctions.displayTraitNotification(player, trait:toString(), gainingTrait, color)
 end
 
 ---@class ETWAddTraitToDelayTableContext

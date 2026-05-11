@@ -252,13 +252,11 @@ function ISPetAnimal:animEvent(event, parameter)
 							and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.PET_THERAPY)
 						)
 					then
-						ETW_CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.PET_THERAPY)
-						ETW_CommonFunctions.displayTraitNotification(
-							player,
-							getText("UI_trait_PetTherapy"),
-							true,
-							HaloTextHelper.getColorGreen()
-						)
+						ETW_CommonFunctions.addTraitToPlayer({
+							player = player,
+							trait = ETWTraitsRegistry.PET_THERAPY,
+							positiveTrait = true,
+						})
 					end
 				end
 			end

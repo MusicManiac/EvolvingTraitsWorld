@@ -399,13 +399,11 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 					and CommonFunctions.checkDelayedTraits(player, CharacterTrait.HARD_OF_HEARING)
 				)
 			then
-				CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.HARD_OF_HEARING)
-				CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_hardhear"),
-					false,
-					HaloTextHelper.getColorGreen()
-				)
+				CommonFunctions.removeTraitFromPlayer({
+					player = player,
+					trait = CharacterTrait.HARD_OF_HEARING,
+					positiveTrait = false,
+				})
 			end
 		elseif not player:hasTrait(CharacterTrait.HARD_OF_HEARING) and levels >= SBvars.HearingSystemSkill then
 			if
@@ -426,13 +424,11 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 					and CommonFunctions.checkDelayedTraits(player, CharacterTrait.KEEN_HEARING)
 				)
 			then
-				CommonFunctions.addTraitToPlayer(player, CharacterTrait.KEEN_HEARING)
-				CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_keenhearing"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
+				CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = CharacterTrait.KEEN_HEARING,
+					positiveTrait = true,
+				})
 			end
 		end
 	end
@@ -456,14 +452,12 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 					and CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.HOARDER)
 				)
 			then
-				CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.HOARDER)
+				CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = ETWTraitsRegistry.HOARDER,
+					positiveTrait = true,
+				})
 				UnifiedCarryWeightFramework.recomputeAll(player)
-				CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_Hoarder"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
 			end
 		end
 	end
@@ -487,13 +481,11 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 					and CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.GYM_RAT)
 				)
 			then
-				CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.GYM_RAT)
-				CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_GymRat"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
+				CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = ETWTraitsRegistry.GYM_RAT,
+					positiveTrait = true,
+				})
 			end
 		end
 	end
@@ -514,13 +506,11 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 				not SBvars.DelayedTraitsSystem
 				or (SBvars.DelayedTraitsSystem and CommonFunctions.checkDelayedTraits(player, CharacterTrait.JOGGER))
 			then
-				CommonFunctions.addTraitToPlayer(player, CharacterTrait.JOGGER)
-				CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_Jogger"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
+				CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = CharacterTrait.JOGGER,
+					positiveTrait = true,
+				})
 			end
 		end
 	end
@@ -544,13 +534,11 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 					and CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.LIGHTSTEP)
 				)
 			then
-				CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.LIGHTSTEP)
-				CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_LightStep"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
+				CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = ETWTraitsRegistry.LIGHTSTEP,
+					positiveTrait = true,
+				})
 			end
 		end
 	end
@@ -574,13 +562,11 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 					and CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.GYMNAST)
 				)
 			then
-				CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.GYMNAST)
-				CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_Gymnast"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
+				CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = ETWTraitsRegistry.GYMNAST,
+					positiveTrait = true,
+				})
 			end
 		end
 	end
@@ -601,13 +587,11 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 				not SBvars.DelayedTraitsSystem
 				or (SBvars.DelayedTraitsSystem and CommonFunctions.checkDelayedTraits(player, CharacterTrait.CLUMSY))
 			then
-				CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.CLUMSY)
-				CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_clumsy"),
-					false,
-					HaloTextHelper.getColorGreen()
-				)
+				CommonFunctions.removeTraitFromPlayer({
+					player = player,
+					trait = CharacterTrait.CLUMSY,
+					positiveTrait = false,
+				})
 			end
 		end
 	end
@@ -629,13 +613,11 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 				not SBvars.DelayedTraitsSystem
 				or (SBvars.DelayedTraitsSystem and CommonFunctions.checkDelayedTraits(player, CharacterTrait.GRACEFUL))
 			then
-				CommonFunctions.addTraitToPlayer(player, CharacterTrait.GRACEFUL)
-				CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_graceful"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
+				CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = CharacterTrait.GRACEFUL,
+					positiveTrait = true,
+				})
 			end
 		end
 	end
@@ -657,13 +639,11 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 				not SBvars.DelayedTraitsSystem
 				or (SBvars.DelayedTraitsSystem and CommonFunctions.checkDelayedTraits(player, CharacterTrait.BURGLAR))
 			then
-				CommonFunctions.addTraitToPlayer(player, CharacterTrait.BURGLAR)
-				CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_Burglar"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
+				CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = CharacterTrait.BURGLAR,
+					positiveTrait = true,
+				})
 			end
 		end
 	end
@@ -687,13 +667,11 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 					and CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.LOW_PROFILE)
 				)
 			then
-				CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.LOW_PROFILE)
-				CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_LowProfile"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
+				CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = ETWTraitsRegistry.LOW_PROFILE,
+					positiveTrait = true,
+				})
 			end
 		end
 	end
@@ -717,13 +695,11 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 					and CommonFunctions.checkDelayedTraits(player, CharacterTrait.CONSPICUOUS)
 				)
 			then
-				CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.CONSPICUOUS)
-				CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_Conspicuous"),
-					false,
-					HaloTextHelper.getColorGreen()
-				)
+				CommonFunctions.removeTraitFromPlayer({
+					player = player,
+					trait = CharacterTrait.CONSPICUOUS,
+					positiveTrait = false,
+				})
 			end
 		elseif ETW_CommonLogicChecks.InconspicuousShouldExecute(player) and sneaking >= SBvars.InconspicuousSkill then
 			if
@@ -744,13 +720,11 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 					and CommonFunctions.checkDelayedTraits(player, CharacterTrait.INCONSPICUOUS)
 				)
 			then
-				CommonFunctions.addTraitToPlayer(player, CharacterTrait.INCONSPICUOUS)
-				CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_Inconspicuous"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
+				CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = CharacterTrait.INCONSPICUOUS,
+					positiveTrait = true,
+				})
 			end
 		end
 	end
@@ -779,13 +753,11 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 				not SBvars.DelayedTraitsSystem
 				or (SBvars.DelayedTraitsSystem and CommonFunctions.checkDelayedTraits(player, CharacterTrait.HUNTER))
 			then
-				CommonFunctions.addTraitToPlayer(player, CharacterTrait.HUNTER)
-				CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_Hunter"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
+				CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = CharacterTrait.HUNTER,
+					positiveTrait = true,
+				})
 			end
 		end
 	end
@@ -806,13 +778,11 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 				not SBvars.DelayedTraitsSystem
 				or (SBvars.DelayedTraitsSystem and CommonFunctions.checkDelayedTraits(player, CharacterTrait.BRAWLER))
 			then
-				CommonFunctions.addTraitToPlayer(player, CharacterTrait.BRAWLER)
-				CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_BarFighter"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
+				CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = CharacterTrait.BRAWLER,
+					positiveTrait = true,
+				})
 			end
 		end
 	end
@@ -836,13 +806,11 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 					and CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.AXE_THROWER)
 				)
 			then
-				CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.AXE_THROWER)
-				CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_AxeThrower"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
+				CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = ETWTraitsRegistry.AXE_THROWER,
+					positiveTrait = true,
+				})
 			end
 		end
 	end
@@ -866,13 +834,11 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 					and CommonFunctions.checkDelayedTraits(player, CharacterTrait.BASEBALL_PLAYER)
 				)
 			then
-				CommonFunctions.addTraitToPlayer(player, CharacterTrait.BASEBALL_PLAYER)
-				CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_PlaysBaseball"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
+				CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = CharacterTrait.BASEBALL_PLAYER,
+					positiveTrait = true,
+				})
 			end
 		end
 	end
@@ -896,13 +862,11 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 					and CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.STICK_FIGHTER)
 				)
 			then
-				CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.STICK_FIGHTER)
-				CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_StickFighter"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
+				CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = ETWTraitsRegistry.STICK_FIGHTER,
+					positiveTrait = true,
+				})
 			end
 		end
 	end
@@ -926,13 +890,11 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 					and CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.BLADE_ENTHUSIAST)
 				)
 			then
-				CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.BLADE_ENTHUSIAST)
-				CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_BladeEnthusiast"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
+				CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = ETWTraitsRegistry.BLADE_ENTHUSIAST,
+					positiveTrait = true,
+				})
 			end
 		end
 	end
@@ -956,13 +918,11 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 					and CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.KNIFE_FIGHTER)
 				)
 			then
-				CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.KNIFE_FIGHTER)
-				CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_KnifeFighter"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
+				CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = ETWTraitsRegistry.KNIFE_FIGHTER,
+					positiveTrait = true,
+				})
 			end
 		end
 	end
@@ -986,13 +946,11 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 					and CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.POLEARM_FIGHTER)
 				)
 			then
-				CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.POLEARM_FIGHTER)
-				CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_PolearmFighter"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
+				CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = ETWTraitsRegistry.POLEARM_FIGHTER,
+					positiveTrait = true,
+				})
 			end
 		end
 	end
@@ -1016,13 +974,11 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 					and CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.RESTORATION_EXPERT)
 				)
 			then
-				CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.RESTORATION_EXPERT)
-				CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_RestorationExpert"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
+				CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = ETWTraitsRegistry.RESTORATION_EXPERT,
+					positiveTrait = true,
+				})
 			end
 		end
 	end
@@ -1043,13 +999,11 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 				not SBvars.DelayedTraitsSystem
 				or (SBvars.DelayedTraitsSystem and CommonFunctions.checkDelayedTraits(player, CharacterTrait.HANDY))
 			then
-				CommonFunctions.addTraitToPlayer(player, CharacterTrait.HANDY)
-				CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_handy"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
+				CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = CharacterTrait.HANDY,
+					positiveTrait = true,
+				})
 			end
 		end
 	end
@@ -1086,13 +1040,11 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 					and CommonFunctions.checkDelayedTraits(player, CharacterTrait.SLOW_LEARNER)
 				)
 			then
-				CommonFunctions.removeTraitFromPlayer(player, CharacterTrait.SLOW_LEARNER)
-				CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_SlowLearner"),
-					false,
-					HaloTextHelper.getColorGreen()
-				)
+				CommonFunctions.removeTraitFromPlayer({
+					player = player,
+					trait = CharacterTrait.SLOW_LEARNER,
+					positiveTrait = false,
+				})
 			end
 		elseif
 			not player:hasTrait(CharacterTrait.SLOW_LEARNER)
@@ -1117,13 +1069,11 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 					and CommonFunctions.checkDelayedTraits(player, CharacterTrait.FAST_LEARNER)
 				)
 			then
-				CommonFunctions.addTraitToPlayer(player, CharacterTrait.FAST_LEARNER)
-				CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_FastLearner"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
+				CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = CharacterTrait.FAST_LEARNER,
+					positiveTrait = true,
+				})
 			end
 		end
 	end
@@ -1150,13 +1100,11 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 					and CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.FURNITURE_ASSEMBLER)
 				)
 			then
-				CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.FURNITURE_ASSEMBLER)
-				CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_FurnitureAssembler"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
+				CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = ETWTraitsRegistry.FURNITURE_ASSEMBLER,
+					positiveTrait = true,
+				})
 			end
 		end
 	end
@@ -1180,13 +1128,11 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 					and CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.HOME_COOK)
 				)
 			then
-				CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.HOME_COOK)
-				CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_HomeCook"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
+				CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = ETWTraitsRegistry.HOME_COOK,
+					positiveTrait = true,
+				})
 			end
 		end
 	end
@@ -1207,13 +1153,11 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 				not SBvars.DelayedTraitsSystem
 				or (SBvars.DelayedTraitsSystem and CommonFunctions.checkDelayedTraits(player, CharacterTrait.COOK))
 			then
-				CommonFunctions.addTraitToPlayer(player, CharacterTrait.COOK)
-				CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_Cook"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
+				CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = CharacterTrait.COOK,
+					positiveTrait = true,
+				})
 			end
 		end
 	end
@@ -1234,13 +1178,11 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 				not SBvars.DelayedTraitsSystem
 				or (SBvars.DelayedTraitsSystem and CommonFunctions.checkDelayedTraits(player, CharacterTrait.GARDENER))
 			then
-				CommonFunctions.addTraitToPlayer(player, CharacterTrait.GARDENER)
-				CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_Gardener"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
+				CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = CharacterTrait.GARDENER,
+					positiveTrait = true,
+				})
 			end
 		end
 	end
@@ -1267,13 +1209,11 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 					and CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.PET_THERAPY)
 				)
 			then
-				CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.PET_THERAPY)
-				CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_PetTherapy"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
+				CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = ETWTraitsRegistry.PET_THERAPY,
+					positiveTrait = true,
+				})
 			end
 		end
 	end
@@ -1294,13 +1234,11 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 				not SBvars.DelayedTraitsSystem
 				or (SBvars.DelayedTraitsSystem and CommonFunctions.checkDelayedTraits(player, CharacterTrait.WHITTLER))
 			then
-				CommonFunctions.addTraitToPlayer(player, CharacterTrait.WHITTLER)
-				CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_Whittler"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
+				CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = CharacterTrait.WHITTLER,
+					positiveTrait = true,
+				})
 			end
 		end
 	end
@@ -1324,13 +1262,11 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 					and CommonFunctions.checkDelayedTraits(player, CharacterTrait.BLACKSMITH)
 				)
 			then
-				CommonFunctions.addTraitToPlayer(player, CharacterTrait.BLACKSMITH)
-				CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_Blacksmith"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
+				CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = CharacterTrait.BLACKSMITH,
+					positiveTrait = true,
+				})
 			end
 		end
 	end
@@ -1360,13 +1296,11 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 					and CommonFunctions.checkDelayedTraits(player, CharacterTrait.WILDERNESS_KNOWLEDGE)
 				)
 			then
-				CommonFunctions.addTraitToPlayer(player, CharacterTrait.WILDERNESS_KNOWLEDGE)
-				CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_WildernessKnowledge"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
+				CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = CharacterTrait.WILDERNESS_KNOWLEDGE,
+					positiveTrait = true,
+				})
 			end
 		end
 	end
@@ -1387,13 +1321,11 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 				not SBvars.DelayedTraitsSystem
 				or (SBvars.DelayedTraitsSystem and CommonFunctions.checkDelayedTraits(player, CharacterTrait.FIRST_AID))
 			then
-				CommonFunctions.addTraitToPlayer(player, CharacterTrait.FIRST_AID)
-				CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_FirstAid"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
+				CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = CharacterTrait.FIRST_AID,
+					positiveTrait = true,
+				})
 			end
 		end
 	end
@@ -1417,13 +1349,11 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 					and CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.AV_CLUB)
 				)
 			then
-				CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.AV_CLUB)
-				CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_AVClub"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
+				CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = ETWTraitsRegistry.AV_CLUB,
+					positiveTrait = true,
+				})
 			end
 		end
 	end
@@ -1456,13 +1386,11 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 					and CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.GUN_ENTHUSIAST)
 				)
 			then
-				CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.GUN_ENTHUSIAST)
-				CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_GunEnthusiast"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
+				CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = ETWTraitsRegistry.GUN_ENTHUSIAST,
+					positiveTrait = true,
+				})
 			end
 		end
 	end
@@ -1483,13 +1411,11 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 				not SBvars.DelayedTraitsSystem
 				or (SBvars.DelayedTraitsSystem and CommonFunctions.checkDelayedTraits(player, CharacterTrait.FISHING))
 			then
-				CommonFunctions.addTraitToPlayer(player, CharacterTrait.FISHING)
-				CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_Fishing"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
+				CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = CharacterTrait.FISHING,
+					positiveTrait = true,
+				})
 			end
 		end
 	end
@@ -1510,13 +1436,11 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 				not SBvars.DelayedTraitsSystem
 				or (SBvars.DelayedTraitsSystem and CommonFunctions.checkDelayedTraits(player, CharacterTrait.HIKER))
 			then
-				CommonFunctions.addTraitToPlayer(player, CharacterTrait.HIKER)
-				CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_Hiker"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
+				CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = CharacterTrait.HIKER,
+					positiveTrait = true,
+				})
 			end
 		end
 	end

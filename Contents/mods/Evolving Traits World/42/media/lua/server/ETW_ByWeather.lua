@@ -87,49 +87,41 @@ local function rainTraits(player, isKill)
 				and not desensitized(player)
 				and SBvars.TraitsLockSystemCanGainNegative
 			then
-				ETW_CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.PLUVIOPHOBIA)
-				ETW_CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_Pluviophobia"),
-					true,
-					HaloTextHelper.getColorRed()
-				)
+				ETW_CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = ETWTraitsRegistry.PLUVIOPHOBIA,
+					positiveTrait = false,
+				})
 			elseif
 				player:hasTrait(ETWTraitsRegistry.PLUVIOPHOBIA)
 				and modData.RainCounter > -SBCounter
 				and SBvars.TraitsLockSystemCanLoseNegative
 			then
-				ETW_CommonFunctions.removeTraitFromPlayer(player, ETWTraitsRegistry.PLUVIOPHOBIA)
-				ETW_CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_Pluviophobia"),
-					false,
-					HaloTextHelper.getColorGreen()
-				)
+				ETW_CommonFunctions.removeTraitFromPlayer({
+					player = player,
+					trait = ETWTraitsRegistry.PLUVIOPHOBIA,
+					positiveTrait = false,
+				})
 			elseif
 				player:hasTrait(ETWTraitsRegistry.PLUVIOPHILE)
 				and modData.RainCounter <= SBCounter
 				and SBvars.TraitsLockSystemCanLosePositive
 			then
-				ETW_CommonFunctions.removeTraitFromPlayer(player, ETWTraitsRegistry.PLUVIOPHILE)
-				ETW_CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_Pluviophile"),
-					false,
-					HaloTextHelper.getColorRed()
-				)
+				ETW_CommonFunctions.removeTraitFromPlayer({
+					player = player,
+					trait = ETWTraitsRegistry.PLUVIOPHILE,
+					positiveTrait = true,
+				})
 			elseif
 				not player:hasTrait(ETWTraitsRegistry.PLUVIOPHILE)
 				and modData.RainCounter > SBCounter
 				and SBvars.TraitsLockSystemCanGainPositive
 			then
-				ETW_CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.PLUVIOPHILE)
-				ETW_CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_Pluviophile"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
+				ETW_CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = ETWTraitsRegistry.PLUVIOPHILE,
+					positiveTrait = true,
+				})
 			end
 		end
 	end
@@ -186,49 +178,41 @@ local function fogTraits(player, isKill)
 				and not desensitized(player)
 				and SBvars.TraitsLockSystemCanGainNegative
 			then
-				ETW_CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.HOMICHLOPHOBIA)
-				ETW_CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_Homichlophobia"),
-					true,
-					HaloTextHelper.getColorRed()
-				)
+				ETW_CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = ETWTraitsRegistry.HOMICHLOPHOBIA,
+					positiveTrait = false,
+				})
 			elseif
 				player:hasTrait(ETWTraitsRegistry.HOMICHLOPHOBIA)
 				and modData.FogCounter > -SBCounter
 				and SBvars.TraitsLockSystemCanLoseNegative
 			then
-				ETW_CommonFunctions.removeTraitFromPlayer(player, ETWTraitsRegistry.HOMICHLOPHOBIA)
-				ETW_CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_Homichlophobia"),
-					false,
-					HaloTextHelper.getColorGreen()
-				)
+				ETW_CommonFunctions.removeTraitFromPlayer({
+					player = player,
+					trait = ETWTraitsRegistry.HOMICHLOPHOBIA,
+					positiveTrait = false,
+				})
 			elseif
 				player:hasTrait(ETWTraitsRegistry.HOMICHLOPHILE)
 				and modData.FogCounter <= SBCounter
 				and SBvars.TraitsLockSystemCanLosePositive
 			then
-				ETW_CommonFunctions.removeTraitFromPlayer(player, ETWTraitsRegistry.HOMICHLOPHILE)
-				ETW_CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_Homichlophile"),
-					false,
-					HaloTextHelper.getColorRed()
-				)
+				ETW_CommonFunctions.removeTraitFromPlayer({
+					player = player,
+					trait = ETWTraitsRegistry.HOMICHLOPHILE,
+					positiveTrait = true,
+				})
 			elseif
 				not player:hasTrait(ETWTraitsRegistry.HOMICHLOPHILE)
 				and modData.FogCounter > SBCounter
 				and SBvars.TraitsLockSystemCanGainPositive
 			then
-				ETW_CommonFunctions.addTraitToPlayer(player, ETWTraitsRegistry.HOMICHLOPHILE)
-				ETW_CommonFunctions.displayTraitNotification(
-					player,
-					getText("UI_trait_Homichlophile"),
-					true,
-					HaloTextHelper.getColorGreen()
-				)
+				ETW_CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = ETWTraitsRegistry.HOMICHLOPHILE,
+					positiveTrait = true,
+				})
 			end
 		end
 	end
