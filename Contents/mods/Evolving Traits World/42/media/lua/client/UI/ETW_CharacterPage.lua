@@ -13,6 +13,39 @@ local ETW_Registry = require("ETW_Registry")
 local ETWTraitsRegistry = ETW_Registry.traits
 
 local modOptions
+local traitUINameCache = {}
+
+---@param traitOrRegistryId CharacterTrait|string
+---@return CharacterTrait|nil
+local function resolveTrait(traitOrRegistryId)
+	if instanceof(traitOrRegistryId, "CharacterTrait") then
+		return traitOrRegistryId
+	end
+	if type(traitOrRegistryId) == "string" then
+		return CharacterTrait.get(ResourceLocation.of(traitOrRegistryId))
+	end
+	return nil
+end
+
+---@param traitOrRegistryId CharacterTrait|string
+---@return string
+local function getCachedTraitUIName(traitOrRegistryId)
+	local trait = resolveTrait(traitOrRegistryId)
+	if not trait then
+		return tostring(traitOrRegistryId)
+	end
+
+	local traitRegistryId = trait:toString()
+	local cachedName = traitUINameCache[traitRegistryId]
+	if cachedName then
+		return cachedName
+	end
+
+	local traitDefinition = CharacterTraitDefinition.getCharacterTraitDefinition(trait)
+	local uiName = traitDefinition and traitDefinition:getUIName() or traitRegistryId
+	traitUINameCache[traitRegistryId] = uiName
+	return uiName
+end
 
 ---Function responsible for setting up mod options on character load
 ---@param playerIndex number
@@ -166,7 +199,7 @@ function ISETWProgressUI:createChildren()
 		end
 
 		if ETW_CommonLogicChecks.ImmunitySystemShouldExecute(player) then
-			str = "- " .. getText("UI_trait_pronetoillness")
+			str = "- " .. getCachedTraitUIName(CharacterTrait.PRONE_TO_ILLNESS)
 			self.labelProneToIllness = ISLabel:new(
 				barMidPosition - strLen(textManager, str) / 2,
 				y,
@@ -186,7 +219,7 @@ function ISETWProgressUI:createChildren()
 				barEndPosition,
 				y,
 				FONT_HGT_SMALL,
-				"+ " .. getText("UI_trait_resilient"),
+				"+ " .. getCachedTraitUIName(CharacterTrait.RESILIENT),
 				self.DimmedTextColor.r,
 				self.DimmedTextColor.g,
 				self.DimmedTextColor.b,
@@ -228,7 +261,7 @@ function ISETWProgressUI:createChildren()
 				barMidPosition,
 				y,
 				FONT_HGT_SMALL,
-				"- " .. getText("UI_trait_WeakStomach"),
+				"- " .. getCachedTraitUIName(CharacterTrait.WEAK_STOMACH),
 				self.DimmedTextColor.r,
 				self.DimmedTextColor.g,
 				self.DimmedTextColor.b,
@@ -244,7 +277,7 @@ function ISETWProgressUI:createChildren()
 				barEndPosition,
 				y,
 				FONT_HGT_SMALL,
-				"+ " .. getText("UI_trait_IronGut"),
+				"+ " .. getCachedTraitUIName(CharacterTrait.IRON_GUT),
 				self.DimmedTextColor.r,
 				self.DimmedTextColor.g,
 				self.DimmedTextColor.b,
@@ -286,7 +319,7 @@ function ISETWProgressUI:createChildren()
 				barEndPosition,
 				y,
 				FONT_HGT_SMALL,
-				"+ " .. getText("UI_trait_PainTolerance"),
+				"+ " .. getCachedTraitUIName(ETWTraitsRegistry.PAIN_TOLERANCE),
 				self.DimmedTextColor.r,
 				self.DimmedTextColor.g,
 				self.DimmedTextColor.b,
@@ -303,7 +336,7 @@ function ISETWProgressUI:createChildren()
 				barStartPosition - lineStartPosition,
 				y,
 				FONT_HGT_SMALL,
-				getText("UI_trait_PainTolerance"),
+				getCachedTraitUIName(ETWTraitsRegistry.PAIN_TOLERANCE),
 				self.TextColor.r,
 				self.TextColor.g,
 				self.TextColor.b,
@@ -324,7 +357,7 @@ function ISETWProgressUI:createChildren()
 		end
 
 		if ETW_CommonLogicChecks.AsthmaticShouldExecute(player) then
-			str = "+ " .. getText("UI_trait_Asthmatic")
+			str = "+ " .. getCachedTraitUIName(CharacterTrait.ASTHMATIC)
 			self.labelAsthmaticGain = ISLabel:new(
 				barOneFourthPosition - strLen(textManager, str) / 2,
 				y,
@@ -340,7 +373,7 @@ function ISETWProgressUI:createChildren()
 			self.labelAsthmaticGain:setTooltip(getText("UI_ETW_GainTooltip"))
 			self:addChild(self.labelAsthmaticGain)
 
-			str = "- " .. getText("UI_trait_Asthmatic")
+			str = "- " .. getCachedTraitUIName(CharacterTrait.ASTHMATIC)
 			self.labelAsthmaticLose = ISLabel:new(
 				barThreeFourthPosition - strLen(textManager, str) / 2,
 				y,
@@ -362,7 +395,7 @@ function ISETWProgressUI:createChildren()
 				barStartPosition - lineStartPosition,
 				y,
 				FONT_HGT_SMALL,
-				getText("UI_trait_Asthmatic"),
+				getCachedTraitUIName(CharacterTrait.ASTHMATIC),
 				self.TextColor.r,
 				self.TextColor.g,
 				self.TextColor.b,
@@ -383,7 +416,7 @@ function ISETWProgressUI:createChildren()
 		end
 
 		if ETW_CommonLogicChecks.BloodlustShouldExecute(player) then
-			str = "- " .. getText("UI_trait_Bloodlust")
+			str = "- " .. getCachedTraitUIName(ETWTraitsRegistry.BLOODLUST)
 			self.labelBloodlustLose = ISLabel:new(
 				barOneFourthPosition - strLen(textManager, str) / 2,
 				y,
@@ -399,7 +432,7 @@ function ISETWProgressUI:createChildren()
 			self.labelBloodlustLose:setTooltip(getText("UI_ETW_LooseTooltip"))
 			self:addChild(self.labelBloodlustLose)
 
-			str = "+ " .. getText("UI_trait_Bloodlust")
+			str = "+ " .. getCachedTraitUIName(ETWTraitsRegistry.BLOODLUST)
 			self.labelBloodlustGain = ISLabel:new(
 				barMidPosition,
 				y,
@@ -421,7 +454,7 @@ function ISETWProgressUI:createChildren()
 				barStartPosition - lineStartPosition,
 				y,
 				FONT_HGT_SMALL,
-				getText("UI_trait_Bloodlust"),
+				getCachedTraitUIName(ETWTraitsRegistry.BLOODLUST),
 				self.TextColor.r,
 				self.TextColor.g,
 				self.TextColor.b,
@@ -442,7 +475,7 @@ function ISETWProgressUI:createChildren()
 		end
 
 		if ETW_CommonLogicChecks.OutdoorsmanShouldExecute(player) then
-			str = "- " .. getText("UI_trait_outdoorsman")
+			str = "- " .. getCachedTraitUIName(CharacterTrait.OUTDOORSMAN)
 			self.labelOutdoorsmanLose = ISLabel:new(
 				barOneThirdPosition - strLen(textManager, str) / 2,
 				y,
@@ -458,7 +491,7 @@ function ISETWProgressUI:createChildren()
 			self.labelOutdoorsmanLose:setTooltip(getText("UI_ETW_LooseTooltip"))
 			self:addChild(self.labelOutdoorsmanLose)
 
-			str = "+ " .. getText("UI_trait_outdoorsman")
+			str = "+ " .. getCachedTraitUIName(CharacterTrait.OUTDOORSMAN)
 			self.labelOutdoorsmanGain = ISLabel:new(
 				barTwoThirdPosition - strLen(textManager, str) / 2,
 				y,
@@ -480,7 +513,7 @@ function ISETWProgressUI:createChildren()
 				barStartPosition - lineStartPosition,
 				y,
 				FONT_HGT_SMALL,
-				getText("UI_trait_outdoorsman"),
+				getCachedTraitUIName(CharacterTrait.OUTDOORSMAN),
 				self.TextColor.r,
 				self.TextColor.g,
 				self.TextColor.b,
@@ -501,7 +534,7 @@ function ISETWProgressUI:createChildren()
 		end
 
 		if ETW_CommonLogicChecks.FearOfLocationsSystemShouldExecute(player) then
-			str = "+ " .. getText("UI_trait_agoraphobic")
+			str = "+ " .. getCachedTraitUIName(CharacterTrait.AGORAPHOBIC)
 			self.labelAgoraphobicGain = ISLabel:new(
 				barOneThirdPosition - strLen(textManager, str) / 2,
 				y,
@@ -517,7 +550,7 @@ function ISETWProgressUI:createChildren()
 			self.labelAgoraphobicGain:setTooltip(getText("UI_ETW_GainTooltip"))
 			self:addChild(self.labelAgoraphobicGain)
 
-			str = "- " .. getText("UI_trait_agoraphobic")
+			str = "- " .. getCachedTraitUIName(CharacterTrait.AGORAPHOBIC)
 			self.labelAgoraphobicLose = ISLabel:new(
 				barTwoThirdPosition - strLen(textManager, str) / 2,
 				y,
@@ -539,7 +572,7 @@ function ISETWProgressUI:createChildren()
 				barStartPosition - lineStartPosition,
 				y,
 				FONT_HGT_SMALL,
-				getText("UI_trait_agoraphobic"),
+				getCachedTraitUIName(CharacterTrait.AGORAPHOBIC),
 				self.TextColor.r,
 				self.TextColor.g,
 				self.TextColor.b,
@@ -558,7 +591,7 @@ function ISETWProgressUI:createChildren()
 
 			y = y + FONT_HGT_SMALL
 
-			str = "+ " .. getText("UI_trait_claustro")
+			str = "+ " .. getCachedTraitUIName(CharacterTrait.CLAUSTROPHOBIC)
 			self.labelClaustrophobicGain = ISLabel:new(
 				barOneThirdPosition - strLen(textManager, str) / 2,
 				y,
@@ -574,7 +607,7 @@ function ISETWProgressUI:createChildren()
 			self.labelClaustrophobicGain:setTooltip(getText("UI_ETW_GainTooltip"))
 			self:addChild(self.labelClaustrophobicGain)
 
-			str = "- " .. getText("UI_trait_claustro")
+			str = "- " .. getCachedTraitUIName(CharacterTrait.CLAUSTROPHOBIC)
 			self.labelClaustrophobicLose = ISLabel:new(
 				barTwoThirdPosition - strLen(textManager, str) / 2,
 				y,
@@ -596,7 +629,7 @@ function ISETWProgressUI:createChildren()
 				barStartPosition - lineStartPosition,
 				y,
 				FONT_HGT_SMALL,
-				getText("UI_trait_claustro"),
+				getCachedTraitUIName(CharacterTrait.CLAUSTROPHOBIC),
 				self.TextColor.r,
 				self.TextColor.g,
 				self.TextColor.b,
@@ -617,7 +650,7 @@ function ISETWProgressUI:createChildren()
 		end
 
 		if ETW_CommonLogicChecks.HearingSystemShouldExecute(player) then
-			str = "- " .. getText("UI_trait_hardhear")
+			str = "- " .. getCachedTraitUIName(CharacterTrait.HARD_OF_HEARING)
 			self.labelHardOfHearingLose = ISLabel:new(
 				barMidPosition - strLen(textManager, str) / 2,
 				y,
@@ -637,7 +670,7 @@ function ISETWProgressUI:createChildren()
 				barEndPosition,
 				y,
 				FONT_HGT_SMALL,
-				"+ " .. getText("UI_trait_keenhearing"),
+				"+ " .. getCachedTraitUIName(CharacterTrait.KEEN_HEARING),
 				self.DimmedTextColor.r,
 				self.DimmedTextColor.g,
 				self.DimmedTextColor.b,
@@ -675,7 +708,7 @@ function ISETWProgressUI:createChildren()
 		end
 
 		if ETW_CommonLogicChecks.LearnerSystemShouldExecute(player) then
-			str = "- " .. getText("UI_trait_SlowLearner")
+			str = "- " .. getCachedTraitUIName(CharacterTrait.SLOW_LEARNER)
 			self.labelSlowLearnerLose = ISLabel:new(
 				barMidPosition - strLen(textManager, str) / 2,
 				y,
@@ -695,7 +728,7 @@ function ISETWProgressUI:createChildren()
 				barEndPosition,
 				y,
 				FONT_HGT_SMALL,
-				"+ " .. getText("UI_trait_FastLearner"),
+				"+ " .. getCachedTraitUIName(CharacterTrait.FAST_LEARNER),
 				self.DimmedTextColor.r,
 				self.DimmedTextColor.g,
 				self.DimmedTextColor.b,
@@ -733,7 +766,7 @@ function ISETWProgressUI:createChildren()
 		end
 
 		if ETW_CommonLogicChecks.SleepSystemShouldExecute(player) then
-			str = "+ " .. getText("UI_trait_MoreSleep")
+			str = "+ " .. getCachedTraitUIName(CharacterTrait.NEEDS_MORE_SLEEP)
 			self.labelMoreSleepGain = ISLabel:new(
 				barOneFourthPosition - strLen(textManager, str) / 2,
 				y,
@@ -749,7 +782,7 @@ function ISETWProgressUI:createChildren()
 			self.labelMoreSleepGain:setTooltip(getText("UI_ETW_GainTooltip"))
 			self:addChild(self.labelMoreSleepGain)
 
-			str = "+ " .. getText("UI_trait_LessSleep")
+			str = "+ " .. getCachedTraitUIName(CharacterTrait.NEEDS_LESS_SLEEP)
 			self.labelLessSleepGain = ISLabel:new(
 				barThreeFourthPosition - strLen(textManager, str) / 2,
 				y,
@@ -792,7 +825,7 @@ function ISETWProgressUI:createChildren()
 		end
 
 		if ETW_CommonLogicChecks.RainSystemShouldExecute(player) then
-			str = "+/- " .. getText("UI_trait_Pluviophobia")
+			str = "+/- " .. getCachedTraitUIName(ETWTraitsRegistry.PLUVIOPHOBIA)
 			self.labelPluviophobia = ISLabel:new(
 				barOneFourthPosition - strLen(textManager, str) / 2,
 				y,
@@ -808,7 +841,7 @@ function ISETWProgressUI:createChildren()
 			self.labelPluviophobia:setTooltip(getText("UI_ETW_GainLoseTooltip"))
 			self:addChild(self.labelPluviophobia)
 
-			str = "+/- " .. getText("UI_trait_Pluviophile")
+			str = "+/- " .. getCachedTraitUIName(ETWTraitsRegistry.PLUVIOPHILE)
 			self.labelPluviophile = ISLabel:new(
 				barThreeFourthPosition - strLen(textManager, str) / 2,
 				y,
@@ -851,7 +884,7 @@ function ISETWProgressUI:createChildren()
 		end
 
 		if ETW_CommonLogicChecks.FogSystemShouldExecute(player) then
-			str = "+/- " .. getText("UI_trait_Homichlophobia")
+			str = "+/- " .. getCachedTraitUIName(ETWTraitsRegistry.HOMICHLOPHOBIA)
 			self.labelHomichlophobia = ISLabel:new(
 				barOneFourthPosition - strLen(textManager, str) / 2,
 				y,
@@ -867,7 +900,7 @@ function ISETWProgressUI:createChildren()
 			self.labelHomichlophobia:setTooltip(getText("UI_ETW_GainLoseTooltip"))
 			self:addChild(self.labelHomichlophobia)
 
-			str = "+/- " .. getText("UI_trait_Homichlophile")
+			str = "+/- " .. getCachedTraitUIName(ETWTraitsRegistry.HOMICHLOPHILE)
 			self.labelHomichlophile = ISLabel:new(
 				barThreeFourthPosition - strLen(textManager, str) / 2,
 				y,
@@ -916,7 +949,7 @@ function ISETWProgressUI:createChildren()
 				or 0
 			local targetWeight = SBvars.InventoryTransferSystemWeight
 			if weightTransferred < targetWeight then
-				str = "- " .. getText("UI_trait_AllThumbs")
+				str = "- " .. getCachedTraitUIName(CharacterTrait.ALL_THUMBS)
 				local labelX = barOneThirdPosition - strLen(textManager, str) / 2
 				self.labelAllThumbsWeightLose = ISLabel:new(
 					labelX,
@@ -933,7 +966,7 @@ function ISETWProgressUI:createChildren()
 				self.labelAllThumbsWeightLose:setTooltip(getText("UI_ETW_LooseTooltip"))
 				self:addChild(self.labelAllThumbsWeightLose)
 
-				str = "- " .. getText("UI_trait_Disorganized")
+				str = "- " .. getCachedTraitUIName(CharacterTrait.DISORGANIZED)
 				labelX = barTwoThirdPosition - strLen(textManager, str) / 2
 				self.labelDisorganizedWeightLose = ISLabel:new(
 					labelX,
@@ -978,7 +1011,7 @@ function ISETWProgressUI:createChildren()
 
 				y = y + FONT_HGT_SMALL
 
-				str = "+ " .. getText("UI_trait_Dexterous")
+				str = "+ " .. getCachedTraitUIName(CharacterTrait.DEXTEROUS)
 				labelX = barTwoThirdPosition - strLen(textManager, str) / 2
 				self.labelDexterousWeightGain = ISLabel:new(
 					labelX,
@@ -996,7 +1029,7 @@ function ISETWProgressUI:createChildren()
 				self:addChild(self.labelDexterousWeightGain)
 
 				-- UI_trait_Packmule is internal string name
-				str = "+ " .. getText("UI_trait_Packmule")
+				str = "+ " .. getCachedTraitUIName(CharacterTrait.PACKMULE)
 				labelX = barEndPosition
 
 				self.labelPackmuleWeightGain = ISLabel:new(
@@ -1020,7 +1053,7 @@ function ISETWProgressUI:createChildren()
 				or 0
 			local targetItems = SBvars.InventoryTransferSystemItems
 			if itemsTransferred < targetItems then
-				str = "- " .. getText("UI_trait_Disorganized")
+				str = "- " .. getCachedTraitUIName(CharacterTrait.DISORGANIZED)
 				local labelX = barOneThirdPosition - strLen(textManager, str) / 2
 				self.labelDisorganizedItemsLose = ISLabel:new(
 					labelX,
@@ -1037,7 +1070,7 @@ function ISETWProgressUI:createChildren()
 				self.labelDisorganizedItemsLose:setTooltip(getText("UI_ETW_LooseTooltip"))
 				self:addChild(self.labelDisorganizedItemsLose)
 
-				str = "- " .. getText("UI_trait_AllThumbs")
+				str = "- " .. getCachedTraitUIName(CharacterTrait.ALL_THUMBS)
 				labelX = barTwoThirdPosition - strLen(textManager, str) / 2
 				self.labelAllThumbsItemsLose = ISLabel:new(
 					labelX,
@@ -1081,7 +1114,7 @@ function ISETWProgressUI:createChildren()
 
 				y = y + FONT_HGT_SMALL
 
-				str = "+ " .. getText("UI_trait_Packmule")
+				str = "+ " .. getCachedTraitUIName(CharacterTrait.PACKMULE)
 				labelX = barTwoThirdPosition - strLen(textManager, str) / 2
 				self.labelPackmuleItemsGain = ISLabel:new(
 					labelX,
@@ -1099,7 +1132,7 @@ function ISETWProgressUI:createChildren()
 				self:addChild(self.labelPackmuleItemsGain)
 
 				-- UI_trait_Packmule is internal string name
-				str = "+ " .. getText("UI_trait_Dexterous")
+				str = "+ " .. getCachedTraitUIName(CharacterTrait.DEXTEROUS)
 				labelX = barEndPosition
 				self.labelDexterousItemsGain = ISLabel:new(
 					labelX,
@@ -1122,7 +1155,7 @@ function ISETWProgressUI:createChildren()
 		end
 
 		if ETW_CommonLogicChecks.BraverySystemShouldExecute(player) then
-			str = "- " .. getText("UI_trait_cowardly")
+			str = "- " .. getCachedTraitUIName(CharacterTrait.COWARDLY)
 			self.labelCowardlyLose = ISLabel:new(
 				barStartPosition + (barLength / 6) - strLen(textManager, str) / 2,
 				y,
@@ -1138,7 +1171,7 @@ function ISETWProgressUI:createChildren()
 			self.labelCowardlyLose:setTooltip(getText("UI_ETW_LooseTooltip"))
 			self:addChild(self.labelCowardlyLose)
 
-			str = "- " .. getText("UI_trait_Pacifist")
+			str = "- " .. getCachedTraitUIName(CharacterTrait.PACIFIST)
 			self.labelPacifistLose = ISLabel:new(
 				barStartPosition + (barLength / 6) * 3 - strLen(textManager, str) / 2,
 				y,
@@ -1154,7 +1187,7 @@ function ISETWProgressUI:createChildren()
 			self.labelPacifistLose:setTooltip(getText("UI_ETW_LooseTooltip"))
 			self:addChild(self.labelPacifistLose)
 
-			str = "+ " .. getText("UI_trait_brave")
+			str = "+ " .. getCachedTraitUIName(CharacterTrait.BRAVE)
 			self.labelBraveryGain = ISLabel:new(
 				barStartPosition + (barLength / 6) * 5 - strLen(textManager, str) / 2,
 				y,
@@ -1196,7 +1229,7 @@ function ISETWProgressUI:createChildren()
 
 			y = y + FONT_HGT_SMALL
 
-			str = "- " .. getText("UI_trait_Hemophobic")
+			str = "- " .. getCachedTraitUIName(CharacterTrait.HEMOPHOBIC)
 			self.labelHemophobicLose = ISLabel:new(
 				barStartPosition + (barLength / 6) * 2 - strLen(textManager, str) / 2,
 				y,
@@ -1212,7 +1245,7 @@ function ISETWProgressUI:createChildren()
 			self.labelHemophobicLose:setTooltip(getText("UI_ETW_LooseTooltip"))
 			self:addChild(self.labelHemophobicLose)
 
-			str = "+ " .. getText("UI_trait_AdrenalineJunkie")
+			str = "+ " .. getCachedTraitUIName(CharacterTrait.ADRENALINE_JUNKIE)
 			self.labelAdrenalineJunkieGain = ISLabel:new(
 				barStartPosition + (barLength / 6) * 4 - strLen(textManager, str) / 2,
 				y,
@@ -1232,7 +1265,7 @@ function ISETWProgressUI:createChildren()
 				barEndPosition,
 				y,
 				FONT_HGT_SMALL,
-				"+ " .. getText("UI_trait_Desensitized"),
+				"+ " .. getCachedTraitUIName(CharacterTrait.DESENSITIZED),
 				self.DimmedTextColor.r,
 				self.DimmedTextColor.g,
 				self.DimmedTextColor.b,
@@ -1252,7 +1285,7 @@ function ISETWProgressUI:createChildren()
 		then
 			y = y + FONT_HGT_SMALL / 2
 
-			str = "- " .. getText("UI_trait_Smoker")
+			str = "- " .. getCachedTraitUIName(CharacterTrait.SMOKER)
 			self.labelSmokerLose = ISLabel:new(
 				barOneFourthPosition - strLen(textManager, str) / 2,
 				y,
@@ -1268,7 +1301,7 @@ function ISETWProgressUI:createChildren()
 			self.labelSmokerLose:setTooltip(getText("UI_ETW_GainTooltip"))
 			self:addChild(self.labelSmokerLose)
 
-			str = "+ " .. getText("UI_trait_Smoker")
+			str = "+ " .. getCachedTraitUIName(CharacterTrait.SMOKER)
 			self.labelSmokerGain = ISLabel:new(
 				barThreeFourthPosition - strLen(textManager, str) / 2,
 				y,
@@ -1290,7 +1323,7 @@ function ISETWProgressUI:createChildren()
 				barStartPosition - lineStartPosition,
 				y,
 				FONT_HGT_SMALL,
-				getText("UI_trait_Smoker"),
+				getCachedTraitUIName(CharacterTrait.SMOKER),
 				self.TextColor.r,
 				self.TextColor.g,
 				self.TextColor.b,
@@ -2538,36 +2571,39 @@ function ISETWProgressUI:render()
 
 	updateLabel(
 		self.labelEagleEyedProgress,
-		getText("UI_trait_eagleeyed") .. ": " .. modData.EagleEyedKills .. "/" .. SBvars.EagleEyedKills
+		getCachedTraitUIName(CharacterTrait.EAGLE_EYED) .. ": " .. modData.EagleEyedKills .. "/" .. SBvars.EagleEyedKills
 	)
 	updateLabel(
 		self.labelHoarderProgress,
-		getText("UI_trait_Hoarder") .. ": " .. strength .. "/" .. SBvars.HoarderSkill
+		getCachedTraitUIName(ETWTraitsRegistry.HOARDER) .. ": " .. strength .. "/" .. SBvars.HoarderSkill
 	)
 	updateLabel(
 		self.labelGymRatProgress,
-		getText("UI_trait_GymRat") .. ": " .. strength + fitness .. "/" .. SBvars.GymRatSkill
+		getCachedTraitUIName(ETWTraitsRegistry.GYM_RAT) .. ": " .. strength + fitness .. "/" .. SBvars.GymRatSkill
 	)
-	updateLabel(self.labelRunnerProgress, getText("UI_trait_Jogger") .. ": " .. sprinting .. "/" .. SBvars.RunnerSkill)
+	updateLabel(
+		self.labelRunnerProgress,
+		getCachedTraitUIName(CharacterTrait.JOGGER) .. ": " .. sprinting .. "/" .. SBvars.RunnerSkill
+	)
 	updateLabel(
 		self.labelLightStepProgress,
-		getText("UI_trait_LightStep") .. ": " .. lightfooted .. "/" .. SBvars.LightStepSkill
+		getCachedTraitUIName(ETWTraitsRegistry.LIGHTSTEP) .. ": " .. lightfooted .. "/" .. SBvars.LightStepSkill
 	)
 	updateLabel(
 		self.labelGymnastProgress,
-		getText("UI_trait_Gymnast") .. ": " .. lightfooted + nimble .. "/" .. SBvars.GymnastSkill
+		getCachedTraitUIName(ETWTraitsRegistry.GYMNAST) .. ": " .. lightfooted + nimble .. "/" .. SBvars.GymnastSkill
 	)
 	updateLabel(
 		self.labelClumsyProgress,
-		getText("UI_trait_clumsy") .. ": " .. lightfooted + sneaking .. "/" .. SBvars.ClumsySkill
+		getCachedTraitUIName(CharacterTrait.CLUMSY) .. ": " .. lightfooted + sneaking .. "/" .. SBvars.ClumsySkill
 	)
 	updateLabel(
 		self.labelGracefulProgress,
-		getText("UI_trait_graceful") .. ": " .. lightfooted + sneaking + nimble .. "/" .. SBvars.GracefulSkill
+		getCachedTraitUIName(CharacterTrait.GRACEFUL) .. ": " .. lightfooted + sneaking + nimble .. "/" .. SBvars.GracefulSkill
 	)
 	updateLabel(
 		self.labelBurglarProgress,
-		getText("UI_prof_Burglar")
+		getCachedTraitUIName(CharacterTrait.BURGLAR)
 			.. ": "
 			.. electrical + mechanics + nimble
 			.. "/"
@@ -2580,19 +2616,19 @@ function ISETWProgressUI:render()
 	)
 	updateLabel(
 		self.labelLowProfileProgress,
-		getText("UI_trait_LowProfile") .. ": " .. sneaking .. "/" .. SBvars.LowProfileSkill
+		getCachedTraitUIName(ETWTraitsRegistry.LOW_PROFILE) .. ": " .. sneaking .. "/" .. SBvars.LowProfileSkill
 	)
 	updateLabel(
 		self.labelConspicuousProgress,
-		getText("UI_trait_Conspicuous") .. ": " .. sneaking .. "/" .. SBvars.ConspicuousSkill
+		getCachedTraitUIName(CharacterTrait.CONSPICUOUS) .. ": " .. sneaking .. "/" .. SBvars.ConspicuousSkill
 	)
 	updateLabel(
 		self.labelInconspicuousProgress,
-		getText("UI_trait_Inconspicuous") .. ": " .. sneaking .. "/" .. SBvars.InconspicuousSkill
+		getCachedTraitUIName(CharacterTrait.INCONSPICUOUS) .. ": " .. sneaking .. "/" .. SBvars.InconspicuousSkill
 	)
 	updateLabel(
 		self.labelHunterSkillProgress,
-		getText("UI_trait_Hunter")
+		getCachedTraitUIName(CharacterTrait.HUNTER)
 			.. ": "
 			.. sneaking + aiming + trapping + shortBlade
 			.. "/"
@@ -2609,11 +2645,11 @@ function ISETWProgressUI:render()
 	)
 	updateLabel(
 		self.labelHunterKillsProgress,
-		getText("UI_trait_Hunter") .. ": " .. shortBladeKills + firearmKills .. "/" .. SBvars.HunterKills
+		getCachedTraitUIName(CharacterTrait.HUNTER) .. ": " .. shortBladeKills + firearmKills .. "/" .. SBvars.HunterKills
 	)
 	updateLabel(
 		self.labelWildernessKnowledgeSkillProgress,
-		getText("UI_trait_WildernessKnowledge")
+		getCachedTraitUIName(CharacterTrait.WILDERNESS_KNOWLEDGE)
 			.. ": "
 			.. foraging + knapping + maintenance + carving
 			.. "/"
@@ -2630,77 +2666,83 @@ function ISETWProgressUI:render()
 	)
 	updateLabel(
 		self.labelBrawlerSkillProgress,
-		getText("UI_trait_BarFighter") .. ": " .. axe + longBlunt .. "/" .. SBvars.BrawlerSkill
+		getCachedTraitUIName(CharacterTrait.BRAWLER) .. ": " .. axe + longBlunt .. "/" .. SBvars.BrawlerSkill
 	)
 	updateLabel(
 		self.labelBrawlerKillsProgress,
-		getText("UI_trait_BarFighter") .. ": " .. axeKills + longBluntKills .. "/" .. SBvars.BrawlerKills
+		getCachedTraitUIName(CharacterTrait.BRAWLER) .. ": " .. axeKills + longBluntKills .. "/" .. SBvars.BrawlerKills
 	)
 	updateLabel(
 		self.labelAxeThrowerSkillProgress,
-		getText("UI_trait_AxeThrower") .. ": " .. axe .. "/" .. SBvars.AxeThrowerSkill
+		getCachedTraitUIName(ETWTraitsRegistry.AXE_THROWER) .. ": " .. axe .. "/" .. SBvars.AxeThrowerSkill
 	)
 	updateLabel(
 		self.labelAxeThrowerKillsProgress,
-		getText("UI_trait_AxeThrower") .. ": " .. axeKills .. "/" .. SBvars.AxeThrowerKills
+		getCachedTraitUIName(ETWTraitsRegistry.AXE_THROWER) .. ": " .. axeKills .. "/" .. SBvars.AxeThrowerKills
 	)
 	updateLabel(
 		self.labelStickFighterSkillProgress,
-		getText("UI_trait_StickFighter") .. ": " .. shortBlunt .. "/" .. SBvars.StickFighterSkill
+		getCachedTraitUIName(ETWTraitsRegistry.STICK_FIGHTER) .. ": " .. shortBlunt .. "/" .. SBvars.StickFighterSkill
 	)
 	updateLabel(
 		self.labelStickFighterKillsProgress,
-		getText("UI_trait_StickFighter") .. ": " .. shortBluntKills .. "/" .. SBvars.StickFighterKills
+		getCachedTraitUIName(ETWTraitsRegistry.STICK_FIGHTER) .. ": " .. shortBluntKills .. "/" .. SBvars.StickFighterKills
 	)
 	updateLabel(
 		self.labelBladeEnthusiastSkillProgress,
-		getText("UI_trait_BladeEnthusiast") .. ": " .. longBlade .. "/" .. SBvars.BladeEnthusiastSkill
+		getCachedTraitUIName(ETWTraitsRegistry.BLADE_ENTHUSIAST) .. ": " .. longBlade .. "/" .. SBvars.BladeEnthusiastSkill
 	)
 	updateLabel(
 		self.labelBladeEnthusiastKillsProgress,
-		getText("UI_trait_BladeEnthusiast") .. ": " .. longBladeKills .. "/" .. SBvars.BladeEnthusiastKills
+		getCachedTraitUIName(ETWTraitsRegistry.BLADE_ENTHUSIAST) .. ": " .. longBladeKills .. "/" .. SBvars.BladeEnthusiastKills
 	)
 	updateLabel(
 		self.labelKnifeFighterSkillProgress,
-		getText("UI_trait_KnifeFighter") .. ": " .. shortBlade .. "/" .. SBvars.KnifeFighterSkill
+		getCachedTraitUIName(ETWTraitsRegistry.KNIFE_FIGHTER) .. ": " .. shortBlade .. "/" .. SBvars.KnifeFighterSkill
 	)
 	updateLabel(
 		self.labelKnifeFighterKillsProgress,
-		getText("UI_trait_KnifeFighter") .. ": " .. shortBladeKills .. "/" .. SBvars.KnifeFighterKills
+		getCachedTraitUIName(ETWTraitsRegistry.KNIFE_FIGHTER) .. ": " .. shortBladeKills .. "/" .. SBvars.KnifeFighterKills
 	)
 	updateLabel(
 		self.labelPolearmFighterSkillProgress,
-		getText("UI_trait_PolearmFighter") .. ": " .. spear .. "/" .. SBvars.PolearmFighterSkill
+		getCachedTraitUIName(ETWTraitsRegistry.POLEARM_FIGHTER) .. ": " .. spear .. "/" .. SBvars.PolearmFighterSkill
 	)
 	updateLabel(
 		self.labelPolearmFighterKillsProgress,
-		getText("UI_trait_PolearmFighter") .. ": " .. spearKills .. "/" .. SBvars.PolearmFighterKills
+		getCachedTraitUIName(ETWTraitsRegistry.POLEARM_FIGHTER) .. ": " .. spearKills .. "/" .. SBvars.PolearmFighterKills
 	)
 	updateLabel(
 		self.labelRestorationExpertSkillProgress,
-		getText("UI_trait_RestorationExpert") .. ": " .. maintenance .. "/" .. SBvars.RestorationExpertSkill
+		getCachedTraitUIName(ETWTraitsRegistry.RESTORATION_EXPERT) .. ": " .. maintenance .. "/" .. SBvars.RestorationExpertSkill
 	)
 	updateLabel(
 		self.labelHandySkillProgress,
-		getText("UI_trait_handy") .. ": " .. maintenance + carpentry .. "/" .. SBvars.HandySkill
+		getCachedTraitUIName(CharacterTrait.HANDY) .. ": " .. maintenance + carpentry .. "/" .. SBvars.HandySkill
 	)
 	updateLabel(
 		self.labelFurnitureAssemblerProgress,
-		getText("UI_trait_FurnitureAssembler") .. ": " .. carpentry .. "/" .. SBvars.FurnitureAssemblerSkill
+		getCachedTraitUIName(ETWTraitsRegistry.FURNITURE_ASSEMBLER) .. ": " .. carpentry .. "/" .. SBvars.FurnitureAssemblerSkill
 	)
 	updateLabel(
 		self.labelHomeCookProgress,
-		getText("UI_trait_HomeCook") .. ": " .. cooking .. "/" .. SBvars.HomeCookSkill
+		getCachedTraitUIName(ETWTraitsRegistry.HOME_COOK) .. ": " .. cooking .. "/" .. SBvars.HomeCookSkill
 	)
-	updateLabel(self.labelCookProgress, getText("UI_trait_Cook") .. ": " .. cooking .. "/" .. SBvars.CookSkill)
+	updateLabel(
+		self.labelCookProgress,
+		getCachedTraitUIName(CharacterTrait.COOK) .. ": " .. cooking .. "/" .. SBvars.CookSkill
+	)
 	updateLabel(
 		self.labelFirstAidProgress,
-		getText("UI_trait_FirstAid") .. ": " .. firstAid .. "/" .. SBvars.FirstAidSkill
+		getCachedTraitUIName(CharacterTrait.FIRST_AID) .. ": " .. firstAid .. "/" .. SBvars.FirstAidSkill
 	)
-	updateLabel(self.labelAVClubProgress, getText("UI_trait_AVClub") .. ": " .. electrical .. "/" .. SBvars.AVClubSkill)
+	updateLabel(
+		self.labelAVClubProgress,
+		getCachedTraitUIName(ETWTraitsRegistry.AV_CLUB) .. ": " .. electrical .. "/" .. SBvars.AVClubSkill
+	)
 	updateLabel(
 		self.labelBodyWorkEnthusiastSkillProgress,
-		getText("UI_trait_BodyWorkEnthusiast")
+		getCachedTraitUIName(ETWTraitsRegistry.BODYWORK_ENTHUSIAST)
 			.. ": "
 			.. metalworking + mechanics
 			.. "/"
@@ -2708,7 +2750,7 @@ function ISETWProgressUI:render()
 	)
 	updateLabel(
 		self.labelBodyWorkEnthusiastRepairsProgress,
-		getText("UI_trait_BodyWorkEnthusiast")
+		getCachedTraitUIName(ETWTraitsRegistry.BODYWORK_ENTHUSIAST)
 			.. ": "
 			.. modData.VehiclePartRepairs
 			.. "/"
@@ -2716,11 +2758,11 @@ function ISETWProgressUI:render()
 	)
 	updateLabel(
 		self.labelMechanicsSkillProgress,
-		getText("UI_trait_Mechanics") .. ": " .. mechanics .. "/" .. SBvars.MechanicsSkill
+		getCachedTraitUIName(CharacterTrait.MECHANICS) .. ": " .. mechanics .. "/" .. SBvars.MechanicsSkill
 	)
 	updateLabel(
 		self.labelMechanicsRepairsProgress,
-		getText("UI_trait_Mechanics")
+		getCachedTraitUIName(CharacterTrait.MECHANICS)
 			.. ": "
 			.. math.floor(modData.VehiclePartRepairs)
 			.. "/"
@@ -2728,19 +2770,23 @@ function ISETWProgressUI:render()
 	)
 	updateLabel(
 		self.labelTailorSkillProgress,
-		getText("UI_trait_Tailor") .. ": " .. tailoring .. "/" .. SBvars.SewerSkill
+		getCachedTraitUIName(CharacterTrait.TAILOR) .. ": " .. tailoring .. "/" .. SBvars.SewerSkill
 	)
 	updateLabel(
 		self.labelTailorRippedClothesProgress,
-		getText("UI_trait_Tailor") .. ": " .. #modData.UniqueClothingRipped .. "/" .. SBvars.SewerUniqueClothesRipped
+		getCachedTraitUIName(CharacterTrait.TAILOR)
+			.. ": "
+			.. #modData.UniqueClothingRipped
+			.. "/"
+			.. SBvars.SewerUniqueClothesRipped
 	)
 	updateLabel(
 		self.labelPetTherapySkillProgress,
-		getText("UI_trait_PetTherapy") .. ": " .. husbandry .. "/" .. SBvars.PetTherapySkill
+		getCachedTraitUIName(ETWTraitsRegistry.PET_THERAPY) .. ": " .. husbandry .. "/" .. SBvars.PetTherapySkill
 	)
 	updateLabel(
 		self.labelPetTherapyPettingProgress,
-		getText("UI_trait_PetTherapy")
+		getCachedTraitUIName(ETWTraitsRegistry.PET_THERAPY)
 			.. ": "
 			.. #modData.AnimalsSystem.UniqueAnimalsPetted
 			.. "/"
@@ -2748,36 +2794,47 @@ function ISETWProgressUI:render()
 	)
 	updateLabel(
 		self.labelGunEnthusiastSkillProgress,
-		getText("UI_trait_GunEnthusiast") .. ": " .. aiming + reloading .. "/" .. SBvars.GunEnthusiastSkill
+		getCachedTraitUIName(ETWTraitsRegistry.GUN_ENTHUSIAST) .. ": " .. aiming + reloading .. "/" .. SBvars.GunEnthusiastSkill
 	)
 	updateLabel(
 		self.labelGunEnthusiastKillsProgress,
-		getText("UI_trait_GunEnthusiast") .. ": " .. firearmKills .. "/" .. SBvars.GunEnthusiastKills
+		getCachedTraitUIName(ETWTraitsRegistry.GUN_ENTHUSIAST) .. ": " .. firearmKills .. "/" .. SBvars.GunEnthusiastKills
 	)
-	updateLabel(self.labelAnglerProgress, getText("UI_trait_Fishing") .. ": " .. fishing .. "/" .. SBvars.FishingSkill)
+	updateLabel(
+		self.labelAnglerProgress,
+		getCachedTraitUIName(CharacterTrait.FISHING) .. ": " .. fishing .. "/" .. SBvars.FishingSkill
+	)
 	updateLabel(
 		self.labelHikerProgress,
-		getText("UI_trait_Hiker") .. ": " .. trapping + foraging .. "/" .. SBvars.HikerSkill
+		getCachedTraitUIName(CharacterTrait.HIKER) .. ": " .. trapping + foraging .. "/" .. SBvars.HikerSkill
 	)
 	updateLabel(
 		self.labelCatEyesProgress,
-		getText("UI_trait_NightVision") .. ": " .. math.floor(modData.CatEyesCounter) .. "/" .. SBvars.CatEyesCounter
+		getCachedTraitUIName(CharacterTrait.NIGHT_VISION)
+			.. ": "
+			.. math.floor(modData.CatEyesCounter)
+			.. "/"
+			.. SBvars.CatEyesCounter
 	)
 	updateLabel(
 		self.labelHerbalistProgress,
-		getText("UI_trait_Herbalist") .. ": " .. math.floor(modData.HerbsPickedUp) .. "/" .. SBvars.HerbalistHerbsPicked
+		getCachedTraitUIName(CharacterTrait.HERBALIST)
+			.. ": "
+			.. math.floor(modData.HerbsPickedUp)
+			.. "/"
+			.. SBvars.HerbalistHerbsPicked
 	)
 	updateLabel(
 		self.labelAxemanProgress,
-		getText("UI_trait_axeman") .. ": " .. modData.TreesChopped .. "/" .. SBvars.AxemanTrees
+		getCachedTraitUIName(CharacterTrait.AXEMAN) .. ": " .. modData.TreesChopped .. "/" .. SBvars.AxemanTrees
 	)
 	updateLabel(
 		self.labelWhittlerProgress,
-		getText("UI_trait_Whittler") .. ": " .. carving .. "/" .. SBvars.WhittlerSkill
+		getCachedTraitUIName(CharacterTrait.WHITTLER) .. ": " .. carving .. "/" .. SBvars.WhittlerSkill
 	)
 	updateLabel(
 		self.labelBlacksmithProgress,
-		getText("UI_trait_Blacksmith") .. ": " .. blacksmith .. "/" .. SBvars.BlacksmithSkill
+		getCachedTraitUIName(CharacterTrait.BLACKSMITH) .. ": " .. blacksmith .. "/" .. SBvars.BlacksmithSkill
 	)
 
 	if self.labelDelayedTraitsSystem ~= nil then
@@ -2789,14 +2846,7 @@ function ISETWProgressUI:render()
 		for index = 1, #traitTable do
 			local traitEntry = traitTable[index]
 			local trait, roll = traitEntry[1], traitEntry[2]
-			local translationString = "missing translation"
-			if instanceof(trait, "CharacterTrait") then
-				translationString = CharacterTraitDefinition.getCharacterTraitDefinition(trait):getUIName()
-			else
-				translationString =
-					CharacterTraitDefinition.getCharacterTraitDefinition(CharacterTrait.get(ResourceLocation.of(trait)))
-						:getUIName()
-			end
+			local translationString = getCachedTraitUIName(trait)
 			local strAddition = translationString .. " (1 " .. getText("UI_ETW_Chance") .. " " .. roll .. ")"
 			table.insert(parts, strAddition)
 		end
