@@ -47,6 +47,26 @@ local function getCachedTraitUIName(traitOrRegistryId)
 	return uiName
 end
 
+---@param player IsoPlayer
+---@param traitOrRegistryId CharacterTrait|string
+---@return boolean
+local function playerHasDelayedTraitNoCache(player, traitOrRegistryId)
+	local modData = ETW_CommonFunctions.getETWModData(player)
+	local delayedTraits = modData and modData.DelayedTraits
+	local trait = resolveTrait(traitOrRegistryId)
+	if not delayedTraits or not trait then
+		return false
+	end
+
+	local traitRegistryId = trait:toString()
+	for index = 1, #delayedTraits do
+		if delayedTraits[index][1] == traitRegistryId then
+			return true
+		end
+	end
+	return false
+end
+
 ---Function responsible for setting up mod options on character load
 ---@param playerIndex number
 ---@param player IsoPlayer
@@ -1343,7 +1363,10 @@ function ISETWProgressUI:createChildren()
 
 		y = y + FONT_HGT_SMALL * 1.5
 
-		if ETW_CommonLogicChecks.EagleEyedShouldExecute(player) then
+		if
+			ETW_CommonLogicChecks.EagleEyedShouldExecute(player)
+			and not playerHasDelayedTraitNoCache(player, CharacterTrait.EAGLE_EYED)
+		then
 			arrangeColumnsInTable()
 			self.labelEagleEyedProgress = ISLabel:new(
 				x,
@@ -1361,7 +1384,10 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelEagleEyedProgress)
 		end
 
-		if ETW_CommonLogicChecks.HoarderShouldExecute(player) then
+		if
+			ETW_CommonLogicChecks.HoarderShouldExecute(player)
+			and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.HOARDER)
+		then
 			arrangeColumnsInTable()
 			self.labelHoarderProgress = ISLabel:new(
 				x,
@@ -1379,7 +1405,10 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelHoarderProgress)
 		end
 
-		if ETW_CommonLogicChecks.GymRatShouldExecute(player) then
+		if
+			ETW_CommonLogicChecks.GymRatShouldExecute(player)
+			and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.GYM_RAT)
+		then
 			arrangeColumnsInTable()
 			self.labelGymRatProgress = ISLabel:new(
 				x,
@@ -1397,7 +1426,10 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelGymRatProgress)
 		end
 
-		if ETW_CommonLogicChecks.RunnerShouldExecute(player) then
+		if
+			ETW_CommonLogicChecks.RunnerShouldExecute(player)
+			and not playerHasDelayedTraitNoCache(player, CharacterTrait.JOGGER)
+		then
 			arrangeColumnsInTable()
 			self.labelRunnerProgress = ISLabel:new(
 				x,
@@ -1415,7 +1447,10 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelRunnerProgress)
 		end
 
-		if ETW_CommonLogicChecks.LightStepShouldExecute(player) then
+		if
+			ETW_CommonLogicChecks.LightStepShouldExecute(player)
+			and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.LIGHTSTEP)
+		then
 			arrangeColumnsInTable()
 			self.labelLightStepProgress = ISLabel:new(
 				x,
@@ -1433,7 +1468,10 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelLightStepProgress)
 		end
 
-		if ETW_CommonLogicChecks.GymnastShouldExecute(player) then
+		if
+			ETW_CommonLogicChecks.GymnastShouldExecute(player)
+			and not playerHasDelayedTraitNoCache(player, CharacterTrait.GYMNAST)
+		then
 			arrangeColumnsInTable()
 			self.labelGymnastProgress = ISLabel:new(
 				x,
@@ -1451,7 +1489,10 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelGymnastProgress)
 		end
 
-		if ETW_CommonLogicChecks.ClumsyShouldExecute(player) then
+		if
+			ETW_CommonLogicChecks.ClumsyShouldExecute(player)
+			and not playerHasDelayedTraitNoCache(player, CharacterTrait.CLUMSY)
+		then
 			arrangeColumnsInTable()
 			self.labelClumsyProgress = ISLabel:new(
 				x,
@@ -1469,7 +1510,10 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelClumsyProgress)
 		end
 
-		if ETW_CommonLogicChecks.GracefulShouldExecute(player) then
+		if
+			ETW_CommonLogicChecks.GracefulShouldExecute(player)
+			and not playerHasDelayedTraitNoCache(player, CharacterTrait.GRACEFUL)
+		then
 			arrangeColumnsInTable()
 			self.labelGracefulProgress = ISLabel:new(
 				x,
@@ -1487,7 +1531,10 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelGracefulProgress)
 		end
 
-		if ETW_CommonLogicChecks.BurglarShouldExecute(player) then
+		if
+			ETW_CommonLogicChecks.BurglarShouldExecute(player)
+			and not playerHasDelayedTraitNoCache(player, CharacterTrait.BURGLAR)
+		then
 			arrangeColumnsInTable()
 			self.labelBurglarProgress = ISLabel:new(
 				x,
@@ -1505,7 +1552,10 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelBurglarProgress)
 		end
 
-		if ETW_CommonLogicChecks.LowProfileShouldExecute(player) then
+		if
+			ETW_CommonLogicChecks.LowProfileShouldExecute(player)
+			and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.LOW_PROFILE)
+		then
 			arrangeColumnsInTable()
 			self.labelLowProfileProgress = ISLabel:new(
 				x,
@@ -1523,7 +1573,10 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelLowProfileProgress)
 		end
 
-		if ETW_CommonLogicChecks.ConspicuousShouldExecute(player) then
+		if
+			ETW_CommonLogicChecks.ConspicuousShouldExecute(player)
+			and not playerHasDelayedTraitNoCache(player, CharacterTrait.CONSPICUOUS)
+		then
 			arrangeColumnsInTable()
 			self.labelConspicuousProgress = ISLabel:new(
 				x,
@@ -1541,7 +1594,10 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelConspicuousProgress)
 		end
 
-		if ETW_CommonLogicChecks.InconspicuousShouldExecute(player) then
+		if
+			ETW_CommonLogicChecks.InconspicuousShouldExecute(player)
+			and not playerHasDelayedTraitNoCache(player, CharacterTrait.INCONSPICUOUS)
+		then
 			arrangeColumnsInTable()
 			self.labelInconspicuousProgress = ISLabel:new(
 				x,
@@ -1559,7 +1615,10 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelInconspicuousProgress)
 		end
 
-		if ETW_CommonLogicChecks.HunterShouldExecute(player) then
+		if
+			ETW_CommonLogicChecks.HunterShouldExecute(player)
+			and not playerHasDelayedTraitNoCache(player, CharacterTrait.HUNTER)
+		then
 			local levels = sneaking + aiming + trapping + shortBlade
 			if sneaking < 2 or aiming < 2 or trapping < 2 or shortBlade < 2 or levels < SBvars.HunterSkill then
 				arrangeColumnsInTable()
@@ -1599,7 +1658,10 @@ function ISETWProgressUI:createChildren()
 			end
 		end
 
-		if ETW_CommonLogicChecks.BladeEnthusiastShouldExecute(player) then
+		if
+			ETW_CommonLogicChecks.BladeEnthusiastShouldExecute(player)
+			and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.BLADE_ENTHUSIAST)
+		then
 			if longBlade < SBvars.BladeEnthusiastSkill then
 				arrangeColumnsInTable()
 				self.labelBladeEnthusiastSkillProgress = ISLabel:new(
@@ -1636,7 +1698,10 @@ function ISETWProgressUI:createChildren()
 			end
 		end
 
-		if ETW_CommonLogicChecks.BrawlerShouldExecute(player) then
+		if
+			ETW_CommonLogicChecks.BrawlerShouldExecute(player)
+			and not playerHasDelayedTraitNoCache(player, CharacterTrait.BRAWLER)
+		then
 			if (axe + longBlunt) < SBvars.BrawlerSkill then
 				arrangeColumnsInTable()
 				self.labelBrawlerSkillProgress = ISLabel:new(
@@ -1676,7 +1741,10 @@ function ISETWProgressUI:createChildren()
 			end
 		end
 
-		if ETW_CommonLogicChecks.AxeThrowerShouldExecute(player) then
+		if
+			ETW_CommonLogicChecks.AxeThrowerShouldExecute(player)
+			and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.AXE_THROWER)
+		then
 			if axe < SBvars.AxeThrowerSkill then
 				arrangeColumnsInTable()
 				self.labelAxeThrowerSkillProgress = ISLabel:new(
@@ -1713,7 +1781,10 @@ function ISETWProgressUI:createChildren()
 			end
 		end
 
-		if ETW_CommonLogicChecks.StickFighterShouldExecute(player) then
+		if
+			ETW_CommonLogicChecks.StickFighterShouldExecute(player)
+			and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.STICK_FIGHTER)
+		then
 			if shortBlunt < SBvars.StickFighterSkill then
 				arrangeColumnsInTable()
 				self.labelStickFighterSkillProgress = ISLabel:new(
@@ -1750,7 +1821,10 @@ function ISETWProgressUI:createChildren()
 			end
 		end
 
-		if ETW_CommonLogicChecks.KnifeFighterShouldExecute(player) then
+		if
+			ETW_CommonLogicChecks.KnifeFighterShouldExecute(player)
+			and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.KNIFE_FIGHTER)
+		then
 			if shortBlade < SBvars.KnifeFighterSkill then
 				arrangeColumnsInTable()
 				self.labelKnifeFighterSkillProgress = ISLabel:new(
@@ -1787,7 +1861,10 @@ function ISETWProgressUI:createChildren()
 			end
 		end
 
-		if ETW_CommonLogicChecks.PolearmFighterShouldExecute(player) then
+		if
+			ETW_CommonLogicChecks.PolearmFighterShouldExecute(player)
+			and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.POLEARM_FIGHTER)
+		then
 			if spear < SBvars.PolearmFighterSkill then
 				arrangeColumnsInTable()
 				self.labelPolearmFighterSkillProgress = ISLabel:new(
@@ -1824,7 +1901,10 @@ function ISETWProgressUI:createChildren()
 			end
 		end
 
-		if ETW_CommonLogicChecks.RestorationExpertShouldExecute(player) then
+		if
+			ETW_CommonLogicChecks.RestorationExpertShouldExecute(player)
+			and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.RESTORATION_EXPERT)
+		then
 			arrangeColumnsInTable()
 			self.labelRestorationExpertSkillProgress = ISLabel:new(
 				x,
@@ -1842,7 +1922,10 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelRestorationExpertSkillProgress)
 		end
 
-		if ETW_CommonLogicChecks.HandyShouldExecute(player) then
+		if
+			ETW_CommonLogicChecks.HandyShouldExecute(player)
+			and not playerHasDelayedTraitNoCache(player, CharacterTrait.HANDY)
+		then
 			arrangeColumnsInTable()
 			self.labelHandySkillProgress = ISLabel:new(
 				x,
@@ -1860,7 +1943,10 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelHandySkillProgress)
 		end
 
-		if ETW_CommonLogicChecks.FurnitureAssemblerShouldExecute(player) then
+		if
+			ETW_CommonLogicChecks.FurnitureAssemblerShouldExecute(player)
+			and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.FURNITURE_ASSEMBLER)
+		then
 			arrangeColumnsInTable()
 			self.labelFurnitureAssemblerProgress = ISLabel:new(
 				x,
@@ -1878,7 +1964,10 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelFurnitureAssemblerProgress)
 		end
 
-		if ETW_CommonLogicChecks.HomeCookShouldExecute(player) then
+		if
+			ETW_CommonLogicChecks.HomeCookShouldExecute(player)
+			and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.HOME_COOK)
+		then
 			arrangeColumnsInTable()
 			self.labelHomeCookProgress = ISLabel:new(
 				x,
@@ -1896,7 +1985,10 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelHomeCookProgress)
 		end
 
-		if ETW_CommonLogicChecks.CookShouldExecute(player) then
+		if
+			ETW_CommonLogicChecks.CookShouldExecute(player)
+			and not playerHasDelayedTraitNoCache(player, CharacterTrait.COOK)
+		then
 			arrangeColumnsInTable()
 			self.labelCookProgress = ISLabel:new(
 				x,
@@ -1914,7 +2006,10 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelCookProgress)
 		end
 
-		if ETW_CommonLogicChecks.FirstAidShouldExecute(player) then
+		if
+			ETW_CommonLogicChecks.FirstAidShouldExecute(player)
+			and not playerHasDelayedTraitNoCache(player, CharacterTrait.FIRST_AID)
+		then
 			arrangeColumnsInTable()
 			self.labelFirstAidProgress = ISLabel:new(
 				x,
@@ -1932,7 +2027,10 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelFirstAidProgress)
 		end
 
-		if ETW_CommonLogicChecks.AVClubShouldExecute(player) then
+		if
+			ETW_CommonLogicChecks.AVClubShouldExecute(player)
+			and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.AV_CLUB)
+		then
 			arrangeColumnsInTable()
 			self.labelAVClubProgress = ISLabel:new(
 				x,
@@ -1950,7 +2048,10 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelAVClubProgress)
 		end
 
-		if ETW_CommonLogicChecks.BodyWorkEnthusiastShouldExecute(player) then
+		if
+			ETW_CommonLogicChecks.BodyWorkEnthusiastShouldExecute(player)
+			and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.BODYWORK_ENTHUSIAST)
+		then
 			if metalworking + mechanics < SBvars.BodyworkEnthusiastSkill then
 				arrangeColumnsInTable()
 				self.labelBodyWorkEnthusiastSkillProgress = ISLabel:new(
@@ -1992,7 +2093,10 @@ function ISETWProgressUI:createChildren()
 			end
 		end
 
-		if ETW_CommonLogicChecks.MechanicsShouldExecute(player) then
+		if
+			ETW_CommonLogicChecks.MechanicsShouldExecute(player)
+			and not playerHasDelayedTraitNoCache(player, CharacterTrait.MECHANICS)
+		then
 			if mechanics < SBvars.MechanicsSkill then
 				arrangeColumnsInTable()
 				self.labelMechanicsSkillProgress = ISLabel:new(
@@ -2030,7 +2134,10 @@ function ISETWProgressUI:createChildren()
 			end
 		end
 
-		if ETW_CommonLogicChecks.SewerShouldExecute(player) then
+		if
+			ETW_CommonLogicChecks.SewerShouldExecute(player)
+			and not playerHasDelayedTraitNoCache(player, CharacterTrait.TAILOR)
+		then
 			if tailoring < SBvars.SewerSkill then
 				arrangeColumnsInTable()
 				self.labelTailorSkillProgress = ISLabel:new(
@@ -2072,7 +2179,10 @@ function ISETWProgressUI:createChildren()
 			end
 		end
 
-		if ETW_CommonLogicChecks.PetTherapyShouldExecute(player) then
+		if
+			ETW_CommonLogicChecks.PetTherapyShouldExecute(player)
+			and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.PET_THERAPY)
+		then
 			if husbandry < SBvars.PetTherapySkill then
 				arrangeColumnsInTable()
 				self.labelPetTherapySkillProgress = ISLabel:new(
@@ -2118,7 +2228,10 @@ function ISETWProgressUI:createChildren()
 			end
 		end
 
-		if ETW_CommonLogicChecks.GunEnthusiastShouldExecute(player) then
+		if
+			ETW_CommonLogicChecks.GunEnthusiastShouldExecute(player)
+			and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.GUN_ENTHUSIAST)
+		then
 			if aiming + reloading < SBvars.GunEnthusiastSkill then
 				arrangeColumnsInTable()
 				self.labelGunEnthusiastSkillProgress = ISLabel:new(
@@ -2156,7 +2269,10 @@ function ISETWProgressUI:createChildren()
 			end
 		end
 
-		if ETW_CommonLogicChecks.AnglerShouldExecute(player) then
+		if
+			ETW_CommonLogicChecks.AnglerShouldExecute(player)
+			and not playerHasDelayedTraitNoCache(player, CharacterTrait.FISHING)
+		then
 			arrangeColumnsInTable()
 			self.labelAnglerProgress = ISLabel:new(
 				x,
@@ -2174,7 +2290,10 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelAnglerProgress)
 		end
 
-		if ETW_CommonLogicChecks.HikerShouldExecute(player) then
+		if
+			ETW_CommonLogicChecks.HikerShouldExecute(player)
+			and not playerHasDelayedTraitNoCache(player, CharacterTrait.HIKER)
+		then
 			arrangeColumnsInTable()
 			self.labelHikerProgress = ISLabel:new(
 				x,
@@ -2192,7 +2311,10 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelHikerProgress)
 		end
 
-		if ETW_CommonLogicChecks.CatEyesShouldExecute(player) then
+		if
+			ETW_CommonLogicChecks.CatEyesShouldExecute(player)
+			and not playerHasDelayedTraitNoCache(player, CharacterTrait.NIGHT_VISION)
+		then
 			arrangeColumnsInTable()
 			self.labelCatEyesProgress = ISLabel:new(
 				x,
@@ -2210,7 +2332,10 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelCatEyesProgress)
 		end
 
-		if ETW_CommonLogicChecks.HerbalistShouldExecute(player) then
+		if
+			ETW_CommonLogicChecks.HerbalistShouldExecute(player)
+			and not playerHasDelayedTraitNoCache(player, CharacterTrait.HERBALIST)
+		then
 			arrangeColumnsInTable()
 			self.labelHerbalistProgress = ISLabel:new(
 				x,
@@ -2228,7 +2353,10 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelHerbalistProgress)
 		end
 
-		if ETW_CommonLogicChecks.AxemanShouldExecute(player) then
+		if
+			ETW_CommonLogicChecks.AxemanShouldExecute(player)
+			and not playerHasDelayedTraitNoCache(player, CharacterTrait.AXEMAN)
+		then
 			arrangeColumnsInTable()
 			self.labelAxemanProgress = ISLabel:new(
 				x,
@@ -2246,7 +2374,10 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelAxemanProgress)
 		end
 
-		if ETW_CommonLogicChecks.WhittlerShouldExecute(player) then
+		if
+			ETW_CommonLogicChecks.WhittlerShouldExecute(player)
+			and not playerHasDelayedTraitNoCache(player, CharacterTrait.WHITTLER)
+		then
 			arrangeColumnsInTable()
 			self.labelWhittlerProgress = ISLabel:new(
 				x,
@@ -2264,7 +2395,10 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelWhittlerProgress)
 		end
 
-		if ETW_CommonLogicChecks.BlacksmithShouldExecute(player) then
+		if
+			ETW_CommonLogicChecks.BlacksmithShouldExecute(player)
+			and not playerHasDelayedTraitNoCache(player, CharacterTrait.BLACKSMITH)
+		then
 			arrangeColumnsInTable()
 			self.labelBlacksmithProgress = ISLabel:new(
 				x,
@@ -2282,7 +2416,10 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.labelBlacksmithProgress)
 		end
 
-		if ETW_CommonLogicChecks.WildernessKnowledgeShouldExecute(player) then
+		if
+			ETW_CommonLogicChecks.WildernessKnowledgeShouldExecute(player)
+			and not playerHasDelayedTraitNoCache(player, CharacterTrait.WILDERNESS_KNOWLEDGE)
+		then
 			local levels = foraging + knapping + maintenance + carving
 			if
 				foraging < 2
@@ -2571,7 +2708,11 @@ function ISETWProgressUI:render()
 
 	updateLabel(
 		self.labelEagleEyedProgress,
-		getCachedTraitUIName(CharacterTrait.EAGLE_EYED) .. ": " .. modData.EagleEyedKills .. "/" .. SBvars.EagleEyedKills
+		getCachedTraitUIName(CharacterTrait.EAGLE_EYED)
+			.. ": "
+			.. modData.EagleEyedKills
+			.. "/"
+			.. SBvars.EagleEyedKills
 	)
 	updateLabel(
 		self.labelHoarderProgress,
@@ -2591,7 +2732,7 @@ function ISETWProgressUI:render()
 	)
 	updateLabel(
 		self.labelGymnastProgress,
-		getCachedTraitUIName(ETWTraitsRegistry.GYMNAST) .. ": " .. lightfooted + nimble .. "/" .. SBvars.GymnastSkill
+		getCachedTraitUIName(CharacterTrait.GYMNAST) .. ": " .. lightfooted + nimble .. "/" .. SBvars.GymnastSkill
 	)
 	updateLabel(
 		self.labelClumsyProgress,
@@ -2599,7 +2740,11 @@ function ISETWProgressUI:render()
 	)
 	updateLabel(
 		self.labelGracefulProgress,
-		getCachedTraitUIName(CharacterTrait.GRACEFUL) .. ": " .. lightfooted + sneaking + nimble .. "/" .. SBvars.GracefulSkill
+		getCachedTraitUIName(CharacterTrait.GRACEFUL)
+			.. ": "
+			.. lightfooted + sneaking + nimble
+			.. "/"
+			.. SBvars.GracefulSkill
 	)
 	updateLabel(
 		self.labelBurglarProgress,
@@ -2645,7 +2790,11 @@ function ISETWProgressUI:render()
 	)
 	updateLabel(
 		self.labelHunterKillsProgress,
-		getCachedTraitUIName(CharacterTrait.HUNTER) .. ": " .. shortBladeKills + firearmKills .. "/" .. SBvars.HunterKills
+		getCachedTraitUIName(CharacterTrait.HUNTER)
+			.. ": "
+			.. shortBladeKills + firearmKills
+			.. "/"
+			.. SBvars.HunterKills
 	)
 	updateLabel(
 		self.labelWildernessKnowledgeSkillProgress,
@@ -2686,15 +2835,27 @@ function ISETWProgressUI:render()
 	)
 	updateLabel(
 		self.labelStickFighterKillsProgress,
-		getCachedTraitUIName(ETWTraitsRegistry.STICK_FIGHTER) .. ": " .. shortBluntKills .. "/" .. SBvars.StickFighterKills
+		getCachedTraitUIName(ETWTraitsRegistry.STICK_FIGHTER)
+			.. ": "
+			.. shortBluntKills
+			.. "/"
+			.. SBvars.StickFighterKills
 	)
 	updateLabel(
 		self.labelBladeEnthusiastSkillProgress,
-		getCachedTraitUIName(ETWTraitsRegistry.BLADE_ENTHUSIAST) .. ": " .. longBlade .. "/" .. SBvars.BladeEnthusiastSkill
+		getCachedTraitUIName(ETWTraitsRegistry.BLADE_ENTHUSIAST)
+			.. ": "
+			.. longBlade
+			.. "/"
+			.. SBvars.BladeEnthusiastSkill
 	)
 	updateLabel(
 		self.labelBladeEnthusiastKillsProgress,
-		getCachedTraitUIName(ETWTraitsRegistry.BLADE_ENTHUSIAST) .. ": " .. longBladeKills .. "/" .. SBvars.BladeEnthusiastKills
+		getCachedTraitUIName(ETWTraitsRegistry.BLADE_ENTHUSIAST)
+			.. ": "
+			.. longBladeKills
+			.. "/"
+			.. SBvars.BladeEnthusiastKills
 	)
 	updateLabel(
 		self.labelKnifeFighterSkillProgress,
@@ -2702,7 +2863,11 @@ function ISETWProgressUI:render()
 	)
 	updateLabel(
 		self.labelKnifeFighterKillsProgress,
-		getCachedTraitUIName(ETWTraitsRegistry.KNIFE_FIGHTER) .. ": " .. shortBladeKills .. "/" .. SBvars.KnifeFighterKills
+		getCachedTraitUIName(ETWTraitsRegistry.KNIFE_FIGHTER)
+			.. ": "
+			.. shortBladeKills
+			.. "/"
+			.. SBvars.KnifeFighterKills
 	)
 	updateLabel(
 		self.labelPolearmFighterSkillProgress,
@@ -2710,11 +2875,19 @@ function ISETWProgressUI:render()
 	)
 	updateLabel(
 		self.labelPolearmFighterKillsProgress,
-		getCachedTraitUIName(ETWTraitsRegistry.POLEARM_FIGHTER) .. ": " .. spearKills .. "/" .. SBvars.PolearmFighterKills
+		getCachedTraitUIName(ETWTraitsRegistry.POLEARM_FIGHTER)
+			.. ": "
+			.. spearKills
+			.. "/"
+			.. SBvars.PolearmFighterKills
 	)
 	updateLabel(
 		self.labelRestorationExpertSkillProgress,
-		getCachedTraitUIName(ETWTraitsRegistry.RESTORATION_EXPERT) .. ": " .. maintenance .. "/" .. SBvars.RestorationExpertSkill
+		getCachedTraitUIName(ETWTraitsRegistry.RESTORATION_EXPERT)
+			.. ": "
+			.. maintenance
+			.. "/"
+			.. SBvars.RestorationExpertSkill
 	)
 	updateLabel(
 		self.labelHandySkillProgress,
@@ -2722,7 +2895,11 @@ function ISETWProgressUI:render()
 	)
 	updateLabel(
 		self.labelFurnitureAssemblerProgress,
-		getCachedTraitUIName(ETWTraitsRegistry.FURNITURE_ASSEMBLER) .. ": " .. carpentry .. "/" .. SBvars.FurnitureAssemblerSkill
+		getCachedTraitUIName(ETWTraitsRegistry.FURNITURE_ASSEMBLER)
+			.. ": "
+			.. carpentry
+			.. "/"
+			.. SBvars.FurnitureAssemblerSkill
 	)
 	updateLabel(
 		self.labelHomeCookProgress,
@@ -2794,11 +2971,19 @@ function ISETWProgressUI:render()
 	)
 	updateLabel(
 		self.labelGunEnthusiastSkillProgress,
-		getCachedTraitUIName(ETWTraitsRegistry.GUN_ENTHUSIAST) .. ": " .. aiming + reloading .. "/" .. SBvars.GunEnthusiastSkill
+		getCachedTraitUIName(ETWTraitsRegistry.GUN_ENTHUSIAST)
+			.. ": "
+			.. aiming + reloading
+			.. "/"
+			.. SBvars.GunEnthusiastSkill
 	)
 	updateLabel(
 		self.labelGunEnthusiastKillsProgress,
-		getCachedTraitUIName(ETWTraitsRegistry.GUN_ENTHUSIAST) .. ": " .. firearmKills .. "/" .. SBvars.GunEnthusiastKills
+		getCachedTraitUIName(ETWTraitsRegistry.GUN_ENTHUSIAST)
+			.. ": "
+			.. firearmKills
+			.. "/"
+			.. SBvars.GunEnthusiastKills
 	)
 	updateLabel(
 		self.labelAnglerProgress,
