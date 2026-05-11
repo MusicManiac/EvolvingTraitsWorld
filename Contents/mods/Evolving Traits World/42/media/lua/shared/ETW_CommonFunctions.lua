@@ -434,7 +434,26 @@ function ETW_CommonFunctions.checkDelayedTraits(player, traitToCheck)
 	local traitRegistryId = traitToCheck:toString()
 	local modData = ETW_CommonFunctions.getETWModData(player)
 	local traitTable = modData.DelayedTraits
-	local traitEntry = traitTable[indexOfDelayedTrait(modData.DelayedTraits, traitRegistryId)]
+	local traitIndex = indexOfDelayedTrait(modData.DelayedTraits, traitRegistryId)
+	if traitIndex == -1 then
+		ETW_CommonFunctions.log(
+			"ETW Logger | ETW_CommonFunctions.checkDelayedTraits(): "
+				.. traitRegistryId
+				.. " is not in DelayedTraits, returning false"
+		)
+		return false
+	end
+	local traitEntry = traitTable[traitIndex]
+	if not traitEntry then
+		ETW_CommonFunctions.log(
+			"ETW Logger | ETW_CommonFunctions.checkDelayedTraits(): "
+				.. traitRegistryId
+				.. " has a nil DelayedTraits entry at index "
+				.. traitIndex
+				.. ", returning false"
+		)
+		return false
+	end
 	local traitNameInTable, gained = traitEntry[1], traitEntry[3]
 	ETW_CommonFunctions.log(
 		"ETW Logger | ETW_CommonFunctions.checkDelayedTraits(): caught check on " .. traitRegistryId
@@ -445,7 +464,7 @@ function ETW_CommonFunctions.checkDelayedTraits(player, traitToCheck)
 				.. traitRegistryId
 				.. ": player qualifies for it, removing it from the table"
 		)
-		table.remove(traitTable, indexOfDelayedTrait(modData.DelayedTraits, traitRegistryId))
+		table.remove(traitTable, traitIndex)
 		return true
 	end
 	return false

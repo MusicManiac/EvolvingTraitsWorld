@@ -2482,7 +2482,7 @@ function ISETWProgressUI:createChildren()
 				UIFont.Small,
 				true
 			)
-			self.labelBlacksmithProgress:setTooltip(getText("Sandbox_ETW_BlacksmithSkill"))
+			self.labelBlacksmithProgress:setTooltip(getText("Sandbox_ETW_BlacksmithSkill_tooltip"))
 			self:addChild(self.labelBlacksmithProgress)
 		end
 

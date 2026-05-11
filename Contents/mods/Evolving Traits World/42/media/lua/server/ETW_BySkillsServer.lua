@@ -753,8 +753,8 @@ local random_instance = newrandom()
 ---Function responsible for hourly check on Delayed Traits system
 local function progressDelayedTraits()
 	local playersList = ETW_CommonFunctions.playersList()
-	for i = 0, playerList:size() - 1 do
-		local player = playerList:get(i)
+	for i = 0, playersList:size() - 1 do
+		local player = playersList:get(i)
 		local modData = CommonFunctions.getETWModData(player)
 		if not modData then
 			logETW("ETW Logger | progressDelayedTraits(): modData is nil, returning early")
@@ -766,41 +766,47 @@ local function progressDelayedTraits()
 				.. player:getUsername()
 				.. " ----------"
 		)
-		for index = 1, #traitTable do
+		for index = #traitTable, 1, -1 do
 			local traitEntry = traitTable[index]
-			local traitRegistryId, traitValue, gained = traitEntry[1], traitEntry[2], traitEntry[3]
-			local trait = CharacterTrait.get(ResourceLocation.of(traitRegistryId))
-			if not gained then
-				local randomValue = random_instance:random(0, traitValue)
-				if randomValue == 0 then
-					traitTable[index][3] = true
-					logETW(
-						"ETW Logger | Delayed Traits System: rolled to get "
-							.. traitRegistryId
-							.. ": rolled 0 from 0-"
-							.. traitTable[index][2],
-						"ETW Logger | Delayed Traits System: "
-							.. traitRegistryId
-							.. " in traitTable["
-							.. index
-							.. "][3]"
-							.. " set to "
-							.. tostring(traitTable[index][3]),
-						"ETW Logger | Delayed Traits System: running traitsGainsBySkill(player, "
-							.. traitRegistryId
-							.. ")"
-					)
-					ETW_BySkills.traitsGainsBySkill(player, trait)
-				elseif randomValue > 0 then
-					logETW(
-						"ETW Logger | Delayed Traits System: rolled to get "
-							.. traitRegistryId
-							.. ": rolled "
-							.. randomValue
-							.. " from 0-"
-							.. traitValue
-					)
-					traitTable[index][2] = traitValue - 1
+			if not traitEntry then
+				logETW("ETW Logger | Delayed Traits System: nil trait entry found at index " .. index .. ", skipping")
+			else
+				local traitRegistryId, traitValue, gained = traitEntry[1], traitEntry[2], traitEntry[3]
+				local trait = CharacterTrait.get(ResourceLocation.of(traitRegistryId))
+				if not gained then
+					-- `newrandom():random(min, max)` uses an inclusive upper bound in PZ.
+					-- Roll directly from 1 to N so a stored value of N means "1 in N".
+					local randomValue = traitValue > 1 and random_instance:random(1, traitValue) or 1
+					if randomValue == 1 then
+						traitTable[index][3] = true
+						logETW(
+							"ETW Logger | Delayed Traits System: rolled to get "
+								.. traitRegistryId
+								.. ": rolled 1 from 1-"
+								.. traitValue,
+							"ETW Logger | Delayed Traits System: "
+								.. traitRegistryId
+								.. " in traitTable["
+								.. index
+								.. "][3]"
+								.. " set to "
+								.. tostring(traitTable[index][3]),
+							"ETW Logger | Delayed Traits System: running traitsGainsBySkill(player, "
+								.. traitRegistryId
+								.. ")"
+						)
+						ETW_BySkills.traitsGainsBySkill(player, trait)
+					elseif randomValue > 0 then
+						logETW(
+							"ETW Logger | Delayed Traits System: rolled to get "
+								.. traitRegistryId
+								.. ": rolled "
+								.. randomValue
+								.. " from 1-"
+								.. traitValue
+						)
+						traitTable[index][2] = traitValue - 1
+					end
 				end
 			end
 		end
