@@ -15,6 +15,7 @@ local ETWTraitsRegistry = ETW_Registry.traits
 local modOptions
 local traitUINameCache = {}
 
+---Resolves either a trait object or registry id string into a CharacterTrait instance.
 ---@param traitOrRegistryId CharacterTrait|string
 ---@return CharacterTrait|nil
 local function resolveTrait(traitOrRegistryId)
@@ -27,6 +28,7 @@ local function resolveTrait(traitOrRegistryId)
 	return nil
 end
 
+---Returns a cached UI name for the provided trait, resolving and caching it on first lookup.
 ---@param traitOrRegistryId CharacterTrait|string
 ---@return string
 local function getCachedTraitUIName(traitOrRegistryId)
@@ -47,6 +49,7 @@ local function getCachedTraitUIName(traitOrRegistryId)
 	return uiName
 end
 
+---Checks whether a trait is currently present in the player's delayed traits list.
 ---@param player IsoPlayer
 ---@param traitOrRegistryId CharacterTrait|string
 ---@return boolean
@@ -65,6 +68,61 @@ local function playerHasDelayedTraitNoCache(player, traitOrRegistryId)
 		end
 	end
 	return false
+end
+
+---Builds a stable signature for the player's currently known traits.
+---@param player IsoPlayer|nil
+---@return string
+local function getKnownTraitsLayoutSignature(player)
+	if not player then
+		return ""
+	end
+
+	local knownTraits = player:getCharacterTraits():getKnownTraits()
+	local signatureParts = {}
+	for index = 1, knownTraits:size() do
+		signatureParts[index] = knownTraits:get(index - 1):toString()
+	end
+	table.sort(signatureParts)
+	return table.concat(signatureParts, "|")
+end
+
+---Builds a stable signature for the player's delayed traits table.
+---@param player IsoPlayer|nil
+---@return string
+local function getDelayedTraitsLayoutSignature(player)
+	if not player then
+		return ""
+	end
+
+	local modData = ETW_CommonFunctions.getETWModData(player)
+	local delayedTraits = modData and modData.DelayedTraits
+	if not delayedTraits then
+		return ""
+	end
+
+	local signatureParts = {}
+	for index = 1, #delayedTraits do
+		local delayedTrait = delayedTraits[index]
+		signatureParts[index] = tostring(delayedTrait[1]) .. ":" .. tostring(delayedTrait[2])
+	end
+	return table.concat(signatureParts, "|")
+end
+
+---Combines trait-based layout inputs into a single signature used to detect when the UI must be rebuilt.
+---@param player IsoPlayer|nil
+---@return string
+local function getLayoutSignature(player)
+	return getKnownTraitsLayoutSignature(player) .. "||" .. getDelayedTraitsLayoutSignature(player)
+end
+
+---Closes a child tooltip before the child is removed from the panel.
+---@param child ISUIElement
+local function hideChildTooltip(child)
+	if child and child.tooltipUI then
+		child.tooltipUI:setVisible(false)
+		child.tooltipUI:removeFromUIManager()
+	end
 end
 
 ---Function responsible for setting up mod options on character load
@@ -98,14 +156,25 @@ local SBvars = SandboxVars.EvolvingTraitsWorld
 
 ISETWProgressUI = ISPanelJoypad:derive("ISETWUI")
 
+---Converts a value within a min/max range into a 0..1 percentage for UI bars.
+---@param minValue number
+---@param maxValue number
+---@param currentValue number
+---@return number
 local function percentile(minValue, maxValue, currentValue)
 	return (currentValue - minValue) / (maxValue - minValue)
 end
 
+---Measures the rendered width of a string using the small UI font.
+---@param textManager TextManager
+---@param str string
+---@return number
 local function strLen(textManager, str)
 	return textManager:MeasureStringX(UIFont.Small, str)
 end
 
+---Advances the column layout cursor for compact label rows, optionally forcing a new line.
+---@param newLine boolean|nil
 local function arrangeColumnsInTable(newLine)
 	x = lineStartPosition
 	nonBarsEntryNumber = nonBarsEntryNumber + 1
@@ -2474,6 +2543,39 @@ function ISETWProgressUI:createChildren()
 		y = 12
 		nonBarsEntryNumber = 0
 	end
+
+	self.layoutSignature = getLayoutSignature(getPlayer())
+end
+
+---Rebuilds every ETW child widget so conditional labels and bars can appear or disappear mid-game.
+function ISETWProgressUI:rebuildChildren()
+	if self.children then
+		for _, child in pairs(self.children) do
+			hideChildTooltip(child)
+		end
+	end
+
+	self:clearChildren()
+
+	local widgetFields = {}
+	for key in pairs(self) do
+		if type(key) == "string" and (string.sub(key, 1, 5) == "label" or string.sub(key, 1, 3) == "bar") then
+			widgetFields[#widgetFields + 1] = key
+		end
+	end
+	for index = 1, #widgetFields do
+		self[widgetFields[index]] = nil
+	end
+
+	self:createChildren()
+end
+
+---Rebuilds the ETW layout when known traits or delayed traits change.
+function ISETWProgressUI:refreshLayoutIfNeeded()
+	local layoutSignature = getLayoutSignature(getPlayer())
+	if self.layoutSignature ~= layoutSignature then
+		self:rebuildChildren()
+	end
 end
 
 function ISCharacterKills:setVisible(visible)
@@ -2485,6 +2587,10 @@ function ISETWProgressUI:prerender()
 	self:setStencilRect(0, 0, self.width, self.height)
 end
 
+---Updates a gradient bar if it exists, including its current tooltip text.
+---@param bar ISGradientBar|nil
+---@param value number
+---@param tooltip string|number
 local function updateBar(bar, value, tooltip)
 	if bar then
 		bar:setValue(value)
@@ -2492,6 +2598,9 @@ local function updateBar(bar, value, tooltip)
 	end
 end
 
+---Updates a label's displayed text if the label exists.
+---@param label ISLabel|nil
+---@param value string
 local function updateLabel(label, value)
 	if label then
 		label:setName(value)
@@ -2499,6 +2608,8 @@ local function updateLabel(label, value)
 end
 
 function ISETWProgressUI:render()
+	self:refreshLayoutIfNeeded()
+
 	self:setWidthAndParentWidth(WINDOW_WIDTH)
 	self:setHeightAndParentHeight(WINDOW_HEIGHT)
 
