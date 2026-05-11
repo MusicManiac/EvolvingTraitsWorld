@@ -52,7 +52,6 @@ function ETW_TimedActionsSharedLogic.checkInventoryTransferPerks(player, modData
 			SBvars.DelayedTraitsSystem
 			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.ORGANIZED)
 		then
-			-- UI_trait_Packmule is internal string name
 			ETW_CommonFunctions.addTraitToDelayTable({
 				modData = modData,
 				trait = CharacterTrait.ORGANIZED,
