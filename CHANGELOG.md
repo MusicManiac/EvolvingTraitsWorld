@@ -1,4 +1,13 @@
-## v.10.2.1
+## v.11.0.0 - The "Real Authority" Update
+###### 13 May 2026
+
+- General:
+  - Moved 95% of logic to server, now server is the authority on granting perks and tracking player progress. This was caused mostly by Indie Stone moving A LOT of logic to server-side in B42. This makes it very hard to cheat progress values as game doesn't just blindly trust the client anymore. This required huge rewrite but this should be the last one for a while.
+  - B42 Multiplayer compatible now. I think. From my limited testing. Basically you're my guinea pigs, if something breaks, please report it with logs on discord lmao.
+- Fixes:
+  - I think I fixed something along the way? I don't know.
+
+## v.10.2.1 
 ###### 21 Mar 2026
 
 - Fixes:
