@@ -1,3 +1,10 @@
+## v.11.0.3
+###### 13 May 2026
+
+- Fixes:
+  - Fixed error when ripping clothes.
+  - Fixed moodle error when waking up in SP.
+
 ## v.11.0.2
 ###### 13 May 2026
 

@@ -1,7 +1,3 @@
-local ETW_CommonLogicChecks
-local ETWCombinedTraitChecks
-local ETW_ExportedFunctions
-
 ---@type ETW_CommonFunctions
 local ETW_CommonFunctions = require("ETW_CommonFunctions")
 
@@ -17,9 +13,13 @@ then
 	return
 end
 
-ETW_CommonLogicChecks = require("ETW_CommonLogicChecks")
-ETW_CombinedTraitChecks = require("ETW_CombinedTraitChecks")
-ETW_ExportedFunctions = require("ETW_ExportedFunctions")
+local ETW_CommonLogicChecks = require("ETW_CommonLogicChecks")
+local ETW_CombinedTraitChecks = require("ETW_CombinedTraitChecks")
+local ETW_ExportedFunctions = require("ETW_ExportedFunctions")
+
+local function logETW(...)
+	return ETW_CommonFunctions.log(..., FILENAME)
+end
 
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld
