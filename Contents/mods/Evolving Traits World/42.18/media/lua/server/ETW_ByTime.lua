@@ -197,19 +197,6 @@ local function sleepSystem()
 		end
 		if not player:isAsleep() and sleepModData.CurrentlySleeping == true then
 			if gameMode == ETW_CommonFunctions.GameMode.SP then
-				ETW_Moodles.sleepHealthMoodleUpdate(
-					player,
-					{ hoursAwayFromPreferredHour = hoursAwayFromPreferredHour, hide = false }
-				)
-			elseif gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
-				sendServerCommand(
-					player,
-					"ETW",
-					"sleepHealthMoodleUpdate",
-					{ hoursAwayFromPreferredHour = hoursAwayFromPreferredHour, hide = false }
-				)
-			end
-			if gameMode == ETW_CommonFunctions.GameMode.SP then
 				ETW_Moodles.sleepHealthMoodleUpdate(player, { hoursAwayFromPreferredHour = 0, hide = true })
 			elseif gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
 				sendServerCommand(

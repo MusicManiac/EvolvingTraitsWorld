@@ -1,6 +1,7 @@
 [url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
 
-v.11.0.2
+v.11.0.3
 
 Fixes:
-	- Fixed errors in SP when killing zombies with fog/rain present.
+	- Fixed error when ripping clothes.
+	- Fixed moodle error when waking up in SP.
