@@ -37,6 +37,17 @@ MF.createMoodle("SleepHealthMoodle")
 
 local bloodlustMeterCapacity = 72
 
+---Checks whether MoodleFramework has initialized the moodle modData entry yet.
+---@param player IsoPlayer
+---@param moodleName string
+local function hasMoodleModData(player, moodleName)
+	if not player then
+		return false
+	end
+	local modData = player:getModData()
+	return modData.Moodles ~= nil and modData.Moodles[moodleName] ~= nil
+end
+
 ---@class bloodlustMoodleArgs
 ---@field hide boolean
 
@@ -46,6 +57,9 @@ local bloodlustMeterCapacity = 72
 function ETW_Moodles.bloodlustMoodleUpdate(player, args)
 	player = player or getPlayer()
 	if SBvars.BloodlustMoodle == true then
+		if not hasMoodleModData(player, "BloodlustMoodle") then
+			return
+		end
 		local moodle = MF.getMoodle("BloodlustMoodle")
 		local modData = ETW_CommonFunctions.getETWModData(player)
 		if not modData then
@@ -90,6 +104,9 @@ end
 function ETW_Moodles.sleepHealthMoodleUpdate(player, args)
 	player = player or getPlayer()
 	if SBvars.SleepMoodle == true then
+		if not hasMoodleModData(player, "SleepHealthMoodle") then
+			return
+		end
 		modOptions = PZAPI.ModOptions:getOptions("ETWModOptions")
 		local moodle = MF.getMoodle("SleepHealthMoodle")
 		moodle:setThresholds(1.5, 3, 4.5, 5.999, 6.001, 7.5, 9, 10.5)
