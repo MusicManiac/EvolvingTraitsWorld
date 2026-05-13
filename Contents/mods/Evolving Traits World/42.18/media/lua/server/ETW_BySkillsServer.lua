@@ -74,6 +74,22 @@ end
 ---@param gainingTrait boolean
 ---@param onApply? fun(ctx: table<string, any>)
 local function applyTraitChange(ctx, trait, positiveTrait, gainingTrait, onApply)
+	if gainingTrait and ctx.player:hasTrait(trait) then
+		logETW(
+			"ETW Logger | applyTraitChange(): skipping gain for "
+				.. trait:toString()
+				.. " because player already has the trait"
+		)
+		return
+	end
+	if not gainingTrait and not ctx.player:hasTrait(trait) then
+		logETW(
+			"ETW Logger | applyTraitChange(): skipping removal for "
+				.. trait:toString()
+				.. " because player does not have the trait"
+		)
+		return
+	end
 	if SBvars.DelayedTraitsSystem and not CommonFunctions.checkIfTraitIsInDelayedTraitsTable(ctx.player, trait) then
 		CommonFunctions.addTraitToDelayTable({
 			modData = ctx.modData,
