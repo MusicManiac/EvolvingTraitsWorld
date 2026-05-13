@@ -1,5 +1,21 @@
-## v.11.0.0 - The "Real Authority" Update
+## v.11.0.1
 ###### 13 May 2026
+
+- Fixes:
+  - Fixed (on KillCount side, thanks to Tchernobill for fast fix) weapon category kill counters not persisting after reconnecting to server.
+  - Fixed ETW character page throwing errors in multiplayer when KillCount weapon-category data has not synced yet.
+  - Fixed ETW moodle updates waiting for Moodle Framework initialization before trying to update client moodles in multiplayer.
+  - Fixed ETW multiplayer modData refresh commands erroring when the local player object or getModData binding is not ready yet.
+  - Fixed ETW shared modData getter crashing during early multiplayer initialization.
+  - Fixed missing ETW character tab help text.
+  - Fixed ETW client notification and trait sound handlers rejecting invalid player values during respawn and other multiplayer timing edge cases.
+  - Fixed traits already present on the character being incorrectly added to Delayed Traits, and traits not present being processed for removal.
+  - Fixed ETW multiplayer character death not clearing ETW modData on the server before the next character is created.
+  - Fixed errors when trying to smoke.
+  - Separate entry as a thanks to YoungWigga for greatly speeding up the process of fixes.
+
+## v.11.0.0 - The "Real Authority" Update
+###### 12 May 2026
 
 - General:
   - Moved 95% of logic to server, now server is the authority on granting perks and tracking player progress. This was caused mostly by Indie Stone moving A LOT of logic to server-side in B42. This makes it very hard to cheat progress values as game doesn't just blindly trust the client anymore. This required huge rewrite but this should be the last one for a while.
