@@ -26,7 +26,7 @@ local logETW = ETW_CommonFunctions.log
 function Commands.ISInventoryTransferActionPerformed(player, args)
 	logETW(
 		"ETW Logger | ISInventoryTransferActionPerformed(): received from player "
-			.. player:getName()
+			.. player:getUsername()
 			.. ": itemsMoved="
 			.. tostring(args.itemsMoved)
 			.. ", weightMoved="
@@ -45,7 +45,7 @@ end
 ---@param player IsoPlayer
 ---@param args {}
 function Commands.ISChopTreeActionPerformed(player, args)
-	logETW("ETW Logger | ISChopTreeActionPerformed(): received from player " .. player:getName())
+	logETW("ETW Logger | ISChopTreeActionPerformed(): received from player " .. player:getUsername())
 	---@type EvolvingTraitsWorldModData
 	local modData = ETW_CommonFunctions.getETWModData(player)
 	modData.TreesChopped = modData.TreesChopped + 1

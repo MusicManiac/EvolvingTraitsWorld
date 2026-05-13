@@ -10,16 +10,17 @@ local SBvars = SandboxVars.EvolvingTraitsWorld
 local logETW = ETW_CommonFunctions.log
 
 local FILENAME = "ETW_ExportedFunctions.lua"
-ETW_CommonFunctions.gameModeSafeguard(FILENAME, { ETW_CommonFunctions.GameMode.SP, ETW_CommonFunctions.GameMode.MP_CLIENT, ETW_CommonFunctions.GameMode.MP_SERVER })
+ETW_CommonFunctions.gameModeSafeguard(
+	FILENAME,
+	{ ETW_CommonFunctions.GameMode.SP, ETW_CommonFunctions.GameMode.MP_CLIENT, ETW_CommonFunctions.GameMode.MP_SERVER }
+)
 
 ---Function that adds to ETW smoking addiction as if character smoked cigarette/cigare/etc
 ---For example, if you use custom function for smoking in your mod and you want it to count for smoking addiction, you can use this.
 ---@param character IsoGameCharacter
 function ETW_ExportedFunctions.smokingAddictionMath(character)
 	if not isServer() then
-		if detailedDebug() then
-			print("ETW Logger | RecipeCodeOnEat.consumeNicotine: detected smoking")
-		end
+		logETW("ETW Logger | RecipeCodeOnEat.consumeNicotine: detected smoking")
 		local modData = ETW_CommonFunctions.getETWModData(character)
 		local smokerModData = modData.SmokeSystem -- SmokingAddiction MinutesSinceLastSmoke
 		local timeSinceLastSmoke = character:getTimeSinceLastSmoke() * 60
@@ -39,7 +40,8 @@ function ETW_ExportedFunctions.smokingAddictionMath(character)
 		if SBvars.AffinitySystem and modData.StartingTraits[CharacterTrait.SMOKER:toString()] then
 			addictionGain = addictionGain * SBvars.AffinitySystemGainMultiplier
 		end
-		smokerModData.SmokingAddiction = math.min(SBvars.SmokerCounter * 2, smokerModData.SmokingAddiction + addictionGain)
+		smokerModData.SmokingAddiction =
+			math.min(SBvars.SmokerCounter * 2, smokerModData.SmokingAddiction + addictionGain)
 		logETW(
 			"ETW Logger | RecipeCodeOnEat.consumeNicotine: addictionGain: "
 				.. addictionGain
