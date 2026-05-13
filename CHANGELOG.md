@@ -1,3 +1,9 @@
+## v.11.0.2
+###### 13 May 2026
+
+- Fixes:
+  - Fixed errors in SP when killing zombies with fog/rain present.
+
 ## v.11.0.1
 ###### 13 May 2026
 

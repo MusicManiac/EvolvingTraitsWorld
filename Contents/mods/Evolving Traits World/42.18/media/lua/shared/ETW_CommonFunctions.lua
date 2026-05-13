@@ -158,16 +158,21 @@ function ETW_CommonFunctions.round(num, numDecimalPlaces)
 	return math.floor(num * mult + 0.5) / mult
 end
 
----Function that returns ArrayList of all players in case its called on Server, all ever loaded players in case it's called on MP Client, or local player list in case it's called on SP.
+---Function that returns ArrayList of all players in case its called on Server, all ever loaded players in case it's called on MP Client, or local player list in case it's called on SP. If player is passed as argument, returns list with only that player.
 ---Later can be looped over like:
 ---
 ---    for i = 0, playerList:size() - 1 do
 ---        local player = playerList:get(i)
 ---    end
+---@param player IsoPlayer|nil optional player to get list for
 ---@return ArrayList<IsoPlayer> ArrayList of all players in case its called on Server, all ever loaded players in case it's called on MP Client, or local player list in case it's called on SP.
-function ETW_CommonFunctions.playersList()
+function ETW_CommonFunctions.playersList(player)
 	local playerList = getOnlinePlayers()
-
+	if player then
+		playerList:clear()
+		playerList:add(player)
+		return playerList
+	end
 	if not playerList:isEmpty() then
 		return playerList
 	end
