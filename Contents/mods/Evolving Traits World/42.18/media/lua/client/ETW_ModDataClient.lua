@@ -68,6 +68,17 @@ local function delayedETWCommandAfterPlayerSpawned()
 	end
 end
 
+---Function responsible for requesting ETW modData clear on the server after player death in MP.
+---@param player IsoPlayer
+local function requestServerClearETWModData(player)
+	if not player then
+		logETW("ETW Logger | requestServerClearETWModData(): player not ready, skipping clear request")
+		return
+	end
+	logETW("ETW Logger | requestServerClearETWModData(): requesting ETW modData clear on server")
+	sendClientCommand(player, "ETW", "clearETWModData", {})
+end
+
 if gameMode == ETW_CommonFunctions.GameMode.SP then
 	Events.OnCreatePlayer.Remove(ETW_ModData.createETWModData)
 	Events.OnCreatePlayer.Add(ETW_ModData.createETWModData)
@@ -76,5 +87,7 @@ if gameMode == ETW_CommonFunctions.GameMode.SP then
 elseif gameMode == ETW_CommonFunctions.GameMode.MP_CLIENT then
 	Events.OnTick.Remove(delayedETWCommandAfterPlayerSpawned)
 	Events.OnTick.Add(delayedETWCommandAfterPlayerSpawned)
+	Events.OnPlayerDeath.Remove(requestServerClearETWModData)
+	Events.OnPlayerDeath.Add(requestServerClearETWModData)
 	Events.OnServerCommand.Add(Commands.OnServerCommand)
 end
