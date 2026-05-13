@@ -208,9 +208,26 @@ end
 
 ---Returns ETW mod data
 ---@param player IsoPlayer|IsoGameCharacter the player for whom to get mod data
----@return EvolvingTraitsWorldModData EvolvingTraitsWorldModData mod data for the player
+---@return EvolvingTraitsWorldModData|nil EvolvingTraitsWorldModData mod data for the player
 function ETW_CommonFunctions.getETWModData(player)
-	return player:getModData().EvolvingTraitsWorld
+	if not player or not player.getModData then
+		return nil
+	end
+	local ok, modData = pcall(function()
+		return player:getModData()
+	end)
+	if not ok or not modData then
+		return nil
+	end
+	if not modData.EvolvingTraitsWorld then
+		local okRequire, ETW_ModData = pcall(require, "ETW_ModData")
+		if okRequire and ETW_ModData and ETW_ModData.createETWModData and player.getPlayerNum then
+			pcall(function()
+				ETW_ModData.createETWModData(player:getPlayerNum(), player)
+			end)
+		end
+	end
+	return modData.EvolvingTraitsWorld
 end
 
 ---Function responsible printing whole Delayed Traits table into console
