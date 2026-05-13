@@ -2664,14 +2664,15 @@ function ISETWProgressUI:render()
 	local blacksmith = player:getPerkLevel(Perks.Blacksmith)
 	local knapping = player:getPerkLevel(Perks.FlintKnapping)
 
-	local killCountModData = player:getModData().KillCount.WeaponCategory
-	local axeKills = killCountModData["Axe"].count
-	local longBluntKills = killCountModData["Blunt"].count
-	local shortBluntKills = killCountModData["SmallBlunt"].count
-	local longBladeKills = killCountModData["LongBlade"].count
-	local shortBladeKills = killCountModData["SmallBlade"].count
-	local spearKills = killCountModData["Spear"].count
-	local firearmKills = killCountModData["Firearm"].count
+	local mdRoot = player:getModData()
+	local killCountModData = mdRoot.KillCount and mdRoot.KillCount.WeaponCategory
+	local axeKills = killCountModData and (killCountModData["Axe"] or {}).count or 0
+	local longBluntKills = killCountModData and (killCountModData["Blunt"] or {}).count or 0
+	local shortBluntKills = killCountModData and (killCountModData["SmallBlunt"] or {}).count or 0
+	local longBladeKills = killCountModData and (killCountModData["LongBlade"] or {}).count or 0
+	local shortBladeKills = killCountModData and (killCountModData["SmallBlade"] or {}).count or 0
+	local spearKills = killCountModData and (killCountModData["Spear"] or {}).count or 0
+	local firearmKills = killCountModData and (killCountModData["Firearm"] or {}).count or 0
 
 	updateBar(
 		self.barImmunitySystem,
@@ -2825,10 +2826,10 @@ function ISETWProgressUI:render()
 	end
 	if self.barBravery ~= nil then
 		local totalKills = player:getZombieKills()
-		local fireKills = killCountModData["Fire"].count
-		local firearmsKills = killCountModData["Firearm"].count
-		local vehiclesKills = killCountModData["Vehicles"].count
-		local explosivesKills = killCountModData["Explosives"].count
+		local fireKills = killCountModData and (killCountModData["Fire"] or {}).count or 0
+		local firearmsKills = killCountModData and (killCountModData["Firearm"] or {}).count or 0
+		local vehiclesKills = killCountModData and (killCountModData["Vehicles"] or {}).count or 0
+		local explosivesKills = killCountModData and (killCountModData["Explosives"] or {}).count or 0
 		local meleeKills = totalKills - firearmsKills - fireKills - vehiclesKills - explosivesKills
 		self.barBravery:setValue(percentile(0, SBvars.BraverySystemKills, totalKills + meleeKills))
 		self.barBravery:setTooltip(totalKills + meleeKills)
