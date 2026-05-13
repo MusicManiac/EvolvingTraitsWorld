@@ -140,7 +140,7 @@ function ETW_Moodles.OnServerCommand(module, command, args)
 		for k, v in pairs(args) do
 			argStr = argStr .. " " .. k .. "=" .. tostring(v)
 		end
-		ETW_Moodles[command](player, args)
+		ETW_Moodles[command](getPlayer(), args)
 	end
 end
 

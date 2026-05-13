@@ -64,7 +64,7 @@ Commands.OnServerCommand = function(module, command, args)
 			argStr = argStr .. " " .. k .. "=" .. tostring(v)
 		end
 		print("ETW Logger | Commands.OnServerCommand received command " .. command .. " with args " .. argStr)
-		Commands[command](player, args)
+		Commands[command](getPlayer(), args)
 	end
 end
 
