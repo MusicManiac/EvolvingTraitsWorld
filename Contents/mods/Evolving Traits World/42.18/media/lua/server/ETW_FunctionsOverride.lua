@@ -41,7 +41,7 @@ function RecipeCodeOnCreate.ripClothing(data, character)
 		and #modData.UniqueClothingRipped < SBvars.SewerUniqueClothesRipped
 		and ETW_CommonLogicChecks.SewerShouldExecute(character)
 	then
-		logETW("ETW Logger | RecipeCodeOnCreate.ripClothing() Executing for player " .. character:getName())
+		logETW("ETW Logger | RecipeCodeOnCreate.ripClothing() Executing for player " .. character:getUsername())
 		local items = data:getAllConsumedItems()
 		local item = items and items:get(0)
 		if item then
