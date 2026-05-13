@@ -40,7 +40,7 @@ local function rainTraits(player, isKill)
 	if rainIntensity == 0 then
 		return
 	end
-	local playersList = player and { player } or ETW_CommonFunctions.playersList()
+	local playersList = ETW_CommonFunctions.playersList(player)
 	for i = 0, playersList:size() - 1 do
 		player = playersList:get(i)
 		if player:isOutside() and player:getVehicle() == nil then
@@ -136,7 +136,7 @@ local function fogTraits(player, isKill)
 	if fogIntensity == 0 then
 		return
 	end
-	local playersList = player and { player } or ETW_CommonFunctions.playersList()
+	local playersList = ETW_CommonFunctions.playersList(player)
 	for i = 0, playersList:size() - 1 do
 		player = playersList:get(i)
 		if player:isOutside() and player:getVehicle() == nil then
