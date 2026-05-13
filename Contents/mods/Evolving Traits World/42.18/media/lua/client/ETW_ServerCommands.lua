@@ -16,6 +16,19 @@ end
 
 local Commands = {}
 
+---Returns the local player when the passed player is invalid or not ready yet.
+---@param player unknown
+---@return IsoPlayer|nil
+local function resolveLocalPlayer(player)
+	if not player or type(player) ~= "userdata" or not player.getModData then
+		player = getPlayer()
+	end
+	if not player or type(player) ~= "userdata" then
+		return nil
+	end
+	return player
+end
+
 ---@class DisplayTraitNotificationArgs
 ---@field traitRegistryId string the trait registry id of the trait
 ---@field arrowIsUp boolean whether the arrow in notification should be up or down, True for up, False for down
@@ -24,7 +37,11 @@ local Commands = {}
 ---Displays trait gain/loss notification on client side. Server sends text, color, and arrow direction information to client, and client displays it in a notification.
 ---@param args DisplayTraitNotificationArgs
 Commands.displayTraitNotification = function(player, args)
-	player = player or getPlayer()
+	player = resolveLocalPlayer(player)
+	if not player then
+		logETW("ETW Logger | Commands.displayTraitNotification(): player not ready, skipping")
+		return
+	end
 	logETW("ETW Logger | Commands.displayTraitNotification received")
 	ETW_CommonFunctions.displayTraitNotification(player, args.traitRegistryId, args.arrowIsUp, args.color)
 end
@@ -38,7 +55,11 @@ end
 ---Displays trait gain/loss notification on client side. Server sends text, color, and arrow direction information to client, and client displays it in a notification.
 ---@param args DisplayDelayedTraitNotificationArgs
 Commands.displayDelayedTraitNotification = function(player, args)
-	player = player or getPlayer()
+	player = resolveLocalPlayer(player)
+	if not player then
+		logETW("ETW Logger | Commands.displayDelayedTraitNotification(): player not ready, skipping")
+		return
+	end
 	logETW("ETW Logger | Commands.displayDelayedTraitNotification received")
 	ETW_CommonFunctions.displayDelayedTraitNotification(
 		player,
@@ -51,7 +72,11 @@ end
 
 ---Plays a trait sound if enabled in settings
 Commands.traitSound = function(player, args)
-	player = player or getPlayer()
+	player = resolveLocalPlayer(player)
+	if not player then
+		logETW("ETW Logger | Commands.traitSound(): player not ready, skipping")
+		return
+	end
 	logETW("ETW Logger | Commands.traitSound received")
 	ETW_CommonFunctions.traitSound(player)
 end
