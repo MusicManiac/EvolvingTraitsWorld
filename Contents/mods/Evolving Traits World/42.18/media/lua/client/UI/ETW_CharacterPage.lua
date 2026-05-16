@@ -339,6 +339,2289 @@ function ISETWProgressUI:createChildren()
 			firearmKills = killCountModData["Firearm"].count or 0
 		end
 
+		-- Example extraction: one Progress-tab builder can own its own bar block.
+		local function buildPermanentProgressSection()
+			if ETW_CommonLogicChecks.ImmunitySystemShouldExecute(player) then
+				self.labelProneToIllness = ISLabel:new(
+					barMidPosition - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					"- " .. getCachedTraitUIName(CharacterTrait.PRONE_TO_ILLNESS),
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelProneToIllness:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self:addChild(self.labelProneToIllness)
+
+				self.labelResilient = ISLabel:new(
+					barEndPosition,
+					y,
+					FONT_HGT_SMALL,
+					"+ " .. getCachedTraitUIName(CharacterTrait.RESILIENT),
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					false
+				)
+				self.labelResilient:setTooltip(getText("UI_ETW_GainTooltip"))
+				self:addChild(self.labelResilient)
+
+				y = y + FONT_HGT_SMALL
+
+				self.labelImmunitySystem = ISLabel:new(
+					barStartPosition - lineStartPosition,
+					y,
+					FONT_HGT_SMALL,
+					getText("Sandbox_ETW_ImmunitySystem"),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					false
+				)
+				self.labelImmunitySystem:setTooltip(getText("Sandbox_ETW_ImmunitySystemCounter_tooltip"))
+				self:addChild(self.labelImmunitySystem)
+
+				self.barImmunitySystem = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
+				self.barImmunitySystem:setGradientTexture(redYellowGreenGradient)
+				self.barImmunitySystem:setHighlightRadius(highlightRadius)
+				self.barImmunitySystem:setDoKnob(false)
+				self:addChild(self.barImmunitySystem)
+
+				y = y + FONT_HGT_SMALL
+			end
+
+			if ETW_CommonLogicChecks.FoodSicknessSystemShouldExecute(player) then
+				self.labelWeakStomach = ISLabel:new(
+					barMidPosition,
+					y,
+					FONT_HGT_SMALL,
+					"- " .. getCachedTraitUIName(CharacterTrait.WEAK_STOMACH),
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelWeakStomach.center = true
+				self.labelWeakStomach:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self:addChild(self.labelWeakStomach)
+
+				self.labelIronGut = ISLabel:new(
+					barEndPosition,
+					y,
+					FONT_HGT_SMALL,
+					"+ " .. getCachedTraitUIName(CharacterTrait.IRON_GUT),
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					false
+				)
+				self.labelIronGut:setTooltip(getText("UI_ETW_GainTooltip"))
+				self:addChild(self.labelIronGut)
+
+				y = y + FONT_HGT_SMALL
+
+				self.labelSicknessSystem = ISLabel:new(
+					barStartPosition - lineStartPosition,
+					y,
+					FONT_HGT_SMALL,
+					getText("Sandbox_ETW_FoodSicknessSystem"),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					false
+				)
+				self.labelSicknessSystem:setTooltip(getText("Sandbox_ETW_FoodSicknessSystemCounter_tooltip"))
+				self:addChild(self.labelSicknessSystem)
+
+				self.barSicknessSystem = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
+				self.barSicknessSystem:setGradientTexture(redYellowGreenGradient)
+				self.barSicknessSystem:setHighlightRadius(highlightRadius)
+				self.barSicknessSystem:setDoKnob(false)
+				self:addChild(self.barSicknessSystem)
+
+				y = y + FONT_HGT_SMALL
+			end
+
+			if ETW_CommonLogicChecks.PainToleranceShouldExecute(player) then
+				self.labelPainTolerance = ISLabel:new(
+					barEndPosition,
+					y,
+					FONT_HGT_SMALL,
+					"+ " .. getCachedTraitUIName(ETWTraitsRegistry.PAIN_TOLERANCE),
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					false
+				)
+				self.labelPainTolerance:setTooltip(getText("UI_ETW_GainTooltip"))
+				self:addChild(self.labelPainTolerance)
+
+				y = y + FONT_HGT_SMALL
+
+				self.labelPainToleranceBarName = ISLabel:new(
+					barStartPosition - lineStartPosition,
+					y,
+					FONT_HGT_SMALL,
+					getCachedTraitUIName(ETWTraitsRegistry.PAIN_TOLERANCE),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					false
+				)
+				self.labelPainToleranceBarName:setTooltip(getText("Sandbox_ETW_PainToleranceCounter_tooltip"))
+				self:addChild(self.labelPainToleranceBarName)
+
+				self.barPainTolerance = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
+				self.barPainTolerance:setGradientTexture(redYellowGreenGradient)
+				self.barPainTolerance:setHighlightRadius(highlightRadius)
+				self.barPainTolerance:setDoKnob(false)
+				self:addChild(self.barPainTolerance)
+
+				y = y + FONT_HGT_SMALL
+			end
+
+			if ETW_CommonLogicChecks.HearingSystemShouldExecute(player) then
+				str = "- " .. getCachedTraitUIName(CharacterTrait.HARD_OF_HEARING)
+				self.labelHardOfHearingLose = ISLabel:new(
+					barMidPosition - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelHardOfHearingLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self:addChild(self.labelHardOfHearingLose)
+
+				self.labelKeenHearingGain = ISLabel:new(
+					barEndPosition,
+					y,
+					FONT_HGT_SMALL,
+					"+ " .. getCachedTraitUIName(CharacterTrait.KEEN_HEARING),
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					false
+				)
+				self.labelKeenHearingGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self:addChild(self.labelKeenHearingGain)
+
+				y = y + FONT_HGT_SMALL
+
+				self.labelHearingSystemBarName = ISLabel:new(
+					barStartPosition - lineStartPosition,
+					y,
+					FONT_HGT_SMALL,
+					getText("Sandbox_ETW_HearingSystem"),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					false
+				)
+				self.labelHearingSystemBarName:setTooltip(getText("Sandbox_ETW_HearingSystemSkill_tooltip"))
+				self:addChild(self.labelHearingSystemBarName)
+
+				self.barHearingSystem = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
+				self.barHearingSystem:setGradientTexture(redYellowGreenGradient)
+				self.barHearingSystem:setHighlightRadius(highlightRadius)
+				self.barHearingSystem:setDoKnob(false)
+				self:addChild(self.barHearingSystem)
+
+				y = y + FONT_HGT_SMALL
+			end
+
+			if ETW_CommonLogicChecks.LearnerSystemShouldExecute(player) then
+				str = "- " .. getCachedTraitUIName(CharacterTrait.SLOW_LEARNER)
+				self.labelSlowLearnerLose = ISLabel:new(
+					barMidPosition - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelSlowLearnerLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self:addChild(self.labelSlowLearnerLose)
+
+				self.labelFastLearnerGain = ISLabel:new(
+					barEndPosition,
+					y,
+					FONT_HGT_SMALL,
+					"+ " .. getCachedTraitUIName(CharacterTrait.FAST_LEARNER),
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					false
+				)
+				self.labelFastLearnerGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self:addChild(self.labelFastLearnerGain)
+
+				y = y + FONT_HGT_SMALL
+
+				self.labelLearnerSystemBarName = ISLabel:new(
+					barStartPosition - lineStartPosition,
+					y,
+					FONT_HGT_SMALL,
+					getText("Sandbox_ETW_LearnerSystem"),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					false
+				)
+				self.labelLearnerSystemBarName:setTooltip(getText("Sandbox_ETW_LearnerSystemSkill_tooltip"))
+				self:addChild(self.labelLearnerSystemBarName)
+
+				self.barLearnerSystem = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
+				self.barLearnerSystem:setGradientTexture(redYellowGreenGradient)
+				self.barLearnerSystem:setHighlightRadius(highlightRadius)
+				self.barLearnerSystem:setDoKnob(false)
+				self:addChild(self.barLearnerSystem)
+
+				y = y + FONT_HGT_SMALL
+			end
+
+			if ETW_CommonLogicChecks.InventoryTransferSystemShouldExecute(player) then
+				y = y + FONT_HGT_SMALL / 2
+
+				local weightTransferred = (
+					modData
+					and modData.TransferSystem
+					and modData.TransferSystem.WeightTransferred
+				) or 0
+				local targetWeight = SBvars.InventoryTransferSystemWeight
+				if weightTransferred < targetWeight then
+					str = "- " .. getCachedTraitUIName(CharacterTrait.ALL_THUMBS)
+					local labelX = barOneThirdPosition - strLen(textManager, str) / 2
+					self.labelAllThumbsWeightLose = ISLabel:new(
+						labelX,
+						y,
+						FONT_HGT_SMALL,
+						str,
+						self.DimmedTextColor.r,
+						self.DimmedTextColor.g,
+						self.DimmedTextColor.b,
+						self.DimmedTextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelAllThumbsWeightLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+					self:addChild(self.labelAllThumbsWeightLose)
+
+					str = "- " .. getCachedTraitUIName(CharacterTrait.DISORGANIZED)
+					labelX = barTwoThirdPosition - strLen(textManager, str) / 2
+					self.labelDisorganizedWeightLose = ISLabel:new(
+						labelX,
+						y,
+						FONT_HGT_SMALL,
+						str,
+						self.DimmedTextColor.r,
+						self.DimmedTextColor.g,
+						self.DimmedTextColor.b,
+						self.DimmedTextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelDisorganizedWeightLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+					self:addChild(self.labelDisorganizedWeightLose)
+
+					y = y + FONT_HGT_SMALL
+
+					self.labelInventoryTransferSystemWeightBarName = ISLabel:new(
+						barStartPosition - lineStartPosition,
+						y,
+						FONT_HGT_SMALL,
+						getText("Sandbox_ETW_InventoryTransferSystemWeight"),
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						false
+					)
+					self.labelInventoryTransferSystemWeightBarName:setTooltip(
+						getText("Sandbox_ETW_InventoryTransferSystemWeight_tooltip")
+					)
+					self:addChild(self.labelInventoryTransferSystemWeightBarName)
+
+					self.barInventoryTransferSystemWeight =
+						ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
+					self.barInventoryTransferSystemWeight:setGradientTexture(redYellowGreenGradient)
+					self.barInventoryTransferSystemWeight:setHighlightRadius(highlightRadius)
+					self.barInventoryTransferSystemWeight:setDoKnob(false)
+					self:addChild(self.barInventoryTransferSystemWeight)
+
+					y = y + FONT_HGT_SMALL
+
+					str = "+ " .. getCachedTraitUIName(CharacterTrait.DEXTROUS)
+					labelX = barTwoThirdPosition - strLen(textManager, str) / 2
+					self.labelDextrousWeightGain = ISLabel:new(
+						labelX,
+						y,
+						FONT_HGT_SMALL,
+						str,
+						self.DimmedTextColor.r,
+						self.DimmedTextColor.g,
+						self.DimmedTextColor.b,
+						self.DimmedTextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelDextrousWeightGain:setTooltip(getText("UI_ETW_GainTooltip"))
+					self:addChild(self.labelDextrousWeightGain)
+
+					str = "+ " .. getCachedTraitUIName(CharacterTrait.ORGANIZED)
+					labelX = barEndPosition
+
+					self.labelOrganizedWeightGain = ISLabel:new(
+						labelX,
+						y,
+						FONT_HGT_SMALL,
+						str,
+						self.DimmedTextColor.r,
+						self.DimmedTextColor.g,
+						self.DimmedTextColor.b,
+						self.DimmedTextColor.a,
+						UIFont.Small,
+						false
+					)
+					self.labelOrganizedWeightGain:setTooltip(getText("UI_ETW_GainTooltip"))
+					self:addChild(self.labelOrganizedWeightGain)
+					y = y + FONT_HGT_SMALL
+				end
+
+				local itemsTransferred = (
+					modData
+					and modData.TransferSystem
+					and modData.TransferSystem.ItemsTransferred
+				) or 0
+				local targetItems = SBvars.InventoryTransferSystemItems
+				if itemsTransferred < targetItems then
+					str = "- " .. getCachedTraitUIName(CharacterTrait.DISORGANIZED)
+					local labelX = barOneThirdPosition - strLen(textManager, str) / 2
+					self.labelDisorganizedItemsLose = ISLabel:new(
+						labelX,
+						y,
+						FONT_HGT_SMALL,
+						str,
+						self.DimmedTextColor.r,
+						self.DimmedTextColor.g,
+						self.DimmedTextColor.b,
+						self.DimmedTextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelDisorganizedItemsLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+					self:addChild(self.labelDisorganizedItemsLose)
+
+					str = "- " .. getCachedTraitUIName(CharacterTrait.ALL_THUMBS)
+					labelX = barTwoThirdPosition - strLen(textManager, str) / 2
+					self.labelAllThumbsItemsLose = ISLabel:new(
+						labelX,
+						y,
+						FONT_HGT_SMALL,
+						str,
+						self.DimmedTextColor.r,
+						self.DimmedTextColor.g,
+						self.DimmedTextColor.b,
+						self.DimmedTextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelAllThumbsItemsLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+					self:addChild(self.labelAllThumbsItemsLose)
+
+					y = y + FONT_HGT_SMALL
+
+					self.labelInventoryTransferSystemItemsBarName = ISLabel:new(
+						barStartPosition - lineStartPosition,
+						y,
+						FONT_HGT_SMALL,
+						getText("Sandbox_ETW_InventoryTransferSystemItems"),
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						false
+					)
+					self.labelInventoryTransferSystemItemsBarName:setTooltip(
+						getText("Sandbox_ETW_InventoryTransferSystemItems_tooltip")
+					)
+					self:addChild(self.labelInventoryTransferSystemItemsBarName)
+
+					self.barInventoryTransferSystemItems =
+						ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
+					self.barInventoryTransferSystemItems:setGradientTexture(redYellowGreenGradient)
+					self.barInventoryTransferSystemItems:setHighlightRadius(highlightRadius)
+					self.barInventoryTransferSystemItems:setDoKnob(false)
+					self:addChild(self.barInventoryTransferSystemItems)
+
+					y = y + FONT_HGT_SMALL
+
+					str = "+ " .. getCachedTraitUIName(CharacterTrait.ORGANIZED)
+					labelX = barTwoThirdPosition - strLen(textManager, str) / 2
+					self.labelOrganizedItemsGain = ISLabel:new(
+						labelX,
+						y,
+						FONT_HGT_SMALL,
+						str,
+						self.DimmedTextColor.r,
+						self.DimmedTextColor.g,
+						self.DimmedTextColor.b,
+						self.DimmedTextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelOrganizedItemsGain:setTooltip(getText("UI_ETW_GainTooltip"))
+					self:addChild(self.labelOrganizedItemsGain)
+
+					str = "+ " .. getCachedTraitUIName(CharacterTrait.DEXTROUS)
+					labelX = barEndPosition
+					self.labelDextrousItemsGain = ISLabel:new(
+						labelX,
+						y,
+						FONT_HGT_SMALL,
+						str,
+						self.DimmedTextColor.r,
+						self.DimmedTextColor.g,
+						self.DimmedTextColor.b,
+						self.DimmedTextColor.a,
+						UIFont.Small,
+						false
+					)
+					self.labelDextrousItemsGain:setTooltip(getText("UI_ETW_GainTooltip"))
+					self:addChild(self.labelDextrousItemsGain)
+					y = y + FONT_HGT_SMALL
+				end
+
+				y = y + FONT_HGT_SMALL / 2
+			end
+
+			if ETW_CommonLogicChecks.BraverySystemShouldExecute(player) then
+				str = "- " .. getCachedTraitUIName(CharacterTrait.COWARDLY)
+				self.labelCowardlyLose = ISLabel:new(
+					barStartPosition + (barLength / 6) - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelCowardlyLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self:addChild(self.labelCowardlyLose)
+
+				str = "- " .. getCachedTraitUIName(CharacterTrait.PACIFIST)
+				self.labelPacifistLose = ISLabel:new(
+					barStartPosition + (barLength / 6) * 3 - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelPacifistLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self:addChild(self.labelPacifistLose)
+
+				str = "+ " .. getCachedTraitUIName(CharacterTrait.BRAVE)
+				self.labelBraveryGain = ISLabel:new(
+					barStartPosition + (barLength / 6) * 5 - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelBraveryGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self:addChild(self.labelBraveryGain)
+
+				y = y + FONT_HGT_SMALL
+
+				self.labelBraveryBarName = ISLabel:new(
+					barStartPosition - lineStartPosition,
+					y,
+					FONT_HGT_SMALL,
+					getText("Sandbox_ETW_BraverySystem"),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					false
+				)
+				self.labelBraveryBarName:setTooltip(getText("Sandbox_ETW_BraverySystemKills_tooltip"))
+				self:addChild(self.labelBraveryBarName)
+
+				self.barBravery = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
+				self.barBravery:setGradientTexture(redYellowGreenGradient)
+				self.barBravery:setValue(1)
+				self.barBravery:setHighlightRadius(highlightRadius)
+				self.barBravery:setDoKnob(false)
+				self:addChild(self.barBravery)
+
+				y = y + FONT_HGT_SMALL
+
+				str = "- " .. getCachedTraitUIName(CharacterTrait.HEMOPHOBIC)
+				self.labelHemophobicLose = ISLabel:new(
+					barStartPosition + (barLength / 6) * 2 - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelHemophobicLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self:addChild(self.labelHemophobicLose)
+
+				str = "+ " .. getCachedTraitUIName(CharacterTrait.ADRENALINE_JUNKIE)
+				self.labelAdrenalineJunkieGain = ISLabel:new(
+					barStartPosition + (barLength / 6) * 4 - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelAdrenalineJunkieGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self:addChild(self.labelAdrenalineJunkieGain)
+
+				self.labelDesensitizedGain = ISLabel:new(
+					barEndPosition,
+					y,
+					FONT_HGT_SMALL,
+					"+ " .. getCachedTraitUIName(CharacterTrait.DESENSITIZED),
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					false
+				)
+				self.labelDesensitizedGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self:addChild(self.labelDesensitizedGain)
+
+				y = y + FONT_HGT_SMALL
+			end
+
+			y = y + FONT_HGT_SMALL / 2
+
+			if
+				ETW_CommonLogicChecks.EagleEyedShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, CharacterTrait.EAGLE_EYED)
+			then
+				arrangeColumnsInTable()
+				self.labelEagleEyedProgress = ISLabel:new(
+					x,
+					y,
+					FONT_HGT_SMALL,
+					"",
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelEagleEyedProgress:setTooltip(getText("Sandbox_ETW_EagleEyedKills"))
+				self:addChild(self.labelEagleEyedProgress)
+			end
+
+			if
+				ETW_CommonLogicChecks.HoarderShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.HOARDER)
+			then
+				arrangeColumnsInTable()
+				self.labelHoarderProgress = ISLabel:new(
+					x,
+					y,
+					FONT_HGT_SMALL,
+					"",
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelHoarderProgress:setTooltip(getText("Sandbox_ETW_HoarderSkill"))
+				self:addChild(self.labelHoarderProgress)
+			end
+
+			if
+				ETW_CommonLogicChecks.GymRatShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.GYM_RAT)
+			then
+				arrangeColumnsInTable()
+				self.labelGymRatProgress = ISLabel:new(
+					x,
+					y,
+					FONT_HGT_SMALL,
+					"",
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelGymRatProgress:setTooltip(getText("Sandbox_ETW_GymRatSkill_tooltip"))
+				self:addChild(self.labelGymRatProgress)
+			end
+
+			if
+				ETW_CommonLogicChecks.RunnerShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, CharacterTrait.JOGGER)
+			then
+				arrangeColumnsInTable()
+				self.labelRunnerProgress = ISLabel:new(
+					x,
+					y,
+					FONT_HGT_SMALL,
+					"",
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelRunnerProgress:setTooltip(getText("Sandbox_ETW_RunnerSkill"))
+				self:addChild(self.labelRunnerProgress)
+			end
+
+			if
+				ETW_CommonLogicChecks.LightStepShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.LIGHTSTEP)
+			then
+				arrangeColumnsInTable()
+				self.labelLightStepProgress = ISLabel:new(
+					x,
+					y,
+					FONT_HGT_SMALL,
+					"",
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelLightStepProgress:setTooltip(getText("Sandbox_ETW_LightStepSkill"))
+				self:addChild(self.labelLightStepProgress)
+			end
+
+			if
+				ETW_CommonLogicChecks.GymnastShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, CharacterTrait.GYMNAST)
+			then
+				arrangeColumnsInTable()
+				self.labelGymnastProgress = ISLabel:new(
+					x,
+					y,
+					FONT_HGT_SMALL,
+					getText(""),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelGymnastProgress:setTooltip(getText("Sandbox_ETW_GymnastSkill_tooltip"))
+				self:addChild(self.labelGymnastProgress)
+			end
+
+			if
+				ETW_CommonLogicChecks.ClumsyShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, CharacterTrait.CLUMSY)
+			then
+				arrangeColumnsInTable()
+				self.labelClumsyProgress = ISLabel:new(
+					x,
+					y,
+					FONT_HGT_SMALL,
+					getText(""),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelClumsyProgress:setTooltip(getText("Sandbox_ETW_ClumsySkill_tooltip"))
+				self:addChild(self.labelClumsyProgress)
+			end
+
+			if
+				ETW_CommonLogicChecks.GracefulShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, CharacterTrait.GRACEFUL)
+			then
+				arrangeColumnsInTable()
+				self.labelGracefulProgress = ISLabel:new(
+					x,
+					y,
+					FONT_HGT_SMALL,
+					getText(""),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelGracefulProgress:setTooltip(getText("Sandbox_ETW_GracefulSkill_tooltip"))
+				self:addChild(self.labelGracefulProgress)
+			end
+
+			if
+				ETW_CommonLogicChecks.BurglarShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, CharacterTrait.BURGLAR)
+			then
+				arrangeColumnsInTable()
+				self.labelBurglarProgress = ISLabel:new(
+					x,
+					y,
+					FONT_HGT_SMALL,
+					getText(""),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelBurglarProgress:setTooltip(getText("Sandbox_ETW_BurglarSkill_tooltip"))
+				self:addChild(self.labelBurglarProgress)
+			end
+
+			if
+				ETW_CommonLogicChecks.LowProfileShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.LOW_PROFILE)
+			then
+				arrangeColumnsInTable()
+				self.labelLowProfileProgress = ISLabel:new(
+					x,
+					y,
+					FONT_HGT_SMALL,
+					getText(""),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelLowProfileProgress:setTooltip(getText("Sandbox_ETW_LowProfileSkill"))
+				self:addChild(self.labelLowProfileProgress)
+			end
+
+			if
+				ETW_CommonLogicChecks.ConspicuousShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, CharacterTrait.CONSPICUOUS)
+			then
+				arrangeColumnsInTable()
+				self.labelConspicuousProgress = ISLabel:new(
+					x,
+					y,
+					FONT_HGT_SMALL,
+					getText(""),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelConspicuousProgress:setTooltip(getText("Sandbox_ETW_ConspicuousSkill"))
+				self:addChild(self.labelConspicuousProgress)
+			end
+
+			if
+				ETW_CommonLogicChecks.InconspicuousShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, CharacterTrait.INCONSPICUOUS)
+			then
+				arrangeColumnsInTable()
+				self.labelInconspicuousProgress = ISLabel:new(
+					x,
+					y,
+					FONT_HGT_SMALL,
+					getText(""),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelInconspicuousProgress:setTooltip(getText("Sandbox_ETW_InconspicuousSkill"))
+				self:addChild(self.labelInconspicuousProgress)
+			end
+
+			if
+				ETW_CommonLogicChecks.HunterShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, CharacterTrait.HUNTER)
+			then
+				local levels = sneaking + aiming + trapping + shortBlade
+				if sneaking < 2 or aiming < 2 or trapping < 2 or shortBlade < 2 or levels < SBvars.HunterSkill then
+					arrangeColumnsInTable()
+					self.labelHunterSkillProgress = ISLabel:new(
+						x,
+						y,
+						FONT_HGT_SMALL,
+						getText(""),
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelHunterSkillProgress:setTooltip(getText("Sandbox_ETW_HunterSkill_tooltip"))
+					self:addChild(self.labelHunterSkillProgress)
+				end
+				if (shortBladeKills + firearmKills) < SBvars.HunterKills then
+					arrangeColumnsInTable()
+					self.labelHunterKillsProgress = ISLabel:new(
+						x,
+						y,
+						FONT_HGT_SMALL,
+						getText(""),
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelHunterKillsProgress:setTooltip(
+						getText("Sandbox_ETW_HunterKills") .. " (" .. getText("Sandbox_ETW_HunterKills_tooltip") .. ")"
+					)
+					self:addChild(self.labelHunterKillsProgress)
+				end
+			end
+
+			if
+				ETW_CommonLogicChecks.BladeEnthusiastShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.BLADE_ENTHUSIAST)
+			then
+				if longBlade < SBvars.BladeEnthusiastSkill then
+					arrangeColumnsInTable()
+					self.labelBladeEnthusiastSkillProgress = ISLabel:new(
+						x,
+						y,
+						FONT_HGT_SMALL,
+						getText(""),
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelBladeEnthusiastSkillProgress:setTooltip(getText("Sandbox_ETW_BladeEnthusiastSkill"))
+					self:addChild(self.labelBladeEnthusiastSkillProgress)
+				end
+				if longBladeKills < SBvars.BladeEnthusiastKills then
+					arrangeColumnsInTable()
+					self.labelBladeEnthusiastKillsProgress = ISLabel:new(
+						x,
+						y,
+						FONT_HGT_SMALL,
+						getText(""),
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelBladeEnthusiastKillsProgress:setTooltip(getText("Sandbox_ETW_BladeEnthusiastKills"))
+					self:addChild(self.labelBladeEnthusiastKillsProgress)
+				end
+			end
+
+			if
+				ETW_CommonLogicChecks.BrawlerShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, CharacterTrait.BRAWLER)
+			then
+				if (axe + longBlunt) < SBvars.BrawlerSkill then
+					arrangeColumnsInTable()
+					self.labelBrawlerSkillProgress = ISLabel:new(
+						x,
+						y,
+						FONT_HGT_SMALL,
+						getText(""),
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelBrawlerSkillProgress:setTooltip(getText("Sandbox_ETW_BrawlerSkill_tooltip"))
+					self:addChild(self.labelBrawlerSkillProgress)
+				end
+
+				if (axeKills + longBluntKills) < SBvars.BrawlerKills then
+					arrangeColumnsInTable()
+					self.labelBrawlerKillsProgress = ISLabel:new(
+						x,
+						y,
+						FONT_HGT_SMALL,
+						getText(""),
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelBrawlerKillsProgress:setTooltip(
+						getText("Sandbox_ETW_BrawlerKills")
+							.. " ("
+							.. getText("Sandbox_ETW_BrawlerKills_tooltip")
+							.. ")"
+					)
+					self:addChild(self.labelBrawlerKillsProgress)
+				end
+			end
+
+			if
+				ETW_CommonLogicChecks.AxeThrowerShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.AXE_THROWER)
+			then
+				if axe < SBvars.AxeThrowerSkill then
+					arrangeColumnsInTable()
+					self.labelAxeThrowerSkillProgress = ISLabel:new(
+						x,
+						y,
+						FONT_HGT_SMALL,
+						getText(""),
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelAxeThrowerSkillProgress:setTooltip(getText("Sandbox_ETW_AxeThrowerSkill"))
+					self:addChild(self.labelAxeThrowerSkillProgress)
+				end
+				if axeKills < SBvars.AxeThrowerKills then
+					arrangeColumnsInTable()
+					self.labelAxeThrowerKillsProgress = ISLabel:new(
+						x,
+						y,
+						FONT_HGT_SMALL,
+						getText(""),
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelAxeThrowerKillsProgress:setTooltip(getText("Sandbox_ETW_AxeThrowerKills"))
+					self:addChild(self.labelAxeThrowerKillsProgress)
+				end
+			end
+
+			if
+				ETW_CommonLogicChecks.StickFighterShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.STICK_FIGHTER)
+			then
+				if shortBlunt < SBvars.StickFighterSkill then
+					arrangeColumnsInTable()
+					self.labelStickFighterSkillProgress = ISLabel:new(
+						x,
+						y,
+						FONT_HGT_SMALL,
+						getText(""),
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelStickFighterSkillProgress:setTooltip(getText("Sandbox_ETW_StickFighterSkill"))
+					self:addChild(self.labelStickFighterSkillProgress)
+				end
+				if shortBluntKills < SBvars.StickFighterKills then
+					arrangeColumnsInTable()
+					self.labelStickFighterKillsProgress = ISLabel:new(
+						x,
+						y,
+						FONT_HGT_SMALL,
+						getText(""),
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelStickFighterKillsProgress:setTooltip(getText("Sandbox_ETW_StickFighterKills"))
+					self:addChild(self.labelStickFighterKillsProgress)
+				end
+			end
+
+			if
+				ETW_CommonLogicChecks.KnifeFighterShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.KNIFE_FIGHTER)
+			then
+				if shortBlade < SBvars.KnifeFighterSkill then
+					arrangeColumnsInTable()
+					self.labelKnifeFighterSkillProgress = ISLabel:new(
+						x,
+						y,
+						FONT_HGT_SMALL,
+						getText(""),
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelKnifeFighterSkillProgress:setTooltip(getText("Sandbox_ETW_KnifeFighterSkill"))
+					self:addChild(self.labelKnifeFighterSkillProgress)
+				end
+				if shortBladeKills < SBvars.KnifeFighterKills then
+					arrangeColumnsInTable()
+					self.labelKnifeFighterKillsProgress = ISLabel:new(
+						x,
+						y,
+						FONT_HGT_SMALL,
+						getText(""),
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelKnifeFighterKillsProgress:setTooltip(getText("Sandbox_ETW_KnifeFighterKills"))
+					self:addChild(self.labelKnifeFighterKillsProgress)
+				end
+			end
+
+			if
+				ETW_CommonLogicChecks.PolearmFighterShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.POLEARM_FIGHTER)
+			then
+				if spear < SBvars.PolearmFighterSkill then
+					arrangeColumnsInTable()
+					self.labelPolearmFighterSkillProgress = ISLabel:new(
+						x,
+						y,
+						FONT_HGT_SMALL,
+						getText(""),
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelPolearmFighterSkillProgress:setTooltip(getText("Sandbox_ETW_PolearmFighterSkill"))
+					self:addChild(self.labelPolearmFighterSkillProgress)
+				end
+				if spearKills < SBvars.PolearmFighterKills then
+					arrangeColumnsInTable()
+					self.labelPolearmFighterKillsProgress = ISLabel:new(
+						x,
+						y,
+						FONT_HGT_SMALL,
+						getText(""),
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelPolearmFighterKillsProgress:setTooltip(getText("Sandbox_ETW_PolearmFighterKills"))
+					self:addChild(self.labelPolearmFighterKillsProgress)
+				end
+			end
+
+			if
+				ETW_CommonLogicChecks.RestorationExpertShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.RESTORATION_EXPERT)
+			then
+				arrangeColumnsInTable()
+				self.labelRestorationExpertSkillProgress = ISLabel:new(
+					x,
+					y,
+					FONT_HGT_SMALL,
+					getText(""),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelRestorationExpertSkillProgress:setTooltip(getText("Sandbox_ETW_RestorationExpertSkill"))
+				self:addChild(self.labelRestorationExpertSkillProgress)
+			end
+
+			if
+				ETW_CommonLogicChecks.HandyShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, CharacterTrait.HANDY)
+			then
+				arrangeColumnsInTable()
+				self.labelHandySkillProgress = ISLabel:new(
+					x,
+					y,
+					FONT_HGT_SMALL,
+					getText(""),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelHandySkillProgress:setTooltip(getText("Sandbox_ETW_HandySkill_tooltip"))
+				self:addChild(self.labelHandySkillProgress)
+			end
+
+			if
+				ETW_CommonLogicChecks.FurnitureAssemblerShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.FURNITURE_ASSEMBLER)
+			then
+				arrangeColumnsInTable()
+				self.labelFurnitureAssemblerProgress = ISLabel:new(
+					x,
+					y,
+					FONT_HGT_SMALL,
+					getText(""),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelFurnitureAssemblerProgress:setTooltip(getText("Sandbox_ETW_FurnitureAssemblerSkill"))
+				self:addChild(self.labelFurnitureAssemblerProgress)
+			end
+
+			if
+				ETW_CommonLogicChecks.HomeCookShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.HOME_COOK)
+			then
+				arrangeColumnsInTable()
+				self.labelHomeCookProgress = ISLabel:new(
+					x,
+					y,
+					FONT_HGT_SMALL,
+					getText(""),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelHomeCookProgress:setTooltip(getText("Sandbox_ETW_HomeCookSkill"))
+				self:addChild(self.labelHomeCookProgress)
+			end
+
+			if
+				ETW_CommonLogicChecks.CookShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, CharacterTrait.COOK)
+			then
+				arrangeColumnsInTable()
+				self.labelCookProgress = ISLabel:new(
+					x,
+					y,
+					FONT_HGT_SMALL,
+					getText(""),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelCookProgress:setTooltip(getText("Sandbox_ETW_CookSkill"))
+				self:addChild(self.labelCookProgress)
+			end
+
+			if
+				ETW_CommonLogicChecks.FirstAidShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, CharacterTrait.FIRST_AID)
+			then
+				arrangeColumnsInTable()
+				self.labelFirstAidProgress = ISLabel:new(
+					x,
+					y,
+					FONT_HGT_SMALL,
+					getText(""),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelFirstAidProgress:setTooltip(getText("Sandbox_ETW_FirstAidSkill"))
+				self:addChild(self.labelFirstAidProgress)
+			end
+
+			if
+				ETW_CommonLogicChecks.AVClubShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.AV_CLUB)
+			then
+				arrangeColumnsInTable()
+				self.labelAVClubProgress = ISLabel:new(
+					x,
+					y,
+					FONT_HGT_SMALL,
+					getText(""),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelAVClubProgress:setTooltip(getText("Sandbox_ETW_AVClubSkill"))
+				self:addChild(self.labelAVClubProgress)
+			end
+
+			if
+				ETW_CommonLogicChecks.BodyWorkEnthusiastShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.BODYWORK_ENTHUSIAST)
+			then
+				if metalworking + mechanics < SBvars.BodyworkEnthusiastSkill then
+					arrangeColumnsInTable()
+					self.labelBodyWorkEnthusiastSkillProgress = ISLabel:new(
+						x,
+						y,
+						FONT_HGT_SMALL,
+						getText(""),
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelBodyWorkEnthusiastSkillProgress:setTooltip(
+						getText("Sandbox_ETW_BodyworkEnthusiastSkill_tooltip")
+					)
+					self:addChild(self.labelBodyWorkEnthusiastSkillProgress)
+				end
+				local vehiclePartRepairs = (modData and modData.VehiclePartRepairs) or 0
+				if vehiclePartRepairs < SBvars.BodyworkEnthusiastRepairs then
+					arrangeColumnsInTable()
+					self.labelBodyWorkEnthusiastRepairsProgress = ISLabel:new(
+						x,
+						y,
+						FONT_HGT_SMALL,
+						getText(""),
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelBodyWorkEnthusiastRepairsProgress:setTooltip(
+						getText("Sandbox_ETW_BodyworkEnthusiastRepairs_tooltip")
+					)
+					self:addChild(self.labelBodyWorkEnthusiastRepairsProgress)
+				end
+			end
+
+			if
+				ETW_CommonLogicChecks.MechanicsShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, CharacterTrait.MECHANICS)
+			then
+				if mechanics < SBvars.MechanicsSkill then
+					arrangeColumnsInTable()
+					self.labelMechanicsSkillProgress = ISLabel:new(
+						x,
+						y,
+						FONT_HGT_SMALL,
+						getText(""),
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelMechanicsSkillProgress:setTooltip(getText("Sandbox_ETW_MechanicsSkill"))
+					self:addChild(self.labelMechanicsSkillProgress)
+				end
+				local vehiclePartRepairs = (modData and modData.VehiclePartRepairs) or 0
+				if vehiclePartRepairs < SBvars.MechanicsRepairs then
+					arrangeColumnsInTable()
+					self.labelMechanicsRepairsProgress = ISLabel:new(
+						x,
+						y,
+						FONT_HGT_SMALL,
+						getText(""),
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelMechanicsRepairsProgress:setTooltip(getText("Sandbox_ETW_MechanicsRepairs_tooltip"))
+					self:addChild(self.labelMechanicsRepairsProgress)
+				end
+			end
+
+			if
+				ETW_CommonLogicChecks.SewerShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, CharacterTrait.TAILOR)
+			then
+				if tailoring < SBvars.SewerSkill then
+					arrangeColumnsInTable()
+					self.labelTailorSkillProgress = ISLabel:new(
+						x,
+						y,
+						FONT_HGT_SMALL,
+						getText(""),
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelTailorSkillProgress:setTooltip(getText("Sandbox_ETW_SewerSkill"))
+					self:addChild(self.labelTailorSkillProgress)
+				end
+
+				local uniqueClothingRipped = (
+					modData
+					and modData.UniqueClothingRipped
+					and #modData.UniqueClothingRipped
+				) or 0
+				if uniqueClothingRipped < SBvars.SewerUniqueClothesRipped then
+					arrangeColumnsInTable()
+					self.labelTailorRippedClothesProgress = ISLabel:new(
+						x,
+						y,
+						FONT_HGT_SMALL,
+						getText(""),
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelTailorRippedClothesProgress:setTooltip(
+						getText("Sandbox_ETW_SewerUniqueClothesRipped_tooltip")
+					)
+					self:addChild(self.labelTailorRippedClothesProgress)
+				end
+			end
+
+			if
+				ETW_CommonLogicChecks.PetTherapyShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.PET_THERAPY)
+			then
+				if husbandry < SBvars.PetTherapySkill then
+					arrangeColumnsInTable()
+					self.labelPetTherapySkillProgress = ISLabel:new(
+						x,
+						y,
+						FONT_HGT_SMALL,
+						getText(""),
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelPetTherapySkillProgress:setTooltip(getText("Sandbox_ETW_PetTherapySkill"))
+					self:addChild(self.labelPetTherapySkillProgress)
+				end
+
+				local uniqueAnimalsPetted = (
+					modData
+					and modData.AnimalsSystem
+					and modData.AnimalsSystem.UniqueAnimalsPetted
+					and #modData.AnimalsSystem.UniqueAnimalsPetted
+				) or 0
+				if uniqueAnimalsPetted < SBvars.PetTherapyUniqueAnimalsPetted then
+					arrangeColumnsInTable()
+					self.labelPetTherapyPettingProgress = ISLabel:new(
+						x,
+						y,
+						FONT_HGT_SMALL,
+						getText(""),
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelPetTherapyPettingProgress:setTooltip(
+						getText("Sandbox_ETW_PetTherapyUniqueAnimalsPetted_tooltip")
+					)
+					self:addChild(self.labelPetTherapyPettingProgress)
+				end
+			end
+
+			if
+				ETW_CommonLogicChecks.GunEnthusiastShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.GUN_ENTHUSIAST)
+			then
+				if aiming + reloading < SBvars.GunEnthusiastSkill then
+					arrangeColumnsInTable()
+					self.labelGunEnthusiastSkillProgress = ISLabel:new(
+						x,
+						y,
+						FONT_HGT_SMALL,
+						getText(""),
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelGunEnthusiastSkillProgress:setTooltip(getText("Sandbox_ETW_GunEnthusiastSkill_tooltip"))
+					self:addChild(self.labelGunEnthusiastSkillProgress)
+				end
+
+				if firearmKills < SBvars.GunEnthusiastKills then
+					arrangeColumnsInTable()
+					self.labelGunEnthusiastKillsProgress = ISLabel:new(
+						x,
+						y,
+						FONT_HGT_SMALL,
+						getText(""),
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelGunEnthusiastKillsProgress:setTooltip(getText("Sandbox_ETW_GunEnthusiastKills"))
+					self:addChild(self.labelGunEnthusiastKillsProgress)
+				end
+			end
+
+			if
+				ETW_CommonLogicChecks.AnglerShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, CharacterTrait.FISHING)
+			then
+				arrangeColumnsInTable()
+				self.labelAnglerProgress = ISLabel:new(
+					x,
+					y,
+					FONT_HGT_SMALL,
+					getText(""),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelAnglerProgress:setTooltip(getText("Sandbox_ETW_FishingSkill"))
+				self:addChild(self.labelAnglerProgress)
+			end
+
+			if
+				ETW_CommonLogicChecks.HikerShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, CharacterTrait.HIKER)
+			then
+				arrangeColumnsInTable()
+				self.labelHikerProgress = ISLabel:new(
+					x,
+					y,
+					FONT_HGT_SMALL,
+					getText(""),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelHikerProgress:setTooltip(getText("Sandbox_ETW_HikerSkill_tooltip"))
+				self:addChild(self.labelHikerProgress)
+			end
+
+			if
+				ETW_CommonLogicChecks.CatEyesShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, CharacterTrait.NIGHT_VISION)
+			then
+				arrangeColumnsInTable()
+				self.labelCatEyesProgress = ISLabel:new(
+					x,
+					y,
+					FONT_HGT_SMALL,
+					getText(""),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelCatEyesProgress:setTooltip(getText("Sandbox_ETW_CatEyesCounter_tooltip"))
+				self:addChild(self.labelCatEyesProgress)
+			end
+
+			if
+				ETW_CommonLogicChecks.HerbalistShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, CharacterTrait.HERBALIST)
+			then
+				arrangeColumnsInTable()
+				self.labelHerbalistProgress = ISLabel:new(
+					x,
+					y,
+					FONT_HGT_SMALL,
+					getText(""),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelHerbalistProgress:setTooltip(getText("Sandbox_ETW_HerbalistHerbsPicked_tooltip"))
+				self:addChild(self.labelHerbalistProgress)
+			end
+
+			if
+				ETW_CommonLogicChecks.AxemanShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, CharacterTrait.AXEMAN)
+			then
+				arrangeColumnsInTable()
+				self.labelAxemanProgress = ISLabel:new(
+					x,
+					y,
+					FONT_HGT_SMALL,
+					getText(""),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelAxemanProgress:setTooltip(getText("Sandbox_ETW_AxpertTrees_tooltip"))
+				self:addChild(self.labelAxemanProgress)
+			end
+
+			if
+				ETW_CommonLogicChecks.WhittlerShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, CharacterTrait.WHITTLER)
+			then
+				arrangeColumnsInTable()
+				self.labelWhittlerProgress = ISLabel:new(
+					x,
+					y,
+					FONT_HGT_SMALL,
+					getText(""),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelWhittlerProgress:setTooltip(getText("Sandbox_ETW_WhittlerSkill"))
+				self:addChild(self.labelWhittlerProgress)
+			end
+
+			if
+				ETW_CommonLogicChecks.BlacksmithShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, CharacterTrait.BLACKSMITH)
+			then
+				arrangeColumnsInTable()
+				self.labelBlacksmithProgress = ISLabel:new(
+					x,
+					y,
+					FONT_HGT_SMALL,
+					getText(""),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelBlacksmithProgress:setTooltip(getText("Sandbox_ETW_BlacksmithSkill_tooltip"))
+				self:addChild(self.labelBlacksmithProgress)
+			end
+
+			if
+				ETW_CommonLogicChecks.WildernessKnowledgeShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, CharacterTrait.WILDERNESS_KNOWLEDGE)
+			then
+				local levels = foraging + knapping + maintenance + carving
+				if
+					foraging < 2
+					or knapping < 2
+					or maintenance < 2
+					or carving < 2
+					or levels < SBvars.WildernessKnowledgeSkill
+				then
+					arrangeColumnsInTable(true)
+					self.labelWildernessKnowledgeSkillProgress = ISLabel:new(
+						x,
+						y,
+						FONT_HGT_SMALL,
+						getText(""),
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelWildernessKnowledgeSkillProgress:setTooltip(
+						getText("Sandbox_ETW_WildernessKnowledgeSkill_tooltip")
+					)
+					self:addChild(self.labelWildernessKnowledgeSkillProgress)
+				end
+			end
+
+			y = y + FONT_HGT_SMALL / 2
+
+			if SBvars.DelayedTraitsSystem then
+				y = y + FONT_HGT_SMALL * 1.5
+				str = getText("Sandbox_ETW_DelayedTraitsSystem")
+				self.labelDelayedTraitsSystem = ISLabel:new(
+					WINDOW_WIDTH / 2 - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelDelayedTraitsSystem:setTooltip(getText("Sandbox_ETW_DelayedTraitsSystem_tooltip"))
+				self:addChild(self.labelDelayedTraitsSystem)
+
+				self.buttonDelayedTraitsTooltip = ISButton:new(
+					lineStartPosition,
+					y + FONT_HGT_SMALL,
+					WINDOW_WIDTH - lineStartPosition * 2,
+					FONT_HGT_SMALL,
+					"",
+					self,
+					nil
+				)
+				self.buttonDelayedTraitsTooltip:initialise()
+				self.buttonDelayedTraitsTooltip.borderColor.a = 0
+				self.buttonDelayedTraitsTooltip.backgroundColor.a = 0
+				self.buttonDelayedTraitsTooltip.backgroundColorMouseOver.a = 0
+				self.buttonDelayedTraitsTooltip:setTooltip(getText("Sandbox_ETW_DelayedTraitsSystem_tooltip"))
+				self:addChild(self.buttonDelayedTraitsTooltip)
+			end
+		end
+
+		-- Example extraction: same idea for a Non-permanent Traits subtab block.
+		local function buildNonPermanentProgressSection()
+			if ETW_CommonLogicChecks.BloodlustShouldExecute(player) then
+				str = "- " .. getCachedTraitUIName(ETWTraitsRegistry.BLOODLUST)
+				self.labelBloodlustLose = ISLabel:new(
+					barOneFourthPosition - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelBloodlustLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self:addChild(self.labelBloodlustLose)
+
+				str = "+ " .. getCachedTraitUIName(ETWTraitsRegistry.BLOODLUST)
+				self.labelBloodlustGain = ISLabel:new(
+					barMidPosition,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelBloodlustGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self:addChild(self.labelBloodlustGain)
+
+				y = y + FONT_HGT_SMALL
+
+				self.labelBloodlustBarName = ISLabel:new(
+					barStartPosition - lineStartPosition,
+					y,
+					FONT_HGT_SMALL,
+					getCachedTraitUIName(ETWTraitsRegistry.BLOODLUST),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					false
+				)
+				self.labelBloodlustBarName:setTooltip(getText("Sandbox_ETW_BloodlustProgress_tooltip"))
+				self:addChild(self.labelBloodlustBarName)
+
+				self.barBloodlust = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
+				self.barBloodlust:setGradientTexture(redYellowGreenGradient)
+				self.barBloodlust:setHighlightRadius(highlightRadius)
+				self.barBloodlust:setDoKnob(false)
+				self:addChild(self.barBloodlust)
+
+				y = y + FONT_HGT_SMALL
+			end
+
+			if ETW_CommonLogicChecks.AsthmaticShouldExecute(player) then
+				str = "+ " .. getCachedTraitUIName(CharacterTrait.ASTHMATIC)
+				self.labelAsthmaticGain = ISLabel:new(
+					barOneFourthPosition - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelAsthmaticGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self:addChild(self.labelAsthmaticGain)
+
+				str = "- " .. getCachedTraitUIName(CharacterTrait.ASTHMATIC)
+				self.labelAsthmaticLose = ISLabel:new(
+					barThreeFourthPosition - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelAsthmaticLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self:addChild(self.labelAsthmaticLose)
+
+				y = y + FONT_HGT_SMALL
+
+				self.labelAsthmaticBarName = ISLabel:new(
+					barStartPosition - lineStartPosition,
+					y,
+					FONT_HGT_SMALL,
+					getCachedTraitUIName(CharacterTrait.ASTHMATIC),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					false
+				)
+				self.labelAsthmaticBarName:setTooltip(getText("Sandbox_ETW_AsthmaticCounter_tooltip"))
+				self:addChild(self.labelAsthmaticBarName)
+
+				self.barAsthmatic = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
+				self.barAsthmatic:setGradientTexture(redYellowGreenGradient)
+				self.barAsthmatic:setHighlightRadius(highlightRadius)
+				self.barAsthmatic:setDoKnob(false)
+				self:addChild(self.barAsthmatic)
+
+				y = y + FONT_HGT_SMALL
+			end
+
+			if ETW_CommonLogicChecks.OutdoorsmanShouldExecute(player) then
+				str = "- " .. getCachedTraitUIName(CharacterTrait.OUTDOORSMAN)
+				self.labelOutdoorsmanLose = ISLabel:new(
+					barOneThirdPosition - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelOutdoorsmanLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self:addChild(self.labelOutdoorsmanLose)
+
+				str = "+ " .. getCachedTraitUIName(CharacterTrait.OUTDOORSMAN)
+				self.labelOutdoorsmanGain = ISLabel:new(
+					barTwoThirdPosition - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelOutdoorsmanGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self:addChild(self.labelOutdoorsmanGain)
+
+				y = y + FONT_HGT_SMALL
+
+				self.labelOutdoorsmanBarName = ISLabel:new(
+					barStartPosition - lineStartPosition,
+					y,
+					FONT_HGT_SMALL,
+					getCachedTraitUIName(CharacterTrait.OUTDOORSMAN),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					false
+				)
+				self.labelOutdoorsmanBarName:setTooltip(getText("Sandbox_ETW_OutdoorsmanCounter_tooltip"))
+				self:addChild(self.labelOutdoorsmanBarName)
+
+				self.barOutdoorsman = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
+				self.barOutdoorsman:setGradientTexture(redYellowGreenGradient)
+				self.barOutdoorsman:setHighlightRadius(highlightRadius)
+				self.barOutdoorsman:setDoKnob(false)
+				self:addChild(self.barOutdoorsman)
+
+				y = y + FONT_HGT_SMALL
+			end
+
+			if ETW_CommonLogicChecks.FearOfLocationsSystemShouldExecute(player) then
+				str = "+ " .. getCachedTraitUIName(CharacterTrait.AGORAPHOBIC)
+				self.labelAgoraphobicGain = ISLabel:new(
+					barOneThirdPosition - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelAgoraphobicGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self:addChild(self.labelAgoraphobicGain)
+
+				str = "- " .. getCachedTraitUIName(CharacterTrait.AGORAPHOBIC)
+				self.labelAgoraphobicLose = ISLabel:new(
+					barTwoThirdPosition - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelAgoraphobicLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self:addChild(self.labelAgoraphobicLose)
+
+				y = y + FONT_HGT_SMALL
+
+				self.labelAgoraphobicBarName = ISLabel:new(
+					barStartPosition - lineStartPosition,
+					y,
+					FONT_HGT_SMALL,
+					getCachedTraitUIName(CharacterTrait.AGORAPHOBIC),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					false
+				)
+				self.labelAgoraphobicBarName:setTooltip(getText("Sandbox_ETW_FearOfLocationsSystemCounter_tooltip"))
+				self:addChild(self.labelAgoraphobicBarName)
+
+				self.barAgoraphobic = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
+				self.barAgoraphobic:setGradientTexture(redYellowGreenGradient)
+				self.barAgoraphobic:setHighlightRadius(highlightRadius)
+				self.barAgoraphobic:setDoKnob(false)
+				self:addChild(self.barAgoraphobic)
+
+				y = y + FONT_HGT_SMALL
+
+				str = "+ " .. getCachedTraitUIName(CharacterTrait.CLAUSTROPHOBIC)
+				self.labelClaustrophobicGain = ISLabel:new(
+					barOneThirdPosition - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelClaustrophobicGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self:addChild(self.labelClaustrophobicGain)
+
+				str = "- " .. getCachedTraitUIName(CharacterTrait.CLAUSTROPHOBIC)
+				self.labelClaustrophobicLose = ISLabel:new(
+					barTwoThirdPosition - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelClaustrophobicLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self:addChild(self.labelClaustrophobicLose)
+
+				y = y + FONT_HGT_SMALL
+
+				self.labelClaustrophobicBarName = ISLabel:new(
+					barStartPosition - lineStartPosition,
+					y,
+					FONT_HGT_SMALL,
+					getCachedTraitUIName(CharacterTrait.CLAUSTROPHOBIC),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					false
+				)
+				self.labelClaustrophobicBarName:setTooltip(getText("Sandbox_ETW_FearOfLocationsSystemCounter_tooltip"))
+				self:addChild(self.labelClaustrophobicBarName)
+
+				self.barClaustrophobic = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
+				self.barClaustrophobic:setGradientTexture(redYellowGreenGradient)
+				self.barClaustrophobic:setHighlightRadius(highlightRadius)
+				self.barClaustrophobic:setDoKnob(false)
+				self:addChild(self.barClaustrophobic)
+
+				y = y + FONT_HGT_SMALL
+			end
+
+			if ETW_CommonLogicChecks.SleepSystemShouldExecute(player) then
+				str = "+ " .. getCachedTraitUIName(CharacterTrait.NEEDS_MORE_SLEEP)
+				self.labelMoreSleepGain = ISLabel:new(
+					barOneFourthPosition - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelMoreSleepGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self:addChild(self.labelMoreSleepGain)
+
+				str = "+ " .. getCachedTraitUIName(CharacterTrait.NEEDS_LESS_SLEEP)
+				self.labelLessSleepGain = ISLabel:new(
+					barThreeFourthPosition - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelLessSleepGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self:addChild(self.labelLessSleepGain)
+
+				y = y + FONT_HGT_SMALL
+
+				self.labelSleepSystemBarName = ISLabel:new(
+					barStartPosition - lineStartPosition,
+					y,
+					FONT_HGT_SMALL,
+					getText("Sandbox_ETW_SleepSystem"),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					false
+				)
+				self.labelSleepSystemBarName:setTooltip(getText("Sandbox_ETW_SleepSystem_tooltip"))
+				self:addChild(self.labelSleepSystemBarName)
+
+				self.barSleepSystem = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
+				self.barSleepSystem:setGradientTexture(redYellowGreenGradient)
+				self.barSleepSystem:setHighlightRadius(highlightRadius)
+				self.barSleepSystem:setDoKnob(false)
+				self:addChild(self.barSleepSystem)
+
+				y = y + FONT_HGT_SMALL
+			end
+
+			if ETW_CommonLogicChecks.RainSystemShouldExecute(player) then
+				str = "+/- " .. getCachedTraitUIName(ETWTraitsRegistry.PLUVIOPHOBIA)
+				self.labelPluviophobia = ISLabel:new(
+					barOneFourthPosition - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelPluviophobia:setTooltip(getText("UI_ETW_GainLoseTooltip"))
+				self:addChild(self.labelPluviophobia)
+
+				str = "+/- " .. getCachedTraitUIName(ETWTraitsRegistry.PLUVIOPHILE)
+				self.labelPluviophile = ISLabel:new(
+					barThreeFourthPosition - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelPluviophile:setTooltip(getText("UI_ETW_GainLoseTooltip"))
+				self:addChild(self.labelPluviophile)
+
+				y = y + FONT_HGT_SMALL
+
+				self.labelRainSystemBarName = ISLabel:new(
+					barStartPosition - lineStartPosition,
+					y,
+					FONT_HGT_SMALL,
+					getText("Sandbox_ETW_RainSystem"),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					false
+				)
+				self.labelRainSystemBarName:setTooltip(getText("Sandbox_ETW_RainSystemCounter_tooltip"))
+				self:addChild(self.labelRainSystemBarName)
+
+				self.barRainSystem = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
+				self.barRainSystem:setGradientTexture(redYellowGreenGradient)
+				self.barRainSystem:setHighlightRadius(highlightRadius)
+				self.barRainSystem:setDoKnob(false)
+				self:addChild(self.barRainSystem)
+
+				y = y + FONT_HGT_SMALL
+			end
+
+			if ETW_CommonLogicChecks.FogSystemShouldExecute(player) then
+				str = "+/- " .. getCachedTraitUIName(ETWTraitsRegistry.HOMICHLOPHOBIA)
+				self.labelHomichlophobia = ISLabel:new(
+					barOneFourthPosition - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelHomichlophobia:setTooltip(getText("UI_ETW_GainLoseTooltip"))
+				self:addChild(self.labelHomichlophobia)
+
+				str = "+/- " .. getCachedTraitUIName(ETWTraitsRegistry.HOMICHLOPHILE)
+				self.labelHomichlophile = ISLabel:new(
+					barThreeFourthPosition - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelHomichlophile:setTooltip(getText("UI_ETW_GainLoseTooltip"))
+				self:addChild(self.labelHomichlophile)
+
+				y = y + FONT_HGT_SMALL
+
+				self.labelFogSystemBarName = ISLabel:new(
+					barStartPosition - lineStartPosition,
+					y,
+					FONT_HGT_SMALL,
+					getText("Sandbox_ETW_FogSystem"),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					false
+				)
+				self.labelFogSystemBarName:setTooltip(getText("Sandbox_ETW_FogSystemCounter_tooltip"))
+				self:addChild(self.labelFogSystemBarName)
+
+				self.barFogSystem = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
+				self.barFogSystem:setGradientTexture(redYellowGreenGradient)
+				self.barFogSystem:setHighlightRadius(highlightRadius)
+				self.barFogSystem:setDoKnob(false)
+				self:addChild(self.barFogSystem)
+
+				y = y + FONT_HGT_SMALL
+			end
+
+			if
+				ETW_CommonLogicChecks.SmokerShouldExecute(player)
+				and ((not modOptions and true) or not modOptions:getOption("HideSmokerUI"):getValue())
+			then
+				y = y + FONT_HGT_SMALL / 2
+
+				str = "- " .. getCachedTraitUIName(CharacterTrait.SMOKER)
+				self.labelSmokerLose = ISLabel:new(
+					barOneFourthPosition - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelSmokerLose:setTooltip(getText("UI_ETW_GainTooltip"))
+				self:addChild(self.labelSmokerLose)
+
+				str = "+ " .. getCachedTraitUIName(CharacterTrait.SMOKER)
+				self.labelSmokerGain = ISLabel:new(
+					barThreeFourthPosition - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelSmokerGain:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self:addChild(self.labelSmokerGain)
+
+				y = y + FONT_HGT_SMALL
+
+				self.labelSmokerBarName = ISLabel:new(
+					barStartPosition - lineStartPosition,
+					y,
+					FONT_HGT_SMALL,
+					getCachedTraitUIName(CharacterTrait.SMOKER),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					false
+				)
+				self.labelSmokerBarName:setTooltip(getText("Sandbox_ETW_SmokerCounter_tooltip"))
+				self:addChild(self.labelSmokerBarName)
+
+				self.barSmokerSystem = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
+				self.barSmokerSystem:setGradientTexture(greenYellowRedGradient)
+				self.barSmokerSystem:setHighlightRadius(highlightRadius)
+				self.barSmokerSystem:setDoKnob(false)
+				self:addChild(self.barSmokerSystem)
+			end
+		end
+
 		if (not modOptions and true) or modOptions:getOption("HideReadMeUI"):getValue() then
 			str = getText("UI_ETW_Options_ReadMe")
 			self.labelReadMe = ISLabel:new(
@@ -359,2288 +2642,10 @@ function ISETWProgressUI:createChildren()
 			y = y + FONT_HGT_MEDIUM
 		end
 
-		if ETW_CommonLogicChecks.ImmunitySystemShouldExecute(player) then
-			str = "- " .. getCachedTraitUIName(CharacterTrait.PRONE_TO_ILLNESS)
-			self.labelProneToIllness = ISLabel:new(
-				barMidPosition - strLen(textManager, str) / 2,
-				y,
-				FONT_HGT_SMALL,
-				str,
-				self.DimmedTextColor.r,
-				self.DimmedTextColor.g,
-				self.DimmedTextColor.b,
-				self.DimmedTextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelProneToIllness:setTooltip(getText("UI_ETW_LooseTooltip"))
-			self:addChild(self.labelProneToIllness)
+		buildPermanentProgressSection()
 
-			self.labelResilient = ISLabel:new(
-				barEndPosition,
-				y,
-				FONT_HGT_SMALL,
-				"+ " .. getCachedTraitUIName(CharacterTrait.RESILIENT),
-				self.DimmedTextColor.r,
-				self.DimmedTextColor.g,
-				self.DimmedTextColor.b,
-				self.DimmedTextColor.a,
-				UIFont.Small,
-				false
-			)
-			self.labelResilient:setTooltip(getText("UI_ETW_GainTooltip"))
-			self:addChild(self.labelResilient)
-
-			y = y + FONT_HGT_SMALL
-
-			self.labelImmunitySystem = ISLabel:new(
-				barStartPosition - lineStartPosition,
-				y,
-				FONT_HGT_SMALL,
-				getText("Sandbox_ETW_ImmunitySystem"),
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				false
-			)
-			self.labelImmunitySystem:setTooltip(getText("Sandbox_ETW_ImmunitySystemCounter_tooltip"))
-			self:addChild(self.labelImmunitySystem)
-
-			self.barImmunitySystem = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
-			self.barImmunitySystem:setGradientTexture(redYellowGreenGradient)
-			self.barImmunitySystem:setHighlightRadius(highlightRadius)
-			self.barImmunitySystem:setDoKnob(false)
-			self:addChild(self.barImmunitySystem)
-
-			y = y + FONT_HGT_SMALL
-		end
-
-		if ETW_CommonLogicChecks.FoodSicknessSystemShouldExecute(player) then
-			self.labelWeakStomach = ISLabel:new(
-				barMidPosition,
-				y,
-				FONT_HGT_SMALL,
-				"- " .. getCachedTraitUIName(CharacterTrait.WEAK_STOMACH),
-				self.DimmedTextColor.r,
-				self.DimmedTextColor.g,
-				self.DimmedTextColor.b,
-				self.DimmedTextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelWeakStomach.center = true
-			self.labelWeakStomach:setTooltip(getText("UI_ETW_LooseTooltip"))
-			self:addChild(self.labelWeakStomach)
-
-			self.labelIronGut = ISLabel:new(
-				barEndPosition,
-				y,
-				FONT_HGT_SMALL,
-				"+ " .. getCachedTraitUIName(CharacterTrait.IRON_GUT),
-				self.DimmedTextColor.r,
-				self.DimmedTextColor.g,
-				self.DimmedTextColor.b,
-				self.DimmedTextColor.a,
-				UIFont.Small,
-				false
-			)
-			self.labelIronGut:setTooltip(getText("UI_ETW_GainTooltip"))
-			self:addChild(self.labelIronGut)
-
-			y = y + FONT_HGT_SMALL
-
-			self.labelSicknessSystem = ISLabel:new(
-				barStartPosition - lineStartPosition,
-				y,
-				FONT_HGT_SMALL,
-				getText("Sandbox_ETW_FoodSicknessSystem"),
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				false
-			)
-			self.labelSicknessSystem:setTooltip(getText("Sandbox_ETW_FoodSicknessSystemCounter_tooltip"))
-			self:addChild(self.labelSicknessSystem)
-
-			self.barSicknessSystem = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
-			self.barSicknessSystem:setGradientTexture(redYellowGreenGradient)
-			self.barSicknessSystem:setHighlightRadius(highlightRadius)
-			self.barSicknessSystem:setDoKnob(false)
-			self:addChild(self.barSicknessSystem)
-
-			y = y + FONT_HGT_SMALL
-		end
-
-		if ETW_CommonLogicChecks.PainToleranceShouldExecute(player) then
-			self.labelPainTolerance = ISLabel:new(
-				barEndPosition,
-				y,
-				FONT_HGT_SMALL,
-				"+ " .. getCachedTraitUIName(ETWTraitsRegistry.PAIN_TOLERANCE),
-				self.DimmedTextColor.r,
-				self.DimmedTextColor.g,
-				self.DimmedTextColor.b,
-				self.DimmedTextColor.a,
-				UIFont.Small,
-				false
-			)
-			self.labelPainTolerance:setTooltip(getText("UI_ETW_GainTooltip"))
-			self:addChild(self.labelPainTolerance)
-
-			y = y + FONT_HGT_SMALL
-
-			self.labelPainToleranceBarName = ISLabel:new(
-				barStartPosition - lineStartPosition,
-				y,
-				FONT_HGT_SMALL,
-				getCachedTraitUIName(ETWTraitsRegistry.PAIN_TOLERANCE),
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				false
-			)
-			self.labelPainToleranceBarName:setTooltip(getText("Sandbox_ETW_PainToleranceCounter_tooltip"))
-			self:addChild(self.labelPainToleranceBarName)
-
-			self.barPainTolerance = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
-			self.barPainTolerance:setGradientTexture(redYellowGreenGradient)
-			self.barPainTolerance:setHighlightRadius(highlightRadius)
-			self.barPainTolerance:setDoKnob(false)
-			self:addChild(self.barPainTolerance)
-
-			y = y + FONT_HGT_SMALL
-		end
-
-		if ETW_CommonLogicChecks.AsthmaticShouldExecute(player) then
-			str = "+ " .. getCachedTraitUIName(CharacterTrait.ASTHMATIC)
-			self.labelAsthmaticGain = ISLabel:new(
-				barOneFourthPosition - strLen(textManager, str) / 2,
-				y,
-				FONT_HGT_SMALL,
-				str,
-				self.DimmedTextColor.r,
-				self.DimmedTextColor.g,
-				self.DimmedTextColor.b,
-				self.DimmedTextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelAsthmaticGain:setTooltip(getText("UI_ETW_GainTooltip"))
-			self:addChild(self.labelAsthmaticGain)
-
-			str = "- " .. getCachedTraitUIName(CharacterTrait.ASTHMATIC)
-			self.labelAsthmaticLose = ISLabel:new(
-				barThreeFourthPosition - strLen(textManager, str) / 2,
-				y,
-				FONT_HGT_SMALL,
-				str,
-				self.DimmedTextColor.r,
-				self.DimmedTextColor.g,
-				self.DimmedTextColor.b,
-				self.DimmedTextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelAsthmaticLose:setTooltip(getText("UI_ETW_LooseTooltip"))
-			self:addChild(self.labelAsthmaticLose)
-
-			y = y + FONT_HGT_SMALL
-
-			self.labelAsthmaticBarName = ISLabel:new(
-				barStartPosition - lineStartPosition,
-				y,
-				FONT_HGT_SMALL,
-				getCachedTraitUIName(CharacterTrait.ASTHMATIC),
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				false
-			)
-			self.labelAsthmaticBarName:setTooltip(getText("Sandbox_ETW_AsthmaticCounter_tooltip"))
-			self:addChild(self.labelAsthmaticBarName)
-
-			self.barAsthmatic = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
-			self.barAsthmatic:setGradientTexture(redYellowGreenGradient)
-			self.barAsthmatic:setHighlightRadius(highlightRadius)
-			self.barAsthmatic:setDoKnob(false)
-			self:addChild(self.barAsthmatic)
-
-			y = y + FONT_HGT_SMALL
-		end
-
-		-- ── Route: Non-permanent Traits tab ─────────────────────────────────────
 		routeTo(self.subViewNonPermanent, nonPermanentLayoutCursor)
-
-		if ETW_CommonLogicChecks.BloodlustShouldExecute(player) then
-			str = "- " .. getCachedTraitUIName(ETWTraitsRegistry.BLOODLUST)
-			self.labelBloodlustLose = ISLabel:new(
-				barOneFourthPosition - strLen(textManager, str) / 2,
-				y,
-				FONT_HGT_SMALL,
-				str,
-				self.DimmedTextColor.r,
-				self.DimmedTextColor.g,
-				self.DimmedTextColor.b,
-				self.DimmedTextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelBloodlustLose:setTooltip(getText("UI_ETW_LooseTooltip"))
-			self:addChild(self.labelBloodlustLose)
-
-			str = "+ " .. getCachedTraitUIName(ETWTraitsRegistry.BLOODLUST)
-			self.labelBloodlustGain = ISLabel:new(
-				barMidPosition,
-				y,
-				FONT_HGT_SMALL,
-				str,
-				self.DimmedTextColor.r,
-				self.DimmedTextColor.g,
-				self.DimmedTextColor.b,
-				self.DimmedTextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelBloodlustGain:setTooltip(getText("UI_ETW_GainTooltip"))
-			self:addChild(self.labelBloodlustGain)
-
-			y = y + FONT_HGT_SMALL
-
-			self.labelBloodlustBarName = ISLabel:new(
-				barStartPosition - lineStartPosition,
-				y,
-				FONT_HGT_SMALL,
-				getCachedTraitUIName(ETWTraitsRegistry.BLOODLUST),
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				false
-			)
-			self.labelBloodlustBarName:setTooltip(getText("Sandbox_ETW_BloodlustProgress_tooltip"))
-			self:addChild(self.labelBloodlustBarName)
-
-			self.barBloodlust = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
-			self.barBloodlust:setGradientTexture(redYellowGreenGradient)
-			self.barBloodlust:setHighlightRadius(highlightRadius)
-			self.barBloodlust:setDoKnob(false)
-			self:addChild(self.barBloodlust)
-
-			y = y + FONT_HGT_SMALL
-		end
-
-		if ETW_CommonLogicChecks.OutdoorsmanShouldExecute(player) then
-			str = "- " .. getCachedTraitUIName(CharacterTrait.OUTDOORSMAN)
-			self.labelOutdoorsmanLose = ISLabel:new(
-				barOneThirdPosition - strLen(textManager, str) / 2,
-				y,
-				FONT_HGT_SMALL,
-				str,
-				self.DimmedTextColor.r,
-				self.DimmedTextColor.g,
-				self.DimmedTextColor.b,
-				self.DimmedTextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelOutdoorsmanLose:setTooltip(getText("UI_ETW_LooseTooltip"))
-			self:addChild(self.labelOutdoorsmanLose)
-
-			str = "+ " .. getCachedTraitUIName(CharacterTrait.OUTDOORSMAN)
-			self.labelOutdoorsmanGain = ISLabel:new(
-				barTwoThirdPosition - strLen(textManager, str) / 2,
-				y,
-				FONT_HGT_SMALL,
-				str,
-				self.DimmedTextColor.r,
-				self.DimmedTextColor.g,
-				self.DimmedTextColor.b,
-				self.DimmedTextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelOutdoorsmanGain:setTooltip(getText("UI_ETW_GainTooltip"))
-			self:addChild(self.labelOutdoorsmanGain)
-
-			y = y + FONT_HGT_SMALL
-
-			self.labelOutdoorsmanBarName = ISLabel:new(
-				barStartPosition - lineStartPosition,
-				y,
-				FONT_HGT_SMALL,
-				getCachedTraitUIName(CharacterTrait.OUTDOORSMAN),
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				false
-			)
-			self.labelOutdoorsmanBarName:setTooltip(getText("Sandbox_ETW_OutdoorsmanCounter_tooltip"))
-			self:addChild(self.labelOutdoorsmanBarName)
-
-			self.barOutdoorsman = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
-			self.barOutdoorsman:setGradientTexture(redYellowGreenGradient)
-			self.barOutdoorsman:setHighlightRadius(highlightRadius)
-			self.barOutdoorsman:setDoKnob(false)
-			self:addChild(self.barOutdoorsman)
-
-			y = y + FONT_HGT_SMALL
-		end
-
-		if ETW_CommonLogicChecks.FearOfLocationsSystemShouldExecute(player) then
-			str = "+ " .. getCachedTraitUIName(CharacterTrait.AGORAPHOBIC)
-			self.labelAgoraphobicGain = ISLabel:new(
-				barOneThirdPosition - strLen(textManager, str) / 2,
-				y,
-				FONT_HGT_SMALL,
-				str,
-				self.DimmedTextColor.r,
-				self.DimmedTextColor.g,
-				self.DimmedTextColor.b,
-				self.DimmedTextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelAgoraphobicGain:setTooltip(getText("UI_ETW_GainTooltip"))
-			self:addChild(self.labelAgoraphobicGain)
-
-			str = "- " .. getCachedTraitUIName(CharacterTrait.AGORAPHOBIC)
-			self.labelAgoraphobicLose = ISLabel:new(
-				barTwoThirdPosition - strLen(textManager, str) / 2,
-				y,
-				FONT_HGT_SMALL,
-				str,
-				self.DimmedTextColor.r,
-				self.DimmedTextColor.g,
-				self.DimmedTextColor.b,
-				self.DimmedTextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelAgoraphobicLose:setTooltip(getText("UI_ETW_LooseTooltip"))
-			self:addChild(self.labelAgoraphobicLose)
-
-			y = y + FONT_HGT_SMALL
-
-			self.labelAgoraphobicBarName = ISLabel:new(
-				barStartPosition - lineStartPosition,
-				y,
-				FONT_HGT_SMALL,
-				getCachedTraitUIName(CharacterTrait.AGORAPHOBIC),
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				false
-			)
-			self.labelAgoraphobicBarName:setTooltip(getText("Sandbox_ETW_FearOfLocationsSystemCounter_tooltip"))
-			self:addChild(self.labelAgoraphobicBarName)
-
-			self.barAgoraphobic = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
-			self.barAgoraphobic:setGradientTexture(redYellowGreenGradient)
-			self.barAgoraphobic:setHighlightRadius(highlightRadius)
-			self.barAgoraphobic:setDoKnob(false)
-			self:addChild(self.barAgoraphobic)
-
-			y = y + FONT_HGT_SMALL
-
-			str = "+ " .. getCachedTraitUIName(CharacterTrait.CLAUSTROPHOBIC)
-			self.labelClaustrophobicGain = ISLabel:new(
-				barOneThirdPosition - strLen(textManager, str) / 2,
-				y,
-				FONT_HGT_SMALL,
-				str,
-				self.DimmedTextColor.r,
-				self.DimmedTextColor.g,
-				self.DimmedTextColor.b,
-				self.DimmedTextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelClaustrophobicGain:setTooltip(getText("UI_ETW_GainTooltip"))
-			self:addChild(self.labelClaustrophobicGain)
-
-			str = "- " .. getCachedTraitUIName(CharacterTrait.CLAUSTROPHOBIC)
-			self.labelClaustrophobicLose = ISLabel:new(
-				barTwoThirdPosition - strLen(textManager, str) / 2,
-				y,
-				FONT_HGT_SMALL,
-				str,
-				self.DimmedTextColor.r,
-				self.DimmedTextColor.g,
-				self.DimmedTextColor.b,
-				self.DimmedTextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelClaustrophobicLose:setTooltip(getText("UI_ETW_LooseTooltip"))
-			self:addChild(self.labelClaustrophobicLose)
-
-			y = y + FONT_HGT_SMALL
-
-			self.labelClaustrophobicBarName = ISLabel:new(
-				barStartPosition - lineStartPosition,
-				y,
-				FONT_HGT_SMALL,
-				getCachedTraitUIName(CharacterTrait.CLAUSTROPHOBIC),
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				false
-			)
-			self.labelClaustrophobicBarName:setTooltip(getText("Sandbox_ETW_FearOfLocationsSystemCounter_tooltip"))
-			self:addChild(self.labelClaustrophobicBarName)
-
-			self.barClaustrophobic = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
-			self.barClaustrophobic:setGradientTexture(redYellowGreenGradient)
-			self.barClaustrophobic:setHighlightRadius(highlightRadius)
-			self.barClaustrophobic:setDoKnob(false)
-			self:addChild(self.barClaustrophobic)
-
-			y = y + FONT_HGT_SMALL
-		end
-
-		-- ── Route: back to Progress tab ──────────────────────────────────────────
-		routeTo(self.subViewProgress, progressLayoutCursor)
-
-		if ETW_CommonLogicChecks.HearingSystemShouldExecute(player) then
-			str = "- " .. getCachedTraitUIName(CharacterTrait.HARD_OF_HEARING)
-			self.labelHardOfHearingLose = ISLabel:new(
-				barMidPosition - strLen(textManager, str) / 2,
-				y,
-				FONT_HGT_SMALL,
-				str,
-				self.DimmedTextColor.r,
-				self.DimmedTextColor.g,
-				self.DimmedTextColor.b,
-				self.DimmedTextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelHardOfHearingLose:setTooltip(getText("UI_ETW_LooseTooltip"))
-			self:addChild(self.labelHardOfHearingLose)
-
-			self.labelKeenHearingGain = ISLabel:new(
-				barEndPosition,
-				y,
-				FONT_HGT_SMALL,
-				"+ " .. getCachedTraitUIName(CharacterTrait.KEEN_HEARING),
-				self.DimmedTextColor.r,
-				self.DimmedTextColor.g,
-				self.DimmedTextColor.b,
-				self.DimmedTextColor.a,
-				UIFont.Small,
-				false
-			)
-			self.labelKeenHearingGain:setTooltip(getText("UI_ETW_GainTooltip"))
-			self:addChild(self.labelKeenHearingGain)
-
-			y = y + FONT_HGT_SMALL
-
-			self.labelHearingSystemBarName = ISLabel:new(
-				barStartPosition - lineStartPosition,
-				y,
-				FONT_HGT_SMALL,
-				getText("Sandbox_ETW_HearingSystem"),
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				false
-			)
-			self.labelHearingSystemBarName:setTooltip(getText("Sandbox_ETW_HearingSystemSkill_tooltip"))
-			self:addChild(self.labelHearingSystemBarName)
-
-			self.barHearingSystem = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
-			self.barHearingSystem:setGradientTexture(redYellowGreenGradient)
-			self.barHearingSystem:setHighlightRadius(highlightRadius)
-			self.barHearingSystem:setDoKnob(false)
-			self:addChild(self.barHearingSystem)
-
-			y = y + FONT_HGT_SMALL
-		end
-
-		if ETW_CommonLogicChecks.LearnerSystemShouldExecute(player) then
-			str = "- " .. getCachedTraitUIName(CharacterTrait.SLOW_LEARNER)
-			self.labelSlowLearnerLose = ISLabel:new(
-				barMidPosition - strLen(textManager, str) / 2,
-				y,
-				FONT_HGT_SMALL,
-				str,
-				self.DimmedTextColor.r,
-				self.DimmedTextColor.g,
-				self.DimmedTextColor.b,
-				self.DimmedTextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelSlowLearnerLose:setTooltip(getText("UI_ETW_LooseTooltip"))
-			self:addChild(self.labelSlowLearnerLose)
-
-			self.labelFastLearnerGain = ISLabel:new(
-				barEndPosition,
-				y,
-				FONT_HGT_SMALL,
-				"+ " .. getCachedTraitUIName(CharacterTrait.FAST_LEARNER),
-				self.DimmedTextColor.r,
-				self.DimmedTextColor.g,
-				self.DimmedTextColor.b,
-				self.DimmedTextColor.a,
-				UIFont.Small,
-				false
-			)
-			self.labelFastLearnerGain:setTooltip(getText("UI_ETW_GainTooltip"))
-			self:addChild(self.labelFastLearnerGain)
-
-			y = y + FONT_HGT_SMALL
-
-			self.labelLearnerSystemBarName = ISLabel:new(
-				barStartPosition - lineStartPosition,
-				y,
-				FONT_HGT_SMALL,
-				getText("Sandbox_ETW_LearnerSystem"),
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				false
-			)
-			self.labelLearnerSystemBarName:setTooltip(getText("Sandbox_ETW_LearnerSystemSkill_tooltip"))
-			self:addChild(self.labelLearnerSystemBarName)
-
-			self.barLearnerSystem = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
-			self.barLearnerSystem:setGradientTexture(redYellowGreenGradient)
-			self.barLearnerSystem:setHighlightRadius(highlightRadius)
-			self.barLearnerSystem:setDoKnob(false)
-			self:addChild(self.barLearnerSystem)
-
-			y = y + FONT_HGT_SMALL
-		end
-
-		-- ── Route: Non-permanent Traits tab ─────────────────────────────────────
-		routeTo(self.subViewNonPermanent, nonPermanentLayoutCursor)
-
-		if ETW_CommonLogicChecks.SleepSystemShouldExecute(player) then
-			str = "+ " .. getCachedTraitUIName(CharacterTrait.NEEDS_MORE_SLEEP)
-			self.labelMoreSleepGain = ISLabel:new(
-				barOneFourthPosition - strLen(textManager, str) / 2,
-				y,
-				FONT_HGT_SMALL,
-				str,
-				self.DimmedTextColor.r,
-				self.DimmedTextColor.g,
-				self.DimmedTextColor.b,
-				self.DimmedTextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelMoreSleepGain:setTooltip(getText("UI_ETW_GainTooltip"))
-			self:addChild(self.labelMoreSleepGain)
-
-			str = "+ " .. getCachedTraitUIName(CharacterTrait.NEEDS_LESS_SLEEP)
-			self.labelLessSleepGain = ISLabel:new(
-				barThreeFourthPosition - strLen(textManager, str) / 2,
-				y,
-				FONT_HGT_SMALL,
-				str,
-				self.DimmedTextColor.r,
-				self.DimmedTextColor.g,
-				self.DimmedTextColor.b,
-				self.DimmedTextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelLessSleepGain:setTooltip(getText("UI_ETW_GainTooltip"))
-			self:addChild(self.labelLessSleepGain)
-
-			y = y + FONT_HGT_SMALL
-
-			self.labelSleepSystemBarName = ISLabel:new(
-				barStartPosition - lineStartPosition,
-				y,
-				FONT_HGT_SMALL,
-				getText("Sandbox_ETW_SleepSystem"),
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				false
-			)
-			self.labelSleepSystemBarName:setTooltip(getText("Sandbox_ETW_SleepSystem_tooltip"))
-			self:addChild(self.labelSleepSystemBarName)
-
-			self.barSleepSystem = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
-			self.barSleepSystem:setGradientTexture(redYellowGreenGradient)
-			self.barSleepSystem:setHighlightRadius(highlightRadius)
-			self.barSleepSystem:setDoKnob(false)
-			self:addChild(self.barSleepSystem)
-
-			y = y + FONT_HGT_SMALL
-		end
-
-		if ETW_CommonLogicChecks.RainSystemShouldExecute(player) then
-			str = "+/- " .. getCachedTraitUIName(ETWTraitsRegistry.PLUVIOPHOBIA)
-			self.labelPluviophobia = ISLabel:new(
-				barOneFourthPosition - strLen(textManager, str) / 2,
-				y,
-				FONT_HGT_SMALL,
-				str,
-				self.DimmedTextColor.r,
-				self.DimmedTextColor.g,
-				self.DimmedTextColor.b,
-				self.DimmedTextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelPluviophobia:setTooltip(getText("UI_ETW_GainLoseTooltip"))
-			self:addChild(self.labelPluviophobia)
-
-			str = "+/- " .. getCachedTraitUIName(ETWTraitsRegistry.PLUVIOPHILE)
-			self.labelPluviophile = ISLabel:new(
-				barThreeFourthPosition - strLen(textManager, str) / 2,
-				y,
-				FONT_HGT_SMALL,
-				str,
-				self.DimmedTextColor.r,
-				self.DimmedTextColor.g,
-				self.DimmedTextColor.b,
-				self.DimmedTextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelPluviophile:setTooltip(getText("UI_ETW_GainLoseTooltip"))
-			self:addChild(self.labelPluviophile)
-
-			y = y + FONT_HGT_SMALL
-
-			self.labelRainSystemBarName = ISLabel:new(
-				barStartPosition - lineStartPosition,
-				y,
-				FONT_HGT_SMALL,
-				getText("Sandbox_ETW_RainSystem"),
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				false
-			)
-			self.labelRainSystemBarName:setTooltip(getText("Sandbox_ETW_RainSystemCounter_tooltip"))
-			self:addChild(self.labelRainSystemBarName)
-
-			self.barRainSystem = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
-			self.barRainSystem:setGradientTexture(redYellowGreenGradient)
-			self.barRainSystem:setHighlightRadius(highlightRadius)
-			self.barRainSystem:setDoKnob(false)
-			self:addChild(self.barRainSystem)
-
-			y = y + FONT_HGT_SMALL
-		end
-
-		if ETW_CommonLogicChecks.FogSystemShouldExecute(player) then
-			str = "+/- " .. getCachedTraitUIName(ETWTraitsRegistry.HOMICHLOPHOBIA)
-			self.labelHomichlophobia = ISLabel:new(
-				barOneFourthPosition - strLen(textManager, str) / 2,
-				y,
-				FONT_HGT_SMALL,
-				str,
-				self.DimmedTextColor.r,
-				self.DimmedTextColor.g,
-				self.DimmedTextColor.b,
-				self.DimmedTextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelHomichlophobia:setTooltip(getText("UI_ETW_GainLoseTooltip"))
-			self:addChild(self.labelHomichlophobia)
-
-			str = "+/- " .. getCachedTraitUIName(ETWTraitsRegistry.HOMICHLOPHILE)
-			self.labelHomichlophile = ISLabel:new(
-				barThreeFourthPosition - strLen(textManager, str) / 2,
-				y,
-				FONT_HGT_SMALL,
-				str,
-				self.DimmedTextColor.r,
-				self.DimmedTextColor.g,
-				self.DimmedTextColor.b,
-				self.DimmedTextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelHomichlophile:setTooltip(getText("UI_ETW_GainLoseTooltip"))
-			self:addChild(self.labelHomichlophile)
-
-			y = y + FONT_HGT_SMALL
-
-			self.labelFogSystemBarName = ISLabel:new(
-				barStartPosition - lineStartPosition,
-				y,
-				FONT_HGT_SMALL,
-				getText("Sandbox_ETW_FogSystem"),
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				false
-			)
-			self.labelFogSystemBarName:setTooltip(getText("Sandbox_ETW_FogSystemCounter_tooltip"))
-			self:addChild(self.labelFogSystemBarName)
-
-			self.barFogSystem = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
-			self.barFogSystem:setGradientTexture(redYellowGreenGradient)
-			self.barFogSystem:setHighlightRadius(highlightRadius)
-			self.barFogSystem:setDoKnob(false)
-			self:addChild(self.barFogSystem)
-
-			y = y + FONT_HGT_SMALL
-		end
-
-		-- ── Route: back to Progress tab ──────────────────────────────────────────
-		routeTo(self.subViewProgress, progressLayoutCursor)
-
-		if ETW_CommonLogicChecks.InventoryTransferSystemShouldExecute(player) then
-			y = y + FONT_HGT_SMALL / 2
-
-			local weightTransferred = (modData and modData.TransferSystem and modData.TransferSystem.WeightTransferred)
-				or 0
-			local targetWeight = SBvars.InventoryTransferSystemWeight
-			if weightTransferred < targetWeight then
-				str = "- " .. getCachedTraitUIName(CharacterTrait.ALL_THUMBS)
-				local labelX = barOneThirdPosition - strLen(textManager, str) / 2
-				self.labelAllThumbsWeightLose = ISLabel:new(
-					labelX,
-					y,
-					FONT_HGT_SMALL,
-					str,
-					self.DimmedTextColor.r,
-					self.DimmedTextColor.g,
-					self.DimmedTextColor.b,
-					self.DimmedTextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelAllThumbsWeightLose:setTooltip(getText("UI_ETW_LooseTooltip"))
-				self:addChild(self.labelAllThumbsWeightLose)
-
-				str = "- " .. getCachedTraitUIName(CharacterTrait.DISORGANIZED)
-				labelX = barTwoThirdPosition - strLen(textManager, str) / 2
-				self.labelDisorganizedWeightLose = ISLabel:new(
-					labelX,
-					y,
-					FONT_HGT_SMALL,
-					str,
-					self.DimmedTextColor.r,
-					self.DimmedTextColor.g,
-					self.DimmedTextColor.b,
-					self.DimmedTextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelDisorganizedWeightLose:setTooltip(getText("UI_ETW_LooseTooltip"))
-				self:addChild(self.labelDisorganizedWeightLose)
-
-				y = y + FONT_HGT_SMALL
-
-				self.labelInventoryTransferSystemWeightBarName = ISLabel:new(
-					barStartPosition - lineStartPosition,
-					y,
-					FONT_HGT_SMALL,
-					getText("Sandbox_ETW_InventoryTransferSystemWeight"),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					false
-				)
-				self.labelInventoryTransferSystemWeightBarName:setTooltip(
-					getText("Sandbox_ETW_InventoryTransferSystemWeight_tooltip")
-				)
-				self:addChild(self.labelInventoryTransferSystemWeightBarName)
-
-				self.barInventoryTransferSystemWeight =
-					ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
-				self.barInventoryTransferSystemWeight:setGradientTexture(redYellowGreenGradient)
-				self.barInventoryTransferSystemWeight:setHighlightRadius(highlightRadius)
-				self.barInventoryTransferSystemWeight:setDoKnob(false)
-				self:addChild(self.barInventoryTransferSystemWeight)
-
-				y = y + FONT_HGT_SMALL
-
-				str = "+ " .. getCachedTraitUIName(CharacterTrait.DEXTEROUS)
-				labelX = barTwoThirdPosition - strLen(textManager, str) / 2
-				self.labelDexterousWeightGain = ISLabel:new(
-					labelX,
-					y,
-					FONT_HGT_SMALL,
-					str,
-					self.DimmedTextColor.r,
-					self.DimmedTextColor.g,
-					self.DimmedTextColor.b,
-					self.DimmedTextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelDexterousWeightGain:setTooltip(getText("UI_ETW_GainTooltip"))
-				self:addChild(self.labelDexterousWeightGain)
-
-				-- UI_trait_Packmule is internal string name
-				str = "+ " .. getCachedTraitUIName(CharacterTrait.PACKMULE)
-				labelX = barEndPosition
-
-				self.labelPackmuleWeightGain = ISLabel:new(
-					labelX,
-					y,
-					FONT_HGT_SMALL,
-					str,
-					self.DimmedTextColor.r,
-					self.DimmedTextColor.g,
-					self.DimmedTextColor.b,
-					self.DimmedTextColor.a,
-					UIFont.Small,
-					false
-				)
-				self.labelPackmuleWeightGain:setTooltip(getText("UI_ETW_GainTooltip"))
-				self:addChild(self.labelPackmuleWeightGain)
-				y = y + FONT_HGT_SMALL
-			end
-
-			local itemsTransferred = (modData and modData.TransferSystem and modData.TransferSystem.ItemsTransferred)
-				or 0
-			local targetItems = SBvars.InventoryTransferSystemItems
-			if itemsTransferred < targetItems then
-				str = "- " .. getCachedTraitUIName(CharacterTrait.DISORGANIZED)
-				local labelX = barOneThirdPosition - strLen(textManager, str) / 2
-				self.labelDisorganizedItemsLose = ISLabel:new(
-					labelX,
-					y,
-					FONT_HGT_SMALL,
-					str,
-					self.DimmedTextColor.r,
-					self.DimmedTextColor.g,
-					self.DimmedTextColor.b,
-					self.DimmedTextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelDisorganizedItemsLose:setTooltip(getText("UI_ETW_LooseTooltip"))
-				self:addChild(self.labelDisorganizedItemsLose)
-
-				str = "- " .. getCachedTraitUIName(CharacterTrait.ALL_THUMBS)
-				labelX = barTwoThirdPosition - strLen(textManager, str) / 2
-				self.labelAllThumbsItemsLose = ISLabel:new(
-					labelX,
-					y,
-					FONT_HGT_SMALL,
-					str,
-					self.DimmedTextColor.r,
-					self.DimmedTextColor.g,
-					self.DimmedTextColor.b,
-					self.DimmedTextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelAllThumbsItemsLose:setTooltip(getText("UI_ETW_LooseTooltip"))
-				self:addChild(self.labelAllThumbsItemsLose)
-
-				y = y + FONT_HGT_SMALL
-
-				self.labelInventoryTransferSystemItemsBarName = ISLabel:new(
-					barStartPosition - lineStartPosition,
-					y,
-					FONT_HGT_SMALL,
-					getText("Sandbox_ETW_InventoryTransferSystemItems"),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					false
-				)
-				self.labelInventoryTransferSystemItemsBarName:setTooltip(
-					getText("Sandbox_ETW_InventoryTransferSystemItems_tooltip")
-				)
-				self:addChild(self.labelInventoryTransferSystemItemsBarName)
-
-				self.barInventoryTransferSystemItems = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
-				self.barInventoryTransferSystemItems:setGradientTexture(redYellowGreenGradient)
-				self.barInventoryTransferSystemItems:setHighlightRadius(highlightRadius)
-				self.barInventoryTransferSystemItems:setDoKnob(false)
-				self:addChild(self.barInventoryTransferSystemItems)
-
-				y = y + FONT_HGT_SMALL
-
-				str = "+ " .. getCachedTraitUIName(CharacterTrait.PACKMULE)
-				labelX = barTwoThirdPosition - strLen(textManager, str) / 2
-				self.labelPackmuleItemsGain = ISLabel:new(
-					labelX,
-					y,
-					FONT_HGT_SMALL,
-					str,
-					self.DimmedTextColor.r,
-					self.DimmedTextColor.g,
-					self.DimmedTextColor.b,
-					self.DimmedTextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelPackmuleItemsGain:setTooltip(getText("UI_ETW_GainTooltip"))
-				self:addChild(self.labelPackmuleItemsGain)
-
-				-- UI_trait_Packmule is internal string name
-				str = "+ " .. getCachedTraitUIName(CharacterTrait.DEXTEROUS)
-				labelX = barEndPosition
-				self.labelDexterousItemsGain = ISLabel:new(
-					labelX,
-					y,
-					FONT_HGT_SMALL,
-					str,
-					self.DimmedTextColor.r,
-					self.DimmedTextColor.g,
-					self.DimmedTextColor.b,
-					self.DimmedTextColor.a,
-					UIFont.Small,
-					false
-				)
-				self.labelDexterousItemsGain:setTooltip(getText("UI_ETW_GainTooltip"))
-				self:addChild(self.labelDexterousItemsGain)
-				y = y + FONT_HGT_SMALL
-			end
-
-			y = y + FONT_HGT_SMALL / 2
-		end
-
-		if ETW_CommonLogicChecks.BraverySystemShouldExecute(player) then
-			str = "- " .. getCachedTraitUIName(CharacterTrait.COWARDLY)
-			self.labelCowardlyLose = ISLabel:new(
-				barStartPosition + (barLength / 6) - strLen(textManager, str) / 2,
-				y,
-				FONT_HGT_SMALL,
-				str,
-				self.DimmedTextColor.r,
-				self.DimmedTextColor.g,
-				self.DimmedTextColor.b,
-				self.DimmedTextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelCowardlyLose:setTooltip(getText("UI_ETW_LooseTooltip"))
-			self:addChild(self.labelCowardlyLose)
-
-			str = "- " .. getCachedTraitUIName(CharacterTrait.PACIFIST)
-			self.labelPacifistLose = ISLabel:new(
-				barStartPosition + (barLength / 6) * 3 - strLen(textManager, str) / 2,
-				y,
-				FONT_HGT_SMALL,
-				str,
-				self.DimmedTextColor.r,
-				self.DimmedTextColor.g,
-				self.DimmedTextColor.b,
-				self.DimmedTextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelPacifistLose:setTooltip(getText("UI_ETW_LooseTooltip"))
-			self:addChild(self.labelPacifistLose)
-
-			str = "+ " .. getCachedTraitUIName(CharacterTrait.BRAVE)
-			self.labelBraveryGain = ISLabel:new(
-				barStartPosition + (barLength / 6) * 5 - strLen(textManager, str) / 2,
-				y,
-				FONT_HGT_SMALL,
-				str,
-				self.DimmedTextColor.r,
-				self.DimmedTextColor.g,
-				self.DimmedTextColor.b,
-				self.DimmedTextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelBraveryGain:setTooltip(getText("UI_ETW_GainTooltip"))
-			self:addChild(self.labelBraveryGain)
-
-			y = y + FONT_HGT_SMALL
-
-			self.labelBraveryBarName = ISLabel:new(
-				barStartPosition - lineStartPosition,
-				y,
-				FONT_HGT_SMALL,
-				getText("Sandbox_ETW_BraverySystem"),
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				false
-			)
-			self.labelBraveryBarName:setTooltip(getText("Sandbox_ETW_BraverySystemKills_tooltip"))
-			self:addChild(self.labelBraveryBarName)
-
-			self.barBravery = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
-			self.barBravery:setGradientTexture(redYellowGreenGradient)
-			self.barBravery:setValue(1)
-			self.barBravery:setHighlightRadius(highlightRadius)
-			self.barBravery:setDoKnob(false)
-			self:addChild(self.barBravery)
-
-			y = y + FONT_HGT_SMALL
-
-			str = "- " .. getCachedTraitUIName(CharacterTrait.HEMOPHOBIC)
-			self.labelHemophobicLose = ISLabel:new(
-				barStartPosition + (barLength / 6) * 2 - strLen(textManager, str) / 2,
-				y,
-				FONT_HGT_SMALL,
-				str,
-				self.DimmedTextColor.r,
-				self.DimmedTextColor.g,
-				self.DimmedTextColor.b,
-				self.DimmedTextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelHemophobicLose:setTooltip(getText("UI_ETW_LooseTooltip"))
-			self:addChild(self.labelHemophobicLose)
-
-			str = "+ " .. getCachedTraitUIName(CharacterTrait.ADRENALINE_JUNKIE)
-			self.labelAdrenalineJunkieGain = ISLabel:new(
-				barStartPosition + (barLength / 6) * 4 - strLen(textManager, str) / 2,
-				y,
-				FONT_HGT_SMALL,
-				str,
-				self.DimmedTextColor.r,
-				self.DimmedTextColor.g,
-				self.DimmedTextColor.b,
-				self.DimmedTextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelAdrenalineJunkieGain:setTooltip(getText("UI_ETW_GainTooltip"))
-			self:addChild(self.labelAdrenalineJunkieGain)
-
-			self.labelDesensitizedGain = ISLabel:new(
-				barEndPosition,
-				y,
-				FONT_HGT_SMALL,
-				"+ " .. getCachedTraitUIName(CharacterTrait.DESENSITIZED),
-				self.DimmedTextColor.r,
-				self.DimmedTextColor.g,
-				self.DimmedTextColor.b,
-				self.DimmedTextColor.a,
-				UIFont.Small,
-				false
-			)
-			self.labelDesensitizedGain:setTooltip(getText("UI_ETW_GainTooltip"))
-			self:addChild(self.labelDesensitizedGain)
-
-			y = y + FONT_HGT_SMALL
-		end
-
-		-- ── Route: Non-permanent Traits tab ─────────────────────────────────────
-		routeTo(self.subViewNonPermanent, nonPermanentLayoutCursor)
-
-		if
-			ETW_CommonLogicChecks.SmokerShouldExecute(player)
-			and ((not modOptions and true) or not modOptions:getOption("HideSmokerUI"):getValue())
-		then
-			y = y + FONT_HGT_SMALL / 2
-
-			str = "- " .. getCachedTraitUIName(CharacterTrait.SMOKER)
-			self.labelSmokerLose = ISLabel:new(
-				barOneFourthPosition - strLen(textManager, str) / 2,
-				y,
-				FONT_HGT_SMALL,
-				str,
-				self.DimmedTextColor.r,
-				self.DimmedTextColor.g,
-				self.DimmedTextColor.b,
-				self.DimmedTextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelSmokerLose:setTooltip(getText("UI_ETW_GainTooltip"))
-			self:addChild(self.labelSmokerLose)
-
-			str = "+ " .. getCachedTraitUIName(CharacterTrait.SMOKER)
-			self.labelSmokerGain = ISLabel:new(
-				barThreeFourthPosition - strLen(textManager, str) / 2,
-				y,
-				FONT_HGT_SMALL,
-				str,
-				self.DimmedTextColor.r,
-				self.DimmedTextColor.g,
-				self.DimmedTextColor.b,
-				self.DimmedTextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelSmokerGain:setTooltip(getText("UI_ETW_LooseTooltip"))
-			self:addChild(self.labelSmokerGain)
-
-			y = y + FONT_HGT_SMALL
-
-			self.labelSmokerBarName = ISLabel:new(
-				barStartPosition - lineStartPosition,
-				y,
-				FONT_HGT_SMALL,
-				getCachedTraitUIName(CharacterTrait.SMOKER),
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				false
-			)
-			self.labelSmokerBarName:setTooltip(getText("Sandbox_ETW_SmokerCounter_tooltip"))
-			self:addChild(self.labelSmokerBarName)
-
-			self.barSmokerSystem = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
-			self.barSmokerSystem:setGradientTexture(greenYellowRedGradient)
-			self.barSmokerSystem:setHighlightRadius(highlightRadius)
-			self.barSmokerSystem:setDoKnob(false)
-			self:addChild(self.barSmokerSystem)
-		end
-
-		y = y + FONT_HGT_SMALL * 1.5
-
-		-- ── Route: back to Progress tab (skill/counter labels section) ───────────
-		routeTo(self.subViewProgress, progressLayoutCursor)
-
-		if
-			ETW_CommonLogicChecks.EagleEyedShouldExecute(player)
-			and not playerHasDelayedTraitNoCache(player, CharacterTrait.EAGLE_EYED)
-		then
-			arrangeColumnsInTable()
-			self.labelEagleEyedProgress = ISLabel:new(
-				x,
-				y,
-				FONT_HGT_SMALL,
-				"",
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelEagleEyedProgress:setTooltip(getText("Sandbox_ETW_EagleEyedKills"))
-			self:addChild(self.labelEagleEyedProgress)
-		end
-
-		if
-			ETW_CommonLogicChecks.HoarderShouldExecute(player)
-			and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.HOARDER)
-		then
-			arrangeColumnsInTable()
-			self.labelHoarderProgress = ISLabel:new(
-				x,
-				y,
-				FONT_HGT_SMALL,
-				"",
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelHoarderProgress:setTooltip(getText("Sandbox_ETW_HoarderSkill"))
-			self:addChild(self.labelHoarderProgress)
-		end
-
-		if
-			ETW_CommonLogicChecks.GymRatShouldExecute(player)
-			and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.GYM_RAT)
-		then
-			arrangeColumnsInTable()
-			self.labelGymRatProgress = ISLabel:new(
-				x,
-				y,
-				FONT_HGT_SMALL,
-				"",
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelGymRatProgress:setTooltip(getText("Sandbox_ETW_GymRatSkill_tooltip"))
-			self:addChild(self.labelGymRatProgress)
-		end
-
-		if
-			ETW_CommonLogicChecks.RunnerShouldExecute(player)
-			and not playerHasDelayedTraitNoCache(player, CharacterTrait.JOGGER)
-		then
-			arrangeColumnsInTable()
-			self.labelRunnerProgress = ISLabel:new(
-				x,
-				y,
-				FONT_HGT_SMALL,
-				"",
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelRunnerProgress:setTooltip(getText("Sandbox_ETW_RunnerSkill"))
-			self:addChild(self.labelRunnerProgress)
-		end
-
-		if
-			ETW_CommonLogicChecks.LightStepShouldExecute(player)
-			and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.LIGHTSTEP)
-		then
-			arrangeColumnsInTable()
-			self.labelLightStepProgress = ISLabel:new(
-				x,
-				y,
-				FONT_HGT_SMALL,
-				"",
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelLightStepProgress:setTooltip(getText("Sandbox_ETW_LightStepSkill"))
-			self:addChild(self.labelLightStepProgress)
-		end
-
-		if
-			ETW_CommonLogicChecks.GymnastShouldExecute(player)
-			and not playerHasDelayedTraitNoCache(player, CharacterTrait.GYMNAST)
-		then
-			arrangeColumnsInTable()
-			self.labelGymnastProgress = ISLabel:new(
-				x,
-				y,
-				FONT_HGT_SMALL,
-				getText(""),
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelGymnastProgress:setTooltip(getText("Sandbox_ETW_GymnastSkill_tooltip"))
-			self:addChild(self.labelGymnastProgress)
-		end
-
-		if
-			ETW_CommonLogicChecks.ClumsyShouldExecute(player)
-			and not playerHasDelayedTraitNoCache(player, CharacterTrait.CLUMSY)
-		then
-			arrangeColumnsInTable()
-			self.labelClumsyProgress = ISLabel:new(
-				x,
-				y,
-				FONT_HGT_SMALL,
-				getText(""),
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelClumsyProgress:setTooltip(getText("Sandbox_ETW_ClumsySkill_tooltip"))
-			self:addChild(self.labelClumsyProgress)
-		end
-
-		if
-			ETW_CommonLogicChecks.GracefulShouldExecute(player)
-			and not playerHasDelayedTraitNoCache(player, CharacterTrait.GRACEFUL)
-		then
-			arrangeColumnsInTable()
-			self.labelGracefulProgress = ISLabel:new(
-				x,
-				y,
-				FONT_HGT_SMALL,
-				getText(""),
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelGracefulProgress:setTooltip(getText("Sandbox_ETW_GracefulSkill_tooltip"))
-			self:addChild(self.labelGracefulProgress)
-		end
-
-		if
-			ETW_CommonLogicChecks.BurglarShouldExecute(player)
-			and not playerHasDelayedTraitNoCache(player, CharacterTrait.BURGLAR)
-		then
-			arrangeColumnsInTable()
-			self.labelBurglarProgress = ISLabel:new(
-				x,
-				y,
-				FONT_HGT_SMALL,
-				getText(""),
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelBurglarProgress:setTooltip(getText("Sandbox_ETW_BurglarSkill_tooltip"))
-			self:addChild(self.labelBurglarProgress)
-		end
-
-		if
-			ETW_CommonLogicChecks.LowProfileShouldExecute(player)
-			and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.LOW_PROFILE)
-		then
-			arrangeColumnsInTable()
-			self.labelLowProfileProgress = ISLabel:new(
-				x,
-				y,
-				FONT_HGT_SMALL,
-				getText(""),
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelLowProfileProgress:setTooltip(getText("Sandbox_ETW_LowProfileSkill"))
-			self:addChild(self.labelLowProfileProgress)
-		end
-
-		if
-			ETW_CommonLogicChecks.ConspicuousShouldExecute(player)
-			and not playerHasDelayedTraitNoCache(player, CharacterTrait.CONSPICUOUS)
-		then
-			arrangeColumnsInTable()
-			self.labelConspicuousProgress = ISLabel:new(
-				x,
-				y,
-				FONT_HGT_SMALL,
-				getText(""),
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelConspicuousProgress:setTooltip(getText("Sandbox_ETW_ConspicuousSkill"))
-			self:addChild(self.labelConspicuousProgress)
-		end
-
-		if
-			ETW_CommonLogicChecks.InconspicuousShouldExecute(player)
-			and not playerHasDelayedTraitNoCache(player, CharacterTrait.INCONSPICUOUS)
-		then
-			arrangeColumnsInTable()
-			self.labelInconspicuousProgress = ISLabel:new(
-				x,
-				y,
-				FONT_HGT_SMALL,
-				getText(""),
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelInconspicuousProgress:setTooltip(getText("Sandbox_ETW_InconspicuousSkill"))
-			self:addChild(self.labelInconspicuousProgress)
-		end
-
-		if
-			ETW_CommonLogicChecks.HunterShouldExecute(player)
-			and not playerHasDelayedTraitNoCache(player, CharacterTrait.HUNTER)
-		then
-			local levels = sneaking + aiming + trapping + shortBlade
-			if sneaking < 2 or aiming < 2 or trapping < 2 or shortBlade < 2 or levels < SBvars.HunterSkill then
-				arrangeColumnsInTable()
-				self.labelHunterSkillProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelHunterSkillProgress:setTooltip(getText("Sandbox_ETW_HunterSkill_tooltip"))
-				self:addChild(self.labelHunterSkillProgress)
-			end
-			if (shortBladeKills + firearmKills) < SBvars.HunterKills then
-				arrangeColumnsInTable()
-				self.labelHunterKillsProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelHunterKillsProgress:setTooltip(
-					getText("Sandbox_ETW_HunterKills") .. " (" .. getText("Sandbox_ETW_HunterKills_tooltip") .. ")"
-				)
-				self:addChild(self.labelHunterKillsProgress)
-			end
-		end
-
-		if
-			ETW_CommonLogicChecks.BladeEnthusiastShouldExecute(player)
-			and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.BLADE_ENTHUSIAST)
-		then
-			if longBlade < SBvars.BladeEnthusiastSkill then
-				arrangeColumnsInTable()
-				self.labelBladeEnthusiastSkillProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelBladeEnthusiastSkillProgress:setTooltip(getText("Sandbox_ETW_BladeEnthusiastSkill"))
-				self:addChild(self.labelBladeEnthusiastSkillProgress)
-			end
-			if longBladeKills < SBvars.BladeEnthusiastKills then
-				arrangeColumnsInTable()
-				self.labelBladeEnthusiastKillsProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelBladeEnthusiastKillsProgress:setTooltip(getText("Sandbox_ETW_BladeEnthusiastKills"))
-				self:addChild(self.labelBladeEnthusiastKillsProgress)
-			end
-		end
-
-		if
-			ETW_CommonLogicChecks.BrawlerShouldExecute(player)
-			and not playerHasDelayedTraitNoCache(player, CharacterTrait.BRAWLER)
-		then
-			if (axe + longBlunt) < SBvars.BrawlerSkill then
-				arrangeColumnsInTable()
-				self.labelBrawlerSkillProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelBrawlerSkillProgress:setTooltip(getText("Sandbox_ETW_BrawlerSkill_tooltip"))
-				self:addChild(self.labelBrawlerSkillProgress)
-			end
-
-			if (axeKills + longBluntKills) < SBvars.BrawlerKills then
-				arrangeColumnsInTable()
-				self.labelBrawlerKillsProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelBrawlerKillsProgress:setTooltip(
-					getText("Sandbox_ETW_BrawlerKills") .. " (" .. getText("Sandbox_ETW_BrawlerKills_tooltip") .. ")"
-				)
-				self:addChild(self.labelBrawlerKillsProgress)
-			end
-		end
-
-		if
-			ETW_CommonLogicChecks.AxeThrowerShouldExecute(player)
-			and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.AXE_THROWER)
-		then
-			if axe < SBvars.AxeThrowerSkill then
-				arrangeColumnsInTable()
-				self.labelAxeThrowerSkillProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelAxeThrowerSkillProgress:setTooltip(getText("Sandbox_ETW_AxeThrowerSkill"))
-				self:addChild(self.labelAxeThrowerSkillProgress)
-			end
-			if axeKills < SBvars.AxeThrowerKills then
-				arrangeColumnsInTable()
-				self.labelAxeThrowerKillsProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelAxeThrowerKillsProgress:setTooltip(getText("Sandbox_ETW_AxeThrowerKills"))
-				self:addChild(self.labelAxeThrowerKillsProgress)
-			end
-		end
-
-		if
-			ETW_CommonLogicChecks.StickFighterShouldExecute(player)
-			and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.STICK_FIGHTER)
-		then
-			if shortBlunt < SBvars.StickFighterSkill then
-				arrangeColumnsInTable()
-				self.labelStickFighterSkillProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelStickFighterSkillProgress:setTooltip(getText("Sandbox_ETW_StickFighterSkill"))
-				self:addChild(self.labelStickFighterSkillProgress)
-			end
-			if shortBluntKills < SBvars.StickFighterKills then
-				arrangeColumnsInTable()
-				self.labelStickFighterKillsProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelStickFighterKillsProgress:setTooltip(getText("Sandbox_ETW_StickFighterKills"))
-				self:addChild(self.labelStickFighterKillsProgress)
-			end
-		end
-
-		if
-			ETW_CommonLogicChecks.KnifeFighterShouldExecute(player)
-			and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.KNIFE_FIGHTER)
-		then
-			if shortBlade < SBvars.KnifeFighterSkill then
-				arrangeColumnsInTable()
-				self.labelKnifeFighterSkillProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelKnifeFighterSkillProgress:setTooltip(getText("Sandbox_ETW_KnifeFighterSkill"))
-				self:addChild(self.labelKnifeFighterSkillProgress)
-			end
-			if shortBladeKills < SBvars.KnifeFighterKills then
-				arrangeColumnsInTable()
-				self.labelKnifeFighterKillsProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelKnifeFighterKillsProgress:setTooltip(getText("Sandbox_ETW_KnifeFighterKills"))
-				self:addChild(self.labelKnifeFighterKillsProgress)
-			end
-		end
-
-		if
-			ETW_CommonLogicChecks.PolearmFighterShouldExecute(player)
-			and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.POLEARM_FIGHTER)
-		then
-			if spear < SBvars.PolearmFighterSkill then
-				arrangeColumnsInTable()
-				self.labelPolearmFighterSkillProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelPolearmFighterSkillProgress:setTooltip(getText("Sandbox_ETW_PolearmFighterSkill"))
-				self:addChild(self.labelPolearmFighterSkillProgress)
-			end
-			if spearKills < SBvars.PolearmFighterKills then
-				arrangeColumnsInTable()
-				self.labelPolearmFighterKillsProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelPolearmFighterKillsProgress:setTooltip(getText("Sandbox_ETW_PolearmFighterKills"))
-				self:addChild(self.labelPolearmFighterKillsProgress)
-			end
-		end
-
-		if
-			ETW_CommonLogicChecks.RestorationExpertShouldExecute(player)
-			and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.RESTORATION_EXPERT)
-		then
-			arrangeColumnsInTable()
-			self.labelRestorationExpertSkillProgress = ISLabel:new(
-				x,
-				y,
-				FONT_HGT_SMALL,
-				getText(""),
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelRestorationExpertSkillProgress:setTooltip(getText("Sandbox_ETW_RestorationExpertSkill"))
-			self:addChild(self.labelRestorationExpertSkillProgress)
-		end
-
-		if
-			ETW_CommonLogicChecks.HandyShouldExecute(player)
-			and not playerHasDelayedTraitNoCache(player, CharacterTrait.HANDY)
-		then
-			arrangeColumnsInTable()
-			self.labelHandySkillProgress = ISLabel:new(
-				x,
-				y,
-				FONT_HGT_SMALL,
-				getText(""),
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelHandySkillProgress:setTooltip(getText("Sandbox_ETW_HandySkill_tooltip"))
-			self:addChild(self.labelHandySkillProgress)
-		end
-
-		if
-			ETW_CommonLogicChecks.FurnitureAssemblerShouldExecute(player)
-			and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.FURNITURE_ASSEMBLER)
-		then
-			arrangeColumnsInTable()
-			self.labelFurnitureAssemblerProgress = ISLabel:new(
-				x,
-				y,
-				FONT_HGT_SMALL,
-				getText(""),
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelFurnitureAssemblerProgress:setTooltip(getText("Sandbox_ETW_FurnitureAssemblerSkill"))
-			self:addChild(self.labelFurnitureAssemblerProgress)
-		end
-
-		if
-			ETW_CommonLogicChecks.HomeCookShouldExecute(player)
-			and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.HOME_COOK)
-		then
-			arrangeColumnsInTable()
-			self.labelHomeCookProgress = ISLabel:new(
-				x,
-				y,
-				FONT_HGT_SMALL,
-				getText(""),
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelHomeCookProgress:setTooltip(getText("Sandbox_ETW_HomeCookSkill"))
-			self:addChild(self.labelHomeCookProgress)
-		end
-
-		if
-			ETW_CommonLogicChecks.CookShouldExecute(player)
-			and not playerHasDelayedTraitNoCache(player, CharacterTrait.COOK)
-		then
-			arrangeColumnsInTable()
-			self.labelCookProgress = ISLabel:new(
-				x,
-				y,
-				FONT_HGT_SMALL,
-				getText(""),
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelCookProgress:setTooltip(getText("Sandbox_ETW_CookSkill"))
-			self:addChild(self.labelCookProgress)
-		end
-
-		if
-			ETW_CommonLogicChecks.FirstAidShouldExecute(player)
-			and not playerHasDelayedTraitNoCache(player, CharacterTrait.FIRST_AID)
-		then
-			arrangeColumnsInTable()
-			self.labelFirstAidProgress = ISLabel:new(
-				x,
-				y,
-				FONT_HGT_SMALL,
-				getText(""),
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelFirstAidProgress:setTooltip(getText("Sandbox_ETW_FirstAidSkill"))
-			self:addChild(self.labelFirstAidProgress)
-		end
-
-		if
-			ETW_CommonLogicChecks.AVClubShouldExecute(player)
-			and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.AV_CLUB)
-		then
-			arrangeColumnsInTable()
-			self.labelAVClubProgress = ISLabel:new(
-				x,
-				y,
-				FONT_HGT_SMALL,
-				getText(""),
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelAVClubProgress:setTooltip(getText("Sandbox_ETW_AVClubSkill"))
-			self:addChild(self.labelAVClubProgress)
-		end
-
-		if
-			ETW_CommonLogicChecks.BodyWorkEnthusiastShouldExecute(player)
-			and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.BODYWORK_ENTHUSIAST)
-		then
-			if metalworking + mechanics < SBvars.BodyworkEnthusiastSkill then
-				arrangeColumnsInTable()
-				self.labelBodyWorkEnthusiastSkillProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelBodyWorkEnthusiastSkillProgress:setTooltip(
-					getText("Sandbox_ETW_BodyworkEnthusiastSkill_tooltip")
-				)
-				self:addChild(self.labelBodyWorkEnthusiastSkillProgress)
-			end
-			local vehiclePartRepairs = (modData and modData.VehiclePartRepairs) or 0
-			if vehiclePartRepairs < SBvars.BodyworkEnthusiastRepairs then
-				arrangeColumnsInTable()
-				self.labelBodyWorkEnthusiastRepairsProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelBodyWorkEnthusiastRepairsProgress:setTooltip(
-					getText("Sandbox_ETW_BodyworkEnthusiastRepairs_tooltip")
-				)
-				self:addChild(self.labelBodyWorkEnthusiastRepairsProgress)
-			end
-		end
-
-		if
-			ETW_CommonLogicChecks.MechanicsShouldExecute(player)
-			and not playerHasDelayedTraitNoCache(player, CharacterTrait.MECHANICS)
-		then
-			if mechanics < SBvars.MechanicsSkill then
-				arrangeColumnsInTable()
-				self.labelMechanicsSkillProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelMechanicsSkillProgress:setTooltip(getText("Sandbox_ETW_MechanicsSkill"))
-				self:addChild(self.labelMechanicsSkillProgress)
-			end
-			local vehiclePartRepairs = (modData and modData.VehiclePartRepairs) or 0
-			if vehiclePartRepairs < SBvars.MechanicsRepairs then
-				arrangeColumnsInTable()
-				self.labelMechanicsRepairsProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelMechanicsRepairsProgress:setTooltip(getText("Sandbox_ETW_MechanicsRepairs_tooltip"))
-				self:addChild(self.labelMechanicsRepairsProgress)
-			end
-		end
-
-		if
-			ETW_CommonLogicChecks.SewerShouldExecute(player)
-			and not playerHasDelayedTraitNoCache(player, CharacterTrait.TAILOR)
-		then
-			if tailoring < SBvars.SewerSkill then
-				arrangeColumnsInTable()
-				self.labelTailorSkillProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelTailorSkillProgress:setTooltip(getText("Sandbox_ETW_SewerSkill"))
-				self:addChild(self.labelTailorSkillProgress)
-			end
-
-			local uniqueClothingRipped = (modData and modData.UniqueClothingRipped and #modData.UniqueClothingRipped)
-				or 0
-			if uniqueClothingRipped < SBvars.SewerUniqueClothesRipped then
-				arrangeColumnsInTable()
-				self.labelTailorRippedClothesProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelTailorRippedClothesProgress:setTooltip(
-					getText("Sandbox_ETW_SewerUniqueClothesRipped_tooltip")
-				)
-				self:addChild(self.labelTailorRippedClothesProgress)
-			end
-		end
-
-		if
-			ETW_CommonLogicChecks.PetTherapyShouldExecute(player)
-			and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.PET_THERAPY)
-		then
-			if husbandry < SBvars.PetTherapySkill then
-				arrangeColumnsInTable()
-				self.labelPetTherapySkillProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelPetTherapySkillProgress:setTooltip(getText("Sandbox_ETW_PetTherapySkill"))
-				self:addChild(self.labelPetTherapySkillProgress)
-			end
-
-			local uniqueAnimalsPetted = (
-				modData
-				and modData.AnimalsSystem
-				and modData.AnimalsSystem.UniqueAnimalsPetted
-				and #modData.AnimalsSystem.UniqueAnimalsPetted
-			) or 0
-			if uniqueAnimalsPetted < SBvars.PetTherapyUniqueAnimalsPetted then
-				arrangeColumnsInTable()
-				self.labelPetTherapyPettingProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelPetTherapyPettingProgress:setTooltip(
-					getText("Sandbox_ETW_PetTherapyUniqueAnimalsPetted_tooltip")
-				)
-				self:addChild(self.labelPetTherapyPettingProgress)
-			end
-		end
-
-		if
-			ETW_CommonLogicChecks.GunEnthusiastShouldExecute(player)
-			and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.GUN_ENTHUSIAST)
-		then
-			if aiming + reloading < SBvars.GunEnthusiastSkill then
-				arrangeColumnsInTable()
-				self.labelGunEnthusiastSkillProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelGunEnthusiastSkillProgress:setTooltip(getText("Sandbox_ETW_GunEnthusiastSkill_tooltip"))
-				self:addChild(self.labelGunEnthusiastSkillProgress)
-			end
-
-			if firearmKills < SBvars.GunEnthusiastKills then
-				arrangeColumnsInTable()
-				self.labelGunEnthusiastKillsProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelGunEnthusiastKillsProgress:setTooltip(getText("Sandbox_ETW_GunEnthusiastKills"))
-				self:addChild(self.labelGunEnthusiastKillsProgress)
-			end
-		end
-
-		if
-			ETW_CommonLogicChecks.AnglerShouldExecute(player)
-			and not playerHasDelayedTraitNoCache(player, CharacterTrait.FISHING)
-		then
-			arrangeColumnsInTable()
-			self.labelAnglerProgress = ISLabel:new(
-				x,
-				y,
-				FONT_HGT_SMALL,
-				getText(""),
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelAnglerProgress:setTooltip(getText("Sandbox_ETW_FishingSkill"))
-			self:addChild(self.labelAnglerProgress)
-		end
-
-		if
-			ETW_CommonLogicChecks.HikerShouldExecute(player)
-			and not playerHasDelayedTraitNoCache(player, CharacterTrait.HIKER)
-		then
-			arrangeColumnsInTable()
-			self.labelHikerProgress = ISLabel:new(
-				x,
-				y,
-				FONT_HGT_SMALL,
-				getText(""),
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelHikerProgress:setTooltip(getText("Sandbox_ETW_HikerSkill_tooltip"))
-			self:addChild(self.labelHikerProgress)
-		end
-
-		if
-			ETW_CommonLogicChecks.CatEyesShouldExecute(player)
-			and not playerHasDelayedTraitNoCache(player, CharacterTrait.NIGHT_VISION)
-		then
-			arrangeColumnsInTable()
-			self.labelCatEyesProgress = ISLabel:new(
-				x,
-				y,
-				FONT_HGT_SMALL,
-				getText(""),
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelCatEyesProgress:setTooltip(getText("Sandbox_ETW_CatEyesCounter_tooltip"))
-			self:addChild(self.labelCatEyesProgress)
-		end
-
-		if
-			ETW_CommonLogicChecks.HerbalistShouldExecute(player)
-			and not playerHasDelayedTraitNoCache(player, CharacterTrait.HERBALIST)
-		then
-			arrangeColumnsInTable()
-			self.labelHerbalistProgress = ISLabel:new(
-				x,
-				y,
-				FONT_HGT_SMALL,
-				getText(""),
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelHerbalistProgress:setTooltip(getText("Sandbox_ETW_HerbalistHerbsPicked_tooltip"))
-			self:addChild(self.labelHerbalistProgress)
-		end
-
-		if
-			ETW_CommonLogicChecks.AxemanShouldExecute(player)
-			and not playerHasDelayedTraitNoCache(player, CharacterTrait.AXEMAN)
-		then
-			arrangeColumnsInTable()
-			self.labelAxemanProgress = ISLabel:new(
-				x,
-				y,
-				FONT_HGT_SMALL,
-				getText(""),
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelAxemanProgress:setTooltip(getText("Sandbox_ETW_AxpertTrees_tooltip"))
-			self:addChild(self.labelAxemanProgress)
-		end
-
-		if
-			ETW_CommonLogicChecks.WhittlerShouldExecute(player)
-			and not playerHasDelayedTraitNoCache(player, CharacterTrait.WHITTLER)
-		then
-			arrangeColumnsInTable()
-			self.labelWhittlerProgress = ISLabel:new(
-				x,
-				y,
-				FONT_HGT_SMALL,
-				getText(""),
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelWhittlerProgress:setTooltip(getText("Sandbox_ETW_WhittlerSkill"))
-			self:addChild(self.labelWhittlerProgress)
-		end
-
-		if
-			ETW_CommonLogicChecks.BlacksmithShouldExecute(player)
-			and not playerHasDelayedTraitNoCache(player, CharacterTrait.BLACKSMITH)
-		then
-			arrangeColumnsInTable()
-			self.labelBlacksmithProgress = ISLabel:new(
-				x,
-				y,
-				FONT_HGT_SMALL,
-				getText(""),
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelBlacksmithProgress:setTooltip(getText("Sandbox_ETW_BlacksmithSkill_tooltip"))
-			self:addChild(self.labelBlacksmithProgress)
-		end
-
-		if
-			ETW_CommonLogicChecks.WildernessKnowledgeShouldExecute(player)
-			and not playerHasDelayedTraitNoCache(player, CharacterTrait.WILDERNESS_KNOWLEDGE)
-		then
-			local levels = foraging + knapping + maintenance + carving
-			if
-				foraging < 2
-				or knapping < 2
-				or maintenance < 2
-				or carving < 2
-				or levels < SBvars.WildernessKnowledgeSkill
-			then
-				arrangeColumnsInTable(true)
-				self.labelWildernessKnowledgeSkillProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelWildernessKnowledgeSkillProgress:setTooltip(
-					getText("Sandbox_ETW_WildernessKnowledgeSkill_tooltip")
-				)
-				self:addChild(self.labelWildernessKnowledgeSkillProgress)
-			end
-		end
-
-		if SBvars.DelayedTraitsSystem then
-			y = y + FONT_HGT_SMALL
-			str = getText("Sandbox_ETW_DelayedTraitsSystem")
-			self.labelDelayedTraitsSystem = ISLabel:new(
-				WINDOW_WIDTH / 2 - strLen(textManager, str) / 2,
-				y,
-				FONT_HGT_SMALL,
-				str,
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelDelayedTraitsSystem:setTooltip(getText("Sandbox_ETW_DelayedTraitsSystem_tooltip"))
-			self:addChild(self.labelDelayedTraitsSystem)
-
-			self.buttonDelayedTraitsTooltip = ISButton:new(
-				lineStartPosition,
-				y + FONT_HGT_SMALL,
-				WINDOW_WIDTH - lineStartPosition * 2,
-				FONT_HGT_SMALL,
-				"",
-				self,
-				nil
-			)
-			self.buttonDelayedTraitsTooltip:initialise()
-			self.buttonDelayedTraitsTooltip.borderColor.a = 0
-			self.buttonDelayedTraitsTooltip.backgroundColor.a = 0
-			self.buttonDelayedTraitsTooltip.backgroundColorMouseOver.a = 0
-			self.buttonDelayedTraitsTooltip:setTooltip(getText("Sandbox_ETW_DelayedTraitsSystem_tooltip"))
-			self:addChild(self.buttonDelayedTraitsTooltip)
-		end
+		buildNonPermanentProgressSection()
 
 		storeActiveLayoutCursor()
 		WINDOW_HEIGHT = math.max(progressLayoutCursor.y, nonPermanentLayoutCursor.y) + FONT_HGT_SMALL * 2
@@ -2769,6 +2774,22 @@ function ISETWProgressUI:render()
 	-- Only draw directly onto self when the Progress subtab is visible.
 	-- The Non-permanent tab (or any future subtab) must not show these renders.
 	local isProgressTabActive = not self.subPanel or self.subPanel:getActiveView() == self.subViewProgress
+	local progressSubviewOffsetY = (self.subPanel and self.subPanel.tabHeight) or 0
+
+	local function getWidgetTop(widget)
+		if not widget then
+			return nil
+		end
+		return widget:getY() + progressSubviewOffsetY
+	end
+
+	local function getWidgetBottom(widget)
+		if not widget then
+			return nil
+		end
+		local height = (widget.getHeight and widget:getHeight()) or widget.height or FONT_HGT_SMALL
+		return widget:getY() + height + progressSubviewOffsetY
+	end
 
 	local strength = player:getPerkLevel(Perks.Strength)
 	local fitness = player:getPerkLevel(Perks.Fitness)
@@ -2923,22 +2944,32 @@ function ISETWProgressUI:render()
 		isProgressTabActive
 		and (self.barInventoryTransferSystemWeight ~= nil or self.barInventoryTransferSystemItems ~= nil)
 	then
-		local heightOfBox = FONT_HGT_SMALL * 3.5
-		if self.barInventoryTransferSystemWeight ~= nil and self.barInventoryTransferSystemItems ~= nil then
-			heightOfBox = FONT_HGT_SMALL * 6.5
+		local topY = getWidgetTop(self.labelAllThumbsWeightLose)
+			or getWidgetTop(self.labelDisorganizedWeightLose)
+			or getWidgetTop(self.labelDisorganizedItemsLose)
+			or getWidgetTop(self.labelAllThumbsItemsLose)
+			or getWidgetTop(self.labelInventoryTransferSystemWeightBarName)
+			or getWidgetTop(self.labelInventoryTransferSystemItemsBarName)
+		local bottomY = getWidgetBottom(self.labelOrganizedItemsGain)
+			or getWidgetBottom(self.labelDextrousItemsGain)
+			or getWidgetBottom(self.labelOrganizedWeightGain)
+			or getWidgetBottom(self.labelDextrousWeightGain)
+			or getWidgetBottom(self.barInventoryTransferSystemItems)
+			or getWidgetBottom(self.barInventoryTransferSystemWeight)
+		if topY and bottomY then
+			topY = topY - (FONT_HGT_SMALL / 4)
+			bottomY = bottomY + (FONT_HGT_SMALL / 4)
+			self:drawRectBorder(
+				lineStartPosition,
+				topY,
+				self:getWidth() - lineStartPosition * 1.5,
+				bottomY - topY,
+				self.DimmedTextColor.a,
+				self.DimmedTextColor.r,
+				self.DimmedTextColor.g,
+				self.DimmedTextColor.b
+			)
 		end
-		local yPosition = (self.labelAllThumbsWeightLose and self.labelAllThumbsWeightLose:getY())
-			or (self.labelDisorganizedItemsLose and self.labelDisorganizedItemsLose:getY())
-		self:drawRectBorder(
-			lineStartPosition,
-			yPosition - (FONT_HGT_SMALL / 4),
-			self:getWidth() - lineStartPosition * 1.5,
-			heightOfBox,
-			self.DimmedTextColor.a,
-			self.DimmedTextColor.r,
-			self.DimmedTextColor.g,
-			self.DimmedTextColor.b
-		)
 	end
 	updateBar(
 		self.barInventoryTransferSystemWeight,
@@ -2952,17 +2983,28 @@ function ISETWProgressUI:render()
 	)
 
 	if isProgressTabActive and self.barBravery ~= nil then
-		local heightOfBox = FONT_HGT_SMALL * 3.5
-		self:drawRectBorder(
-			lineStartPosition,
-			self.labelCowardlyLose:getY() - (FONT_HGT_SMALL / 4),
-			self:getWidth() - lineStartPosition * 1.5,
-			heightOfBox,
-			self.DimmedTextColor.a,
-			self.DimmedTextColor.r,
-			self.DimmedTextColor.g,
-			self.DimmedTextColor.b
-		)
+		local topY = getWidgetTop(self.labelCowardlyLose)
+			or getWidgetTop(self.labelPacifistLose)
+			or getWidgetTop(self.labelBraveryGain)
+			or getWidgetTop(self.labelBraveryBarName)
+		local bottomY = getWidgetBottom(self.labelDesensitizedGain)
+			or getWidgetBottom(self.labelAdrenalineJunkieGain)
+			or getWidgetBottom(self.labelHemophobicLose)
+			or getWidgetBottom(self.barBravery)
+		if topY and bottomY then
+			topY = topY - (FONT_HGT_SMALL / 4)
+			bottomY = bottomY + (FONT_HGT_SMALL / 4)
+			self:drawRectBorder(
+				lineStartPosition,
+				topY,
+				self:getWidth() - lineStartPosition * 1.5,
+				bottomY - topY,
+				self.DimmedTextColor.a,
+				self.DimmedTextColor.r,
+				self.DimmedTextColor.g,
+				self.DimmedTextColor.b
+			)
+		end
 	end
 	if self.barBravery ~= nil then
 		local totalKills = player:getZombieKills()
@@ -3295,6 +3337,11 @@ function ISETWProgressUI:render()
 		local textManager = getTextManager()
 		local initialWindowHeight = WINDOW_HEIGHT_AFTER_CHILDREN
 		local delayedY = initialWindowHeight - FONT_HGT_SMALL * 2
+		local delayedLocalY = delayedY - progressSubviewOffsetY
+		self.labelDelayedTraitsSystem:setY(delayedLocalY)
+		self.labelDelayedTraitsSystem:setX(
+			WINDOW_WIDTH / 2 - strLen(textManager, self.labelDelayedTraitsSystem.name) / 2
+		)
 		local traitTable = player:getModData().EvolvingTraitsWorld.DelayedTraits
 		local parts = {}
 		for index = 1, #traitTable do
@@ -3334,11 +3381,11 @@ function ISETWProgressUI:render()
 		end
 		if self.buttonDelayedTraitsTooltip ~= nil then
 			self.buttonDelayedTraitsTooltip:setX(lineStartPosition)
-			self.buttonDelayedTraitsTooltip:setY(delayedY + FONT_HGT_SMALL)
+			self.buttonDelayedTraitsTooltip:setY(delayedLocalY + FONT_HGT_SMALL)
 			self.buttonDelayedTraitsTooltip:setWidth(WINDOW_WIDTH - lineStartPosition * 2)
 			self.buttonDelayedTraitsTooltip:setHeight(#lines * FONT_HGT_SMALL)
 		end
-		WINDOW_HEIGHT = initialWindowHeight + (#lines * FONT_HGT_SMALL)
+		WINDOW_HEIGHT = initialWindowHeight + ((#lines - 1) * FONT_HGT_SMALL)
 		self:setHeightAndParentHeight(WINDOW_HEIGHT)
 	end
 	if isProgressTabActive and not SBvars.UIPage then
