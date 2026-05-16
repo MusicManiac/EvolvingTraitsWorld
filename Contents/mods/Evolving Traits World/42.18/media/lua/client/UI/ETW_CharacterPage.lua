@@ -3394,7 +3394,7 @@ function ISETWPermanentTraitsUI:render()
 			self.buttonDelayedTraitsTooltip:setWidth(WINDOW_WIDTH - lineStartPosition * 2)
 			self.buttonDelayedTraitsTooltip:setHeight(#lines * FONT_HGT_SMALL)
 		end
-		WINDOW_HEIGHT = initialWindowHeight + ((#lines - 1) * FONT_HGT_SMALL)
+		WINDOW_HEIGHT = initialWindowHeight + permanentTraitsSubviewOffsetY + ((#lines - 1) * FONT_HGT_SMALL)
 		self:setHeightAndParentHeight(WINDOW_HEIGHT)
 	end
 	if isPermanentTraitsTabActive and not SBvars.UIPage then
