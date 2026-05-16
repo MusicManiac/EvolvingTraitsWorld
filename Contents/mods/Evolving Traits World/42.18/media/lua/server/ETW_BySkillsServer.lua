@@ -74,6 +74,11 @@ end
 ---@param gainingTrait boolean
 ---@param onApply? fun(ctx: table<string, any>)
 local function applyTraitChange(ctx, trait, positiveTrait, gainingTrait, onApply)
+	trait = ETW_CommonFunctions.resolveTrait(trait)
+	if not trait then
+		logETW("ETW Logger | applyTraitChange(): could not resolve trait, skipping trait change")
+		return
+	end
 	if gainingTrait and ctx.player:hasTrait(trait) then
 		logETW(
 			"ETW Logger | applyTraitChange(): skipping gain for "
@@ -231,7 +236,7 @@ local skillTraitRules = {
 		condition = function(ctx)
 			return sumContextValues(ctx, { "lightfooted", "nimble" }) >= SBvars.GymnastSkill
 		end,
-		trait = ETWTraitsRegistry.GYMNAST,
+		trait = CharacterTrait.GYMNAST,
 		positiveTrait = true,
 		gainingTrait = true,
 	},
@@ -290,26 +295,24 @@ local skillTraitRules = {
 		gainingTrait = true,
 	},
 	{
-		triggers = makeTriggerSet(
-			"characterInitialization",
-			Perks.Sneak,
-			CharacterTrait.CONSPICUOUS,
-			CharacterTrait.INCONSPICUOUS
-		),
+		triggers = makeTriggerSet("characterInitialization", Perks.Sneak, CharacterTrait.CONSPICUOUS),
 		shouldExecute = ETW_CommonLogicChecks.ConspicuousShouldExecute,
-		run = function(ctx)
-			if
-				ETW_CommonLogicChecks.ConspicuousShouldExecute(ctx.player)
-				and ctx.sneaking >= SBvars.ConspicuousSkill
-			then
-				applyTraitChange(ctx, CharacterTrait.CONSPICUOUS, false, false)
-			elseif
-				ETW_CommonLogicChecks.InconspicuousShouldExecute(ctx.player)
-				and ctx.sneaking >= SBvars.InconspicuousSkill
-			then
-				applyTraitChange(ctx, CharacterTrait.INCONSPICUOUS, true, true)
-			end
+		condition = function(ctx)
+			return ctx.sneaking >= SBvars.ConspicuousSkill
 		end,
+		trait = CharacterTrait.CONSPICUOUS,
+		positiveTrait = false,
+		gainingTrait = false,
+	},
+	{
+		triggers = makeTriggerSet("characterInitialization", Perks.Sneak, CharacterTrait.INCONSPICUOUS),
+		shouldExecute = ETW_CommonLogicChecks.InconspicuousShouldExecute,
+		condition = function(ctx)
+			return ctx.sneaking >= SBvars.InconspicuousSkill and not ctx.player:hasTrait(CharacterTrait.CONSPICUOUS)
+		end,
+		trait = CharacterTrait.INCONSPICUOUS,
+		positiveTrait = true,
+		gainingTrait = true,
 	},
 	{
 		triggers = makeTriggerSet(
