@@ -6,8 +6,6 @@ v.11.x.x
 
 General:
 	-
-Moodles:
-	-
 Balancing:
 	-
 	- I am looking to balance the initial sandbox values to be good for plug-and-play. If you have suggestions regarding initial sandbox values please let me know.
