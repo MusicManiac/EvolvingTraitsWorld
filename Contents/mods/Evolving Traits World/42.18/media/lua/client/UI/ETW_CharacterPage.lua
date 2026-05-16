@@ -187,7 +187,7 @@ end
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld
 
-ISETWProgressUI = ISPanelJoypad:derive("ISETWUI")
+ISETWPermanentTraitsUI = ISPanelJoypad:derive("ISETWUI")
 
 ---Converts a value within a min/max range into a 0..1 percentage for UI bars.
 ---@param minValue number
@@ -221,11 +221,11 @@ local function arrangeColumnsInTable(newLine)
 	storeActiveLayoutCursor()
 end
 
-function ISETWProgressUI:initialise()
+function ISETWPermanentTraitsUI:initialise()
 	--ISPanelJoypad.initialise(self)
 end
 
-function ISETWProgressUI:createChildren()
+function ISETWPermanentTraitsUI:createChildren()
 	local player = getSpecificPlayer(self.playerNum)
 
 	-- ── Subtab setup ──────────────────────────────────────────────────────────
@@ -238,18 +238,18 @@ function ISETWProgressUI:createChildren()
 	self.subPanel.allowDraggingTabs = false
 	self.subPanel.allowTornOffTabs = false
 
-	-- Sub-view A: Progress Bars (receives all the existing widgets)
-	self.subViewProgress = ISPanel:new(0, 0, self.width, self.height - TAB_H)
-	self.subViewProgress:initialise()
-	self.subViewProgress:noBackground()
+	-- Sub-view A: Permanent Traits (receives all the existing widgets)
+	self.subViewPermanentTraits = ISPanel:new(0, 0, self.width, self.height - TAB_H)
+	self.subViewPermanentTraits:initialise()
+	self.subViewPermanentTraits:noBackground()
 
 	-- Sub-view B: Non-permanent Traits
-	self.subViewNonPermanent = ISPanel:new(0, 0, self.width, self.height - TAB_H)
-	self.subViewNonPermanent:initialise()
-	self.subViewNonPermanent:noBackground()
+	self.subViewNonPermanentTraits = ISPanel:new(0, 0, self.width, self.height - TAB_H)
+	self.subViewNonPermanentTraits:initialise()
+	self.subViewNonPermanentTraits:noBackground()
 
-	local progressLayoutCursor = newLayoutCursor()
-	local nonPermanentLayoutCursor = newLayoutCursor()
+	local permanentTraitsLayoutCursor = newLayoutCursor()
+	local nonPermanentTraitsLayoutCursor = newLayoutCursor()
 
 	-- routeTo(subView): switches the addChild redirect to the given subview.
 	-- Call this before each section to control which tab receives its widgets.
@@ -261,8 +261,8 @@ function ISETWProgressUI:createChildren()
 		useLayoutCursor(layoutCursor)
 	end
 
-	-- Start routing to Progress tab (default)
-	routeTo(self.subViewProgress, progressLayoutCursor)
+	-- Start routing to Permanent Traits tab (default)
+	routeTo(self.subViewPermanentTraits, permanentTraitsLayoutCursor)
 	-- ── End subtab setup (redirect active) ────────────────────────────────────
 
 	if SBvars.UIPage then
@@ -339,8 +339,8 @@ function ISETWProgressUI:createChildren()
 			firearmKills = killCountModData["Firearm"].count or 0
 		end
 
-		-- Example extraction: one Progress-tab builder can own its own bar block.
-		local function buildPermanentProgressSection()
+		-- Example extraction: one Permanent Traits tab builder can own its own bar block.
+		local function buildPermanentTraitsSection()
 			if ETW_CommonLogicChecks.ImmunitySystemShouldExecute(player) then
 				self.labelProneToIllness = ISLabel:new(
 					barMidPosition - strLen(textManager, str) / 2,
@@ -2088,7 +2088,7 @@ function ISETWProgressUI:createChildren()
 		end
 
 		-- Example extraction: same idea for a Non-permanent Traits subtab block.
-		local function buildNonPermanentProgressSection()
+		local function buildNonPermanentTraitsSection()
 			if ETW_CommonLogicChecks.BloodlustShouldExecute(player) then
 				str = "- " .. getCachedTraitUIName(ETWTraitsRegistry.BLOODLUST)
 				self.labelBloodlustLose = ISLabel:new(
@@ -2642,14 +2642,16 @@ function ISETWProgressUI:createChildren()
 			y = y + FONT_HGT_MEDIUM
 		end
 
-		buildPermanentProgressSection()
+		buildPermanentTraitsSection()
 
-		routeTo(self.subViewNonPermanent, nonPermanentLayoutCursor)
-		buildNonPermanentProgressSection()
+		routeTo(self.subViewNonPermanentTraits, nonPermanentTraitsLayoutCursor)
+		buildNonPermanentTraitsSection()
 
 		storeActiveLayoutCursor()
-		WINDOW_HEIGHT = math.max(progressLayoutCursor.y, nonPermanentLayoutCursor.y) + FONT_HGT_SMALL * 2
-		WINDOW_HEIGHT_AFTER_CHILDREN = WINDOW_HEIGHT
+		self.permanentTraitsWindowHeight = permanentTraitsLayoutCursor.y + FONT_HGT_SMALL * 2
+		self.nonPermanentTraitsWindowHeight = nonPermanentTraitsLayoutCursor.y + FONT_HGT_SMALL * 2
+		WINDOW_HEIGHT = self.permanentTraitsWindowHeight
+		WINDOW_HEIGHT_AFTER_CHILDREN = self.permanentTraitsWindowHeight
 
 		activeLayoutCursor = nil
 		x = lineStartPosition
@@ -2663,24 +2665,24 @@ function ISETWProgressUI:createChildren()
 	self.addChild = nil -- restore to prototype method
 
 	-- Register the two sub-views into the subtab panel
-	self.subPanel:addView(getText("UI_ETW_SubTab_Progress"), self.subViewProgress)
-	self.subPanel:addView(getText("UI_ETW_SubTab_NonPermanent"), self.subViewNonPermanent)
+	self.subPanel:addView(getText("UI_ETW_SubTab_Progress"), self.subViewPermanentTraits)
+	self.subPanel:addView(getText("UI_ETW_SubTab_NonPermanent"), self.subViewNonPermanentTraits)
 
 	-- Attach the subtab panel to self (this is the real addChild now)
-	ISETWProgressUI.addChild(self, self.subPanel)
+	ISETWPermanentTraitsUI.addChild(self, self.subPanel)
 	-- ── End subtab restore ────────────────────────────────────────────────────
 end
 
 ---Rebuilds every ETW child widget so conditional labels and bars can appear or disappear mid-game.
-function ISETWProgressUI:rebuildChildren()
-	-- Hide tooltips on subViewProgress children before clearing
-	if self.subViewProgress and self.subViewProgress.children then
-		for _, child in pairs(self.subViewProgress.children) do
+function ISETWPermanentTraitsUI:rebuildChildren()
+	-- Hide tooltips on subViewPermanentTraits children before clearing
+	if self.subViewPermanentTraits and self.subViewPermanentTraits.children then
+		for _, child in pairs(self.subViewPermanentTraits.children) do
 			hideChildTooltip(child)
 		end
 	end
-	if self.subViewNonPermanent and self.subViewNonPermanent.children then
-		for _, child in pairs(self.subViewNonPermanent.children) do
+	if self.subViewNonPermanentTraits and self.subViewNonPermanentTraits.children then
+		for _, child in pairs(self.subViewNonPermanentTraits.children) do
 			hideChildTooltip(child)
 		end
 	end
@@ -2693,8 +2695,8 @@ function ISETWProgressUI:rebuildChildren()
 
 	-- Clear the subtab references so createChildren re-creates them fresh
 	self.subPanel = nil
-	self.subViewProgress = nil
-	self.subViewNonPermanent = nil
+	self.subViewPermanentTraits = nil
+	self.subViewNonPermanentTraits = nil
 	self:clearChildren()
 
 	local widgetFields = {}
@@ -2711,7 +2713,7 @@ function ISETWProgressUI:rebuildChildren()
 end
 
 ---Rebuilds the ETW layout when known traits or delayed traits change.
-function ISETWProgressUI:refreshLayoutIfNeeded()
+function ISETWPermanentTraitsUI:refreshLayoutIfNeeded()
 	local layoutSignature = getLayoutSignature(getPlayer())
 	if self.layoutSignature ~= layoutSignature then
 		self:rebuildChildren()
@@ -2722,7 +2724,7 @@ function ISCharacterKills:setVisible(visible)
 	self.javaObject:setVisible(visible)
 end
 
-function ISETWProgressUI:prerender()
+function ISETWPermanentTraitsUI:prerender()
 	ISPanelJoypad.prerender(self)
 	self:setStencilRect(0, 0, self.width, self.height)
 end
@@ -2747,8 +2749,15 @@ local function updateLabel(label, value)
 	end
 end
 
-function ISETWProgressUI:render()
+function ISETWPermanentTraitsUI:render()
 	self:refreshLayoutIfNeeded()
+
+	local subTabHeight = (self.subPanel and self.subPanel.tabHeight) or 0
+	local activeWindowHeight = self.permanentTraitsWindowHeight or WINDOW_HEIGHT
+	if self.subPanel and self.subPanel:getActiveView() == self.subViewNonPermanentTraits then
+		activeWindowHeight = self.nonPermanentTraitsWindowHeight or activeWindowHeight
+	end
+	WINDOW_HEIGHT = activeWindowHeight + subTabHeight
 
 	self:setWidthAndParentWidth(WINDOW_WIDTH)
 	self:setHeightAndParentHeight(WINDOW_HEIGHT)
@@ -2758,29 +2767,29 @@ function ISETWProgressUI:render()
 		local TAB_H = getTextManager():getFontHeight(UIFont.Small) + 6
 		self.subPanel:setWidth(WINDOW_WIDTH)
 		self.subPanel:setHeight(WINDOW_HEIGHT)
-		if self.subViewProgress then
-			self.subViewProgress:setWidth(WINDOW_WIDTH)
-			self.subViewProgress:setHeight(WINDOW_HEIGHT - TAB_H)
+		if self.subViewPermanentTraits then
+			self.subViewPermanentTraits:setWidth(WINDOW_WIDTH)
+			self.subViewPermanentTraits:setHeight(WINDOW_HEIGHT - TAB_H)
 		end
-		if self.subViewNonPermanent then
-			self.subViewNonPermanent:setWidth(WINDOW_WIDTH)
-			self.subViewNonPermanent:setHeight(WINDOW_HEIGHT - TAB_H)
+		if self.subViewNonPermanentTraits then
+			self.subViewNonPermanentTraits:setWidth(WINDOW_WIDTH)
+			self.subViewNonPermanentTraits:setHeight(WINDOW_HEIGHT - TAB_H)
 		end
 	end
 
 	local player = getPlayer()
 	local modData = ETW_CommonFunctions.getETWModData(player)
 
-	-- Only draw directly onto self when the Progress subtab is visible.
+	-- Only draw directly onto self when the Permanent Traits subtab is visible.
 	-- The Non-permanent tab (or any future subtab) must not show these renders.
-	local isProgressTabActive = not self.subPanel or self.subPanel:getActiveView() == self.subViewProgress
-	local progressSubviewOffsetY = (self.subPanel and self.subPanel.tabHeight) or 0
+	local isPermanentTraitsTabActive = not self.subPanel or self.subPanel:getActiveView() == self.subViewPermanentTraits
+	local permanentTraitsSubviewOffsetY = (self.subPanel and self.subPanel.tabHeight) or 0
 
 	local function getWidgetTop(widget)
 		if not widget then
 			return nil
 		end
-		return widget:getY() + progressSubviewOffsetY
+		return widget:getY() + permanentTraitsSubviewOffsetY
 	end
 
 	local function getWidgetBottom(widget)
@@ -2788,7 +2797,7 @@ function ISETWProgressUI:render()
 			return nil
 		end
 		local height = (widget.getHeight and widget:getHeight()) or widget.height or FONT_HGT_SMALL
-		return widget:getY() + height + progressSubviewOffsetY
+		return widget:getY() + height + permanentTraitsSubviewOffsetY
 	end
 
 	local strength = player:getPerkLevel(Perks.Strength)
@@ -2941,7 +2950,7 @@ function ISETWProgressUI:render()
 		getText("UI_ETW_CurrentValue") .. modData.FogCounter
 	)
 	if
-		isProgressTabActive
+		isPermanentTraitsTabActive
 		and (self.barInventoryTransferSystemWeight ~= nil or self.barInventoryTransferSystemItems ~= nil)
 	then
 		local topY = getWidgetTop(self.labelAllThumbsWeightLose)
@@ -2982,7 +2991,7 @@ function ISETWProgressUI:render()
 		getText("UI_ETW_CurrentValue") .. modData.TransferSystem.ItemsTransferred
 	)
 
-	if isProgressTabActive and self.barBravery ~= nil then
+	if isPermanentTraitsTabActive and self.barBravery ~= nil then
 		local topY = getWidgetTop(self.labelCowardlyLose)
 			or getWidgetTop(self.labelPacifistLose)
 			or getWidgetTop(self.labelBraveryGain)
@@ -3333,11 +3342,11 @@ function ISETWProgressUI:render()
 		getCachedTraitUIName(CharacterTrait.BLACKSMITH) .. ": " .. blacksmith .. "/" .. SBvars.BlacksmithSkill
 	)
 
-	if isProgressTabActive and self.labelDelayedTraitsSystem ~= nil then
+	if isPermanentTraitsTabActive and self.labelDelayedTraitsSystem ~= nil then
 		local textManager = getTextManager()
-		local initialWindowHeight = WINDOW_HEIGHT_AFTER_CHILDREN
-		local delayedY = initialWindowHeight - FONT_HGT_SMALL * 2
-		local delayedLocalY = delayedY - progressSubviewOffsetY
+		local initialWindowHeight = self.permanentTraitsWindowHeight or WINDOW_HEIGHT_AFTER_CHILDREN
+		local delayedY = initialWindowHeight + permanentTraitsSubviewOffsetY - FONT_HGT_SMALL * 2
+		local delayedLocalY = delayedY - permanentTraitsSubviewOffsetY
 		self.labelDelayedTraitsSystem:setY(delayedLocalY)
 		self.labelDelayedTraitsSystem:setX(
 			WINDOW_WIDTH / 2 - strLen(textManager, self.labelDelayedTraitsSystem.name) / 2
@@ -3388,7 +3397,7 @@ function ISETWProgressUI:render()
 		WINDOW_HEIGHT = initialWindowHeight + ((#lines - 1) * FONT_HGT_SMALL)
 		self:setHeightAndParentHeight(WINDOW_HEIGHT)
 	end
-	if isProgressTabActive and not SBvars.UIPage then
+	if isPermanentTraitsTabActive and not SBvars.UIPage then
 		self:drawText(getText("UI_ETW_ProgressPageDisabled"), 10, 10, 1, 1, 1, 1)
 	end
 	self:clearStencilRect()
@@ -3407,16 +3416,16 @@ function ISETWProgressUI:render()
 	end
 end
 
-function ISETWProgressUI:update()
+function ISETWPermanentTraitsUI:update()
 	ISPanelJoypad.update(self)
 end
 
-function ISETWProgressUI:onMouseWheel(del)
+function ISETWPermanentTraitsUI:onMouseWheel(del)
 	self:setYScroll(self:getYScroll() - del * 30)
 	return true
 end
 
-function ISETWProgressUI:new(X, Y, width, height, playerNum)
+function ISETWPermanentTraitsUI:new(X, Y, width, height, playerNum)
 	local o = ISPanelJoypad:new(X, Y, width, height)
 	setmetatable(o, self)
 	self.__index = self
@@ -3426,11 +3435,11 @@ function ISETWProgressUI:new(X, Y, width, height, playerNum)
 	o.categoryButtons = {}
 	o.categoryXOffset = 20
 
-	ISETWProgressUI.instance = o
+	ISETWPermanentTraitsUI.instance = o
 	return o
 end
 
-function ISETWProgressUI:ensureVisible()
+function ISETWPermanentTraitsUI:ensureVisible()
 	if not self.joyfocus then
 		return
 	end
@@ -3446,17 +3455,17 @@ function ISETWProgressUI:ensureVisible()
 	end
 end
 
-function ISETWProgressUI:onGainJoypadFocus(joypadData)
+function ISETWPermanentTraitsUI:onGainJoypadFocus(joypadData)
 	ISPanelJoypad.onGainJoypadFocus(self, joypadData)
 	self.joypadIndex = nil
 	self.barWithTooltip = nil
 end
 
-function ISETWProgressUI:onLoseJoypadFocus(joypadData)
+function ISETWPermanentTraitsUI:onLoseJoypadFocus(joypadData)
 	ISPanelJoypad.onLoseJoypadFocus(self, joypadData)
 end
 
-function ISETWProgressUI:onJoypadDown(button)
+function ISETWPermanentTraitsUI:onJoypadDown(button)
 	if button == Joypad.AButton then
 	end
 	if button == Joypad.YButton then
@@ -3471,14 +3480,14 @@ function ISETWProgressUI:onJoypadDown(button)
 	end
 end
 
-function ISETWProgressUI:onJoypadDirDown()
+function ISETWPermanentTraitsUI:onJoypadDirDown()
 	self.joypadIndex = self.joypadIndex + 1
 	self:ensureVisible()
 	self:updateTooltipForJoypad()
 end
 
-function ISETWProgressUI:onJoypadDirLeft() end
+function ISETWPermanentTraitsUI:onJoypadDirLeft() end
 
-function ISETWProgressUI:onJoypadDirRight() end
+function ISETWPermanentTraitsUI:onJoypadDirRight() end
 
-addCharacterPageTab("ETW", ISETWProgressUI:new(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0))
+addCharacterPageTab("ETW", ISETWPermanentTraitsUI:new(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0))
