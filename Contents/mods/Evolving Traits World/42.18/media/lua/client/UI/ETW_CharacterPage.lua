@@ -151,6 +151,39 @@ local columnGap
 local nonBarsEntriesPerRow = 4
 local nonBarsEntryNumber = 0
 
+---Creates an isolated layout cursor so each subtab can track its own positions.
+---@return {x:number, y:number, nonBarsEntryNumber:number}
+local function newLayoutCursor()
+	return {
+		x = lineStartPosition,
+		y = 12,
+		nonBarsEntryNumber = 0,
+	}
+end
+
+---@type {x:number, y:number, nonBarsEntryNumber:number}|nil
+local activeLayoutCursor
+
+---Saves the active globals back into the currently-selected layout cursor.
+local function storeActiveLayoutCursor()
+	if not activeLayoutCursor then
+		return
+	end
+
+	activeLayoutCursor.x = x
+	activeLayoutCursor.y = y
+	activeLayoutCursor.nonBarsEntryNumber = nonBarsEntryNumber
+end
+
+---Loads a layout cursor into the legacy global position variables.
+---@param layoutCursor {x:number, y:number, nonBarsEntryNumber:number}
+local function useLayoutCursor(layoutCursor)
+	activeLayoutCursor = layoutCursor
+	x = layoutCursor.x
+	y = layoutCursor.y
+	nonBarsEntryNumber = layoutCursor.nonBarsEntryNumber
+end
+
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld
 
@@ -185,6 +218,7 @@ local function arrangeColumnsInTable(newLine)
 	if nonBarsEntryNumber ~= 1 then
 		x = lineStartPosition + columnGap * (nonBarsEntryNumber - 1)
 	end
+	storeActiveLayoutCursor()
 end
 
 function ISETWProgressUI:initialise()
@@ -193,6 +227,43 @@ end
 
 function ISETWProgressUI:createChildren()
 	local player = getSpecificPlayer(self.playerNum)
+
+	-- ── Subtab setup ──────────────────────────────────────────────────────────
+	-- Create the inner ISTabPanel that lives inside this ETW tab view.
+	local TAB_H = getTextManager():getFontHeight(UIFont.Small) + 6
+	self.subPanel = ISTabPanel:new(0, 0, self.width, self.height)
+	self.subPanel:initialise()
+	self.subPanel.equalTabWidth = false
+	self.subPanel.tabPadX = 14
+	self.subPanel.allowDraggingTabs = false
+	self.subPanel.allowTornOffTabs = false
+
+	-- Sub-view A: Progress Bars (receives all the existing widgets)
+	self.subViewProgress = ISPanel:new(0, 0, self.width, self.height - TAB_H)
+	self.subViewProgress:initialise()
+	self.subViewProgress:noBackground()
+
+	-- Sub-view B: Non-permanent Traits
+	self.subViewNonPermanent = ISPanel:new(0, 0, self.width, self.height - TAB_H)
+	self.subViewNonPermanent:initialise()
+	self.subViewNonPermanent:noBackground()
+
+	local progressLayoutCursor = newLayoutCursor()
+	local nonPermanentLayoutCursor = newLayoutCursor()
+
+	-- routeTo(subView): switches the addChild redirect to the given subview.
+	-- Call this before each section to control which tab receives its widgets.
+	local function routeTo(subView, layoutCursor)
+		storeActiveLayoutCursor()
+		self.addChild = function(s, child)
+			subView:addChild(child)
+		end
+		useLayoutCursor(layoutCursor)
+	end
+
+	-- Start routing to Progress tab (default)
+	routeTo(self.subViewProgress, progressLayoutCursor)
+	-- ── End subtab setup (redirect active) ────────────────────────────────────
 
 	if SBvars.UIPage then
 		local barStartPosition = 150 -- TODO : add mod option to adjust this
@@ -505,6 +576,9 @@ function ISETWProgressUI:createChildren()
 			y = y + FONT_HGT_SMALL
 		end
 
+		-- ── Route: Non-permanent Traits tab ─────────────────────────────────────
+		routeTo(self.subViewNonPermanent, nonPermanentLayoutCursor)
+
 		if ETW_CommonLogicChecks.BloodlustShouldExecute(player) then
 			str = "- " .. getCachedTraitUIName(ETWTraitsRegistry.BLOODLUST)
 			self.labelBloodlustLose = ISLabel:new(
@@ -739,6 +813,9 @@ function ISETWProgressUI:createChildren()
 			y = y + FONT_HGT_SMALL
 		end
 
+		-- ── Route: back to Progress tab ──────────────────────────────────────────
+		routeTo(self.subViewProgress, progressLayoutCursor)
+
 		if ETW_CommonLogicChecks.HearingSystemShouldExecute(player) then
 			str = "- " .. getCachedTraitUIName(CharacterTrait.HARD_OF_HEARING)
 			self.labelHardOfHearingLose = ISLabel:new(
@@ -854,6 +931,9 @@ function ISETWProgressUI:createChildren()
 
 			y = y + FONT_HGT_SMALL
 		end
+
+		-- ── Route: Non-permanent Traits tab ─────────────────────────────────────
+		routeTo(self.subViewNonPermanent, nonPermanentLayoutCursor)
 
 		if ETW_CommonLogicChecks.SleepSystemShouldExecute(player) then
 			str = "+ " .. getCachedTraitUIName(CharacterTrait.NEEDS_MORE_SLEEP)
@@ -1031,6 +1111,9 @@ function ISETWProgressUI:createChildren()
 
 			y = y + FONT_HGT_SMALL
 		end
+
+		-- ── Route: back to Progress tab ──────────────────────────────────────────
+		routeTo(self.subViewProgress, progressLayoutCursor)
 
 		if ETW_CommonLogicChecks.InventoryTransferSystemShouldExecute(player) then
 			y = y + FONT_HGT_SMALL / 2
@@ -1369,6 +1452,9 @@ function ISETWProgressUI:createChildren()
 			y = y + FONT_HGT_SMALL
 		end
 
+		-- ── Route: Non-permanent Traits tab ─────────────────────────────────────
+		routeTo(self.subViewNonPermanent, nonPermanentLayoutCursor)
+
 		if
 			ETW_CommonLogicChecks.SmokerShouldExecute(player)
 			and ((not modOptions and true) or not modOptions:getOption("HideSmokerUI"):getValue())
@@ -1432,6 +1518,9 @@ function ISETWProgressUI:createChildren()
 		end
 
 		y = y + FONT_HGT_SMALL * 1.5
+
+		-- ── Route: back to Progress tab (skill/counter labels section) ───────────
+		routeTo(self.subViewProgress, progressLayoutCursor)
 
 		if
 			ETW_CommonLogicChecks.EagleEyedShouldExecute(player)
@@ -2553,25 +2642,54 @@ function ISETWProgressUI:createChildren()
 			self:addChild(self.buttonDelayedTraitsTooltip)
 		end
 
-		WINDOW_HEIGHT = y + FONT_HGT_SMALL * 2
+		storeActiveLayoutCursor()
+		WINDOW_HEIGHT = math.max(progressLayoutCursor.y, nonPermanentLayoutCursor.y) + FONT_HGT_SMALL * 2
 		WINDOW_HEIGHT_AFTER_CHILDREN = WINDOW_HEIGHT
 
+		activeLayoutCursor = nil
 		x = lineStartPosition
 		y = 12
 		nonBarsEntryNumber = 0
 	end
 
 	self.layoutSignature = getLayoutSignature(player)
+
+	-- ── Restore real addChild and attach subtab to self ───────────────────────
+	self.addChild = nil -- restore to prototype method
+
+	-- Register the two sub-views into the subtab panel
+	self.subPanel:addView(getText("UI_ETW_SubTab_Progress"), self.subViewProgress)
+	self.subPanel:addView(getText("UI_ETW_SubTab_NonPermanent"), self.subViewNonPermanent)
+
+	-- Attach the subtab panel to self (this is the real addChild now)
+	ISETWProgressUI.addChild(self, self.subPanel)
+	-- ── End subtab restore ────────────────────────────────────────────────────
 end
 
 ---Rebuilds every ETW child widget so conditional labels and bars can appear or disappear mid-game.
 function ISETWProgressUI:rebuildChildren()
+	-- Hide tooltips on subViewProgress children before clearing
+	if self.subViewProgress and self.subViewProgress.children then
+		for _, child in pairs(self.subViewProgress.children) do
+			hideChildTooltip(child)
+		end
+	end
+	if self.subViewNonPermanent and self.subViewNonPermanent.children then
+		for _, child in pairs(self.subViewNonPermanent.children) do
+			hideChildTooltip(child)
+		end
+	end
+	-- Also hide tooltips on any direct children (safety)
 	if self.children then
 		for _, child in pairs(self.children) do
 			hideChildTooltip(child)
 		end
 	end
 
+	-- Clear the subtab references so createChildren re-creates them fresh
+	self.subPanel = nil
+	self.subViewProgress = nil
+	self.subViewNonPermanent = nil
 	self:clearChildren()
 
 	local widgetFields = {}
@@ -2630,8 +2748,27 @@ function ISETWProgressUI:render()
 	self:setWidthAndParentWidth(WINDOW_WIDTH)
 	self:setHeightAndParentHeight(WINDOW_HEIGHT)
 
+	-- Keep the subtab panel and sub-views sized to match the parent
+	if self.subPanel then
+		local TAB_H = getTextManager():getFontHeight(UIFont.Small) + 6
+		self.subPanel:setWidth(WINDOW_WIDTH)
+		self.subPanel:setHeight(WINDOW_HEIGHT)
+		if self.subViewProgress then
+			self.subViewProgress:setWidth(WINDOW_WIDTH)
+			self.subViewProgress:setHeight(WINDOW_HEIGHT - TAB_H)
+		end
+		if self.subViewNonPermanent then
+			self.subViewNonPermanent:setWidth(WINDOW_WIDTH)
+			self.subViewNonPermanent:setHeight(WINDOW_HEIGHT - TAB_H)
+		end
+	end
+
 	local player = getPlayer()
 	local modData = ETW_CommonFunctions.getETWModData(player)
+
+	-- Only draw directly onto self when the Progress subtab is visible.
+	-- The Non-permanent tab (or any future subtab) must not show these renders.
+	local isProgressTabActive = not self.subPanel or self.subPanel:getActiveView() == self.subViewProgress
 
 	local strength = player:getPerkLevel(Perks.Strength)
 	local fitness = player:getPerkLevel(Perks.Fitness)
@@ -2782,7 +2919,10 @@ function ISETWProgressUI:render()
 		percentile(SBvars.FogSystemCounter * -2, SBvars.FogSystemCounter * 2, modData.FogCounter),
 		getText("UI_ETW_CurrentValue") .. modData.FogCounter
 	)
-	if self.barInventoryTransferSystemWeight ~= nil or self.barInventoryTransferSystemItems ~= nil then
+	if
+		isProgressTabActive
+		and (self.barInventoryTransferSystemWeight ~= nil or self.barInventoryTransferSystemItems ~= nil)
+	then
 		local heightOfBox = FONT_HGT_SMALL * 3.5
 		if self.barInventoryTransferSystemWeight ~= nil and self.barInventoryTransferSystemItems ~= nil then
 			heightOfBox = FONT_HGT_SMALL * 6.5
@@ -2811,7 +2951,7 @@ function ISETWProgressUI:render()
 		getText("UI_ETW_CurrentValue") .. modData.TransferSystem.ItemsTransferred
 	)
 
-	if self.barBravery ~= nil then
+	if isProgressTabActive and self.barBravery ~= nil then
 		local heightOfBox = FONT_HGT_SMALL * 3.5
 		self:drawRectBorder(
 			lineStartPosition,
@@ -3151,7 +3291,7 @@ function ISETWProgressUI:render()
 		getCachedTraitUIName(CharacterTrait.BLACKSMITH) .. ": " .. blacksmith .. "/" .. SBvars.BlacksmithSkill
 	)
 
-	if self.labelDelayedTraitsSystem ~= nil then
+	if isProgressTabActive and self.labelDelayedTraitsSystem ~= nil then
 		local textManager = getTextManager()
 		local initialWindowHeight = WINDOW_HEIGHT_AFTER_CHILDREN
 		local delayedY = initialWindowHeight - FONT_HGT_SMALL * 2
@@ -3201,7 +3341,7 @@ function ISETWProgressUI:render()
 		WINDOW_HEIGHT = initialWindowHeight + (#lines * FONT_HGT_SMALL)
 		self:setHeightAndParentHeight(WINDOW_HEIGHT)
 	end
-	if not SBvars.UIPage then
+	if isProgressTabActive and not SBvars.UIPage then
 		self:drawText(getText("UI_ETW_ProgressPageDisabled"), 10, 10, 1, 1, 1, 1)
 	end
 	self:clearStencilRect()
