@@ -198,6 +198,49 @@ option EvolvingTraitsWorld.FoodSicknessSystemNormalSicknessMultiplier
 	page = ETWSystems,
 	translation = ETW_FoodSicknessSystemNormalSicknessMultiplier,
 }
+option EvolvingTraitsWorld.FoodSystem
+{
+	type = boolean,
+	default = true,
+	page = ETWSystems,
+	translation = ETW_FoodSystem,
+}
+option EvolvingTraitsWorld.FoodSystemGainPositiveThreshold
+{
+	type = double,
+	min = 0,
+	max = 1,
+	default = 0.18,
+	page = ETWSystems,
+	translation = ETW_FoodSystemGainPositiveThreshold,
+}
+option EvolvingTraitsWorld.FoodSystemLosePositiveThreshold
+{
+	type = double,
+	min = 0,
+	max = 1,
+	default = 0.28,
+	page = ETWSystems,
+	translation = ETW_FoodSystemLosePositiveThreshold,
+}
+option EvolvingTraitsWorld.FoodSystemLoseNegativeThreshold
+{
+	type = double,
+	min = 0,
+	max = 1,
+	default = 0.3,
+	page = ETWSystems,
+	translation = ETW_FoodSystemLoseNegativeThreshold,
+}
+option EvolvingTraitsWorld.FoodSystemGainNegativeThreshold
+{
+	type = double,
+	min = 0,
+	max = 1,
+	default = 0.45,
+	page = ETWSystems,
+	translation = ETW_FoodSystemGainNegativeThreshold,
+}
 option EvolvingTraitsWorld.HearingSystem
 {
 	type = boolean,
@@ -374,6 +417,49 @@ option EvolvingTraitsWorld.TraitsLockSystemCanGainNegative
 	page = ETWSystems,
 	translation = ETW_TraitsLockSystemCanGainNegative,
 }
+option EvolvingTraitsWorld.ThirstSystem
+{
+	type = boolean,
+	default = true,
+	page = ETWSystems,
+	translation = ETW_ThirstSystem,
+}
+option EvolvingTraitsWorld.ThirstSystemGainPositiveThreshold
+{
+	type = double,
+	min = 0,
+	max = 1,
+	default = 0.15,
+	page = ETWSystems,
+	translation = ETW_ThirstSystemGainPositiveThreshold,
+}
+option EvolvingTraitsWorld.ThirstSystemLosePositiveThreshold
+{
+	type = double,
+	min = 0,
+	max = 1,
+	default = 0.24,
+	page = ETWSystems,
+	translation = ETW_ThirstSystemLosePositiveThreshold,
+}
+option EvolvingTraitsWorld.ThirstSystemLoseNegativeThreshold
+{
+	type = double,
+	min = 0,
+	max = 1,
+	default = 0.25,
+	page = ETWSystems,
+	translation = ETW_ThirstSystemLoseNegativeThreshold,
+}
+option EvolvingTraitsWorld.ThirstSystemGainNegativeThreshold
+{
+	type = double,
+	min = 0,
+	max = 1,
+	default = 0.4,
+	page = ETWSystems,
+	translation = ETW_ThirstSystemGainNegativeThreshold,
+}
 option EvolvingTraitsWorld.WeightSystem
 {
 	type = boolean,
@@ -398,15 +484,6 @@ option EvolvingTraitsWorld.WeightSystemLowerMentalThreshold
 	default = 60,
 	page = ETWSystems,
 	translation = ETW_WeightSystemLowerMentalThreshold,
-}
-option EvolvingTraitsWorld.WeightSystemUpperMentalThreshold
-{
-	type = double,
-	min = 0,
-	max = 100,
-	default = 80,
-	page = ETWSystems,
-	translation = ETW_WeightSystemUpperMentalThreshold,
 }
 
 option EvolvingTraitsWorld.MOODLES

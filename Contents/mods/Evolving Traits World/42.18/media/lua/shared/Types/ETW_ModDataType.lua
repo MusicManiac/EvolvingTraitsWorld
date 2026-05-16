@@ -13,6 +13,14 @@
 --- @field MentalStateInLast24Hours number[]
 --- @field MentalStateInLast31Days number[]
 --- @field RecentAverageMental number
+--- @field FoodStateInLast60Min number[]
+--- @field FoodStateInLast24Hours number[]
+--- @field FoodStateInLast31Days number[]
+--- @field RecentAverageFood number
+--- @field ThirstStateInLast60Min number[]
+--- @field ThirstStateInLast24Hours number[]
+--- @field ThirstStateInLast31Days number[]
+--- @field RecentAverageThirst number
 --- @field StartingTraits table<string, boolean>
 --- @field DelayedStartingTraitsFilled boolean
 --- @field DelayedTraits table<string, number, boolean>
