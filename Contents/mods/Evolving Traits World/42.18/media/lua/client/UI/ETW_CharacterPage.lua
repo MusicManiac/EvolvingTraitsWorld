@@ -15,32 +15,28 @@ local ETWTraitsRegistry = ETW_Registry.traits
 local modOptions
 local traitUINameCache = {}
 
----Resolves either a trait object or registry id string into a CharacterTrait instance.
----@param traitOrRegistryId CharacterTrait|string
----@return CharacterTrait|nil
-local function resolveTrait(traitOrRegistryId)
-	if instanceof(traitOrRegistryId, "CharacterTrait") then
-		return traitOrRegistryId
-	end
-	if type(traitOrRegistryId) == "string" then
-		return CharacterTrait.get(ResourceLocation.of(traitOrRegistryId))
-	end
-	return nil
-end
-
 ---Returns a cached UI name for the provided trait, resolving and caching it on first lookup.
 ---@param traitOrRegistryId CharacterTrait|string
 ---@return string
 local function getCachedTraitUIName(traitOrRegistryId)
-	local trait = resolveTrait(traitOrRegistryId)
-	if not trait then
+	local traitRegistryId
+
+	if instanceof(traitOrRegistryId, "CharacterTrait") then
+		traitRegistryId = traitOrRegistryId:toString()
+	elseif type(traitOrRegistryId) == "string" then
+		traitRegistryId = traitOrRegistryId
+	else
 		return tostring(traitOrRegistryId)
 	end
 
-	local traitRegistryId = trait:toString()
 	local cachedName = traitUINameCache[traitRegistryId]
 	if cachedName then
 		return cachedName
+	end
+
+	local trait = ETW_CommonFunctions.resolveTrait(traitOrRegistryId)
+	if not trait then
+		return traitRegistryId
 	end
 
 	local traitDefinition = CharacterTraitDefinition.getCharacterTraitDefinition(trait)
@@ -56,7 +52,7 @@ end
 local function playerHasDelayedTraitNoCache(player, traitOrRegistryId)
 	local modData = ETW_CommonFunctions.getETWModData(player)
 	local delayedTraits = modData and modData.DelayedTraits
-	local trait = resolveTrait(traitOrRegistryId)
+	local trait = ETW_CommonFunctions.resolveTrait(traitOrRegistryId)
 	if not delayedTraits or not trait then
 		return false
 	end
@@ -2752,10 +2748,48 @@ end
 function ISETWPermanentTraitsUI:render()
 	self:refreshLayoutIfNeeded()
 
+	local player = getPlayer()
+	local modData = ETW_CommonFunctions.getETWModData(player)
+	local isPermanentTraitsTabActive = not self.subPanel or self.subPanel:getActiveView() == self.subViewPermanentTraits
+	local permanentTraitsSubviewOffsetY = (self.subPanel and self.subPanel.tabHeight) or 0
+	local delayedTraitLines
+
+	if isPermanentTraitsTabActive and self.labelDelayedTraitsSystem ~= nil then
+		local textManager = getTextManager()
+		local traitTable = player:getModData().EvolvingTraitsWorld.DelayedTraits
+		local parts = {}
+		for index = 1, #traitTable do
+			local traitEntry = traitTable[index]
+			local trait, roll = traitEntry[1], traitEntry[2]
+			local translationString = getCachedTraitUIName(trait)
+			local strAddition = translationString .. " (1 " .. getText("UI_ETW_Chance") .. " " .. roll .. ")"
+			table.insert(parts, strAddition)
+		end
+		local combinedParts = table.concat(parts, ", ")
+		delayedTraitLines = {}
+		local currentLine = getText("UI_ETW_ListOfDelayedTraits")
+		local spaceLeft = WINDOW_WIDTH - lineStartPosition
+		for part in combinedParts:gmatch("[^,]+") do
+			local partWithComma = part .. ", "
+			if strLen(textManager, currentLine .. partWithComma) > spaceLeft then
+				table.insert(delayedTraitLines, currentLine)
+				currentLine = partWithComma
+			else
+				currentLine = currentLine .. partWithComma
+			end
+		end
+		if currentLine ~= "" then
+			table.insert(delayedTraitLines, currentLine:sub(1, -3))
+		end
+	end
+
 	local subTabHeight = (self.subPanel and self.subPanel.tabHeight) or 0
 	local activeWindowHeight = self.permanentTraitsWindowHeight or WINDOW_HEIGHT
 	if self.subPanel and self.subPanel:getActiveView() == self.subViewNonPermanentTraits then
 		activeWindowHeight = self.nonPermanentTraitsWindowHeight or activeWindowHeight
+	end
+	if delayedTraitLines and #delayedTraitLines > 1 then
+		activeWindowHeight = activeWindowHeight + ((#delayedTraitLines - 1) * FONT_HGT_SMALL)
 	end
 	WINDOW_HEIGHT = activeWindowHeight + subTabHeight
 
@@ -2777,14 +2811,8 @@ function ISETWPermanentTraitsUI:render()
 		end
 	end
 
-	local player = getPlayer()
-	local modData = ETW_CommonFunctions.getETWModData(player)
-
 	-- Only draw directly onto self when the Permanent Traits subtab is visible.
 	-- The Non-permanent tab (or any future subtab) must not show these renders.
-	local isPermanentTraitsTabActive = not self.subPanel or self.subPanel:getActiveView() == self.subViewPermanentTraits
-	local permanentTraitsSubviewOffsetY = (self.subPanel and self.subPanel.tabHeight) or 0
-
 	local function getWidgetTop(widget)
 		if not widget then
 			return nil
@@ -3351,31 +3379,7 @@ function ISETWPermanentTraitsUI:render()
 		self.labelDelayedTraitsSystem:setX(
 			WINDOW_WIDTH / 2 - strLen(textManager, self.labelDelayedTraitsSystem.name) / 2
 		)
-		local traitTable = player:getModData().EvolvingTraitsWorld.DelayedTraits
-		local parts = {}
-		for index = 1, #traitTable do
-			local traitEntry = traitTable[index]
-			local trait, roll = traitEntry[1], traitEntry[2]
-			local translationString = getCachedTraitUIName(trait)
-			local strAddition = translationString .. " (1 " .. getText("UI_ETW_Chance") .. " " .. roll .. ")"
-			table.insert(parts, strAddition)
-		end
-		local combinedParts = table.concat(parts, ", ")
-		local lines = {}
-		local currentLine = getText("UI_ETW_ListOfDelayedTraits")
-		local spaceLeft = WINDOW_WIDTH - lineStartPosition
-		for part in combinedParts:gmatch("[^,]+") do
-			local partWithComma = part .. ", "
-			if strLen(textManager, currentLine .. partWithComma) > spaceLeft then
-				table.insert(lines, currentLine)
-				currentLine = partWithComma
-			else
-				currentLine = currentLine .. partWithComma
-			end
-		end
-		if currentLine ~= "" then
-			table.insert(lines, currentLine:sub(1, -3))
-		end
+		local lines = delayedTraitLines or {}
 		for i = 1, #lines do
 			local line = lines[i]
 			self:drawText(
@@ -3394,8 +3398,6 @@ function ISETWPermanentTraitsUI:render()
 			self.buttonDelayedTraitsTooltip:setWidth(WINDOW_WIDTH - lineStartPosition * 2)
 			self.buttonDelayedTraitsTooltip:setHeight(#lines * FONT_HGT_SMALL)
 		end
-		WINDOW_HEIGHT = initialWindowHeight + permanentTraitsSubviewOffsetY + ((#lines - 1) * FONT_HGT_SMALL)
-		self:setHeightAndParentHeight(WINDOW_HEIGHT)
 	end
 	if isPermanentTraitsTabActive and not SBvars.UIPage then
 		self:drawText(getText("UI_ETW_ProgressPageDisabled"), 10, 10, 1, 1, 1, 1)

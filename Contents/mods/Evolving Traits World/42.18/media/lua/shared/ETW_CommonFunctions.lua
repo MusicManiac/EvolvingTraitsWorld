@@ -180,6 +180,22 @@ function ETW_CommonFunctions.playersList(player)
 	return playerList
 end
 
+---Resolves either a trait object or registry id string into a CharacterTrait instance.
+---@param traitOrRegistryId CharacterTrait|string
+---@return CharacterTrait|nil
+function ETW_CommonFunctions.resolveTrait(traitOrRegistryId)
+	ETW_CommonFunctions.log("Resolving type " .. tostring(type(traitOrRegistryId)))
+	if instanceof(traitOrRegistryId, "CharacterTrait") then
+		ETW_CommonFunctions.log("Resolving trait CharacterTrait: " .. tostring(traitOrRegistryId))
+		return traitOrRegistryId
+	end
+	if type(traitOrRegistryId) == "string" then
+		ETW_CommonFunctions.log("Resolving trait string: " .. traitOrRegistryId)
+		return CharacterTrait.get(ResourceLocation.of(traitOrRegistryId))
+	end
+	return nil
+end
+
 ---Plays a sound if enabled in settings
 ---@param player IsoPlayer|IsoGameCharacter the player to play sound for
 function ETW_CommonFunctions.traitSound(player)
