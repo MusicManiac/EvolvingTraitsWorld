@@ -539,7 +539,12 @@ local skillTraitRules = {
 		gainingTrait = true,
 	},
 	{
-		triggers = makeTriggerSet("characterInitialization", Perks.Blacksmith, CharacterTrait.BLACKSMITH),
+		triggers = makeTriggerSet(
+			"characterInitialization",
+			Perks.Blacksmith,
+			Perks.Maintenance,
+			CharacterTrait.BLACKSMITH
+		),
 		shouldExecute = ETW_CommonLogicChecks.BlacksmithShouldExecute,
 		condition = function(ctx)
 			return sumContextValues(ctx, { "blacksmith", "maintenance" }) >= SBvars.BlacksmithSkill
