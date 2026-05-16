@@ -1,3 +1,9 @@
+## v.11.0.4
+###### 16 May 2026
+
+- General:
+  - Split food and thirst traits out of the old Weight System into their own rolling-average systems based on long-term hunger and thirst values. (No UI yet)
+
 ## v.11.0.3
 ###### 13 May 2026
 

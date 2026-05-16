@@ -209,6 +209,251 @@ local function sleepCheck(SleepHealthinessBar)
 	return false
 end
 
+---Returns the average of the first N entries in a rolling samples table once enough samples were collected.
+---@param samples number[]
+---@param requiredSamples integer
+---@return number|nil
+local function getRollingAverage(samples, requiredSamples)
+	if #samples < requiredSamples then
+		return nil
+	end
+
+	local sum = 0
+	for i = 1, requiredSamples do
+		sum = sum + samples[i]
+	end
+	return sum / requiredSamples
+end
+
+---Pushes a raw habit value into rolling 60-minute, 24-hour and 31-day buckets and returns the newest long-term average.
+---@param samples60 number[]
+---@param samples24 number[]
+---@param samples31 number[]
+---@param latestValue number
+---@param label string
+---@return number
+local function updateRollingHabitAverage(samples60, samples24, samples31, latestValue, label)
+	table.insert(samples60, latestValue)
+	local hourAverage = getRollingAverage(samples60, 60)
+	if hourAverage then
+		ETW_CommonFunctions.log("ETW Logger | " .. label .. "(): average in last 60 min: " .. hourAverage)
+		table.insert(samples24, hourAverage)
+		samples60[1] = hourAverage
+		for i = #samples60, 2, -1 do
+			table.remove(samples60, i)
+		end
+
+		local dayAverage = getRollingAverage(samples24, 24)
+		if dayAverage then
+			ETW_CommonFunctions.log("ETW Logger | " .. label .. "(): average in last 24 hours: " .. dayAverage)
+			table.insert(samples31, dayAverage)
+			samples24[1] = dayAverage
+			for i = #samples24, 2, -1 do
+				table.remove(samples24, i)
+			end
+
+			local sum = 0
+			for i = 1, #samples31 do
+				sum = sum + samples31[i]
+			end
+			if #samples31 > 31 then
+				table.remove(samples31, 1)
+			end
+			return sum / #samples31
+		end
+	end
+
+	local sum = 0
+	for i = 1, #samples31 do
+		sum = sum + samples31[i]
+	end
+	return sum / #samples31
+end
+
+---Records the player's current hunger value into food-system rolling averages.
+local function recordFoodStateETW()
+	local playersList = ETW_CommonFunctions.playersList()
+
+	for i = 0, playersList:size() - 1 do
+		local player = playersList:get(i)
+		local modData = ETW_CommonFunctions.getETWModData(player)
+		local stats = player:getStats()
+		if player:isAsleep() then
+			ETW_CommonFunctions.log("ETW Logger | recordFoodStateETW(): skipping sleeping player " .. player:getUsername())
+		else
+			local hunger = stats:get(CharacterStat.HUNGER)
+			ETW_CommonFunctions.log(
+				"ETW Logger | recordFoodStateETW(): player "
+					.. player:getUsername()
+					.. ", hunger = "
+					.. hunger
+			)
+			modData.RecentAverageFood = updateRollingHabitAverage(
+				modData.FoodStateInLast60Min,
+				modData.FoodStateInLast24Hours,
+				modData.FoodStateInLast31Days,
+				hunger,
+				"recordFoodStateETW"
+			)
+		end
+	end
+end
+
+---Records the player's current thirst value into thirst-system rolling averages.
+local function recordThirstStateETW()
+	local playersList = ETW_CommonFunctions.playersList()
+
+	for i = 0, playersList:size() - 1 do
+		local player = playersList:get(i)
+		local modData = ETW_CommonFunctions.getETWModData(player)
+		local stats = player:getStats()
+		if player:isAsleep() then
+			ETW_CommonFunctions.log("ETW Logger | recordThirstStateETW(): skipping sleeping player " .. player:getUsername())
+		else
+			local thirst = stats:get(CharacterStat.THIRST)
+			ETW_CommonFunctions.log(
+				"ETW Logger | recordThirstStateETW(): player "
+					.. player:getUsername()
+					.. ", thirst = "
+					.. thirst
+			)
+			modData.RecentAverageThirst = updateRollingHabitAverage(
+				modData.ThirstStateInLast60Min,
+				modData.ThirstStateInLast24Hours,
+				modData.ThirstStateInLast31Days,
+				thirst,
+				"recordThirstStateETW"
+			)
+		end
+	end
+end
+
+---Applies Food System trait gain/loss rules from the player's long-term average hunger value.
+local function foodSystemETW()
+	local playersList = ETW_CommonFunctions.playersList()
+
+	for i = 0, playersList:size() - 1 do
+		local player = playersList:get(i)
+		local modData = ETW_CommonFunctions.getETWModData(player)
+		local averageHunger = modData.RecentAverageFood
+		ETW_CommonFunctions.log(
+			"ETW Logger | foodSystemETW(): running for player "
+				.. player:getUsername()
+				.. ", RecentAverageFood = "
+				.. averageHunger
+		)
+
+		if
+			player:hasTrait(CharacterTrait.HEARTY_APPETITE)
+			and averageHunger <= SBvars.FoodSystemLoseNegativeThreshold
+			and SBvars.TraitsLockSystemCanLoseNegative
+		then
+			ETW_CommonFunctions.removeTraitFromPlayer({
+				player = player,
+				trait = CharacterTrait.HEARTY_APPETITE,
+				positiveTrait = false,
+			})
+		elseif
+			not player:hasTrait(CharacterTrait.HEARTY_APPETITE)
+			and not player:hasTrait(CharacterTrait.LIGHT_EATER)
+			and averageHunger >= SBvars.FoodSystemGainNegativeThreshold
+			and SBvars.TraitsLockSystemCanGainNegative
+		then
+			ETW_CommonFunctions.addTraitToPlayer({
+				player = player,
+				trait = CharacterTrait.HEARTY_APPETITE,
+				positiveTrait = false,
+			})
+		end
+
+		if
+			player:hasTrait(CharacterTrait.LIGHT_EATER)
+			and averageHunger >= SBvars.FoodSystemLosePositiveThreshold
+			and SBvars.TraitsLockSystemCanLosePositive
+		then
+			ETW_CommonFunctions.removeTraitFromPlayer({
+				player = player,
+				trait = CharacterTrait.LIGHT_EATER,
+				positiveTrait = true,
+			})
+		elseif
+			not player:hasTrait(CharacterTrait.LIGHT_EATER)
+			and not player:hasTrait(CharacterTrait.HEARTY_APPETITE)
+			and averageHunger <= SBvars.FoodSystemGainPositiveThreshold
+			and SBvars.TraitsLockSystemCanGainPositive
+		then
+			ETW_CommonFunctions.addTraitToPlayer({
+				player = player,
+				trait = CharacterTrait.LIGHT_EATER,
+				positiveTrait = true,
+			})
+		end
+	end
+end
+
+---Applies Thirst System trait gain/loss rules from the player's long-term average thirst value.
+local function thirstSystemETW()
+	local playersList = ETW_CommonFunctions.playersList()
+
+	for i = 0, playersList:size() - 1 do
+		local player = playersList:get(i)
+		local modData = ETW_CommonFunctions.getETWModData(player)
+		local averageThirst = modData.RecentAverageThirst
+		ETW_CommonFunctions.log(
+			"ETW Logger | thirstSystemETW(): running for player "
+				.. player:getUsername()
+				.. ", RecentAverageThirst = "
+				.. averageThirst
+		)
+
+		if
+			player:hasTrait(CharacterTrait.HIGH_THIRST)
+			and averageThirst <= SBvars.ThirstSystemLoseNegativeThreshold
+			and SBvars.TraitsLockSystemCanLoseNegative
+		then
+			ETW_CommonFunctions.removeTraitFromPlayer({
+				player = player,
+				trait = CharacterTrait.HIGH_THIRST,
+				positiveTrait = false,
+			})
+		elseif
+			not player:hasTrait(CharacterTrait.HIGH_THIRST)
+			and not player:hasTrait(CharacterTrait.LOW_THIRST)
+			and averageThirst >= SBvars.ThirstSystemGainNegativeThreshold
+			and SBvars.TraitsLockSystemCanGainNegative
+		then
+			ETW_CommonFunctions.addTraitToPlayer({
+				player = player,
+				trait = CharacterTrait.HIGH_THIRST,
+				positiveTrait = false,
+			})
+		end
+
+		if
+			player:hasTrait(CharacterTrait.LOW_THIRST)
+			and averageThirst >= SBvars.ThirstSystemLosePositiveThreshold
+			and SBvars.TraitsLockSystemCanLosePositive
+		then
+			ETW_CommonFunctions.removeTraitFromPlayer({
+				player = player,
+				trait = CharacterTrait.LOW_THIRST,
+				positiveTrait = true,
+			})
+		elseif
+			not player:hasTrait(CharacterTrait.LOW_THIRST)
+			and not player:hasTrait(CharacterTrait.HIGH_THIRST)
+			and averageThirst <= SBvars.ThirstSystemGainPositiveThreshold
+			and SBvars.TraitsLockSystemCanGainPositive
+		then
+			ETW_CommonFunctions.addTraitToPlayer({
+				player = player,
+				trait = CharacterTrait.LOW_THIRST,
+				positiveTrait = true,
+			})
+		end
+	end
+end
+
 ---Function responsible for managing Weight System traits
 local function weightSystemETW()
 	local playersList = ETW_CommonFunctions.playersList()
@@ -268,28 +513,6 @@ local function weightSystemETW()
 		end
 		if (weight > 85 and weight < 100) or (weight > 65 and weight < 75) then
 			if
-				not player:hasTrait(CharacterTrait.HEARTY_APPETITE)
-				and startingTraits.LightEater ~= true
-				and SBvars.TraitsLockSystemCanGainNegative
-			then
-				ETW_CommonFunctions.addTraitToPlayer({
-					player = player,
-					trait = CharacterTrait.HEARTY_APPETITE,
-					positiveTrait = false,
-				})
-			end
-			if
-				not player:hasTrait(CharacterTrait.HIGH_THIRST)
-				and startingTraits.LowThirst ~= true
-				and SBvars.TraitsLockSystemCanGainNegative
-			then
-				ETW_CommonFunctions.addTraitToPlayer({
-					player = player,
-					trait = CharacterTrait.HIGH_THIRST,
-					positiveTrait = false,
-				})
-			end
-			if
 				player:hasTrait(CharacterTrait.THICK_SKINNED)
 				and startingTraits.ThickSkinned ~= true
 				and SBvars.TraitsLockSystemCanLosePositive
@@ -311,53 +534,8 @@ local function weightSystemETW()
 					positiveTrait = true,
 				})
 			end
-			if
-				player:hasTrait(CharacterTrait.LIGHT_EATER)
-				and startingTraits.LightEater ~= true
-				and SBvars.TraitsLockSystemCanLosePositive
-			then
-				ETW_CommonFunctions.removeTraitFromPlayer({
-					player = player,
-					trait = CharacterTrait.LIGHT_EATER,
-					positiveTrait = true,
-				})
-			end
-			if
-				player:hasTrait(CharacterTrait.LOW_THIRST)
-				and startingTraits.LowThirst ~= true
-				and SBvars.TraitsLockSystemCanLosePositive
-			then
-				ETW_CommonFunctions.removeTraitFromPlayer({
-					player = player,
-					trait = CharacterTrait.LOW_THIRST,
-					positiveTrait = true,
-				})
-			end
 		end
 		if weight >= 75 and weight <= 85 then
-			-- losing Hearty Appetite and High Thirst if weight 75-85
-			if
-				player:hasTrait(CharacterTrait.HEARTY_APPETITE)
-				and startingTraits.HeartyAppetite ~= true
-				and SBvars.TraitsLockSystemCanLoseNegative
-			then
-				ETW_CommonFunctions.removeTraitFromPlayer({
-					player = player,
-					trait = CharacterTrait.HEARTY_APPETITE,
-					positiveTrait = false,
-				})
-			end
-			if
-				player:hasTrait(CharacterTrait.HIGH_THIRST)
-				and startingTraits.HighThirst ~= true
-				and SBvars.TraitsLockSystemCanLoseNegative
-			then
-				ETW_CommonFunctions.removeTraitFromPlayer({
-					player = player,
-					trait = CharacterTrait.HIGH_THIRST,
-					positiveTrait = false,
-				})
-			end
 			-- losing Thick Skinned and Fast Healer if mental state not good
 			if modData.RecentAverageMental <= (SBvars.WeightSystemLowerMentalThreshold / 100) then
 				if
@@ -410,58 +588,6 @@ local function weightSystemETW()
 							positiveTrait = true,
 						})
 					end
-				end
-			end
-			-- losing Light Eater and Low Thirst if mental is not good or if sleep is bad
-			if
-				modData.RecentAverageMental <= (SBvars.WeightSystemUpperMentalThreshold / 100)
-				or sleepCheck(modData.SleepSystem.SleepHealthinessBar) == false
-			then
-				if
-					player:hasTrait(CharacterTrait.LIGHT_EATER)
-					and startingTraits.LightEater ~= true
-					and SBvars.TraitsLockSystemCanLosePositive
-				then
-					ETW_CommonFunctions.removeTraitFromPlayer({
-						player = player,
-						trait = CharacterTrait.LIGHT_EATER,
-						positiveTrait = true,
-					})
-				end
-				if
-					player:hasTrait(CharacterTrait.LOW_THIRST)
-					and startingTraits.LowThirst ~= true
-					and SBvars.TraitsLockSystemCanLosePositive
-				then
-					ETW_CommonFunctions.removeTraitFromPlayer({
-						player = player,
-						trait = CharacterTrait.LOW_THIRST,
-						positiveTrait = true,
-					})
-				end
-			else
-				-- gaining Light Eater and Low Thirst if mental is good, sleep is good, and weight 75-85
-				if
-					not player:hasTrait(CharacterTrait.LIGHT_EATER)
-					and startingTraits.HeartyAppetite ~= true
-					and SBvars.TraitsLockSystemCanGainPositive
-				then
-					ETW_CommonFunctions.addTraitToPlayer({
-						player = player,
-						trait = CharacterTrait.LIGHT_EATER,
-						positiveTrait = true,
-					})
-				end
-				if
-					not player:hasTrait(CharacterTrait.LOW_THIRST)
-					and startingTraits.HighThirst ~= true
-					and SBvars.TraitsLockSystemCanGainPositive
-				then
-					ETW_CommonFunctions.addTraitToPlayer({
-						player = player,
-						trait = CharacterTrait.LOW_THIRST,
-						positiveTrait = true,
-					})
 				end
 			end
 		end
@@ -659,6 +785,22 @@ local function initializeEventsETW(playerIndex, player)
 	if ETW_CommonLogicChecks.FoodSicknessSystemShouldExecute(player) then
 		Events.EveryOneMinute.Add(foodSicknessTraitsETW)
 	end
+	Events.EveryOneMinute.Remove(recordFoodStateETW)
+	if ETW_CommonLogicChecks.FoodSystemShouldExecute(player) then
+		Events.EveryOneMinute.Add(recordFoodStateETW)
+	end
+	Events.EveryTenMinutes.Remove(foodSystemETW)
+	if ETW_CommonLogicChecks.FoodSystemShouldExecute(player) then
+		Events.EveryTenMinutes.Add(foodSystemETW)
+	end
+	Events.EveryOneMinute.Remove(recordThirstStateETW)
+	if ETW_CommonLogicChecks.ThirstSystemShouldExecute(player) then
+		Events.EveryOneMinute.Add(recordThirstStateETW)
+	end
+	Events.EveryTenMinutes.Remove(thirstSystemETW)
+	if ETW_CommonLogicChecks.ThirstSystemShouldExecute(player) then
+		Events.EveryTenMinutes.Add(thirstSystemETW)
+	end
 	Events.EveryTenMinutes.Remove(weightSystemETW)
 	if SBvars.WeightSystem == true and noTraitsLock() then
 		Events.EveryTenMinutes.Add(weightSystemETW)
@@ -683,6 +825,10 @@ end
 local function clearEventsETW(character)
 	Events.EveryOneMinute.Remove(immunitySystemTraits)
 	Events.EveryOneMinute.Remove(foodSicknessTraitsETW)
+	Events.EveryOneMinute.Remove(recordFoodStateETW)
+	Events.EveryTenMinutes.Remove(foodSystemETW)
+	Events.EveryOneMinute.Remove(recordThirstStateETW)
+	Events.EveryTenMinutes.Remove(thirstSystemETW)
 	Events.EveryTenMinutes.Remove(weightSystemETW)
 	Events.EveryTenMinutes.Remove(painToleranceTraitETW)
 	Events.EveryOneMinute.Remove(asthmaticTraitETW)

@@ -50,6 +50,44 @@ function ETW_CommonLogicChecks.FoodSicknessSystemShouldExecute(player)
 	end
 end
 
+---Returns true if the Food System should execute
+---@param player IsoPlayer|nil the player to check for
+---@return boolean boolean true if the Food System should execute, false otherwise
+function ETW_CommonLogicChecks.FoodSystemShouldExecute(player)
+	if
+		SBvars.FoodSystem == true
+		and (
+			SBvars.TraitsLockSystemCanGainPositive
+			or SBvars.TraitsLockSystemCanLosePositive
+			or SBvars.TraitsLockSystemCanGainNegative
+			or SBvars.TraitsLockSystemCanLoseNegative
+		)
+	then
+		return true
+	else
+		return false
+	end
+end
+
+---Returns true if the Thirst System should execute
+---@param player IsoPlayer|nil the player to check for
+---@return boolean boolean true if the Thirst System should execute, false otherwise
+function ETW_CommonLogicChecks.ThirstSystemShouldExecute(player)
+	if
+		SBvars.ThirstSystem == true
+		and (
+			SBvars.TraitsLockSystemCanGainPositive
+			or SBvars.TraitsLockSystemCanLosePositive
+			or SBvars.TraitsLockSystemCanGainNegative
+			or SBvars.TraitsLockSystemCanLoseNegative
+		)
+	then
+		return true
+	else
+		return false
+	end
+end
+
 ---Returns true if the Asthmatic System should execute
 ---@param player IsoPlayer|nil the player to check for
 ---@return boolean boolean true if the Asthmatic System should execute, false otherwise
