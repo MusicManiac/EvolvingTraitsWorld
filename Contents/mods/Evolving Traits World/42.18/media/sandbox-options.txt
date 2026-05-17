@@ -210,7 +210,7 @@ option EvolvingTraitsWorld.FoodSystemGainPositiveThreshold
 	type = double,
 	min = 0,
 	max = 1,
-	default = 0.18,
+	default = 0.82,
 	page = ETWSystems,
 	translation = ETW_FoodSystemGainPositiveThreshold,
 }
@@ -219,7 +219,7 @@ option EvolvingTraitsWorld.FoodSystemLosePositiveThreshold
 	type = double,
 	min = 0,
 	max = 1,
-	default = 0.28,
+	default = 0.72,
 	page = ETWSystems,
 	translation = ETW_FoodSystemLosePositiveThreshold,
 }
@@ -228,7 +228,7 @@ option EvolvingTraitsWorld.FoodSystemLoseNegativeThreshold
 	type = double,
 	min = 0,
 	max = 1,
-	default = 0.3,
+	default = 0.7,
 	page = ETWSystems,
 	translation = ETW_FoodSystemLoseNegativeThreshold,
 }
@@ -237,7 +237,7 @@ option EvolvingTraitsWorld.FoodSystemGainNegativeThreshold
 	type = double,
 	min = 0,
 	max = 1,
-	default = 0.45,
+	default = 0.55,
 	page = ETWSystems,
 	translation = ETW_FoodSystemGainNegativeThreshold,
 }
@@ -429,7 +429,7 @@ option EvolvingTraitsWorld.ThirstSystemGainPositiveThreshold
 	type = double,
 	min = 0,
 	max = 1,
-	default = 0.15,
+	default = 0.85,
 	page = ETWSystems,
 	translation = ETW_ThirstSystemGainPositiveThreshold,
 }
@@ -438,7 +438,7 @@ option EvolvingTraitsWorld.ThirstSystemLosePositiveThreshold
 	type = double,
 	min = 0,
 	max = 1,
-	default = 0.24,
+	default = 0.76,
 	page = ETWSystems,
 	translation = ETW_ThirstSystemLosePositiveThreshold,
 }
@@ -447,7 +447,7 @@ option EvolvingTraitsWorld.ThirstSystemLoseNegativeThreshold
 	type = double,
 	min = 0,
 	max = 1,
-	default = 0.25,
+	default = 0.75,
 	page = ETWSystems,
 	translation = ETW_ThirstSystemLoseNegativeThreshold,
 }
@@ -456,7 +456,7 @@ option EvolvingTraitsWorld.ThirstSystemGainNegativeThreshold
 	type = double,
 	min = 0,
 	max = 1,
-	default = 0.4,
+	default = 0.6,
 	page = ETWSystems,
 	translation = ETW_ThirstSystemGainNegativeThreshold,
 }
