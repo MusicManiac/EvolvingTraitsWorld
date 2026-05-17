@@ -3206,12 +3206,12 @@ function ISETWUI:render()
 	)
 	updateBar(
 		self.barVitalsFood,
-		1 - modData.RecentAverageFood,
+		modData.RecentAverageFood,
 		getText("UI_ETW_CurrentValue") .. formatDecimal(modData.RecentAverageFood)
 	)
 	updateBar(
 		self.barVitalsThirst,
-		1 - modData.RecentAverageThirst,
+		modData.RecentAverageThirst,
 		getText("UI_ETW_CurrentValue") .. formatDecimal(modData.RecentAverageThirst)
 	)
 	updateBar(
