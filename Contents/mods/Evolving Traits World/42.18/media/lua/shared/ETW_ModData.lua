@@ -47,14 +47,14 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	modData.MentalStateInLast24Hours = modData.MentalStateInLast24Hours or { 0.75 }
 	modData.MentalStateInLast31Days = modData.MentalStateInLast31Days or { 0.75 }
 	modData.RecentAverageMental = modData.RecentAverageMental or 0.75
-	modData.FoodStateInLast60Min = modData.FoodStateInLast60Min or { 0 }
-	modData.FoodStateInLast24Hours = modData.FoodStateInLast24Hours or { 0 }
-	modData.FoodStateInLast31Days = modData.FoodStateInLast31Days or { 0 }
-	modData.RecentAverageFood = modData.RecentAverageFood or 0
-	modData.ThirstStateInLast60Min = modData.ThirstStateInLast60Min or { 0 }
-	modData.ThirstStateInLast24Hours = modData.ThirstStateInLast24Hours or { 0 }
-	modData.ThirstStateInLast31Days = modData.ThirstStateInLast31Days or { 0 }
-	modData.RecentAverageThirst = modData.RecentAverageThirst or 0
+	modData.FoodStateInLast60Min = modData.FoodStateInLast60Min or { 0.75 }
+	modData.FoodStateInLast24Hours = modData.FoodStateInLast24Hours or { 0.75 }
+	modData.FoodStateInLast31Days = modData.FoodStateInLast31Days or { 0.75 }
+	modData.RecentAverageFood = modData.RecentAverageFood or 0.75
+	modData.ThirstStateInLast60Min = modData.ThirstStateInLast60Min or { 0.75 }
+	modData.ThirstStateInLast24Hours = modData.ThirstStateInLast24Hours or { 0.75 }
+	modData.ThirstStateInLast31Days = modData.ThirstStateInLast31Days or { 0.75 }
+	modData.RecentAverageThirst = modData.RecentAverageThirst or 0.75
 
 	modData.StartingTraits = modData.StartingTraits or {}
 	local startingTraits = modData.StartingTraits
