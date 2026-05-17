@@ -14,6 +14,41 @@ local SBvars = SandboxVars.EvolvingTraitsWorld
 local ETW_Registry = require("ETW_Registry")
 local ETWTraitsRegistry = ETW_Registry.traits
 
+---Returns the midpoint between two numeric values.
+---@param a number
+---@param b number
+---@return number
+local function midpoint(a, b)
+	return (a + b) / 2
+end
+
+---Builds a fixed-size samples array filled with the same value.
+---@param value number
+---@param sampleCount integer
+---@return number[]
+local function buildFilledSamples(value, sampleCount)
+	local samples = {}
+	for i = 1, sampleCount do
+		samples[i] = value
+	end
+	return samples
+end
+
+---Seeds a rolling samples array for new saves and migrates legacy single-sample defaults.
+---@param existingSamples number[]|nil
+---@param initialValue number
+---@param sampleCount integer
+---@return number[]
+local function initializeRollingSamples(existingSamples, initialValue, sampleCount)
+	if type(existingSamples) ~= "table" or #existingSamples == 0 then
+		return buildFilledSamples(initialValue, sampleCount)
+	end
+	if #existingSamples == 1 then
+		return buildFilledSamples(tonumber(existingSamples[1]) or initialValue, sampleCount)
+	end
+	return existingSamples
+end
+
 ---Checks if player has trait and adds it to modData.StartingTraits if it's not there
 ---@param startingTraits table
 ---@param player IsoPlayer
@@ -23,6 +58,32 @@ function ETW_ModData.checkStartingTrait(startingTraits, player, trait)
 	if startingTraits[traitRegistryId] == nil then
 		startingTraits[traitRegistryId] = player:hasTrait(trait)
 	end
+end
+
+---Returns the initial long-term food average based on the player's starting food trait or sandbox neutral midpoint.
+---@param startingTraits table<string, boolean>
+---@return number
+local function getInitialFoodAverage(startingTraits)
+	if startingTraits[CharacterTrait.HEARTY_APPETITE:toString()] == true then
+		return midpoint(SBvars.FoodSystemGainNegativeThreshold, 0)
+	end
+	if startingTraits[CharacterTrait.LIGHT_EATER:toString()] == true then
+		return midpoint(1, SBvars.FoodSystemGainPositiveThreshold)
+	end
+	return midpoint(SBvars.FoodSystemGainNegativeThreshold, SBvars.FoodSystemGainPositiveThreshold)
+end
+
+---Returns the initial long-term thirst average based on the player's starting thirst trait or sandbox neutral midpoint.
+---@param startingTraits table<string, boolean>
+---@return number
+local function getInitialThirstAverage(startingTraits)
+	if startingTraits[CharacterTrait.HIGH_THIRST:toString()] == true then
+		return midpoint(SBvars.ThirstSystemGainNegativeThreshold, 0)
+	end
+	if startingTraits[CharacterTrait.LOW_THIRST:toString()] == true then
+		return midpoint(1, SBvars.ThirstSystemGainPositiveThreshold)
+	end
+	return midpoint(SBvars.ThirstSystemGainNegativeThreshold, SBvars.ThirstSystemGainPositiveThreshold)
 end
 
 ---Creates modData for player if it doesn't exist and fills it with default values if they don't exist. Should be ran on character creation and loading.
@@ -47,14 +108,6 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	modData.MentalStateInLast24Hours = modData.MentalStateInLast24Hours or { 0.75 }
 	modData.MentalStateInLast31Days = modData.MentalStateInLast31Days or { 0.75 }
 	modData.RecentAverageMental = modData.RecentAverageMental or 0.75
-	modData.FoodStateInLast60Min = modData.FoodStateInLast60Min or { 0.75 }
-	modData.FoodStateInLast24Hours = modData.FoodStateInLast24Hours or { 0.75 }
-	modData.FoodStateInLast31Days = modData.FoodStateInLast31Days or { 0.75 }
-	modData.RecentAverageFood = modData.RecentAverageFood or 0.75
-	modData.ThirstStateInLast60Min = modData.ThirstStateInLast60Min or { 0.75 }
-	modData.ThirstStateInLast24Hours = modData.ThirstStateInLast24Hours or { 0.75 }
-	modData.ThirstStateInLast31Days = modData.ThirstStateInLast31Days or { 0.75 }
-	modData.RecentAverageThirst = modData.RecentAverageThirst or 0.75
 
 	modData.StartingTraits = modData.StartingTraits or {}
 	local startingTraits = modData.StartingTraits
@@ -71,6 +124,24 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	ETW_ModData.checkStartingTrait(startingTraits, player, ETWTraitsRegistry.PLUVIOPHOBIA)
 	ETW_ModData.checkStartingTrait(startingTraits, player, ETWTraitsRegistry.HOMICHLOPHOBIA)
 	ETW_ModData.checkStartingTrait(startingTraits, player, ETWTraitsRegistry.HOMICHLOPHILE)
+	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.HEARTY_APPETITE)
+	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.LIGHT_EATER)
+	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.HIGH_THIRST)
+	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.LOW_THIRST)
+
+	local initialFoodAverage = getInitialFoodAverage(startingTraits)
+	modData.FoodStateInLast60Min = initializeRollingSamples(modData.FoodStateInLast60Min, initialFoodAverage, 60)
+	modData.FoodStateInLast24Hours = initializeRollingSamples(modData.FoodStateInLast24Hours, initialFoodAverage, 24)
+	modData.FoodStateInLast31Days = initializeRollingSamples(modData.FoodStateInLast31Days, initialFoodAverage, 31)
+	modData.RecentAverageFood = modData.RecentAverageFood or initialFoodAverage
+
+	local initialThirstAverage = getInitialThirstAverage(startingTraits)
+	modData.ThirstStateInLast60Min = initializeRollingSamples(modData.ThirstStateInLast60Min, initialThirstAverage, 60)
+	modData.ThirstStateInLast24Hours =
+		initializeRollingSamples(modData.ThirstStateInLast24Hours, initialThirstAverage, 24)
+	modData.ThirstStateInLast31Days =
+		initializeRollingSamples(modData.ThirstStateInLast31Days, initialThirstAverage, 31)
+	modData.RecentAverageThirst = modData.RecentAverageThirst or initialThirstAverage
 
 	modData.DelayedStartingTraitsFilled = modData.DelayedStartingTraitsFilled or false
 	modData.DelayedTraits = modData.DelayedTraits or {}
