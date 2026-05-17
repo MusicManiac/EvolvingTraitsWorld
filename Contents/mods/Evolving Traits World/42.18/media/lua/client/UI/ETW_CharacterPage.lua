@@ -2987,27 +2987,27 @@ function ISETWUI:render()
 	updateBar(
 		self.barImmunitySystem,
 		percentile(0, SBvars.ImmunitySystemCounter, modData.ImmunitySystemCounter),
-		getText("UI_ETW_CurrentValue") .. modData.ImmunitySystemCounter
+		getText("UI_ETW_CurrentValue") .. formatDecimal(modData.ImmunitySystemCounter)
 	)
 	updateBar(
 		self.barSicknessSystem,
 		percentile(0, SBvars.FoodSicknessSystemCounter, modData.FoodSicknessWeathered),
-		getText("UI_ETW_CurrentValue") .. modData.FoodSicknessWeathered
+		getText("UI_ETW_CurrentValue") .. formatDecimal(modData.FoodSicknessWeathered)
 	)
 	updateBar(
 		self.barPainTolerance,
 		percentile(0, SBvars.PainToleranceCounter, modData.PainToleranceCounter),
-		modData.PainToleranceCounter
+		getText("UI_ETW_CurrentValue") .. formatDecimal(modData.PainToleranceCounter)
 	)
 	updateBar(
 		self.barAsthmatic,
 		percentile(SBvars.AsthmaticCounter * -2, SBvars.AsthmaticCounter * 2, modData.AsthmaticCounter),
-		getText("UI_ETW_CurrentValue") .. modData.AsthmaticCounter
+		getText("UI_ETW_CurrentValue") .. formatDecimal(modData.AsthmaticCounter)
 	)
 	updateBar(
 		self.barBloodlust,
 		percentile(0, SBvars.BloodlustProgress * 2, modData.BloodlustSystem.BloodlustProgress),
-		getText("UI_ETW_CurrentValue") .. modData.BloodlustSystem.BloodlustProgress
+		getText("UI_ETW_CurrentValue") .. formatDecimal(modData.BloodlustSystem.BloodlustProgress)
 	)
 	updateBar(
 		self.barOutdoorsman,
@@ -3016,7 +3016,7 @@ function ISETWUI:render()
 			SBvars.OutdoorsmanCounter * 2,
 			modData.OutdoorsmanSystem.OutdoorsmanCounter
 		),
-		getText("UI_ETW_CurrentValue") .. modData.OutdoorsmanSystem.OutdoorsmanCounter
+		getText("UI_ETW_CurrentValue") .. formatDecimal(modData.OutdoorsmanSystem.OutdoorsmanCounter)
 	)
 	updateBar(
 		self.barAgoraphobic,
@@ -3025,7 +3025,7 @@ function ISETWUI:render()
 			SBvars.FearOfLocationsSystemCounter * 2,
 			modData.LocationFearSystem.FearOfOutside
 		),
-		getText("UI_ETW_CurrentValue") .. modData.LocationFearSystem.FearOfOutside
+		getText("UI_ETW_CurrentValue") .. formatDecimal(modData.LocationFearSystem.FearOfOutside)
 	)
 	updateBar(
 		self.barClaustrophobic,
@@ -3034,7 +3034,7 @@ function ISETWUI:render()
 			SBvars.FearOfLocationsSystemCounter * 2,
 			modData.LocationFearSystem.FearOfInside
 		),
-		getText("UI_ETW_CurrentValue") .. modData.LocationFearSystem.FearOfInside
+		getText("UI_ETW_CurrentValue") .. formatDecimal(modData.LocationFearSystem.FearOfInside)
 	)
 	if self.barLuckSystem ~= nil then
 		local totalPerkLevel = 0
@@ -3075,7 +3075,7 @@ function ISETWUI:render()
 	updateBar(
 		self.barSleepSystem,
 		percentile(-200, 200, modData.SleepSystem.SleepHealthinessBar),
-		getText("UI_ETW_CurrentValue") .. modData.SleepSystem.SleepHealthinessBar
+		getText("UI_ETW_CurrentValue") .. formatDecimal(modData.SleepSystem.SleepHealthinessBar)
 	)
 	updateBar(
 		self.barSmokerSystem,
@@ -3085,12 +3085,12 @@ function ISETWUI:render()
 	updateBar(
 		self.barRainSystem,
 		percentile(SBvars.RainSystemCounter * -2, SBvars.RainSystemCounter * 2, modData.RainCounter),
-		getText("UI_ETW_CurrentValue") .. modData.RainCounter
+		getText("UI_ETW_CurrentValue") .. formatDecimal(modData.RainCounter)
 	)
 	updateBar(
 		self.barFogSystem,
 		percentile(SBvars.FogSystemCounter * -2, SBvars.FogSystemCounter * 2, modData.FogCounter),
-		getText("UI_ETW_CurrentValue") .. modData.FogCounter
+		getText("UI_ETW_CurrentValue") .. formatDecimal(modData.FogCounter)
 	)
 	if
 		isPermanentTraitsTabActive
