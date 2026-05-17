@@ -682,43 +682,13 @@ local function recordMentalStateETW()
 		local unhappiness = stats:get(CharacterStat.UNHAPPINESS) / 100 -- 0-100 -> 0-1
 		local panic = stats:get(CharacterStat.PANIC) / 100 -- 0-100 -> 0-1
 		local mentalHealth = 1 - ((anger + stress + unhappiness + panic) / 4)
-		table.insert(modData.MentalStateInLast60Min, mentalHealth)
-		if #modData.MentalStateInLast60Min >= 60 then
-			local sum = 0
-			for i = 1, 60 do
-				sum = sum + modData.MentalStateInLast60Min[i]
-			end
-			local average = sum / 60
-			ETW_CommonFunctions.log("ETW Logger | recordMentalStateETW(): average mental in last 60 min: " .. average)
-			table.insert(modData.MentalStateInLast24Hours, average)
-			modData.MentalStateInLast60Min = { average }
-			-- last 24h mental
-			if #modData.MentalStateInLast24Hours >= 24 then
-				sum = 0
-				for i = 1, 24 do
-					sum = sum + modData.MentalStateInLast24Hours[i]
-				end
-				average = sum / 24
-				ETW_CommonFunctions.log(
-					"ETW Logger | recordMentalStateETW(): average mental in last 24 hours: " .. average
-				)
-				table.insert(modData.MentalStateInLast31Days, average)
-				modData.MentalStateInLast24Hours = { average }
-				-- last days mental
-				sum = 0
-				for i = 1, #modData.MentalStateInLast31Days do
-					sum = sum + modData.MentalStateInLast31Days[i]
-				end
-				modData.RecentAverageMental = sum / #modData.MentalStateInLast31Days
-				ETW_CommonFunctions.log(
-					"ETW Logger | recordMentalStateETW(): average mental in last 31 days: "
-						.. modData.RecentAverageMental
-				)
-				if #modData.MentalStateInLast31Days > 31 then
-					table.remove(modData.MentalStateInLast31Days, 1)
-				end
-			end
-		end
+		modData.RecentAverageMental = updateRollingHabitAverage(
+			modData.MentalStateInLast60Min,
+			modData.MentalStateInLast24Hours,
+			modData.MentalStateInLast31Days,
+			mentalHealth,
+			"recordMentalStateETW"
+		)
 	end
 end
 
