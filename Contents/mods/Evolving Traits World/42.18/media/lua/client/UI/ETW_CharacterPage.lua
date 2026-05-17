@@ -2,7 +2,6 @@
 require("ISUI/ISPanelJoypad")
 require("UI/CharacterInfoAddTab")
 require("ETW_ModOptions")
-require("ETW_ModData")
 
 local ETW_CommonFunctions = require("ETW_CommonFunctions")
 local ETW_CommonLogicChecks = require("ETW_CommonLogicChecks")
@@ -269,24 +268,24 @@ function ISETWUI:createChildren()
 	self.subPanel.allowDraggingTabs = false
 	self.subPanel.allowTornOffTabs = false
 
-	-- Sub-view A: Permanent Traits (receives all the existing widgets)
-	self.subViewPermanentTraits = ISPanel:new(0, 0, self.width, self.height - TAB_H)
-	self.subViewPermanentTraits:initialise()
-	self.subViewPermanentTraits:noBackground()
-
-	-- Sub-view B: Non-permanent Traits
-	self.subViewNonPermanentTraits = ISPanel:new(0, 0, self.width, self.height - TAB_H)
-	self.subViewNonPermanentTraits:initialise()
-	self.subViewNonPermanentTraits:noBackground()
-
-	-- Sub-view C: Vitals
+	-- Sub-view: Vitals
 	self.subViewVitals = ISPanel:new(0, 0, self.width, self.height - TAB_H)
 	self.subViewVitals:initialise()
 	self.subViewVitals:noBackground()
 
+	-- Sub-view: Permanent Traits
+	self.subViewPermanentTraits = ISPanel:new(0, 0, self.width, self.height - TAB_H)
+	self.subViewPermanentTraits:initialise()
+	self.subViewPermanentTraits:noBackground()
+
+	-- Sub-view: Non-permanent Traits
+	self.subViewNonPermanentTraits = ISPanel:new(0, 0, self.width, self.height - TAB_H)
+	self.subViewNonPermanentTraits:initialise()
+	self.subViewNonPermanentTraits:noBackground()
+
+	local vitalsLayoutCursor = newLayoutCursor()
 	local permanentTraitsLayoutCursor = newLayoutCursor()
 	local nonPermanentTraitsLayoutCursor = newLayoutCursor()
-	local vitalsLayoutCursor = newLayoutCursor()
 
 	-- routeTo(subView): switches the addChild redirect to the given subview.
 	-- Call this before each section to control which tab receives its widgets.
@@ -297,10 +296,7 @@ function ISETWUI:createChildren()
 		end
 		useLayoutCursor(layoutCursor)
 	end
-
-	-- Start routing to Permanent Traits tab (default)
-	routeTo(self.subViewPermanentTraits, permanentTraitsLayoutCursor)
-	-- ── End subtab setup (redirect active) ────────────────────────────────────
+	-- ── End subtab setup (redirect active) ──────────────────────────────────────────────────────────
 
 	if SBvars.UIPage then
 		local barStartPosition = 150 -- TODO : add mod option to adjust this
@@ -376,7 +372,139 @@ function ISETWUI:createChildren()
 			firearmKills = killCountModData["Firearm"].count or 0
 		end
 
-		-- Example extraction: one Permanent Traits tab builder can own its own bar block.
+		local function buildVitalsSection()
+			str = getText("UI_ETW_Vitals_Last31Days")
+			self.labelVitalsLast31Days = ISLabel:new(
+				WINDOW_WIDTH / 2 - strLen(textManager, str) / 2,
+				y,
+				FONT_HGT_MEDIUM,
+				str,
+				self.TextColor.r,
+				self.TextColor.g,
+				self.TextColor.b,
+				self.TextColor.a,
+				UIFont.Small,
+				true
+			)
+			self:addChild(self.labelVitalsLast31Days)
+
+			y = y + FONT_HGT_MEDIUM + 4
+
+			self.labelVitalsFood = ISLabel:new(
+				barStartPosition - lineStartPosition,
+				y,
+				FONT_HGT_SMALL,
+				getText("UI_ETW_Vitals_Food"),
+				self.TextColor.r,
+				self.TextColor.g,
+				self.TextColor.b,
+				self.TextColor.a,
+				UIFont.Small,
+				false
+			)
+			self:addChild(self.labelVitalsFood)
+
+			self.barVitalsFood = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
+			self.barVitalsFood:setGradientTexture(redYellowGreenGradient)
+			self.barVitalsFood:setHighlightRadius(highlightRadius)
+			self.barVitalsFood:setDoKnob(false)
+			self:addChild(self.barVitalsFood)
+
+			y = y + FONT_HGT_SMALL + 2
+
+			self.labelVitalsFood24Hours = ISLabel:new(
+				barStartPosition,
+				y,
+				FONT_HGT_SMALL,
+				"",
+				self.DimmedTextColor.r,
+				self.DimmedTextColor.g,
+				self.DimmedTextColor.b,
+				self.DimmedTextColor.a,
+				UIFont.Small,
+				true
+			)
+			self:addChild(self.labelVitalsFood24Hours)
+
+			y = y + FONT_HGT_SMALL + 6
+
+			self.labelVitalsThirst = ISLabel:new(
+				barStartPosition - lineStartPosition,
+				y,
+				FONT_HGT_SMALL,
+				getText("UI_ETW_Vitals_Thirst"),
+				self.TextColor.r,
+				self.TextColor.g,
+				self.TextColor.b,
+				self.TextColor.a,
+				UIFont.Small,
+				false
+			)
+			self:addChild(self.labelVitalsThirst)
+
+			self.barVitalsThirst = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
+			self.barVitalsThirst:setGradientTexture(redYellowGreenGradient)
+			self.barVitalsThirst:setHighlightRadius(highlightRadius)
+			self.barVitalsThirst:setDoKnob(false)
+			self:addChild(self.barVitalsThirst)
+
+			y = y + FONT_HGT_SMALL + 2
+
+			self.labelVitalsThirst24Hours = ISLabel:new(
+				barStartPosition,
+				y,
+				FONT_HGT_SMALL,
+				"",
+				self.DimmedTextColor.r,
+				self.DimmedTextColor.g,
+				self.DimmedTextColor.b,
+				self.DimmedTextColor.a,
+				UIFont.Small,
+				true
+			)
+			self:addChild(self.labelVitalsThirst24Hours)
+
+			y = y + FONT_HGT_SMALL + 6
+
+			self.labelVitalsMental = ISLabel:new(
+				barStartPosition - lineStartPosition,
+				y,
+				FONT_HGT_SMALL,
+				getText("UI_ETW_Vitals_Mental"),
+				self.TextColor.r,
+				self.TextColor.g,
+				self.TextColor.b,
+				self.TextColor.a,
+				UIFont.Small,
+				false
+			)
+			self:addChild(self.labelVitalsMental)
+
+			self.barVitalsMental = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
+			self.barVitalsMental:setGradientTexture(redYellowGreenGradient)
+			self.barVitalsMental:setHighlightRadius(highlightRadius)
+			self.barVitalsMental:setDoKnob(false)
+			self:addChild(self.barVitalsMental)
+
+			y = y + FONT_HGT_SMALL + 2
+
+			self.labelVitalsMental24Hours = ISLabel:new(
+				barStartPosition,
+				y,
+				FONT_HGT_SMALL,
+				"",
+				self.DimmedTextColor.r,
+				self.DimmedTextColor.g,
+				self.DimmedTextColor.b,
+				self.DimmedTextColor.a,
+				UIFont.Small,
+				true
+			)
+			self:addChild(self.labelVitalsMental24Hours)
+
+			y = y + FONT_HGT_SMALL
+		end
+
 		local function buildPermanentTraitsSection()
 			if ETW_CommonLogicChecks.ImmunitySystemShouldExecute(player) then
 				self.labelProneToIllness = ISLabel:new(
@@ -2124,7 +2252,6 @@ function ISETWUI:createChildren()
 			end
 		end
 
-		-- Example extraction: same idea for a Non-permanent Traits subtab block.
 		local function buildNonPermanentTraitsSection()
 			if ETW_CommonLogicChecks.BloodlustShouldExecute(player) then
 				str = "- " .. getCachedTraitUIName(ETWTraitsRegistry.BLOODLUST)
@@ -2659,139 +2786,6 @@ function ISETWUI:createChildren()
 			end
 		end
 
-		local function buildVitalsSection()
-			str = getText("UI_ETW_Vitals_Last31Days")
-			self.labelVitalsLast31Days = ISLabel:new(
-				WINDOW_WIDTH / 2 - strLen(textManager, str) / 2,
-				y,
-				FONT_HGT_MEDIUM,
-				str,
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				true
-			)
-			self:addChild(self.labelVitalsLast31Days)
-
-			y = y + FONT_HGT_MEDIUM + 4
-
-			self.labelVitalsFood = ISLabel:new(
-				barStartPosition - lineStartPosition,
-				y,
-				FONT_HGT_SMALL,
-				getText("UI_ETW_Vitals_Food"),
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				false
-			)
-			self:addChild(self.labelVitalsFood)
-
-			self.barVitalsFood = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
-			self.barVitalsFood:setGradientTexture(redYellowGreenGradient)
-			self.barVitalsFood:setHighlightRadius(highlightRadius)
-			self.barVitalsFood:setDoKnob(false)
-			self:addChild(self.barVitalsFood)
-
-			y = y + FONT_HGT_SMALL + 2
-
-			self.labelVitalsFood24Hours = ISLabel:new(
-				barStartPosition,
-				y,
-				FONT_HGT_SMALL,
-				"",
-				self.DimmedTextColor.r,
-				self.DimmedTextColor.g,
-				self.DimmedTextColor.b,
-				self.DimmedTextColor.a,
-				UIFont.Small,
-				true
-			)
-			self:addChild(self.labelVitalsFood24Hours)
-
-			y = y + FONT_HGT_SMALL + 6
-
-			self.labelVitalsThirst = ISLabel:new(
-				barStartPosition - lineStartPosition,
-				y,
-				FONT_HGT_SMALL,
-				getText("UI_ETW_Vitals_Thirst"),
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				false
-			)
-			self:addChild(self.labelVitalsThirst)
-
-			self.barVitalsThirst = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
-			self.barVitalsThirst:setGradientTexture(redYellowGreenGradient)
-			self.barVitalsThirst:setHighlightRadius(highlightRadius)
-			self.barVitalsThirst:setDoKnob(false)
-			self:addChild(self.barVitalsThirst)
-
-			y = y + FONT_HGT_SMALL + 2
-
-			self.labelVitalsThirst24Hours = ISLabel:new(
-				barStartPosition,
-				y,
-				FONT_HGT_SMALL,
-				"",
-				self.DimmedTextColor.r,
-				self.DimmedTextColor.g,
-				self.DimmedTextColor.b,
-				self.DimmedTextColor.a,
-				UIFont.Small,
-				true
-			)
-			self:addChild(self.labelVitalsThirst24Hours)
-
-			y = y + FONT_HGT_SMALL + 6
-
-			self.labelVitalsMental = ISLabel:new(
-				barStartPosition - lineStartPosition,
-				y,
-				FONT_HGT_SMALL,
-				getText("UI_ETW_Vitals_Mental"),
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				false
-			)
-			self:addChild(self.labelVitalsMental)
-
-			self.barVitalsMental = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
-			self.barVitalsMental:setGradientTexture(redYellowGreenGradient)
-			self.barVitalsMental:setHighlightRadius(highlightRadius)
-			self.barVitalsMental:setDoKnob(false)
-			self:addChild(self.barVitalsMental)
-
-			y = y + FONT_HGT_SMALL + 2
-
-			self.labelVitalsMental24Hours = ISLabel:new(
-				barStartPosition,
-				y,
-				FONT_HGT_SMALL,
-				"",
-				self.DimmedTextColor.r,
-				self.DimmedTextColor.g,
-				self.DimmedTextColor.b,
-				self.DimmedTextColor.a,
-				UIFont.Small,
-				true
-			)
-			self:addChild(self.labelVitalsMental24Hours)
-
-			y = y + FONT_HGT_SMALL
-		end
-
 		if (not modOptions and true) or modOptions:getOption("HideReadMeUI"):getValue() then
 			str = getText("UI_ETW_Options_ReadMe")
 			self.labelReadMe = ISLabel:new(
@@ -2812,18 +2806,19 @@ function ISETWUI:createChildren()
 			y = y + FONT_HGT_MEDIUM
 		end
 
+		routeTo(self.subViewVitals, vitalsLayoutCursor)
+		buildVitalsSection()
+
+		routeTo(self.subViewPermanentTraits, permanentTraitsLayoutCursor)
 		buildPermanentTraitsSection()
 
 		routeTo(self.subViewNonPermanentTraits, nonPermanentTraitsLayoutCursor)
 		buildNonPermanentTraitsSection()
 
-		routeTo(self.subViewVitals, vitalsLayoutCursor)
-		buildVitalsSection()
-
 		storeActiveLayoutCursor()
 		self.permanentTraitsWindowHeight = permanentTraitsLayoutCursor.y + FONT_HGT_SMALL * 2
-		self.nonPermanentTraitsWindowHeight = nonPermanentTraitsLayoutCursor.y + FONT_HGT_SMALL * 2
-		self.vitalsWindowHeight = vitalsLayoutCursor.y + FONT_HGT_SMALL * 2
+		self.nonPermanentTraitsWindowHeight = nonPermanentTraitsLayoutCursor.y
+		self.vitalsWindowHeight = vitalsLayoutCursor.y + FONT_HGT_SMALL * 0.5
 		WINDOW_HEIGHT = self.permanentTraitsWindowHeight
 		WINDOW_HEIGHT_AFTER_CHILDREN = self.permanentTraitsWindowHeight
 
@@ -2838,7 +2833,7 @@ function ISETWUI:createChildren()
 	-- ── Restore real addChild and attach subtab to self ───────────────────────
 	self.addChild = nil -- restore to prototype method
 
-	-- Register the two sub-views into the subtab panel
+	-- Register the sub-views into the subtab panel
 	self.subPanel:addView(getText("UI_ETW_SubTab_Vitals"), self.subViewVitals)
 	self.subPanel:addView(getText("UI_ETW_SubTab_Progress"), self.subViewPermanentTraits)
 	self.subPanel:addView(getText("UI_ETW_SubTab_NonPermanent"), self.subViewNonPermanentTraits)
