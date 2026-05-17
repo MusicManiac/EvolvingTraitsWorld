@@ -209,6 +209,34 @@ local function formatDecimal(value)
 	return string.format("%.2f", value or 0)
 end
 
+---Formats a slice of rolling average samples into a compact space-separated string.
+---@param samples number[]|nil
+---@param startIndex integer
+---@param endIndex integer
+---@return string
+local function formatSampleSlice(samples, startIndex, endIndex)
+	if not samples or #samples == 0 then
+		return ""
+	end
+
+	local parts = {}
+	for index = math.min(endIndex, #samples), startIndex, -1 do
+		parts[#parts + 1] = formatDecimal(samples[index])
+	end
+	return table.concat(parts, " ")
+end
+
+---Formats up to 24 hourly samples into a single compact row for display under a vitals bar.
+---@param samples number[]|nil
+---@return string
+local function formatHourlySamples(samples)
+	local values = formatSampleSlice(samples, 1, 24)
+	if values == "" then
+		return getText("UI_ETW_Vitals_LatestHourlyAverages") .. ":"
+	end
+	return getText("UI_ETW_Vitals_LatestHourlyAverages") .. ": " .. values
+end
+
 ---Advances the column layout cursor for compact label rows, optionally forcing a new line.
 ---@param newLine boolean|nil
 local function arrangeColumnsInTable(newLine)
@@ -2669,6 +2697,22 @@ function ISETWUI:createChildren()
 			self.barVitalsFood:setDoKnob(false)
 			self:addChild(self.barVitalsFood)
 
+			y = y + FONT_HGT_SMALL + 2
+
+			self.labelVitalsFood24Hours = ISLabel:new(
+				barStartPosition,
+				y,
+				FONT_HGT_SMALL,
+				"",
+				self.DimmedTextColor.r,
+				self.DimmedTextColor.g,
+				self.DimmedTextColor.b,
+				self.DimmedTextColor.a,
+				UIFont.Small,
+				true
+			)
+			self:addChild(self.labelVitalsFood24Hours)
+
 			y = y + FONT_HGT_SMALL + 6
 
 			self.labelVitalsThirst = ISLabel:new(
@@ -2691,6 +2735,22 @@ function ISETWUI:createChildren()
 			self.barVitalsThirst:setDoKnob(false)
 			self:addChild(self.barVitalsThirst)
 
+			y = y + FONT_HGT_SMALL + 2
+
+			self.labelVitalsThirst24Hours = ISLabel:new(
+				barStartPosition,
+				y,
+				FONT_HGT_SMALL,
+				"",
+				self.DimmedTextColor.r,
+				self.DimmedTextColor.g,
+				self.DimmedTextColor.b,
+				self.DimmedTextColor.a,
+				UIFont.Small,
+				true
+			)
+			self:addChild(self.labelVitalsThirst24Hours)
+
 			y = y + FONT_HGT_SMALL + 6
 
 			self.labelVitalsMental = ISLabel:new(
@@ -2712,6 +2772,22 @@ function ISETWUI:createChildren()
 			self.barVitalsMental:setHighlightRadius(highlightRadius)
 			self.barVitalsMental:setDoKnob(false)
 			self:addChild(self.barVitalsMental)
+
+			y = y + FONT_HGT_SMALL + 2
+
+			self.labelVitalsMental24Hours = ISLabel:new(
+				barStartPosition,
+				y,
+				FONT_HGT_SMALL,
+				"",
+				self.DimmedTextColor.r,
+				self.DimmedTextColor.g,
+				self.DimmedTextColor.b,
+				self.DimmedTextColor.a,
+				UIFont.Small,
+				true
+			)
+			self:addChild(self.labelVitalsMental24Hours)
 
 			y = y + FONT_HGT_SMALL
 		end
@@ -3148,6 +3224,9 @@ function ISETWUI:render()
 		modData.RecentAverageMental,
 		getText("UI_ETW_CurrentValue") .. formatDecimal(modData.RecentAverageMental)
 	)
+	updateLabel(self.labelVitalsFood24Hours, formatHourlySamples(modData.FoodStateInLast24Hours))
+	updateLabel(self.labelVitalsThirst24Hours, formatHourlySamples(modData.ThirstStateInLast24Hours))
+	updateLabel(self.labelVitalsMental24Hours, formatHourlySamples(modData.MentalStateInLast24Hours))
 
 	if isPermanentTraitsTabActive and self.barBravery ~= nil then
 		local topY = getWidgetTop(self.labelCowardlyLose)

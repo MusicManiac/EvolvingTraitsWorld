@@ -5,3 +5,7 @@ v.11.1.0
 General:
 	- Split food and thirst traits out of the old Weight System into their own rolling-average systems based on long-term hunger and thirst values. (No UI yet)
 	- Split ETW tab into subtabs. Now it's less crowded and I can add even more stuff there.
+	- New Vitals subtab.
+Fixes:
+	- Fixed Outdoorsy not progessing in SP.
+	- Fixed Blacksmith not triggering trait check when leveling Maintanence.
