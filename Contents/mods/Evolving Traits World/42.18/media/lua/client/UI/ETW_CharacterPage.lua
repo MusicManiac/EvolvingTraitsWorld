@@ -183,7 +183,7 @@ end
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld
 
-ISETWPermanentTraitsUI = ISPanelJoypad:derive("ISETWUI")
+ISETWUI = ISPanelJoypad:derive("ISETWUI")
 
 ---Converts a value within a min/max range into a 0..1 percentage for UI bars.
 ---@param minValue number
@@ -202,6 +202,13 @@ local function strLen(textManager, str)
 	return textManager:MeasureStringX(UIFont.Small, str)
 end
 
+---Formats a numeric UI value with two decimals for compact tooltips and labels.
+---@param value number|nil
+---@return string
+local function formatDecimal(value)
+	return string.format("%.2f", value or 0)
+end
+
 ---Advances the column layout cursor for compact label rows, optionally forcing a new line.
 ---@param newLine boolean|nil
 local function arrangeColumnsInTable(newLine)
@@ -217,11 +224,11 @@ local function arrangeColumnsInTable(newLine)
 	storeActiveLayoutCursor()
 end
 
-function ISETWPermanentTraitsUI:initialise()
+function ISETWUI:initialise()
 	--ISPanelJoypad.initialise(self)
 end
 
-function ISETWPermanentTraitsUI:createChildren()
+function ISETWUI:createChildren()
 	local player = getSpecificPlayer(self.playerNum)
 
 	-- ── Subtab setup ──────────────────────────────────────────────────────────
@@ -244,8 +251,14 @@ function ISETWPermanentTraitsUI:createChildren()
 	self.subViewNonPermanentTraits:initialise()
 	self.subViewNonPermanentTraits:noBackground()
 
+	-- Sub-view C: Vitals
+	self.subViewVitals = ISPanel:new(0, 0, self.width, self.height - TAB_H)
+	self.subViewVitals:initialise()
+	self.subViewVitals:noBackground()
+
 	local permanentTraitsLayoutCursor = newLayoutCursor()
 	local nonPermanentTraitsLayoutCursor = newLayoutCursor()
+	local vitalsLayoutCursor = newLayoutCursor()
 
 	-- routeTo(subView): switches the addChild redirect to the given subview.
 	-- Call this before each section to control which tab receives its widgets.
@@ -2618,6 +2631,91 @@ function ISETWPermanentTraitsUI:createChildren()
 			end
 		end
 
+		local function buildVitalsSection()
+			str = getText("UI_ETW_Vitals_Last31Days")
+			self.labelVitalsLast31Days = ISLabel:new(
+				WINDOW_WIDTH / 2 - strLen(textManager, str) / 2,
+				y,
+				FONT_HGT_MEDIUM,
+				str,
+				self.TextColor.r,
+				self.TextColor.g,
+				self.TextColor.b,
+				self.TextColor.a,
+				UIFont.Small,
+				true
+			)
+			self:addChild(self.labelVitalsLast31Days)
+
+			y = y + FONT_HGT_MEDIUM + 4
+
+			self.labelVitalsFood = ISLabel:new(
+				barStartPosition - lineStartPosition,
+				y,
+				FONT_HGT_SMALL,
+				getText("UI_ETW_Vitals_Food"),
+				self.TextColor.r,
+				self.TextColor.g,
+				self.TextColor.b,
+				self.TextColor.a,
+				UIFont.Small,
+				false
+			)
+			self:addChild(self.labelVitalsFood)
+
+			self.barVitalsFood = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
+			self.barVitalsFood:setGradientTexture(redYellowGreenGradient)
+			self.barVitalsFood:setHighlightRadius(highlightRadius)
+			self.barVitalsFood:setDoKnob(false)
+			self:addChild(self.barVitalsFood)
+
+			y = y + FONT_HGT_SMALL + 6
+
+			self.labelVitalsThirst = ISLabel:new(
+				barStartPosition - lineStartPosition,
+				y,
+				FONT_HGT_SMALL,
+				getText("UI_ETW_Vitals_Thirst"),
+				self.TextColor.r,
+				self.TextColor.g,
+				self.TextColor.b,
+				self.TextColor.a,
+				UIFont.Small,
+				false
+			)
+			self:addChild(self.labelVitalsThirst)
+
+			self.barVitalsThirst = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
+			self.barVitalsThirst:setGradientTexture(redYellowGreenGradient)
+			self.barVitalsThirst:setHighlightRadius(highlightRadius)
+			self.barVitalsThirst:setDoKnob(false)
+			self:addChild(self.barVitalsThirst)
+
+			y = y + FONT_HGT_SMALL + 6
+
+			self.labelVitalsMental = ISLabel:new(
+				barStartPosition - lineStartPosition,
+				y,
+				FONT_HGT_SMALL,
+				getText("UI_ETW_Vitals_Mental"),
+				self.TextColor.r,
+				self.TextColor.g,
+				self.TextColor.b,
+				self.TextColor.a,
+				UIFont.Small,
+				false
+			)
+			self:addChild(self.labelVitalsMental)
+
+			self.barVitalsMental = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
+			self.barVitalsMental:setGradientTexture(redYellowGreenGradient)
+			self.barVitalsMental:setHighlightRadius(highlightRadius)
+			self.barVitalsMental:setDoKnob(false)
+			self:addChild(self.barVitalsMental)
+
+			y = y + FONT_HGT_SMALL
+		end
+
 		if (not modOptions and true) or modOptions:getOption("HideReadMeUI"):getValue() then
 			str = getText("UI_ETW_Options_ReadMe")
 			self.labelReadMe = ISLabel:new(
@@ -2643,9 +2741,13 @@ function ISETWPermanentTraitsUI:createChildren()
 		routeTo(self.subViewNonPermanentTraits, nonPermanentTraitsLayoutCursor)
 		buildNonPermanentTraitsSection()
 
+		routeTo(self.subViewVitals, vitalsLayoutCursor)
+		buildVitalsSection()
+
 		storeActiveLayoutCursor()
 		self.permanentTraitsWindowHeight = permanentTraitsLayoutCursor.y + FONT_HGT_SMALL * 2
 		self.nonPermanentTraitsWindowHeight = nonPermanentTraitsLayoutCursor.y + FONT_HGT_SMALL * 2
+		self.vitalsWindowHeight = vitalsLayoutCursor.y + FONT_HGT_SMALL * 2
 		WINDOW_HEIGHT = self.permanentTraitsWindowHeight
 		WINDOW_HEIGHT_AFTER_CHILDREN = self.permanentTraitsWindowHeight
 
@@ -2661,16 +2763,17 @@ function ISETWPermanentTraitsUI:createChildren()
 	self.addChild = nil -- restore to prototype method
 
 	-- Register the two sub-views into the subtab panel
+	self.subPanel:addView(getText("UI_ETW_SubTab_Vitals"), self.subViewVitals)
 	self.subPanel:addView(getText("UI_ETW_SubTab_Progress"), self.subViewPermanentTraits)
 	self.subPanel:addView(getText("UI_ETW_SubTab_NonPermanent"), self.subViewNonPermanentTraits)
 
 	-- Attach the subtab panel to self (this is the real addChild now)
-	ISETWPermanentTraitsUI.addChild(self, self.subPanel)
+	ISETWUI.addChild(self, self.subPanel)
 	-- ── End subtab restore ────────────────────────────────────────────────────
 end
 
 ---Rebuilds every ETW child widget so conditional labels and bars can appear or disappear mid-game.
-function ISETWPermanentTraitsUI:rebuildChildren()
+function ISETWUI:rebuildChildren()
 	-- Hide tooltips on subViewPermanentTraits children before clearing
 	if self.subViewPermanentTraits and self.subViewPermanentTraits.children then
 		for _, child in pairs(self.subViewPermanentTraits.children) do
@@ -2679,6 +2782,11 @@ function ISETWPermanentTraitsUI:rebuildChildren()
 	end
 	if self.subViewNonPermanentTraits and self.subViewNonPermanentTraits.children then
 		for _, child in pairs(self.subViewNonPermanentTraits.children) do
+			hideChildTooltip(child)
+		end
+	end
+	if self.subViewVitals and self.subViewVitals.children then
+		for _, child in pairs(self.subViewVitals.children) do
 			hideChildTooltip(child)
 		end
 	end
@@ -2693,6 +2801,7 @@ function ISETWPermanentTraitsUI:rebuildChildren()
 	self.subPanel = nil
 	self.subViewPermanentTraits = nil
 	self.subViewNonPermanentTraits = nil
+	self.subViewVitals = nil
 	self:clearChildren()
 
 	local widgetFields = {}
@@ -2709,7 +2818,7 @@ function ISETWPermanentTraitsUI:rebuildChildren()
 end
 
 ---Rebuilds the ETW layout when known traits or delayed traits change.
-function ISETWPermanentTraitsUI:refreshLayoutIfNeeded()
+function ISETWUI:refreshLayoutIfNeeded()
 	local layoutSignature = getLayoutSignature(getPlayer())
 	if self.layoutSignature ~= layoutSignature then
 		self:rebuildChildren()
@@ -2720,7 +2829,7 @@ function ISCharacterKills:setVisible(visible)
 	self.javaObject:setVisible(visible)
 end
 
-function ISETWPermanentTraitsUI:prerender()
+function ISETWUI:prerender()
 	ISPanelJoypad.prerender(self)
 	self:setStencilRect(0, 0, self.width, self.height)
 end
@@ -2745,7 +2854,7 @@ local function updateLabel(label, value)
 	end
 end
 
-function ISETWPermanentTraitsUI:render()
+function ISETWUI:render()
 	self:refreshLayoutIfNeeded()
 
 	local player = getPlayer()
@@ -2787,6 +2896,8 @@ function ISETWPermanentTraitsUI:render()
 	local activeWindowHeight = self.permanentTraitsWindowHeight or WINDOW_HEIGHT
 	if self.subPanel and self.subPanel:getActiveView() == self.subViewNonPermanentTraits then
 		activeWindowHeight = self.nonPermanentTraitsWindowHeight or activeWindowHeight
+	elseif self.subPanel and self.subPanel:getActiveView() == self.subViewVitals then
+		activeWindowHeight = self.vitalsWindowHeight or activeWindowHeight
 	end
 	if delayedTraitLines and #delayedTraitLines > 1 then
 		activeWindowHeight = activeWindowHeight + ((#delayedTraitLines - 1) * FONT_HGT_SMALL)
@@ -2808,6 +2919,10 @@ function ISETWPermanentTraitsUI:render()
 		if self.subViewNonPermanentTraits then
 			self.subViewNonPermanentTraits:setWidth(WINDOW_WIDTH)
 			self.subViewNonPermanentTraits:setHeight(WINDOW_HEIGHT - TAB_H)
+		end
+		if self.subViewVitals then
+			self.subViewVitals:setWidth(WINDOW_WIDTH)
+			self.subViewVitals:setHeight(WINDOW_HEIGHT - TAB_H)
 		end
 	end
 
@@ -3017,6 +3132,21 @@ function ISETWPermanentTraitsUI:render()
 		self.barInventoryTransferSystemItems,
 		percentile(0, SBvars.InventoryTransferSystemItems, modData.TransferSystem.ItemsTransferred),
 		getText("UI_ETW_CurrentValue") .. modData.TransferSystem.ItemsTransferred
+	)
+	updateBar(
+		self.barVitalsFood,
+		1 - modData.RecentAverageFood,
+		getText("UI_ETW_CurrentValue") .. formatDecimal(modData.RecentAverageFood)
+	)
+	updateBar(
+		self.barVitalsThirst,
+		1 - modData.RecentAverageThirst,
+		getText("UI_ETW_CurrentValue") .. formatDecimal(modData.RecentAverageThirst)
+	)
+	updateBar(
+		self.barVitalsMental,
+		modData.RecentAverageMental,
+		getText("UI_ETW_CurrentValue") .. formatDecimal(modData.RecentAverageMental)
 	)
 
 	if isPermanentTraitsTabActive and self.barBravery ~= nil then
@@ -3418,16 +3548,16 @@ function ISETWPermanentTraitsUI:render()
 	end
 end
 
-function ISETWPermanentTraitsUI:update()
+function ISETWUI:update()
 	ISPanelJoypad.update(self)
 end
 
-function ISETWPermanentTraitsUI:onMouseWheel(del)
+function ISETWUI:onMouseWheel(del)
 	self:setYScroll(self:getYScroll() - del * 30)
 	return true
 end
 
-function ISETWPermanentTraitsUI:new(X, Y, width, height, playerNum)
+function ISETWUI:new(X, Y, width, height, playerNum)
 	local o = ISPanelJoypad:new(X, Y, width, height)
 	setmetatable(o, self)
 	self.__index = self
@@ -3437,11 +3567,11 @@ function ISETWPermanentTraitsUI:new(X, Y, width, height, playerNum)
 	o.categoryButtons = {}
 	o.categoryXOffset = 20
 
-	ISETWPermanentTraitsUI.instance = o
+	ISETWUI.instance = o
 	return o
 end
 
-function ISETWPermanentTraitsUI:ensureVisible()
+function ISETWUI:ensureVisible()
 	if not self.joyfocus then
 		return
 	end
@@ -3457,17 +3587,17 @@ function ISETWPermanentTraitsUI:ensureVisible()
 	end
 end
 
-function ISETWPermanentTraitsUI:onGainJoypadFocus(joypadData)
+function ISETWUI:onGainJoypadFocus(joypadData)
 	ISPanelJoypad.onGainJoypadFocus(self, joypadData)
 	self.joypadIndex = nil
 	self.barWithTooltip = nil
 end
 
-function ISETWPermanentTraitsUI:onLoseJoypadFocus(joypadData)
+function ISETWUI:onLoseJoypadFocus(joypadData)
 	ISPanelJoypad.onLoseJoypadFocus(self, joypadData)
 end
 
-function ISETWPermanentTraitsUI:onJoypadDown(button)
+function ISETWUI:onJoypadDown(button)
 	if button == Joypad.AButton then
 	end
 	if button == Joypad.YButton then
@@ -3482,14 +3612,14 @@ function ISETWPermanentTraitsUI:onJoypadDown(button)
 	end
 end
 
-function ISETWPermanentTraitsUI:onJoypadDirDown()
+function ISETWUI:onJoypadDirDown()
 	self.joypadIndex = self.joypadIndex + 1
 	self:ensureVisible()
 	self:updateTooltipForJoypad()
 end
 
-function ISETWPermanentTraitsUI:onJoypadDirLeft() end
+function ISETWUI:onJoypadDirLeft() end
 
-function ISETWPermanentTraitsUI:onJoypadDirRight() end
+function ISETWUI:onJoypadDirRight() end
 
-addCharacterPageTab("ETW", ISETWPermanentTraitsUI:new(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0))
+addCharacterPageTab("ETW", ISETWUI:new(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0))
