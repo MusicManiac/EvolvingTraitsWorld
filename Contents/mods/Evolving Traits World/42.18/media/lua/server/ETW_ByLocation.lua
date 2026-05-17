@@ -40,12 +40,7 @@ local function outdoorsman(player, isKill)
 	local windIntensity = climateManager:getWindIntensity()
 	local fogIntensity = climateManager:getFogIntensity()
 	local isThunderstorm = climateManager:getIsThunderStorming()
-	local playersList = ArrayList.new()
-	if player then
-		playerList:add(player)
-	else
-		playerList = ETW_CommonFunctions.playersList()
-	end
+	local playersList = ETW_CommonFunctions.playersList(player)
 	for i = 0, playersList:size() - 1 do
 		player = playersList:get(i)
 		local modData = ETW_CommonFunctions.getETWModData(player)
@@ -130,12 +125,7 @@ local function fearOfLocations(player, isKill)
 	if isKill then
 		logETW("ETW Logger | fearOfLocations(): was triggered by a kill")
 	end
-	local playersList = ArrayList.new()
-	if player then
-		playersList:add(player)
-	else
-		playersList = ETW_CommonFunctions.playersList()
-	end
+	local playersList = ETW_CommonFunctions.playersList(player)
 	for i = 0, playersList:size() - 1 do
 		player = playersList:get(i)
 		local modData = ETW_CommonFunctions.getETWModData(player)
