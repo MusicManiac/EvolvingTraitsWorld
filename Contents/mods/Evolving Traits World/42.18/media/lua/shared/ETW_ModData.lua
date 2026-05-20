@@ -162,33 +162,33 @@ function ETW_ModData.createETWModData(playerIndex, player)
 		end
 	end
 
-	if modData.AsthmaticCounter == nil and startingTraits[CharacterTrait.ASTHMATIC] == true then -- start at full counter if they start with the trait
+	if modData.AsthmaticCounter == nil and startingTraits[CharacterTrait.ASTHMATIC:toString()] == true then -- start at full counter if they start with the trait
 		modData.AsthmaticCounter = SBvars.AsthmaticCounter * -2
 	end
 	modData.AsthmaticCounter = modData.AsthmaticCounter or 0
 
-	if modData.HerbsPickedUp == nil and startingTraits[CharacterTrait.HERBALIST] == true then -- start at full counter if they start with the trait
+	if modData.HerbsPickedUp == nil and startingTraits[CharacterTrait.HERBALIST:toString()] == true then -- start at full counter if they start with the trait
 		modData.HerbsPickedUp = SBvars.HerbalistHerbsPicked
 	end
 	modData.HerbsPickedUp = modData.HerbsPickedUp or 0
 
-	if modData.RainCounter == nil and startingTraits[ETWTraitsRegistry.PLUVIOPHILE] == true then -- start at full counter if they start with the trait
+	if modData.RainCounter == nil and startingTraits[ETWTraitsRegistry.PLUVIOPHILE:toString()] == true then -- start at full counter if they start with the trait
 		modData.RainCounter = SBvars.RainSystemCounter * 2
-	elseif modData.RainCounter == nil and startingTraits[ETWTraitsRegistry.PLUVIOPHOBIA] == true then
+	elseif modData.RainCounter == nil and startingTraits[ETWTraitsRegistry.PLUVIOPHOBIA:toString()] == true then
 		modData.RainCounter = SBvars.RainSystemCounter * -2
 	end
 	modData.RainCounter = modData.RainCounter or 0
 
-	if modData.FogCounter == nil and startingTraits[ETWTraitsRegistry.HOMICHLOPHILE] == true then -- start at full counter if they start with the trait
+	if modData.FogCounter == nil and startingTraits[ETWTraitsRegistry.HOMICHLOPHILE:toString()] == true then -- start at full counter if they start with the trait
 		modData.FogCounter = SBvars.FogSystemCounter * 2
-	elseif modData.FogCounter == nil and startingTraits[ETWTraitsRegistry.HOMICHLOPHOBIA] == true then
+	elseif modData.FogCounter == nil and startingTraits[ETWTraitsRegistry.HOMICHLOPHOBIA:toString()] == true then
 		modData.FogCounter = SBvars.FogSystemCounter * -2
 	end
 	modData.FogCounter = modData.FogCounter or 0
 
 	modData.OutdoorsmanSystem = modData.OutdoorsmanSystem or {}
 	local outdoorsmanSystem = modData.OutdoorsmanSystem
-	if outdoorsmanSystem.OutdoorsmanCounter == nil and startingTraits[CharacterTrait.OUTDOORSMAN] == true then -- start at full counter if they start with the trait
+	if outdoorsmanSystem.OutdoorsmanCounter == nil and startingTraits[CharacterTrait.OUTDOORSMAN:toString()] == true then -- start at full counter if they start with the trait
 		outdoorsmanSystem.OutdoorsmanCounter = SBvars.OutdoorsmanCounter * 2
 	end
 	outdoorsmanSystem.OutdoorsmanCounter = outdoorsmanSystem.OutdoorsmanCounter or 0
@@ -196,10 +196,10 @@ function ETW_ModData.createETWModData(playerIndex, player)
 
 	modData.LocationFearSystem = modData.LocationFearSystem or {}
 	local locationFearSystem = modData.LocationFearSystem
-	if locationFearSystem.FearOfInside == nil and startingTraits[CharacterTrait.CLAUSTROPHOBIC] == true then -- start at full counter if they start with the trait
+	if locationFearSystem.FearOfInside == nil and startingTraits[CharacterTrait.CLAUSTROPHOBIC:toString()] == true then -- start at full counter if they start with the trait
 		locationFearSystem.FearOfInside = SBvars.FearOfLocationsSystemCounter * -2
 	end
-	if locationFearSystem.FearOfOutside == nil and startingTraits[CharacterTrait.AGORAPHOBIC] == true then -- start at full counter if they start with the trait
+	if locationFearSystem.FearOfOutside == nil and startingTraits[CharacterTrait.AGORAPHOBIC:toString()] == true then -- start at full counter if they start with the trait
 		locationFearSystem.FearOfOutside = SBvars.FearOfLocationsSystemCounter * -2
 	end
 	locationFearSystem.FearOfInside = locationFearSystem.FearOfInside or 0
@@ -213,9 +213,9 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	sleepSystem.HoursSinceLastSleep = sleepSystem.HoursSinceLastSleep or 0
 	sleepSystem.LastMidpoint = sleepSystem.LastMidpoint or 4
 	sleepSystem.WentToSleepAt = sleepSystem.WentToSleepAt or 21
-	if sleepSystem.SleepHealthinessBar == nil and startingTraits[CharacterTrait.NEEDS_LESS_SLEEP] == true then
+	if sleepSystem.SleepHealthinessBar == nil and startingTraits[CharacterTrait.NEEDS_LESS_SLEEP:toString()] == true then
 		sleepSystem.SleepHealthinessBar = 200
-	elseif sleepSystem.SleepHealthinessBar == nil and startingTraits[CharacterTrait.NEEDS_MORE_SLEEP] == true then
+	elseif sleepSystem.SleepHealthinessBar == nil and startingTraits[CharacterTrait.NEEDS_MORE_SLEEP:toString()] == true then
 		sleepSystem.SleepHealthinessBar = sleepSystem.SleepHealthinessBar or -200
 	else
 		sleepSystem.SleepHealthinessBar = sleepSystem.SleepHealthinessBar or 0
@@ -223,7 +223,7 @@ function ETW_ModData.createETWModData(playerIndex, player)
 
 	modData.SmokeSystem = modData.SmokeSystem or {}
 	local smokeSystem = modData.SmokeSystem
-	if smokeSystem.SmokingAddiction == nil and startingTraits[CharacterTrait.SMOKER] == true then
+	if smokeSystem.SmokingAddiction == nil and startingTraits[CharacterTrait.SMOKER:toString()] == true then
 		smokeSystem.SmokingAddiction = SBvars.SmokerCounter * 2
 	else
 		smokeSystem.SmokingAddiction = smokeSystem.SmokingAddiction or 0
@@ -238,7 +238,7 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	modData.BloodlustSystem = modData.BloodlustSystem or {}
 	local bloodlustSystem = modData.BloodlustSystem
 	bloodlustSystem.LastKillTimestamp = bloodlustSystem.LastKillTimestamp or 0
-	if bloodlustSystem.BloodlustProgress == nil and startingTraits[ETWTraitsRegistry.BLOODLUST] == true then
+	if bloodlustSystem.BloodlustProgress == nil and startingTraits[ETWTraitsRegistry.BLOODLUST:toString()] == true then
 		bloodlustSystem.BloodlustProgress = SBvars.BloodlustProgress
 		bloodlustSystem.BloodlustMeter = 18
 	else
