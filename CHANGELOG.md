@@ -1,3 +1,16 @@
+## v.12.0.0 - Subtab-ocalypse
+###### 20 May 2026
+
+- General:
+  - Split ETW tab into subtabs. Now it's less crowded and I can add even more stuff there.
+  - Split food and thirst traits out of the old Weight System into their own rolling-average systems based on long-term hunger and thirst values.
+  - New Vitals subtab.
+- Fixes:
+  - Fixed Outdoorsy not progressing in SP.
+  - Fixed Blacksmith not triggering trait check when leveling Maintenance.
+  - Fix Affinity System not filling initial data correctly.
+  - Fix Eagle Eyed errors + make it more reliable.
+
 ## v.11.0.4
 ###### 16 May 2026
 
