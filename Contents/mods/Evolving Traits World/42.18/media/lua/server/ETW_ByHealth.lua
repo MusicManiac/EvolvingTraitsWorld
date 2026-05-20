@@ -19,13 +19,16 @@ then
 	return
 end
 
+---@type fun(...: string)
+local logETW = ETW_CommonFunctions.log
+
 ---Function responsible for managing Immunity traits
 local function immunitySystemTraits()
 	local playersList = ETW_CommonFunctions.playersList()
 
 	for i = 0, playersList:size() - 1 do
 		local player = playersList:get(i)
-		ETW_CommonFunctions.log("ETW Logger | immunitySystemTraits(): running for player " .. player:getUsername())
+		logETW("ETW Logger | immunitySystemTraits(): running for player " .. player:getUsername())
 		local bodyDamage = player:getBodyDamage()
 		local coldStrength = bodyDamage:getColdStrength() / 100 -- 0-100 -> 0-1
 		local infectionLevel = bodyDamage:getApparentInfectionLevel() / 100 -- 0-100 -> 0-1
@@ -36,7 +39,7 @@ local function immunitySystemTraits()
 				+ coldStrength
 				+ infectionLevel * SBvars.ImmunitySystemInfectionMultiplier
 			)
-			ETW_CommonFunctions.log(
+			logETW(
 				"ETW Logger | immunitySystemTraits(): modData.ImmunitySystemCounter = " .. modData.ImmunitySystemCounter
 			)
 			if
@@ -113,11 +116,11 @@ local function foodSicknessTraitsETW()
 
 	for i = 0, playersList:size() - 1 do
 		local player = playersList:get(i)
-		ETW_CommonFunctions.log("ETW Logger | foodSicknessTraitsETW(): running for player " .. player:getUsername())
+		logETW("ETW Logger | foodSicknessTraitsETW(): running for player " .. player:getUsername())
 		local stats = player:getStats()
 		local foodSicknessStrength = stats:get(CharacterStat.FOOD_SICKNESS) / 100 -- 0-100 -> 0-1
 		local normalSickness = stats:get(CharacterStat.SICKNESS) -- 0-1
-		ETW_CommonFunctions.log(
+		logETW(
 			"ETW Logger | foodSicknessTraitsETW(): foodSicknessStrength = "
 				.. foodSicknessStrength
 				.. ", normal sickness: "
@@ -236,7 +239,7 @@ local function updateRollingHabitAverage(samples60, samples24, samples31, latest
 	table.insert(samples60, latestValue)
 	local hourAverage = getRollingAverage(samples60, 60)
 	if hourAverage then
-		ETW_CommonFunctions.log("ETW Logger | " .. label .. "(): average in last 60 min: " .. hourAverage)
+		logETW("ETW Logger | " .. label .. "(): average in last 60 min: " .. hourAverage)
 		table.insert(samples24, hourAverage)
 		samples60[1] = hourAverage
 		for i = #samples60, 2, -1 do
@@ -245,7 +248,7 @@ local function updateRollingHabitAverage(samples60, samples24, samples31, latest
 
 		local dayAverage = getRollingAverage(samples24, 24)
 		if dayAverage then
-			ETW_CommonFunctions.log("ETW Logger | " .. label .. "(): average in last 24 hours: " .. dayAverage)
+			logETW("ETW Logger | " .. label .. "(): average in last 24 hours: " .. dayAverage)
 			table.insert(samples31, dayAverage)
 			samples24[1] = dayAverage
 			for i = #samples24, 2, -1 do
@@ -288,10 +291,12 @@ local function recordFoodStateETW()
 		local modData = ETW_CommonFunctions.getETWModData(player)
 		local stats = player:getStats()
 		if player:isAsleep() then
-			ETW_CommonFunctions.log("ETW Logger | recordFoodStateETW(): skipping sleeping player " .. player:getUsername())
+			logETW(
+				"ETW Logger | recordFoodStateETW(): skipping sleeping player " .. player:getUsername()
+			)
 		else
 			local hunger = normalizeInvertedVital(stats:get(CharacterStat.HUNGER))
-			ETW_CommonFunctions.log(
+			logETW(
 				"ETW Logger | recordFoodStateETW(): player "
 					.. player:getUsername()
 					.. ", normalized hunger = "
@@ -317,10 +322,12 @@ local function recordThirstStateETW()
 		local modData = ETW_CommonFunctions.getETWModData(player)
 		local stats = player:getStats()
 		if player:isAsleep() then
-			ETW_CommonFunctions.log("ETW Logger | recordThirstStateETW(): skipping sleeping player " .. player:getUsername())
+			logETW(
+				"ETW Logger | recordThirstStateETW(): skipping sleeping player " .. player:getUsername()
+			)
 		else
 			local thirst = normalizeInvertedVital(stats:get(CharacterStat.THIRST))
-			ETW_CommonFunctions.log(
+			logETW(
 				"ETW Logger | recordThirstStateETW(): player "
 					.. player:getUsername()
 					.. ", normalized thirst = "
@@ -345,7 +352,7 @@ local function foodSystemETW()
 		local player = playersList:get(i)
 		local modData = ETW_CommonFunctions.getETWModData(player)
 		local averageFood = modData.RecentAverageFood
-		ETW_CommonFunctions.log(
+		logETW(
 			"ETW Logger | foodSystemETW(): running for player "
 				.. player:getUsername()
 				.. ", RecentAverageFood = "
@@ -408,7 +415,7 @@ local function thirstSystemETW()
 		local player = playersList:get(i)
 		local modData = ETW_CommonFunctions.getETWModData(player)
 		local averageThirst = modData.RecentAverageThirst
-		ETW_CommonFunctions.log(
+		logETW(
 			"ETW Logger | thirstSystemETW(): running for player "
 				.. player:getUsername()
 				.. ", RecentAverageThirst = "
@@ -469,7 +476,7 @@ local function weightSystemETW()
 
 	for i = 0, playersList:size() - 1 do
 		local player = playersList:get(i)
-		ETW_CommonFunctions.log("ETW Logger | weightSystemETW(): running for player " .. player:getUsername())
+		logETW("ETW Logger | weightSystemETW(): running for player " .. player:getUsername())
 		local modData = ETW_CommonFunctions.getETWModData(player)
 		local startingTraits = modData.StartingTraits
 		local weight = player:getNutrition():getWeight()
@@ -502,22 +509,22 @@ local function weightSystemETW()
 				and startingTraits.ThinSkinned ~= true
 				and SBvars.TraitsLockSystemCanLoseNegative
 			then
-					ETW_CommonFunctions.removeTraitFromPlayer({
-						player = player,
-						trait = CharacterTrait.THIN_SKINNED,
-						positiveTrait = false,
-					})
+				ETW_CommonFunctions.removeTraitFromPlayer({
+					player = player,
+					trait = CharacterTrait.THIN_SKINNED,
+					positiveTrait = false,
+				})
 			end
 			if
 				player:hasTrait(CharacterTrait.SLOW_HEALER)
 				and startingTraits.SlowHealer ~= true
 				and SBvars.TraitsLockSystemCanLoseNegative
 			then
-					ETW_CommonFunctions.removeTraitFromPlayer({
-						player = player,
-						trait = CharacterTrait.SLOW_HEALER,
-						positiveTrait = false,
-					})
+				ETW_CommonFunctions.removeTraitFromPlayer({
+					player = player,
+					trait = CharacterTrait.SLOW_HEALER,
+					positiveTrait = false,
+				})
 			end
 		end
 		if (weight > 85 and weight < 100) or (weight > 65 and weight < 75) then
@@ -609,7 +616,7 @@ local function asthmaticTraitETW()
 
 	for i = 0, playersList:size() - 1 do
 		local player = playersList:get(i)
-		ETW_CommonFunctions.log("ETW Logger | asthmaticTraitETW(): running for player " .. player:getUsername())
+		logETW("ETW Logger | asthmaticTraitETW(): running for player " .. player:getUsername())
 		local modData = ETW_CommonFunctions.getETWModData(player)
 		local startedWithAsthmatic = modData.StartingTraits[CharacterTrait.ASTHMATIC:toString()]
 		local running = player:isRunning()
@@ -631,7 +638,7 @@ local function asthmaticTraitETW()
 			counterDecrease = counterDecrease
 				* ((SBvars.AffinitySystem and startedWithAsthmatic) and SBvars.AffinitySystemGainMultiplier or 1)
 			modData.AsthmaticCounter = math.max(lowerBoundary, modData.AsthmaticCounter - counterDecrease)
-			ETW_CommonFunctions.log(
+			logETW(
 				"ETW Logger | asthmaticTraitETW(): counterDecrease: "
 					.. counterDecrease
 					.. ", modData.AsthmaticCounter: "
@@ -646,7 +653,7 @@ local function asthmaticTraitETW()
 			counterIncrease = counterIncrease
 				/ ((SBvars.AffinitySystem and startedWithAsthmatic) and SBvars.AffinitySystemLoseDivider or 1)
 			modData.AsthmaticCounter = math.min(upperBoundary, modData.AsthmaticCounter + counterIncrease)
-			ETW_CommonFunctions.log(
+			logETW(
 				"ETW Logger | asthmaticTraitETW(): counterDecrease: "
 					.. counterIncrease
 					.. ", modData.AsthmaticCounter: "
@@ -684,7 +691,7 @@ local function recordMentalStateETW()
 	for i = 0, playersList:size() - 1 do
 		local player = playersList:get(i)
 		local modData = ETW_CommonFunctions.getETWModData(player)
-		ETW_CommonFunctions.log("ETW Logger | recordMentalStateETW(): running for player " .. player:getUsername())
+		logETW("ETW Logger | recordMentalStateETW(): running for player " .. player:getUsername())
 		local stats = player:getStats()
 		local anger = stats:get(CharacterStat.ANGER) -- 0-1
 		local stress = stats:get(CharacterStat.STRESS) -- 0-1
@@ -707,10 +714,10 @@ local function painToleranceTraitETW()
 
 	for i = 0, playersList:size() - 1 do
 		local player = playersList:get(i)
-		ETW_CommonFunctions.log("ETW Logger | painToleranceTraitETW(): running for player " .. player:getUsername())
+		logETW("ETW Logger | painToleranceTraitETW(): running for player " .. player:getUsername())
 		local modData = ETW_CommonFunctions.getETWModData(player)
 		modData.PainToleranceCounter = modData.PainToleranceCounter + player:getStats():get(CharacterStat.PAIN) -- pain is 0-100
-		ETW_CommonFunctions.log("ETW Logger | painToleranceTraitETW(): pain counter: " .. modData.PainToleranceCounter)
+		logETW("ETW Logger | painToleranceTraitETW(): pain counter: " .. modData.PainToleranceCounter)
 		if modData.PainToleranceCounter >= SBvars.PainToleranceCounter then
 			if
 				SBvars.DelayedTraitsSystem
@@ -812,7 +819,7 @@ local function clearEventsETW(character)
 	Events.EveryTenMinutes.Remove(painToleranceTraitETW)
 	Events.EveryOneMinute.Remove(asthmaticTraitETW)
 	Events.EveryOneMinute.Remove(recordMentalStateETW)
-	ETW_CommonFunctions.log("ETW Logger | System: clearEventsETW in " .. FILENAME)
+	logETW("ETW Logger | System: clearEventsETW in " .. FILENAME)
 end
 
 if gameMode == ETW_CommonFunctions.GameMode.SP then
