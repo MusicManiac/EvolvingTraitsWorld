@@ -714,14 +714,14 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 	local knapping = player:getPerkLevel(Perks.FlintKnapping)
 
 	-- locals for kills by category
-	local killCountModData = player:getModData().KillCount.WeaponCategory
-	local axeKills = killCountModData["Axe"].count
-	local longBluntKills = killCountModData["Blunt"].count
-	local shortBluntKills = killCountModData["SmallBlunt"].count
-	local longBladeKills = killCountModData["LongBlade"].count
-	local shortBladeKills = killCountModData["SmallBlade"].count
-	local spearKills = killCountModData["Spear"].count
-	local firearmKills = killCountModData["Firearm"].count
+	local killCountModData = (player:getModData().KillCount or {}).WeaponCategory or {}
+	local axeKills = (killCountModData["Axe"] or {}).count or 0
+	local longBluntKills = (killCountModData["Blunt"] or {}).count or 0
+	local shortBluntKills = (killCountModData["SmallBlunt"] or {}).count or 0
+	local longBladeKills = (killCountModData["LongBlade"] or {}).count or 0
+	local shortBladeKills = (killCountModData["SmallBlade"] or {}).count or 0
+	local spearKills = (killCountModData["Spear"] or {}).count or 0
+	local firearmKills = (killCountModData["Firearm"] or {}).count or 0
 
 	local ctx = {
 		player = player,

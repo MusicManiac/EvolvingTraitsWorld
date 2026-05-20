@@ -281,12 +281,12 @@ local function braverySystemETW(zombie)
 		local player = playersList:get(playerListIndex)
 		local totalKills = player:getZombieKills()
 		local modDataGlobal = player:getModData()
-		local killCountModData = modDataGlobal.KillCount.WeaponCategory
+		local killCountModData = (modDataGlobal.KillCount or {}).WeaponCategory or {}
 		local ETWModData = modDataGlobal.EvolvingTraitsWorld
-		local fireKills = killCountModData["Fire"].count
-		local firearmsKills = killCountModData["Firearm"].count
-		local vehiclesKills = killCountModData["Vehicles"].count
-		local explosivesKills = killCountModData["Explosives"].count
+		local fireKills = (killCountModData["Fire"] or {}).count or 0
+		local firearmsKills = (killCountModData["Firearm"] or {}).count or 0
+		local vehiclesKills = (killCountModData["Vehicles"] or {}).count or 0
+		local explosivesKills = (killCountModData["Explosives"] or {}).count or 0
 		local meleeKills = totalKills - firearmsKills - fireKills - vehiclesKills - explosivesKills
 
 		for i = 1, #braverySystemTraitInfo do
