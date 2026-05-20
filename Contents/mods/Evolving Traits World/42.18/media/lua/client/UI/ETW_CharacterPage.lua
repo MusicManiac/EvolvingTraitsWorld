@@ -393,7 +393,9 @@ function ISETWUI:createChildren()
 			if ETW_CommonLogicChecks.FoodSystemShouldExecute(player) then
 				str = "+ " .. getCachedTraitUIName(CharacterTrait.HEARTY_APPETITE)
 				self.labelVitalsFoodGainNegative = ISLabel:new(
-					barStartPosition + (barLength * SBvars.FoodSystemGainNegativeThreshold) - strLen(textManager, str) / 2,
+					barStartPosition
+						+ (barLength * SBvars.FoodSystemGainNegativeThreshold)
+						- strLen(textManager, str) / 2,
 					y,
 					FONT_HGT_SMALL,
 					str,
@@ -409,7 +411,9 @@ function ISETWUI:createChildren()
 
 				str = "- " .. getCachedTraitUIName(CharacterTrait.LIGHT_EATER)
 				self.labelVitalsFoodLosePositive = ISLabel:new(
-					barStartPosition + (barLength * SBvars.FoodSystemLosePositiveThreshold) - strLen(textManager, str) / 2,
+					barStartPosition
+						+ (barLength * SBvars.FoodSystemLosePositiveThreshold)
+						- strLen(textManager, str) / 2,
 					y,
 					FONT_HGT_SMALL,
 					str,
@@ -451,7 +455,9 @@ function ISETWUI:createChildren()
 			if ETW_CommonLogicChecks.FoodSystemShouldExecute(player) then
 				str = "- " .. getCachedTraitUIName(CharacterTrait.HEARTY_APPETITE)
 				self.labelVitalsFoodLose = ISLabel:new(
-					barStartPosition + (barLength * SBvars.FoodSystemLoseNegativeThreshold) - strLen(textManager, str) / 2,
+					barStartPosition
+						+ (barLength * SBvars.FoodSystemLoseNegativeThreshold)
+						- strLen(textManager, str) / 2,
 					y,
 					FONT_HGT_SMALL,
 					str,
@@ -467,7 +473,9 @@ function ISETWUI:createChildren()
 
 				str = "+ " .. getCachedTraitUIName(CharacterTrait.LIGHT_EATER)
 				self.labelVitalsFoodGain = ISLabel:new(
-					barStartPosition + (barLength * SBvars.FoodSystemGainPositiveThreshold) - strLen(textManager, str) / 2,
+					barStartPosition
+						+ (barLength * SBvars.FoodSystemGainPositiveThreshold)
+						- strLen(textManager, str) / 2,
 					y,
 					FONT_HGT_SMALL,
 					str,
@@ -503,7 +511,9 @@ function ISETWUI:createChildren()
 			if ETW_CommonLogicChecks.ThirstSystemShouldExecute(player) then
 				str = "+ " .. getCachedTraitUIName(CharacterTrait.HIGH_THIRST)
 				self.labelVitalsThirstGainNegative = ISLabel:new(
-					barStartPosition + (barLength * SBvars.ThirstSystemGainNegativeThreshold) - strLen(textManager, str) / 2,
+					barStartPosition
+						+ (barLength * SBvars.ThirstSystemGainNegativeThreshold)
+						- strLen(textManager, str) / 2,
 					y,
 					FONT_HGT_SMALL,
 					str,
@@ -519,7 +529,9 @@ function ISETWUI:createChildren()
 
 				str = "- " .. getCachedTraitUIName(CharacterTrait.LOW_THIRST)
 				self.labelVitalsThirstLosePositive = ISLabel:new(
-					barStartPosition + (barLength * SBvars.ThirstSystemLosePositiveThreshold) - strLen(textManager, str) / 2,
+					barStartPosition
+						+ (barLength * SBvars.ThirstSystemLosePositiveThreshold)
+						- strLen(textManager, str) / 2,
 					y,
 					FONT_HGT_SMALL,
 					str,
@@ -561,7 +573,9 @@ function ISETWUI:createChildren()
 			if ETW_CommonLogicChecks.ThirstSystemShouldExecute(player) then
 				str = "- " .. getCachedTraitUIName(CharacterTrait.HIGH_THIRST)
 				self.labelVitalsThirstLose = ISLabel:new(
-					barStartPosition + (barLength * SBvars.ThirstSystemLoseNegativeThreshold) - strLen(textManager, str) / 2,
+					barStartPosition
+						+ (barLength * SBvars.ThirstSystemLoseNegativeThreshold)
+						- strLen(textManager, str) / 2,
 					y,
 					FONT_HGT_SMALL,
 					str,
@@ -577,7 +591,9 @@ function ISETWUI:createChildren()
 
 				str = "+ " .. getCachedTraitUIName(CharacterTrait.LOW_THIRST)
 				self.labelVitalsThirstGain = ISLabel:new(
-					barStartPosition + (barLength * SBvars.ThirstSystemGainPositiveThreshold) - strLen(textManager, str) / 2,
+					barStartPosition
+						+ (barLength * SBvars.ThirstSystemGainPositiveThreshold)
+						- strLen(textManager, str) / 2,
 					y,
 					FONT_HGT_SMALL,
 					str,
@@ -2961,7 +2977,7 @@ function ISETWUI:createChildren()
 
 		storeActiveLayoutCursor()
 		self.permanentTraitsWindowHeight = permanentTraitsLayoutCursor.y + FONT_HGT_SMALL * 2
-		self.nonPermanentTraitsWindowHeight = nonPermanentTraitsLayoutCursor.y
+		self.nonPermanentTraitsWindowHeight = nonPermanentTraitsLayoutCursor.y + FONT_HGT_SMALL * 0.5
 		self.vitalsWindowHeight = vitalsLayoutCursor.y + FONT_HGT_SMALL * 0.5
 		WINDOW_HEIGHT = self.permanentTraitsWindowHeight
 		WINDOW_HEIGHT_AFTER_CHILDREN = self.permanentTraitsWindowHeight
