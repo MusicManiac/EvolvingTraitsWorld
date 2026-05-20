@@ -390,6 +390,42 @@ function ISETWUI:createChildren()
 
 			y = y + FONT_HGT_MEDIUM + 4
 
+			if ETW_CommonLogicChecks.FoodSystemShouldExecute(player) then
+				str = "+ " .. getCachedTraitUIName(CharacterTrait.HEARTY_APPETITE)
+				self.labelVitalsFoodGainNegative = ISLabel:new(
+					barStartPosition + (barLength * SBvars.FoodSystemGainNegativeThreshold) - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelVitalsFoodGainNegative:setTooltip(getText("UI_ETW_GainTooltip"))
+				self:addChild(self.labelVitalsFoodGainNegative)
+
+				str = "- " .. getCachedTraitUIName(CharacterTrait.LIGHT_EATER)
+				self.labelVitalsFoodLosePositive = ISLabel:new(
+					barStartPosition + (barLength * SBvars.FoodSystemLosePositiveThreshold) - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelVitalsFoodLosePositive:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self:addChild(self.labelVitalsFoodLosePositive)
+
+				y = y + FONT_HGT_SMALL
+			end
+
 			self.labelVitalsFood = ISLabel:new(
 				barStartPosition - lineStartPosition,
 				y,
@@ -412,6 +448,42 @@ function ISETWUI:createChildren()
 
 			y = y + FONT_HGT_SMALL + 2
 
+			if ETW_CommonLogicChecks.FoodSystemShouldExecute(player) then
+				str = "- " .. getCachedTraitUIName(CharacterTrait.HEARTY_APPETITE)
+				self.labelVitalsFoodLose = ISLabel:new(
+					barStartPosition + (barLength * SBvars.FoodSystemLoseNegativeThreshold) - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelVitalsFoodLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self:addChild(self.labelVitalsFoodLose)
+
+				str = "+ " .. getCachedTraitUIName(CharacterTrait.LIGHT_EATER)
+				self.labelVitalsFoodGain = ISLabel:new(
+					barStartPosition + (barLength * SBvars.FoodSystemGainPositiveThreshold) - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelVitalsFoodGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self:addChild(self.labelVitalsFoodGain)
+
+				y = y + FONT_HGT_SMALL
+			end
+
 			self.labelVitalsFood24Hours = ISLabel:new(
 				barStartPosition,
 				y,
@@ -427,6 +499,42 @@ function ISETWUI:createChildren()
 			self:addChild(self.labelVitalsFood24Hours)
 
 			y = y + FONT_HGT_SMALL + 6
+
+			if ETW_CommonLogicChecks.ThirstSystemShouldExecute(player) then
+				str = "+ " .. getCachedTraitUIName(CharacterTrait.HIGH_THIRST)
+				self.labelVitalsThirstGainNegative = ISLabel:new(
+					barStartPosition + (barLength * SBvars.ThirstSystemGainNegativeThreshold) - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelVitalsThirstGainNegative:setTooltip(getText("UI_ETW_GainTooltip"))
+				self:addChild(self.labelVitalsThirstGainNegative)
+
+				str = "- " .. getCachedTraitUIName(CharacterTrait.LOW_THIRST)
+				self.labelVitalsThirstLosePositive = ISLabel:new(
+					barStartPosition + (barLength * SBvars.ThirstSystemLosePositiveThreshold) - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelVitalsThirstLosePositive:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self:addChild(self.labelVitalsThirstLosePositive)
+
+				y = y + FONT_HGT_SMALL
+			end
 
 			self.labelVitalsThirst = ISLabel:new(
 				barStartPosition - lineStartPosition,
@@ -449,6 +557,42 @@ function ISETWUI:createChildren()
 			self:addChild(self.barVitalsThirst)
 
 			y = y + FONT_HGT_SMALL + 2
+
+			if ETW_CommonLogicChecks.ThirstSystemShouldExecute(player) then
+				str = "- " .. getCachedTraitUIName(CharacterTrait.HIGH_THIRST)
+				self.labelVitalsThirstLose = ISLabel:new(
+					barStartPosition + (barLength * SBvars.ThirstSystemLoseNegativeThreshold) - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelVitalsThirstLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self:addChild(self.labelVitalsThirstLose)
+
+				str = "+ " .. getCachedTraitUIName(CharacterTrait.LOW_THIRST)
+				self.labelVitalsThirstGain = ISLabel:new(
+					barStartPosition + (barLength * SBvars.ThirstSystemGainPositiveThreshold) - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelVitalsThirstGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self:addChild(self.labelVitalsThirstGain)
+
+				y = y + FONT_HGT_SMALL
+			end
 
 			self.labelVitalsThirst24Hours = ISLabel:new(
 				barStartPosition,
