@@ -2943,6 +2943,8 @@ function ISETWUI:createChildren()
 				self.barSmokerSystem:setHighlightRadius(highlightRadius)
 				self.barSmokerSystem:setDoKnob(false)
 				self:addChild(self.barSmokerSystem)
+
+				y = y + FONT_HGT_SMALL
 			end
 		end
 
