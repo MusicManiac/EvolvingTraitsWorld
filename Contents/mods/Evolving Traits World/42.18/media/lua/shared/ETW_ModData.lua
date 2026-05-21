@@ -90,10 +90,11 @@ end
 ---@param playerIndex number -- The index of the player
 ---@param player IsoPlayer   -- The player object
 function ETW_ModData.createETWModData(playerIndex, player)
+	local playerModData = player:getModData()
 	print("ETW Logger | System: initializing modData for player " .. player:getUsername())
-	player:getModData().EvolvingTraitsWorld = player:getModData().EvolvingTraitsWorld or {}
+	playerModData.EvolvingTraitsWorld = playerModData.EvolvingTraitsWorld or {}
 	---@type EvolvingTraitsWorldModData
-	local modData = player:getModData().EvolvingTraitsWorld
+	local modData = playerModData.EvolvingTraitsWorld
 
 	modData.VehiclePartRepairs = modData.VehiclePartRepairs or 0
 	modData.EagleEyedKills = modData.EagleEyedKills or 0
@@ -188,7 +189,10 @@ function ETW_ModData.createETWModData(playerIndex, player)
 
 	modData.OutdoorsmanSystem = modData.OutdoorsmanSystem or {}
 	local outdoorsmanSystem = modData.OutdoorsmanSystem
-	if outdoorsmanSystem.OutdoorsmanCounter == nil and startingTraits[CharacterTrait.OUTDOORSMAN:toString()] == true then -- start at full counter if they start with the trait
+	if
+		outdoorsmanSystem.OutdoorsmanCounter == nil
+		and startingTraits[CharacterTrait.OUTDOORSMAN:toString()] == true
+	then -- start at full counter if they start with the trait
 		outdoorsmanSystem.OutdoorsmanCounter = SBvars.OutdoorsmanCounter * 2
 	end
 	outdoorsmanSystem.OutdoorsmanCounter = outdoorsmanSystem.OutdoorsmanCounter or 0
@@ -213,9 +217,15 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	sleepSystem.HoursSinceLastSleep = sleepSystem.HoursSinceLastSleep or 0
 	sleepSystem.LastMidpoint = sleepSystem.LastMidpoint or 4
 	sleepSystem.WentToSleepAt = sleepSystem.WentToSleepAt or 21
-	if sleepSystem.SleepHealthinessBar == nil and startingTraits[CharacterTrait.NEEDS_LESS_SLEEP:toString()] == true then
+	if
+		sleepSystem.SleepHealthinessBar == nil
+		and startingTraits[CharacterTrait.NEEDS_LESS_SLEEP:toString()] == true
+	then
 		sleepSystem.SleepHealthinessBar = 200
-	elseif sleepSystem.SleepHealthinessBar == nil and startingTraits[CharacterTrait.NEEDS_MORE_SLEEP:toString()] == true then
+	elseif
+		sleepSystem.SleepHealthinessBar == nil
+		and startingTraits[CharacterTrait.NEEDS_MORE_SLEEP:toString()] == true
+	then
 		sleepSystem.SleepHealthinessBar = sleepSystem.SleepHealthinessBar or -200
 	else
 		sleepSystem.SleepHealthinessBar = sleepSystem.SleepHealthinessBar or 0
@@ -251,9 +261,9 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	AnimalsSystem.UniqueAnimalsPetted = AnimalsSystem.UniqueAnimalsPetted or {}
 	AnimalsSystem.LastMinuteTimestampWhenPettedWithBoost = AnimalsSystem.LastMinuteTimestampWhenPettedWithBoost or 0
 
-	player:getModData().KillCount = player:getModData().KillCount or {}
-	player:getModData().KillCount.WeaponCategory = player:getModData().KillCount.WeaponCategory or {}
-	local killCount = player:getModData().KillCount.WeaponCategory
+	playerModData.KillCount = playerModData.KillCount or {}
+	playerModData.KillCount.WeaponCategory = playerModData.KillCount.WeaponCategory or {}
+	local killCount = playerModData.KillCount.WeaponCategory
 	killCount["Axe"] = killCount["Axe"] or { count = 0, WeaponType = {} }
 	killCount["Blunt"] = killCount["Blunt"] or { count = 0, WeaponType = {} }
 	killCount["SmallBlunt"] = killCount["SmallBlunt"] or { count = 0, WeaponType = {} }
