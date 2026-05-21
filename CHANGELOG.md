@@ -1,3 +1,12 @@
+## v.12.0.1
+###### 21 May 2026
+
+- General:
+  - A bit of code cleanup.
+- Fixes:
+  - Fixed smoker bar being cut off.
+  - Possible fix on text being cut off. Possible because I can't even recreate the issue.
+
 ## v.12.0.0 - Subtab-ocalypse
 ###### 20 May 2026
 
