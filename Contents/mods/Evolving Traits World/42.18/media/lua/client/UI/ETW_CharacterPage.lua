@@ -299,16 +299,7 @@ function ISETWUI:createChildren()
 	-- ── End subtab setup (redirect active) ──────────────────────────────────────────────────────────
 
 	if SBvars.UIPage then
-		local barStartPosition = 150 -- TODO : add mod option to adjust this
-		local barEndPosition = WINDOW_WIDTH - lineStartPosition
-		local barMidPosition = barStartPosition + (barEndPosition - barStartPosition) / 2
-		local barLength = barEndPosition - barStartPosition
-		local barOneFourthPosition = barMidPosition - barLength / 4
-		local barThreeFourthPosition = barMidPosition + barLength / 4
-		local barOneThirdPosition = barStartPosition + barLength / 3
-		local barTwoThirdPosition = barOneThirdPosition + barLength / 3
 		local highlightRadius = 20
-
 		columnGap = (WINDOW_WIDTH - 2 * lineStartPosition) / nonBarsEntriesPerRow
 
 		local yellowGreenGradient = getTexture("media/ui/GradientBars/yellowGreenGradient.png")
@@ -352,6 +343,101 @@ function ISETWUI:createChildren()
 		local carving = player:getPerkLevel(Perks.Carving)
 		local blacksmith = player:getPerkLevel(Perks.Blacksmith)
 		local knapping = player:getPerkLevel(Perks.FlintKnapping)
+
+		local function appendLeftBarLabel(labelTexts, labelText)
+			if labelText and labelText ~= "" then
+				labelTexts[#labelTexts + 1] = labelText
+			end
+		end
+
+		local function getDynamicBarStartPosition()
+			local labelTexts = {
+				getText("UI_ETW_Vitals_Food"),
+				getText("UI_ETW_Vitals_Thirst"),
+				getText("UI_ETW_Vitals_Mental"),
+			}
+
+			if ETW_CommonLogicChecks.ImmunitySystemShouldExecute(player) then
+				appendLeftBarLabel(labelTexts, getText("Sandbox_ETW_ImmunitySystem"))
+			end
+			if ETW_CommonLogicChecks.FoodSicknessSystemShouldExecute(player) then
+				appendLeftBarLabel(labelTexts, getText("Sandbox_ETW_FoodSicknessSystem"))
+			end
+			if ETW_CommonLogicChecks.PainToleranceShouldExecute(player) then
+				appendLeftBarLabel(labelTexts, getCachedTraitUIName(ETWTraitsRegistry.PAIN_TOLERANCE))
+			end
+			if ETW_CommonLogicChecks.HearingSystemShouldExecute(player) then
+				appendLeftBarLabel(labelTexts, getText("Sandbox_ETW_HearingSystem"))
+			end
+			if ETW_CommonLogicChecks.LearnerSystemShouldExecute(player) then
+				appendLeftBarLabel(labelTexts, getText("Sandbox_ETW_LearnerSystem"))
+			end
+			if ETW_CommonLogicChecks.InventoryTransferSystemShouldExecute(player) then
+				local weightTransferred = (
+					modData
+					and modData.TransferSystem
+					and modData.TransferSystem.WeightTransferred
+				) or 0
+				local itemsTransferred = (
+					modData
+					and modData.TransferSystem
+					and modData.TransferSystem.ItemsTransferred
+				) or 0
+				if weightTransferred < SBvars.InventoryTransferSystemWeight then
+					appendLeftBarLabel(labelTexts, getText("Sandbox_ETW_InventoryTransferSystemWeight"))
+				end
+				if itemsTransferred < SBvars.InventoryTransferSystemItems then
+					appendLeftBarLabel(labelTexts, getText("Sandbox_ETW_InventoryTransferSystemItems"))
+				end
+			end
+			if ETW_CommonLogicChecks.BraverySystemShouldExecute(player) then
+				appendLeftBarLabel(labelTexts, getText("Sandbox_ETW_BraverySystem"))
+			end
+			if ETW_CommonLogicChecks.BloodlustShouldExecute(player) then
+				appendLeftBarLabel(labelTexts, getCachedTraitUIName(ETWTraitsRegistry.BLOODLUST))
+			end
+			if ETW_CommonLogicChecks.AsthmaticShouldExecute(player) then
+				appendLeftBarLabel(labelTexts, getCachedTraitUIName(CharacterTrait.ASTHMATIC))
+			end
+			if ETW_CommonLogicChecks.OutdoorsmanShouldExecute(player) then
+				appendLeftBarLabel(labelTexts, getCachedTraitUIName(CharacterTrait.OUTDOORSMAN))
+			end
+			if ETW_CommonLogicChecks.FearOfLocationsSystemShouldExecute(player) then
+				appendLeftBarLabel(labelTexts, getCachedTraitUIName(CharacterTrait.AGORAPHOBIC))
+				appendLeftBarLabel(labelTexts, getCachedTraitUIName(CharacterTrait.CLAUSTROPHOBIC))
+			end
+			if ETW_CommonLogicChecks.SleepSystemShouldExecute(player) then
+				appendLeftBarLabel(labelTexts, getText("Sandbox_ETW_SleepSystem"))
+			end
+			if ETW_CommonLogicChecks.RainSystemShouldExecute(player) then
+				appendLeftBarLabel(labelTexts, getText("Sandbox_ETW_RainSystem"))
+			end
+			if ETW_CommonLogicChecks.FogSystemShouldExecute(player) then
+				appendLeftBarLabel(labelTexts, getText("Sandbox_ETW_FogSystem"))
+			end
+			if
+				ETW_CommonLogicChecks.SmokerShouldExecute(player)
+				and ((not modOptions and true) or not modOptions:getOption("HideSmokerUI"):getValue())
+			then
+				appendLeftBarLabel(labelTexts, getCachedTraitUIName(CharacterTrait.SMOKER))
+			end
+
+			local maxWidth = 0
+			for index = 1, #labelTexts do
+				maxWidth = math.max(maxWidth, strLen(textManager, labelTexts[index]))
+			end
+
+			return math.max(150, maxWidth + (lineStartPosition * 2))
+		end
+
+		local barStartPosition = getDynamicBarStartPosition()
+		local barEndPosition = WINDOW_WIDTH - lineStartPosition
+		local barMidPosition = barStartPosition + (barEndPosition - barStartPosition) / 2
+		local barLength = barEndPosition - barStartPosition
+		local barOneFourthPosition = barMidPosition - barLength / 4
+		local barThreeFourthPosition = barMidPosition + barLength / 4
+		local barOneThirdPosition = barStartPosition + barLength / 3
+		local barTwoThirdPosition = barOneThirdPosition + barLength / 3
 
 		local killCountModData
 		local axeKills = 0
