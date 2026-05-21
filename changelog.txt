@@ -6,3 +6,4 @@ General:
 	- A bit of code cleanup.
 Fixes:
 	- Fixed smoker bar being cut off.
+	- Possible fix on text being cut off. Possible because I can't even recreate the issue.
