@@ -4,6 +4,7 @@ local ETW_CommonFunctions = require("ETW_CommonFunctions")
 ---@type ETW_ModData
 local ETW_ModData = require("ETW_ModData")
 local ETW_EagleEyedTracking = require("ETW_EagleEyedTracking")
+local ETW_CommonLogicChecks = require("ETW_CommonLogicChecks")
 
 local ETW_BySkills = require("ETW_BySkillsServer")
 
@@ -79,6 +80,69 @@ function Commands.eagleEyedRecordHit(player, args)
 			.. tostring(args.distance)
 	)
 	ETW_EagleEyedTracking.recordHitById(player, args.zombieId, args.distance)
+end
+
+---@param player IsoPlayer
+---@param args {progressIncrease:number, isKill:boolean}|nil
+function Commands.catEyesRecordProgress(player, args)
+	if not args or type(args.progressIncrease) ~= "number" then
+		ETW_CommonFunctions.log(
+			"ETW Logger | Commands.catEyesRecordProgress(): invalid args from player "
+				.. tostring(player and player:getUsername() or "nil")
+		)
+		return
+	end
+	if not ETW_CommonLogicChecks.CatEyesShouldExecute(player) then
+		return
+	end
+
+	local modData = ETW_CommonFunctions.getETWModData(player)
+	if not modData then
+		ETW_CommonFunctions.log("ETW Logger | Commands.catEyesRecordProgress(): modData is nil, returning early")
+		return
+	end
+
+	modData.CatEyesCounter = modData.CatEyesCounter + args.progressIncrease
+	if args.isKill then
+		ETW_CommonFunctions.log("ETW Logger | Commands.catEyesRecordProgress(): was triggered by a kill")
+	end
+	ETW_CommonFunctions.log(
+		"ETW Logger | Commands.catEyesRecordProgress(): server received player="
+			.. tostring(player:getUsername())
+			.. " progressIncrease="
+			.. tostring(args.progressIncrease)
+			.. " CatEyesCounter="
+			.. tostring(modData.CatEyesCounter)
+	)
+
+	if player:hasTrait(CharacterTrait.NIGHT_VISION) or modData.CatEyesCounter < SandboxVars.EvolvingTraitsWorld.CatEyesCounter then
+		return
+	end
+
+	if
+		SandboxVars.EvolvingTraitsWorld.DelayedTraitsSystem
+		and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.NIGHT_VISION)
+	then
+		ETW_CommonFunctions.addTraitToDelayTable({
+			modData = modData,
+			trait = CharacterTrait.NIGHT_VISION,
+			player = player,
+			positiveTrait = true,
+			gainingTrait = true,
+		})
+	elseif
+		not SandboxVars.EvolvingTraitsWorld.DelayedTraitsSystem
+		or (
+			SandboxVars.EvolvingTraitsWorld.DelayedTraitsSystem
+			and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.NIGHT_VISION)
+		)
+	then
+		ETW_CommonFunctions.addTraitToPlayer({
+			player = player,
+			trait = CharacterTrait.NIGHT_VISION,
+			positiveTrait = true,
+		})
+	end
 end
 
 Commands.OnClientCommand = function(module, command, player, args)

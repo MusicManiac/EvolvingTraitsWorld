@@ -1,3 +1,9 @@
+## v.12.0.2
+###### 03 Jun 2026
+
+- Fixes:
+  - Fixed Cat Eyes not recording progress in MP.
+
 ## v.12.0.1
 ###### 21 May 2026
 
