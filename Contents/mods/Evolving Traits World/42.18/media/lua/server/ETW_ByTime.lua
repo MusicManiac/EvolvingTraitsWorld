@@ -25,89 +25,6 @@ then
 	return
 end
 
----Function responsible for managing Cat Eyes trait
----@param player IsoPlayer|IsoGameCharacter
----@param isKill boolean
-local function catEyes(player, isKill)
-	isKill = isKill or false
-	local nightStrength = getClimateManager():getNightStrength()
-	if nightStrength > 0 then
-		local playersList = ETW_CommonFunctions.playersList()
-		for i = 0, playersList:size() - 1 do
-			player = playersList:get(i)
-			local modData = ETW_CommonFunctions.getETWModData(player)
-			if not modData then
-				logETW("ETW Logger | catEyes(): modData is nil, returning early")
-				return
-			end
-			local playerNum = player:getPlayerNum()
-			local checkedSquares = 0
-			local squaresVisible = 0
-			local square
-			local plX, plY, plZ = player:getX(), player:getY(), player:getZ()
-			local radius = 30
-			local playerIsInside = player:isInARoom()
-			local hasEagleEyed = player:hasTrait(CharacterTrait.EAGLE_EYED)
-			local thisMinuteIncrease = 0
-			for x = -radius, radius do
-				for y = -radius, radius do
-					square = getCell():getGridSquare(plX + x, plY + y, plZ)
-					checkedSquares = checkedSquares + 1
-					if square and square:isCanSee(playerNum) then
-						local squareDarknessLevel = nightStrength
-							* (1 - square:getLightLevel(playerNum))
-							* 0.01
-							* (square:isInARoom() and playerIsInside and 2 or 1)
-							* (hasEagleEyed and 2 or 1)
-						squaresVisible = squaresVisible + 1
-						thisMinuteIncrease = thisMinuteIncrease + squareDarknessLevel
-					end
-				end
-			end
-			modData.CatEyesCounter = modData.CatEyesCounter + thisMinuteIncrease
-			if isKill then
-				logETW("ETW Logger | catEyes(): was triggered by a kill")
-			end
-			logETW(
-				"ETW Logger | catEyes(): Checked squares: "
-					.. checkedSquares
-					.. ", visible squares: "
-					.. squaresVisible
-					.. " with total darkness level of "
-					.. thisMinuteIncrease,
-				"ETW Logger | catEyes(): CatEyesCounter: " .. modData.CatEyesCounter
-			)
-			if not player:hasTrait(CharacterTrait.NIGHT_VISION) and modData.CatEyesCounter >= SBvars.CatEyesCounter then
-				if
-					SBvars.DelayedTraitsSystem
-					and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.NIGHT_VISION)
-				then
-					ETW_CommonFunctions.addTraitToDelayTable({
-						modData = modData,
-						trait = CharacterTrait.NIGHT_VISION,
-						player = player,
-						positiveTrait = true,
-						gainingTrait = true,
-					})
-				elseif
-					not SBvars.DelayedTraitsSystem
-					or (
-						SBvars.DelayedTraitsSystem
-						and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.NIGHT_VISION)
-					)
-				then
-					ETW_CommonFunctions.addTraitToPlayer({
-						player = player,
-						trait = CharacterTrait.NIGHT_VISION,
-						positiveTrait = true,
-					})
-					Events.EveryOneMinute.Remove(catEyes)
-				end
-			end
-		end
-	end
-end
-
 ---Function responsible for finding midpoint between 2 timestamps
 ---time1 and time2 are passed in chronological order, time2 was after time1
 ---@param time1 number
@@ -361,32 +278,10 @@ local function herbalist()
 	end
 end
 
----Helper function to fire catEyes() on zombie kill
----@param zombie IsoZombie
-local function catEyesKill(zombie)
-	local player = zombie:getAttackedBy()
-	---@cast player IsoPlayer
-	if
-		not player
-		or not instanceof(player, "IsoPlayer")
-		or (gameMode == ETW_CommonFunctions.GameMode.SP and not player:isLocalPlayer())
-	then
-		return
-	else
-		catEyes(player, true)
-	end
-end
-
 ---Function responsible for setting up events
 ---@param playerIndex number
 ---@param player IsoPlayer
 local function initializeEventsETW(playerIndex, player)
-	Events.EveryOneMinute.Remove(catEyes)
-	Events.OnZombieDead.Remove(catEyesKill)
-	if ETW_CommonLogicChecks.CatEyesShouldExecute(player) then
-		Events.EveryOneMinute.Add(catEyes)
-		Events.OnZombieDead.Add(catEyesKill)
-	end
 	Events.EveryTenMinutes.Remove(sleepSystem)
 	if ETW_CommonLogicChecks.SleepSystemShouldExecute(player) then
 		Events.EveryTenMinutes.Add(sleepSystem)
@@ -407,7 +302,6 @@ end
 ---Function responsible for clearing events
 ---@param character IsoPlayer
 local function clearEventsETW(character)
-	Events.EveryOneMinute.Remove(catEyes)
 	Events.EveryTenMinutes.Remove(sleepSystem)
 	Events.EveryOneMinute.Remove(smoker)
 	Events.EveryDays.Remove(herbalist)
