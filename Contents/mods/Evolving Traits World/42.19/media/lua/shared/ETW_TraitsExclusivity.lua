@@ -1,0 +1,11 @@
+local ETW_Registry = require("ETW_Registry")
+
+---@type EvolvingTraitsWorldTraitsRegistries
+local ETWTraitsRegistry = ETW_Registry.traits
+
+CharacterTraitDefinition.setMutualExclusive(CharacterTrait.UNFIT, ETWTraitsRegistry.GYM_RAT)
+CharacterTraitDefinition.setMutualExclusive(CharacterTrait.OUT_OF_SHAPE, ETWTraitsRegistry.GYM_RAT)
+CharacterTraitDefinition.setMutualExclusive(CharacterTrait.WEAK, ETWTraitsRegistry.GYM_RAT)
+CharacterTraitDefinition.setMutualExclusive(CharacterTrait.FEEBLE, ETWTraitsRegistry.GYM_RAT)
+CharacterTraitDefinition.setMutualExclusive(CharacterTrait.OBESE, ETWTraitsRegistry.GYM_RAT)
+CharacterTraitDefinition.setMutualExclusive(CharacterTrait.VERY_UNDERWEIGHT, ETWTraitsRegistry.GYM_RAT)
