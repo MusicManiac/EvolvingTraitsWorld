@@ -829,6 +829,22 @@ option EvolvingTraitsWorld.MechanicsRepairs
 	page = ETWSimplePerks,
 	translation = ETW_MechanicsRepairs,
 }
+option EvolvingTraitsWorld.Mason
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_Mason,
+}
+option EvolvingTraitsWorld.MasonSkill
+{
+	type = integer,
+	min = 0,
+	max = 10,
+	default = 4,
+	page = ETWSimplePerks,
+	translation = ETW_MasonSkill,
+}
 option EvolvingTraitsWorld.Fishing
 {
 	type = boolean,
@@ -860,6 +876,22 @@ option EvolvingTraitsWorld.AVClubSkill
 	default = 4,
 	page = ETWSimplePerks,
 	translation = ETW_AVClubSkill,
+}
+option EvolvingTraitsWorld.Artisan
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_Artisan,
+}
+option EvolvingTraitsWorld.ArtisanSkill
+{
+	type = integer,
+	min = 0,
+	max = 20,
+	default = 8,
+	page = ETWSimplePerks,
+	translation = ETW_ArtisanSkill,
 }
 option EvolvingTraitsWorld.Axeman
 {
@@ -942,6 +974,22 @@ option EvolvingTraitsWorld.BlacksmithSkill
 	default = 12,
 	page = ETWSimplePerks,
 	translation = ETW_BlacksmithSkill,
+}
+option EvolvingTraitsWorld.Blacksmith2
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_Blacksmith2,
+}
+option EvolvingTraitsWorld.Blacksmith2Skill
+{
+	type = integer,
+	min = 0,
+	max = 20,
+	default = 8,
+	page = ETWSimplePerks,
+	translation = ETW_Blacksmith2Skill,
 }
 option EvolvingTraitsWorld.BladeEnthusiast
 {
@@ -1082,6 +1130,22 @@ option EvolvingTraitsWorld.CookSkill
 	page = ETWSimplePerks,
 	translation = ETW_CookSkill,
 }
+option EvolvingTraitsWorld.Crafty
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_Crafty,
+}
+option EvolvingTraitsWorld.CraftySkill
+{
+	type = integer,
+	min = 0,
+	max = 120,
+	default = 48,
+	page = ETWSimplePerks,
+	translation = ETW_CraftySkill,
+}
 option EvolvingTraitsWorld.FirstAid
 {
 	type = boolean,
@@ -1214,8 +1278,8 @@ option EvolvingTraitsWorld.HandySkill
 {
 	type = integer,
 	min = 0,
-	max = 20,
-	default = 13,
+	max = 40,
+	default = 24,
 	page = ETWSimplePerks,
 	translation = ETW_HandySkill,
 }
@@ -1277,9 +1341,9 @@ option EvolvingTraitsWorld.Hunter
 option EvolvingTraitsWorld.HunterSkill
 {
 	type = integer,
-	min = 8,
-	max = 40,
-	default = 24,
+	min = 10,
+	max = 50,
+	default = 28,
 	page = ETWSimplePerks,
 	translation = ETW_HunterSkill,
 }
@@ -1512,6 +1576,38 @@ option EvolvingTraitsWorld.StickFighterKills
 	default = 200,
 	page = ETWSimplePerks,
 	translation = ETW_StickFighterKills,
+}
+option EvolvingTraitsWorld.TargetShooter
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_TargetShooter,
+}
+option EvolvingTraitsWorld.TargetShooterSkill
+{
+	type = integer,
+	min = 0,
+	max = 10,
+	default = 4,
+	page = ETWSimplePerks,
+	translation = ETW_TargetShooterSkill,
+}
+option EvolvingTraitsWorld.Tinkerer
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_Tinkerer,
+}
+option EvolvingTraitsWorld.TinkererSkill
+{
+	type = integer,
+	min = 0,
+	max = 10,
+	default = 4,
+	page = ETWSimplePerks,
+	translation = ETW_TinkererSkill,
 }
 option EvolvingTraitsWorld.WildernessKnowledge
 {

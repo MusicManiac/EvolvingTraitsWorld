@@ -329,9 +329,10 @@ local skillTraitRules = {
 			return hasRequiredLevels(ctx, {
 				sneaking = 2,
 				aiming = 2,
-				trapping = 2,
 				shortBlade = 2,
-			}) and sumContextValues(ctx, { "sneaking", "aiming", "trapping", "shortBlade" }) >= SBvars.HunterSkill and (ctx.shortBladeKills + ctx.firearmKills) >= SBvars.HunterKills
+				butchering = 2,
+				tracking = 2,
+			}) and sumContextValues(ctx, { "sneaking", "aiming", "butchering", "shortBlade", "tracking" }) >= SBvars.HunterSkill and (ctx.shortBladeKills + ctx.firearmKills) >= SBvars.HunterKills
 		end,
 		trait = CharacterTrait.HUNTER,
 		positiveTrait = true,
@@ -427,7 +428,7 @@ local skillTraitRules = {
 		triggers = makeTriggerSet("characterInitialization", Perks.Maintenance, Perks.Woodwork, CharacterTrait.HANDY),
 		shouldExecute = ETW_CommonLogicChecks.HandyShouldExecute,
 		condition = function(ctx)
-			return sumContextValues(ctx, { "maintenance", "carpentry" }) >= SBvars.HandySkill
+			return sumContextValues(ctx, { "maintenance", "carpentry", "carving", "masonry" }) >= SBvars.HandySkill
 		end,
 		trait = CharacterTrait.HANDY,
 		positiveTrait = true,
@@ -663,6 +664,94 @@ local skillTraitRules = {
 		positiveTrait = true,
 		gainingTrait = true,
 	},
+	{
+		triggers = makeTriggerSet("characterInitialization", Perks.Glassmaking, Perks.Pottery, CharacterTrait.ARTISAN),
+		shouldExecute = ETW_CommonLogicChecks.ArtisanShouldExecute,
+		condition = function(ctx)
+			return sumContextValues(ctx, { "glassmaking", "pottery" }) >= SBvars.ArtisanSkill
+		end,
+		trait = CharacterTrait.ARTISAN,
+		positiveTrait = true,
+		gainingTrait = true,
+	},
+	{
+		triggers = makeTriggerSet("characterInitialization", Perks.Masonry, CharacterTrait.MASON),
+		shouldExecute = ETW_CommonLogicChecks.MasonShouldExecute,
+		condition = function(ctx)
+			return ctx.masonry >= SBvars.MasonSkill
+		end,
+		trait = CharacterTrait.MASON,
+		positiveTrait = true,
+		gainingTrait = true,
+	},
+	{
+		triggers = makeTriggerSet(
+			"characterInitialization",
+			Perks.Blacksmith,
+			Perks.Woodwork,
+			Perks.Carving,
+			Perks.Cooking,
+			Perks.Electricity,
+			Perks.Glassmaking,
+			Perks.FlintKnapping,
+			Perks.Masonry,
+			Perks.Mechanics,
+			Perks.Pottery,
+			Perks.Tailoring,
+			Perks.MetalWelding,
+			CharacterTrait.CRAFTY
+		),
+		shouldExecute = ETW_CommonLogicChecks.CraftyShouldExecute,
+		condition = function(ctx)
+			return sumContextValues(ctx, {
+				"blacksmith",
+				"carpentry",
+				"carving",
+				"cooking",
+				"electrical",
+				"glassmaking",
+				"knapping",
+				"masonry",
+				"mechanics",
+				"pottery",
+				"tailoring",
+				"metalworking",
+			}) >= SBvars.CraftySkill
+		end,
+		trait = CharacterTrait.CRAFTY,
+		positiveTrait = true,
+		gainingTrait = true,
+	},
+	{
+		triggers = makeTriggerSet("characterInitialization", Perks.Maintenance, CharacterTrait.TINKERER),
+		shouldExecute = ETW_CommonLogicChecks.TinkererShouldExecute,
+		condition = function(ctx)
+			return ctx.maintenance >= SBvars.TinkererSkill
+		end,
+		trait = CharacterTrait.TINKERER,
+		positiveTrait = true,
+		gainingTrait = true,
+	},
+	{
+		triggers = makeTriggerSet("characterInitialization", Perks.Aiming, CharacterTrait.TARGET_SHOOTER),
+		shouldExecute = ETW_CommonLogicChecks.TargetShooterShouldExecute,
+		condition = function(ctx)
+			return ctx.aiming >= SBvars.TargetShooterSkill
+		end,
+		trait = CharacterTrait.TARGET_SHOOTER,
+		positiveTrait = true,
+		gainingTrait = true,
+	},
+	{
+		triggers = makeTriggerSet("characterInitialization", Perks.Aiming, CharacterTrait.BLACKSMITH2),
+		shouldExecute = ETW_CommonLogicChecks.Blacksmith2ShouldExecute,
+		condition = function(ctx)
+			return sumContextValues(ctx, { "blacksmith", "maintenance" }) >= SBvars.Blacksmith2Skill
+		end,
+		trait = CharacterTrait.BLACKSMITH2,
+		positiveTrait = true,
+		gainingTrait = true,
+	},
 }
 
 ---Gain traits by skills (in majority cases)
@@ -716,6 +805,7 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 	local pottery = player:getPerkLevel(Perks.Pottery)
 	local masonry = player:getPerkLevel(Perks.Masonry)
 	local butchering = player:getPerkLevel(Perks.Butchering)
+	local tracking = player:getPerkLevel(Perks.Tracking)
 
 	-- locals for kills by category
 	local killCountModData = (player:getModData().KillCount or {}).WeaponCategory or {}
@@ -763,6 +853,8 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 		glassmaking = glassmaking,
 		pottery = pottery,
 		masonry = masonry,
+		butchering = butchering,
+		tracking = tracking,
 		axeKills = axeKills,
 		longBluntKills = longBluntKills,
 		shortBluntKills = shortBluntKills,

@@ -61,6 +61,38 @@ function ISFixAction:complete()
 	return originalReturn
 end
 
+local original_ISChopTreeAction_complete = ISChopTreeAction.complete
+---Overwriting ISChopTreeAction:perform() here to insert ETW logic catching player doing any kind of repairs and trigger RestorationExpert
+function ISChopTreeAction:complete()
+	local modData = ETW_CommonFunctions.getETWModData(self.character)
+	modData.TreesChopped = modData.TreesChopped + 1
+	logETW("ETW Logger | ISChopTreeAction.perform(): modData.TreesChopped = " .. modData.TreesChopped)
+	if modData.TreesChopped >= SBvars.AxemanTrees then
+		if
+			SBvars.DelayedTraitsSystem
+			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(self.character, CharacterTrait.AXEMAN)
+		then
+			ETW_CommonFunctions.addTraitToDelayTable({
+				modData = modData,
+				trait = CharacterTrait.AXEMAN,
+				player = self.character,
+				positiveTrait = true,
+				gainingTrait = true,
+			})
+		elseif
+			not SBvars.DelayedTraitsSystem
+			or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(self.character, CharacterTrait.AXEMAN))
+		then
+			ETW_CommonFunctions.addTraitToPlayer({
+				player = self.character,
+				trait = CharacterTrait.AXEMAN,
+				positiveTrait = true,
+			})
+		end
+	end
+	return originalReturn
+end
+
 local original_ISRepairEngine_complete = ISRepairEngine.complete
 ---Overwriting ISRepairEngine:perform() here to insert ETW logic catching player doing engine repairs
 function ISRepairEngine:complete()

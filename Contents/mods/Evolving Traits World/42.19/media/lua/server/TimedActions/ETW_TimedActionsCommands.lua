@@ -41,18 +41,6 @@ function Commands.ISInventoryTransferActionPerformed(player, args)
 	ETW_TimedActionsSharedLogic.checkInventoryTransferPerks(player, modData)
 end
 
----Function responsible for updating trees chopped counter and checking axeman perk
----@param player IsoPlayer
----@param args {}
-function Commands.ISChopTreeActionPerformed(player, args)
-	logETW("ETW Logger | ISChopTreeActionPerformed(): received from player " .. player:getUsername())
-	---@type EvolvingTraitsWorldModData
-	local modData = ETW_CommonFunctions.getETWModData(player)
-	modData.TreesChopped = modData.TreesChopped + 1
-	logETW("ETW Logger | ISChopTreeActionPerformed(): modData.TreesChopped = " .. modData.TreesChopped)
-	ETW_TimedActionsSharedLogic.checkAxemanPerk(player, modData)
-end
-
 Commands.OnClientCommand = function(module, command, player, args)
 	if module == "ETW" and Commands[command] then
 		local argStr = ""
