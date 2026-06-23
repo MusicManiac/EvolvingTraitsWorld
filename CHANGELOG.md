@@ -1,3 +1,18 @@
+## v.12.1.0
+###### 23 Jun 2026
+
+- General:
+  - Changed Keen Cook requirements to reflect base game changes, now requires Cooking + Butchering levels.
+  - Changed Handy requirements to reflect base game changes, now requires Carpentry + Carving + Maintenance + Masonry levels.
+  - Changed Hunter requirements to reflect base game changes, now requires Sneaking + Aiming + Butchering + ShortBlade + Tracking levels.
+  - Bushcrafter sandbox settings update (previously was known as Wilderness Knowledge).
+  - Made new traits added since release of b42 dynamic: Artisan, Mason, Crafty, Tinkerer, Target Shooter, Blacksmith Knowledge
+  - Added clarification in Delayed Traits System when trait will be gained on next trait-specific action.
+- Fixes:
+  - Fixed Axeman not recording chopped trees in MP (Indie Stone changed stuff that broke it)
+  - Removed google sheets mentions in EN translations.
+  - Removed a print that I left in on accident in Cat Eyes function that was spamming console.
+
 ## v.12.0.2
 ###### 03 Jun 2026
 

@@ -82,6 +82,19 @@ local function getKnownTraitsLayoutSignature(player)
 	return table.concat(signatureParts, "|")
 end
 
+---Returns text describing a delayed trait entry based on whether it is still rolling or already waiting on its next trait-specific trigger.
+---@param traitUIName string
+---@param roll number
+---@param gained boolean
+---@return string
+local function formatDelayedTraitStatus(traitUIName, roll, gained)
+	if gained then
+		return traitUIName .. " (" .. getText("UI_ETW_DelayedTraitReadyOnNextAction") .. ")"
+	end
+
+	return traitUIName .. " (1 " .. getText("UI_ETW_Chance") .. " " .. roll .. ")"
+end
+
 ---Builds a stable signature for the player's delayed traits table.
 ---@param player IsoPlayer|nil
 ---@return string
@@ -99,7 +112,11 @@ local function getDelayedTraitsLayoutSignature(player)
 	local signatureParts = {}
 	for index = 1, #delayedTraits do
 		local delayedTrait = delayedTraits[index]
-		signatureParts[index] = tostring(delayedTrait[1]) .. ":" .. tostring(delayedTrait[2])
+		signatureParts[index] = tostring(delayedTrait[1])
+			.. ":"
+			.. tostring(delayedTrait[2])
+			.. ":"
+			.. tostring(delayedTrait[3])
 	end
 	return table.concat(signatureParts, "|")
 end
@@ -3188,9 +3205,9 @@ function ISETWUI:render()
 		local parts = {}
 		for index = 1, #traitTable do
 			local traitEntry = traitTable[index]
-			local trait, roll = traitEntry[1], traitEntry[2]
+			local trait, roll, gained = traitEntry[1], traitEntry[2], traitEntry[3]
 			local translationString = getCachedTraitUIName(trait)
-			local strAddition = translationString .. " (1 " .. getText("UI_ETW_Chance") .. " " .. roll .. ")"
+			local strAddition = formatDelayedTraitStatus(translationString, roll, gained)
 			table.insert(parts, strAddition)
 		end
 		local combinedParts = table.concat(parts, ", ")
