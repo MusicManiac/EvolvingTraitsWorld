@@ -8,6 +8,7 @@
     "UI_ETW_DelayedNotificationsStringAdd":  "Qualified for gaining ",
     "UI_ETW_DelayedNotificationsStringRemove":  "Qualified for losing ",
     "UI_ETW_DelayedNotificationsStringRemove___note_to_translators":  "(Don't translate this, this is just info for you guys) UI_ETW_DelayedNotificationsStringAdd and UI_ETW_DelayedNotificationsStringRemove is used in combination with trait names, for example 'Qualified for gaining Hoarder' or 'Qualified for losing Unlucky'. You get the idea.",
+    "UI_ETW_DelayedTraitReadyOnNextAction":  "gained on next trait-specific action",
     "UI_ETW_GainLoseTooltip":  "You will gain/lose the trait when bar is around here (or qualify for gaining/losing it, if Delayed Traits System is on and this trait in that system)",
     "UI_ETW_GainTooltip":  "You will gain the trait when bar is around here (or qualify for gaining it, if Delayed Traits System is on and this trait in that system)",
     "UI_ETW_LooseTooltip":  "You will lose the trait when bar is around here (or qualify for losing it, if Delayed Traits System is on and this trait in that system)",
