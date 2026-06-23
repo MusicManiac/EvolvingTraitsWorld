@@ -116,8 +116,8 @@ catEyes = function(player, isKill)
 	local hasEagleEyed = player:hasTrait(CharacterTrait.EAGLE_EYED)
 	local progressIncrease = 0
 
-	print(player:getDisplayName() .. " is checking for cat eyes with nightStrength: " .. tostring(nightStrength))
-	print("Position: x=" .. tostring(plX) .. ", y=" .. tostring(plY) .. ", z=" .. tostring(plZ))
+	-- print(player:getDisplayName() .. " is checking for cat eyes with nightStrength: " .. tostring(nightStrength))
+	-- print("Position: x=" .. tostring(plX) .. ", y=" .. tostring(plY) .. ", z=" .. tostring(plZ))
 
 	for x = -radius, radius do
 		for y = -radius, radius do

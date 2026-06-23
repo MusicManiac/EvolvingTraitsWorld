@@ -907,4 +907,94 @@ function ETW_CommonLogicChecks.InventoryTransferSystemShouldExecute(player)
 	end
 end
 
+---Returns true if the Artisan System should execute
+---@param player IsoPlayer|nil the player to check for
+---@return boolean boolean true if the Artisan System should execute, false otherwise
+function ETW_CommonLogicChecks.ArtisanShouldExecute(player)
+	if
+		SBvars.Artisan == true
+		and ((player and not player:hasTrait(CharacterTrait.ARTISAN)) or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER)
+		and SBvars.TraitsLockSystemCanGainPositive
+	then
+		return true
+	else
+		return false
+	end
+end
+
+---Returns true if the Mason System should execute
+---@param player IsoPlayer|nil the player to check for
+---@return boolean boolean true if the Mason System should execute, false otherwise
+function ETW_CommonLogicChecks.MasonShouldExecute(player)
+	if
+		SBvars.Mason == true
+		and ((player and not player:hasTrait(CharacterTrait.MASON)) or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER)
+		and SBvars.TraitsLockSystemCanGainPositive
+	then
+		return true
+	else
+		return false
+	end
+end
+
+---Returns true if the Crafty System should execute
+---@param player IsoPlayer|nil the player to check for
+---@return boolean boolean true if the Crafty System should execute, false otherwise
+function ETW_CommonLogicChecks.CraftyShouldExecute(player)
+	if
+		SBvars.Crafty == true
+		and ((player and not player:hasTrait(CharacterTrait.CRAFTY)) or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER)
+		and SBvars.TraitsLockSystemCanGainPositive
+	then
+		return true
+	else
+		return false
+	end
+end
+
+---Returns true if the Tinkerer System should execute
+---@param player IsoPlayer|nil the player to check for
+---@return boolean boolean true if the Tinkerer System should execute, false otherwise
+function ETW_CommonLogicChecks.TinkererShouldExecute(player)
+	if
+		SBvars.Tinkerer == true
+		and ((player and not player:hasTrait(CharacterTrait.TINKERER)) or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER)
+		and SBvars.TraitsLockSystemCanGainPositive
+	then
+		return true
+	else
+		return false
+	end
+end
+
+---Returns true if the Target Shooter System should execute
+---@param player IsoPlayer|nil the player to check for
+---@return boolean boolean true if the Target Shooter System should execute, false otherwise
+function ETW_CommonLogicChecks.TargetShooterShouldExecute(player)
+	if
+		SBvars.TargetShooter == true
+		and ((player and not player:hasTrait(CharacterTrait.TARGET_SHOOTER)) or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER)
+		and SBvars.TraitsLockSystemCanGainPositive
+	then
+		return true
+	else
+		return false
+	end
+end
+
+---Returns true if the Blacksmith2 System should execute
+---@param player IsoPlayer|nil the player to check for
+---@return boolean boolean true if the Blacksmith2 System should execute, false otherwise
+function ETW_CommonLogicChecks.Blacksmith2ShouldExecute(player)
+	if
+		SBvars.Blacksmith2 == true
+		and ((player and not player:hasTrait(CharacterTrait.BLACKSMITH2)) or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER)
+		and SBvars.TraitsLockSystemCanGainPositive
+	then
+		return true
+	else
+		return false
+	end
+end
+
 return ETW_CommonLogicChecks

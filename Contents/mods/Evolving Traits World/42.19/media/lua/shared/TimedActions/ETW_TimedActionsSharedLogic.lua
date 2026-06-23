@@ -131,33 +131,4 @@ function ETW_TimedActionsSharedLogic.checkInventoryTransferPerks(player, modData
 	end
 end
 
----Checks if player qualifies for gaining axeman perk
----@param player IsoPlayer player
----@param modData EvolvingTraitsWorldModData ETW modData table
-function ETW_TimedActionsSharedLogic.checkAxemanPerk(player, modData)
-	if modData.TreesChopped >= SBvars.AxemanTrees then
-		if
-			SBvars.DelayedTraitsSystem
-			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.AXEMAN)
-		then
-			ETW_CommonFunctions.addTraitToDelayTable({
-				modData = modData,
-				trait = CharacterTrait.AXEMAN,
-				player = player,
-				positiveTrait = true,
-				gainingTrait = true,
-			})
-		elseif
-			not SBvars.DelayedTraitsSystem
-			or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.AXEMAN))
-		then
-			ETW_CommonFunctions.addTraitToPlayer({
-				player = player,
-				trait = CharacterTrait.AXEMAN,
-				positiveTrait = true,
-			})
-		end
-	end
-end
-
 return ETW_TimedActionsSharedLogic

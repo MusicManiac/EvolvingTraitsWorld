@@ -1,6 +1,14 @@
 [url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
 
-v.12.0.2
+v.12.1.0
 
+General:
+	- Changed Keen Cook requirements to reflect base game changes, now requires Cooking + Butchering levels.
+	- Changed Handy requirements to reflect base game changes, now requires Carpentry + Carving + Maintenance + Masonry levels.
+	- Changed Hunter requirements to reflect base game changes, now requires Sneaking + Aiming + Butchering + ShortBlade + Tracking levels.
+	- Bushcrafter sandbox settings update (previously was known as Wilderness Knowledge).
+	- Made new traits added since release of b42 dynamic: Artisan, Mason, Crafty, Tinkerer, Target Shooter, Blacksmith Knowledge
 Fixes:
-	- Fixed Cat Eyes not recording progress in MP.
+	- Fixed Axeman not recording chopped trees in MP (Indie Stone changed stuff that broke it)
+	- Removed google sheets mentions in EN translations.
+	- Removed a print that I left in on accident in Cat Eyes function that was spamming console.
