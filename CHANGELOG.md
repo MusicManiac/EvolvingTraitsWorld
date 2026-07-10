@@ -1,3 +1,8 @@
+## v.12.1.1
+###### 07 Jul 2026
+- Fixes:
+	- Fixed players having to rejoin the server to gain traits (Indie Stone moved some things between server and client)
+
 ## v.12.1.0
 ###### 23 Jun 2026
 

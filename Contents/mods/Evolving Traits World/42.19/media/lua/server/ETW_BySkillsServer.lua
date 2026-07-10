@@ -960,6 +960,8 @@ local function initializeEventsETW(playerIndex, player)
 	if SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLoseNegative then
 		if gameMode == CommonFunctions.GameMode.SP then
 			ETW_BySkills.traitsGainsBySkill(player, "characterInitialization")
+		end
+		if gameMode ~= CommonFunctions.GameMode.MP_CLIENT then
 			Events.LevelPerk.Remove(ETW_BySkills.traitsGainsBySkill)
 			Events.LevelPerk.Add(ETW_BySkills.traitsGainsBySkill)
 		end
