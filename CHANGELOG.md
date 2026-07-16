@@ -5,6 +5,7 @@ General:
 	- Added Reader System: Gain/Lose Slow/Fast Reader based on amount of pages read. Read sandbox settings for more details.
 	- Reading The Herbalist journal now grants configurable progress towards the Herbalist trait once per character. Read sandbox settings for more details.
 	- Herbalist is now permanent once gained and no longer decays.
+	- Killing and butchering animals now fills the Bloodlust meter. The amount relative to a point-blank zombie kill is configurable in the sandbox settings.
 
 ## v.12.1.2
 ###### 10 Jul 2026
