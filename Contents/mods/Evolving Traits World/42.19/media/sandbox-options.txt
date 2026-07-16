@@ -653,6 +653,15 @@ option EvolvingTraitsWorld.Bloodlust
 	page = ETWComplexPerks,
 	translation = ETW_Bloodlust,
 }
+option EvolvingTraitsWorld.BloodlustFromAnimalsMultiplier
+{
+	type = double,
+	min = 0,
+	max = 10,
+	default = 1.0,
+	page = ETWComplexPerks,
+	translation = ETW_BloodlustFromAnimalsMultiplier,
+}
 option EvolvingTraitsWorld.BloodlustMeterFillMultiplier
 {
 	type = double,

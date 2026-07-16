@@ -82,6 +82,7 @@
 --- @field Asthmatic boolean
 --- @field AsthmaticCounter integer
 --- @field Bloodlust boolean
+--- @field BloodlustFromAnimalsMultiplier number
 --- @field BloodlustMeterFillMultiplier number
 --- @field BloodlustMeterMaxCapMultiplier number
 --- @field BloodlustProgress integer
