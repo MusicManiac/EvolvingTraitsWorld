@@ -251,33 +251,6 @@ local function smoker()
 	end
 end
 
----Function responsible for managing daily Herbalist trait decay
-local function herbalist()
-	local playersList = ETW_CommonFunctions.playersList()
-	for i = 0, playersList:size() - 1 do
-		local player = playersList:get(i)
-		local modData = ETW_CommonFunctions.getETWModData(player)
-		if not modData then
-			logETW("ETW Logger | herbalist(): modData is nil, returning early")
-			return
-		end
-		local startedWithHerbalist = modData.StartingTraits[CharacterTrait.HERBALIST:toString()]
-		modData.HerbsPickedUp = math.max(
-			0,
-			modData.HerbsPickedUp
-				- ((SBvars.AffinitySystem and startedWithHerbalist) and 1 / SBvars.AffinitySystemLoseDivider or 1)
-		)
-		logETW("ETW Logger | herbalist(): modData.HerbsPickedUp: " .. modData.HerbsPickedUp)
-		if modData.HerbsPickedUp < SBvars.HerbalistHerbsPicked / 2 and player:hasTrait(CharacterTrait.HERBALIST) then
-			ETW_CommonFunctions.removeTraitFromPlayer({
-				player = player,
-				trait = CharacterTrait.HERBALIST,
-				positiveTrait = true,
-			})
-		end
-	end
-end
-
 ---Function responsible for setting up events
 ---@param playerIndex number
 ---@param player IsoPlayer
@@ -290,10 +263,6 @@ local function initializeEventsETW(playerIndex, player)
 	if ETW_CommonLogicChecks.SmokerShouldExecute(player) then
 		Events.EveryOneMinute.Add(smoker)
 	end
-	Events.EveryDays.Remove(herbalist)
-	if ETW_CommonLogicChecks.HerbalistShouldExecute(player) then
-		Events.EveryDays.Add(herbalist)
-	end
 	if gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
 		Events.OnTick.Remove(initializeEventsETW)
 	end
@@ -304,7 +273,6 @@ end
 local function clearEventsETW(character)
 	Events.EveryTenMinutes.Remove(sleepSystem)
 	Events.EveryOneMinute.Remove(smoker)
-	Events.EveryDays.Remove(herbalist)
 	logETW("ETW Logger | System: clearEventsETW in " .. FILENAME)
 end
 

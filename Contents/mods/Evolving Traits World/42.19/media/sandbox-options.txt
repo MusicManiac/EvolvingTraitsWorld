@@ -373,6 +373,22 @@ option EvolvingTraitsWorld.RainSystemCounterDecreaseMultiplier
 	page = ETWSystems,
 	translation = ETW_RainSystemCounterDecreaseMultiplier,
 }
+option EvolvingTraitsWorld.ReaderSystem
+{
+	type = boolean,
+	default = true,
+	page = ETWSystems,
+	translation = ETW_ReaderSystem,
+}
+option EvolvingTraitsWorld.ReaderSystemCounter
+{
+	type = integer,
+	min = 0,
+	max = 500000,
+	default = 10000,
+	page = ETWSystems,
+	translation = ETW_ReaderSystemCounter,
+}
 option EvolvingTraitsWorld.SleepSystem
 {
 	type = boolean,
@@ -721,14 +737,14 @@ option EvolvingTraitsWorld.HerbalistHerbsPicked
 	page = ETWComplexPerks,
 	translation = ETW_HerbalistHerbsPicked,
 }
-option EvolvingTraitsWorld.HerbalistHerbsDecay
+option EvolvingTraitsWorld.HerbalistJournalCounterIncrease
 {
-	type = double,
+	type = integer,
 	min = 0,
-	max = 500000,
-	default = 0.2,
+	max = 200,
+	default = 50,
 	page = ETWComplexPerks,
-	translation = ETW_HerbalistHerbsDecay,
+	translation = ETW_HerbalistJournalCounterIncrease,
 }
 option EvolvingTraitsWorld.Outdoorsman
 {

@@ -971,6 +971,7 @@ local function initializeEventsETW(playerIndex, player)
 		end
 	end
 	if SBvars.DelayedTraitsSystem then
+		Events.EveryHours.Remove(progressDelayedTraits)
 		Events.EveryHours.Add(progressDelayedTraits)
 	end
 	if gameMode == CommonFunctions.GameMode.MP_SERVER then
@@ -993,6 +994,7 @@ if gameMode == CommonFunctions.GameMode.SP then
 	Events.OnPlayerDeath.Remove(clearEventsETW)
 	Events.OnPlayerDeath.Add(clearEventsETW)
 elseif gameMode == CommonFunctions.GameMode.MP_SERVER then
+	Events.OnTick.Remove(initializeEventsETW)
 	Events.OnTick.Add(initializeEventsETW)
 end
 

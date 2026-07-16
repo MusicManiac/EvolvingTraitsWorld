@@ -13,6 +13,17 @@ local ETWTraitsRegistry = ETW_Registry.traits
 ---@type fun(...: string)
 local logETW = ETW_CommonFunctions.log
 
+local FILENAME = "ETW_ActionsOverrideServer.lua"
+
+if
+	not ETW_CommonFunctions.gameModeSafeguard(
+		FILENAME,
+		{ ETW_CommonFunctions.GameMode.SP, ETW_CommonFunctions.GameMode.MP_SERVER }
+	)
+then
+	return
+end
+
 local random_instance = newrandom()
 
 local original_ISFixVehiclePartAction_complete = ISFixVehiclePartAction.complete
@@ -81,7 +92,10 @@ function ISChopTreeAction:complete()
 			})
 		elseif
 			not SBvars.DelayedTraitsSystem
-			or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(self.character, CharacterTrait.AXEMAN))
+			or (
+				SBvars.DelayedTraitsSystem
+				and ETW_CommonFunctions.checkDelayedTraits(self.character, CharacterTrait.AXEMAN)
+			)
 		then
 			ETW_CommonFunctions.addTraitToPlayer({
 				player = self.character,
@@ -169,7 +183,6 @@ Events.onAddForageDefs.Add(generateHerbsList)
 
 local original_forageSystem_addOrDropItems = forageSystem.addOrDropItems
 ---Decorating forageSystem.addOrDropItems() here to insert ETW logic catching player picking up herbs while foraging
----@diagnostic disable-next-line: duplicate-set-field
 function forageSystem.addOrDropItems(_character, _inventory, _items)
 	if ETW_CommonLogicChecks.HerbalistShouldExecute(_character) and SBvars.TraitsLockSystemCanGainPositive then
 		for item in iterList(_items) do
