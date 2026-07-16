@@ -1,6 +1,8 @@
 [url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
 
-v.12.1.1
+v.12.2.0
 
-Fixes:
-	- Fixed players having to rejoin the server to gain traits (Indie Stone moved some things between server and client)
+General:
+	- Added Reader System: Gain/Lose Slow/Fast Reader based on amount of pages read. Read sandbox settings for more details.
+	- Reading The Herbalist journal now grants configurable progress towards the Herbalist trait once per character. Read sandbox settings for more details.
+	- Herbalist is now permanent once gained and no longer decays.

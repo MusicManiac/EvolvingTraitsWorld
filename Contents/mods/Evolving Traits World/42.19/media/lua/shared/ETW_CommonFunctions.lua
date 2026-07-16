@@ -343,6 +343,16 @@ end
 function ETW_CommonFunctions.addTraitToPlayer(context)
 	local player = context.player
 	local trait = context.trait
+	if player:hasTrait(trait) then
+		ETW_CommonFunctions.log(
+			"ETW Logger | addTraitToPlayer() : player "
+				.. player:getUsername()
+				.. " already has trait "
+				.. trait:toString()
+				.. ", skipping"
+		)
+		return
+	end
 	ETW_CommonFunctions.log(
 		"ETW Logger | addTraitToPlayer() : adding trait " .. trait:toString() .. " to player " .. player:getUsername()
 	)
@@ -397,6 +407,16 @@ function ETW_CommonFunctions.addTraitToDelayTable(context)
 	local positiveTrait = context.positiveTrait
 	local gainingTrait = context.gainingTrait
 	local traitRegistryId = trait:toString()
+	local traitIsQueued = indexOfDelayedTrait(modData.DelayedTraits, traitRegistryId) ~= -1
+	local playerHasTrait = player:hasTrait(trait)
+	if traitIsQueued or (gainingTrait and playerHasTrait) or (not gainingTrait and not playerHasTrait) then
+		ETW_CommonFunctions.log(
+			"ETW Logger | Delayed Traits System: skipping "
+				.. traitRegistryId
+				.. " because it is already queued or the requested change no longer applies"
+		)
+		return
+	end
 	ETW_CommonFunctions.log(
 		"ETW Logger | Delayed Traits System: modData.DelayedStartingTraitsFilled =  "
 			.. tostring(modData.DelayedStartingTraitsFilled)
@@ -414,9 +434,7 @@ function ETW_CommonFunctions.addTraitToDelayTable(context)
 		})
 		ETW_CommonFunctions.traitSound(player)
 	elseif
-		indexOfDelayedTrait(modData.DelayedTraits, traitRegistryId) == -1
-		and not player:hasTrait(trait)
-		and positiveTrait
+		positiveTrait
 	then
 		ETW_CommonFunctions.log(
 			"ETW Logger | Delayed Traits System: player qualifies for positive trait "
@@ -427,9 +445,7 @@ function ETW_CommonFunctions.addTraitToDelayTable(context)
 		ETW_CommonFunctions.displayDelayedTraitNotification(player, gainingTrait, traitRegistryId, true, "GREEN")
 		ETW_CommonFunctions.traitSound(player)
 	elseif
-		indexOfDelayedTrait(modData.DelayedTraits, traitRegistryId) == -1
-		and player:hasTrait(trait)
-		and not positiveTrait
+		not positiveTrait
 	then
 		ETW_CommonFunctions.log(
 			"ETW Logger | Delayed Traits System: player qualifies for removing negative trait "

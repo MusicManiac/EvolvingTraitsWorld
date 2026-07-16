@@ -1,5 +1,20 @@
+## v.12.2.0
+###### xx Jul 2026
+
+General:
+	- Added Reader System: Gain/Lose Slow/Fast Reader based on amount of pages read. Read sandbox settings for more details.
+	- Reading The Herbalist journal now grants configurable progress towards the Herbalist trait once per character. Read sandbox settings for more details.
+	- Herbalist is now permanent once gained and no longer decays.
+
+## v.12.1.2
+###### 10 Jul 2026
+
+- Fixes:
+	- Possible fix on players getting same trait multiple times.
+
 ## v.12.1.1
 ###### 07 Jul 2026
+
 - Fixes:
 	- Fixed players having to rejoin the server to gain traits (Indie Stone moved some things between server and client)
 

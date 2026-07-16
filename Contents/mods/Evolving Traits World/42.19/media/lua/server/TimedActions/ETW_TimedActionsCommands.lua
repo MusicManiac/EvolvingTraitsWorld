@@ -1,17 +1,15 @@
 local ETW_CombinedTraitChecks = require("ETW_CombinedTraitChecks")
 local ETW_CommonLogicChecks = require("ETW_CommonLogicChecks")
 local ETW_TimedActionsSharedLogic = require("TimedActions/ETW_TimedActionsSharedLogic")
-
----@type ETW_CommonFunctions
 local ETW_CommonFunctions = require("ETW_CommonFunctions")
-
-local gameMode = ETW_CommonFunctions.gameMode()
-local Commands = {}
 
 local FILENAME = "ETW_TimedActionsCommands.lua"
 if not ETW_CommonFunctions.gameModeSafeguard(FILENAME, { ETW_CommonFunctions.GameMode.MP_SERVER }) then
 	return
 end
+
+local gameMode = ETW_CommonFunctions.gameMode()
+local Commands = {}
 
 ---@type fun(...: string)
 local logETW = ETW_CommonFunctions.log

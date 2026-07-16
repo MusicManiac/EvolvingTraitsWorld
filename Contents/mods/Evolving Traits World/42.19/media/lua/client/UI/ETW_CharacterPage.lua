@@ -389,6 +389,9 @@ function ISETWUI:createChildren()
 			if ETW_CommonLogicChecks.LearnerSystemShouldExecute(player) then
 				appendLeftBarLabel(labelTexts, getText("Sandbox_ETW_LearnerSystem"))
 			end
+			if ETW_CommonLogicChecks.ReaderSystemShouldExecute(player) then
+				appendLeftBarLabel(labelTexts, getText("Sandbox_ETW_ReaderSystem"))
+			end
 			if ETW_CommonLogicChecks.InventoryTransferSystemShouldExecute(player) then
 				local weightTransferred = (
 					modData
@@ -1038,6 +1041,64 @@ function ISETWUI:createChildren()
 				self.barLearnerSystem:setHighlightRadius(highlightRadius)
 				self.barLearnerSystem:setDoKnob(false)
 				self:addChild(self.barLearnerSystem)
+
+				y = y + FONT_HGT_SMALL
+			end
+
+			if ETW_CommonLogicChecks.ReaderSystemShouldExecute(player) then
+				str = "- " .. getCachedTraitUIName(CharacterTrait.SLOW_READER)
+				self.labelSlowReaderLose = ISLabel:new(
+					barMidPosition - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelSlowReaderLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self:addChild(self.labelSlowReaderLose)
+
+				self.labelFastReaderGain = ISLabel:new(
+					barEndPosition,
+					y,
+					FONT_HGT_SMALL,
+					"+ " .. getCachedTraitUIName(CharacterTrait.FAST_READER),
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					false
+				)
+				self.labelFastReaderGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self:addChild(self.labelFastReaderGain)
+
+				y = y + FONT_HGT_SMALL
+
+				self.labelReaderSystemBarName = ISLabel:new(
+					barStartPosition - lineStartPosition,
+					y,
+					FONT_HGT_SMALL,
+					getText("Sandbox_ETW_ReaderSystem"),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					false
+				)
+				self.labelReaderSystemBarName:setTooltip(getText("Sandbox_ETW_ReaderSystemCounter_tooltip"))
+				self:addChild(self.labelReaderSystemBarName)
+
+				self.barReaderSystem = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
+				self.barReaderSystem:setGradientTexture(redYellowGreenGradient)
+				self.barReaderSystem:setHighlightRadius(highlightRadius)
+				self.barReaderSystem:setDoKnob(false)
+				self:addChild(self.barReaderSystem)
 
 				y = y + FONT_HGT_SMALL
 			end
@@ -3407,6 +3468,11 @@ function ISETWUI:render()
 		self.barLearnerSystem,
 		percentile(0, SBvars.LearnerSystemSkill, levels),
 		getText("UI_ETW_CurrentValue") .. levels
+	)
+	updateBar(
+		self.barReaderSystem,
+		percentile(0, SBvars.ReaderSystemCounter, modData.PagesReadCounter),
+		getText("UI_ETW_CurrentValue") .. modData.PagesReadCounter
 	)
 	updateBar(
 		self.barSleepSystem,

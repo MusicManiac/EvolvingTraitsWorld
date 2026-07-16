@@ -549,6 +549,21 @@ function ETW_CommonLogicChecks.LearnerSystemShouldExecute(player)
 	end
 end
 
+---Returns true if the Reader System should execute
+---@param player IsoPlayer|nil the player to check for
+---@return boolean boolean true if the Reader System should execute, false otherwise
+function ETW_CommonLogicChecks.ReaderSystemShouldExecute(player)
+	if
+		SBvars.ReaderSystem == true
+		and ((player and not player:hasTrait(CharacterTrait.FAST_READER)) or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER)
+		and (SBvars.TraitsLockSystemCanLoseNegative or SBvars.TraitsLockSystemCanGainPositive)
+	then
+		return true
+	else
+		return false
+	end
+end
+
 ---Returns true if the Furniture Assembler System should execute
 ---@param player IsoPlayer|nil the player to check for
 ---@return boolean boolean true if the Furniture Assembler System should execute, false otherwise
@@ -779,7 +794,9 @@ end
 ---@return boolean boolean true if the Herbalist System should execute, false otherwise
 function ETW_CommonLogicChecks.HerbalistShouldExecute(player)
 	if
-		SBvars.Herbalist == true and (SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLosePositive)
+		SBvars.Herbalist == true
+		and ((player and not player:hasTrait(CharacterTrait.HERBALIST)) or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER)
+		and SBvars.TraitsLockSystemCanGainPositive
 	then
 		return true
 	else
