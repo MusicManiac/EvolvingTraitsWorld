@@ -1,5 +1,5 @@
 ## v.12.2.0
-###### xx Jul 2026
+###### 18 Jul 2026
 
 General:
 	- New thumbnail wololo!
@@ -7,6 +7,7 @@ General:
 	- Reading The Herbalist journal now grants configurable progress towards the Herbalist trait once per character. Read sandbox settings for more details.
 	- Herbalist is now permanent once gained and no longer decays.
 	- Killing and butchering animals now fills the Bloodlust meter. The amount relative to a point-blank zombie kill is configurable in the sandbox settings.
+  - Added support for [Mark Dynamic Traits Framework (MDTF)](https://steamcommunity.com/sharedfiles/filedetails/?id=3766701843)
 
 ## v.12.1.2
 ###### 10 Jul 2026

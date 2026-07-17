@@ -6,6 +6,11 @@ require("ETW_ModOptions")
 local ETW_CommonFunctions = require("ETW_CommonFunctions")
 local ETW_CommonLogicChecks = require("ETW_CommonLogicChecks")
 
+local MarkDynamicTraitsFramework
+if getActivatedMods():contains("MarkDynamicTraitsFramework") then
+	MarkDynamicTraitsFramework = require("MDTF_Main")
+end
+
 ---@type EvolvingTraitsWorldRegistries
 local ETW_Registry = require("ETW_Registry")
 ---@type EvolvingTraitsWorldTraitsRegistries
@@ -39,7 +44,11 @@ local function getCachedTraitUIName(traitOrRegistryId)
 	end
 
 	local traitDefinition = CharacterTraitDefinition.getCharacterTraitDefinition(trait)
-	local uiName = traitDefinition and traitDefinition:getUIName() or traitRegistryId
+	local uiName = traitRegistryId
+	if traitDefinition then
+		uiName = (MarkDynamicTraitsFramework and MarkDynamicTraitsFramework.getUndecoratedUIName(traitDefinition))
+			or traitDefinition:getUIName()
+	end
 	traitUINameCache[traitRegistryId] = uiName
 	return uiName
 end
