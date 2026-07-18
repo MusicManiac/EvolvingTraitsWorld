@@ -3121,26 +3121,6 @@ function ISETWUI:createChildren()
 			end
 		end
 
-		if (not modOptions and true) or modOptions:getOption("HideReadMeUI"):getValue() then
-			str = getText("UI_ETW_Options_ReadMe")
-			self.labelReadMe = ISLabel:new(
-				WINDOW_WIDTH / 2 - strLen(textManager, str) / 2,
-				y,
-				FONT_HGT_MEDIUM,
-				str,
-				self.TextColor.r,
-				self.TextColor.g,
-				self.TextColor.b,
-				self.TextColor.a,
-				UIFont.Small,
-				true
-			)
-			self.labelReadMe:setTooltip(getText("UI_ETW_Options_ReadMe_tooltip"))
-			self:addChild(self.labelReadMe)
-
-			y = y + FONT_HGT_MEDIUM
-		end
-
 		routeTo(self.subViewVitals, vitalsLayoutCursor)
 		buildVitalsSection()
 
