@@ -1535,7 +1535,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelHoarderProgress:setTooltip(getText("Sandbox_ETW_HoarderSkill"))
+				self.labelHoarderProgress:setTooltip(getText("Sandbox_ETW_HoarderCounter_tooltip"))
 				self:addChild(self.labelHoarderProgress)
 			end
 
@@ -3682,7 +3682,11 @@ function ISETWUI:render()
 	)
 	updateLabel(
 		self.labelHoarderProgress,
-		getCachedTraitUIName(ETWTraitsRegistry.HOARDER) .. ": " .. strength .. "/" .. SBvars.HoarderSkill
+		getCachedTraitUIName(ETWTraitsRegistry.HOARDER)
+			.. ": "
+			.. formatDecimal(modData.HoarderCounter)
+			.. "/"
+			.. SBvars.HoarderCounter
 	)
 	updateLabel(
 		self.labelGymRatProgress,

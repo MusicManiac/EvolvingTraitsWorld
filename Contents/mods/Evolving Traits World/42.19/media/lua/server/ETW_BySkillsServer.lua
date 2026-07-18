@@ -1,6 +1,5 @@
 local ETW_BySkills = {}
 
-local UCWF = require("UnifiedCarryWeightFramework")
 local CombinedTraitChecks = require("ETW_CombinedTraitChecks")
 local CommonFunctions = require("ETW_CommonFunctions")
 local ETW_CommonLogicChecks = require("ETW_CommonLogicChecks")
@@ -185,19 +184,6 @@ local skillTraitRules = {
 			elseif not ctx.player:hasTrait(CharacterTrait.HARD_OF_HEARING) and levels >= SBvars.HearingSystemSkill then
 				applyTraitChange(ctx, CharacterTrait.KEEN_HEARING, true, true)
 			end
-		end,
-	},
-	{
-		triggers = makeTriggerSet("characterInitialization", Perks.Strength, ETWTraitsRegistry.HOARDER),
-		shouldExecute = ETW_CommonLogicChecks.HoarderShouldExecute,
-		condition = function(ctx)
-			return ctx.strength >= SBvars.HoarderSkill
-		end,
-		trait = ETWTraitsRegistry.HOARDER,
-		positiveTrait = true,
-		gainingTrait = true,
-		onApply = function(ctx)
-			UnifiedCarryWeightFramework.recomputeAll(ctx.player)
 		end,
 	},
 	{

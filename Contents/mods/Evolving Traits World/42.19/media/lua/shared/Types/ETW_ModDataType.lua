@@ -10,6 +10,7 @@
 --- @field UniqueClothingRipped string[]
 --- @field ImmunitySystemCounter number
 --- @field PagesReadCounter number
+--- @field HoarderCounter number
 --- @field MentalStateInLast60Min number[]
 --- @field MentalStateInLast24Hours number[]
 --- @field MentalStateInLast31Days number[]

@@ -1,3 +1,12 @@
+## v.12.3.0
+###### 18 Jul 2026
+
+General:
+  - Added "FAQ" subpage in UI.
+  - Reworked Hoarder acquisition. Hoarder is now gained by carrying a full inventory over time instead of reaching a required Strength level, check sandbox for more details.
+Fix:
+  - Possible fix for existing characters having temporary broken mod data on mod update.
+
 ## v.12.2.2
 ###### 18 Jul 2026
 
