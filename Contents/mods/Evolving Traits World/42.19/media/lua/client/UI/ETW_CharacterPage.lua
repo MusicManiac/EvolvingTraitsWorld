@@ -495,6 +495,14 @@ function ISETWUI:createChildren()
 		local barThreeFourthPosition = barMidPosition + barLength / 4
 		local barOneThirdPosition = barStartPosition + barLength / 3
 		local barTwoThirdPosition = barOneThirdPosition + barLength / 3
+		local vitalsLabelWidth = math.max(
+			strLen(textManager, getText("UI_ETW_Vitals_Food")),
+			strLen(textManager, getText("UI_ETW_Vitals_Thirst")),
+			strLen(textManager, getText("UI_ETW_Vitals_Mental"))
+		)
+		-- Leave one extra gutter between the row labels and the group border.
+		local vitalsBarStartPosition = lineStartPosition + vitalsLabelWidth + (lineStartPosition * 2)
+		local vitalsBarLength = barEndPosition - vitalsBarStartPosition
 
 		local killCountModData
 		local axeKills = 0
@@ -516,6 +524,11 @@ function ISETWUI:createChildren()
 		end
 
 		local function buildVitalsSection()
+			-- Vitals only needs room for its three short row labels. Keep the wider
+			-- shared bar geometry for trait subtabs, whose labels can be much longer.
+			local barStartPosition = vitalsBarStartPosition
+			local barLength = vitalsBarLength
+
 			str = getText("UI_ETW_Vitals_Last31Days")
 			self.labelVitalsLast31Days = ISLabel:new(
 				WINDOW_WIDTH / 2 - strLen(textManager, str) / 2,
@@ -3282,6 +3295,7 @@ function ISETWUI:render()
 	local player = getPlayer()
 	local modData = ETW_CommonFunctions.getETWModData(player)
 	local isPermanentTraitsTabActive = not self.subPanel or self.subPanel:getActiveView() == self.subViewPermanentTraits
+	local isVitalsTabActive = self.subPanel and self.subPanel:getActiveView() == self.subViewVitals
 	local permanentTraitsSubviewOffsetY = (self.subPanel and self.subPanel.tabHeight) or 0
 	local delayedTraitLines
 
@@ -3363,8 +3377,8 @@ function ISETWUI:render()
 		end
 	end
 
-	-- Only draw directly onto self when the Permanent Traits subtab is visible.
-	-- The Non-permanent tab (or any future subtab) must not show these renders.
+	-- Convert child-widget coordinates into this panel's coordinates for borders
+	-- and other decorations drawn directly by the parent panel.
 	local function getWidgetTop(widget)
 		if not widget then
 			return nil
@@ -3593,6 +3607,35 @@ function ISETWUI:render()
 	updateLabel(self.labelVitalsFood24Hours, formatHourlySamples(modData.FoodStateInLast24Hours))
 	updateLabel(self.labelVitalsThirst24Hours, formatHourlySamples(modData.ThirstStateInLast24Hours))
 	updateLabel(self.labelVitalsMental24Hours, formatHourlySamples(modData.MentalStateInLast24Hours))
+
+	local function drawVitalsGroupBorder(topWidget, bottomWidget)
+		if not isVitalsTabActive or not topWidget or not bottomWidget then
+			return
+		end
+
+		local topY = getWidgetTop(topWidget) - (FONT_HGT_SMALL / 4)
+		local bottomY = getWidgetBottom(bottomWidget) + (FONT_HGT_SMALL / 4)
+		self:drawRectBorder(
+			lineStartPosition,
+			topY,
+			self:getWidth() - lineStartPosition * 1.5,
+			bottomY - topY,
+			self.DimmedTextColor.a,
+			self.DimmedTextColor.r,
+			self.DimmedTextColor.g,
+			self.DimmedTextColor.b
+		)
+	end
+
+	drawVitalsGroupBorder(
+		self.labelVitalsFoodGainNegative or self.labelVitalsFoodLosePositive or self.labelVitalsFood,
+		self.labelVitalsFood24Hours
+	)
+	drawVitalsGroupBorder(
+		self.labelVitalsThirstGainNegative or self.labelVitalsThirstLosePositive or self.labelVitalsThirst,
+		self.labelVitalsThirst24Hours
+	)
+	drawVitalsGroupBorder(self.labelVitalsMental, self.labelVitalsMental24Hours)
 
 	if isPermanentTraitsTabActive and self.barBravery ~= nil then
 		local topY = getWidgetTop(self.labelCowardlyLose)
