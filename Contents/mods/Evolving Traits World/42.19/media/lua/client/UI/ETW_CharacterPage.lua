@@ -1,5 +1,6 @@
 ---@diagnostic disable: param-type-mismatch, undefined-global
 require("ISUI/ISPanelJoypad")
+require("ISUI/ISRichTextPanel")
 require("UI/CharacterInfoAddTab")
 require("ETW_ModOptions")
 
@@ -161,6 +162,8 @@ local FONT_HGT_MEDIUM = getTextManager():getFontHeight(UIFont.Medium)
 local WINDOW_WIDTH = 700
 local WINDOW_HEIGHT = 200
 local WINDOW_HEIGHT_AFTER_CHILDREN = 700
+local HELP_WINDOW_MIN_HEIGHT = 120
+local HELP_WINDOW_MAX_HEIGHT = 500
 
 local lineStartPosition = 5
 
@@ -180,6 +183,14 @@ local function newLayoutCursor()
 		y = 12,
 		nonBarsEntryNumber = 0,
 	}
+end
+
+---Returns a bounded Help view height based on the rich text's paginated content.
+---@param helpText ISRichTextPanel
+---@return number
+local function getHelpWindowHeight(helpText)
+	local contentHeight = helpText:getScrollHeight() + 20
+	return math.max(HELP_WINDOW_MIN_HEIGHT, math.min(HELP_WINDOW_MAX_HEIGHT, contentHeight))
 end
 
 ---@type {x:number, y:number, nonBarsEntryNumber:number}|nil
@@ -308,6 +319,23 @@ function ISETWUI:createChildren()
 	self.subViewNonPermanentTraits = ISPanel:new(0, 0, self.width, self.height - TAB_H)
 	self.subViewNonPermanentTraits:initialise()
 	self.subViewNonPermanentTraits:noBackground()
+
+	-- Sub-view: Help
+	self.subViewHelp = ISPanel:new(0, 0, self.width, self.height - TAB_H)
+	self.subViewHelp:initialise()
+	self.subViewHelp:noBackground()
+
+	self.helpText = ISRichTextPanel:new(10, 10, self.width - 20, HELP_WINDOW_MAX_HEIGHT - 20)
+	self.helpText:initialise()
+	self.helpText.background = false
+	self.helpText.autosetheight = false
+	self.helpText.clip = true
+	self.helpText.marginRight = self.helpText.marginLeft
+	self.helpText:addScrollBars()
+	self.helpText:setText(getText("UI_ETW_Help_FAQ"))
+	self.helpText:paginate()
+	self.subViewHelp:addChild(self.helpText)
+	self.helpWindowHeight = getHelpWindowHeight(self.helpText)
 
 	local vitalsLayoutCursor = newLayoutCursor()
 	local permanentTraitsLayoutCursor = newLayoutCursor()
@@ -3152,6 +3180,7 @@ function ISETWUI:createChildren()
 	self.subPanel:addView(getText("UI_ETW_SubTab_Vitals"), self.subViewVitals)
 	self.subPanel:addView(getText("UI_ETW_SubTab_Progress"), self.subViewPermanentTraits)
 	self.subPanel:addView(getText("UI_ETW_SubTab_NonPermanent"), self.subViewNonPermanentTraits)
+	self.subPanel:addView(getText("UI_ETW_SubTab_Help"), self.subViewHelp)
 
 	-- Attach the subtab panel to self (this is the real addChild now)
 	ISETWUI.addChild(self, self.subPanel)
@@ -3176,6 +3205,11 @@ function ISETWUI:rebuildChildren()
 			hideChildTooltip(child)
 		end
 	end
+	if self.subViewHelp and self.subViewHelp.children then
+		for _, child in pairs(self.subViewHelp.children) do
+			hideChildTooltip(child)
+		end
+	end
 	-- Also hide tooltips on any direct children (safety)
 	if self.children then
 		for _, child in pairs(self.children) do
@@ -3188,6 +3222,8 @@ function ISETWUI:rebuildChildren()
 	self.subViewPermanentTraits = nil
 	self.subViewNonPermanentTraits = nil
 	self.subViewVitals = nil
+	self.subViewHelp = nil
+	self.helpText = nil
 	self:clearChildren()
 
 	local widgetFields = {}
@@ -3284,6 +3320,8 @@ function ISETWUI:render()
 		activeWindowHeight = self.nonPermanentTraitsWindowHeight or activeWindowHeight
 	elseif self.subPanel and self.subPanel:getActiveView() == self.subViewVitals then
 		activeWindowHeight = self.vitalsWindowHeight or activeWindowHeight
+	elseif self.subPanel and self.subPanel:getActiveView() == self.subViewHelp then
+		activeWindowHeight = self.helpWindowHeight or activeWindowHeight
 	end
 	if delayedTraitLines and #delayedTraitLines > 1 then
 		activeWindowHeight = activeWindowHeight + ((#delayedTraitLines - 1) * FONT_HGT_SMALL)
@@ -3309,6 +3347,19 @@ function ISETWUI:render()
 		if self.subViewVitals then
 			self.subViewVitals:setWidth(WINDOW_WIDTH)
 			self.subViewVitals:setHeight(WINDOW_HEIGHT - TAB_H)
+		end
+		if self.subViewHelp then
+			self.subViewHelp:setWidth(WINDOW_WIDTH)
+			self.subViewHelp:setHeight(WINDOW_HEIGHT - TAB_H)
+		end
+		if self.helpText then
+			local helpTextWidth = WINDOW_WIDTH - 20
+			if self.helpText:getWidth() ~= helpTextWidth then
+				self.helpText:setWidth(helpTextWidth)
+				self.helpText:paginate()
+				self.helpWindowHeight = getHelpWindowHeight(self.helpText)
+			end
+			self.helpText:setHeight(WINDOW_HEIGHT - TAB_H - 20)
 		end
 	end
 

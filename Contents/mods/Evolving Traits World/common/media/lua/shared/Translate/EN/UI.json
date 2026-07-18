@@ -16,6 +16,8 @@
     "UI_ETW_SubTab_NonPermanent":  "Non-permanent Traits",
     "UI_ETW_SubTab_Progress":  "Permanent Traits",
     "UI_ETW_SubTab_Vitals":  "Vitals",
+    "UI_ETW_SubTab_Help":  "Help",
+    "UI_ETW_Help_FAQ":  "<H1> FAQ <LINE> <LINE> <H2> Q: How do I stop/change the sound notifications? How do I resize window? <LINE> <TEXT> A: Esc -> Options -> Mod Options. There are also some other options sprinkled in there <LINE> <LINE> <H2> Q: How do I get trait XYZ? <LINE> <TEXT> A: Hover your mouse over UI elements. There are a lot of tooltips which explain stuff. If it's still not understandable, check sandbox tooltips.",
     "UI_ETW_Vitals_Food":  "Food",
     "UI_ETW_Vitals_Last31Days":  "Average vitals in last 31 days",
     "UI_ETW_Vitals_LatestHourlyAverages":  "Latest hourly averages",
