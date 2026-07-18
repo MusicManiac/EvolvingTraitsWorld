@@ -484,7 +484,9 @@ local function braverySystemETW(zombie)
 							positiveTrait = true,
 						})
 						if trait == CharacterTrait.DESENSITIZED then
-							Events.OnZombieDead.Remove(braverySystemETW)
+							if gameMode == ETW_CommonFunctions.GameMode.SP then
+								Events.OnZombieDead.Remove(braverySystemETW)
+							end
 							if
 								SBvars.BraverySystemRemovesOtherFearPerks == true
 								and SBvars.TraitsLockSystemCanLoseNegative
