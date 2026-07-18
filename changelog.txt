@@ -1,6 +1,8 @@
 [url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
 
-v.12.2.2
+v.12.3.0
 
+General:
+	- Added "FAQ" subpage in UI.
 Fix:
 	- Possible fix for existing characters having temporary broken mod data on mod update.
