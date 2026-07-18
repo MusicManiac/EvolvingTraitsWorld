@@ -1,3 +1,9 @@
+## v.12.2.2
+###### 18 Jul 2026
+
+Fix:
+	- Possible fix for existing characters having temporary broken mod data on mod update.
+
 ## v.12.2.1
 ###### 18 Jul 2026
 
