@@ -1332,7 +1332,7 @@ function ISETWUI:createChildren()
 			if ETW_CommonLogicChecks.BraverySystemShouldExecute(player) then
 				str = "- " .. getCachedTraitUIName(CharacterTrait.COWARDLY)
 				self.labelCowardlyLose = ISLabel:new(
-					barStartPosition + (barLength / 6) - strLen(textManager, str) / 2,
+					barStartPosition + barLength * 0.1 - strLen(textManager, str) / 2,
 					y,
 					FONT_HGT_SMALL,
 					str,
@@ -1348,7 +1348,7 @@ function ISETWUI:createChildren()
 
 				str = "- " .. getCachedTraitUIName(CharacterTrait.PACIFIST)
 				self.labelPacifistLose = ISLabel:new(
-					barStartPosition + (barLength / 6) * 3 - strLen(textManager, str) / 2,
+					barStartPosition + barLength * 0.3 - strLen(textManager, str) / 2,
 					y,
 					FONT_HGT_SMALL,
 					str,
@@ -1364,7 +1364,7 @@ function ISETWUI:createChildren()
 
 				str = "+ " .. getCachedTraitUIName(CharacterTrait.BRAVE)
 				self.labelBraveryGain = ISLabel:new(
-					barStartPosition + (barLength / 6) * 5 - strLen(textManager, str) / 2,
+					barStartPosition + barLength * 0.6 - strLen(textManager, str) / 2,
 					y,
 					FONT_HGT_SMALL,
 					str,
@@ -1406,7 +1406,7 @@ function ISETWUI:createChildren()
 
 				str = "- " .. getCachedTraitUIName(CharacterTrait.HEMOPHOBIC)
 				self.labelHemophobicLose = ISLabel:new(
-					barStartPosition + (barLength / 6) * 2 - strLen(textManager, str) / 2,
+					barStartPosition + barLength * 0.2 - strLen(textManager, str) / 2,
 					y,
 					FONT_HGT_SMALL,
 					str,
@@ -1422,7 +1422,7 @@ function ISETWUI:createChildren()
 
 				str = "+ " .. getCachedTraitUIName(CharacterTrait.ADRENALINE_JUNKIE)
 				self.labelAdrenalineJunkieGain = ISLabel:new(
-					barStartPosition + (barLength / 6) * 4 - strLen(textManager, str) / 2,
+					barStartPosition + barLength * 0.4 - strLen(textManager, str) / 2,
 					y,
 					FONT_HGT_SMALL,
 					str,
