@@ -1,10 +1,8 @@
 [url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
 
-v.12.2.0
+v.12.2.1
 
-General:
-	- Added Reader System: Gain/Lose Slow/Fast Reader based on amount of pages read. Read sandbox settings for more details.
-	- Reading The Herbalist journal now grants configurable progress towards the Herbalist trait once per character. Read sandbox settings for more details.
-	- Herbalist is now permanent once gained and no longer decays.
-	- Killing and butchering animals now fills the Bloodlust meter. The amount relative to a point-blank zombie kill is configurable in the sandbox settings.
-	- Added support for [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3766701843]Mark Dynamic Traits Framework (MDTF)[/url]
+Fix:
+	- Fixed incorrect Bravery bar UI labels positions.
+	- Fixed bravery system unhooking itself after someone earned Desensitized in MP.
+	- Fixed Bravery system not respecting sandbox settings for amount of kills.

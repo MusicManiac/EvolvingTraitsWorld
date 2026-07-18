@@ -1,3 +1,11 @@
+## v.12.2.1
+###### 18 Jul 2026
+
+Fix:
+	- Fixed incorrect Bravery bar UI labels positions.
+	- Fixed bravery system unhooking itself after someone earned Desensitized in MP.
+	- Fixed Bravery system not respecting sandbox settings for amount of kills.
+
 ## v.12.2.0
 ###### 18 Jul 2026
 
