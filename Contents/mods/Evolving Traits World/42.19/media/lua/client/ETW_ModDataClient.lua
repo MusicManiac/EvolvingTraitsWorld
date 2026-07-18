@@ -85,6 +85,8 @@ if gameMode == ETW_CommonFunctions.GameMode.SP then
 	Events.OnPlayerDeath.Remove(ETW_ModData.clearETWModData)
 	Events.OnPlayerDeath.Add(ETW_ModData.clearETWModData)
 elseif gameMode == ETW_CommonFunctions.GameMode.MP_CLIENT then
+	Events.OnCreatePlayer.Remove(ETW_ModData.createETWModData)
+	Events.OnCreatePlayer.Add(ETW_ModData.createETWModData)
 	Events.OnTick.Remove(delayedETWCommandAfterPlayerSpawned)
 	Events.OnTick.Add(delayedETWCommandAfterPlayerSpawned)
 	Events.OnPlayerDeath.Remove(requestServerClearETWModData)
