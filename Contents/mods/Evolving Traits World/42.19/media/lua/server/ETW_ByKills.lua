@@ -361,41 +361,41 @@ end
 local braverySystemTraitInfo = {
 	{
 		trait = CharacterTrait.COWARDLY,
-		threshold = SBvars.BraverySystemKills * 0.1,
+		thresholdMultiplier = 0.1,
 		remove = true,
 		translationString = getText("UI_trait_cowardly"),
 	},
 	{
 		trait = CharacterTrait.HEMOPHOBIC,
-		threshold = SBvars.BraverySystemKills * 0.2,
+		thresholdMultiplier = 0.2,
 		remove = true,
 		cantHaveTrait = CharacterTrait.COWARDLY,
 		translationString = getText("UI_trait_Hemophobic"),
 	},
 	{
 		trait = CharacterTrait.PACIFIST,
-		threshold = SBvars.BraverySystemKills * 0.3,
+		thresholdMultiplier = 0.3,
 		remove = true,
 		cantHaveTrait = CharacterTrait.HEMOPHOBIC,
 		translationString = getText("UI_trait_Pacifist"),
 	},
 	{
 		trait = CharacterTrait.ADRENALINE_JUNKIE,
-		threshold = SBvars.BraverySystemKills * 0.4,
+		thresholdMultiplier = 0.4,
 		add = true,
 		cantHaveTrait = CharacterTrait.PACIFIST,
 		translationString = getText("UI_trait_AdrenalineJunkie"),
 	},
 	{
 		trait = CharacterTrait.BRAVE,
-		threshold = SBvars.BraverySystemKills * 0.6,
+		thresholdMultiplier = 0.6,
 		add = true,
 		requiredTrait = CharacterTrait.ADRENALINE_JUNKIE,
 		translationString = getText("UI_trait_brave"),
 	},
 	{
 		trait = CharacterTrait.DESENSITIZED,
-		threshold = SBvars.BraverySystemKills,
+		thresholdMultiplier = 1,
 		add = true,
 		requiredTrait = CharacterTrait.BRAVE,
 		translationString = getText("UI_trait_Desensitized"),
@@ -405,9 +405,11 @@ local braverySystemTraitInfo = {
 ---Function responsible for managing Bravery System traits
 ---@param zombie IsoZombie
 local function braverySystemETW(zombie)
+	logETW("ETW Logger | braverySystemETW(): Processing Bravery System for all players")
 	local playersList = ETW_CommonFunctions.playersList()
 	for playerListIndex = 0, playersList:size() - 1 do
 		local player = playersList:get(playerListIndex)
+		logETW("ETW Logger | braverySystemETW(): Processing player: " .. player:getUsername())
 		local totalKills = player:getZombieKills()
 		local modDataGlobal = player:getModData()
 		local killCountModData = (modDataGlobal.KillCount or {}).WeaponCategory or {}
@@ -421,12 +423,26 @@ local function braverySystemETW(zombie)
 		for i = 1, #braverySystemTraitInfo do
 			local info = braverySystemTraitInfo[i]
 			local trait = info.trait
-			local threshold = info.threshold
+			local threshold = SBvars.BraverySystemKills * info.thresholdMultiplier
 			local negativeTrait = info.remove
 			local positiveTrait = info.add
 			local cantHaveTrait = info.cantHaveTrait
 			local requiredTrait = info.requiredTrait
 			local translationString = info.translationString
+			logETW(
+				"ETW Logger | braverySystemETW(): Checking trait "
+					.. translationString
+					.. " ("
+					.. trait:getName()
+					.. ") for player "
+					.. player:getUsername()
+					.. " with totalKills="
+					.. totalKills
+					.. ", meleeKills="
+					.. meleeKills
+					.. ", threshold="
+					.. threshold
+			)
 			if (totalKills + meleeKills) >= threshold then -- melee kills counted double
 				if
 					player:hasTrait(trait)
