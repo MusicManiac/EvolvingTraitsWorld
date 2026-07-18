@@ -1331,14 +1331,14 @@ option EvolvingTraitsWorld.Hoarder
 	page = ETWSimplePerks,
 	translation = ETW_Hoarder,
 }
-option EvolvingTraitsWorld.HoarderSkill
+option EvolvingTraitsWorld.HoarderCounter
 {
 	type = integer,
 	min = 0,
-	max = 10,
-	default = 8,
+	max = 500000,
+	default = 30000,
 	page = ETWSimplePerks,
-	translation = ETW_HoarderSkill,
+	translation = ETW_HoarderCounter,
 }
 option EvolvingTraitsWorld.HomeCook
 {

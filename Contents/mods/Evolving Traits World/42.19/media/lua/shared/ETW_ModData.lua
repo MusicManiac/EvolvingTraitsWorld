@@ -105,6 +105,7 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	modData.UniqueClothingRipped = modData.UniqueClothingRipped or {}
 	modData.ImmunitySystemCounter = modData.ImmunitySystemCounter or 0
 	modData.PagesReadCounter = modData.PagesReadCounter or 0
+	modData.HoarderCounter = modData.HoarderCounter or 0
 
 	modData.MentalStateInLast60Min = modData.MentalStateInLast60Min or { 0.75 }
 	modData.MentalStateInLast24Hours = modData.MentalStateInLast24Hours or { 0.75 }

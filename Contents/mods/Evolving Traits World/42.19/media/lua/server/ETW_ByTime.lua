@@ -1,7 +1,13 @@
 local ETW_ModDataServer = require("ETW_ModDataServer")
 local ETW_CommonFunctions = require("ETW_CommonFunctions")
 local ETW_CommonLogicChecks = require("ETW_CommonLogicChecks")
+local UCWF = require("UnifiedCarryWeightFramework")
 local ETW_Moodles
+
+---@type EvolvingTraitsWorldRegistries
+local ETW_Registry = require("ETW_Registry")
+---@type EvolvingTraitsWorldTraitsRegistries
+local ETWTraitsRegistry = ETW_Registry.traits
 
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld
@@ -251,6 +257,55 @@ local function smoker()
 	end
 end
 
+---Function responsible for managing Hoarder trait
+local function hoarder()
+	local playersList = ETW_CommonFunctions.playersList()
+	for i = 0, playersList:size() - 1 do
+		local player = playersList:get(i)
+		local modData = ETW_CommonFunctions.getETWModData(player)
+		if not modData then
+			logETW("ETW Logger | hoarder(): modData is nil, returning early")
+			return
+		end
+
+		if ETW_CommonLogicChecks.HoarderShouldExecute(player) and not player:hasTrait(ETWTraitsRegistry.HOARDER) then
+			local maxWeight = player:getMaxWeight()
+			local inventoryFullness = 0
+			if maxWeight > 0 then
+				inventoryFullness = math.min(1, math.max(0, player:getInventoryWeight() / maxWeight))
+			end
+
+			modData.HoarderCounter = modData.HoarderCounter + inventoryFullness
+			logETW("ETW Logger | hoarder(): Hoarder counter: " .. modData.HoarderCounter)
+
+			if modData.HoarderCounter >= SBvars.HoarderCounter then
+				if
+					SBvars.DelayedTraitsSystem
+					and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.HOARDER)
+				then
+					ETW_CommonFunctions.addTraitToDelayTable({
+						modData = modData,
+						trait = ETWTraitsRegistry.HOARDER,
+						player = player,
+						positiveTrait = true,
+						gainingTrait = true,
+					})
+				elseif
+					not SBvars.DelayedTraitsSystem
+					or ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.HOARDER)
+				then
+					ETW_CommonFunctions.addTraitToPlayer({
+						player = player,
+						trait = ETWTraitsRegistry.HOARDER,
+						positiveTrait = true,
+					})
+					UCWF.recomputeAll(player)
+				end
+			end
+		end
+	end
+end
+
 ---Function responsible for setting up events
 ---@param playerIndex number
 ---@param player IsoPlayer
@@ -263,6 +318,10 @@ local function initializeEventsETW(playerIndex, player)
 	if ETW_CommonLogicChecks.SmokerShouldExecute(player) then
 		Events.EveryOneMinute.Add(smoker)
 	end
+	Events.EveryOneMinute.Remove(hoarder)
+	if ETW_CommonLogicChecks.HoarderShouldExecute(player) then
+		Events.EveryOneMinute.Add(hoarder)
+	end
 	if gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
 		Events.OnTick.Remove(initializeEventsETW)
 	end
@@ -273,6 +332,7 @@ end
 local function clearEventsETW(character)
 	Events.EveryTenMinutes.Remove(sleepSystem)
 	Events.EveryOneMinute.Remove(smoker)
+	Events.EveryOneMinute.Remove(hoarder)
 	logETW("ETW Logger | System: clearEventsETW in " .. FILENAME)
 end
 
