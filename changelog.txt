@@ -1,9 +1,7 @@
 [url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
 
-v.12.3.0
+v.12.3.1
 
-General:
-	- Added "FAQ" subpage in UI.
-	- Reworked Hoarder acquisition. Hoarder is now gained by carrying a full inventory over time instead of reaching a required Strength level, check sandbox for more details.
 Fix:
-	- Possible fix for existing characters having temporary broken mod data on mod update.
+	- Fixed a UI render error caused by missing bar values.
+	- Fixed mismatched English sandbox translations for Handy and Bushcrafter.
