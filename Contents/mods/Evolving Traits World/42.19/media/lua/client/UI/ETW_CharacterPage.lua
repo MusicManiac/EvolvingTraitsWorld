@@ -227,6 +227,9 @@ ISETWUI = ISPanelJoypad:derive("ISETWUI")
 ---@param currentValue number
 ---@return number
 local function percentile(minValue, maxValue, currentValue)
+	if minValue == nil or maxValue == nil or currentValue == nil or maxValue == minValue then
+		return 0
+	end
 	return (currentValue - minValue) / (maxValue - minValue)
 end
 
