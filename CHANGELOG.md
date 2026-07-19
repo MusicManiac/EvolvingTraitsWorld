@@ -1,24 +1,31 @@
+## v.12.3.1
+###### 19 Jul 2026
+
+- Fix:
+  - Fixed a UI render error caused by missing bar values.
+  - Fixed mismatched English sandbox translations for Handy and Bushcrafter.
+
 ## v.12.3.0
 ###### 18 Jul 2026
 
-General:
+- General:
   - Added "FAQ" subpage in UI.
   - Reworked Hoarder acquisition. Hoarder is now gained by carrying a full inventory over time instead of reaching a required Strength level, check sandbox for more details.
-Fix:
+- Fix:
   - Possible fix for existing characters having temporary broken mod data on mod update.
 
 ## v.12.2.2
 ###### 18 Jul 2026
 
-General:
+- General:
   - Added "FAQ" subpage in UI.
-Fix:
+- Fix:
 	- Possible fix for existing characters having temporary broken mod data on mod update.
 
 ## v.12.2.1
 ###### 18 Jul 2026
 
-Fix:
+- Fix:
 	- Fixed incorrect Bravery bar UI labels positions.
 	- Fixed bravery system unhooking itself after someone earned Desensitized in MP.
 	- Fixed Bravery system not respecting sandbox settings for amount of kills.
@@ -26,12 +33,12 @@ Fix:
 ## v.12.2.0
 ###### 18 Jul 2026
 
-General:
+- General:
 	- New thumbnail wololo!
   - Added Reader System: Gain/Lose Slow/Fast Reader based on amount of pages read. Read sandbox settings for more details.
-	- Reading The Herbalist journal now grants configurable progress towards the Herbalist trait once per character. Read sandbox settings for more details.
-	- Herbalist is now permanent once gained and no longer decays.
-	- Killing and butchering animals now fills the Bloodlust meter. The amount relative to a point-blank zombie kill is configurable in the sandbox settings.
+  - Reading The Herbalist journal now grants configurable progress towards the Herbalist trait once per character. Read sandbox settings for more details.
+  - Herbalist is now permanent once gained and no longer decays.
+  - Killing and butchering animals now fills the Bloodlust meter. The amount relative to a point-blank zombie kill is configurable in the sandbox settings.
   - Added support for [Mark Dynamic Traits Framework (MDTF)](https://steamcommunity.com/sharedfiles/filedetails/?id=3766701843)
 
 ## v.12.1.2
