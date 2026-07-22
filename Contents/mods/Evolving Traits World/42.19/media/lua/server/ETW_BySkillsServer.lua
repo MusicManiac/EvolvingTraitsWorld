@@ -727,17 +727,7 @@ local skillTraitRules = {
 		trait = CharacterTrait.TARGET_SHOOTER,
 		positiveTrait = true,
 		gainingTrait = true,
-	},
-	{
-		triggers = makeTriggerSet("characterInitialization", Perks.Aiming, CharacterTrait.BLACKSMITH2),
-		shouldExecute = ETW_CommonLogicChecks.Blacksmith2ShouldExecute,
-		condition = function(ctx)
-			return sumContextValues(ctx, { "blacksmith", "maintenance" }) >= SBvars.Blacksmith2Skill
-		end,
-		trait = CharacterTrait.BLACKSMITH2,
-		positiveTrait = true,
-		gainingTrait = true,
-	},
+	}
 }
 
 ---Gain traits by skills (in majority cases)
