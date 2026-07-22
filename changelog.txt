@@ -4,3 +4,4 @@ v.12.3.2
 
 Fix:
 	- Fixed Blacksmith 2 appearing in sandbox.
+	- Fixed Axeman sandbox description.
