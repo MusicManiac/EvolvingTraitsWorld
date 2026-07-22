@@ -1,3 +1,9 @@
+## v.12.3.2
+###### 22 Jul 2026
+
+- Fix:
+  - Fixed Blacksmith 2 appearing in sandbox.
+
 ## v.12.3.1
 ###### 19 Jul 2026
 
