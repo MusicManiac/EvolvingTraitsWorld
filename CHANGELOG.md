@@ -3,6 +3,7 @@
 
 - Fix:
   - Fixed Blacksmith 2 appearing in sandbox.
+	- Fixed Axeman sandbox description.
 
 ## v.12.3.1
 ###### 19 Jul 2026
