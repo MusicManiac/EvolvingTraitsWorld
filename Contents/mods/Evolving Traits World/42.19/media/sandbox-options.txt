@@ -1000,22 +1000,6 @@ option EvolvingTraitsWorld.BlacksmithSkill
 	page = ETWSimplePerks,
 	translation = ETW_BlacksmithSkill,
 }
-option EvolvingTraitsWorld.Blacksmith2
-{
-	type = boolean,
-	default = true,
-	page = ETWSimplePerks,
-	translation = ETW_Blacksmith2,
-}
-option EvolvingTraitsWorld.Blacksmith2Skill
-{
-	type = integer,
-	min = 0,
-	max = 20,
-	default = 8,
-	page = ETWSimplePerks,
-	translation = ETW_Blacksmith2Skill,
-}
 option EvolvingTraitsWorld.BladeEnthusiast
 {
 	type = boolean,
