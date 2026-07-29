@@ -282,6 +282,103 @@ option EvolvingTraitsWorld.ImmunitySystemInfectionMultiplier
 	page = ETWSystems,
 	translation = ETW_ImmunitySystemInfectionMultiplier,
 }
+option EvolvingTraitsWorld.InjuriesSystem
+{
+	type = boolean,
+	default = true,
+	page = ETWSystems,
+	translation = ETW_InjuriesSystem,
+}
+option EvolvingTraitsWorld.InjuriesSystemCounter
+{
+	type = integer,
+	min = 1,
+	max = 500000,
+	default = 10000,
+	page = ETWSystems,
+	translation = ETW_InjuriesSystemCounter,
+}
+option EvolvingTraitsWorld.InjuriesSystemPassiveCounterDecay
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 0.5,
+	page = ETWSystems,
+	translation = ETW_InjuriesSystemPassiveCounterDecay,
+}
+option EvolvingTraitsWorld.InjuriesSystemScratchContribution
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 2,
+	page = ETWSystems,
+	translation = ETW_InjuriesSystemScratchContribution,
+}
+option EvolvingTraitsWorld.InjuriesSystemLacerationContribution
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 4,
+	page = ETWSystems,
+	translation = ETW_InjuriesSystemLacerationContribution,
+}
+option EvolvingTraitsWorld.InjuriesSystemDeepWoundContribution
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 6,
+	page = ETWSystems,
+	translation = ETW_InjuriesSystemDeepWoundContribution,
+}
+option EvolvingTraitsWorld.InjuriesSystemBiteContribution
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 8,
+	page = ETWSystems,
+	translation = ETW_InjuriesSystemBiteContribution,
+}
+option EvolvingTraitsWorld.InjuriesSystemBurnContribution
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 6,
+	page = ETWSystems,
+	translation = ETW_InjuriesSystemBurnContribution,
+}
+option EvolvingTraitsWorld.InjuriesSystemFractureContribution
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 6,
+	page = ETWSystems,
+	translation = ETW_InjuriesSystemFractureContribution,
+}
+option EvolvingTraitsWorld.InjuriesSystemLodgedBulletContribution
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 8,
+	page = ETWSystems,
+	translation = ETW_InjuriesSystemLodgedBulletContribution,
+}
+option EvolvingTraitsWorld.InjuriesSystemLodgedGlassContribution
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 4,
+	page = ETWSystems,
+	translation = ETW_InjuriesSystemLodgedGlassContribution,
+}
 option EvolvingTraitsWorld.InventoryTransferSystem
 {
 	type = boolean,

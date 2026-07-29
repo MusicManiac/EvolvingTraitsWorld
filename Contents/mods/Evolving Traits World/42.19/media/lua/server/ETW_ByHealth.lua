@@ -492,29 +492,7 @@ local function weightSystemETW()
 					positiveTrait = false,
 				})
 			end
-			if
-				not player:hasTrait(CharacterTrait.THIN_SKINNED)
-				and startingTraits.ThickSkinned ~= true
-				and SBvars.TraitsLockSystemCanGainNegative
-			then
-				ETW_CommonFunctions.addTraitToPlayer({
-					player = player,
-					trait = CharacterTrait.THIN_SKINNED,
-					positiveTrait = false,
-				})
-			end
 		else
-			if
-				player:hasTrait(CharacterTrait.THIN_SKINNED)
-				and startingTraits.ThinSkinned ~= true
-				and SBvars.TraitsLockSystemCanLoseNegative
-			then
-				ETW_CommonFunctions.removeTraitFromPlayer({
-					player = player,
-					trait = CharacterTrait.THIN_SKINNED,
-					positiveTrait = false,
-				})
-			end
 			if
 				player:hasTrait(CharacterTrait.SLOW_HEALER)
 				and startingTraits.SlowHealer ~= true
@@ -529,17 +507,6 @@ local function weightSystemETW()
 		end
 		if (weight > 85 and weight < 100) or (weight > 65 and weight < 75) then
 			if
-				player:hasTrait(CharacterTrait.THICK_SKINNED)
-				and startingTraits.ThickSkinned ~= true
-				and SBvars.TraitsLockSystemCanLosePositive
-			then
-				ETW_CommonFunctions.removeTraitFromPlayer({
-					player = player,
-					trait = CharacterTrait.THICK_SKINNED,
-					positiveTrait = true,
-				})
-			end
-			if
 				player:hasTrait(CharacterTrait.FAST_HEALER)
 				and startingTraits.FastHealer ~= true
 				and SBvars.TraitsLockSystemCanLosePositive
@@ -552,19 +519,8 @@ local function weightSystemETW()
 			end
 		end
 		if weight >= 75 and weight <= 85 then
-			-- losing Thick Skinned and Fast Healer if mental state not good
+			-- losing Fast Healer if mental state not good
 			if modData.RecentAverageMental <= (SBvars.WeightSystemLowerMentalThreshold / 100) then
-				if
-					player:hasTrait(CharacterTrait.THICK_SKINNED)
-					and startingTraits.ThickSkinned ~= true
-					and SBvars.TraitsLockSystemCanLosePositive
-				then
-					ETW_CommonFunctions.removeTraitFromPlayer({
-						player = player,
-						trait = CharacterTrait.THICK_SKINNED,
-						positiveTrait = true,
-					})
-				end
 				if
 					player:hasTrait(CharacterTrait.FAST_HEALER)
 					and startingTraits.FastHealer ~= true
@@ -576,23 +532,12 @@ local function weightSystemETW()
 						positiveTrait = true,
 					})
 				end
-			else -- gaining Thick Skinned and Fast Healer if weight 75-85, mental is good, passive levels are good and sleep health enabled
+			else -- gaining Fast Healer if weight 75-85, mental is good, passive levels are good and sleep health enabled
 				local passiveLevels = player:getPerkLevel(Perks.Strength) + player:getPerkLevel(Perks.Fitness)
 				if
 					sleepCheck(modData.SleepSystem.SleepHealthinessBar)
 					and passiveLevels >= SBvars.WeightSystemSkill
 				then
-					if
-						not player:hasTrait(CharacterTrait.THICK_SKINNED)
-						and startingTraits.ThinSkinned ~= true
-						and SBvars.TraitsLockSystemCanGainPositive
-					then
-						ETW_CommonFunctions.addTraitToPlayer({
-							player = player,
-							trait = CharacterTrait.THICK_SKINNED,
-							positiveTrait = true,
-						})
-					end
 					if
 						not player:hasTrait(CharacterTrait.FAST_HEALER)
 						and startingTraits.SlowHealer ~= true
@@ -606,6 +551,127 @@ local function weightSystemETW()
 					end
 				end
 			end
+		end
+	end
+end
+
+---Returns the total injury contribution and whether the body has any tracked injury.
+---@param player IsoPlayer
+---@return number injuryContribution
+---@return boolean hasTrackedInjury
+local function getInjuryContribution(player)
+	local bodyParts = player:getBodyDamage():getBodyParts()
+	local injuryContribution = 0
+	local hasTrackedInjury = false
+
+	for i = 0, bodyParts:size() - 1 do
+		local bodyPart = bodyParts:get(i)
+		if bodyPart:scratched() then
+			hasTrackedInjury = true
+			injuryContribution = injuryContribution + SBvars.InjuriesSystemScratchContribution
+		end
+		if bodyPart:isCut() then
+			hasTrackedInjury = true
+			injuryContribution = injuryContribution + SBvars.InjuriesSystemLacerationContribution
+		end
+		if bodyPart:deepWounded() then
+			hasTrackedInjury = true
+			injuryContribution = injuryContribution + SBvars.InjuriesSystemDeepWoundContribution
+		end
+		if bodyPart:bitten() then
+			hasTrackedInjury = true
+			injuryContribution = injuryContribution + SBvars.InjuriesSystemBiteContribution
+		end
+		if bodyPart:getBurnTime() > 0 then
+			hasTrackedInjury = true
+			injuryContribution = injuryContribution + SBvars.InjuriesSystemBurnContribution
+		end
+		if bodyPart:getFractureTime() > 0 then
+			hasTrackedInjury = true
+			injuryContribution = injuryContribution + SBvars.InjuriesSystemFractureContribution
+		end
+		if bodyPart:haveBullet() then
+			hasTrackedInjury = true
+			injuryContribution = injuryContribution + SBvars.InjuriesSystemLodgedBulletContribution
+		end
+		if bodyPart:haveGlass() then
+			hasTrackedInjury = true
+			injuryContribution = injuryContribution + SBvars.InjuriesSystemLodgedGlassContribution
+		end
+	end
+
+	return injuryContribution, hasTrackedInjury
+end
+
+---Updates Thin Skinned and Thick Skinned from the player's injury history.
+local function injuriesSystemETW()
+	local playersList = ETW_CommonFunctions.playersList()
+	local maxCounter = SBvars.InjuriesSystemCounter
+	local gainNegativeThreshold = maxCounter * -2 / 3
+	local loseNegativeThreshold = maxCounter * -1 / 3
+	local losePositiveThreshold = maxCounter * 1 / 3
+	local gainPositiveThreshold = maxCounter * 2 / 3
+
+	for i = 0, playersList:size() - 1 do
+		local player = playersList:get(i)
+		local modData = ETW_CommonFunctions.getETWModData(player)
+		local injuryContribution, hasTrackedInjury = getInjuryContribution(player)
+		local counterChange = hasTrackedInjury and injuryContribution or -SBvars.InjuriesSystemPassiveCounterDecay
+		modData.injuriesCounter = math.max(-maxCounter, math.min(maxCounter, modData.injuriesCounter + counterChange))
+
+		logETW(
+			"ETW Logger | injuriesSystemETW(): player="
+				.. player:getUsername()
+				.. " counterChange="
+				.. counterChange
+				.. " injuriesCounter="
+				.. modData.injuriesCounter
+		)
+
+		if
+			player:hasTrait(CharacterTrait.THIN_SKINNED)
+			and modData.injuriesCounter >= loseNegativeThreshold
+			and SBvars.TraitsLockSystemCanLoseNegative
+		then
+			ETW_CommonFunctions.removeTraitFromPlayer({
+				player = player,
+				trait = CharacterTrait.THIN_SKINNED,
+				positiveTrait = false,
+			})
+		elseif
+			not player:hasTrait(CharacterTrait.THIN_SKINNED)
+			and not player:hasTrait(CharacterTrait.THICK_SKINNED)
+			and modData.injuriesCounter <= gainNegativeThreshold
+			and SBvars.TraitsLockSystemCanGainNegative
+		then
+			ETW_CommonFunctions.addTraitToPlayer({
+				player = player,
+				trait = CharacterTrait.THIN_SKINNED,
+				positiveTrait = false,
+			})
+		end
+
+		if
+			player:hasTrait(CharacterTrait.THICK_SKINNED)
+			and modData.injuriesCounter <= losePositiveThreshold
+			and SBvars.TraitsLockSystemCanLosePositive
+		then
+			ETW_CommonFunctions.removeTraitFromPlayer({
+				player = player,
+				trait = CharacterTrait.THICK_SKINNED,
+				positiveTrait = true,
+			})
+		elseif
+			not player:hasTrait(CharacterTrait.THICK_SKINNED)
+			and not player:hasTrait(CharacterTrait.THIN_SKINNED)
+			and modData.injuriesCounter >= gainPositiveThreshold
+			and SBvars.TraitsLockSystemCanGainPositive
+		then
+			ETW_CommonFunctions.addTraitToPlayer({
+				player = player,
+				trait = CharacterTrait.THICK_SKINNED,
+				positiveTrait = true,
+			})
 		end
 	end
 end
@@ -791,6 +857,10 @@ local function initializeEventsETW(playerIndex, player)
 	if SBvars.WeightSystem == true and noTraitsLock() then
 		Events.EveryTenMinutes.Add(weightSystemETW)
 	end
+	Events.EveryTenMinutes.Remove(injuriesSystemETW)
+	if ETW_CommonLogicChecks.InjuriesSystemShouldExecute(player) then
+		Events.EveryTenMinutes.Add(injuriesSystemETW)
+	end
 	Events.EveryTenMinutes.Remove(painToleranceTraitETW)
 	if ETW_CommonLogicChecks.PainToleranceShouldExecute(player) then
 		Events.EveryTenMinutes.Add(painToleranceTraitETW)
@@ -816,6 +886,7 @@ local function clearEventsETW(character)
 	Events.EveryOneMinute.Remove(recordThirstStateETW)
 	Events.EveryTenMinutes.Remove(thirstSystemETW)
 	Events.EveryTenMinutes.Remove(weightSystemETW)
+	Events.EveryTenMinutes.Remove(injuriesSystemETW)
 	Events.EveryTenMinutes.Remove(painToleranceTraitETW)
 	Events.EveryOneMinute.Remove(asthmaticTraitETW)
 	Events.EveryOneMinute.Remove(recordMentalStateETW)
