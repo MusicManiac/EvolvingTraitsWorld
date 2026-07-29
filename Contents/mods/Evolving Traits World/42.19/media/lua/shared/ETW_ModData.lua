@@ -106,7 +106,6 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	modData.ImmunitySystemCounter = modData.ImmunitySystemCounter or 0
 	modData.PagesReadCounter = modData.PagesReadCounter or 0
 	modData.HoarderCounter = modData.HoarderCounter or 0
-
 	modData.MentalStateInLast60Min = modData.MentalStateInLast60Min or { 0.75 }
 	modData.MentalStateInLast24Hours = modData.MentalStateInLast24Hours or { 0.75 }
 	modData.MentalStateInLast31Days = modData.MentalStateInLast31Days or { 0.75 }
@@ -114,6 +113,8 @@ function ETW_ModData.createETWModData(playerIndex, player)
 
 	modData.StartingTraits = modData.StartingTraits or {}
 	local startingTraits = modData.StartingTraits
+	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.THIN_SKINNED)
+	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.THICK_SKINNED)
 	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.CLAUSTROPHOBIC)
 	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.AGORAPHOBIC)
 	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.ASTHMATIC)
@@ -131,6 +132,16 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.LIGHT_EATER)
 	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.HIGH_THIRST)
 	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.LOW_THIRST)
+
+	if modData.injuriesCounter == nil then
+		if startingTraits[CharacterTrait.THICK_SKINNED:toString()] == true then
+			modData.injuriesCounter = SBvars.InjuriesSystemCounter
+		elseif startingTraits[CharacterTrait.THIN_SKINNED:toString()] == true then
+			modData.injuriesCounter = -SBvars.InjuriesSystemCounter
+		else
+			modData.injuriesCounter = 0
+		end
+	end
 
 	local initialFoodAverage = getInitialFoodAverage(startingTraits)
 	modData.FoodStateInLast60Min = initializeRollingSamples(modData.FoodStateInLast60Min, initialFoodAverage, 60)

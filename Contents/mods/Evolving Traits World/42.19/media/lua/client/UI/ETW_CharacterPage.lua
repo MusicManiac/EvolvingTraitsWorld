@@ -420,6 +420,9 @@ function ISETWUI:createChildren()
 			if ETW_CommonLogicChecks.FoodSicknessSystemShouldExecute(player) then
 				appendLeftBarLabel(labelTexts, getText("Sandbox_ETW_FoodSicknessSystem"))
 			end
+			if ETW_CommonLogicChecks.InjuriesSystemShouldExecute(player) then
+				appendLeftBarLabel(labelTexts, getText("Sandbox_ETW_InjuriesSystem"))
+			end
 			if ETW_CommonLogicChecks.PainToleranceShouldExecute(player) then
 				appendLeftBarLabel(labelTexts, getCachedTraitUIName(ETWTraitsRegistry.PAIN_TOLERANCE))
 			end
@@ -498,6 +501,8 @@ function ISETWUI:createChildren()
 		local barThreeFourthPosition = barMidPosition + barLength / 4
 		local barOneThirdPosition = barStartPosition + barLength / 3
 		local barTwoThirdPosition = barOneThirdPosition + barLength / 3
+		local barOneSixthPosition = barStartPosition + barLength / 6
+		local barFiveSixthPosition = barStartPosition + barLength * 5 / 6
 		local vitalsLabelWidth = math.max(
 			strLen(textManager, getText("UI_ETW_Vitals_Food")),
 			strLen(textManager, getText("UI_ETW_Vitals_Thirst")),
@@ -2630,6 +2635,99 @@ function ISETWUI:createChildren()
 		end
 
 		local function buildNonPermanentTraitsSection()
+			if ETW_CommonLogicChecks.InjuriesSystemShouldExecute(player) then
+				str = "+ " .. getCachedTraitUIName(CharacterTrait.THIN_SKINNED)
+				self.labelThinSkinnedGain = ISLabel:new(
+					barOneSixthPosition - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelThinSkinnedGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self:addChild(self.labelThinSkinnedGain)
+
+				str = "+ " .. getCachedTraitUIName(CharacterTrait.THICK_SKINNED)
+				self.labelThickSkinnedGain = ISLabel:new(
+					barFiveSixthPosition - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelThickSkinnedGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self:addChild(self.labelThickSkinnedGain)
+
+				y = y + FONT_HGT_SMALL
+
+				str = "- " .. getCachedTraitUIName(CharacterTrait.THIN_SKINNED)
+				self.labelThinSkinnedLose = ISLabel:new(
+					barOneThirdPosition - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelThinSkinnedLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self:addChild(self.labelThinSkinnedLose)
+
+				str = "- " .. getCachedTraitUIName(CharacterTrait.THICK_SKINNED)
+				self.labelThickSkinnedLose = ISLabel:new(
+					barTwoThirdPosition - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelThickSkinnedLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self:addChild(self.labelThickSkinnedLose)
+
+				y = y + FONT_HGT_SMALL
+
+				self.labelInjuriesSystemBarName = ISLabel:new(
+					barStartPosition - lineStartPosition,
+					y,
+					FONT_HGT_SMALL,
+					getText("Sandbox_ETW_InjuriesSystem"),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					false
+				)
+				self.labelInjuriesSystemBarName:setTooltip(getText("Sandbox_ETW_InjuriesSystemCounter_tooltip"))
+				self:addChild(self.labelInjuriesSystemBarName)
+
+				self.barInjuriesSystem = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
+				self.barInjuriesSystem:setGradientTexture(redYellowGreenGradient)
+				self.barInjuriesSystem:setHighlightRadius(highlightRadius)
+				self.barInjuriesSystem:setDoKnob(false)
+				self:addChild(self.barInjuriesSystem)
+
+				y = y + FONT_HGT_SMALL
+			end
+
 			if ETW_CommonLogicChecks.BloodlustShouldExecute(player) then
 				str = "- " .. getCachedTraitUIName(ETWTraitsRegistry.BLOODLUST)
 				self.labelBloodlustLose = ISLabel:new(
@@ -3452,6 +3550,11 @@ function ISETWUI:render()
 		self.barPainTolerance,
 		percentile(0, SBvars.PainToleranceCounter, modData.PainToleranceCounter),
 		getText("UI_ETW_CurrentValue") .. formatDecimal(modData.PainToleranceCounter)
+	)
+	updateBar(
+		self.barInjuriesSystem,
+		percentile(-SBvars.InjuriesSystemCounter, SBvars.InjuriesSystemCounter, modData.injuriesCounter),
+		getText("UI_ETW_CurrentValue") .. formatDecimal(modData.injuriesCounter)
 	)
 	updateBar(
 		self.barAsthmatic,
