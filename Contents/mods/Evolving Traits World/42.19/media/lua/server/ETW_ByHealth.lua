@@ -197,21 +197,6 @@ local function foodSicknessTraitsETW()
 	end
 end
 
----Function responsible for checking if players sleep health is good (if applicable)
---- @param SleepHealthinessBar number
-local function sleepCheck(SleepHealthinessBar)
-	if not getServerOptions():getBoolean("SleepNeeded") then
-		return true
-	end
-	if SBvars.SleepSystem == true and SleepHealthinessBar > 0 then
-		return true
-	end
-	if SBvars.SleepSystem == false then
-		return true
-	end
-	return false
-end
-
 ---Returns the average of the first N entries in a rolling samples table once enough samples were collected.
 ---@param samples number[]
 ---@param requiredSamples integer
@@ -470,89 +455,76 @@ local function thirstSystemETW()
 	end
 end
 
----Function responsible for managing Weight System traits
-local function weightSystemETW()
-	local playersList = ETW_CommonFunctions.playersList()
+---Returns whether this body part has an active scratch, including one hidden beneath a bandage.
+---@param bodyPart BodyPart
+---@return boolean
+local function hasScratch(bodyPart)
+	return bodyPart:scratched() or bodyPart:getScratchTime() > 0
+end
 
-	for i = 0, playersList:size() - 1 do
-		local player = playersList:get(i)
-		logETW("ETW Logger | weightSystemETW(): running for player " .. player:getUsername())
-		local modData = ETW_CommonFunctions.getETWModData(player)
-		local startingTraits = modData.StartingTraits
-		local weight = player:getNutrition():getWeight()
-		if weight >= 100 or weight <= 65 then
-			if
-				not player:hasTrait(CharacterTrait.SLOW_HEALER)
-				and startingTraits.FastHealer ~= true
-				and SBvars.TraitsLockSystemCanGainNegative
-			then
-				ETW_CommonFunctions.addTraitToPlayer({
-					player = player,
-					trait = CharacterTrait.SLOW_HEALER,
-					positiveTrait = false,
-				})
-			end
-		else
-			if
-				player:hasTrait(CharacterTrait.SLOW_HEALER)
-				and startingTraits.SlowHealer ~= true
-				and SBvars.TraitsLockSystemCanLoseNegative
-			then
-				ETW_CommonFunctions.removeTraitFromPlayer({
-					player = player,
-					trait = CharacterTrait.SLOW_HEALER,
-					positiveTrait = false,
-				})
-			end
-		end
-		if (weight > 85 and weight < 100) or (weight > 65 and weight < 75) then
-			if
-				player:hasTrait(CharacterTrait.FAST_HEALER)
-				and startingTraits.FastHealer ~= true
-				and SBvars.TraitsLockSystemCanLosePositive
-			then
-				ETW_CommonFunctions.removeTraitFromPlayer({
-					player = player,
-					trait = CharacterTrait.FAST_HEALER,
-					positiveTrait = true,
-				})
-			end
-		end
-		if weight >= 75 and weight <= 85 then
-			-- losing Fast Healer if mental state not good
-			if modData.RecentAverageMental <= (SBvars.WeightSystemLowerMentalThreshold / 100) then
-				if
-					player:hasTrait(CharacterTrait.FAST_HEALER)
-					and startingTraits.FastHealer ~= true
-					and SBvars.TraitsLockSystemCanLosePositive
-				then
-					ETW_CommonFunctions.removeTraitFromPlayer({
-						player = player,
-						trait = CharacterTrait.FAST_HEALER,
-						positiveTrait = true,
-					})
-				end
-			else -- gaining Fast Healer if weight 75-85, mental is good, passive levels are good and sleep health enabled
-				local passiveLevels = player:getPerkLevel(Perks.Strength) + player:getPerkLevel(Perks.Fitness)
-				if
-					sleepCheck(modData.SleepSystem.SleepHealthinessBar)
-					and passiveLevels >= SBvars.WeightSystemSkill
-				then
-					if
-						not player:hasTrait(CharacterTrait.FAST_HEALER)
-						and startingTraits.SlowHealer ~= true
-						and SBvars.TraitsLockSystemCanGainPositive
-					then
-						ETW_CommonFunctions.addTraitToPlayer({
-							player = player,
-							trait = CharacterTrait.FAST_HEALER,
-							positiveTrait = true,
-						})
-					end
-				end
-			end
-		end
+---Returns whether this body part has an active laceration, including one hidden beneath a bandage.
+---@param bodyPart BodyPart
+---@return boolean
+local function hasLaceration(bodyPart)
+	return bodyPart:isCut() or bodyPart:getCutTime() > 0
+end
+
+---Returns whether this body part has an active deep wound, including one hidden beneath a bandage.
+---@param bodyPart BodyPart
+---@return boolean
+local function hasDeepWound(bodyPart)
+	return bodyPart:deepWounded() or bodyPart:getDeepWoundTime() > 0
+end
+
+---Returns whether this body part has an active bite, including one hidden beneath a bandage.
+---@param bodyPart BodyPart
+---@return boolean
+local function hasBite(bodyPart)
+	return bodyPart:bitten() or bodyPart:getBiteTime() > 0
+end
+
+---Returns the configured severity contribution of injuries on one body part.
+---@param bodyPart BodyPart
+---@return number injuryContribution
+---@return boolean hasTrackedInjury
+local function getBodyPartInjuryContribution(bodyPart)
+	local injuryContribution = 0
+	local hasTrackedInjury = false
+
+	if hasScratch(bodyPart) then
+		hasTrackedInjury = true
+		injuryContribution = injuryContribution + SBvars.BodyScratchContribution
 	end
+	if hasLaceration(bodyPart) then
+		hasTrackedInjury = true
+		injuryContribution = injuryContribution + SBvars.BodyLacerationContribution
+	end
+	if hasDeepWound(bodyPart) then
+		hasTrackedInjury = true
+		injuryContribution = injuryContribution + SBvars.BodyDeepWoundContribution
+	end
+	if hasBite(bodyPart) then
+		hasTrackedInjury = true
+		injuryContribution = injuryContribution + SBvars.BodyBiteContribution
+	end
+	if bodyPart:getBurnTime() > 0 then
+		hasTrackedInjury = true
+		injuryContribution = injuryContribution + SBvars.BodyBurnContribution
+	end
+	if bodyPart:getFractureTime() > 0 then
+		hasTrackedInjury = true
+		injuryContribution = injuryContribution + SBvars.BodyFractureContribution
+	end
+	if bodyPart:haveBullet() then
+		hasTrackedInjury = true
+		injuryContribution = injuryContribution + SBvars.BodyLodgedBulletContribution
+	end
+	if bodyPart:haveGlass() then
+		hasTrackedInjury = true
+		injuryContribution = injuryContribution + SBvars.BodyLodgedGlassContribution
+	end
+
+	return injuryContribution, hasTrackedInjury
 end
 
 ---Returns the total injury contribution and whether the body has any tracked injury.
@@ -565,39 +537,9 @@ local function getInjuryContribution(player)
 	local hasTrackedInjury = false
 
 	for i = 0, bodyParts:size() - 1 do
-		local bodyPart = bodyParts:get(i)
-		if bodyPart:scratched() then
-			hasTrackedInjury = true
-			injuryContribution = injuryContribution + SBvars.InjuriesSystemScratchContribution
-		end
-		if bodyPart:isCut() then
-			hasTrackedInjury = true
-			injuryContribution = injuryContribution + SBvars.InjuriesSystemLacerationContribution
-		end
-		if bodyPart:deepWounded() then
-			hasTrackedInjury = true
-			injuryContribution = injuryContribution + SBvars.InjuriesSystemDeepWoundContribution
-		end
-		if bodyPart:bitten() then
-			hasTrackedInjury = true
-			injuryContribution = injuryContribution + SBvars.InjuriesSystemBiteContribution
-		end
-		if bodyPart:getBurnTime() > 0 then
-			hasTrackedInjury = true
-			injuryContribution = injuryContribution + SBvars.InjuriesSystemBurnContribution
-		end
-		if bodyPart:getFractureTime() > 0 then
-			hasTrackedInjury = true
-			injuryContribution = injuryContribution + SBvars.InjuriesSystemFractureContribution
-		end
-		if bodyPart:haveBullet() then
-			hasTrackedInjury = true
-			injuryContribution = injuryContribution + SBvars.InjuriesSystemLodgedBulletContribution
-		end
-		if bodyPart:haveGlass() then
-			hasTrackedInjury = true
-			injuryContribution = injuryContribution + SBvars.InjuriesSystemLodgedGlassContribution
-		end
+		local bodyPartContribution, bodyPartHasInjury = getBodyPartInjuryContribution(bodyParts:get(i))
+		injuryContribution = injuryContribution + bodyPartContribution
+		hasTrackedInjury = hasTrackedInjury or bodyPartHasInjury
 	end
 
 	return injuryContribution, hasTrackedInjury
@@ -670,6 +612,168 @@ local function injuriesSystemETW()
 			ETW_CommonFunctions.addTraitToPlayer({
 				player = player,
 				trait = CharacterTrait.THICK_SKINNED,
+				positiveTrait = true,
+			})
+		end
+	end
+end
+
+---Returns whether a fracture on this body part can be splinted by the vanilla health panel.
+---@param bodyPart BodyPart
+---@return boolean
+local function isSplintableFracture(bodyPart)
+	local bodyPartType = bodyPart:getType()
+	return bodyPartType ~= BodyPartType.Head
+		and bodyPartType ~= BodyPartType.Torso_Upper
+		and bodyPartType ~= BodyPartType.Torso_Lower
+end
+
+---Returns whether this body part has a wound for which a clean bandage is appropriate care.
+---@param bodyPart BodyPart
+---@return boolean
+local function hasBandageTreatableWound(bodyPart)
+	return hasScratch(bodyPart)
+		or hasLaceration(bodyPart)
+		or hasDeepWound(bodyPart)
+		or bodyPart:stitched()
+		or hasBite(bodyPart)
+		or bodyPart:getBurnTime() > 0
+		or bodyPart:haveBullet()
+		or bodyPart:haveGlass()
+end
+
+---Returns the severity-weighted counter change produced by the player's current wound care.
+---Wound infection is intentionally not considered; only actionable physical treatment states are evaluated.
+---@param player IsoPlayer
+---@return number counterChange
+---@return integer properlyTendedCount
+---@return integer needsAttentionCount
+local function getHealerCounterChange(player)
+	local bodyParts = player:getBodyDamage():getBodyParts()
+	local counterChange = 0
+	local properlyTendedCount = 0
+	local needsAttentionCount = 0
+
+	for i = 0, bodyParts:size() - 1 do
+		local bodyPart = bodyParts:get(i)
+		local injuryContribution, hasTrackedInjury = getBodyPartInjuryContribution(bodyPart)
+		if bodyPart:stitched() and not hasDeepWound(bodyPart) then
+			hasTrackedInjury = true
+			injuryContribution = injuryContribution + SBvars.BodyDeepWoundContribution
+		end
+		if hasTrackedInjury then
+			local bandageTreatableWound = hasBandageTreatableWound(bodyPart)
+			local hasCleanBandage = bandageTreatableWound
+				and bodyPart:bandaged()
+				and bodyPart:getBandageLife() > 0
+			local hasDirtyBandage = bandageTreatableWound
+				and bodyPart:bandaged()
+				and bodyPart:getBandageLife() <= 0
+			local untreatedFracture = bodyPart:getFractureTime() > 0
+				and bodyPart:getSplintFactor() <= 0
+				and isSplintableFracture(bodyPart)
+
+			local needsAttention = bodyPart:haveGlass()
+				or bodyPart:haveBullet()
+				or hasDirtyBandage
+				or (bodyPart:bleeding() and not bodyPart:bandaged())
+				or (bodyPart:getBurnTime() > 0 and bodyPart:isNeedBurnWash())
+				or untreatedFracture
+
+			local properlyTended = hasCleanBandage
+				or bodyPart:stitched()
+				or (bodyPart:getFractureTime() > 0 and bodyPart:getSplintFactor() > 0)
+
+			if needsAttention then
+				needsAttentionCount = needsAttentionCount + 1
+				counterChange = counterChange
+					- injuryContribution * SBvars.HealerSystemNeedsAttentionMultiplier
+			elseif properlyTended then
+				properlyTendedCount = properlyTendedCount + 1
+				counterChange = counterChange
+					+ injuryContribution * SBvars.HealerSystemProperlyTendedMultiplier
+			elseif bandageTreatableWound then
+				needsAttentionCount = needsAttentionCount + 1
+				counterChange = counterChange
+					- injuryContribution * SBvars.HealerSystemNeedsAttentionMultiplier
+			end
+		end
+	end
+
+	return counterChange, properlyTendedCount, needsAttentionCount
+end
+
+---Updates Slow Healer and Fast Healer from the quality of the player's wound care.
+local function healerSystemETW()
+	local playersList = ETW_CommonFunctions.playersList()
+	local maxCounter = SBvars.HealerSystemCounter
+	local gainNegativeThreshold = maxCounter * -2 / 3
+	local loseNegativeThreshold = maxCounter * -1 / 3
+	local losePositiveThreshold = maxCounter * 1 / 3
+	local gainPositiveThreshold = maxCounter * 2 / 3
+
+	for i = 0, playersList:size() - 1 do
+		local player = playersList:get(i)
+		local modData = ETW_CommonFunctions.getETWModData(player)
+		local counterChange, properlyTendedCount, needsAttentionCount = getHealerCounterChange(player)
+		counterChange = counterChange / 10
+		modData.healerCounter = math.max(-maxCounter, math.min(maxCounter, modData.healerCounter + counterChange))
+
+		logETW(
+			"ETW Logger | healerSystemETW(): player="
+				.. player:getUsername()
+				.. " properlyTended="
+				.. properlyTendedCount
+				.. " needsAttention="
+				.. needsAttentionCount
+				.. " counterChange="
+				.. counterChange
+				.. " healerCounter="
+				.. modData.healerCounter
+		)
+
+		if
+			player:hasTrait(CharacterTrait.SLOW_HEALER)
+			and modData.healerCounter >= loseNegativeThreshold
+			and SBvars.TraitsLockSystemCanLoseNegative
+		then
+			ETW_CommonFunctions.removeTraitFromPlayer({
+				player = player,
+				trait = CharacterTrait.SLOW_HEALER,
+				positiveTrait = false,
+			})
+		elseif
+			not player:hasTrait(CharacterTrait.SLOW_HEALER)
+			and not player:hasTrait(CharacterTrait.FAST_HEALER)
+			and modData.healerCounter <= gainNegativeThreshold
+			and SBvars.TraitsLockSystemCanGainNegative
+		then
+			ETW_CommonFunctions.addTraitToPlayer({
+				player = player,
+				trait = CharacterTrait.SLOW_HEALER,
+				positiveTrait = false,
+			})
+		end
+
+		if
+			player:hasTrait(CharacterTrait.FAST_HEALER)
+			and modData.healerCounter <= losePositiveThreshold
+			and SBvars.TraitsLockSystemCanLosePositive
+		then
+			ETW_CommonFunctions.removeTraitFromPlayer({
+				player = player,
+				trait = CharacterTrait.FAST_HEALER,
+				positiveTrait = true,
+			})
+		elseif
+			not player:hasTrait(CharacterTrait.FAST_HEALER)
+			and not player:hasTrait(CharacterTrait.SLOW_HEALER)
+			and modData.healerCounter >= gainPositiveThreshold
+			and SBvars.TraitsLockSystemCanGainPositive
+		then
+			ETW_CommonFunctions.addTraitToPlayer({
+				player = player,
+				trait = CharacterTrait.FAST_HEALER,
 				positiveTrait = true,
 			})
 		end
@@ -815,16 +919,6 @@ local function painToleranceTraitETW()
 	end
 end
 
----@return boolean
-local noTraitsLock = function()
-	return (
-		SBvars.TraitsLockSystemCanGainNegative
-		or SBvars.TraitsLockSystemCanLoseNegative
-		or SBvars.TraitsLockSystemCanGainPositive
-		or SBvars.TraitsLockSystemCanLosePositive
-	)
-end
-
 ---Function responsible for setting up events
 ---@param playerIndex number
 ---@param player IsoPlayer
@@ -853,13 +947,13 @@ local function initializeEventsETW(playerIndex, player)
 	if ETW_CommonLogicChecks.ThirstSystemShouldExecute(player) then
 		Events.EveryTenMinutes.Add(thirstSystemETW)
 	end
-	Events.EveryTenMinutes.Remove(weightSystemETW)
-	if SBvars.WeightSystem == true and noTraitsLock() then
-		Events.EveryTenMinutes.Add(weightSystemETW)
-	end
 	Events.EveryTenMinutes.Remove(injuriesSystemETW)
 	if ETW_CommonLogicChecks.InjuriesSystemShouldExecute(player) then
 		Events.EveryTenMinutes.Add(injuriesSystemETW)
+	end
+	Events.EveryOneMinute.Remove(healerSystemETW)
+	if ETW_CommonLogicChecks.HealerSystemShouldExecute(player) then
+		Events.EveryOneMinute.Add(healerSystemETW)
 	end
 	Events.EveryTenMinutes.Remove(painToleranceTraitETW)
 	if ETW_CommonLogicChecks.PainToleranceShouldExecute(player) then
@@ -885,8 +979,8 @@ local function clearEventsETW(character)
 	Events.EveryTenMinutes.Remove(foodSystemETW)
 	Events.EveryOneMinute.Remove(recordThirstStateETW)
 	Events.EveryTenMinutes.Remove(thirstSystemETW)
-	Events.EveryTenMinutes.Remove(weightSystemETW)
 	Events.EveryTenMinutes.Remove(injuriesSystemETW)
+	Events.EveryOneMinute.Remove(healerSystemETW)
 	Events.EveryTenMinutes.Remove(painToleranceTraitETW)
 	Events.EveryOneMinute.Remove(asthmaticTraitETW)
 	Events.EveryOneMinute.Remove(recordMentalStateETW)

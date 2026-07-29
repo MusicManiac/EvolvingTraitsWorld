@@ -423,6 +423,9 @@ function ISETWUI:createChildren()
 			if ETW_CommonLogicChecks.InjuriesSystemShouldExecute(player) then
 				appendLeftBarLabel(labelTexts, getText("Sandbox_ETW_InjuriesSystem"))
 			end
+			if ETW_CommonLogicChecks.HealerSystemShouldExecute(player) then
+				appendLeftBarLabel(labelTexts, getText("Sandbox_ETW_HealerSystem"))
+			end
 			if ETW_CommonLogicChecks.PainToleranceShouldExecute(player) then
 				appendLeftBarLabel(labelTexts, getCachedTraitUIName(ETWTraitsRegistry.PAIN_TOLERANCE))
 			end
@@ -2673,7 +2676,7 @@ function ISETWUI:createChildren()
 				str = "- " .. getCachedTraitUIName(CharacterTrait.THIN_SKINNED)
 				self.labelThinSkinnedLose = ISLabel:new(
 					barOneThirdPosition - strLen(textManager, str) / 2,
-					y,
+					y + FONT_HGT_SMALL,
 					FONT_HGT_SMALL,
 					str,
 					self.DimmedTextColor.r,
@@ -2689,7 +2692,7 @@ function ISETWUI:createChildren()
 				str = "- " .. getCachedTraitUIName(CharacterTrait.THICK_SKINNED)
 				self.labelThickSkinnedLose = ISLabel:new(
 					barTwoThirdPosition - strLen(textManager, str) / 2,
-					y,
+					y + FONT_HGT_SMALL,
 					FONT_HGT_SMALL,
 					str,
 					self.DimmedTextColor.r,
@@ -2701,8 +2704,6 @@ function ISETWUI:createChildren()
 				)
 				self.labelThickSkinnedLose:setTooltip(getText("UI_ETW_LooseTooltip"))
 				self:addChild(self.labelThickSkinnedLose)
-
-				y = y + FONT_HGT_SMALL
 
 				self.labelInjuriesSystemBarName = ISLabel:new(
 					barStartPosition - lineStartPosition,
@@ -2716,7 +2717,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					false
 				)
-				self.labelInjuriesSystemBarName:setTooltip(getText("Sandbox_ETW_InjuriesSystemCounter_tooltip"))
+				self.labelInjuriesSystemBarName:setTooltip(getText("Sandbox_ETW_InjuriesSystem_tooltip"))
 				self:addChild(self.labelInjuriesSystemBarName)
 
 				self.barInjuriesSystem = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
@@ -2725,7 +2726,98 @@ function ISETWUI:createChildren()
 				self.barInjuriesSystem:setDoKnob(false)
 				self:addChild(self.barInjuriesSystem)
 
+				y = y + FONT_HGT_SMALL * 2
+			end
+
+			if ETW_CommonLogicChecks.HealerSystemShouldExecute(player) then
+				str = "+ " .. getCachedTraitUIName(CharacterTrait.SLOW_HEALER)
+				self.labelSlowHealerGain = ISLabel:new(
+					barOneSixthPosition - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelSlowHealerGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self:addChild(self.labelSlowHealerGain)
+
+				str = "+ " .. getCachedTraitUIName(CharacterTrait.FAST_HEALER)
+				self.labelFastHealerGain = ISLabel:new(
+					barFiveSixthPosition - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelFastHealerGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self:addChild(self.labelFastHealerGain)
+
 				y = y + FONT_HGT_SMALL
+
+				str = "- " .. getCachedTraitUIName(CharacterTrait.SLOW_HEALER)
+				self.labelSlowHealerLose = ISLabel:new(
+					barOneThirdPosition - strLen(textManager, str) / 2,
+					y + FONT_HGT_SMALL,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelSlowHealerLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self:addChild(self.labelSlowHealerLose)
+
+				str = "- " .. getCachedTraitUIName(CharacterTrait.FAST_HEALER)
+				self.labelFastHealerLose = ISLabel:new(
+					barTwoThirdPosition - strLen(textManager, str) / 2,
+					y + FONT_HGT_SMALL,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelFastHealerLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self:addChild(self.labelFastHealerLose)
+
+				self.labelHealerSystemBarName = ISLabel:new(
+					barStartPosition - lineStartPosition,
+					y,
+					FONT_HGT_SMALL,
+					getText("Sandbox_ETW_HealerSystem"),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					false
+				)
+				self.labelHealerSystemBarName:setTooltip(getText("Sandbox_ETW_HealerSystem_tooltip"))
+				self:addChild(self.labelHealerSystemBarName)
+
+				self.barHealerSystem = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
+				self.barHealerSystem:setGradientTexture(redYellowGreenGradient)
+				self.barHealerSystem:setHighlightRadius(highlightRadius)
+				self.barHealerSystem:setDoKnob(false)
+				self:addChild(self.barHealerSystem)
+
+				y = y + FONT_HGT_SMALL * 2
 			end
 
 			if ETW_CommonLogicChecks.BloodlustShouldExecute(player) then
@@ -3555,6 +3647,11 @@ function ISETWUI:render()
 		self.barInjuriesSystem,
 		percentile(-SBvars.InjuriesSystemCounter, SBvars.InjuriesSystemCounter, modData.injuriesCounter),
 		getText("UI_ETW_CurrentValue") .. formatDecimal(modData.injuriesCounter)
+	)
+	updateBar(
+		self.barHealerSystem,
+		percentile(-SBvars.HealerSystemCounter, SBvars.HealerSystemCounter, modData.healerCounter),
+		getText("UI_ETW_CurrentValue") .. formatDecimal(modData.healerCounter)
 	)
 	updateBar(
 		self.barAsthmatic,
