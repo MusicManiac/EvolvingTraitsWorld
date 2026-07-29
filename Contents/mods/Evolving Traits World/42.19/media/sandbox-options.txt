@@ -307,77 +307,111 @@ option EvolvingTraitsWorld.InjuriesSystemPassiveCounterDecay
 	page = ETWSystems,
 	translation = ETW_InjuriesSystemPassiveCounterDecay,
 }
-option EvolvingTraitsWorld.InjuriesSystemScratchContribution
+option EvolvingTraitsWorld.HealerSystem
+{
+	type = boolean,
+	default = true,
+	page = ETWSystems,
+	translation = ETW_HealerSystem,
+}
+option EvolvingTraitsWorld.HealerSystemCounter
+{
+	type = integer,
+	min = 1,
+	max = 500000,
+	default = 10000,
+	page = ETWSystems,
+	translation = ETW_HealerSystemCounter,
+}
+option EvolvingTraitsWorld.HealerSystemProperlyTendedMultiplier
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 1,
+	page = ETWSystems,
+	translation = ETW_HealerSystemProperlyTendedMultiplier,
+}
+option EvolvingTraitsWorld.HealerSystemNeedsAttentionMultiplier
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 1,
+	page = ETWSystems,
+	translation = ETW_HealerSystemNeedsAttentionMultiplier,
+}
+option EvolvingTraitsWorld.BodyScratchContribution
 {
 	type = double,
 	min = 0,
 	max = 100,
 	default = 2,
 	page = ETWSystems,
-	translation = ETW_InjuriesSystemScratchContribution,
+	translation = ETW_BodyScratchContribution,
 }
-option EvolvingTraitsWorld.InjuriesSystemLacerationContribution
+option EvolvingTraitsWorld.BodyLacerationContribution
 {
 	type = double,
 	min = 0,
 	max = 100,
 	default = 4,
 	page = ETWSystems,
-	translation = ETW_InjuriesSystemLacerationContribution,
+	translation = ETW_BodyLacerationContribution,
 }
-option EvolvingTraitsWorld.InjuriesSystemDeepWoundContribution
+option EvolvingTraitsWorld.BodyDeepWoundContribution
 {
 	type = double,
 	min = 0,
 	max = 100,
 	default = 6,
 	page = ETWSystems,
-	translation = ETW_InjuriesSystemDeepWoundContribution,
+	translation = ETW_BodyDeepWoundContribution,
 }
-option EvolvingTraitsWorld.InjuriesSystemBiteContribution
+option EvolvingTraitsWorld.BodyBiteContribution
 {
 	type = double,
 	min = 0,
 	max = 100,
 	default = 8,
 	page = ETWSystems,
-	translation = ETW_InjuriesSystemBiteContribution,
+	translation = ETW_BodyBiteContribution,
 }
-option EvolvingTraitsWorld.InjuriesSystemBurnContribution
+option EvolvingTraitsWorld.BodyBurnContribution
 {
 	type = double,
 	min = 0,
 	max = 100,
 	default = 6,
 	page = ETWSystems,
-	translation = ETW_InjuriesSystemBurnContribution,
+	translation = ETW_BodyBurnContribution,
 }
-option EvolvingTraitsWorld.InjuriesSystemFractureContribution
+option EvolvingTraitsWorld.BodyFractureContribution
 {
 	type = double,
 	min = 0,
 	max = 100,
 	default = 6,
 	page = ETWSystems,
-	translation = ETW_InjuriesSystemFractureContribution,
+	translation = ETW_BodyFractureContribution,
 }
-option EvolvingTraitsWorld.InjuriesSystemLodgedBulletContribution
+option EvolvingTraitsWorld.BodyLodgedBulletContribution
 {
 	type = double,
 	min = 0,
 	max = 100,
 	default = 8,
 	page = ETWSystems,
-	translation = ETW_InjuriesSystemLodgedBulletContribution,
+	translation = ETW_BodyLodgedBulletContribution,
 }
-option EvolvingTraitsWorld.InjuriesSystemLodgedGlassContribution
+option EvolvingTraitsWorld.BodyLodgedGlassContribution
 {
 	type = double,
 	min = 0,
 	max = 100,
 	default = 4,
 	page = ETWSystems,
-	translation = ETW_InjuriesSystemLodgedGlassContribution,
+	translation = ETW_BodyLodgedGlassContribution,
 }
 option EvolvingTraitsWorld.InventoryTransferSystem
 {
@@ -573,32 +607,6 @@ option EvolvingTraitsWorld.ThirstSystemGainNegativeThreshold
 	page = ETWSystems,
 	translation = ETW_ThirstSystemGainNegativeThreshold,
 }
-option EvolvingTraitsWorld.WeightSystem
-{
-	type = boolean,
-	default = true,
-	page = ETWSystems,
-	translation = ETW_WeightSystem,
-}
-option EvolvingTraitsWorld.WeightSystemSkill
-{
-	type = integer,
-	min = 0,
-	max = 20,
-	default = 16,
-	page = ETWSystems,
-	translation = ETW_WeightSystemSkill,
-}
-option EvolvingTraitsWorld.WeightSystemLowerMentalThreshold
-{
-	type = double,
-	min = 0,
-	max = 100,
-	default = 60,
-	page = ETWSystems,
-	translation = ETW_WeightSystemLowerMentalThreshold,
-}
-
 option EvolvingTraitsWorld.MOODLES
 {
 	translation = -----------------------------------------------MOODLES-----------------------------------------------------------------,

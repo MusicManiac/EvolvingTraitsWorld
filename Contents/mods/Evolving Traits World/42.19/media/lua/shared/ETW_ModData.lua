@@ -115,6 +115,8 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	local startingTraits = modData.StartingTraits
 	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.THIN_SKINNED)
 	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.THICK_SKINNED)
+	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.SLOW_HEALER)
+	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.FAST_HEALER)
 	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.CLAUSTROPHOBIC)
 	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.AGORAPHOBIC)
 	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.ASTHMATIC)
@@ -140,6 +142,16 @@ function ETW_ModData.createETWModData(playerIndex, player)
 			modData.injuriesCounter = -SBvars.InjuriesSystemCounter
 		else
 			modData.injuriesCounter = 0
+		end
+	end
+
+	if modData.healerCounter == nil then
+		if startingTraits[CharacterTrait.FAST_HEALER:toString()] == true then
+			modData.healerCounter = SBvars.HealerSystemCounter
+		elseif startingTraits[CharacterTrait.SLOW_HEALER:toString()] == true then
+			modData.healerCounter = -SBvars.HealerSystemCounter
+		else
+			modData.healerCounter = 0
 		end
 	end
 
