@@ -222,7 +222,9 @@ function ETW_CommonFunctions.traitSound(player)
 					table.insert(filteredSoundTable, soundTable[index])
 				end
 			end
-			player:playSoundLocal(filteredSoundTable[random_instance:random(1, #filteredSoundTable)])
+			if #filteredSoundTable > 0 then
+				player:playSoundLocal(filteredSoundTable[random_instance:random(1, #filteredSoundTable)])
+			end
 		end
 	end
 end
