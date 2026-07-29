@@ -1,7 +1,12 @@
 [url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
 
-v.12.3.2
+v.12.4.0
 
-Fix:
-	- Fixed Blacksmith 2 appearing in sandbox.
-	- Fixed Axeman sandbox description.
+General:
+	- REMOVED SUPPORT FOR B41. Legacy version can be found [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3773982162]here[/url]. You do not lose any progress even if you load save without mod, just gotta re-enable b41 version if you are staying on b41.
+	- Added the Injuries System for dynamic Thin Skinned and Thick Skinned progression. Current injuries increase its counter every ten minutes and fortify the character over time, while injury-free checks decay it; every contribution and the maximum counter are configurable in sandbox settings.
+	- Added an Injuries System progress bar to the Non-permanent Traits UI.
+	- Removed Thin Skinned and Thick Skinned from the Weight System. The Weight System now manages only Slow Healer and Fast Healer.
+Fixes:
+	- Fixed pettingAnimal event after 42.20 change.
+	
