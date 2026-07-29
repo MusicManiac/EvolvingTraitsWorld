@@ -262,7 +262,7 @@ function ISPetAnimal:animEvent(event, parameter)
 			end
 		end
 	end
-	original_ISPetAnimal_animEvent(self)
+	original_ISPetAnimal_animEvent(self, event, parameter)
 end
 
 ---Function responsible for setting up every minute updates
