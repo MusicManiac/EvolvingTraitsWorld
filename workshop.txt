@@ -61,5 +61,5 @@ description=
 description=Workshop ID: 2914075159
 description=Mod ID: EvolvingTraitsWorld
 description=Mod ID: EvolvingTraitsWorldMarkDynamicTraits (doesn't work for b42)
-tags=Build 41;Build 42;Balance;Hardmode;Interface;Misc;Multiplayer;Realistic;Silly/Fun;Skills;Traits;QoL;WIP
+tags=Build 42;Balance;Hardmode;Interface;Misc;Multiplayer;Realistic;Silly/Fun;Skills;Traits;QoL;WIP
 visibility=public
