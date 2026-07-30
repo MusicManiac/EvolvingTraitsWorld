@@ -132,7 +132,6 @@ local function bloodlustTimeETW()
 		logETW("ETW Logger | bloodlustTimeETW(): Processing player: " .. player:getUsername())
 		local modData = ETW_CommonFunctions.getETWModData(player)
 		local bloodlustModData = modData.BloodlustSystem
-		local startedWithBloodlust = modData.StartingTraits[ETWTraitsRegistry.BLOODLUST:toString()]
 		bloodlustModData.BloodlustMeter =
 			math.min(bloodlustModData.BloodlustMeter, bloodlustMeterCapacity * SBvars.BloodlustMeterMaxCapMultiplier)
 		bloodlustModData.BloodlustMeter = math.max(bloodlustModData.BloodlustMeter - 1, 0) -- hourly decay
@@ -146,7 +145,12 @@ local function bloodlustTimeETW()
 			local bloodLustProgressIncrease = bloodlustModData.BloodlustMeter
 				* 0.1
 				* (1 + bloodiedClothesLevel(player))
-				* ((SBvars.AffinitySystem and startedWithBloodlust) and SBvars.AffinitySystemGainMultiplier or 1)
+			bloodLustProgressIncrease = ETW_CommonFunctions.applyAffinityToDirectionalChange(
+				modData,
+				bloodLustProgressIncrease,
+				nil,
+				ETWTraitsRegistry.BLOODLUST
+			)
 			bloodlustModData.BloodlustProgress =
 				math.min(SBvars.BloodlustProgress * 2, bloodlustModData.BloodlustProgress + bloodLustProgressIncrease)
 			logETW(
@@ -154,13 +158,18 @@ local function bloodlustTimeETW()
 					.. bloodlustModData.BloodlustProgress
 			)
 		else -- lose if below 50%
-			local bloodLustProgressDecrease = bloodlustModData.BloodlustMeter
+			local bloodLustProgressMitigation = bloodlustModData.BloodlustMeter
 				* 0.1
 				* (1 - bloodiedClothesLevel(player))
-				/ ((SBvars.AffinitySystem and startedWithBloodlust) and SBvars.AffinitySystemLoseDivider or 1)
+			local bloodLustProgressChange = ETW_CommonFunctions.applyAffinityToDirectionalChange(
+				modData,
+				-(bloodlustMeterCapacity / 10 - bloodLustProgressMitigation),
+				nil,
+				ETWTraitsRegistry.BLOODLUST
+			)
 			bloodlustModData.BloodlustProgress = math.max(
 				0,
-				bloodlustModData.BloodlustProgress - (bloodlustMeterCapacity / 10 - bloodLustProgressDecrease)
+				bloodlustModData.BloodlustProgress + bloodLustProgressChange
 			)
 			logETW(
 				"ETW Logger | bloodlustTimeETW(): BloodlustMeter is below 50%, BloodlustProgress ="

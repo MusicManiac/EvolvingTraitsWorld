@@ -37,9 +37,12 @@ function ETW_ExportedFunctions.smokingAddictionMath(character)
 			* (1 + panic / 100)
 			* 1000
 			/ (math.max(timeSinceLastSmoke, smokerModData.MinutesSinceLastSmoke) + 100)
-		if SBvars.AffinitySystem and modData.StartingTraits[CharacterTrait.SMOKER:toString()] then
-			addictionGain = addictionGain * SBvars.AffinitySystemGainMultiplier
-		end
+		addictionGain = ETW_CommonFunctions.applyAffinityToDirectionalChange(
+			modData,
+			addictionGain,
+			nil,
+			CharacterTrait.SMOKER
+		)
 		smokerModData.SmokingAddiction =
 			math.min(SBvars.SmokerCounter * 2, smokerModData.SmokingAddiction + addictionGain)
 		logETW(

@@ -59,9 +59,6 @@ local function sleepSystem()
 			logETW("ETW Logger | sleepSystem(): modData is nil, returning early")
 			return
 		end
-		local startingTraitsModData = modData.StartingTraits
-		local startedWithNeedsLessSleep = startingTraitsModData[CharacterTrait.NEEDS_LESS_SLEEP:toString()]
-		local startedWithNeedsMoreSleep = startingTraitsModData[CharacterTrait.NEEDS_MORE_SLEEP:toString()]
 		local sleepModData = modData.SleepSystem
 		local timeOfDay = getGameTime():getTimeOfDay()
 		local currentPreferredTargetHour = sleepModData.LastMidpoint
@@ -76,33 +73,23 @@ local function sleepSystem()
 				logETW("ETW Logger | sleepSystem(): player went to sleep at: " .. sleepModData.WentToSleepAt)
 			end
 			if hoursAwayFromPreferredHour <= 6 then
-				local sleepHealthinessBarIncreaseMultiplier = SBvars.SleepSystemMultiplier
-				if SBvars.AffinitySystem then
-					if startedWithNeedsLessSleep then
-						sleepHealthinessBarIncreaseMultiplier = sleepHealthinessBarIncreaseMultiplier
-							* SBvars.AffinitySystemGainMultiplier
-					elseif startedWithNeedsMoreSleep then
-						sleepHealthinessBarIncreaseMultiplier = sleepHealthinessBarIncreaseMultiplier
-							/ SBvars.AffinitySystemLoseDivider
-					end
-				end
-				local sleepHealthinessBarIncrease = (1 / 6) * sleepHealthinessBarIncreaseMultiplier
+				local sleepHealthinessBarIncrease = ETW_CommonFunctions.applyAffinityToDirectionalChange(
+					modData,
+					(1 / 6) * SBvars.SleepSystemMultiplier,
+					CharacterTrait.NEEDS_MORE_SLEEP,
+					CharacterTrait.NEEDS_LESS_SLEEP
+				)
 				sleepModData.SleepHealthinessBar =
 					math.min(200, sleepModData.SleepHealthinessBar + sleepHealthinessBarIncrease)
 			else
-				local sleepHealthinessBarDecreaseMultiplier = SBvars.SleepSystemMultiplier
-				if SBvars.AffinitySystem then
-					if startedWithNeedsLessSleep then
-						sleepHealthinessBarDecreaseMultiplier = sleepHealthinessBarDecreaseMultiplier
-							/ SBvars.AffinitySystemGainMultiplier
-					elseif startedWithNeedsMoreSleep then
-						sleepHealthinessBarDecreaseMultiplier = sleepHealthinessBarDecreaseMultiplier
-							* SBvars.AffinitySystemLoseDivider
-					end
-				end
-				local sleepHealthinessBarDecrease = (1 / 6) * sleepHealthinessBarDecreaseMultiplier
+				local sleepHealthinessBarDecrease = ETW_CommonFunctions.applyAffinityToDirectionalChange(
+					modData,
+					-(1 / 6) * SBvars.SleepSystemMultiplier,
+					CharacterTrait.NEEDS_MORE_SLEEP,
+					CharacterTrait.NEEDS_LESS_SLEEP
+				)
 				sleepModData.SleepHealthinessBar =
-					math.max(-200, sleepModData.SleepHealthinessBar - sleepHealthinessBarDecrease)
+					math.max(-200, sleepModData.SleepHealthinessBar + sleepHealthinessBarDecrease)
 			end
 			if gameMode == ETW_CommonFunctions.GameMode.SP then
 				ETW_Moodles.sleepHealthMoodleUpdate(
@@ -145,18 +132,14 @@ local function sleepSystem()
 		if not player:isAsleep() then
 			sleepModData.HoursSinceLastSleep = sleepModData.HoursSinceLastSleep + 1 / 6
 			if sleepModData.HoursSinceLastSleep >= 24 then
-				local sleepHealthinessBarIncreaseMultiplier = SBvars.SleepSystemMultiplier
-				if SBvars.AffinitySystem then
-					if startedWithNeedsLessSleep then
-						sleepHealthinessBarIncreaseMultiplier = sleepHealthinessBarIncreaseMultiplier
-							/ SBvars.AffinitySystemGainMultiplier
-					elseif startedWithNeedsMoreSleep then
-						sleepHealthinessBarIncreaseMultiplier = sleepHealthinessBarIncreaseMultiplier
-							* SBvars.AffinitySystemLoseDivider
-					end
-				end
+				local sleepHealthinessBarDecrease = ETW_CommonFunctions.applyAffinityToDirectionalChange(
+					modData,
+					-(1 / 6) * SBvars.SleepSystemMultiplier,
+					CharacterTrait.NEEDS_MORE_SLEEP,
+					CharacterTrait.NEEDS_LESS_SLEEP
+				)
 				sleepModData.SleepHealthinessBar =
-					math.max(-200, sleepModData.SleepHealthinessBar - (1 / 6) * SBvars.SleepSystemMultiplier)
+					math.max(-200, sleepModData.SleepHealthinessBar + sleepHealthinessBarDecrease)
 			end
 		end
 		if sleepModData.SleepHealthinessBar > 100 then
@@ -206,7 +189,6 @@ local function smoker()
 			return
 		end
 		local smokerModData = modData.SmokeSystem
-		local startedWithSmoker = modData.StartingTraits[CharacterTrait.SMOKER:toString()]
 		local timeSinceLastSmoke = player:getTimeSinceLastSmoke() * 60
 		smokerModData.MinutesSinceLastSmoke = smokerModData.MinutesSinceLastSmoke + 1
 		logETW(
@@ -220,14 +202,17 @@ local function smoker()
 		local panic = stats:get(CharacterStat.PANIC) -- 0-100
 		local addictionDecay = SBvars.SmokingAddictionDecay * (0.0167 / 10) * (1 - stress) * (1 - panic / 100)
 		addictionDecay = math.max(0, addictionDecay) -- make sure values doesn't go into negative
-		if SBvars.AffinitySystem and startedWithSmoker then
-			addictionDecay = addictionDecay / SBvars.AffinitySystemLoseDivider
-		end
+		local addictionChange = ETW_CommonFunctions.applyAffinityToDirectionalChange(
+			modData,
+			-addictionDecay,
+			nil,
+			CharacterTrait.SMOKER
+		)
 		smokerModData.SmokingAddiction =
-			math.max(SBvars.SmokerCounter * -2, smokerModData.SmokingAddiction - addictionDecay)
+			math.max(SBvars.SmokerCounter * -2, smokerModData.SmokingAddiction + addictionChange)
 		logETW(
 			"ETW Logger | smoker(): smoking addictionDecay: "
-				.. addictionDecay
+				.. -addictionChange
 				.. ", modData.SmokingAddiction: "
 				.. smokerModData.SmokingAddiction
 		)
