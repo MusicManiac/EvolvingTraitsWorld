@@ -349,6 +349,7 @@ function ISETWUI:createChildren()
 	local function routeTo(subView, layoutCursor)
 		storeActiveLayoutCursor()
 		self.addChild = function(s, child)
+			child.etwUseCustomTooltipWidth = true
 			subView:addChild(child)
 		end
 		useLayoutCursor(layoutCursor)
