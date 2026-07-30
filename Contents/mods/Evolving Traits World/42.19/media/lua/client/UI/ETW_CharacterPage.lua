@@ -2639,6 +2639,23 @@ function ISETWUI:createChildren()
 		end
 
 		local function buildNonPermanentTraitsSection()
+			if SBvars.AffinitySystem then
+				self.labelAffinitySystemEnabled = ISLabel:new(
+					lineStartPosition,
+					y - 4,
+					FONT_HGT_SMALL,
+					getText("UI_ETW_AffinitySystemEnabled"),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelAffinitySystemEnabled:setTooltip(getText("Sandbox_ETW_AffinitySystem_tooltip"))
+				self:addChild(self.labelAffinitySystemEnabled)
+			end
+
 			if ETW_CommonLogicChecks.InjuriesSystemShouldExecute(player) then
 				str = "+ " .. getCachedTraitUIName(CharacterTrait.THIN_SKINNED)
 				self.labelThinSkinnedGain = ISLabel:new(

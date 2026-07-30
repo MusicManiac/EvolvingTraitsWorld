@@ -1,6 +1,7 @@
 {
     "note_to_LANGUAGE_translators":  "Make sure file is saved in <ENCODING> encoding, so game display correct characters",
     "UI_ETW":  "ETW",
+    "UI_ETW_AffinitySystemEnabled":  "Affinity System is enabled",
     "UI_ETW_Chance":  "in",
     "UI_ETW_Chance___note_to_translators":  "(Don't translate this, this is just info for you guys) UI_ETW_Chance is used in displaying chances, so for example '1 in 300' or '1 in 50300', etc.",
     "UI_ETW_CurrentValue":  "Current value: ",
