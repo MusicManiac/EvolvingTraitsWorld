@@ -189,12 +189,7 @@ function forageSystem.addOrDropItems(_character, _inventory, _items)
 			logETW("ETW Logger | forageSystem.addOrDropItems(): picking up foraging item: " .. item:getFullType())
 			if filteredForageHashMap[item:getFullType()] then
 				local modData = ETW_CommonFunctions.getETWModData(_character)
-				modData.HerbsPickedUp = modData.HerbsPickedUp
-					+ (
-						(SBvars.AffinitySystem and modData.StartingTraits[CharacterTrait.HERBALIST:toString()])
-							and 1 * SBvars.AffinitySystemGainMultiplier
-						or 1
-					)
+				modData.HerbsPickedUp = modData.HerbsPickedUp + 1
 				logETW("ETW Logger | forageSystem.addOrDropItems(): modData.HerbsPickedUp: " .. modData.HerbsPickedUp)
 				if
 					not _character:hasTrait(CharacterTrait.HERBALIST)

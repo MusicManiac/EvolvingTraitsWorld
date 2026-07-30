@@ -267,6 +267,20 @@ local function normalizeInvertedVital(value)
 	return 1 - numericValue
 end
 
+---Adjusts a normalized habit sample so its movement toward or away from a starting trait uses Affinity rates.
+---@param modData ETW_ModData
+---@param latestValue number
+---@param currentAverage number
+---@param negativeTrait CharacterTrait
+---@param positiveTrait CharacterTrait
+---@return number
+local function applyAffinityToHabitSample(modData, latestValue, currentAverage, negativeTrait, positiveTrait)
+	local change = latestValue - currentAverage
+	local adjustedValue = currentAverage
+		+ ETW_CommonFunctions.applyAffinityToDirectionalChange(modData, change, negativeTrait, positiveTrait)
+	return math.max(0, math.min(1, adjustedValue))
+end
+
 ---Records the player's current normalized food score into food-system rolling averages.
 local function recordFoodStateETW()
 	local playersList = ETW_CommonFunctions.playersList()
@@ -280,11 +294,21 @@ local function recordFoodStateETW()
 				"ETW Logger | recordFoodStateETW(): skipping sleeping player " .. player:getUsername()
 			)
 		else
-			local hunger = normalizeInvertedVital(stats:get(CharacterStat.HUNGER))
+			local rawHunger = normalizeInvertedVital(stats:get(CharacterStat.HUNGER))
+			local hunger = rawHunger
+			hunger = applyAffinityToHabitSample(
+				modData,
+				hunger,
+				modData.RecentAverageFood,
+				CharacterTrait.HEARTY_APPETITE,
+				CharacterTrait.LIGHT_EATER
+			)
 			logETW(
 				"ETW Logger | recordFoodStateETW(): player "
 					.. player:getUsername()
-					.. ", normalized hunger = "
+					.. ", raw normalized hunger = "
+					.. rawHunger
+					.. ", affinity-adjusted hunger = "
 					.. hunger
 			)
 			modData.RecentAverageFood = updateRollingHabitAverage(
@@ -311,11 +335,21 @@ local function recordThirstStateETW()
 				"ETW Logger | recordThirstStateETW(): skipping sleeping player " .. player:getUsername()
 			)
 		else
-			local thirst = normalizeInvertedVital(stats:get(CharacterStat.THIRST))
+			local rawThirst = normalizeInvertedVital(stats:get(CharacterStat.THIRST))
+			local thirst = rawThirst
+			thirst = applyAffinityToHabitSample(
+				modData,
+				thirst,
+				modData.RecentAverageThirst,
+				CharacterTrait.HIGH_THIRST,
+				CharacterTrait.LOW_THIRST
+			)
 			logETW(
 				"ETW Logger | recordThirstStateETW(): player "
 					.. player:getUsername()
-					.. ", normalized thirst = "
+					.. ", raw normalized thirst = "
+					.. rawThirst
+					.. ", affinity-adjusted thirst = "
 					.. thirst
 			)
 			modData.RecentAverageThirst = updateRollingHabitAverage(
@@ -559,6 +593,12 @@ local function injuriesSystemETW()
 		local modData = ETW_CommonFunctions.getETWModData(player)
 		local injuryContribution, hasTrackedInjury = getInjuryContribution(player)
 		local counterChange = hasTrackedInjury and injuryContribution or -SBvars.InjuriesSystemPassiveCounterDecay
+		counterChange = ETW_CommonFunctions.applyAffinityToDirectionalChange(
+			modData,
+			counterChange,
+			CharacterTrait.THIN_SKINNED,
+			CharacterTrait.THICK_SKINNED
+		)
 		modData.injuriesCounter = math.max(-maxCounter, math.min(maxCounter, modData.injuriesCounter + counterChange))
 
 		logETW(
@@ -717,6 +757,12 @@ local function healerSystemETW()
 		local modData = ETW_CommonFunctions.getETWModData(player)
 		local counterChange, properlyTendedCount, needsAttentionCount = getHealerCounterChange(player)
 		counterChange = counterChange / 10
+		counterChange = ETW_CommonFunctions.applyAffinityToDirectionalChange(
+			modData,
+			counterChange,
+			CharacterTrait.SLOW_HEALER,
+			CharacterTrait.FAST_HEALER
+		)
 		modData.healerCounter = math.max(-maxCounter, math.min(maxCounter, modData.healerCounter + counterChange))
 
 		logETW(
@@ -788,7 +834,6 @@ local function asthmaticTraitETW()
 		local player = playersList:get(i)
 		logETW("ETW Logger | asthmaticTraitETW(): running for player " .. player:getUsername())
 		local modData = ETW_CommonFunctions.getETWModData(player)
-		local startedWithAsthmatic = modData.StartingTraits[CharacterTrait.ASTHMATIC:toString()]
 		local running = player:isRunning()
 		local sprinting = player:isSprinting()
 		local smoker = player:hasTrait(CharacterTrait.SMOKER)
@@ -805,12 +850,16 @@ local function asthmaticTraitETW()
 				* (smoker and 1.5 or 0.8)
 				* (asthmatic and 1.5 or 0.8)
 				* (sprinting and 1.5 or 1)
-			counterDecrease = counterDecrease
-				* ((SBvars.AffinitySystem and startedWithAsthmatic) and SBvars.AffinitySystemGainMultiplier or 1)
-			modData.AsthmaticCounter = math.max(lowerBoundary, modData.AsthmaticCounter - counterDecrease)
+			local counterChange = ETW_CommonFunctions.applyAffinityToDirectionalChange(
+				modData,
+				-counterDecrease,
+				CharacterTrait.ASTHMATIC,
+				nil
+			)
+			modData.AsthmaticCounter = math.max(lowerBoundary, modData.AsthmaticCounter + counterChange)
 			logETW(
 				"ETW Logger | asthmaticTraitETW(): counterDecrease: "
-					.. counterDecrease
+					.. -counterChange
 					.. ", modData.AsthmaticCounter: "
 					.. modData.AsthmaticCounter
 			)
@@ -820,8 +869,12 @@ local function asthmaticTraitETW()
 				* (smoker and 0.5 or 1)
 				* (asthmatic and 0.5 or 1)
 				* endurance
-			counterIncrease = counterIncrease
-				/ ((SBvars.AffinitySystem and startedWithAsthmatic) and SBvars.AffinitySystemLoseDivider or 1)
+			counterIncrease = ETW_CommonFunctions.applyAffinityToDirectionalChange(
+				modData,
+				counterIncrease,
+				CharacterTrait.ASTHMATIC,
+				nil
+			)
 			modData.AsthmaticCounter = math.min(upperBoundary, modData.AsthmaticCounter + counterIncrease)
 			logETW(
 				"ETW Logger | asthmaticTraitETW(): counterDecrease: "

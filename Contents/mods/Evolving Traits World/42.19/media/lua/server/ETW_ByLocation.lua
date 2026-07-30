@@ -48,7 +48,6 @@ local function outdoorsman(player, isKill)
 			logETW("ETW Logger | outdoorsman(): modData is nil, returning early")
 			return
 		end
-		local startedWithOutdoorsman = modData.StartingTraits[CharacterTrait.OUTDOORSMAN:toString()]
 		local outdoorsmanModData = modData.OutdoorsmanSystem
 		local baseGain = 1
 		local rainGain = 5
@@ -64,9 +63,13 @@ local function outdoorsman(player, isKill)
 		local totalGain = baseGain
 			+ (rainGain + snowGain + windGain + fogGain) * (player:hasTrait(CharacterTrait.HIKER) and 1.1 or 1)
 		if player:isOutside() and player:getVehicle() == nil then
-			totalGain = totalGain
-				* ((SBvars.AffinitySystem and startedWithOutdoorsman) and SBvars.AffinitySystemGainMultiplier or 1)
-				* SBvars.OutdoorsmanCounterIncreaseMultiplier
+			totalGain = totalGain * SBvars.OutdoorsmanCounterIncreaseMultiplier
+			totalGain = ETW_CommonFunctions.applyAffinityToDirectionalChange(
+				modData,
+				totalGain,
+				nil,
+				CharacterTrait.OUTDOORSMAN
+			)
 			outdoorsmanModData.MinutesSinceOutside = math.max(0, outdoorsmanModData.MinutesSinceOutside - 3)
 			outdoorsmanModData.OutdoorsmanCounter =
 				math.min(outdoorsmanModData.OutdoorsmanCounter + totalGain, SBvars.OutdoorsmanCounter * 2)
@@ -92,14 +95,18 @@ local function outdoorsman(player, isKill)
 				* 0.1
 				* (1 + outdoorsmanModData.MinutesSinceOutside / 100)
 				* SBvars.OutdoorsmanCounterDecreaseMultiplier
-			totalLose = totalLose
-				/ ((SBvars.AffinitySystem and startedWithOutdoorsman) and SBvars.AffinitySystemLoseDivider or 1)
+			local counterChange = ETW_CommonFunctions.applyAffinityToDirectionalChange(
+				modData,
+				-totalLose,
+				nil,
+				CharacterTrait.OUTDOORSMAN
+			)
 			outdoorsmanModData.MinutesSinceOutside = math.min(900, outdoorsmanModData.MinutesSinceOutside + 1)
 			outdoorsmanModData.OutdoorsmanCounter =
-				math.max(SBvars.OutdoorsmanCounter * -2, outdoorsmanModData.OutdoorsmanCounter - totalLose)
+				math.max(SBvars.OutdoorsmanCounter * -2, outdoorsmanModData.OutdoorsmanCounter + counterChange)
 			logETW(
 				"ETW Logger | outdoorsman(): totalLose="
-					.. totalLose
+					.. -counterChange
 					.. ". OutdoorsmanCounter="
 					.. outdoorsmanModData.OutdoorsmanCounter
 			)
@@ -133,8 +140,6 @@ local function fearOfLocations(player, isKill)
 			logETW("ETW Logger | fearOfLocations(): modData is nil, returning early")
 			return
 		end
-		local startedWithAgoraphobic = modData.StartingTraits[CharacterTrait.AGORAPHOBIC:toString()]
-		local startedWithClaustrophobic = modData.StartingTraits[CharacterTrait.CLAUSTROPHOBIC:toString()]
 		local fearOfLocationsModData = modData.LocationFearSystem
 		local stats = player:getStats()
 		local stress = stats:get(CharacterStat.STRESS) -- 0-1, may be higher with stress from cigarettes
@@ -150,32 +155,48 @@ local function fearOfLocations(player, isKill)
 		end
 		counterDecrease = counterDecrease * SBvars.FearOfLocationsSystemCounterLoseMultiplier
 		if player:isOutside() then
-			counterDecrease = counterDecrease
-				* ((SBvars.AffinitySystem and startedWithAgoraphobic) and SBvars.AffinitySystemGainMultiplier or 1)
-				* (isKill and 0.25 or 1)
-			local resultingCounter = fearOfLocationsModData.FearOfOutside
-				- counterDecrease
-				+ ((SBvars.AffinitySystem and startedWithAgoraphobic) and 1 / SBvars.AffinitySystemLoseDivider or 1) -- +1/divider passive ticking of just being outside
+			counterDecrease = counterDecrease * (isKill and 0.25 or 1)
+			local counterChange = ETW_CommonFunctions.applyAffinityToDirectionalChange(
+				modData,
+				-counterDecrease + 1,
+				CharacterTrait.AGORAPHOBIC,
+				nil
+			)
+			local resultingCounter = fearOfLocationsModData.FearOfOutside + counterChange
 			resultingCounter = math.min(upperCounterBoundary, resultingCounter)
 			resultingCounter = math.max(lowerCounterBoundary, resultingCounter)
 			fearOfLocationsModData.FearOfOutside = resultingCounter
+			local fearOfInsidePassiveDecay = ETW_CommonFunctions.applyAffinityToDirectionalChange(
+				modData,
+				SBvars.FearOfLocationsSystemPassiveCounterDecay,
+				CharacterTrait.CLAUSTROPHOBIC,
+				nil
+			)
 			fearOfLocationsModData.FearOfInside = math.min(
 				upperCounterBoundary,
-				fearOfLocationsModData.FearOfInside + SBvars.FearOfLocationsSystemPassiveCounterDecay
+				fearOfLocationsModData.FearOfInside + fearOfInsidePassiveDecay
 			)
 		elseif not player:isOutside() or player:getVehicle() ~= nil then
-			counterDecrease = counterDecrease
-				* ((SBvars.AffinitySystem and startedWithClaustrophobic) and SBvars.AffinitySystemGainMultiplier or 1)
-				* (isKill and 0.25 or 1)
-			local resultingCounter = fearOfLocationsModData.FearOfInside
-				- counterDecrease
-				+ ((SBvars.AffinitySystem and startedWithClaustrophobic) and 1 / SBvars.AffinitySystemLoseDivider or 1) -- +1/divider passive ticking of just being inside
+			counterDecrease = counterDecrease * (isKill and 0.25 or 1)
+			local counterChange = ETW_CommonFunctions.applyAffinityToDirectionalChange(
+				modData,
+				-counterDecrease + 1,
+				CharacterTrait.CLAUSTROPHOBIC,
+				nil
+			)
+			local resultingCounter = fearOfLocationsModData.FearOfInside + counterChange
 			resultingCounter = math.min(upperCounterBoundary, resultingCounter)
 			resultingCounter = math.max(lowerCounterBoundary, resultingCounter)
 			fearOfLocationsModData.FearOfInside = resultingCounter
+			local fearOfOutsidePassiveDecay = ETW_CommonFunctions.applyAffinityToDirectionalChange(
+				modData,
+				SBvars.FearOfLocationsSystemPassiveCounterDecay,
+				CharacterTrait.AGORAPHOBIC,
+				nil
+			)
 			fearOfLocationsModData.FearOfOutside = math.min(
 				upperCounterBoundary,
-				fearOfLocationsModData.FearOfOutside + SBvars.FearOfLocationsSystemPassiveCounterDecay
+				fearOfLocationsModData.FearOfOutside + fearOfOutsidePassiveDecay
 			)
 		end
 		logETW(

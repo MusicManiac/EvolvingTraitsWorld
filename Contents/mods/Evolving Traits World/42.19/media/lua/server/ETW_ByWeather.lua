@@ -49,8 +49,6 @@ local function rainTraits(player, isKill)
 				logETW("ETW Logger | rainTraits(): modData is nil, returning early")
 				return
 			end
-			local startedWithPluviophobia = modData.StartingTraits[ETWTraitsRegistry.PLUVIOPHOBIA:toString()]
-			local startedWithPluviophile = modData.StartingTraits[ETWTraitsRegistry.PLUVIOPHILE:toString()]
 			local panic = player:getStats():get(CharacterStat.PANIC) -- 0-100
 			local primaryItem = player:getPrimaryHandItem()
 			local secondaryItem = player:getSecondaryHandItem()
@@ -60,20 +58,18 @@ local function rainTraits(player, isKill)
 			local lowerBoundary = -SBCounter * 2
 			local upperBoundary = SBCounter * 2
 			local rainGain = rainIntensity * (rainProtection and 0.5 or 1) * SBvars.RainSystemCounterIncreaseMultiplier
-			rainGain = rainGain
-				/ ((SBvars.AffinitySystem and startedWithPluviophobia) and SBvars.AffinitySystemLoseDivider or 1)
-			rainGain = rainGain
-				* ((SBvars.AffinitySystem and startedWithPluviophile) and SBvars.AffinitySystemGainMultiplier or 1)
 			local rainDecrease = rainGain
 				* (panic / 100)
 				* 0.9
 				* SBvars.RainSystemCounterDecreaseMultiplier
 				* (isKill and 0.25 or 1)
-			rainDecrease = rainDecrease
-				/ ((SBvars.AffinitySystem and startedWithPluviophile) and SBvars.AffinitySystemLoseDivider or 1)
-			rainDecrease = rainDecrease
-				* ((SBvars.AffinitySystem and startedWithPluviophobia) and SBvars.AffinitySystemGainMultiplier or 1)
-			local finalRainCounter = modData.RainCounter + rainGain - rainDecrease
+			local counterChange = ETW_CommonFunctions.applyAffinityToDirectionalChange(
+				modData,
+				rainGain - rainDecrease,
+				ETWTraitsRegistry.PLUVIOPHOBIA,
+				ETWTraitsRegistry.PLUVIOPHILE
+			)
+			local finalRainCounter = modData.RainCounter + counterChange
 			finalRainCounter = math.min(upperBoundary, finalRainCounter)
 			finalRainCounter = math.max(lowerBoundary, finalRainCounter)
 			modData.RainCounter = finalRainCounter
@@ -145,26 +141,22 @@ local function fogTraits(player, isKill)
 				logETW("ETW Logger | fogTraits(): modData is nil, returning early")
 				return
 			end
-			local startedWithHomichlophobia = modData.StartingTraits[ETWTraitsRegistry.HOMICHLOPHOBIA:toString()]
-			local startedWithHomichlophile = modData.StartingTraits[ETWTraitsRegistry.HOMICHLOPHILE:toString()]
 			local panic = player:getStats():get(CharacterStat.PANIC) -- 0-100
 			local fogGain = fogIntensity * SBvars.FogSystemCounterIncreaseMultiplier
-			fogGain = fogGain
-				/ ((SBvars.AffinitySystem and startedWithHomichlophobia) and SBvars.AffinitySystemLoseDivider or 1)
-			fogGain = fogGain
-				* ((SBvars.AffinitySystem and startedWithHomichlophile) and SBvars.AffinitySystemGainMultiplier or 1)
 			local fogDecrease = fogIntensity
 				* (2 * panic / 100)
 				* SBvars.FogSystemCounterDecreaseMultiplier
 				* (isKill and 0.25 or 1)
-			fogDecrease = fogDecrease
-				/ ((SBvars.AffinitySystem and startedWithHomichlophile) and SBvars.AffinitySystemLoseDivider or 1)
-			fogDecrease = fogDecrease
-				* ((SBvars.AffinitySystem and startedWithHomichlophobia) and SBvars.AffinitySystemGainMultiplier or 1)
+			local counterChange = ETW_CommonFunctions.applyAffinityToDirectionalChange(
+				modData,
+				fogGain - fogDecrease,
+				ETWTraitsRegistry.HOMICHLOPHOBIA,
+				ETWTraitsRegistry.HOMICHLOPHILE
+			)
 			local SBCounter = SBvars.FogSystemCounter
 			local lowerBoundary = -SBCounter * 2
 			local upperBoundary = SBCounter * 2
-			local finalFogCounter = modData.FogCounter + fogGain - fogDecrease
+			local finalFogCounter = modData.FogCounter + counterChange
 			finalFogCounter = math.max(finalFogCounter, lowerBoundary)
 			finalFogCounter = math.min(finalFogCounter, upperBoundary)
 			modData.FogCounter = finalFogCounter

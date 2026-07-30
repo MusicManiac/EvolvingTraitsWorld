@@ -158,6 +158,35 @@ function ETW_CommonFunctions.round(num, numDecimalPlaces)
 	return math.floor(num * mult + 0.5) / mult
 end
 
+---Applies Affinity System gain/loss rates to progress toward either of two opposing starting traits. This function assumes that negative change = moving towards negative change, and positive change = moving towards positive change.
+---@param modData ETW_ModData
+---@param change number the change to apply to progress, can be positive or negative
+---@param negativeTrait CharacterTrait|nil Trait favored by negative progress
+---@param positiveTrait CharacterTrait|nil Trait favored by positive progress
+---@return number
+function ETW_CommonFunctions.applyAffinityToDirectionalChange(modData, change, negativeTrait, positiveTrait)
+	if not SBvars.AffinitySystem or change == 0 then
+		return change
+	end
+
+	local startingTraits = modData.StartingTraits
+	local startedWithNegativeTrait = negativeTrait ~= nil and startingTraits[negativeTrait:toString()] == true
+	local startedWithPositiveTrait = positiveTrait ~= nil and startingTraits[positiveTrait:toString()] == true
+	if change < 0 then
+		if startedWithNegativeTrait then
+			return change * SBvars.AffinitySystemGainMultiplier
+		elseif startedWithPositiveTrait then
+			return change / SBvars.AffinitySystemLoseDivider
+		end
+	elseif startedWithPositiveTrait then
+		return change * SBvars.AffinitySystemGainMultiplier
+	elseif startedWithNegativeTrait then
+		return change / SBvars.AffinitySystemLoseDivider
+	end
+
+	return change
+end
+
 ---Function that returns ArrayList of all players in case its called on Server, all ever loaded players in case it's called on MP Client, or local player list in case it's called on SP. If player is passed as argument, returns list with only that player.
 ---Later can be looped over like:
 ---
