@@ -1,5 +1,5 @@
 ## v.12.5.0
-###### 29 Jul 2026
+###### 30 Jul 2026
 
 - General:
   - Removed the Weight System.
@@ -12,7 +12,7 @@
 	- Found a bunch of bugs in Affinity system, fixed a bunch.
 
 ## v.12.4.0
-###### 30 Jul 2026
+###### 29 Jul 2026
 
 - General:
   - REMOVED SUPPORT FOR B41. Legacy version can be found [here](https://steamcommunity.com/sharedfiles/filedetails/?id=3773982162). You do not lose any progress even if you load save without mod, just gotta re-enable b41 version if you are staying on b41.
