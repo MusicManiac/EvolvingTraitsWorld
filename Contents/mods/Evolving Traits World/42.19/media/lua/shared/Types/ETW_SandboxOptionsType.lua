@@ -91,6 +91,7 @@
 --- @field PluviophileMultiplier number
 --- @field PluviophobiaMultiplier number
 --- @field RestorationExpertChance integer
+--- @field SlowEaterSpeed integer
 -- Complex Perks
 --- @field Asthmatic boolean
 --- @field AsthmaticCounter integer

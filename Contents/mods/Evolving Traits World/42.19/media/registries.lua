@@ -24,6 +24,7 @@ ETW_Registry = ETW_Registry or {}
 ---@field PET_THERAPY CharacterTrait
 ---@field POLEARM_FIGHTER CharacterTrait
 ---@field RESTORATION_EXPERT CharacterTrait
+---@field SLOW_EATER CharacterTrait
 ETW_Registry.traits = {
 	AV_CLUB = CharacterTrait.register("ETW:AVClub"),
 	AXE_THROWER = CharacterTrait.register("ETW:AxeThrower"),
@@ -47,5 +48,6 @@ ETW_Registry.traits = {
 	PET_THERAPY = CharacterTrait.register("ETW:PetTherapy"),
 	POLEARM_FIGHTER = CharacterTrait.register("ETW:PolearmFighter"),
 	RESTORATION_EXPERT = CharacterTrait.register("ETW:RestorationExpert"),
+	SLOW_EATER = CharacterTrait.register("ETW:SlowEater"),
 	STICK_FIGHTER = CharacterTrait.register("ETW:StickFighter"),
 }
