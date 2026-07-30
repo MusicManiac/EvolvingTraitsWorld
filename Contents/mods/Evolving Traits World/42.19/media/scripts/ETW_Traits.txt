@@ -53,6 +53,7 @@ module ETW
         Cost = 1,
         UIName = UI_trait_FastEater,
         UIDescription = UI_trait_FastEaterDesc,
+        MutuallyExclusiveTraits = ETW:SlowEater,
     }
 
     character_trait_definition ETW:FurnitureAssembler
@@ -237,6 +238,17 @@ module ETW
         UIName = UI_trait_RestorationExpert,
         UIDescription = UI_trait_RestorationExpertDesc,
         XPBoosts = Maintenance=1,
+    }
+
+    character_trait_definition ETW:SlowEater
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:SlowEater,
+        Cost = -1,
+        UIName = UI_trait_SlowEater,
+        UIDescription = UI_trait_SlowEaterDesc,
+        MutuallyExclusiveTraits = ETW:FastEater,
     }
 
     character_trait_definition ETW:StickFighter

@@ -738,6 +738,15 @@ option EvolvingTraitsWorld.RestorationExpertChance
 	page = ETWTraitsSettings,
 	translation = ETW_RestorationExpertChance,
 }
+option EvolvingTraitsWorld.SlowEaterSpeed
+{
+	type = integer,
+	min = 0,
+	max = 90,
+	default = 25,
+	page = ETWTraitsSettings,
+	translation = ETW_SlowEaterSpeed,
+}
 
 option EvolvingTraitsWorld.COMPLEX_PERKS
 {
