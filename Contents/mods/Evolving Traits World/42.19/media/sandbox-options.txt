@@ -648,6 +648,15 @@ option EvolvingTraitsWorld.BloodlustMultiplier
 	page = ETWTraitsSettings,
 	translation = ETW_BloodlustMultiplier,
 }
+option EvolvingTraitsWorld.FastEaterSpeed
+{
+	type = integer,
+	min = 0,
+	max = 90,
+	default = 25,
+	page = ETWTraitsSettings,
+	translation = ETW_FastEaterSpeed,
+}
 option EvolvingTraitsWorld.HoarderWeight
 {
 	type = double,

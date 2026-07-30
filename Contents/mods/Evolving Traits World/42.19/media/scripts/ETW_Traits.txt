@@ -45,6 +45,16 @@ module ETW
         GrantedRecipes = MakeMetalSheet;MakeSmallMetalSheet;CutSmallMetalSheet;Split_Steel_Sheet_Into_Small_Sheets;Cut_Steel_Sheet_Into_Small_Sheets,
     }
 
+    character_trait_definition ETW:FastEater
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:FastEater,
+        Cost = 1,
+        UIName = UI_trait_FastEater,
+        UIDescription = UI_trait_FastEaterDesc,
+    }
+
     character_trait_definition ETW:FurnitureAssembler
     {
         IsProfessionTrait = false,

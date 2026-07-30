@@ -81,6 +81,7 @@
 --- @field SleepMoodle boolean
 -- Traits
 --- @field BloodlustMultiplier number
+--- @field FastEaterSpeed integer
 --- @field HoarderWeight number
 --- @field HomichlophileMultiplier number
 --- @field HomichlophobiaMultiplier number
