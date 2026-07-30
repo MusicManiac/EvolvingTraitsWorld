@@ -84,6 +84,8 @@
     "Sandbox_ETW_EagleEyedDistance": "Eagle Eyed Distance",
     "Sandbox_ETW_EagleEyedDistance_tooltip": "At what distance must a zombie be to count this as a kill to Eagle-Eyed kill counter. For vanilla would recommend leaving at 20, for mods that add good firearms (Gunfighter + Brita for example), would recommend setting to 25 or so",
     "Sandbox_ETW_EagleEyedKills": "Eagle Eyed Kills",
+    "Sandbox_ETW_FastEaterSpeed": "Fast Eater time reduction (%)",
+    "Sandbox_ETW_FastEaterSpeed_tooltip": "Percentage by which the Fast Eater trait reduces the time needed to eat food. Does not affect drinking or smoking. Set to 0 to disable the speed bonus.",
     "Sandbox_ETW_FearOfLocationsExclusiveFears": "Claustrophobic and Agoraphobic are Exclusive",
     "Sandbox_ETW_FearOfLocationsExclusiveFears_tooltip": "If enabled, you will only ever have Claustrophobic OR Agoraphobic, whichever has the lower counter",
     "Sandbox_ETW_FearOfLocationsSystem": "Fear Of Locations System",

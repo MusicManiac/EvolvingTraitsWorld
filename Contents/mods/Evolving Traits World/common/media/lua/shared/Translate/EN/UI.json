@@ -72,6 +72,8 @@
     "UI_trait_BloodlustDesc":  "You find great joy in culling the undead.<br>You gain happiness and lose stress and panic from killing zombies.",
     "UI_trait_BodyWorkEnthusiast":  "Bodywork Enthusiast",
     "UI_trait_BodyWorkEnthusiastDesc":  "You enjoy repairing and restoring the bodies of old cars",
+    "UI_trait_FastEater":  "Fast Eater",
+    "UI_trait_FastEaterDesc":  "You waste no time eating. Food takes less time to consume.",
     "UI_trait_FurnitureAssembler":  "Furniture Assembler",
     "UI_trait_FurnitureAssemblerDesc":  "You are a fan of putting together your own furniture",
     "UI_trait_GunEnthusiast":  "Gun Enthusiast",

@@ -6,6 +6,7 @@ ETW_Registry = ETW_Registry or {}
 ---@field AXE_THROWER CharacterTrait
 ---@field BLOODLUST CharacterTrait
 ---@field BODYWORK_ENTHUSIAST CharacterTrait
+---@field FAST_EATER CharacterTrait
 ---@field FURNITURE_ASSEMBLER CharacterTrait
 ---@field GUN_ENTHUSIAST CharacterTrait
 ---@field GYM_RAT CharacterTrait
@@ -28,6 +29,7 @@ ETW_Registry.traits = {
 	AXE_THROWER = CharacterTrait.register("ETW:AxeThrower"),
 	BLOODLUST = CharacterTrait.register("ETW:Bloodlust"),
 	BODYWORK_ENTHUSIAST = CharacterTrait.register("ETW:BodyWorkEnthusiast"),
+	FAST_EATER = CharacterTrait.register("ETW:FastEater"),
 	FURNITURE_ASSEMBLER = CharacterTrait.register("ETW:FurnitureAssembler"),
 	GUN_ENTHUSIAST = CharacterTrait.register("ETW:GunEnthusiast"),
 	GYM_RAT = CharacterTrait.register("ETW:GymRat"),
