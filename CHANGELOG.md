@@ -1,5 +1,18 @@
+## v.12.5.0
+###### 29 Jul 2026
+
+- General:
+  - Removed the Weight System.
+  - Added the Healer System. Properly tending active wounds builds progress toward Fast Healer, while wounds needing treatment reduce progress toward Slow Healer; having no wounds does not move the counter.
+  - Added a configurable Healer System counter, treatment multipliers, and a Non-permanent Traits progress bar.
+  - Added a client mod option for customizing the width of tooltips on the ETW character page.
+  - Added a small label in UI to remind people about affinity system existing.
+- Fixes:
+  - Fixed an error when the player disabled every sound in client options instead of only disabling sound notifications.
+	- Found a bunch of bugs in Affinity system, fixed a bunch.
+
 ## v.12.4.0
-###### 22 Jul 2026
+###### 30 Jul 2026
 
 - General:
   - REMOVED SUPPORT FOR B41. Legacy version can be found [here](https://steamcommunity.com/sharedfiles/filedetails/?id=3773982162). You do not lose any progress even if you load save without mod, just gotta re-enable b41 version if you are staying on b41.
