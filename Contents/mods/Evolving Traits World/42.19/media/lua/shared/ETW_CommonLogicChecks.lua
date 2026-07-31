@@ -602,6 +602,24 @@ function ETW_CommonLogicChecks.ReaderSystemShouldExecute(player)
 	end
 end
 
+---Returns true if the Eating Speed System should execute
+---@param player IsoPlayer|nil the player to check for
+---@return boolean boolean true if the Eating Speed System should execute, false otherwise
+function ETW_CommonLogicChecks.	EatingSpeedSystemShouldExecute(player)
+	if
+		SBvars.EatingSpeedSystem == true
+		and (
+			(player and not player:hasTrait(ETWTraitsRegistry.FAST_EATER))
+			or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER
+		)
+		and (SBvars.TraitsLockSystemCanLoseNegative or SBvars.TraitsLockSystemCanGainPositive)
+	then
+		return true
+	else
+		return false
+	end
+end
+
 ---Returns true if the Furniture Assembler System should execute
 ---@param player IsoPlayer|nil the player to check for
 ---@return boolean boolean true if the Furniture Assembler System should execute, false otherwise
