@@ -1,3 +1,14 @@
+## v.12.6.0
+###### 30 Jul 2026
+
+- General:
+  - New trait: Fast Eater. Does exactly what you think it does. Sandbox settings included.
+  - New trait: Slow Eater. Also does exactly what you think it does. Sandbox settings included.
+  - Added the Eating Speed System. Base duration values from completed food-eating actions build progress toward losing Slow Eater and gaining Fast Eater; interrupted actions do not count.
+- Fix:
+	- Fixed read book pages not being registered in MP.
+	- Potential fix (cuz can't recreate) on bloodlust moodle throwing errors in MP.
+
 ## v.12.5.0
 ###### 30 Jul 2026
 
