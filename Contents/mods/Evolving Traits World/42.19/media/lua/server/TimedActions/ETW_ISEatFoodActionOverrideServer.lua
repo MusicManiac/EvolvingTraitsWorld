@@ -2,7 +2,13 @@ require("TimedActions/ISEatFoodAction")
 
 local ETW_CommonFunctions = require("ETW_CommonFunctions")
 local ETW_CommonLogicChecks = require("ETW_CommonLogicChecks")
-local ETW_TimedActionsSharedLogic = require("TimedActions/ETW_TimedActionsSharedLogic")
+local ETW_Registry = require("ETW_Registry")
+
+---@type EvolvingTraitsWorldSandboxVars
+local SBvars = SandboxVars.EvolvingTraitsWorld
+
+---@type EvolvingTraitsWorldTraitsRegistries
+local ETWTraitsRegistry = ETW_Registry.traits
 
 local FILENAME = "ETW_ISEatFoodActionOverrideServer.lua"
 if
@@ -16,47 +22,35 @@ end
 
 ---@type fun(...: string)
 local logETW = ETW_CommonFunctions.log
+local gameMode = ETW_CommonFunctions.gameMode()
 
 local ACTION_UNITS_PER_MINUTE = 3600
-local currentlyEating = {}
 
-local original_ISEatFoodAction_start = ISEatFoodAction.start
----Starts a session used to account for both completed and interrupted eating actions.
-function ISEatFoodAction:start()
-	logETW("ETW Logger | ISEatFoodAction:start(): caught")
-	local username = self.character:getUsername()
-	currentlyEating[username] = nil
-	if
-		ETW_CommonLogicChecks.EatingSpeedSystemShouldExecute(self.character)
-		and ETW_TimedActionsSharedLogic.isFoodEatingAction(self)
-	then
-		currentlyEating[username] = {
-			itemId = self.item:getID(),
-			itemType = self.item:getFullType(),
-			duration = math.max(0, self.maxTime or 0),
-		}
-	end
-	return original_ISEatFoodAction_start(self)
-end
+local original_ISEatFoodAction_getDuration = ISEatFoodAction.getDuration
 
----Returns and removes the eating session when it matches the current food item.
----@param action ISEatFoodAction
----@return table|nil
-local function takeEatingSession(action)
-	local username = action.character:getUsername()
-	local eatingSession = currentlyEating[username]
-	currentlyEating[username] = nil
-	if
-		eatingSession
-		and eatingSession.itemId == action.item:getID()
-		and eatingSession.itemType == action.item:getFullType()
-	then
-		return eatingSession
+---Applies the eating-speed traits after vanilla has calculated the duration so
+---portion sizes, utensils, and item-specific EatTime values keep working.
+---@return number
+function ISEatFoodAction:getDuration()
+	local duration = original_ISEatFoodAction_getDuration(self)
+	if duration <= 1 then
+		return duration
 	end
-	if eatingSession then
-		logETW("ETW Logger | ISEatFoodAction: eating session does not match the current food; ignoring it")
+
+	local item = self.item
+	local isFood = item ~= nil
+		and item:getCustomMenuOption() ~= getText("ContextMenu_Drink")
+		and not item:hasTag(ItemTag.SMOKABLE)
+	if isFood and self.character:hasTrait(ETW_Registry.traits.FAST_EATER) then
+		local reduction = PZMath.clamp(SBvars.FastEaterSpeed or 25, 0, 90) / 100
+		return math.max(1, duration * (1 - reduction))
 	end
-	return nil
+	if isFood and self.character:hasTrait(ETW_Registry.traits.SLOW_EATER) then
+		local increase = PZMath.clamp(SBvars.SlowEaterSpeed or 25, 0, 90) / 100
+		return duration * (1 + increase)
+	end
+
+	return duration
 end
 
 ---Returns the best available progress for a completed or interrupted action.
@@ -67,47 +61,150 @@ local function getEatingProgress(action)
 	return PZMath.clamp(progress or 0, 0, 1)
 end
 
----Records elapsed action time and checks the Slow/Fast Eater thresholds.
+---Removes Slow Eater and adds Fast Eater when the Eating Speed System thresholds are reached.
+---@param player IsoPlayer
+---@param modData EvolvingTraitsWorldModData
+local function checkEatingSpeedTraits(player, modData)
+	local counter = modData.MinutesSpentEating or 0
+	local target = SBvars.EatingSpeedSystemMinutes or 60
+	if
+		player:hasTrait(ETWTraitsRegistry.SLOW_EATER)
+		and counter >= target / 2
+		and SBvars.TraitsLockSystemCanLoseNegative
+	then
+		if
+			SBvars.DelayedTraitsSystem
+			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.SLOW_EATER)
+		then
+			ETW_CommonFunctions.addTraitToDelayTable({
+				modData = modData,
+				trait = ETWTraitsRegistry.SLOW_EATER,
+				player = player,
+				positiveTrait = false,
+				gainingTrait = false,
+			})
+		elseif
+			not SBvars.DelayedTraitsSystem
+			or (
+				SBvars.DelayedTraitsSystem
+					and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.SLOW_EATER)
+			)
+		then
+			ETW_CommonFunctions.removeTraitFromPlayer({
+				player = player,
+				trait = ETWTraitsRegistry.SLOW_EATER,
+				positiveTrait = false,
+			})
+		end
+	elseif
+		not player:hasTrait(ETWTraitsRegistry.SLOW_EATER)
+		and not player:hasTrait(ETWTraitsRegistry.FAST_EATER)
+		and counter >= target
+		and SBvars.TraitsLockSystemCanGainPositive
+	then
+		if
+			SBvars.DelayedTraitsSystem
+			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.FAST_EATER)
+		then
+			ETW_CommonFunctions.addTraitToDelayTable({
+				modData = modData,
+				trait = ETWTraitsRegistry.FAST_EATER,
+				player = player,
+				positiveTrait = true,
+				gainingTrait = true,
+			})
+		elseif
+			not SBvars.DelayedTraitsSystem
+			or (
+				SBvars.DelayedTraitsSystem
+					and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.FAST_EATER)
+			)
+		then
+			ETW_CommonFunctions.addTraitToPlayer({
+				player = player,
+				trait = ETWTraitsRegistry.FAST_EATER,
+				positiveTrait = true,
+			})
+		end
+	end
+end
+
+---Records elapsed action time once and checks the Slow/Fast Eater thresholds.
 ---@param action ISEatFoodAction
----@param eatingSession table
 ---@param progress number
-local function recordEatingTime(action, eatingSession, progress)
-	if not ETW_CommonLogicChecks.EatingSpeedSystemShouldExecute(action.character) then
+local function recordEatingTime(action, progress)
+	if action.etwEatingTimeRecorded then
 		return
 	end
-	local minutesSpentEating = eatingSession.duration * PZMath.clamp(progress, 0, 1) / ACTION_UNITS_PER_MINUTE
+	local item = action.item
+	local isFood = item ~= nil
+		and item:getCustomMenuOption() ~= getText("ContextMenu_Drink")
+		and not item:hasTag(ItemTag.SMOKABLE)
+	local shouldExecute = ETW_CommonLogicChecks.EatingSpeedSystemShouldExecute(action.character)
+	if not shouldExecute or not isFood then
+		logETW(
+			"ETW Logger | ISEatFoodAction: skipped; shouldExecute = "
+				.. tostring(shouldExecute)
+				.. ", isFood = "
+				.. tostring(isFood)
+		)
+		return
+	end
+	local duration = tonumber(action.maxTime) or 0
+	if duration <= 0 then
+		duration = tonumber(action:getDuration()) or 0
+	end
+	duration = math.max(0, duration)
+	local minutesSpentEating = duration * PZMath.clamp(progress, 0, 1) / ACTION_UNITS_PER_MINUTE
 	if minutesSpentEating <= 0 then
+		logETW(
+			"ETW Logger | ISEatFoodAction: no time recorded; duration = "
+				.. duration
+				.. ", progress = "
+				.. progress
+		)
 		return
 	end
+	action.etwEatingTimeRecorded = true
 	local modData = ETW_CommonFunctions.getETWModData(action.character)
 	modData.MinutesSpentEating = (modData.MinutesSpentEating or 0) + minutesSpentEating
 	logETW(
 		"ETW Logger | ISEatFoodAction: minutesSpentEating = " .. minutesSpentEating,
 		"ETW Logger | ISEatFoodAction: modData.MinutesSpentEating = " .. modData.MinutesSpentEating
 	)
-	ETW_TimedActionsSharedLogic.checkEatingSpeedTraits(action.character, modData)
+	checkEatingSpeedTraits(action.character, modData)
 end
 
 local original_ISEatFoodAction_complete = ISEatFoodAction.complete
----Records the full duration on completion, or network progress when the server force-stops the action.
+---Records the full duration when an eating action completes in single-player or on the server.
 function ISEatFoodAction:complete()
 	logETW("ETW Logger | ISEatFoodAction:complete(): caught")
-	local eatingSession = takeEatingSession(self)
-	local progress = self.forceStopped and getEatingProgress(self) or 1
 	local originalReturn = original_ISEatFoodAction_complete(self)
-	if eatingSession then
-		recordEatingTime(self, eatingSession, progress)
-	end
+	recordEatingTime(self, 1)
 	return originalReturn
 end
 
 local original_ISEatFoodAction_stop = ISEatFoodAction.stop
----Records partial duration before vanilla clears an interrupted action's progress.
+---Records partial duration before single-player clears an interrupted action's progress.
 function ISEatFoodAction:stop()
 	logETW("ETW Logger | ISEatFoodAction:stop(): caught")
-	local eatingSession = takeEatingSession(self)
-	if eatingSession then
-		recordEatingTime(self, eatingSession, getEatingProgress(self))
+	if gameMode == ETW_CommonFunctions.GameMode.SP then
+		recordEatingTime(self, getEatingProgress(self))
 	end
 	return original_ISEatFoodAction_stop(self)
+end
+
+local original_ISEatFoodAction_serverStop = ISEatFoodAction.serverStop
+---Records authoritative network progress whenever an eating action finishes on the server.
+function ISEatFoodAction:serverStop()
+	logETW("ETW Logger | ISEatFoodAction:serverStop(): caught")
+	local progress = getEatingProgress(self)
+	logETW(
+		"ETW Logger | ISEatFoodAction:serverStop(): progress = "
+			.. progress
+			.. ", maxTime = "
+			.. tostring(self.maxTime)
+	)
+	recordEatingTime(self, progress)
+	return original_ISEatFoodAction_serverStop(self)
 end
