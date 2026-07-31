@@ -1,13 +1,11 @@
 [url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
 
-v.12.5.0
+v.12.6.0
 
 General:
-	- Removed the Weight System.
-	- Added Healer System. Properly tending active wounds builds progress toward Fast Healer, while wounds needing treatment reduce progress toward Slow Healer; having no wounds does not move the counter.
-	- Added a configurable Healer System counter, treatment multipliers, and a Non-permanent Traits progress bar.
-	- Added a client mod option for customizing the width of tooltips on the ETW character page.
-	- Added a small label in UI to remind people about affinity system existing.
-Fixes:
-	- Fixed error when player disabled every sound in client options instead of just disabling sound notification.
-	- Found a bunch of bugs in Affinity system, fixed a bunch.
+	- New trait: Fast Eater. Does exactly what you think it does. Sandbox settings included.
+	- New trait: Slow Eater. Also does exactly what you think it does. Sandbox settings included.
+	- Added the Eating Speed System. Base duration values from completed food-eating actions build progress toward losing Slow Eater and gaining Fast Eater; interrupted actions do not count.
+Fix:
+	- Fixed read book pages not being registered in MP.
+	- Potential fix (cuz can't recreate) on bloodlust moodle throwing errors in MP.
