@@ -436,6 +436,9 @@ function ISETWUI:createChildren()
 			if ETW_CommonLogicChecks.LearnerSystemShouldExecute(player) then
 				appendLeftBarLabel(labelTexts, getText("Sandbox_ETW_LearnerSystem"))
 			end
+			if ETW_CommonLogicChecks.EatingSpeedSystemShouldExecute(player) then
+				appendLeftBarLabel(labelTexts, getText("Sandbox_ETW_EatingSpeedSystem"))
+			end
 			if ETW_CommonLogicChecks.ReaderSystemShouldExecute(player) then
 				appendLeftBarLabel(labelTexts, getText("Sandbox_ETW_ReaderSystem"))
 			end
@@ -1161,6 +1164,66 @@ function ISETWUI:createChildren()
 				self.barReaderSystem:setHighlightRadius(highlightRadius)
 				self.barReaderSystem:setDoKnob(false)
 				self:addChild(self.barReaderSystem)
+
+				y = y + FONT_HGT_SMALL
+			end
+
+			if ETW_CommonLogicChecks.EatingSpeedSystemShouldExecute(player) then
+				str = "- " .. getCachedTraitUIName(ETWTraitsRegistry.SLOW_EATER)
+				self.labelSlowEaterLose = ISLabel:new(
+					barMidPosition - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelSlowEaterLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self:addChild(self.labelSlowEaterLose)
+
+				self.labelFastEaterGain = ISLabel:new(
+					barEndPosition,
+					y,
+					FONT_HGT_SMALL,
+					"+ " .. getCachedTraitUIName(ETWTraitsRegistry.FAST_EATER),
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					false
+				)
+				self.labelFastEaterGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self:addChild(self.labelFastEaterGain)
+
+				y = y + FONT_HGT_SMALL
+
+				self.labelEatingSpeedSystemBarName = ISLabel:new(
+					barStartPosition - lineStartPosition,
+					y,
+					FONT_HGT_SMALL,
+					getText("Sandbox_ETW_EatingSpeedSystem"),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					false
+				)
+				self.labelEatingSpeedSystemBarName:setTooltip(
+					getText("Sandbox_ETW_EatingSpeedSystemMinutes_tooltip")
+				)
+				self:addChild(self.labelEatingSpeedSystemBarName)
+
+				self.barEatingSpeedSystem = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
+				self.barEatingSpeedSystem:setGradientTexture(redYellowGreenGradient)
+				self.barEatingSpeedSystem:setHighlightRadius(highlightRadius)
+				self.barEatingSpeedSystem:setDoKnob(false)
+				self:addChild(self.barEatingSpeedSystem)
 
 				y = y + FONT_HGT_SMALL
 			end
@@ -3748,6 +3811,11 @@ function ISETWUI:render()
 		self.barReaderSystem,
 		percentile(0, SBvars.ReaderSystemCounter, modData.PagesReadCounter),
 		getText("UI_ETW_CurrentValue") .. modData.PagesReadCounter
+	)
+	updateBar(
+		self.barEatingSpeedSystem,
+		percentile(0, SBvars.EatingSpeedSystemMinutes or 60, modData.MinutesSpentEating or 0),
+		getText("UI_ETW_CurrentValue") .. formatDecimal(modData.MinutesSpentEating or 0)
 	)
 	updateBar(
 		self.barSleepSystem,

@@ -98,6 +98,22 @@ option EvolvingTraitsWorld.BraverySystemRemovesOtherFearPerks
 	page = ETWSystems,
 	translation = ETW_BraverySystemRemovesOtherFearPerks,
 }
+option EvolvingTraitsWorld.EatingSpeedSystem
+{
+	type = boolean,
+	default = true,
+	page = ETWSystems,
+	translation = ETW_EatingSpeedSystem,
+}
+option EvolvingTraitsWorld.EatingSpeedSystemMinutes
+{
+	type = integer,
+	min = 0,
+	max = 5000,
+	default = 60,
+	page = ETWSystems,
+	translation = ETW_EatingSpeedSystemMinutes,
+}
 option EvolvingTraitsWorld.FearOfLocationsSystem
 {
 	type = boolean,

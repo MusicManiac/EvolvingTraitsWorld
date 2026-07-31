@@ -4,6 +4,86 @@ local ETW_TimedActionsSharedLogic = {}
 local SBvars = SandboxVars.EvolvingTraitsWorld
 
 local ETW_CommonFunctions = require("ETW_CommonFunctions")
+local ETW_Registry = require("ETW_Registry")
+local ETWTraitsRegistry = ETW_Registry.traits
+
+---Returns true when an eat action is consuming food rather than a drink or smokable.
+---@param action ISEatFoodAction
+---@return boolean
+function ETW_TimedActionsSharedLogic.isFoodEatingAction(action)
+	local item = action.item
+	return item ~= nil
+		and item:getCustomMenuOption() ~= getText("ContextMenu_Drink")
+		and not item:hasTag(ItemTag.SMOKABLE)
+end
+
+---Removes Slow Eater and adds Fast Eater when the Eating Speed System thresholds are reached.
+---@param player IsoPlayer
+---@param modData EvolvingTraitsWorldModData
+function ETW_TimedActionsSharedLogic.checkEatingSpeedTraits(player, modData)
+	local counter = modData.MinutesSpentEating or 0
+	local target = SBvars.EatingSpeedSystemMinutes or 60
+	if
+		player:hasTrait(ETWTraitsRegistry.SLOW_EATER)
+		and counter >= target / 2
+		and SBvars.TraitsLockSystemCanLoseNegative
+	then
+		if
+			SBvars.DelayedTraitsSystem
+			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.SLOW_EATER)
+		then
+			ETW_CommonFunctions.addTraitToDelayTable({
+				modData = modData,
+				trait = ETWTraitsRegistry.SLOW_EATER,
+				player = player,
+				positiveTrait = false,
+				gainingTrait = false,
+			})
+		elseif
+			not SBvars.DelayedTraitsSystem
+			or (
+				SBvars.DelayedTraitsSystem
+					and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.SLOW_EATER)
+			)
+		then
+			ETW_CommonFunctions.removeTraitFromPlayer({
+				player = player,
+				trait = ETWTraitsRegistry.SLOW_EATER,
+				positiveTrait = false,
+			})
+		end
+	elseif
+		not player:hasTrait(ETWTraitsRegistry.SLOW_EATER)
+		and not player:hasTrait(ETWTraitsRegistry.FAST_EATER)
+		and counter >= target
+		and SBvars.TraitsLockSystemCanGainPositive
+	then
+		if
+			SBvars.DelayedTraitsSystem
+			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.FAST_EATER)
+		then
+			ETW_CommonFunctions.addTraitToDelayTable({
+				modData = modData,
+				trait = ETWTraitsRegistry.FAST_EATER,
+				player = player,
+				positiveTrait = true,
+				gainingTrait = true,
+			})
+		elseif
+			not SBvars.DelayedTraitsSystem
+			or (
+				SBvars.DelayedTraitsSystem
+					and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.FAST_EATER)
+			)
+		then
+			ETW_CommonFunctions.addTraitToPlayer({
+				player = player,
+				trait = ETWTraitsRegistry.FAST_EATER,
+				positiveTrait = true,
+			})
+		end
+	end
+end
 
 ---Checks if player qualifies for gaining or losing innventory transfer system perks
 ---@param player IsoPlayer player
