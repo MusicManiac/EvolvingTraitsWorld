@@ -22,7 +22,6 @@ end
 
 ---@type fun(...: string)
 local logETW = ETW_CommonFunctions.log
-local gameMode = ETW_CommonFunctions.gameMode()
 
 local original_ISEatFoodAction_getDuration = ISEatFoodAction.getDuration
 
@@ -49,14 +48,6 @@ function ISEatFoodAction:getDuration()
 	end
 
 	return duration
-end
-
----Returns the best available progress for a completed or interrupted action.
----@param action ISEatFoodAction
----@return number
-local function getEatingProgress(action)
-	local progress = action.netAction and action.netAction:getProgress() or action:getJobDelta()
-	return PZMath.clamp(progress or 0, 0, 1)
 end
 
 ---Removes Slow Eater and adds Fast Eater when the Eating Speed System thresholds are reached.
@@ -127,10 +118,9 @@ local function checkEatingSpeedTraits(player, modData)
 	end
 end
 
----Records elapsed action time once and checks the Slow/Fast Eater thresholds.
+---Records a completed food action's base duration and checks the Slow/Fast Eater thresholds.
 ---@param action ISEatFoodAction
----@param progress number
-local function recordEatingTime(action, progress)
+local function recordEatingTime(action)
 	if action.etwEatingTimeRecorded then
 		return
 	end
@@ -149,21 +139,15 @@ local function recordEatingTime(action, progress)
 		return
 	end
 	local baseDuration = math.max(0, tonumber(original_ISEatFoodAction_getDuration(action)) or 0)
-	local recordedDuration = baseDuration * PZMath.clamp(progress, 0, 1)
-	if recordedDuration <= 0 then
-		logETW(
-			"ETW Logger | ISEatFoodAction: no duration recorded; baseDuration = "
-				.. baseDuration
-				.. ", progress = "
-				.. progress
-		)
+	if baseDuration <= 0 then
+		logETW("ETW Logger | ISEatFoodAction: no duration recorded; baseDuration = " .. baseDuration)
 		return
 	end
 	action.etwEatingTimeRecorded = true
 	local modData = ETW_CommonFunctions.getETWModData(action.character)
-	modData.EatingSpeedSystemCounter = (modData.EatingSpeedSystemCounter or 0) + recordedDuration
+	modData.EatingSpeedSystemCounter = (modData.EatingSpeedSystemCounter or 0) + baseDuration
 	logETW(
-		"ETW Logger | ISEatFoodAction: recordedDuration = " .. recordedDuration,
+		"ETW Logger | ISEatFoodAction: recordedDuration = " .. baseDuration,
 		"ETW Logger | ISEatFoodAction: modData.EatingSpeedSystemCounter = "
 			.. modData.EatingSpeedSystemCounter
 	)
@@ -175,31 +159,6 @@ local original_ISEatFoodAction_complete = ISEatFoodAction.complete
 function ISEatFoodAction:complete()
 	logETW("ETW Logger | ISEatFoodAction:complete(): caught")
 	local originalReturn = original_ISEatFoodAction_complete(self)
-	recordEatingTime(self, 1)
+	recordEatingTime(self)
 	return originalReturn
-end
-
-local original_ISEatFoodAction_stop = ISEatFoodAction.stop
----Records partial duration before single-player clears an interrupted action's progress.
-function ISEatFoodAction:stop()
-	logETW("ETW Logger | ISEatFoodAction:stop(): caught")
-	if gameMode == ETW_CommonFunctions.GameMode.SP then
-		recordEatingTime(self, getEatingProgress(self))
-	end
-	return original_ISEatFoodAction_stop(self)
-end
-
-local original_ISEatFoodAction_serverStop = ISEatFoodAction.serverStop
----Records authoritative network progress whenever an eating action finishes on the server.
-function ISEatFoodAction:serverStop()
-	logETW("ETW Logger | ISEatFoodAction:serverStop(): caught")
-	local progress = getEatingProgress(self)
-	logETW(
-		"ETW Logger | ISEatFoodAction:serverStop(): progress = "
-			.. progress
-			.. ", maxTime = "
-			.. tostring(self.maxTime)
-	)
-	recordEatingTime(self, progress)
-	return original_ISEatFoodAction_serverStop(self)
 end
