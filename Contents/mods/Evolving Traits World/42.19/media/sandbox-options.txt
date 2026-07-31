@@ -105,14 +105,14 @@ option EvolvingTraitsWorld.EatingSpeedSystem
 	page = ETWSystems,
 	translation = ETW_EatingSpeedSystem,
 }
-option EvolvingTraitsWorld.EatingSpeedSystemMinutes
+option EvolvingTraitsWorld.EatingSpeedSystemCounter
 {
 	type = integer,
 	min = 0,
-	max = 5000,
-	default = 60,
+	max = 1000000,
+	default = 216000,
 	page = ETWSystems,
-	translation = ETW_EatingSpeedSystemMinutes,
+	translation = ETW_EatingSpeedSystemCounter,
 }
 option EvolvingTraitsWorld.FearOfLocationsSystem
 {
