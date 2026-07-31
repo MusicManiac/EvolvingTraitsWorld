@@ -21,34 +21,47 @@ end
 local currentlyReadingBook = {}
 local DEFAULT_NUMBER_OF_PAGES = 5
 
-local original_ISReadABook_start = ISReadABook.start
----Overwriting ISReadABook:start() here to insert ETW logic catching player reading books
-function ISReadABook:start()
-	logETW("ETW Logger | ISReadABook:start(): caught")
-	local username = self.character:getUsername()
+---@param action ISReadABook
+local function startReadingSession(action)
+	local username = action.character:getUsername()
 	currentlyReadingBook[username] = nil
-	if ETW_CommonLogicChecks.ReaderSystemShouldExecute(self.character) then
-		local itemNumberOfPages = self.item:getNumberOfPages()
+	if ETW_CommonLogicChecks.ReaderSystemShouldExecute(action.character) then
+		local itemNumberOfPages = action.item:getNumberOfPages()
 		local hasDefinedPages = itemNumberOfPages > 0
 		local numberOfPages = hasDefinedPages and itemNumberOfPages or DEFAULT_NUMBER_OF_PAGES
-		local numberOfAlreadyReadPages = hasDefinedPages and self.item:getAlreadyReadPages() or 0
+		local numberOfAlreadyReadPages = hasDefinedPages and action.item:getAlreadyReadPages() or 0
 		logETW(
-			"ETW Logger | ISReadABook:start(): numberOfPages = "
+			"ETW Logger | ISReadABook: reading session started: numberOfPages = "
 				.. numberOfPages
 				.. ", numberOfAlreadyReadPages = "
 				.. numberOfAlreadyReadPages
 		)
 
 		currentlyReadingBook[username] = {
-			itemId = self.item:getID(),
-			itemType = self.item:getFullType(),
+			itemId = action.item:getID(),
+			itemType = action.item:getFullType(),
 			numberOfPages = numberOfPages,
 			hasDefinedPages = hasDefinedPages,
 			startPage = numberOfAlreadyReadPages,
 		}
 	end
+end
+
+local original_ISReadABook_start = ISReadABook.start
+---Overwriting ISReadABook:start() here to insert ETW logic catching player reading books
+function ISReadABook:start()
+	logETW("ETW Logger | ISReadABook:start(): caught")
+	startReadingSession(self)
 	local originalReturn = original_ISReadABook_start(self)
 	return originalReturn
+end
+
+local original_ISReadABook_serverStart = ISReadABook.serverStart
+---The MP server starts networked timed actions through serverStart(), not start().
+function ISReadABook:serverStart()
+	logETW("ETW Logger | ISReadABook:serverStart(): caught")
+	startReadingSession(self)
+	return original_ISReadABook_serverStart(self)
 end
 
 ---Returns and removes the reading session for this action when it matches the book that was opened.
@@ -139,11 +152,42 @@ local function checkReaderTraits(player, modData)
 	end
 end
 
+---Credits the pages read during a completed or interrupted reading session.
+---@param action ISReadABook
+---@param completed boolean
+local function creditReadingSession(action, completed)
+	local readingSession = takeReadingSession(action)
+	if not readingSession or not ETW_CommonLogicChecks.ReaderSystemShouldExecute(action.character) then
+		return
+	end
+
+	local pagesRead = 0
+	if readingSession.hasDefinedPages then
+		local endPage = completed and readingSession.numberOfPages or action.item:getAlreadyReadPages()
+		pagesRead = math.max(
+			0,
+			math.min(endPage, readingSession.numberOfPages) - readingSession.startPage
+		)
+	elseif completed then
+		pagesRead = readingSession.numberOfPages
+	end
+
+	if pagesRead > 0 then
+		local modData = ETW_CommonFunctions.getETWModData(action.character)
+		modData.PagesReadCounter = modData.PagesReadCounter + pagesRead
+		logETW(
+			"ETW Logger | ISReadABook: pagesRead = " .. pagesRead,
+			"ETW Logger | ISReadABook: modData.PagesReadCounter = " .. modData.PagesReadCounter
+		)
+		checkReaderTraits(action.character, modData)
+	end
+end
+
 local original_ISReadABook_complete = ISReadABook.complete
 ---Overwriting ISReadABook:complete() here to insert ETW logic catching player reading books
 function ISReadABook:complete()
 	logETW("ETW Logger | ISReadABook:complete(): caught")
-	local readingSession = takeReadingSession(self)
+	local completed = not (isServer() and self.forceStopped)
 	local learnedRecipes = self.item:getLearnedRecipes()
 	local isHerbalistJournal = learnedRecipes
 		and not learnedRecipes:isEmpty()
@@ -152,21 +196,7 @@ function ISReadABook:complete()
 		and self.character:getAlreadyReadBook():contains(self.item:getFullType())
 	local originalReturn = original_ISReadABook_complete(self)
 	local modData = ETW_CommonFunctions.getETWModData(self.character)
-	if
-		readingSession
-		and ETW_CommonLogicChecks.ReaderSystemShouldExecute(self.character)
-		and not (isServer() and self.forceStopped)
-	then
-		local pagesRead = math.max(0, readingSession.numberOfPages - readingSession.startPage)
-		if pagesRead > 0 then
-			modData.PagesReadCounter = modData.PagesReadCounter + pagesRead
-			logETW(
-				"ETW Logger | ISReadABook:complete(): pagesRead = " .. pagesRead,
-				"ETW Logger | ISReadABook:complete(): modData.PagesReadCounter = " .. modData.PagesReadCounter
-			)
-			checkReaderTraits(self.character, modData)
-		end
-	end
+	creditReadingSession(self, completed)
 	if
 		ETW_CommonLogicChecks.HerbalistShouldExecute(self.character)
 		and isHerbalistJournal
@@ -197,33 +227,17 @@ local original_ISReadABook_stop = ISReadABook.stop
 ---Overwriting ISReadABook:stop() here to insert ETW logic catching player reading books
 function ISReadABook:stop()
 	logETW("ETW Logger | ISReadABook:stop(): caught")
-	local readingSession = takeReadingSession(self)
-	if
-		readingSession
-		and readingSession.hasDefinedPages
-		and ETW_CommonLogicChecks.ReaderSystemShouldExecute(self.character)
-	then
-		local numberOfAlreadyReadPages = self.item:getAlreadyReadPages()
-		logETW(
-			"ETW Logger | ISReadABook:stop(): numberOfPages = "
-				.. readingSession.numberOfPages
-				.. ", numberOfAlreadyReadPages = "
-				.. numberOfAlreadyReadPages
-		)
-		local modData = ETW_CommonFunctions.getETWModData(self.character)
-		local pagesRead = math.max(
-			0,
-			math.min(numberOfAlreadyReadPages, readingSession.numberOfPages) - readingSession.startPage
-		)
-		if pagesRead > 0 then
-			modData.PagesReadCounter = modData.PagesReadCounter + pagesRead
-			logETW(
-				"ETW Logger | ISReadABook:stop(): pagesRead = " .. pagesRead,
-				"ETW Logger | ISReadABook:stop(): modData.PagesReadCounter = " .. modData.PagesReadCounter
-			)
-			checkReaderTraits(self.character, modData)
-		end
-	end
+	creditReadingSession(self, false)
 	local originalReturn = original_ISReadABook_stop(self)
 	return originalReturn
+end
+
+local original_ISReadABook_serverStop = ISReadABook.serverStop
+---The MP server reports interrupted networked timed actions through serverStop().
+function ISReadABook:serverStop()
+	logETW("ETW Logger | ISReadABook:serverStop(): caught")
+	creditReadingSession(self, false)
+	if original_ISReadABook_serverStop then
+		return original_ISReadABook_serverStop(self)
+	end
 end
