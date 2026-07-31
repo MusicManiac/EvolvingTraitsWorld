@@ -37,16 +37,63 @@ MF.createMoodle("SleepHealthMoodle")
 
 local bloodlustMeterCapacity = 72
 
----Checks whether MoodleFramework has initialized the moodle modData entry yet.
+---Ensures MoodleFramework's backing modData entry exists for an initialized moodle.
 ---@param player IsoPlayer
 ---@param moodleName string
-local function hasMoodleModData(player, moodleName)
+---@return boolean
+local function ensureMoodleModData(player, moodleName)
 	if not player then
 		return false
 	end
 	local modData = player:getModData()
-	return modData.Moodles ~= nil and modData.Moodles[moodleName] ~= nil
+	if type(modData.Moodles) ~= "table" then
+		modData.Moodles = {}
+	end
+	local moodleModData = modData.Moodles[moodleName]
+	local restored = false
+	if type(moodleModData) ~= "table" then
+		modData.Moodles[moodleName] = {
+			Level = 0,
+			GoodBadNeutral = 0,
+			Value = 0.5,
+		}
+		restored = true
+	else
+		if moodleModData.Level == nil then
+			moodleModData.Level = 0
+			restored = true
+		end
+		if moodleModData.GoodBadNeutral == nil then
+			moodleModData.GoodBadNeutral = 0
+			restored = true
+		end
+		if moodleModData.Value == nil then
+			moodleModData.Value = 0.5
+			restored = true
+		end
+	end
+	if restored then
+		logETW("ETW Logger | ensureMoodleModData(): restored missing backing data for " .. moodleName)
+	end
+	return true
 end
+
+---Repairs backing data that may be lost when player modData is synchronized in multiplayer.
+---@param player IsoPlayer
+local function repairInitializedMoodleModData(player)
+	if player ~= getPlayer() then
+		return
+	end
+	if MF.getMoodle("BloodlustMoodle") then
+		ensureMoodleModData(player, "BloodlustMoodle")
+	end
+	if MF.getMoodle("SleepHealthMoodle") then
+		ensureMoodleModData(player, "SleepHealthMoodle")
+	end
+end
+
+Events.OnPlayerUpdate.Remove(repairInitializedMoodleModData)
+Events.OnPlayerUpdate.Add(repairInitializedMoodleModData)
 
 ---@class bloodlustMoodleArgs
 ---@field hide boolean
@@ -57,10 +104,10 @@ end
 function ETW_Moodles.bloodlustMoodleUpdate(player, args)
 	player = player or getPlayer()
 	if SBvars.BloodlustMoodle == true then
-		if not hasMoodleModData(player, "BloodlustMoodle") then
+		local moodle = MF.getMoodle("BloodlustMoodle")
+		if not moodle or not ensureMoodleModData(player, "BloodlustMoodle") then
 			return
 		end
-		local moodle = MF.getMoodle("BloodlustMoodle")
 		local modData = ETW_CommonFunctions.getETWModData(player)
 		if not modData then
 			logETW("ETW Logger | bloodlustMoodleUpdate(): modData is nil, returning early")
@@ -104,11 +151,11 @@ end
 function ETW_Moodles.sleepHealthMoodleUpdate(player, args)
 	player = player or getPlayer()
 	if SBvars.SleepMoodle == true then
-		if not hasMoodleModData(player, "SleepHealthMoodle") then
+		local moodle = MF.getMoodle("SleepHealthMoodle")
+		if not moodle or not ensureMoodleModData(player, "SleepHealthMoodle") then
 			return
 		end
 		modOptions = PZAPI.ModOptions:getOptions("ETWModOptions")
-		local moodle = MF.getMoodle("SleepHealthMoodle")
 		moodle:setThresholds(1.5, 3, 4.5, 5.999, 6.001, 7.5, 9, 10.5)
 		if player == getPlayer() and modOptions:getOption("EnableSleepHealthMoodle"):getValue() and not args.hide then
 			logETW(
