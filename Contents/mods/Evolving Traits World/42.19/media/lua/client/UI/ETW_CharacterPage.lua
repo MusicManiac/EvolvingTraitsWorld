@@ -1215,7 +1215,7 @@ function ISETWUI:createChildren()
 					false
 				)
 				self.labelEatingSpeedSystemBarName:setTooltip(
-					getText("Sandbox_ETW_EatingSpeedSystemMinutes_tooltip")
+					getText("Sandbox_ETW_EatingSpeedSystemCounter_tooltip")
 				)
 				self:addChild(self.labelEatingSpeedSystemBarName)
 
@@ -3814,8 +3814,8 @@ function ISETWUI:render()
 	)
 	updateBar(
 		self.barEatingSpeedSystem,
-		percentile(0, SBvars.EatingSpeedSystemMinutes or 60, modData.MinutesSpentEating or 0),
-		getText("UI_ETW_CurrentValue") .. formatDecimal(modData.MinutesSpentEating or 0)
+		percentile(0, SBvars.EatingSpeedSystemCounter or 216000, modData.EatingSpeedSystemCounter or 0),
+		getText("UI_ETW_CurrentValue") .. formatDecimal(modData.EatingSpeedSystemCounter or 0)
 	)
 	updateBar(
 		self.barSleepSystem,

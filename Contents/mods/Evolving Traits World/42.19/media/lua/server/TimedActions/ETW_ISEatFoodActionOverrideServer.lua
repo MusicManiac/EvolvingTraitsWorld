@@ -24,8 +24,6 @@ end
 local logETW = ETW_CommonFunctions.log
 local gameMode = ETW_CommonFunctions.gameMode()
 
-local ACTION_UNITS_PER_MINUTE = 3600
-
 local original_ISEatFoodAction_getDuration = ISEatFoodAction.getDuration
 
 ---Applies the eating-speed traits after vanilla has calculated the duration so
@@ -65,8 +63,8 @@ end
 ---@param player IsoPlayer
 ---@param modData EvolvingTraitsWorldModData
 local function checkEatingSpeedTraits(player, modData)
-	local counter = modData.MinutesSpentEating or 0
-	local target = SBvars.EatingSpeedSystemMinutes or 60
+	local counter = modData.EatingSpeedSystemCounter or 0
+	local target = SBvars.EatingSpeedSystemCounter or 216000
 	if
 		player:hasTrait(ETWTraitsRegistry.SLOW_EATER)
 		and counter >= target / 2
@@ -150,16 +148,12 @@ local function recordEatingTime(action, progress)
 		)
 		return
 	end
-	local duration = tonumber(action.maxTime) or 0
-	if duration <= 0 then
-		duration = tonumber(action:getDuration()) or 0
-	end
-	duration = math.max(0, duration)
-	local minutesSpentEating = duration * PZMath.clamp(progress, 0, 1) / ACTION_UNITS_PER_MINUTE
-	if minutesSpentEating <= 0 then
+	local baseDuration = math.max(0, tonumber(original_ISEatFoodAction_getDuration(action)) or 0)
+	local recordedDuration = baseDuration * PZMath.clamp(progress, 0, 1)
+	if recordedDuration <= 0 then
 		logETW(
-			"ETW Logger | ISEatFoodAction: no time recorded; duration = "
-				.. duration
+			"ETW Logger | ISEatFoodAction: no duration recorded; baseDuration = "
+				.. baseDuration
 				.. ", progress = "
 				.. progress
 		)
@@ -167,10 +161,11 @@ local function recordEatingTime(action, progress)
 	end
 	action.etwEatingTimeRecorded = true
 	local modData = ETW_CommonFunctions.getETWModData(action.character)
-	modData.MinutesSpentEating = (modData.MinutesSpentEating or 0) + minutesSpentEating
+	modData.EatingSpeedSystemCounter = (modData.EatingSpeedSystemCounter or 0) + recordedDuration
 	logETW(
-		"ETW Logger | ISEatFoodAction: minutesSpentEating = " .. minutesSpentEating,
-		"ETW Logger | ISEatFoodAction: modData.MinutesSpentEating = " .. modData.MinutesSpentEating
+		"ETW Logger | ISEatFoodAction: recordedDuration = " .. recordedDuration,
+		"ETW Logger | ISEatFoodAction: modData.EatingSpeedSystemCounter = "
+			.. modData.EatingSpeedSystemCounter
 	)
 	checkEatingSpeedTraits(action.character, modData)
 end
