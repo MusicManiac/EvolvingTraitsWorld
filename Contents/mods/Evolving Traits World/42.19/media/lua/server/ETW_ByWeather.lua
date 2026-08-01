@@ -12,7 +12,7 @@ local ETWTraitsRegistry = ETW_Registry.traits
 
 ---@type fun(...: any)
 local logETW = ETW_CommonFunctions.log
-local FILENAME = "ETWByWeather.lua"
+local FILENAME = "ETW_ByWeather.lua"
 
 if
 	not ETW_CommonFunctions.gameModeSafeguard(

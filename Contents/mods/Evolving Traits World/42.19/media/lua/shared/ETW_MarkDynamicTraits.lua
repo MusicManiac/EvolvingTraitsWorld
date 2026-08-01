@@ -98,9 +98,13 @@ local function registerDynamicTraits()
 		CharacterTrait.SMOKER,
 	})
 
-	-- server/TimedActions/ETW_ActionsOverrideServer.lua
+	-- server/TimedActions/ETW_ISChopTreeActionOverrideServer.lua
 	registerTraits({
 		CharacterTrait.AXEMAN,
+	})
+
+	-- server/Foraging/ETW_forageSystemOverrideServer.lua
+	registerTraits({
 		CharacterTrait.HERBALIST,
 	})
 

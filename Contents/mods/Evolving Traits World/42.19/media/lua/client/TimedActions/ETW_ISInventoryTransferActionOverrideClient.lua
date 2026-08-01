@@ -3,7 +3,7 @@ local ETW_CommonLogicChecks = require("ETW_CommonLogicChecks")
 local ETW_TimedActionsSharedLogic = require("TimedActions/ETW_TimedActionsSharedLogic")
 
 local gameMode = ETW_CommonFunctions.gameMode()
-local FILENAME = "ETW_ActionsOverrideClient.lua"
+local FILENAME = "ETW_ISInventoryTransferActionOverrideClient.lua"
 if
 	not ETW_CommonFunctions.gameModeSafeguard(
 		FILENAME,

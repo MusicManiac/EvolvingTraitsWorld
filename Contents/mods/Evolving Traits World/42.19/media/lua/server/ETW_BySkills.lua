@@ -15,7 +15,7 @@ local SBvars = SandboxVars.EvolvingTraitsWorld
 
 ---@type fun(...: string)
 local logETW = CommonFunctions.log
-local FILENAME = "ETWBySkills.lua"
+local FILENAME = "ETW_BySkills.lua"
 
 if
 	not CommonFunctions.gameModeSafeguard(FILENAME, { CommonFunctions.GameMode.SP, CommonFunctions.GameMode.MP_SERVER })
@@ -727,7 +727,7 @@ local skillTraitRules = {
 		trait = CharacterTrait.TARGET_SHOOTER,
 		positiveTrait = true,
 		gainingTrait = true,
-	}
+	},
 }
 
 ---Gain traits by skills (in majority cases)
