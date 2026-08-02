@@ -20,6 +20,16 @@ ETW_CommonFunctions.gameModeSafeguard(
 	{ ETW_CommonFunctions.GameMode.SP, ETW_CommonFunctions.GameMode.MP_CLIENT, ETW_CommonFunctions.GameMode.MP_SERVER }
 )
 
+---Returns whether the optional ETW Trait Sandbox permits this trait system to execute.
+---@param enabledOption string
+---@return boolean
+local function traitShouldExecute(enabledOption)
+	local traitSandboxVars = SandboxVars.ETWTraitSandbox
+	return traitSandboxVars == nil
+		or traitSandboxVars.DisabledTraitsAcquirableViaGameplay == true
+		or traitSandboxVars[enabledOption] ~= false
+end
+
 ---Returns true if the Immunity System should execute
 ---@param player IsoPlayer|nil the player to check for
 ---@return boolean boolean true if the Immunity System should execute, false otherwise
@@ -145,6 +155,7 @@ end
 function ETW_CommonLogicChecks.PainToleranceShouldExecute(player)
 	if
 		SBvars.PainTolerance == true
+		and traitShouldExecute("PainToleranceEnabled")
 		and ((player and not player:hasTrait(ETWTraitsRegistry.PAIN_TOLERANCE)) or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER)
 		and SBvars.TraitsLockSystemCanGainPositive
 	then
@@ -159,7 +170,9 @@ end
 ---@return boolean boolean true if the Bloodlust System should execute, false otherwise
 function ETW_CommonLogicChecks.BloodlustShouldExecute(player)
 	if
-		SBvars.Bloodlust == true and (SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLosePositive)
+		SBvars.Bloodlust == true
+		and traitShouldExecute("BloodlustEnabled")
+		and (SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLosePositive)
 	then
 		return true
 	else
@@ -232,6 +245,7 @@ function ETW_CommonLogicChecks.HoarderShouldExecute(player)
 	if
 		not activatedMods:contains("\\2934686936/EvolvingTraitsWorldDisableHoarder")
 		and SBvars.Hoarder == true
+		and traitShouldExecute("HoarderEnabled")
 		and ((player and not player:hasTrait(ETWTraitsRegistry.HOARDER)) or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER)
 		and SBvars.TraitsLockSystemCanGainPositive
 	then
@@ -248,6 +262,7 @@ function ETW_CommonLogicChecks.GymRatShouldExecute(player)
 	if
 		not activatedMods:contains("\\2934686936/EvolvingTraitsWorldDisableGymRat")
 		and SBvars.GymRat == true
+		and traitShouldExecute("GymRatEnabled")
 		and ((player and not player:hasTrait(ETWTraitsRegistry.GYM_RAT)) or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER)
 		and SBvars.TraitsLockSystemCanGainPositive
 	then
@@ -293,6 +308,7 @@ end
 function ETW_CommonLogicChecks.LightStepShouldExecute(player)
 	if
 		SBvars.LightStep == true
+		and traitShouldExecute("LightStepEnabled")
 		and ((player and not player:hasTrait(ETWTraitsRegistry.LIGHTSTEP)) or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER)
 		and SBvars.TraitsLockSystemCanGainPositive
 	then
@@ -368,6 +384,7 @@ end
 function ETW_CommonLogicChecks.LowProfileShouldExecute(player)
 	if
 		SBvars.LowProfile == true
+		and traitShouldExecute("LowProfileEnabled")
 		and ((player and not player:hasTrait(ETWTraitsRegistry.LOW_PROFILE)) or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER)
 		and SBvars.TraitsLockSystemCanGainPositive
 	then
@@ -443,6 +460,7 @@ end
 function ETW_CommonLogicChecks.AxeThrowerShouldExecute(player)
 	if
 		SBvars.AxeThrower == true
+		and traitShouldExecute("AxeThrowerEnabled")
 		and ((player and not player:hasTrait(ETWTraitsRegistry.AXE_THROWER)) or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER)
 		and SBvars.TraitsLockSystemCanGainPositive
 	then
@@ -473,6 +491,7 @@ end
 function ETW_CommonLogicChecks.StickFighterShouldExecute(player)
 	if
 		SBvars.StickFighter == true
+		and traitShouldExecute("StickFighterEnabled")
 		and ((player and not player:hasTrait(ETWTraitsRegistry.STICK_FIGHTER)) or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER)
 		and SBvars.TraitsLockSystemCanGainPositive
 	then
@@ -488,6 +507,7 @@ end
 function ETW_CommonLogicChecks.BladeEnthusiastShouldExecute(player)
 	if
 		SBvars.BladeEnthusiast == true
+		and traitShouldExecute("BladeEnthusiastEnabled")
 		and ((player and not player:hasTrait(ETWTraitsRegistry.BLADE_ENTHUSIAST)) or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER)
 		and SBvars.TraitsLockSystemCanGainPositive
 	then
@@ -518,6 +538,7 @@ end
 function ETW_CommonLogicChecks.KnifeFighterShouldExecute(player)
 	if
 		SBvars.KnifeFighter == true
+		and traitShouldExecute("KnifeFighterEnabled")
 		and ((player and not player:hasTrait(ETWTraitsRegistry.KNIFE_FIGHTER)) or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER)
 		and SBvars.TraitsLockSystemCanGainPositive
 	then
@@ -533,6 +554,7 @@ end
 function ETW_CommonLogicChecks.PolearmFighterShouldExecute(player)
 	if
 		SBvars.PolearmFighter == true
+		and traitShouldExecute("PolearmFighterEnabled")
 		and ((player and not player:hasTrait(ETWTraitsRegistry.POLEARM_FIGHTER)) or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER)
 		and SBvars.TraitsLockSystemCanGainPositive
 	then
@@ -548,6 +570,7 @@ end
 function ETW_CommonLogicChecks.RestorationExpertShouldExecute(player)
 	if
 		SBvars.RestorationExpert == true
+		and traitShouldExecute("RestorationExpertEnabled")
 		and (player and not player:hasTrait(ETWTraitsRegistry.RESTORATION_EXPERT))
 		and SBvars.TraitsLockSystemCanGainPositive
 	then
@@ -608,6 +631,7 @@ end
 function ETW_CommonLogicChecks.	EatingSpeedSystemShouldExecute(player)
 	if
 		SBvars.EatingSpeedSystem == true
+		and traitShouldExecute("EatingSpeedTraitsEnabled")
 		and (
 			(player and not player:hasTrait(ETWTraitsRegistry.FAST_EATER))
 			or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER
@@ -626,6 +650,7 @@ end
 function ETW_CommonLogicChecks.FurnitureAssemblerShouldExecute(player)
 	if
 		SBvars.FurnitureAssembler == true
+		and traitShouldExecute("FurnitureAssemblerEnabled")
 		and ((player and not player:hasTrait(ETWTraitsRegistry.FURNITURE_ASSEMBLER)) or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER)
 		and SBvars.TraitsLockSystemCanGainPositive
 	then
@@ -641,6 +666,7 @@ end
 function ETW_CommonLogicChecks.HomeCookShouldExecute(player)
 	if
 		SBvars.HomeCook == true
+		and traitShouldExecute("HomeCookEnabled")
 		and ((player and not player:hasTrait(ETWTraitsRegistry.HOME_COOK)) or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER)
 		and SBvars.TraitsLockSystemCanGainPositive
 	then
@@ -701,6 +727,7 @@ end
 function ETW_CommonLogicChecks.AVClubShouldExecute(player)
 	if
 		SBvars.AVClub == true
+		and traitShouldExecute("AVClubEnabled")
 		and ((player and not player:hasTrait(ETWTraitsRegistry.AV_CLUB)) or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER)
 		and SBvars.TraitsLockSystemCanGainPositive
 	then
@@ -716,6 +743,7 @@ end
 function ETW_CommonLogicChecks.BodyWorkEnthusiastShouldExecute(player)
 	if
 		SBvars.BodyworkEnthusiast == true
+		and traitShouldExecute("BodyWorkEnthusiastEnabled")
 		and ((player and not player:hasTrait(ETWTraitsRegistry.BODYWORK_ENTHUSIAST)) or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER)
 		and SBvars.TraitsLockSystemCanGainPositive
 	then
@@ -761,6 +789,7 @@ end
 function ETW_CommonLogicChecks.GunEnthusiastShouldExecute(player)
 	if
 		SBvars.GunEnthusiast == true
+		and traitShouldExecute("GunEnthusiastEnabled")
 		and ((player and not player:hasTrait(ETWTraitsRegistry.GUN_ENTHUSIAST)) or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER)
 		and SBvars.TraitsLockSystemCanGainPositive
 	then
@@ -866,6 +895,7 @@ end
 function ETW_CommonLogicChecks.RainSystemShouldExecute(player)
 	if
 		SBvars.RainSystem == true
+		and traitShouldExecute("RainTraitsEnabled")
 		and (
 			SBvars.TraitsLockSystemCanGainNegative
 			or SBvars.TraitsLockSystemCanLoseNegative
@@ -885,6 +915,7 @@ end
 function ETW_CommonLogicChecks.FogSystemShouldExecute(player)
 	if
 		SBvars.FogSystem == true
+		and traitShouldExecute("FogTraitsEnabled")
 		and (
 			SBvars.TraitsLockSystemCanGainNegative
 			or SBvars.TraitsLockSystemCanLoseNegative
@@ -904,6 +935,7 @@ end
 function ETW_CommonLogicChecks.PetTherapyShouldExecute(player)
 	if
 		SBvars.PetTherapy == true
+		and traitShouldExecute("PetTherapyEnabled")
 		and ((player and not player:hasTrait(ETWTraitsRegistry.PET_THERAPY)) or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER)
 		and (SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLosePositive)
 	then
