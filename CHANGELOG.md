@@ -1,5 +1,15 @@
+## v.12.7.0
+###### 02 Aug 2026
+
+- General:
+  - Some internal refactors.
+  - New FAQ question.
+  - Added new submod to disable traits added by ETW (in case you don't want to have some traits added)
+- Fix:
+	- Fixed spanish translation bugging out bloodlust moodle
+
 ## v.12.6.0
-###### 30 Jul 2026
+###### 31 Jul 2026
 
 - General:
   - New trait: Fast Eater. Does exactly what you think it does. Sandbox settings included.
