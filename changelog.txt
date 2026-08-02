@@ -1,10 +1,6 @@
 [url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
 
-v.12.7.0
+v.12.7.1
 
-General:
-	- Some internal refactors.
-	- New FAQ question.
-	- Added new submod to disable traits added by ETW (in case you don't want to have some traits added)
 Fix:
-	- Fixed spanish translation bugging out bloodlust moodle
+	- Fixed error related to player list. 
