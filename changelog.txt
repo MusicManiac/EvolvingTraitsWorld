@@ -1,11 +1,10 @@
 [url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
 
-v.12.6.0
+v.12.7.0
 
 General:
-	- New trait: Fast Eater. Does exactly what you think it does. Sandbox settings included.
-	- New trait: Slow Eater. Also does exactly what you think it does. Sandbox settings included.
-	- Added the Eating Speed System. Base duration values from completed food-eating actions build progress toward losing Slow Eater and gaining Fast Eater; interrupted actions do not count.
+	- Some internal refactors.
+	- New FAQ question.
+	- Added new submod to disable traits added by ETW (in case you don't want to have some traits added)
 Fix:
-	- Fixed read book pages not being registered in MP.
-	- Potential fix (cuz can't recreate) on bloodlust moodle throwing errors in MP.
+	- Fixed spanish translation bugging out bloodlust moodle

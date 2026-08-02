@@ -12,6 +12,7 @@ description=[*][h3][b]FULL sandbox customization[/b]. Choose which perks you wan
 description=[*]Advanced systems that affect a lot of traits. Affinity system, that allows you to stick to your starting traits better. Delayed traits system, that allows you to get/remove traits with random delay.
 description=[*](B41 ONLY) QOL (Quality of Life) submod - mark all traits that are dynamic so in character creating you can see which perks are obtainable during gameplay! Can be enabled without enabling main mod, so if you don't like main features added by this mod and just want to see which traits are dynamic in your game with SOTO/MST/MT/DT - you can do that.
 description=[*]For new traits (aka not vanilla game), customization is also present. Want Hoarder perk to give you more carry weight per point of STR? Go adjust it in Sandbox. Want to be even happier under rain with Pluviophile? Sandbox it is.
+description=[*]Optional [b]Trait Sandbox[/b] submod: choose which ETW-added traits appear during character creation and change their point values. Requires [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3378285185]Starlit Library[/url].
 description=[*](B41 requires mod, B42 has in-game mod options now)Client-sided configuration available with [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2169435993]Mod Options[/url].
 description=[*](B41 ONLY) Don't like some/all traits added by this mod but only want to have vanilla traits dynamic? Also possible, with help of [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2934686936]Evolving Traits World (ETW) - Disable Selected Traits[/url].
 description=[/list]
@@ -61,5 +62,6 @@ description=
 description=Workshop ID: 2914075159
 description=Mod ID: EvolvingTraitsWorld
 description=Mod ID: EvolvingTraitsWorldMarkDynamicTraits (doesn't work for b42)
+description=Mod ID: EvolvingTraitsWorldTraitSandbox
 tags=Build 42;Balance;Hardmode;Interface;Misc;Multiplayer;Realistic;Silly/Fun;Skills;Traits;QoL;WIP
 visibility=public
