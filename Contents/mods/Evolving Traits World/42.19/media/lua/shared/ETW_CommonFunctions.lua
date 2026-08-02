@@ -196,16 +196,20 @@ end
 ---@param player IsoPlayer|nil optional player to get list for
 ---@return ArrayList<IsoPlayer> ArrayList of all players in case its called on Server, all ever loaded players in case it's called on MP Client, or local player list in case it's called on SP.
 function ETW_CommonFunctions.playersList(player)
-	local playerList = getOnlinePlayers()
 	if player then
-		playerList:clear()
+		local playerList = ArrayList.new()
 		playerList:add(player)
 		return playerList
 	end
-	if not playerList:isEmpty() then
-		return playerList
+
+	local playerList = getOnlinePlayers()
+	if playerList:isEmpty() then
+		local localPlayer = getPlayer()
+		if localPlayer then
+			playerList:add(localPlayer)
+		end
 	end
-	playerList:add(getPlayer())
+
 	return playerList
 end
 

@@ -1,3 +1,9 @@
+## v.12.7.1
+###### 02 Aug 2026
+
+- Fix:
+	- Fixed error related to player list. 
+
 ## v.12.7.0
 ###### 02 Aug 2026
 
