@@ -8,25 +8,25 @@ local traits = {
 	{ id = "AxeThrower", pointValue = -4 },
 	{ id = "Bloodlust", pointValue = -4 },
 	{ id = "BodyWorkEnthusiast", pointValue = -6 },
-	{ id = "FastEater", pointValue = -1 },
+	{ id = "FastEater", pointValue = -1, toggle = "EatingSpeedTraitsEnabled" },
 	{ id = "FurnitureAssembler", pointValue = -4 },
 	{ id = "GunEnthusiast", pointValue = -6 },
 	{ id = "GymRat", pointValue = -6 },
 	{ id = "Hoarder", pointValue = -4 },
 	{ id = "HomeCook", pointValue = -2 },
-	{ id = "Homichlophobia", pointValue = 1 },
-	{ id = "Homichlophile", pointValue = -1 },
+	{ id = "Homichlophobia", pointValue = 1, toggle = "FogTraitsEnabled" },
+	{ id = "Homichlophile", pointValue = -1, toggle = "FogTraitsEnabled" },
 	{ id = "BladeEnthusiast", pointValue = -4 },
 	{ id = "KnifeFighter", pointValue = -3 },
 	{ id = "LightStep", pointValue = -3 },
 	{ id = "LowProfile", pointValue = -3 },
-	{ id = "Pluviophile", pointValue = -2 },
-	{ id = "Pluviophobia", pointValue = 2 },
+	{ id = "Pluviophile", pointValue = -2, toggle = "RainTraitsEnabled" },
+	{ id = "Pluviophobia", pointValue = 2, toggle = "RainTraitsEnabled" },
 	{ id = "PainTolerance", pointValue = -2 },
 	{ id = "PetTherapy", pointValue = -3 },
 	{ id = "PolearmFighter", pointValue = -3 },
 	{ id = "RestorationExpert", pointValue = -8 },
-	{ id = "SlowEater", pointValue = 1 },
+	{ id = "SlowEater", pointValue = 1, toggle = "EatingSpeedTraitsEnabled" },
 	{ id = "StickFighter", pointValue = -3 },
 }
 
@@ -44,7 +44,7 @@ for _, traitOptions in ipairs(traits) do
 		-- table by CharacterTrait. It resolves the definition itself when the
 		-- sandbox screen applies its values.
 		local info = StarlitTraits.getOrCreateInfo(characterTrait)
-		info.toggleOption = "ETWTraitSandbox." .. traitOptions.id .. "Enabled"
+		info.toggleOption = "ETWTraitSandbox." .. (traitOptions.toggle or (traitOptions.id .. "Enabled"))
 		info.costOption = "ETWTraitSandbox." .. traitOptions.id .. "PointValue"
 		table.insert(registeredTraits, { definition = definition, info = info })
 	else

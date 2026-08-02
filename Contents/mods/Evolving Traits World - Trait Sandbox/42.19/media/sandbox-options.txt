@@ -1,5 +1,13 @@
 VERSION = 1,
 
+option ETWTraitSandbox.DisabledTraitsAcquirableViaGameplay
+{
+	type = boolean,
+	default = false,
+	page = ETWTraitSandbox,
+	translation = ETWTS_DisabledTraitsAcquirableViaGameplay,
+}
+
 option ETWTraitSandbox.AVClubEnabled
 {
 	type = boolean,
@@ -68,12 +76,12 @@ option ETWTraitSandbox.BodyWorkEnthusiastPointValue
 	translation = ETWTS_BodyWorkEnthusiastPointValue,
 }
 
-option ETWTraitSandbox.FastEaterEnabled
+option ETWTraitSandbox.EatingSpeedTraitsEnabled
 {
 	type = boolean,
 	default = true,
 	page = ETWTraitSandbox,
-	translation = ETWTS_FastEaterEnabled,
+	translation = ETWTS_EatingSpeedTraitsEnabled,
 }
 option ETWTraitSandbox.FastEaterPointValue
 {
@@ -170,12 +178,12 @@ option ETWTraitSandbox.HomeCookPointValue
 	translation = ETWTS_HomeCookPointValue,
 }
 
-option ETWTraitSandbox.HomichlophobiaEnabled
+option ETWTraitSandbox.FogTraitsEnabled
 {
 	type = boolean,
 	default = true,
 	page = ETWTraitSandbox,
-	translation = ETWTS_HomichlophobiaEnabled,
+	translation = ETWTS_FogTraitsEnabled,
 }
 option ETWTraitSandbox.HomichlophobiaPointValue
 {
@@ -187,13 +195,6 @@ option ETWTraitSandbox.HomichlophobiaPointValue
 	translation = ETWTS_HomichlophobiaPointValue,
 }
 
-option ETWTraitSandbox.HomichlophileEnabled
-{
-	type = boolean,
-	default = true,
-	page = ETWTraitSandbox,
-	translation = ETWTS_HomichlophileEnabled,
-}
 option ETWTraitSandbox.HomichlophilePointValue
 {
 	type = integer,
@@ -272,12 +273,12 @@ option ETWTraitSandbox.LowProfilePointValue
 	translation = ETWTS_LowProfilePointValue,
 }
 
-option ETWTraitSandbox.PluviophileEnabled
+option ETWTraitSandbox.RainTraitsEnabled
 {
 	type = boolean,
 	default = true,
 	page = ETWTraitSandbox,
-	translation = ETWTS_PluviophileEnabled,
+	translation = ETWTS_RainTraitsEnabled,
 }
 option ETWTraitSandbox.PluviophilePointValue
 {
@@ -289,13 +290,6 @@ option ETWTraitSandbox.PluviophilePointValue
 	translation = ETWTS_PluviophilePointValue,
 }
 
-option ETWTraitSandbox.PluviophobiaEnabled
-{
-	type = boolean,
-	default = true,
-	page = ETWTraitSandbox,
-	translation = ETWTS_PluviophobiaEnabled,
-}
 option ETWTraitSandbox.PluviophobiaPointValue
 {
 	type = integer,
@@ -374,13 +368,6 @@ option ETWTraitSandbox.RestorationExpertPointValue
 	translation = ETWTS_RestorationExpertPointValue,
 }
 
-option ETWTraitSandbox.SlowEaterEnabled
-{
-	type = boolean,
-	default = true,
-	page = ETWTraitSandbox,
-	translation = ETWTS_SlowEaterEnabled,
-}
 option ETWTraitSandbox.SlowEaterPointValue
 {
 	type = integer,
