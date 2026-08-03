@@ -1,6 +1,7 @@
 [url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
 
-v.12.7.1
+v.12.7.2
 
 Fix:
-	- Fixed error related to player list. 
+  - Fixed incorrect requirement in one of the files
+
