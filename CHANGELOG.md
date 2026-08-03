@@ -1,3 +1,9 @@
+## v.12.7.2
+###### 03 Aug 2026
+
+- Fix:
+  - Fixed incorrect requirement in one of the files
+
 ## v.12.7.1
 ###### 02 Aug 2026
 
