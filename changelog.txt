@@ -1,7 +1,11 @@
 [url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
 
-v.12.7.3
+v.12.8.0
 
+General:
+  - New FAQ question.
+  - Added new tooltip for Mental label.
+  - Changed default size of ETW window so people with larger font don't get instant overlap.
 Fix:
-  - Fixed broken translation files by 42.20.1
+  - Fixed missing tooltips from food and thirst tooltips.
 
