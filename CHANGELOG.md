@@ -1,3 +1,13 @@
+## v.12.8.0
+###### 05 Aug 2026
+
+- General:
+  - New FAQ question.
+  - Added new tooltip for Mental label.
+  - Changed default size of ETW window so people with larger font don't get instant overlap.
+- Fix:
+  - Fixed missing tooltips from food and thirst tooltips.
+
 ## v.12.7.3
 ###### 05 Aug 2026
 

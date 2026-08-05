@@ -613,6 +613,7 @@ function ISETWUI:createChildren()
 				UIFont.Small,
 				false
 			)
+			self.labelVitalsFood:setTooltip(getText("Sandbox_ETW_FoodSystem_tooltip"))
 			self:addChild(self.labelVitalsFood)
 
 			self.barVitalsFood = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
@@ -731,6 +732,7 @@ function ISETWUI:createChildren()
 				UIFont.Small,
 				false
 			)
+			self.labelVitalsThirst:setTooltip(getText("Sandbox_ETW_ThirstSystem_tooltip"))
 			self:addChild(self.labelVitalsThirst)
 
 			self.barVitalsThirst = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
@@ -809,6 +811,7 @@ function ISETWUI:createChildren()
 				UIFont.Small,
 				false
 			)
+			self.labelVitalsMental:setTooltip(getText("UI_ETW_Vitals_Mental_tooltip"))
 			self:addChild(self.labelVitalsMental)
 
 			self.barVitalsMental = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
