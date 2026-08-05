@@ -1,7 +1,7 @@
 [url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
 
-v.12.7.2
+v.12.7.3
 
 Fix:
-  - Fixed incorrect requirement in one of the files
+  - Fixed broken translation files by 42.20.1
 
