@@ -1,3 +1,9 @@
+## v.12.7.3
+###### 05 Aug 2026
+
+- Fix:
+  - Fixed broken translation files by 42.20.1
+
 ## v.12.7.2
 ###### 03 Aug 2026
 
