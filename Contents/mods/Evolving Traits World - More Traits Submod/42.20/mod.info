@@ -1,9 +1,0 @@
-name=Evolving Traits World (ETW) - More Traits Submod
-require=\1299328280/ToadTraits,\EvolvingTraitsWorld
-incompatible=\1299328280/ToadTraitsDynamic
-url=https://steamcommunity.com/sharedfiles/filedetails/?id=2914075159
-id=EvolvingTraitsWorldMoreTraitsSubmod
-versionMin=42.20
-modversion=1.0.0
-description=ETW-owned home for More Traits dynamic-trait integration. Enable this through the dependency-only companion submod in More Traits; integration code is maintained in this ETW submod.
-author=MusicManiac
