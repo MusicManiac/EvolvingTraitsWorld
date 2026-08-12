@@ -87,7 +87,7 @@ module ETW
         UIName = UI_trait_GymRat,
         UIDescription = UI_trait_GymRatDesc,
         XPBoosts = Fitness=1;Strength=1,
-        MutuallyExclusiveTraits = base:unfit;base:emaciated;base:very underweight;base:underweight;base:out of shape;base:weak;base:feeble,
+        MutuallyExclusiveTraits = base:unfit;base:emaciated;base:very underweight;base:underweight;base:out of shape;base:weak;base:feeble;base:obese,
     }
 
     character_trait_definition ETW:Hoarder
@@ -119,7 +119,7 @@ module ETW
         Cost = -1,
         UIName = UI_trait_Homichlophobia,
         UIDescription = UI_trait_HomichlophobiaDesc,
-        MutuallyExclusiveTraits = ETW:Homichlophile
+        MutuallyExclusiveTraits = ETW:Homichlophile,
     }
 
     character_trait_definition ETW:Homichlophile
@@ -130,7 +130,7 @@ module ETW
         Cost = 1,
         UIName = UI_trait_Homichlophile,
         UIDescription = UI_trait_HomichlophileDesc,
-        MutuallyExclusiveTraits = ETW:Homichlophobia
+        MutuallyExclusiveTraits = ETW:Homichlophobia,
     }
 
     character_trait_definition ETW:BladeEnthusiast
@@ -185,6 +185,7 @@ module ETW
         Cost = 2,
         UIName = UI_trait_Pluviophile,
         UIDescription = UI_trait_PluviophileDesc,
+        MutuallyExclusiveTraits = ETW:Pluviophobia,
     }
 
     character_trait_definition ETW:Pluviophobia
@@ -195,6 +196,7 @@ module ETW
         Cost = -2,
         UIName = UI_trait_Pluviophobia,
         UIDescription = UI_trait_PluviophobiaDesc,
+        MutuallyExclusiveTraits = ETW:Pluviophile,
     }
 
     character_trait_definition ETW:PainTolerance

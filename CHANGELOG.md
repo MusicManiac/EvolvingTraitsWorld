@@ -1,3 +1,11 @@
+## v.12.8.1
+###### 12 Aug 2026
+
+- Fix:
+  - Fixed submod screwing up starting trait points.
+  - Fixed Blacksmith not including Maintenance levels in the counter (purely UI bug)
+  - Fixed missing mutual exclusivity for opposing rain and fog traits, and between Gym Rat and Obese.
+
 ## v.12.8.0
 ###### 05 Aug 2026
 

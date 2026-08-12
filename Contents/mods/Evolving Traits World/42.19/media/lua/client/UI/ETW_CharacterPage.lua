@@ -4281,7 +4281,7 @@ function ISETWUI:render()
 	)
 	updateLabel(
 		self.labelBlacksmithProgress,
-		getCachedTraitUIName(CharacterTrait.BLACKSMITH) .. ": " .. blacksmith .. "/" .. SBvars.BlacksmithSkill
+		getCachedTraitUIName(CharacterTrait.BLACKSMITH) .. ": " .. blacksmith + maintenance .. "/" .. SBvars.BlacksmithSkill
 	)
 
 	if isPermanentTraitsTabActive and self.labelDelayedTraitsSystem ~= nil then

@@ -1,11 +1,8 @@
 [url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
 
-v.12.8.0
+v.12.8.1
 
-General:
-  - New FAQ question.
-  - Added new tooltip for Mental label.
-  - Changed default size of ETW window so people with larger font don't get instant overlap.
 Fix:
-  - Fixed missing tooltips from food and thirst tooltips.
-
+  - Fixed submod screwing up starting trait points.
+  - Fixed Blacksmith not including Maintenance levels in the counter (purely UI bug)
+  - Fixed missing mutual exclusivity for opposing rain and fog traits, and between Gym Rat and Obese.
