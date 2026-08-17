@@ -1,3 +1,9 @@
+## v.12.8.2
+###### 17 Aug 2026
+
+- Fix:
+  - Fixed the ETW character page resetting to the Vitality sub-tab whenever its UI layout was rebuilt.
+
 ## v.12.8.1
 ###### 12 Aug 2026
 

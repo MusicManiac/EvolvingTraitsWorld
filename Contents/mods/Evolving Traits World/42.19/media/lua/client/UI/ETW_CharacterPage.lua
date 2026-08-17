@@ -3479,6 +3479,8 @@ end
 
 ---Rebuilds every ETW child widget so conditional labels and bars can appear or disappear mid-game.
 function ISETWUI:rebuildChildren()
+	local activeSubViewId = self.subPanel and self.subPanel:getActiveViewIndex()
+
 	-- Hide tooltips on subViewPermanentTraits children before clearing
 	if self.subViewPermanentTraits and self.subViewPermanentTraits.children then
 		for _, child in pairs(self.subViewPermanentTraits.children) do
@@ -3527,6 +3529,9 @@ function ISETWUI:rebuildChildren()
 	end
 
 	self:createChildren()
+	if activeSubViewId and self.subPanel then
+		self.subPanel:activateViewById(activeSubViewId)
+	end
 end
 
 ---Rebuilds the ETW layout when known traits or delayed traits change.
@@ -4327,8 +4332,7 @@ function ISETWUI:render()
 	then
 		WINDOW_WIDTH = modOptions:getOption("UIWidth"):getValue()
 		nonBarsEntriesPerRow = modOptions:getOption("TraitColumns"):getValue()
-		self:clearChildren()
-		self:createChildren()
+		self:rebuildChildren()
 	end
 end
 
