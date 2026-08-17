@@ -1,6 +1,12 @@
 [url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
 
-v.12.8.2
+v.12.9.0
+
+General:
+  - Added Translations Status sub-tab to the ETW character page. It shows when each supported translation was last updated relative to the installed mod version.
 
 Fix:
   - Fixed the ETW character page resetting to the Vitality sub-tab whenever its UI layout was rebuilt.
+
+Translations:
+  - Added Japanese translation.

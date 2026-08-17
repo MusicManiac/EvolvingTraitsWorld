@@ -1,4 +1,5 @@
 {
+    "UI_ETW_TranslationVersion": "8.4.1",
     "UI_ETW_Chance": "확률: ",
     "UI_ETW_DelayedNotificationsStringAdd": "획득 조건 충족: ",
     "UI_ETW_DelayedNotificationsStringRemove": "상실 조건 충족: ",

@@ -164,6 +164,21 @@ local WINDOW_HEIGHT = 200
 local WINDOW_HEIGHT_AFTER_CHILDREN = 700
 local HELP_WINDOW_MIN_HEIGHT = 120
 local HELP_WINDOW_MAX_HEIGHT = 500
+local TRANSLATION_STATUS_FILE_PREFIX = "media/lua/shared/Translate/"
+local TRANSLATION_STATUS_FILE_SUFFIX = "/UI.json"
+local SUPPORTED_TRANSLATIONS = {
+	{ code = "CH", nameKey = "UI_ETW_TranslationsStatus_Language_CH" },
+	{ code = "CN", nameKey = "UI_ETW_TranslationsStatus_Language_CN" },
+	{ code = "DE", nameKey = "UI_ETW_TranslationsStatus_Language_DE" },
+	{ code = "ES", nameKey = "UI_ETW_TranslationsStatus_Language_ES" },
+	{ code = "IT", nameKey = "UI_ETW_TranslationsStatus_Language_IT" },
+	{ code = "JP", nameKey = "UI_ETW_TranslationsStatus_Language_JP" },
+	{ code = "KO", nameKey = "UI_ETW_TranslationsStatus_Language_KO" },
+	{ code = "PTBR", nameKey = "UI_ETW_TranslationsStatus_Language_PTBR" },
+	{ code = "RU", nameKey = "UI_ETW_TranslationsStatus_Language_RU" },
+	{ code = "TR", nameKey = "UI_ETW_TranslationsStatus_Language_TR" },
+	{ code = "UA", nameKey = "UI_ETW_TranslationsStatus_Language_UA" },
+}
 
 local lineStartPosition = 5
 
@@ -191,6 +206,125 @@ end
 local function getHelpWindowHeight(helpText)
 	local contentHeight = helpText:getScrollHeight() + 20
 	return math.max(HELP_WINDOW_MIN_HEIGHT, math.min(HELP_WINDOW_MAX_HEIGHT, contentHeight))
+end
+
+---Reads the version marker kept at the top of a language's UI translation file.
+---@param languageCode string
+---@return string
+local function getTranslationVersion(languageCode)
+	local path = TRANSLATION_STATUS_FILE_PREFIX .. languageCode .. TRANSLATION_STATUS_FILE_SUFFIX
+	local reader = getModFileReader("EvolvingTraitsWorld", path, false)
+	if not reader then
+		return getText("UI_ETW_TranslationsStatus_UnknownValue")
+	end
+
+	local version = getText("UI_ETW_TranslationsStatus_UnknownValue")
+	for _ = 1, 10 do
+		local line = reader:readLine()
+		if not line then
+			break
+		end
+		local marker = string.match(line, '"UI_ETW_TranslationVersion"%s*:%s*"([^"]+)"')
+		if marker then
+			version = marker
+			break
+		end
+	end
+	reader:close()
+	return version
+end
+
+---Splits an ETW semantic version into its numeric major, minor, and patch parts.
+---@param version string
+---@return number|nil, number|nil, number|nil
+local function parseETWVersion(version)
+	local major, minor, patch = string.match(version or "", "^(%d+)%.(%d+)%.(%d+)")
+	return tonumber(major), tonumber(minor), tonumber(patch)
+end
+
+---Returns the status color for a translation version relative to the installed mod version.
+---@param currentVersion string
+---@param translationVersion string
+---@return {r:number, g:number, b:number, a:number}
+local function getTranslationVersionColor(currentVersion, translationVersion)
+	local currentMajor, currentMinor, currentPatch = parseETWVersion(currentVersion)
+	local translationMajor, translationMinor, translationPatch = parseETWVersion(translationVersion)
+	if not currentMajor or not translationMajor then
+		return { r = 0.65, g = 0.65, b = 0.65, a = 1 }
+	end
+	if currentMajor ~= translationMajor then
+		return { r = 0.95, g = 0.2, b = 0.2, a = 1 }
+	end
+	if currentMinor ~= translationMinor then
+		local minorDifference = math.abs(currentMinor - translationMinor)
+		if minorDifference > 3 then
+			return { r = 1, g = 0.85, b = 0.1, a = 1 }
+		end
+		local green = 0.95 - minorDifference * 0.08
+		return { r = 0.55 + minorDifference * 0.13, g = green, b = 0.2, a = 1 }
+	end
+	if currentPatch ~= translationPatch then
+		return { r = 0.45, g = 0.85, b = 0.3, a = 1 }
+	end
+	return { r = 0.2, g = 1, b = 0.2, a = 1 }
+end
+
+---Adds a horizontally-centered label to a panel.
+---@param panel ISPanel
+---@param labelY number
+---@param text string
+---@param font UIFont
+---@param color {r:number, g:number, b:number, a:number}
+local function addCenteredLabel(panel, labelY, text, font, color)
+	local width = getTextManager():MeasureStringX(font, text)
+	local height = getTextManager():getFontHeight(font)
+	local label = ISLabel:new((WINDOW_WIDTH - width) / 2, labelY, height, text, color.r, color.g, color.b, color.a, font, true)
+	panel:addChild(label)
+end
+
+---Populates the translation-status subtab and returns its required content height.
+---@param panel ISPanel
+---@param currentVersion string
+---@return number
+local function buildTranslationStatusView(panel, currentVersion)
+	local white = { r = 1, g = 1, b = 1, a = 1 }
+	local dim = { r = 0.75, g = 0.75, b = 0.75, a = 1 }
+	local rowHeight = FONT_HGT_SMALL + 4
+	local statusY = 18
+	addCenteredLabel(panel, statusY, getText("UI_ETW_TranslationsStatus_CurrentModVersion", currentVersion), UIFont.Medium, white)
+
+	statusY = statusY + FONT_HGT_MEDIUM + 22
+	local languageX = 190
+	local versionRightX = 510
+	panel:addChild(ISLabel:new(languageX, statusY, FONT_HGT_SMALL, getText("UI_ETW_TranslationsStatus_SupportedLanguage"), 1, 1, 1, 1, UIFont.Small, true))
+	panel:addChild(ISLabel:new(versionRightX, statusY, FONT_HGT_SMALL, getText("UI_ETW_TranslationsStatus_LastUpdated"), 1, 1, 1, 1, UIFont.Small, false))
+
+	statusY = statusY + rowHeight
+	for _, language in ipairs(SUPPORTED_TRANSLATIONS) do
+		local translationVersion = getTranslationVersion(language.code)
+		local color = getTranslationVersionColor(currentVersion, translationVersion)
+		panel:addChild(ISLabel:new(languageX, statusY, FONT_HGT_SMALL, getText(language.nameKey) .. " (" .. language.code .. ")", dim.r, dim.g, dim.b, dim.a, UIFont.Small, true))
+		panel:addChild(ISLabel:new(versionRightX, statusY, FONT_HGT_SMALL, translationVersion, color.r, color.g, color.b, color.a, UIFont.Small, false))
+		statusY = statusY + rowHeight
+	end
+
+	statusY = statusY + 14
+	addCenteredLabel(panel, statusY, getText("UI_ETW_TranslationsStatus_Explanation"), UIFont.Small, dim)
+	statusY = statusY + rowHeight
+	addCenteredLabel(panel, statusY, getText("UI_ETW_TranslationsStatus_BrightGreen"), UIFont.Small, { r = 0.2, g = 1, b = 0.2, a = 1 })
+	statusY = statusY + rowHeight
+	addCenteredLabel(panel, statusY, getText("UI_ETW_TranslationsStatus_Green"), UIFont.Small, { r = 0.45, g = 0.85, b = 0.3, a = 1 })
+	statusY = statusY + rowHeight
+	addCenteredLabel(panel, statusY, getText("UI_ETW_TranslationsStatus_YellowGreen"), UIFont.Small, { r = 0.75, g = 0.87, b = 0.2, a = 1 })
+	statusY = statusY + rowHeight
+	addCenteredLabel(panel, statusY, getText("UI_ETW_TranslationsStatus_Yellow"), UIFont.Small, { r = 1, g = 0.85, b = 0.1, a = 1 })
+	statusY = statusY + rowHeight
+	addCenteredLabel(panel, statusY, getText("UI_ETW_TranslationsStatus_OldVersionSeries"), UIFont.Small, { r = 0.95, g = 0.35, b = 0.3, a = 1 })
+	statusY = statusY + rowHeight
+	addCenteredLabel(panel, statusY, getText("UI_ETW_TranslationsStatus_Unknown"), UIFont.Small, { r = 0.65, g = 0.65, b = 0.65, a = 1 })
+	statusY = statusY + rowHeight + 10
+	addCenteredLabel(panel, statusY, getText("UI_ETW_TranslationsStatus_MaintainersNeeded"), UIFont.Small, { r = 1, g = 0.75, b = 0.2, a = 1 })
+	return statusY + rowHeight + 10
 end
 
 ---@type {x:number, y:number, nonBarsEntryNumber:number}|nil
@@ -339,6 +473,13 @@ function ISETWUI:createChildren()
 	self.helpText:paginate()
 	self.subViewHelp:addChild(self.helpText)
 	self.helpWindowHeight = getHelpWindowHeight(self.helpText)
+
+	self.subViewTranslationStatus = ISPanel:new(0, 0, self.width, self.height - TAB_H)
+	self.subViewTranslationStatus:initialise()
+	self.subViewTranslationStatus:noBackground()
+	local modInfo = getModInfoByID("EvolvingTraitsWorld")
+	local currentVersion = modInfo and modInfo:getModVersion() or getText("UI_ETW_TranslationsStatus_UnknownValue")
+	self.translationStatusWindowHeight = buildTranslationStatusView(self.subViewTranslationStatus, currentVersion)
 
 	local vitalsLayoutCursor = newLayoutCursor()
 	local permanentTraitsLayoutCursor = newLayoutCursor()
@@ -3471,6 +3612,9 @@ function ISETWUI:createChildren()
 	self.subPanel:addView(getText("UI_ETW_SubTab_Progress"), self.subViewPermanentTraits)
 	self.subPanel:addView(getText("UI_ETW_SubTab_NonPermanent"), self.subViewNonPermanentTraits)
 	self.subPanel:addView(getText("UI_ETW_SubTab_Help"), self.subViewHelp)
+	if self.subViewTranslationStatus then
+		self.subPanel:addView(getText("UI_ETW_SubTab_TranslationsStatus"), self.subViewTranslationStatus)
+	end
 
 	-- Attach the subtab panel to self (this is the real addChild now)
 	ISETWUI.addChild(self, self.subPanel)
@@ -3502,6 +3646,11 @@ function ISETWUI:rebuildChildren()
 			hideChildTooltip(child)
 		end
 	end
+	if self.subViewTranslationStatus and self.subViewTranslationStatus.children then
+		for _, child in pairs(self.subViewTranslationStatus.children) do
+			hideChildTooltip(child)
+		end
+	end
 	-- Also hide tooltips on any direct children (safety)
 	if self.children then
 		for _, child in pairs(self.children) do
@@ -3515,6 +3664,7 @@ function ISETWUI:rebuildChildren()
 	self.subViewNonPermanentTraits = nil
 	self.subViewVitals = nil
 	self.subViewHelp = nil
+	self.subViewTranslationStatus = nil
 	self.helpText = nil
 	self:clearChildren()
 
@@ -3618,6 +3768,8 @@ function ISETWUI:render()
 		activeWindowHeight = self.vitalsWindowHeight or activeWindowHeight
 	elseif self.subPanel and self.subPanel:getActiveView() == self.subViewHelp then
 		activeWindowHeight = self.helpWindowHeight or activeWindowHeight
+	elseif self.subPanel and self.subPanel:getActiveView() == self.subViewTranslationStatus then
+		activeWindowHeight = self.translationStatusWindowHeight or activeWindowHeight
 	end
 	if delayedTraitLines and #delayedTraitLines > 1 then
 		activeWindowHeight = activeWindowHeight + ((#delayedTraitLines - 1) * FONT_HGT_SMALL)
@@ -3647,6 +3799,10 @@ function ISETWUI:render()
 		if self.subViewHelp then
 			self.subViewHelp:setWidth(WINDOW_WIDTH)
 			self.subViewHelp:setHeight(WINDOW_HEIGHT - TAB_H)
+		end
+		if self.subViewTranslationStatus then
+			self.subViewTranslationStatus:setWidth(WINDOW_WIDTH)
+			self.subViewTranslationStatus:setHeight(WINDOW_HEIGHT - TAB_H)
 		end
 		if self.helpText then
 			local helpTextWidth = WINDOW_WIDTH - 20

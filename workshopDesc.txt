@@ -38,6 +38,7 @@ Currently mod supports following languages (note that not all translations are 1
 [*]繁體中文 / Traditional Chinese
 [*]Português Brasileiro / Brazilian Portuguese
 [*]한국어 / Korean
+[*]日本語 / Japanese
 [*]Türkçe / Turkish
 [*]Deutsch / German
 [*]Українська / Ukrainian
