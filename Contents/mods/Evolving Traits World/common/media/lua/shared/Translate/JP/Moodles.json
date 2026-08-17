@@ -1,0 +1,22 @@
+{
+    "___note_to_translators": "(Don't translate this, this is just info for you guys) If a field has %1 in it, it's replaced with value later on when the code is run",
+    "___note_to_JP_translators": "Make sure file is saved in UTF-8 encoding, so game display correct characters",
+    "Moodles_BloodlustMoodle_Good_lvl4": "最高の気分だ！ゾンビ狩りが楽しくてたまらない！",
+    "Moodles_BloodlustMoodle_Good_lvl3": "有意義な時間を過ごせているな",
+    "Moodles_BloodlustMoodle_Good_lvl2": "まあ、悪くない時間の過ごし方だ",
+    "Moodles_BloodlustMoodle_Good_lvl1": "ほんの少しだけスカッとしたかもな",
+    "Moodles_BloodlustMoodle_Bad_lvl1": "大して面白くもないな…",
+    "Moodles_BloodlustMoodle_Bad_lvl2": "退屈な仕事だが、誰かがやらなきゃな",
+    "Moodles_BloodlustMoodle_Bad_lvl3": "数体倒すくらいなら、まだマシな方か…",
+    "Moodles_BloodlustMoodle_Bad_lvl4": "ゾンビなんて1体も殺したくない気分だ…",
+    "Moodles_BloodlustMoodle_Custom": "血の渇きメーター: %1 。<br>50％以上を維持すると最終的に特性「血の渇き」を獲得し<br>50％未満になると進行度が減少します<br>（特性「血の渇き」の獲得・喪失の進行状況を示す指標です）",
+    "Moodles_SleepHealthMoodle_Good_lvl4": "完璧なタイミングでの睡眠だ",
+    "Moodles_SleepHealthMoodle_Good_lvl3": "睡眠をとるには最高の時間帯だ",
+    "Moodles_SleepHealthMoodle_Good_lvl2": "睡眠をとるには良い時間帯だ",
+    "Moodles_SleepHealthMoodle_Good_lvl1": "平均より少し良い時間帯の睡眠だ",
+    "Moodles_SleepHealthMoodle_Bad_lvl1": "生活リズムが少しズレている",
+    "Moodles_SleepHealthMoodle_Bad_lvl2": "寝るにはあまり良くない時間帯だ",
+    "Moodles_SleepHealthMoodle_Bad_lvl3": "睡眠スケジュールが大きく狂っている",
+    "Moodles_SleepHealthMoodle_Bad_lvl4": "睡眠スケジュールが完全に崩壊している",
+    "Moodles_SleepHealthMoodle_Custom": "最適な就寝時間から %1 時間離れています"
+}
