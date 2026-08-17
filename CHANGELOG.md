@@ -1,8 +1,12 @@
-## v.12.8.2
-###### 17 Aug 2026
+## v.12.9.0
+###### 18 Aug 2026
 
+- General:
+  - Added Translations Status sub-tab to the ETW character page. It shows when each supported translation was last updated relative to the installed mod version.
 - Fix:
   - Fixed the ETW character page resetting to the Vitality sub-tab whenever its UI layout was rebuilt.
+- Translations:
+  - Added Japanese translation.
 
 ## v.12.8.1
 ###### 12 Aug 2026
