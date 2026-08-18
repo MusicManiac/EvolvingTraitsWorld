@@ -3708,9 +3708,11 @@ function ISETWUI:createChildren()
 	self.addChild = nil -- restore to prototype method
 
 	-- Register the sub-views into the subtab panel
-	self.subPanel:addView(getText("UI_ETW_SubTab_Vitals"), self.subViewVitals)
-	self.subPanel:addView(getText("UI_ETW_SubTab_Progress"), self.subViewPermanentTraits)
-	self.subPanel:addView(getText("UI_ETW_SubTab_NonPermanent"), self.subViewNonPermanentTraits)
+	if SBvars.UIPage then
+		self.subPanel:addView(getText("UI_ETW_SubTab_Vitals"), self.subViewVitals)
+		self.subPanel:addView(getText("UI_ETW_SubTab_Progress"), self.subViewPermanentTraits)
+		self.subPanel:addView(getText("UI_ETW_SubTab_NonPermanent"), self.subViewNonPermanentTraits)
+	end
 	self.subPanel:addView(getText("UI_ETW_SubTab_Help"), self.subViewHelp)
 	if self.subViewTranslationStatus then
 		self.subPanel:addView(getText("UI_ETW_SubTab_TranslationsStatus"), self.subViewTranslationStatus)
@@ -4577,9 +4579,6 @@ function ISETWUI:render()
 			self.buttonDelayedTraitsTooltip:setWidth(WINDOW_WIDTH - lineStartPosition * 2)
 			self.buttonDelayedTraitsTooltip:setHeight(#lines * FONT_HGT_SMALL)
 		end
-	end
-	if isPermanentTraitsTabActive and not SBvars.UIPage then
-		self:drawText(getText("UI_ETW_ProgressPageDisabled"), 10, 10, 1, 1, 1, 1)
 	end
 	self:clearStencilRect()
 

@@ -3,6 +3,7 @@
 
 - General:
   - Added Translations Status sub-tab to the ETW character page. It shows when each supported translation was last updated relative to the installed mod version.
+  - The UI Progress Pages sandbox option now hides only the Vitals, Permanent Traits, and Non-permanent Traits tabs; Help and Translations Status remain available.
 - Fix:
   - Fixed the ETW character page resetting to the Vitality sub-tab whenever its UI layout was rebuilt.
 - Translations:
