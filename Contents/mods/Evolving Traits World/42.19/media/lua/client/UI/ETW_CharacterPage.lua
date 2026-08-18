@@ -242,6 +242,23 @@ local function parseETWVersion(version)
 	return tonumber(major), tonumber(minor), tonumber(patch)
 end
 
+-- Staleness gradient: 2+ major versions behind, 1 major, 8+ to 1 minor,
+-- 3+ bug-fix versions, and finally 0-2 bug-fix versions behind.
+local TRANSLATION_VERSION_COLORS = {
+	{ r = 1, g = 0.15, b = 0.15, a = 1 },
+	{ r = 1, g = 0.28, b = 0.12, a = 1 },
+	{ r = 1, g = 0.4, b = 0.1, a = 1 },
+	{ r = 1, g = 0.52, b = 0.08, a = 1 },
+	{ r = 1, g = 0.64, b = 0.08, a = 1 },
+	{ r = 1, g = 0.76, b = 0.08, a = 1 },
+	{ r = 1, g = 0.88, b = 0.1, a = 1 },
+	{ r = 0.86, g = 0.94, b = 0.12, a = 1 },
+	{ r = 0.7, g = 0.96, b = 0.14, a = 1 },
+	{ r = 0.54, g = 0.98, b = 0.16, a = 1 },
+	{ r = 0.38, g = 0.99, b = 0.18, a = 1 },
+	{ r = 0.2, g = 1, b = 0.2, a = 1 },
+}
+
 ---Returns the status color for a translation version relative to the installed mod version.
 ---@param currentVersion string
 ---@param translationVersion string
@@ -250,26 +267,32 @@ local function getTranslationVersionColor(currentVersion, translationVersion)
 	local currentMajor, currentMinor, currentPatch = parseETWVersion(currentVersion)
 	local translationMajor, translationMinor, translationPatch = parseETWVersion(translationVersion)
 	if not currentMajor or not translationMajor then
-		return { r = 0.95, g = 0.2, b = 0.2, a = 1 }
+		return TRANSLATION_VERSION_COLORS[1]
 	end
-	if currentMajor ~= translationMajor then
-		return { r = 0.95, g = 0.2, b = 0.2, a = 1 }
+
+	local majorDifference = currentMajor - translationMajor
+	if majorDifference >= 2 then
+		return TRANSLATION_VERSION_COLORS[1]
+	elseif majorDifference == 1 then
+		return TRANSLATION_VERSION_COLORS[2]
+	elseif majorDifference < 0 then
+		return TRANSLATION_VERSION_COLORS[12]
 	end
-	if currentMinor ~= translationMinor then
-		local minorDifference = math.abs(currentMinor - translationMinor)
-		if minorDifference > 3 then
-			return { r = 1, g = 0.85, b = 0.1, a = 1 }
-		end
-		local green = 0.95 - minorDifference * 0.08
-		return { r = 0.55 + minorDifference * 0.13, g = green, b = 0.2, a = 1 }
+
+	local minorDifference = currentMinor - translationMinor
+	if minorDifference >= 8 then
+		return TRANSLATION_VERSION_COLORS[3]
+	elseif minorDifference > 0 then
+		return TRANSLATION_VERSION_COLORS[11 - minorDifference]
+	elseif minorDifference < 0 then
+		return TRANSLATION_VERSION_COLORS[12]
 	end
-	if currentPatch ~= translationPatch then
-		if math.abs(currentPatch - translationPatch) <= 2 then
-			return { r = 0.2, g = 1, b = 0.2, a = 1 }
-		end
-		return { r = 0.45, g = 0.85, b = 0.3, a = 1 }
+
+	local patchDifference = currentPatch - translationPatch
+	if patchDifference > 2 then
+		return TRANSLATION_VERSION_COLORS[11]
 	end
-	return { r = 0.2, g = 1, b = 0.2, a = 1 }
+	return TRANSLATION_VERSION_COLORS[12]
 end
 
 ---Adds a horizontally-centered label to a panel.
@@ -381,46 +404,6 @@ local function buildTranslationStatusView(panel, currentVersion)
 
 	statusY = listStartY + rowsPerGroup * rowHeight + 14
 	addCenteredLabel(panel, statusY, getText("UI_ETW_TranslationsStatus_Explanation"), UIFont.Small, dim)
-	statusY = statusY + rowHeight
-	addCenteredLabel(
-		panel,
-		statusY,
-		getText("UI_ETW_TranslationsStatus_BrightGreen"),
-		UIFont.Small,
-		{ r = 0.2, g = 1, b = 0.2, a = 1 }
-	)
-	statusY = statusY + rowHeight
-	addCenteredLabel(
-		panel,
-		statusY,
-		getText("UI_ETW_TranslationsStatus_Green"),
-		UIFont.Small,
-		{ r = 0.45, g = 0.85, b = 0.3, a = 1 }
-	)
-	statusY = statusY + rowHeight
-	addCenteredLabel(
-		panel,
-		statusY,
-		getText("UI_ETW_TranslationsStatus_YellowGreen"),
-		UIFont.Small,
-		{ r = 0.75, g = 0.87, b = 0.2, a = 1 }
-	)
-	statusY = statusY + rowHeight
-	addCenteredLabel(
-		panel,
-		statusY,
-		getText("UI_ETW_TranslationsStatus_Yellow"),
-		UIFont.Small,
-		{ r = 1, g = 0.85, b = 0.1, a = 1 }
-	)
-	statusY = statusY + rowHeight
-	addCenteredLabel(
-		panel,
-		statusY,
-		getText("UI_ETW_TranslationsStatus_OldVersionSeries"),
-		UIFont.Small,
-		{ r = 0.95, g = 0.35, b = 0.3, a = 1 }
-	)
 	statusY = statusY + rowHeight + 10
 	addCenteredLabel(
 		panel,
