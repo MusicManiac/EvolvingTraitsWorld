@@ -1,6 +1,5 @@
 {
-    "UI_ETW_TranslationVersion": "7.1.1",
-    "UI_ETWPageDisabled": "A página do ETW está desabilitado nas configurações de sandbox",
+    "UI_ETW_aaa_TranslationVersion": "7.1.1",
     "UI_ETW_Chance": "em",
     "UI_ETW_DelayedNotificationsStringAdd": "Qualificado para ganhar o traço ",
     "UI_ETW_DelayedNotificationsStringRemove": "Qualificado para perder o traço ",
@@ -23,6 +22,7 @@
     "UI_ETW_Options_UIWidth": "[UI] Largura da página do personagem",
     "UI_ETW_Options_UIWidth_tooltip": "Largura da página do personagem em pixels. Se você joga em inglês, a configuração padrão deve funcionar bem para você, mas em outras línguas pode ser estranho, então se precisar de mais espaço, aumente aqui.",
     "UI_optionscreen_binding_ETW_UI_Toggle": "Ativar UI do Evolving Traits World",
+    "UI_ETW_ProgressPageDisabled": "A página do ETW está desabilitado nas configurações de sandbox",
     "UI_trait_AVClub": "Membro do clube CA",
     "UI_trait_AVClubDesc": "Você é parte do clube CA.",
     "UI_trait_AxeThrower": "Arremessador de Machado",
