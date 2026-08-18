@@ -215,16 +215,16 @@ local function getTranslationVersion(languageCode)
 	local path = TRANSLATION_STATUS_FILE_PREFIX .. languageCode .. TRANSLATION_STATUS_FILE_SUFFIX
 	local reader = getModFileReader("EvolvingTraitsWorld", path, false)
 	if not reader then
-		return getText("UI_ETW_TranslationsStatus_UnknownValue")
+		return "0.0.0"
 	end
 
-	local version = getText("UI_ETW_TranslationsStatus_UnknownValue")
+	local version = "0.0.0"
 	for _ = 1, 10 do
 		local line = reader:readLine()
 		if not line then
 			break
 		end
-		local marker = string.match(line, '"UI_ETW_TranslationVersion"%s*:%s*"([^"]+)"')
+		local marker = string.match(line, '"UI_ETW_aaa_TranslationVersion"%s*:%s*"([^"]+)"')
 		if marker then
 			version = marker
 			break
@@ -250,7 +250,7 @@ local function getTranslationVersionColor(currentVersion, translationVersion)
 	local currentMajor, currentMinor, currentPatch = parseETWVersion(currentVersion)
 	local translationMajor, translationMinor, translationPatch = parseETWVersion(translationVersion)
 	if not currentMajor or not translationMajor then
-		return { r = 0.65, g = 0.65, b = 0.65, a = 1 }
+		return { r = 0.95, g = 0.2, b = 0.2, a = 1 }
 	end
 	if currentMajor ~= translationMajor then
 		return { r = 0.95, g = 0.2, b = 0.2, a = 1 }
@@ -278,7 +278,8 @@ end
 local function addCenteredLabel(panel, labelY, text, font, color)
 	local width = getTextManager():MeasureStringX(font, text)
 	local height = getTextManager():getFontHeight(font)
-	local label = ISLabel:new((WINDOW_WIDTH - width) / 2, labelY, height, text, color.r, color.g, color.b, color.a, font, true)
+	local label =
+		ISLabel:new((WINDOW_WIDTH - width) / 2, labelY, height, text, color.r, color.g, color.b, color.a, font, true)
 	panel:addChild(label)
 end
 
@@ -291,39 +292,140 @@ local function buildTranslationStatusView(panel, currentVersion)
 	local dim = { r = 0.75, g = 0.75, b = 0.75, a = 1 }
 	local rowHeight = FONT_HGT_SMALL + 4
 	local statusY = 18
-	addCenteredLabel(panel, statusY, getText("UI_ETW_TranslationsStatus_CurrentModVersion", currentVersion), UIFont.Medium, white)
+	addCenteredLabel(
+		panel,
+		statusY,
+		getText("UI_ETW_TranslationsStatus_CurrentModVersion", currentVersion),
+		UIFont.Medium,
+		white
+	)
 
 	statusY = statusY + FONT_HGT_MEDIUM + 22
-	local languageX = 190
-	local versionRightX = 510
-	panel:addChild(ISLabel:new(languageX, statusY, FONT_HGT_SMALL, getText("UI_ETW_TranslationsStatus_SupportedLanguage"), 1, 1, 1, 1, UIFont.Small, true))
-	panel:addChild(ISLabel:new(versionRightX, statusY, FONT_HGT_SMALL, getText("UI_ETW_TranslationsStatus_LastUpdated"), 1, 1, 1, 1, UIFont.Small, false))
-
-	statusY = statusY + rowHeight
-	for _, language in ipairs(SUPPORTED_TRANSLATIONS) do
-		local translationVersion = getTranslationVersion(language.code)
-		local color = getTranslationVersionColor(currentVersion, translationVersion)
-		panel:addChild(ISLabel:new(languageX, statusY, FONT_HGT_SMALL, getText(language.nameKey) .. " (" .. language.code .. ")", dim.r, dim.g, dim.b, dim.a, UIFont.Small, true))
-		panel:addChild(ISLabel:new(versionRightX, statusY, FONT_HGT_SMALL, translationVersion, color.r, color.g, color.b, color.a, UIFont.Small, false))
-		statusY = statusY + rowHeight
+	local groupWidth = WINDOW_WIDTH / 2
+	local groupPadding = 40
+	local rowsPerGroup = math.ceil(#SUPPORTED_TRANSLATIONS / 2)
+	for groupIndex = 0, 1 do
+		local languageX = groupIndex * groupWidth + groupPadding
+		local versionRightX = (groupIndex + 1) * groupWidth - groupPadding
+		panel:addChild(
+			ISLabel:new(
+				languageX,
+				statusY,
+				FONT_HGT_SMALL,
+				getText("UI_ETW_TranslationsStatus_SupportedLanguage"),
+				1,
+				1,
+				1,
+				1,
+				UIFont.Small,
+				true
+			)
+		)
+		panel:addChild(
+			ISLabel:new(
+				versionRightX,
+				statusY,
+				FONT_HGT_SMALL,
+				getText("UI_ETW_TranslationsStatus_LastUpdated"),
+				1,
+				1,
+				1,
+				1,
+				UIFont.Small,
+				false
+			)
+		)
 	end
 
-	statusY = statusY + 14
+	local listStartY = statusY + rowHeight
+	for index, language in ipairs(SUPPORTED_TRANSLATIONS) do
+		local groupIndex = math.floor((index - 1) / rowsPerGroup)
+		local rowIndex = (index - 1) % rowsPerGroup
+		local languageX = groupIndex * groupWidth + groupPadding
+		local versionRightX = (groupIndex + 1) * groupWidth - groupPadding
+		local rowY = listStartY + rowIndex * rowHeight
+		local translationVersion = getTranslationVersion(language.code)
+		local color = getTranslationVersionColor(currentVersion, translationVersion)
+		panel:addChild(
+			ISLabel:new(
+				languageX,
+				rowY,
+				FONT_HGT_SMALL,
+				getText(language.nameKey) .. " (" .. language.code .. ")",
+				dim.r,
+				dim.g,
+				dim.b,
+				dim.a,
+				UIFont.Small,
+				true
+			)
+		)
+		panel:addChild(
+			ISLabel:new(
+				versionRightX,
+				rowY,
+				FONT_HGT_SMALL,
+				translationVersion,
+				color.r,
+				color.g,
+				color.b,
+				color.a,
+				UIFont.Small,
+				false
+			)
+		)
+	end
+
+	statusY = listStartY + rowsPerGroup * rowHeight + 14
 	addCenteredLabel(panel, statusY, getText("UI_ETW_TranslationsStatus_Explanation"), UIFont.Small, dim)
 	statusY = statusY + rowHeight
-	addCenteredLabel(panel, statusY, getText("UI_ETW_TranslationsStatus_BrightGreen"), UIFont.Small, { r = 0.2, g = 1, b = 0.2, a = 1 })
+	addCenteredLabel(
+		panel,
+		statusY,
+		getText("UI_ETW_TranslationsStatus_BrightGreen"),
+		UIFont.Small,
+		{ r = 0.2, g = 1, b = 0.2, a = 1 }
+	)
 	statusY = statusY + rowHeight
-	addCenteredLabel(panel, statusY, getText("UI_ETW_TranslationsStatus_Green"), UIFont.Small, { r = 0.45, g = 0.85, b = 0.3, a = 1 })
+	addCenteredLabel(
+		panel,
+		statusY,
+		getText("UI_ETW_TranslationsStatus_Green"),
+		UIFont.Small,
+		{ r = 0.45, g = 0.85, b = 0.3, a = 1 }
+	)
 	statusY = statusY + rowHeight
-	addCenteredLabel(panel, statusY, getText("UI_ETW_TranslationsStatus_YellowGreen"), UIFont.Small, { r = 0.75, g = 0.87, b = 0.2, a = 1 })
+	addCenteredLabel(
+		panel,
+		statusY,
+		getText("UI_ETW_TranslationsStatus_YellowGreen"),
+		UIFont.Small,
+		{ r = 0.75, g = 0.87, b = 0.2, a = 1 }
+	)
 	statusY = statusY + rowHeight
-	addCenteredLabel(panel, statusY, getText("UI_ETW_TranslationsStatus_Yellow"), UIFont.Small, { r = 1, g = 0.85, b = 0.1, a = 1 })
+	addCenteredLabel(
+		panel,
+		statusY,
+		getText("UI_ETW_TranslationsStatus_Yellow"),
+		UIFont.Small,
+		{ r = 1, g = 0.85, b = 0.1, a = 1 }
+	)
 	statusY = statusY + rowHeight
-	addCenteredLabel(panel, statusY, getText("UI_ETW_TranslationsStatus_OldVersionSeries"), UIFont.Small, { r = 0.95, g = 0.35, b = 0.3, a = 1 })
-	statusY = statusY + rowHeight
-	addCenteredLabel(panel, statusY, getText("UI_ETW_TranslationsStatus_Unknown"), UIFont.Small, { r = 0.65, g = 0.65, b = 0.65, a = 1 })
+	addCenteredLabel(
+		panel,
+		statusY,
+		getText("UI_ETW_TranslationsStatus_OldVersionSeries"),
+		UIFont.Small,
+		{ r = 0.95, g = 0.35, b = 0.3, a = 1 }
+	)
 	statusY = statusY + rowHeight + 10
-	addCenteredLabel(panel, statusY, getText("UI_ETW_TranslationsStatus_MaintainersNeeded"), UIFont.Small, { r = 1, g = 0.75, b = 0.2, a = 1 })
+	addCenteredLabel(
+		panel,
+		statusY,
+		getText("UI_ETW_TranslationsStatus_MaintainersNeeded"),
+		UIFont.Small,
+		{ r = 1, g = 0.75, b = 0.2, a = 1 }
+	)
 	return statusY + rowHeight + 10
 end
 
@@ -478,7 +580,7 @@ function ISETWUI:createChildren()
 	self.subViewTranslationStatus:initialise()
 	self.subViewTranslationStatus:noBackground()
 	local modInfo = getModInfoByID("EvolvingTraitsWorld")
-	local currentVersion = modInfo and modInfo:getModVersion() or getText("UI_ETW_TranslationsStatus_UnknownValue")
+	local currentVersion = modInfo and modInfo:getModVersion() or "0.0.0"
 	self.translationStatusWindowHeight = buildTranslationStatusView(self.subViewTranslationStatus, currentVersion)
 
 	local vitalsLayoutCursor = newLayoutCursor()
@@ -1358,9 +1460,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					false
 				)
-				self.labelEatingSpeedSystemBarName:setTooltip(
-					getText("Sandbox_ETW_EatingSpeedSystemCounter_tooltip")
-				)
+				self.labelEatingSpeedSystemBarName:setTooltip(getText("Sandbox_ETW_EatingSpeedSystemCounter_tooltip"))
 				self:addChild(self.labelEatingSpeedSystemBarName)
 
 				self.barEatingSpeedSystem = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
@@ -2852,10 +2952,10 @@ function ISETWUI:createChildren()
 					y - 4,
 					FONT_HGT_SMALL,
 					getText("UI_ETW_AffinitySystemEnabled"),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
+					0.2,
+					1,
+					0.2,
+					1,
 					UIFont.Small,
 					true
 				)
@@ -4442,7 +4542,11 @@ function ISETWUI:render()
 	)
 	updateLabel(
 		self.labelBlacksmithProgress,
-		getCachedTraitUIName(CharacterTrait.BLACKSMITH) .. ": " .. blacksmith + maintenance .. "/" .. SBvars.BlacksmithSkill
+		getCachedTraitUIName(CharacterTrait.BLACKSMITH)
+			.. ": "
+			.. blacksmith + maintenance
+			.. "/"
+			.. SBvars.BlacksmithSkill
 	)
 
 	if isPermanentTraitsTabActive and self.labelDelayedTraitsSystem ~= nil then

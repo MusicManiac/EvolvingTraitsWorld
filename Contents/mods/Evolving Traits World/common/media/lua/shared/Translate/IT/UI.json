@@ -1,5 +1,5 @@
 {
-    "UI_ETW_TranslationVersion": "9.3.1",
+    "UI_ETW_aaa_TranslationVersion": "9.3.1",
     "UI_ETW": "ETW",
     "UI_ETW_Chance": "su",
     "UI_ETW_Chance___note_to_translators": "(Don't translate this, this is just info for you guys) UI_ETW_Chance is used in displaying chances, so for example '1 in 300' or '1 in 50300', etc.",
