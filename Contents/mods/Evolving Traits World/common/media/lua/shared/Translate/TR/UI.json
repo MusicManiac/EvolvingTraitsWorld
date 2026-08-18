@@ -22,7 +22,6 @@
     "UI_ETW_Options_TraitColumns_tooltip": "UI sayfasýnda ne kadar sütun olduðunu belirler. Oyunu Türkçe oynadýðýnýz için bu ayarýn deðiþtirilmesi gereklidir. Azaltmak yeterli olacaktýr.",
     "UI_ETW_Options_UIWidth": "[UI] Özellikler için UI sayfasýnýn geniþliði",
     "UI_ETW_Options_UIWidth_tooltip": "Özellikler için olan UI sayfasýnýn pixel sayýsý olarak geniþliðidir. Oyunu Türkçe olarak oynadýðýnýz için bu ayarýn deðiþtirilmesi gereklidir. Deðiþtirilmemesi durumunda sayfa garip gözükebilir.",
-    "UI_ETW_ProgressPageDisabled": "ETW sayfasý sandbox ayarlarýnda kapalý",
     "UI_trait_AVClub": "Bilim Teknik Dergisi Abonesi(A.V. klübü aslýnda da anladýnýz iþte)",
     "UI_trait_AVClubDesc": "Eskiden Bilim Teknik Dergisi okurdun",
     "UI_trait_AxeThrower": "Balta Atýcýsý",

@@ -10,6 +10,7 @@ General:
 
 Fix:
   - Fixed the ETW character page resetting to the Vitality sub-tab whenever its UI layout was rebuilt.
+  - Fixed missing Homichlophile and Homichlophobia sandbox tooltips and removed obsolete UI translation entries.
 
 Translations:
   - Added Japanese translation.

@@ -21,7 +21,6 @@
     "UI_ETW_Options_TraitColumns_tooltip": "Cuantas columnas hay en la IU en la pestaña del personaje. La configuración predeterminada deberia de funcionar correctamente si juegas en el idioma ingles, pero si el texto se superpone, quizas deberias de reducir este valor",
     "UI_ETW_Options_UIWidth": "[IU] Ancho de pagina",
     "UI_ETW_Options_UIWidth_tooltip": "Ancho de pagina en pixeles. Si juegas en el idioma ingles debería de funcionar correctamente, pero en cualquier otro idioma puede verse raro asique si necesitas mas espacio, auméntalo  aquí.",
-    "UI_ETW_ProgressPageDisabled": "la pagina de ETW esta deshabilitada en la sandbox",
     "UI_optionscreen_binding_ETW_UI_Toggle": "Activar Interfaz del Evolving Traits World",
     "UI_trait_AVClub": "Miembro del club de A/V",
     "UI_trait_AVClubDesc": "Eres parte del club de A/V",

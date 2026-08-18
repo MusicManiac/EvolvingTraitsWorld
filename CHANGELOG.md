@@ -8,6 +8,7 @@
   - Made the default Smoker and Fear of Locations settings less punishing by speeding up smoking addiction recovery, lowering the location-fear threshold, and enabling slight passive recovery for the opposite location fear.
 - Fix:
   - Fixed the ETW character page resetting to the Vitality sub-tab whenever its UI layout was rebuilt.
+  - Fixed missing Homichlophile and Homichlophobia sandbox tooltips and removed obsolete UI translation entries.
 - Translations:
   - Added Japanese translation.
 
