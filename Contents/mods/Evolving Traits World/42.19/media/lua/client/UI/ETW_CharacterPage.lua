@@ -264,6 +264,9 @@ local function getTranslationVersionColor(currentVersion, translationVersion)
 		return { r = 0.55 + minorDifference * 0.13, g = green, b = 0.2, a = 1 }
 	end
 	if currentPatch ~= translationPatch then
+		if math.abs(currentPatch - translationPatch) <= 2 then
+			return { r = 0.2, g = 1, b = 0.2, a = 1 }
+		end
 		return { r = 0.45, g = 0.85, b = 0.3, a = 1 }
 	end
 	return { r = 0.2, g = 1, b = 0.2, a = 1 }

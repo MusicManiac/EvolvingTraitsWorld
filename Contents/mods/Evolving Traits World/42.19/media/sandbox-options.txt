@@ -133,7 +133,7 @@ option EvolvingTraitsWorld.FearOfLocationsSystemPassiveCounterDecay
 	type = double,
 	min = 0,
 	max = 8,
-	default = 0,
+	default = 0.1,
 	page = ETWSystems,
 	translation = ETW_FearOfLocationsSystemPassiveCounterDecay,
 }
@@ -142,7 +142,7 @@ option EvolvingTraitsWorld.FearOfLocationsSystemCounter
 	type = integer,
 	min = 0,
 	max = 10000000,
-	default = 12000,
+	default = 8000,
 	page = ETWSystems,
 	translation = ETW_FearOfLocationsSystemCounter,
 }
@@ -949,7 +949,7 @@ option EvolvingTraitsWorld.SmokingAddictionDecay
 	type = double,
 	min = 0,
 	max = 1000,
-	default = 12,
+	default = 24,
 	page = ETWComplexPerks,
 	translation = ETW_SmokingAddictionDecay,
 }
