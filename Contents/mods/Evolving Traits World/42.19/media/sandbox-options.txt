@@ -41,7 +41,7 @@ option EvolvingTraitsWorld.DelayedTraitsSystemDefaultDelay
 {
 	type = integer,
 	min = 1,
-	max = 5000,
+	max = 100000,
 	default = 336,
 	page = ETWSettings,
 	translation = ETW_DelayedTraitsSystemDefaultDelay,
@@ -50,7 +50,7 @@ option EvolvingTraitsWorld.DelayedTraitsSystemDefaultStartingDelay
 {
 	type = integer,
 	min = 1,
-	max = 5000,
+	max = 100000,
 	default = 504,
 	page = ETWSettings,
 	translation = ETW_DelayedTraitsSystemDefaultStartingDelay,
@@ -86,7 +86,7 @@ option EvolvingTraitsWorld.BraverySystemKills
 {
 	type = integer,
 	min = 0,
-	max = 500000,
+	max = 10000000,
 	default = 14000,
 	page = ETWSystems,
 	translation = ETW_BraverySystemKills,
@@ -109,7 +109,7 @@ option EvolvingTraitsWorld.EatingSpeedSystemCounter
 {
 	type = integer,
 	min = 0,
-	max = 1000000,
+	max = 10000000,
 	default = 216000,
 	page = ETWSystems,
 	translation = ETW_EatingSpeedSystemCounter,
@@ -141,7 +141,7 @@ option EvolvingTraitsWorld.FearOfLocationsSystemCounter
 {
 	type = integer,
 	min = 0,
-	max = 500000,
+	max = 10000000,
 	default = 12000,
 	page = ETWSystems,
 	translation = ETW_FearOfLocationsSystemCounter,
@@ -166,7 +166,7 @@ option EvolvingTraitsWorld.FogSystemCounter
 {
 	type = integer,
 	min = 0,
-	max = 500000,
+	max = 10000000,
 	default = 20000,
 	page = ETWSystems,
 	translation = ETW_FogSystemCounter,
@@ -200,7 +200,7 @@ option EvolvingTraitsWorld.FoodSicknessSystemCounter
 {
 	type = integer,
 	min = 0,
-	max = 500000,
+	max = 10000000,
 	default = 40000,
 	page = ETWSystems,
 	translation = ETW_FoodSicknessSystemCounter,
@@ -284,7 +284,7 @@ option EvolvingTraitsWorld.ImmunitySystemCounter
 {
 	type = integer,
 	min = 0,
-	max = 500000,
+	max = 10000000,
 	default = 9000,
 	page = ETWSystems,
 	translation = ETW_ImmunitySystemCounter,
@@ -309,7 +309,7 @@ option EvolvingTraitsWorld.InjuriesSystemCounter
 {
 	type = integer,
 	min = 1,
-	max = 500000,
+	max = 10000000,
 	default = 10000,
 	page = ETWSystems,
 	translation = ETW_InjuriesSystemCounter,
@@ -334,7 +334,7 @@ option EvolvingTraitsWorld.HealerSystemCounter
 {
 	type = integer,
 	min = 1,
-	max = 500000,
+	max = 10000000,
 	default = 10000,
 	page = ETWSystems,
 	translation = ETW_HealerSystemCounter,
@@ -440,7 +440,7 @@ option EvolvingTraitsWorld.InventoryTransferSystemItems
 {
 	type = integer,
 	min = 0,
-	max = 2500000,
+	max = 10000000,
 	default = 40000,
 	page = ETWSystems,
 	translation = ETW_InventoryTransferSystemItems,
@@ -449,7 +449,7 @@ option EvolvingTraitsWorld.InventoryTransferSystemWeight
 {
 	type = integer,
 	min = 0,
-	max = 2500000,
+	max = 10000000,
 	default = 30000,
 	page = ETWSystems,
 	translation = ETW_InventoryTransferSystemWeight,
@@ -497,7 +497,7 @@ option EvolvingTraitsWorld.RainSystemCounter
 {
 	type = integer,
 	min = 0,
-	max = 500000,
+	max = 10000000,
 	default = 40000,
 	page = ETWSystems,
 	translation = ETW_RainSystemCounter,
@@ -531,7 +531,7 @@ option EvolvingTraitsWorld.ReaderSystemCounter
 {
 	type = integer,
 	min = 0,
-	max = 500000,
+	max = 10000000,
 	default = 10000,
 	page = ETWSystems,
 	translation = ETW_ReaderSystemCounter,
@@ -780,7 +780,7 @@ option EvolvingTraitsWorld.AsthmaticCounter
 {
 	type = integer,
 	min = 0,
-	max = 500000,
+	max = 10000000,
 	default = 20000,
 	page = ETWComplexPerks,
 	translation = ETW_AsthmaticCounter,
@@ -823,7 +823,7 @@ option EvolvingTraitsWorld.BloodlustProgress
 {
 	type = integer,
 	min = 1,
-	max = 500000,
+	max = 10000000,
 	default = 1000,
 	page = ETWComplexPerks,
 	translation = ETW_BloodlustProgress,
@@ -839,7 +839,7 @@ option EvolvingTraitsWorld.CatEyesCounter
 {
 	type = integer,
 	min = 0,
-	max = 2500000,
+	max = 10000000,
 	default = 250000,
 	page = ETWComplexPerks,
 	translation = ETW_CatEyesCounter,
@@ -864,7 +864,7 @@ option EvolvingTraitsWorld.EagleEyedKills
 {
 	type = integer,
 	min = 0,
-	max = 500000,
+	max = 10000000,
 	default = 200,
 	page = ETWComplexPerks,
 	translation = ETW_EagleEyedKills,
@@ -880,7 +880,7 @@ option EvolvingTraitsWorld.HerbalistHerbsPicked
 {
 	type = integer,
 	min = 0,
-	max = 500000,
+	max = 10000000,
 	default = 250,
 	page = ETWComplexPerks,
 	translation = ETW_HerbalistHerbsPicked,
@@ -905,7 +905,7 @@ option EvolvingTraitsWorld.OutdoorsmanCounter
 {
 	type = integer,
 	min = 0,
-	max = 2500000,
+	max = 10000000,
 	default = 500000,
 	page = ETWComplexPerks,
 	translation = ETW_OutdoorsmanCounter,
@@ -939,7 +939,7 @@ option EvolvingTraitsWorld.SmokerCounter
 {
 	type = integer,
 	min = 0,
-	max = 500000,
+	max = 10000000,
 	default = 500,
 	page = ETWComplexPerks,
 	translation = ETW_SmokerCounter,
@@ -988,7 +988,7 @@ option EvolvingTraitsWorld.MechanicsRepairs
 {
 	type = integer,
 	min = 0,
-	max = 500000,
+	max = 10000000,
 	default = 1000,
 	page = ETWSimplePerks,
 	translation = ETW_MechanicsRepairs,
@@ -1068,7 +1068,7 @@ option EvolvingTraitsWorld.AxemanTrees
 {
 	type = integer,
 	min = 0,
-	max = 500000,
+	max = 10000000,
 	default = 250,
 	page = ETWSimplePerks,
 	translation = ETW_AxemanTrees,
@@ -1093,7 +1093,7 @@ option EvolvingTraitsWorld.AxeThrowerKills
 {
 	type = integer,
 	min = 0,
-	max = 500000,
+	max = 10000000,
 	default = 200,
 	page = ETWSimplePerks,
 	translation = ETW_AxeThrowerKills,
@@ -1118,7 +1118,7 @@ option EvolvingTraitsWorld.BaseballPlayerKills
 {
 	type = integer,
 	min = 0,
-	max = 500000,
+	max = 10000000,
 	default = 200,
 	page = ETWSimplePerks,
 	translation = ETW_BaseballPlayerKills,
@@ -1159,7 +1159,7 @@ option EvolvingTraitsWorld.BladeEnthusiastKills
 {
 	type = integer,
 	min = 0,
-	max = 500000,
+	max = 10000000,
 	default = 250,
 	page = ETWSimplePerks,
 	translation = ETW_BladeEnthusiastKills,
@@ -1184,7 +1184,7 @@ option EvolvingTraitsWorld.BodyworkEnthusiastRepairs
 {
 	type = integer,
 	min = 0,
-	max = 500000,
+	max = 10000000,
 	default = 6000,
 	page = ETWSimplePerks,
 	translation = ETW_BodyworkEnthusiastRepairs,
@@ -1209,7 +1209,7 @@ option EvolvingTraitsWorld.BrawlerKills
 {
 	type = integer,
 	min = 0,
-	max = 500000,
+	max = 10000000,
 	default = 600,
 	page = ETWSimplePerks,
 	translation = ETW_BrawlerKills,
@@ -1378,7 +1378,7 @@ option EvolvingTraitsWorld.GunEnthusiastKills
 {
 	type = integer,
 	min = 0,
-	max = 500000,
+	max = 10000000,
 	default = 600,
 	page = ETWSimplePerks,
 	translation = ETW_GunEnthusiastKills,
@@ -1458,7 +1458,7 @@ option EvolvingTraitsWorld.HoarderCounter
 {
 	type = integer,
 	min = 0,
-	max = 500000,
+	max = 10000000,
 	default = 30000,
 	page = ETWSimplePerks,
 	translation = ETW_HoarderCounter,
@@ -1499,7 +1499,7 @@ option EvolvingTraitsWorld.HunterKills
 {
 	type = integer,
 	min = 0,
-	max = 500000,
+	max = 10000000,
 	default = 200,
 	page = ETWSimplePerks,
 	translation = ETW_HunterKills,
@@ -1540,7 +1540,7 @@ option EvolvingTraitsWorld.KnifeFighterKills
 {
 	type = integer,
 	min = 0,
-	max = 500000,
+	max = 10000000,
 	default = 200,
 	page = ETWSimplePerks,
 	translation = ETW_KnifeFighterKills,
@@ -1588,7 +1588,7 @@ option EvolvingTraitsWorld.PainToleranceCounter
 {
 	type = integer,
 	min = 0,
-	max = 500000,
+	max = 10000000,
 	default = 30000,
 	page = ETWSimplePerks,
 	translation = ETW_PainToleranceCounter,
@@ -1613,7 +1613,7 @@ option EvolvingTraitsWorld.PetTherapyUniqueAnimalsPetted
 {
 	type = integer,
 	min = 0,
-	max = 50000,
+	max = 1000000,
 	default = 50,
 	page = ETWSimplePerks,
 	translation = ETW_PetTherapyUniqueAnimalsPetted,
@@ -1638,7 +1638,7 @@ option EvolvingTraitsWorld.PolearmFighterKills
 {
 	type = integer,
 	min = 0,
-	max = 500000,
+	max = 10000000,
 	default = 200,
 	page = ETWSimplePerks,
 	translation = ETW_PolearmFighterKills,
@@ -1695,7 +1695,7 @@ option EvolvingTraitsWorld.SewerUniqueClothesRipped
 {
 	type = integer,
 	min = 0,
-	max = 1000,
+	max = 1000000,
 	default = 50,
 	page = ETWSimplePerks,
 	translation = ETW_SewerUniqueClothesRipped,
@@ -1720,7 +1720,7 @@ option EvolvingTraitsWorld.StickFighterKills
 {
 	type = integer,
 	min = 0,
-	max = 500000,
+	max = 10000000,
 	default = 200,
 	page = ETWSimplePerks,
 	translation = ETW_StickFighterKills,
