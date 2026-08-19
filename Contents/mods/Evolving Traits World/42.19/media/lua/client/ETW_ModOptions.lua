@@ -70,6 +70,12 @@ etwOptions:addTickBox(
 	getText("UI_ETW_Options_EnableDelayedNotifications_tooltip")
 )
 etwOptions:addTickBox(
+	"EnableButterfingersPopup",
+	getText("UI_ETW_Options_EnableButterfingersPopup"),
+	true,
+	getText("UI_ETW_Options_EnableButterfingersPopup_tooltip")
+)
+etwOptions:addTickBox(
 	"EnableBloodLustMoodle",
 	getText("UI_ETW_Options_EnableBloodLustMoodle"),
 	true,

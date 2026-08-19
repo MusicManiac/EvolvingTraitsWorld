@@ -9,6 +9,7 @@ local SBvars = SandboxVars.EvolvingTraitsWorld
 
 ---@type EvolvingTraitsWorldTraitsRegistries
 local ETWTraitsRegistry = ETW_Registry.traits
+local random_instance = newrandom()
 
 local FILENAME = "ETW_ISEatFoodActionOverrideServer.lua"
 if
@@ -160,5 +161,28 @@ function ISEatFoodAction:complete()
 	logETW("ETW Logger | ISEatFoodAction:complete(): caught")
 	local originalReturn = original_ISEatFoodAction_complete(self)
 	recordEatingTime(self)
+	local item = self.item
+	local isFood = item ~= nil
+		and item:getCustomMenuOption() ~= getText("ContextMenu_Drink")
+		and not item:hasTag(ItemTag.SMOKABLE)
+	if isFood and self.character:hasTrait(ETWTraitsRegistry.BAD_TEETH) then
+		local chance = PZMath.clamp(SBvars.BadTeethPainChance or 10, 0, 100)
+		if random_instance:random(1, 100) <= chance then
+			local portion = PZMath.clamp(tonumber(self.percentage) or 1, 0, 1)
+			local pain = portion * math.max(0, SBvars.BadTeethMaxPain or 20)
+			local head = self.character:getBodyDamage():getBodyPart(BodyPartType.Head)
+			local currentPain = head:getAdditionalPain()
+			local resultingPain = math.min(100, currentPain + pain)
+			head:setAdditionalPain(resultingPain)
+			logETW(
+				"ETW Logger | ISEatFoodAction:complete(): Bad Teeth triggered; head pain: "
+					.. currentPain
+					.. "->"
+					.. resultingPain
+					.. ", portion: "
+					.. portion
+			)
+		end
+	end
 	return originalReturn
 end

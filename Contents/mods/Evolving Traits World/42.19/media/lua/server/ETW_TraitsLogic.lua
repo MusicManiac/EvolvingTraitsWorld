@@ -7,6 +7,7 @@ local ETWTraitsRegistry = ETW_Registry.traits
 
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld
+local random_instance = newrandom()
 
 local gameMode = ETW_CommonFunctions.gameMode()
 
@@ -265,14 +266,230 @@ function ISPetAnimal:animEvent(event, parameter)
 	original_ISPetAnimal_animEvent(self, event, parameter)
 end
 
+---Applies Anemic's additional damage to actively bleeding, unstemmed wounds.
+---@param player IsoPlayer
+local function anemicTrait(player)
+	if not player:hasTrait(ETWTraitsRegistry.ANEMIC) then
+		return
+	end
+	local bodyDamage = player:getBodyDamage()
+	if bodyDamage:getNumPartsBleeding() <= 0 then
+		return
+	end
+	local damage = math.max(0, SBvars.AnemicBleedingDamage or 0.4)
+	local parts = bodyDamage:getBodyParts()
+	local damagedParts = 0
+	local totalDamage = 0
+	for i = 0, parts:size() - 1 do
+		local part = parts:get(i)
+		if part:bleeding() and not part:IsBleedingStemmed() then
+			local partDamage = damage
+			if part:getType() == BodyPartType.Head or part:getType() == BodyPartType.Neck then
+				partDamage = partDamage * 2
+			end
+			part:ReduceHealth(partDamage)
+			damagedParts = damagedParts + 1
+			totalDamage = totalDamage + partDamage
+		end
+	end
+	if damagedParts > 0 then
+		logETW(
+			"ETW Logger | anemicTrait(): damaged "
+				.. damagedParts
+				.. " bleeding parts for "
+				.. totalDamage
+				.. " total health"
+		)
+	end
+end
+
+---Applies Blissful's passive mood recovery.
+---@param player IsoPlayer
+local function blissfulTrait(player)
+	if not player:hasTrait(ETWTraitsRegistry.BLISSFUL) then
+		return
+	end
+	local stats = player:getStats()
+	local unhappiness = stats:get(CharacterStat.UNHAPPINESS)
+	local boredom = stats:get(CharacterStat.BOREDOM)
+	local unhappinessReduction = PZMath.clamp(SBvars.BlissfulUnhappinessReductionPerMinute or 1, 0, 100)
+	local boredomReduction = PZMath.clamp(SBvars.BlissfulBoredomReductionPerMinute or 0.5, 0, 100)
+	local resultingUnhappiness = math.max(0, unhappiness - unhappinessReduction)
+	local resultingBoredom = math.max(0, boredom - boredomReduction)
+	stats:set(CharacterStat.UNHAPPINESS, resultingUnhappiness)
+	stats:set(CharacterStat.BOREDOM, resultingBoredom)
+	if resultingUnhappiness ~= unhappiness or resultingBoredom ~= boredom then
+		logETW(
+			"ETW Logger | blissfulTrait(): unhappiness: "
+				.. unhappiness
+				.. "->"
+				.. resultingUnhappiness
+				.. ", boredom: "
+				.. boredom
+				.. "->"
+				.. resultingBoredom
+		)
+	end
+end
+
+---Rolls for Butterfingers to drop held items while moving.
+---@param player IsoPlayer
+local function butterfingersTrait(player)
+	if not player:hasTrait(ETWTraitsRegistry.BUTTERFINGERS) or not player:isPlayerMoving() then
+		return
+	end
+	if player:getPrimaryHandItem() == nil and player:getSecondaryHandItem() == nil then
+		return
+	end
+
+	local chanceIn = math.max(1, SBvars.ButterfingersChanceOneIn or 2000)
+	local chance = 3 + math.floor(player:getInventoryWeight() / 5)
+	if player:hasTrait(CharacterTrait.ALL_THUMBS) then
+		chance = chance + 1
+	elseif player:hasTrait(CharacterTrait.DEXTROUS) then
+		chance = chance - 1
+	end
+	if player:isSprinting() then
+		chance = chance + 10
+	elseif player:isRunning() then
+		chance = chance + 5
+	end
+
+	if random_instance:random(1, chanceIn) <= math.min(chanceIn, math.max(1, chance)) then
+		local primaryItem = player:getPrimaryHandItem()
+		local secondaryItem = player:getSecondaryHandItem()
+		player:dropHandItems()
+		ETW_CommonFunctions.displayButterfingersPopup(player)
+		logETW(
+			"ETW Logger | butterfingersTrait(): dropped held items; primary: "
+				.. (primaryItem and primaryItem:getFullType() or "nil")
+				.. ", secondary: "
+				.. (secondaryItem and secondaryItem:getFullType() or "nil")
+				.. ", chance: "
+				.. math.max(1, chance)
+				.. "/"
+				.. chanceIn
+		)
+	end
+end
+
+---Applies Quick Rest to endurance recovered since the previous minute update.
+---@param player IsoPlayer
+---@param modData EvolvingTraitsWorldModData
+local function quickRestTrait(player, modData)
+	local stats = player:getStats()
+	local endurance = stats:get(CharacterStat.ENDURANCE)
+	if player:hasTrait(ETWTraitsRegistry.QUICK_REST)
+		and (player:isSitOnGround() or player:isSittingOnFurniture())
+		and endurance > modData.QuickRestLastEndurance
+	then
+		local multiplier = math.max(1, SBvars.QuickRestRecoveryMultiplier or 2)
+		local bonus = (endurance - modData.QuickRestLastEndurance) * (multiplier - 1)
+		local resultingEndurance = math.min(1, endurance + bonus)
+		stats:set(CharacterStat.ENDURANCE, resultingEndurance)
+		-- if resultingEndurance ~= endurance then
+		-- 	logETW(
+		-- 		"ETW Logger | quickRestTrait(): endurance: " .. endurance .. "->" .. resultingEndurance
+		-- 	)
+		-- end
+	end
+	modData.QuickRestLastEndurance = stats:get(CharacterStat.ENDURANCE)
+end
+
+---Processes Quick Rest every tick so each natural endurance recovery increment is multiplied.
+local function quickRestTraitTick()
+	local playersList = ETW_CommonFunctions.playersList()
+	for i = 0, playersList:size() - 1 do
+		local player = playersList:get(i)
+		local modData = ETW_CommonFunctions.getETWModData(player)
+		if modData then
+			quickRestTrait(player, modData)
+		end
+	end
+end
+
+---Transfers endurance between Hardy's reserve and the normal endurance bar.
+---@param player IsoPlayer
+---@param modData EvolvingTraitsWorldModData
+local function hardyTrait(player, modData)
+	-- TODO: moodle support as a display of available endurance reserve
+	if not player:hasTrait(ETWTraitsRegistry.HARDY) then
+		modData.HardyReserve = nil
+		return
+	end
+	local stats = player:getStats()
+	local endurance = stats:get(CharacterStat.ENDURANCE)
+	local maximumReserve = PZMath.clamp((SBvars.HardyExtraEndurancePercent or 25) / 100, 0, 1)
+	local transfer = PZMath.clamp(SBvars.HardyTransferPerMinute or 0.05, 0, 1)
+	modData.HardyReserve = PZMath.clamp(modData.HardyReserve or maximumReserve, 0, maximumReserve)
+	if endurance < 0.85 and modData.HardyReserve > 0 then
+		local amount = math.min(transfer, modData.HardyReserve, 1 - endurance)
+		stats:set(CharacterStat.ENDURANCE, endurance + amount)
+		modData.HardyReserve = modData.HardyReserve - amount
+		logETW(
+			"ETW Logger | hardyTrait(): transferred "
+				.. amount
+				.. " from reserve; endurance: "
+				.. endurance
+				.. "->"
+				.. (endurance + amount)
+				.. ", reserve: "
+				.. modData.HardyReserve
+		)
+	elseif endurance >= 0.99 and modData.HardyReserve < maximumReserve then
+		local amount = math.min(transfer, maximumReserve - modData.HardyReserve, endurance)
+		stats:set(CharacterStat.ENDURANCE, endurance - amount)
+		modData.HardyReserve = modData.HardyReserve + amount
+		logETW(
+			"ETW Logger | hardyTrait(): replenished reserve by "
+				.. amount
+				.. "; endurance: "
+				.. endurance
+				.. "->"
+				.. (endurance - amount)
+				.. ", reserve: "
+				.. modData.HardyReserve
+		)
+	end
+end
+
+---Adjusts positive calorie gains when Ideal Weight is below or above its target range.
+---@param player IsoPlayer
+---@param modData EvolvingTraitsWorldModData
+local function idealWeightTrait(player, modData)
+	local nutrition = player:getNutrition()
+	local calories = nutrition:getCalories()
+	if player:hasTrait(ETWTraitsRegistry.IDEAL_WEIGHT) and calories > modData.IdealWeightLastCalories then
+		local originalCalories = calories
+		local gain = calories - modData.IdealWeightLastCalories
+		local weight = nutrition:getWeight()
+		local lowerWeight = SBvars.IdealWeightLowerThreshold or 78
+		local upperWeight = SBvars.IdealWeightUpperThreshold or 82
+		if weight <= lowerWeight then
+			calories = modData.IdealWeightLastCalories + gain * math.max(0, SBvars.IdealWeightUnderMultiplier or 1.5)
+		elseif weight >= upperWeight then
+			calories = modData.IdealWeightLastCalories + gain * math.max(0, SBvars.IdealWeightOverMultiplier or 0.75)
+		end
+		nutrition:setCalories(calories)
+		if calories ~= originalCalories then
+			logETW(
+				"ETW Logger | idealWeightTrait(): weight: "
+					.. weight
+					.. ", calories: "
+					.. originalCalories
+					.. "->"
+					.. calories
+			)
+		end
+	end
+	modData.IdealWeightLastCalories = calories
+end
+
 ---Function responsible for setting up every minute updates
 local function oneMinuteUpdate()
 	local climateManager = getClimateManager()
 	local rainIntensity = climateManager:getRainIntensity()
 	local fogIntensity = climateManager:getFogIntensity()
-	if fogIntensity == 0 and rainIntensity == 0 then
-		return
-	end
 	local playersList = ETW_CommonFunctions.playersList()
 	for i = 0, playersList:size() - 1 do
 		local player = playersList:get(i)
@@ -282,6 +499,15 @@ local function oneMinuteUpdate()
 		if rainIntensity > 0 then
 			fogTraits(player, fogIntensity)
 		end
+		anemicTrait(player)
+		blissfulTrait(player)
+		butterfingersTrait(player)
+		local modData = ETW_CommonFunctions.getETWModData(player)
+		if modData then
+			hardyTrait(player, modData)
+			modData.QuickRestLastEndurance = player:getStats():get(CharacterStat.ENDURANCE)
+			idealWeightTrait(player, modData)
+		end
 	end
 end
 
@@ -289,10 +515,7 @@ end
 ---@param player IsoPlayer
 function ETW_InitiatePainToleranceTrait(player)
 	Events.OnTick.Remove(painToleranceTrait)
-	if
-		not getActivatedMods():contains("\\2934686936/EvolvingTraitsWorldDisablePainTolerance")
-		and player:hasTrait(ETWTraitsRegistry.PAIN_TOLERANCE)
-	then
+	if player:hasTrait(ETWTraitsRegistry.PAIN_TOLERANCE) then
 		Events.OnTick.Add(painToleranceTrait)
 	end
 end
@@ -305,6 +528,8 @@ local function initializeTraitsLogic(playerIndex, player)
 	Events.OnZombieDead.Add(OnZombieDeadETW)
 	Events.EveryOneMinute.Remove(oneMinuteUpdate)
 	Events.EveryOneMinute.Add(oneMinuteUpdate)
+	Events.OnTick.Remove(quickRestTraitTick)
+	Events.OnTick.Add(quickRestTraitTick)
 	Events.OnTick.Remove(painToleranceTrait)
 	if gameMode == ETW_CommonFunctions.GameMode.MP_SERVER or getPlayer():hasTrait(ETWTraitsRegistry.PAIN_TOLERANCE) then
 		Events.OnTick.Add(painToleranceTrait)
@@ -319,6 +544,7 @@ end
 local function clearEventsETW(character)
 	Events.OnZombieDead.Remove(OnZombieDeadETW)
 	Events.EveryOneMinute.Remove(oneMinuteUpdate)
+	Events.OnTick.Remove(quickRestTraitTick)
 	Events.OnTick.Remove(painToleranceTrait)
 	logETW("ETW Logger | System: clearEventsETW in " .. FILENAME)
 end

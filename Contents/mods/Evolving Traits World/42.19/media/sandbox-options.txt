@@ -655,6 +655,148 @@ option EvolvingTraitsWorld.TRAITS
 {
 	translation = --------------------------------------------------TRAITS-----------------------------------------------------------------,
 }
+option EvolvingTraitsWorld.AnemicBleedingDamage
+{
+	type = double,
+	min = 0,
+	max = 10,
+	default = 0.4,
+	page = ETWTraitsSettings,
+	translation = ETW_AnemicBleedingDamage,
+}
+option EvolvingTraitsWorld.BadTeethPainChance
+{
+	type = integer,
+	min = 0,
+	max = 100,
+	default = 20,
+	page = ETWTraitsSettings,
+	translation = ETW_BadTeethPainChance,
+}
+option EvolvingTraitsWorld.BadTeethMaxPain
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 20,
+	page = ETWTraitsSettings,
+	translation = ETW_BadTeethMaxPain,
+}
+option EvolvingTraitsWorld.BlissfulUnhappinessReductionPerMinute
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 0.7,
+	page = ETWTraitsSettings,
+	translation = ETW_BlissfulUnhappinessReductionPerMinute,
+}
+option EvolvingTraitsWorld.BlissfulBoredomReductionPerMinute
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 0.35,
+	page = ETWTraitsSettings,
+	translation = ETW_BlissfulBoredomReductionPerMinute,
+}
+option EvolvingTraitsWorld.ButterfingersChanceOneIn
+{
+	type = integer,
+	min = 1,
+	max = 100000,
+	default = 2000,
+	page = ETWTraitsSettings,
+	translation = ETW_ButterfingersChanceOneIn,
+}
+option EvolvingTraitsWorld.HardyExtraEndurancePercent
+{
+	type = integer,
+	min = 0,
+	max = 100,
+	default = 25,
+	page = ETWTraitsSettings,
+	translation = ETW_HardyExtraEndurancePercent,
+}
+option EvolvingTraitsWorld.HardyTransferPerMinute
+{
+	type = double,
+	min = 0,
+	max = 1,
+	default = 0.05,
+	page = ETWTraitsSettings,
+	translation = ETW_HardyTransferPerMinute,
+}
+option EvolvingTraitsWorld.IdealWeightLowerThreshold
+{
+	type = double,
+	min = 35,
+	max = 200,
+	default = 78,
+	page = ETWTraitsSettings,
+	translation = ETW_IdealWeightLowerThreshold,
+}
+option EvolvingTraitsWorld.IdealWeightUpperThreshold
+{
+	type = double,
+	min = 35,
+	max = 200,
+	default = 82,
+	page = ETWTraitsSettings,
+	translation = ETW_IdealWeightUpperThreshold,
+}
+option EvolvingTraitsWorld.IdealWeightUnderMultiplier
+{
+	type = double,
+	min = 0,
+	max = 10,
+	default = 1.5,
+	page = ETWTraitsSettings,
+	translation = ETW_IdealWeightUnderMultiplier,
+}
+option EvolvingTraitsWorld.IdealWeightOverMultiplier
+{
+	type = double,
+	min = 0,
+	max = 10,
+	default = 0.75,
+	page = ETWTraitsSettings,
+	translation = ETW_IdealWeightOverMultiplier,
+}
+option EvolvingTraitsWorld.PackMouseWeight
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 0.5,
+	page = ETWTraitsSettings,
+	translation = ETW_PackMouseWeight,
+}
+option EvolvingTraitsWorld.QuickRestRecoveryMultiplier
+{
+	type = double,
+	min = 1,
+	max = 10,
+	default = 2,
+	page = ETWTraitsSettings,
+	translation = ETW_QuickRestRecoveryMultiplier,
+}
+option EvolvingTraitsWorld.WellFittedWeightReduction
+{
+	type = integer,
+	min = 0,
+	max = 100,
+	default = 50,
+	page = ETWTraitsSettings,
+	translation = ETW_WellFittedWeightReduction,
+}
+option EvolvingTraitsWorld.WellFittedNegatesSpeedPenalties
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitsSettings,
+	translation = ETW_WellFittedNegatesSpeedPenalties,
+}
 option EvolvingTraitsWorld.BloodlustMultiplier
 {
 	type = double,

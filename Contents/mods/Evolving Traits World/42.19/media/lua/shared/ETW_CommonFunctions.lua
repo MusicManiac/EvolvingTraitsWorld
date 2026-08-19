@@ -75,6 +75,15 @@ local delayedNotification = function()
 	return false
 end
 
+---Returns whether the Butterfingers popup is enabled.
+---@return boolean
+local butterfingersPopup = function()
+	if modOptions then
+		return modOptions:getOption("EnableButterfingersPopup"):getValue()
+	end
+	return false
+end
+
 ---Returns whether detailed debug is enabled. If called on server, returns server logs sandbox variable, otherwise returns mod option
 ---@return boolean boolean true if detailed debug is enabled, false otherwise
 local detailedDebug = function()
@@ -584,6 +593,20 @@ function ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, trait)
 			.. " is already in the table, it is not."
 	)
 	return false
+end
+
+---Shows Butterfingers' red halo popup. In MP, the server asks the affected player's client to display it;
+---the receiving client then applies its local Mod Options preference.
+---@param player IsoPlayer
+function ETW_CommonFunctions.displayButterfingersPopup(player)
+	if gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
+		sendServerCommand(player, "ETW", "displayButterfingersPopup", {})
+	elseif butterfingersPopup() then
+		local trait = CharacterTrait.get(ResourceLocation.of("ETW:Butterfingers"))
+		local traitName = CharacterTraitDefinition.getCharacterTraitDefinition(trait):getUIName()
+		HaloTextHelper.addText(player, traitName .. "!", HaloTextHelper.getColorRed())
+		ETW_CommonFunctions.log("ETW Logger | displayButterfingersPopup(): displayed")
+	end
 end
 
 ---Shows notification for trait gain/loss. If it's SP client, it's displayed trait gain/loss notification to client. If it's called on a server, it sends a command to the client to display the notification. Then the client checks if notification should be displayed based on per-client mod settings.

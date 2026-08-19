@@ -14,7 +14,6 @@ description=[*](B41 ONLY) QOL (Quality of Life) submod - mark all traits that ar
 description=[*]For new traits (aka not vanilla game), customization is also present. Want Hoarder perk to give you more carry weight per point of STR? Go adjust it in Sandbox. Want to be even happier under rain with Pluviophile? Sandbox it is.
 description=[*]Optional [b]Trait Sandbox[/b] submod: choose which ETW-added traits appear during character creation and change their point values. Requires [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3378285185]Starlit Library[/url].
 description=[*](B41 requires mod, B42 has in-game mod options now)Client-sided configuration available with [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2169435993]Mod Options[/url].
-description=[*](B41 ONLY) Don't like some/all traits added by this mod but only want to have vanilla traits dynamic? Also possible, with help of [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2934686936]Evolving Traits World (ETW) - Disable Selected Traits[/url].
 description=[/list]
 description=
 description=[h1]Compatibility and Installation[/h1]

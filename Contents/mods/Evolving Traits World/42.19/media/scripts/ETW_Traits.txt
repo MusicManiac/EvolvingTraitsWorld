@@ -1,5 +1,98 @@
 module ETW
 {
+    character_trait_definition ETW:Anemic
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:Anemic,
+        Cost = -4,
+        UIName = UI_trait_Anemic,
+        UIDescription = UI_trait_AnemicDesc,
+    }
+
+    character_trait_definition ETW:BadTeeth
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:BadTeeth,
+        Cost = -3,
+        UIName = UI_trait_BadTeeth,
+        UIDescription = UI_trait_BadTeethDesc,
+    }
+
+    character_trait_definition ETW:Blissful
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:Blissful,
+        Cost = 3,
+        UIName = UI_trait_Blissful,
+        UIDescription = UI_trait_BlissfulDesc,
+        MutuallyExclusiveTraits = base:smoker,
+    }
+
+    character_trait_definition ETW:Butterfingers
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:Butterfingers,
+        Cost = -12,
+        UIName = UI_trait_Butterfingers,
+        UIDescription = UI_trait_ButterfingersDesc,
+    }
+
+    character_trait_definition ETW:Hardy
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:Hardy,
+        Cost = 6,
+        UIName = UI_trait_Hardy,
+        UIDescription = UI_trait_HardyDesc,
+    }
+
+    character_trait_definition ETW:IdealWeight
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:IdealWeight,
+        Cost = 4,
+        UIName = UI_trait_IdealWeight,
+        UIDescription = UI_trait_IdealWeightDesc,
+        MutuallyExclusiveTraits = base:emaciated;base:obese;base:overweight;base:underweight;base:very underweight;base:weightgain;base:weightloss,
+    }
+
+    character_trait_definition ETW:PackMouse
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:PackMouse,
+        Cost = -7,
+        UIName = UI_trait_PackMouse,
+        UIDescription = UI_trait_PackMouseDesc,
+        MutuallyExclusiveTraits = ETW:Hoarder,
+    }
+
+    character_trait_definition ETW:QuickRest
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:QuickRest,
+        Cost = 3,
+        UIName = UI_trait_QuickRest,
+        UIDescription = UI_trait_QuickRestDesc,
+    }
+
+    character_trait_definition ETW:WellFitted
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:WellFitted,
+        Cost = 4,
+        UIName = UI_trait_WellFitted,
+        UIDescription = UI_trait_WellFittedDesc,
+    }
+
     character_trait_definition ETW:AVClub
     {
         IsProfessionTrait = false,
