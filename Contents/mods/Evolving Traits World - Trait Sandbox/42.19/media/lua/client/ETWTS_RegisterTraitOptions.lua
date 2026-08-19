@@ -5,6 +5,15 @@ local StarlitTraits = require("Starlit/sandbox/Traits")
 -- default below is the inverse of the Cost in ETW_Traits.txt.
 local traits = {
 	{ id = "AVClub", pointValue = -4 },
+	{ id = "Anemic", pointValue = 4 },
+	{ id = "BadTeeth", pointValue = 3 },
+	{ id = "Blissful", pointValue = -3 },
+	{ id = "Butterfingers", pointValue = 12 },
+	{ id = "Hardy", pointValue = -6 },
+	{ id = "IdealWeight", pointValue = -4 },
+	{ id = "PackMouse", pointValue = 7 },
+	{ id = "QuickRest", pointValue = -3 },
+	{ id = "WellFitted", pointValue = -4 },
 	{ id = "AxeThrower", pointValue = -4 },
 	{ id = "Bloodlust", pointValue = -4 },
 	{ id = "BodyWorkEnthusiast", pointValue = -6 },

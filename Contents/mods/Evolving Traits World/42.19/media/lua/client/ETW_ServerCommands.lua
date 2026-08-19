@@ -81,6 +81,16 @@ Commands.traitSound = function(player, args)
 	ETW_CommonFunctions.traitSound(player)
 end
 
+---Displays the Butterfingers effect popup if enabled in this client's mod options.
+Commands.displayButterfingersPopup = function(player, args)
+	player = resolveLocalPlayer(player)
+	if not player then
+		logETW("ETW Logger | Commands.displayButterfingersPopup(): player not ready, skipping")
+		return
+	end
+	ETW_CommonFunctions.displayButterfingersPopup(player)
+end
+
 Commands.OnServerCommand = function(module, command, args)
 	if module == "ETW" and Commands[command] then
 		local argStr = ""

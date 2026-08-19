@@ -2,7 +2,6 @@ local ETW_CommonLogicChecks = {}
 
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld
-local activatedMods = getActivatedMods()
 
 local ETW_Registry = require("ETW_Registry")
 
@@ -243,8 +242,7 @@ end
 ---@return boolean boolean true if the Hoarder System should execute, false otherwise
 function ETW_CommonLogicChecks.HoarderShouldExecute(player)
 	if
-		not activatedMods:contains("\\2934686936/EvolvingTraitsWorldDisableHoarder")
-		and SBvars.Hoarder == true
+		SBvars.Hoarder == true
 		and traitShouldExecute("HoarderEnabled")
 		and ((player and not player:hasTrait(ETWTraitsRegistry.HOARDER)) or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER)
 		and SBvars.TraitsLockSystemCanGainPositive
@@ -260,8 +258,7 @@ end
 ---@return boolean boolean true if the Gym Rat System should execute, false otherwise
 function ETW_CommonLogicChecks.GymRatShouldExecute(player)
 	if
-		not activatedMods:contains("\\2934686936/EvolvingTraitsWorldDisableGymRat")
-		and SBvars.GymRat == true
+		SBvars.GymRat == true
 		and traitShouldExecute("GymRatEnabled")
 		and ((player and not player:hasTrait(ETWTraitsRegistry.GYM_RAT)) or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER)
 		and SBvars.TraitsLockSystemCanGainPositive

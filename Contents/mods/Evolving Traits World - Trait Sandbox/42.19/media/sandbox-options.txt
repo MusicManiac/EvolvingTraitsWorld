@@ -395,3 +395,148 @@ option ETWTraitSandbox.StickFighterPointValue
 	translation = ETWTS_StickFighterPointValue,
 }
 
+option ETWTraitSandbox.AnemicEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_AnemicEnabled,
+}
+option ETWTraitSandbox.AnemicPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = 4,
+	page = ETWTraitSandbox,
+	translation = ETWTS_AnemicPointValue,
+}
+option ETWTraitSandbox.BadTeethEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_BadTeethEnabled,
+}
+option ETWTraitSandbox.BadTeethPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = 3,
+	page = ETWTraitSandbox,
+	translation = ETWTS_BadTeethPointValue,
+}
+option ETWTraitSandbox.BlissfulEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_BlissfulEnabled,
+}
+option ETWTraitSandbox.BlissfulPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = -3,
+	page = ETWTraitSandbox,
+	translation = ETWTS_BlissfulPointValue,
+}
+option ETWTraitSandbox.ButterfingersEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_ButterfingersEnabled,
+}
+option ETWTraitSandbox.ButterfingersPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = 12,
+	page = ETWTraitSandbox,
+	translation = ETWTS_ButterfingersPointValue,
+}
+option ETWTraitSandbox.HardyEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_HardyEnabled,
+}
+option ETWTraitSandbox.HardyPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = -6,
+	page = ETWTraitSandbox,
+	translation = ETWTS_HardyPointValue,
+}
+option ETWTraitSandbox.IdealWeightEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_IdealWeightEnabled,
+}
+option ETWTraitSandbox.IdealWeightPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = -4,
+	page = ETWTraitSandbox,
+	translation = ETWTS_IdealWeightPointValue,
+}
+option ETWTraitSandbox.PackMouseEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_PackMouseEnabled,
+}
+option ETWTraitSandbox.PackMousePointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = 7,
+	page = ETWTraitSandbox,
+	translation = ETWTS_PackMousePointValue,
+}
+option ETWTraitSandbox.QuickRestEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_QuickRestEnabled,
+}
+option ETWTraitSandbox.QuickRestPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = -3,
+	page = ETWTraitSandbox,
+	translation = ETWTS_QuickRestPointValue,
+}
+option ETWTraitSandbox.WellFittedEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_WellFittedEnabled,
+}
+option ETWTraitSandbox.WellFittedPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = -4,
+	page = ETWTraitSandbox,
+	translation = ETWTS_WellFittedPointValue,
+}
+

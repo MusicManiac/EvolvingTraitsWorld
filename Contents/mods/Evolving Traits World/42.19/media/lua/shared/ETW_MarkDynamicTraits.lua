@@ -14,9 +14,32 @@ end
 
 local function registerDynamicTraits()
 	-- Custom ETW Traits
-	for _, trait in pairs(ETW_Registry.traits) do
-		MarkDynamicTraitsFramework.registerTrait(trait)
-	end
+	registerTraits({
+		ETW_Registry.traits.AV_CLUB,
+		ETW_Registry.traits.AXE_THROWER,
+		ETW_Registry.traits.BLADE_ENTHUSIAST,
+		ETW_Registry.traits.BLOODLUST,
+		ETW_Registry.traits.BODYWORK_ENTHUSIAST,
+		ETW_Registry.traits.FAST_EATER,
+		ETW_Registry.traits.FURNITURE_ASSEMBLER,
+		ETW_Registry.traits.GUN_ENTHUSIAST,
+		ETW_Registry.traits.GYM_RAT,
+		ETW_Registry.traits.HOARDER,
+		ETW_Registry.traits.HOME_COOK,
+		ETW_Registry.traits.HOMICHLOPHILE,
+		ETW_Registry.traits.HOMICHLOPHOBIA,
+		ETW_Registry.traits.KNIFE_FIGHTER,
+		ETW_Registry.traits.LIGHTSTEP,
+		ETW_Registry.traits.LOW_PROFILE,
+		ETW_Registry.traits.PAIN_TOLERANCE,
+		ETW_Registry.traits.PET_THERAPY,
+		ETW_Registry.traits.PLUVIOPHILE,
+		ETW_Registry.traits.PLUVIOPHOBIA,
+		ETW_Registry.traits.POLEARM_FIGHTER,
+		ETW_Registry.traits.RESTORATION_EXPERT,
+		ETW_Registry.traits.SLOW_EATER,
+		ETW_Registry.traits.STICK_FIGHTER,
+	})
 
 	-- ETW_ByTimeClient.lua
 	registerTraits({

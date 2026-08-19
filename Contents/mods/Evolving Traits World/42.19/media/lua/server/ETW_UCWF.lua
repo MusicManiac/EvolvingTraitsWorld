@@ -35,3 +35,18 @@ UnifiedCarryWeightFramework.registerMaxModifier({
 		return {}
 	end,
 })
+
+UnifiedCarryWeightFramework.registerMaxModifier({
+	id = "ETW.PackMouseTraitCarryWeight",
+
+	resolve = function(ctx)
+		local player = ctx.player
+		---@cast player IsoPlayer
+		if player:hasTrait(ETWTraitsRegistry.PACK_MOUSE) then
+			return {
+				add = -player:getPerkLevel(Perks.Strength) * (SBvars.PackMouseWeight or 0.5),
+			}
+		end
+		return {}
+	end,
+})

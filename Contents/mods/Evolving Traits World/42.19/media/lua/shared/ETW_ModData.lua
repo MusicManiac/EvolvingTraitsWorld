@@ -107,6 +107,11 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	modData.PagesReadCounter = modData.PagesReadCounter or 0
 	modData.EatingSpeedSystemCounter = modData.EatingSpeedSystemCounter or 0
 	modData.HoarderCounter = modData.HoarderCounter or 0
+	modData.HardyReserve = modData.HardyReserve
+		or PZMath.clamp((SBvars.HardyExtraEndurancePercent or 25) / 100, 0, 1)
+	modData.QuickRestLastEndurance = modData.QuickRestLastEndurance
+		or player:getStats():get(CharacterStat.ENDURANCE)
+	modData.IdealWeightLastCalories = modData.IdealWeightLastCalories or player:getNutrition():getCalories()
 	modData.MentalStateInLast60Min = modData.MentalStateInLast60Min or { 0.75 }
 	modData.MentalStateInLast24Hours = modData.MentalStateInLast24Hours or { 0.75 }
 	modData.MentalStateInLast31Days = modData.MentalStateInLast31Days or { 0.75 }
