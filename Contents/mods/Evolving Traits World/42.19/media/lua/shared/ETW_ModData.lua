@@ -112,6 +112,7 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	modData.QuickRestLastEndurance = modData.QuickRestLastEndurance
 		or player:getStats():get(CharacterStat.ENDURANCE)
 	modData.IdealWeightLastCalories = modData.IdealWeightLastCalories or player:getNutrition():getCalories()
+	modData.DepressiveEpisodeActive = modData.DepressiveEpisodeActive or false
 	modData.MentalStateInLast60Min = modData.MentalStateInLast60Min or { 0.75 }
 	modData.MentalStateInLast24Hours = modData.MentalStateInLast24Hours or { 0.75 }
 	modData.MentalStateInLast31Days = modData.MentalStateInLast31Days or { 0.75 }

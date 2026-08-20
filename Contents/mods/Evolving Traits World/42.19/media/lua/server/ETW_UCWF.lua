@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-global
 ---@type ETW_CommonFunctions
 local ETW_CommonFunctions = require("ETW_CommonFunctions")
 
