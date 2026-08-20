@@ -756,6 +756,11 @@ local function healerSystemETW()
 		local player = playersList:get(i)
 		local modData = ETW_CommonFunctions.getETWModData(player)
 		local counterChange, properlyTendedCount, needsAttentionCount = getHealerCounterChange(player)
+		local rawCounterChange = counterChange
+		local isSleeping = player:isAsleep()
+		if isSleeping then
+			counterChange = counterChange * SBvars.HealerSystemSleepingMultiplier
+		end
 		counterChange = counterChange / 10
 		counterChange = ETW_CommonFunctions.applyAffinityToDirectionalChange(
 			modData,
@@ -772,6 +777,12 @@ local function healerSystemETW()
 				.. properlyTendedCount
 				.. " needsAttention="
 				.. needsAttentionCount
+				.. " rawCounterChange="
+				.. rawCounterChange
+				.. " isSleeping="
+				.. tostring(isSleeping)
+				.. " sleepingMultiplier="
+				.. (isSleeping and SBvars.HealerSystemSleepingMultiplier or 1)
 				.. " counterChange="
 				.. counterChange
 				.. " healerCounter="
@@ -931,6 +942,41 @@ local function recordMentalStateETW()
 	end
 end
 
+---Returns how much exercise stiffness adds to the player's current body-pain target.
+---This mirrors BodyDamage's pain calculation so stiffness cannot displace wound
+---pain when the combined value reaches the 0-100 stat limits.
+---Mirrored from vanilla Java:
+---`zombie.characters.BodyDamage.BodyPart:getAdditionalPain(boolean)`,
+---`zombie.characters.BodyDamage.BodyPart:getPain()`, and
+---`zombie.characters.BodyDamage.BodyDamage:Update()`.
+---@param player IsoPlayer
+---@return number stiffnessPain
+local function getExerciseStiffnessPain(player)
+	local injurySeverityMultiplier = 1
+	if SandboxVars.InjurySeverity == 1 then
+		injurySeverityMultiplier = 0.7
+	elseif SandboxVars.InjurySeverity == 3 then
+		injurySeverityMultiplier = 1.3
+	end
+
+	local bodyDamage = player:getBodyDamage()
+	local bodyParts = bodyDamage:getBodyParts()
+	local bodyPain = 0
+	local stiffnessPain = 0
+	for i = 0, bodyParts:size() - 1 do
+		local bodyPart = bodyParts:get(i)
+		local painModifier = BodyPartType.getPainModifyer(i)
+		local bodyPartStiffnessPain = bodyPart:getAdditionalPain(true) - bodyPart:getAdditionalPain(false)
+		bodyPain = bodyPain + bodyPart:getPain() * painModifier
+		stiffnessPain = stiffnessPain + bodyPartStiffnessPain * injurySeverityMultiplier * painModifier
+	end
+
+	local painReduction = bodyDamage:getPainReduction()
+	local painWithStiffness = math.max(0, math.min(100, bodyPain - painReduction))
+	local painWithoutStiffness = math.max(0, math.min(100, bodyPain - stiffnessPain - painReduction))
+	return painWithStiffness - painWithoutStiffness
+end
+
 ---Function responsible for managing Pain Tolerance trait
 local function painToleranceTraitETW()
 	local playersList = ETW_CommonFunctions.playersList()
@@ -939,7 +985,23 @@ local function painToleranceTraitETW()
 		local player = playersList:get(i)
 		logETW("ETW Logger | painToleranceTraitETW(): running for player " .. player:getUsername())
 		local modData = ETW_CommonFunctions.getETWModData(player)
-		modData.PainToleranceCounter = modData.PainToleranceCounter + player:getStats():get(CharacterStat.PAIN) -- pain is 0-100
+		local pain = player:getStats():get(CharacterStat.PAIN) -- pain is 0-100
+		local stiffnessPain = math.min(pain, getExerciseStiffnessPain(player))
+		local adjustedPain = pain - stiffnessPain + stiffnessPain * SBvars.PainToleranceExerciseMultiplier
+		logETW(
+			"ETW Logger | painToleranceTraitETW(): player="
+				.. player:getUsername()
+				.. " rawPain="
+				.. pain
+				.. " stiffnessPain="
+				.. stiffnessPain
+				.. " exerciseMultiplier="
+				.. SBvars.PainToleranceExerciseMultiplier
+				.. " adjustedPain="
+				.. adjustedPain
+		)
+		pain = adjustedPain
+		modData.PainToleranceCounter = modData.PainToleranceCounter + pain
 		logETW("ETW Logger | painToleranceTraitETW(): pain counter: " .. modData.PainToleranceCounter)
 		if modData.PainToleranceCounter >= SBvars.PainToleranceCounter then
 			if
