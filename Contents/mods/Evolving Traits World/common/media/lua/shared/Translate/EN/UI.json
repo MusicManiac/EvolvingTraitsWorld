@@ -1,4 +1,5 @@
 {
+    "UI_ETW_aaa_TranslationVersion": "This is a note for translators, please do not translate. Set translation version to the latest ETW release you are translating for. This is used to track which translation is up-to-date and which is not.",
     "UI_ETW": "ETW",
     "UI_ETW_AffinitySystemEnabled": "Affinity System is enabled",
     "UI_ETW_Chance": "in",

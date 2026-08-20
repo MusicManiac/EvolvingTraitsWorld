@@ -1,3 +1,12 @@
+## v.12.10.0
+###### 20 Aug 2026
+
+- General:
+  - Added a configurable exercise-pain multiplier for Pain Tolerance progression. Only pain contributed by exercise stiffness is multiplied; wounds and other pain sources still count at their full value.
+  - Added a configurable sleeping multiplier for Healer System counter changes, reducing the impact of wounds that cannot be tended while asleep.
+- Translations:
+  - Updated CN translation thanks to [爱看歌剧的长颈鹿](<https://steamcommunity.com/profiles/76561199210012731>).
+
 ## v.12.9.0
 ###### 18 Aug 2026
 

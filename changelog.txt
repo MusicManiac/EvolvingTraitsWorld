@@ -1,16 +1,10 @@
 [url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
 
-v.12.9.0
+v.12.10.0
 
 General:
-  - Added Translations Status sub-tab to the ETW character page. It shows when each supported translation was last updated relative to the installed mod version.
-  - The UI Progress Pages sandbox option now hides only the Vitals, Permanent Traits, and Non-permanent Traits tabs; Help and Translations Status remain available.
-  - Raised the maximum values for long-term progression counters and delayed trait gain sandbox settings to support slower, much longer playthroughs.
-  - Made the default Smoker and Fear of Locations settings less punishing by speeding up smoking addiction recovery, lowering the location-fear threshold, and enabling slight passive recovery for the opposite location fear.
-
-Fix:
-  - Fixed the ETW character page resetting to the Vitality sub-tab whenever its UI layout was rebuilt.
-  - Fixed missing Homichlophile and Homichlophobia sandbox tooltips and removed obsolete UI translation entries.
+  - Added a configurable exercise-pain multiplier for Pain Tolerance progression. Only pain contributed by exercise stiffness is multiplied; wounds and other pain sources still count at their full value.
+  - Added a configurable sleeping multiplier for Healer System counter changes, reducing the impact of wounds that cannot be tended while asleep.
 
 Translations:
-  - Added Japanese translation.
+  - Updated CN translation thanks to [url=https://steamcommunity.com/profiles/76561199210012731]爱看歌剧的长颈鹿[/url].
