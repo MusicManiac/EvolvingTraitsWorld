@@ -11,6 +11,7 @@ ETW_Registry = ETW_Registry or {}
 ---@field FAST_EATER CharacterTrait
 ---@field BAD_TEETH CharacterTrait
 ---@field BUTTERFINGERS CharacterTrait
+---@field DEPRESSIVE CharacterTrait
 ---@field FURNITURE_ASSEMBLER CharacterTrait
 ---@field GUN_ENTHUSIAST CharacterTrait
 ---@field GYM_RAT CharacterTrait
@@ -18,12 +19,14 @@ ETW_Registry = ETW_Registry or {}
 ---@field HOARDER CharacterTrait
 ---@field HOME_COOK CharacterTrait
 ---@field IDEAL_WEIGHT CharacterTrait
+---@field LEAD_FOOT CharacterTrait
 ---@field HOMICHLOPHOBIA CharacterTrait
 ---@field HOMICHLOPHILE CharacterTrait
 ---@field BLADE_ENTHUSIAST CharacterTrait
 ---@field KNIFE_FIGHTER CharacterTrait
 ---@field LIGHTSTEP CharacterTrait
 ---@field LOW_PROFILE CharacterTrait
+---@field MUNDANE CharacterTrait
 ---@field PLUVIOPHILE CharacterTrait
 ---@field PLUVIOPHOBIA CharacterTrait
 ---@field PAIN_TOLERANCE CharacterTrait
@@ -33,6 +36,7 @@ ETW_Registry = ETW_Registry or {}
 ---@field RESTORATION_EXPERT CharacterTrait
 ---@field QUICK_REST CharacterTrait
 ---@field SLOW_EATER CharacterTrait
+---@field THICK_BLOODED CharacterTrait
 ---@field WELL_FITTED CharacterTrait
 ETW_Registry.traits = {
 	AV_CLUB = CharacterTrait.register("ETW:AVClub"),
@@ -44,6 +48,7 @@ ETW_Registry.traits = {
 	FAST_EATER = CharacterTrait.register("ETW:FastEater"),
 	BAD_TEETH = CharacterTrait.register("ETW:BadTeeth"),
 	BUTTERFINGERS = CharacterTrait.register("ETW:Butterfingers"),
+	DEPRESSIVE = CharacterTrait.register("ETW:Depressive"),
 	FURNITURE_ASSEMBLER = CharacterTrait.register("ETW:FurnitureAssembler"),
 	GUN_ENTHUSIAST = CharacterTrait.register("ETW:GunEnthusiast"),
 	GYM_RAT = CharacterTrait.register("ETW:GymRat"),
@@ -51,12 +56,14 @@ ETW_Registry.traits = {
 	HOARDER = CharacterTrait.register("ETW:Hoarder"),
 	HOME_COOK = CharacterTrait.register("ETW:HomeCook"),
 	IDEAL_WEIGHT = CharacterTrait.register("ETW:IdealWeight"),
+	LEAD_FOOT = CharacterTrait.register("ETW:LeadFoot"),
 	HOMICHLOPHOBIA = CharacterTrait.register("ETW:Homichlophobia"),
 	HOMICHLOPHILE = CharacterTrait.register("ETW:Homichlophile"),
 	BLADE_ENTHUSIAST = CharacterTrait.register("ETW:BladeEnthusiast"),
 	KNIFE_FIGHTER = CharacterTrait.register("ETW:KnifeFighter"),
 	LIGHTSTEP = CharacterTrait.register("ETW:LightStep"),
 	LOW_PROFILE = CharacterTrait.register("ETW:LowProfile"),
+	MUNDANE = CharacterTrait.register("ETW:Mundane"),
 	PLUVIOPHILE = CharacterTrait.register("ETW:Pluviophile"),
 	PLUVIOPHOBIA = CharacterTrait.register("ETW:Pluviophobia"),
 	PAIN_TOLERANCE = CharacterTrait.register("ETW:PainTolerance"),
@@ -66,6 +73,7 @@ ETW_Registry.traits = {
 	RESTORATION_EXPERT = CharacterTrait.register("ETW:RestorationExpert"),
 	QUICK_REST = CharacterTrait.register("ETW:QuickRest"),
 	SLOW_EATER = CharacterTrait.register("ETW:SlowEater"),
+	THICK_BLOODED = CharacterTrait.register("ETW:ThickBlooded"),
 	WELL_FITTED = CharacterTrait.register("ETW:WellFitted"),
 	STICK_FIGHTER = CharacterTrait.register("ETW:StickFighter"),
 }

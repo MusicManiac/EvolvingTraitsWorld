@@ -15,6 +15,7 @@
 --- @field HardyReserve number|nil
 --- @field QuickRestLastEndurance number
 --- @field IdealWeightLastCalories number
+--- @field DepressiveEpisodeActive boolean
 --- @field injuriesCounter number
 --- @field healerCounter number
 --- @field MentalStateInLast60Min number[]

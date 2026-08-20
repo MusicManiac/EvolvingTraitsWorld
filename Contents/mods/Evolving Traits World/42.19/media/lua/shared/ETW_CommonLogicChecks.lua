@@ -934,7 +934,7 @@ function ETW_CommonLogicChecks.PetTherapyShouldExecute(player)
 		SBvars.PetTherapy == true
 		and traitShouldExecute("PetTherapyEnabled")
 		and ((player and not player:hasTrait(ETWTraitsRegistry.PET_THERAPY)) or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER)
-		and (SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLosePositive)
+		and SBvars.TraitsLockSystemCanGainPositive
 	then
 		return true
 	else

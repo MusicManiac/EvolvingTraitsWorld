@@ -28,7 +28,7 @@ module ETW
         Cost = 3,
         UIName = UI_trait_Blissful,
         UIDescription = UI_trait_BlissfulDesc,
-        MutuallyExclusiveTraits = base:smoker,
+        MutuallyExclusiveTraits = base:smoker;ETW:Depressive,
     }
 
     character_trait_definition ETW:Butterfingers
@@ -39,6 +39,17 @@ module ETW
         Cost = -12,
         UIName = UI_trait_Butterfingers,
         UIDescription = UI_trait_ButterfingersDesc,
+    }
+
+    character_trait_definition ETW:Depressive
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:Depressive,
+        Cost = -4,
+        UIName = UI_trait_Depressive,
+        UIDescription = UI_trait_DepressiveDesc,
+        MutuallyExclusiveTraits = ETW:Blissful,
     }
 
     character_trait_definition ETW:Hardy
@@ -60,6 +71,26 @@ module ETW
         UIName = UI_trait_IdealWeight,
         UIDescription = UI_trait_IdealWeightDesc,
         MutuallyExclusiveTraits = base:emaciated;base:obese;base:overweight;base:underweight;base:very underweight;base:weightgain;base:weightloss,
+    }
+
+    character_trait_definition ETW:LeadFoot
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:LeadFoot,
+        Cost = 2,
+        UIName = UI_trait_LeadFoot,
+        UIDescription = UI_trait_LeadFootDesc,
+    }
+
+    character_trait_definition ETW:Mundane
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:Mundane,
+        Cost = -9,
+        UIName = UI_trait_Mundane,
+        UIDescription = UI_trait_MundaneDesc,
     }
 
     character_trait_definition ETW:PackMouse
@@ -91,6 +122,17 @@ module ETW
         Cost = 4,
         UIName = UI_trait_WellFitted,
         UIDescription = UI_trait_WellFittedDesc,
+    }
+
+    character_trait_definition ETW:ThickBlooded
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:ThickBlooded,
+        Cost = 4,
+        UIName = UI_trait_ThickBlooded,
+        UIDescription = UI_trait_ThickBloodedDesc,
+        MutuallyExclusiveTraits = ETW:Anemic,
     }
 
     character_trait_definition ETW:AVClub

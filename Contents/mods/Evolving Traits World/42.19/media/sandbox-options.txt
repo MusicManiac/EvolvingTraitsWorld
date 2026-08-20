@@ -709,6 +709,33 @@ option EvolvingTraitsWorld.ButterfingersChanceOneIn
 	page = ETWTraitsSettings,
 	translation = ETW_ButterfingersChanceOneIn,
 }
+option EvolvingTraitsWorld.DepressiveEpisodeChance
+{
+	type = integer,
+	min = 0,
+	max = 100,
+	default = 2,
+	page = ETWTraitsSettings,
+	translation = ETW_DepressiveEpisodeChance,
+}
+option EvolvingTraitsWorld.DepressiveUnhappinessIncrease
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 25,
+	page = ETWTraitsSettings,
+	translation = ETW_DepressiveUnhappinessIncrease,
+}
+option EvolvingTraitsWorld.DepressiveRecoveryPerMinute
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 0.01,
+	page = ETWTraitsSettings,
+	translation = ETW_DepressiveRecoveryPerMinute,
+}
 option EvolvingTraitsWorld.HardyExtraEndurancePercent
 {
 	type = integer,
@@ -763,6 +790,24 @@ option EvolvingTraitsWorld.IdealWeightOverMultiplier
 	page = ETWTraitsSettings,
 	translation = ETW_IdealWeightOverMultiplier,
 }
+option EvolvingTraitsWorld.LeadFootStompPowerMultiplier
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 2,
+	page = ETWTraitsSettings,
+	translation = ETW_LeadFootStompPowerMultiplier,
+}
+option EvolvingTraitsWorld.LeadFootStompPowerBonus
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 1,
+	page = ETWTraitsSettings,
+	translation = ETW_LeadFootStompPowerBonus,
+}
 option EvolvingTraitsWorld.PackMouseWeight
 {
 	type = double,
@@ -796,6 +841,15 @@ option EvolvingTraitsWorld.WellFittedNegatesSpeedPenalties
 	default = true,
 	page = ETWTraitsSettings,
 	translation = ETW_WellFittedNegatesSpeedPenalties,
+}
+option EvolvingTraitsWorld.ThickBloodedBleedingHealthPerMinute
+{
+	type = double,
+	min = 0,
+	max = 10,
+	default = 0.15,
+	page = ETWTraitsSettings,
+	translation = ETW_ThickBloodedBleedingHealthPerMinute,
 }
 option EvolvingTraitsWorld.BloodlustMultiplier
 {

@@ -965,7 +965,6 @@ local function painToleranceTraitETW()
 					trait = ETWTraitsRegistry.PAIN_TOLERANCE,
 					positiveTrait = true,
 				})
-				ETW_InitiatePainToleranceTrait(player)
 				Events.EveryTenMinutes.Remove(painToleranceTraitETW)
 			end
 		end

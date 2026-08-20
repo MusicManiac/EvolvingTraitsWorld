@@ -539,4 +539,68 @@ option ETWTraitSandbox.WellFittedPointValue
 	page = ETWTraitSandbox,
 	translation = ETWTS_WellFittedPointValue,
 }
+option ETWTraitSandbox.DepressiveEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_DepressiveEnabled,
+}
+option ETWTraitSandbox.DepressivePointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = 4,
+	page = ETWTraitSandbox,
+	translation = ETWTS_DepressivePointValue,
+}
+option ETWTraitSandbox.LeadFootEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_LeadFootEnabled,
+}
+option ETWTraitSandbox.LeadFootPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = -2,
+	page = ETWTraitSandbox,
+	translation = ETWTS_LeadFootPointValue,
+}
+option ETWTraitSandbox.MundaneEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_MundaneEnabled,
+}
+option ETWTraitSandbox.MundanePointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = 9,
+	page = ETWTraitSandbox,
+	translation = ETWTS_MundanePointValue,
+}
+option ETWTraitSandbox.ThickBloodedEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_ThickBloodedEnabled,
+}
+option ETWTraitSandbox.ThickBloodedPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = -4,
+	page = ETWTraitSandbox,
+	translation = ETWTS_ThickBloodedPointValue,
+}
 

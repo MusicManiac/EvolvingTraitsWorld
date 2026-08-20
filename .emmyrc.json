@@ -4,5 +4,16 @@
     "library": [
       "C:/Users/Slava/Umbrella/library"
     ]
+  },
+  "runtime": {
+      "requirePattern": [
+          "shared/?.lua",
+          "client/?.lua",
+          "server/?.lua"
+      ],
+      "version": "Lua5.1"
+  },
+  "diagnostics": {
+      "disable": ["unnecessary-if"]
   }
 }
