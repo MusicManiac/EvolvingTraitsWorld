@@ -89,6 +89,7 @@
 --- @field BlissfulBoredomReductionPerMinute number
 --- @field BloodlustMultiplier number
 --- @field ButterfingersChanceOneIn integer
+--- @field ButterfingersTransferDropChance integer
 --- @field DepressiveEpisodeChance integer
 --- @field DepressiveUnhappinessIncrease number
 --- @field DepressiveRecoveryPerMinute number
