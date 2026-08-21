@@ -11,6 +11,8 @@
     "Sandbox_ETW_BlissfulBoredomReductionPerMinute_tooltip": "Percentage of the full boredom scale removed each minute. Since boredom ranges from 0 to 100, 1%% removes 1 point per minute.",
     "Sandbox_ETW_ButterfingersChanceOneIn": "Butterfingers base roll size",
     "Sandbox_ETW_ButterfingersChanceOneIn_tooltip": "A larger value makes the once-per-minute roll less likely to drop held items. Carried weight, running, sprinting, All Thumbs, and Dextrous modify the chance.",
+    "Sandbox_ETW_ButterfingersTransferDropChance": "Butterfingers transfer drop chance (%%)",
+    "Sandbox_ETW_ButterfingersTransferDropChance_tooltip": "Chance per successfully transferred item for Butterfingers to drop it on the nearby ground instead. This is independent of the once-per-minute chance to drop held items.",
     "Sandbox_ETW_DepressiveEpisodeChance": "Depressive episode chance per hour (%%)",
     "Sandbox_ETW_DepressiveEpisodeChance_tooltip": "Chance each in-game hour to begin a depressive episode while one is not already active.",
     "Sandbox_ETW_DepressiveUnhappinessIncrease": "Depressive episode unhappiness (%%)",

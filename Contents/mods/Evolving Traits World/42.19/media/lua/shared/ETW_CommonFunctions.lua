@@ -604,7 +604,7 @@ function ETW_CommonFunctions.displayButterfingersPopup(player)
 	elseif butterfingersPopup() then
 		local trait = CharacterTrait.get(ResourceLocation.of("ETW:Butterfingers"))
 		local traitName = CharacterTraitDefinition.getCharacterTraitDefinition(trait):getUIName()
-		HaloTextHelper.addText(player, traitName .. "!", HaloTextHelper.getColorRed())
+		HaloTextHelper.addText(player, traitName .. "!", "[br/]", HaloTextHelper.getColorRed())
 		ETW_CommonFunctions.log("ETW Logger | displayButterfingersPopup(): displayed")
 	end
 end
