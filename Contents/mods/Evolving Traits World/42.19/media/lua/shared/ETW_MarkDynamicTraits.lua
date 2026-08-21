@@ -2,8 +2,8 @@ if not getActivatedMods():contains("MarkDynamicTraitsFramework") then
 	return
 end
 
-local MarkDynamicTraitsFramework = require "MDTF_Main"
-local ETW_Registry = require "ETW_Registry"
+local MarkDynamicTraitsFramework = require("MDTF_Main")
+local ETW_Registry = require("ETW_Registry")
 
 ---@param traits CharacterTrait[]
 local function registerTraits(traits)
@@ -137,7 +137,7 @@ local function registerDynamicTraits()
 		CharacterTrait.FAST_READER,
 	})
 
-	-- shared/ETW_CombinedTraitChecks.lua
+	-- shared/ETW_CombinedTraitFunctions.lua
 	registerTraits({
 		CharacterTrait.MECHANICS,
 		CharacterTrait.TAILOR,

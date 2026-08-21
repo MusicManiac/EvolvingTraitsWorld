@@ -1,6 +1,6 @@
 local ETW_BySkills = {}
 
-local CombinedTraitChecks = require("ETW_CombinedTraitChecks")
+local CombinedTraitChecks = require("ETW_CombinedTraitFunctions")
 local CommonFunctions = require("ETW_CommonFunctions")
 local ETW_CommonLogicChecks = require("ETW_CommonLogicChecks")
 local ETW_CommonFunctions = require("ETW_CommonFunctions")

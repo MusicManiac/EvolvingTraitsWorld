@@ -1,6 +1,6 @@
 local ETW_CommonFunctions = require("ETW_CommonFunctions")
 local ETW_Registry = require("ETW_Registry")
-local ETWCombinedTraitChecks = require("ETW_CombinedTraitChecks")
+local ETWCombinedTraitChecks = require("ETW_CombinedTraitFunctions")
 
 local FILENAME = "ETW_FightingTraits.lua"
 if
@@ -27,13 +27,7 @@ local logETW = ETW_CommonFunctions.log
 ---@param damage number
 ---@param hitCount number
 function ETW_FightingTraits.onWeaponHitXP(player, weapon, hitObject, damage, hitCount)
-	if
-		not instanceof(player, "IsoPlayer")
-		or not weapon
-		or not weapon:isRanged()
-		or not hitCount
-		or hitCount <= 0
-	then
+	if not instanceof(player, "IsoPlayer") or not weapon or not weapon:isRanged() or not hitCount or hitCount <= 0 then
 		return
 	end
 	---@cast player IsoPlayer
