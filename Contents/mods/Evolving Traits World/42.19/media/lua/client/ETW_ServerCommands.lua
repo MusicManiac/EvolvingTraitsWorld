@@ -91,6 +91,35 @@ Commands.displayButterfingersPopup = function(player, args)
 	ETW_CommonFunctions.displayButterfingersPopup(player)
 end
 
+---Executes the owning client's Butterfingers held-item drop so MP inventory changes synchronize correctly.
+Commands.dropButterfingersHandItems = function(player, args)
+	player = resolveLocalPlayer(player)
+	if not player then
+		logETW("ETW Logger | Commands.dropButterfingersHandItems(): player not ready, skipping")
+		return
+	end
+	local primaryItem = player:getPrimaryHandItem()
+	local secondaryItem = player:getSecondaryHandItem()
+	player:dropHandItems()
+	logETW(
+		"ETW Logger | Commands.dropButterfingersHandItems(): executed; primary: "
+			.. (primaryItem and primaryItem:getFullType() or "nil")
+			.. ", secondary: "
+			.. (secondaryItem and secondaryItem:getFullType() or "nil")
+	)
+end
+
+---Applies the Noodle Legs bump state on the owning client.
+Commands.triggerNoodleLegsTrip = function(player, args)
+	player = resolveLocalPlayer(player)
+	if not player then
+		logETW("ETW Logger | Commands.triggerNoodleLegsTrip(): player not ready, skipping")
+		return
+	end
+	local side = args.side == "right" and "right" or "left"
+	ETW_CommonFunctions.triggerNoodleLegsTrip(player, side)
+end
+
 Commands.OnServerCommand = function(module, command, args)
 	if module == "ETW" and Commands[command] then
 		local argStr = ""

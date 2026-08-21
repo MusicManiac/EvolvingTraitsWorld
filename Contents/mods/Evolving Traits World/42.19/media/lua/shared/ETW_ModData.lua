@@ -113,6 +113,14 @@ function ETW_ModData.createETWModData(playerIndex, player)
 		or player:getStats():get(CharacterStat.ENDURANCE)
 	modData.IdealWeightLastCalories = modData.IdealWeightLastCalories or player:getNutrition():getCalories()
 	modData.DepressiveEpisodeActive = modData.DepressiveEpisodeActive or false
+	if player:hasTrait(ETWTraitsRegistry.ANTI_GUN_ACTIVIST) then
+		modData.AntiGunLastRecordedAimingXP = player:getXp():getXP(Perks.Aiming)
+		modData.AntiGunAimingXPCheckPending = nil
+	end
+	if player:hasTrait(ETWTraitsRegistry.SUN_SENSITIVITY) then
+		modData.SunSensitivityExposure = modData.SunSensitivityExposure or 0
+		modData.SunSensitivityAppliedPain = modData.SunSensitivityAppliedPain or 0
+	end
 	modData.MentalStateInLast60Min = modData.MentalStateInLast60Min or { 0.75 }
 	modData.MentalStateInLast24Hours = modData.MentalStateInLast24Hours or { 0.75 }
 	modData.MentalStateInLast31Days = modData.MentalStateInLast31Days or { 0.75 }

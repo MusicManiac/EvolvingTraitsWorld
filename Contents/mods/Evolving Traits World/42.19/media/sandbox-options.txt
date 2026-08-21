@@ -655,6 +655,60 @@ option EvolvingTraitsWorld.TRAITS
 {
 	translation = --------------------------------------------------TRAITS-----------------------------------------------------------------,
 }
+option EvolvingTraitsWorld.AntiGunAimingTimeMultiplier
+{
+	type = double,
+	min = 0,
+	max = 10,
+	default = 0.8,
+	page = ETWTraitsSettings,
+	translation = ETW_AntiGunAimingTimeMultiplier,
+}
+option EvolvingTraitsWorld.AntiGunMaxRangePenalty
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 5,
+	page = ETWTraitsSettings,
+	translation = ETW_AntiGunMaxRangePenalty,
+}
+option EvolvingTraitsWorld.AntiGunUnhappinessPerMinute
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 2,
+	page = ETWTraitsSettings,
+	translation = ETW_AntiGunUnhappinessPerMinute,
+}
+option EvolvingTraitsWorld.AntiGunAimingXPPenaltyPercent
+{
+	type = integer,
+	min = 0,
+	max = 100,
+	default = 25,
+	page = ETWTraitsSettings,
+	translation = ETW_AntiGunAimingXPPenaltyPercent,
+}
+option EvolvingTraitsWorld.AntiGunMagazineHandlingUnhappinessPerBullet
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 0.1,
+	page = ETWTraitsSettings,
+	translation = ETW_AntiGunMagazineHandlingUnhappinessPerBullet,
+}
+option EvolvingTraitsWorld.AntiGunReloadingXPPenaltyPercent
+{
+	type = integer,
+	min = 0,
+	max = 100,
+	default = 25,
+	page = ETWTraitsSettings,
+	translation = ETW_AntiGunReloadingXPPenaltyPercent,
+}
 option EvolvingTraitsWorld.AnemicBleedingDamage
 {
 	type = double,
@@ -817,6 +871,33 @@ option EvolvingTraitsWorld.LeadFootStompPowerBonus
 	page = ETWTraitsSettings,
 	translation = ETW_LeadFootStompPowerBonus,
 }
+option EvolvingTraitsWorld.NaturalEaterMentalRecoveryPercentOfHunger
+{
+	type = double,
+	min = 0,
+	max = 1000,
+	default = 50,
+	page = ETWTraitsSettings,
+	translation = ETW_NaturalEaterMentalRecoveryPercentOfHunger,
+}
+option EvolvingTraitsWorld.NaturalEaterMaximumMentalRecoveryPercent
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 5,
+	page = ETWTraitsSettings,
+	translation = ETW_NaturalEaterMaximumMentalRecoveryPercent,
+}
+option EvolvingTraitsWorld.NoodleLegsTripChanceOneIn
+{
+	type = integer,
+	min = 1,
+	max = 1000000,
+	default = 5000,
+	page = ETWTraitsSettings,
+	translation = ETW_NoodleLegsTripChanceOneIn,
+}
 option EvolvingTraitsWorld.PackMouseWeight
 {
 	type = double,
@@ -825,6 +906,15 @@ option EvolvingTraitsWorld.PackMouseWeight
 	default = 0.5,
 	page = ETWTraitsSettings,
 	translation = ETW_PackMouseWeight,
+}
+option EvolvingTraitsWorld.PackMuleMaxCapacityPercent
+{
+	type = double,
+	min = 0,
+	max = 1000,
+	default = 20,
+	page = ETWTraitsSettings,
+	translation = ETW_PackMuleMaxCapacityPercent,
 }
 option EvolvingTraitsWorld.QuickRestRecoveryMultiplier
 {
@@ -859,6 +949,42 @@ option EvolvingTraitsWorld.ThickBloodedBleedingHealthPerMinute
 	default = 0.15,
 	page = ETWTraitsSettings,
 	translation = ETW_ThickBloodedBleedingHealthPerMinute,
+}
+option EvolvingTraitsWorld.SunSensitivityMaximumPain
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 50,
+	page = ETWTraitsSettings,
+	translation = ETW_SunSensitivityMaximumPain,
+}
+option EvolvingTraitsWorld.SunSensitivityExposurePerMinute
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 1,
+	page = ETWTraitsSettings,
+	translation = ETW_SunSensitivityExposurePerMinute,
+}
+option EvolvingTraitsWorld.SunSensitivityRecoveryPerMinute
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 2,
+	page = ETWTraitsSettings,
+	translation = ETW_SunSensitivityRecoveryPerMinute,
+}
+option EvolvingTraitsWorld.SunSensitivityUmbrellaMultiplier
+{
+	type = double,
+	min = 0,
+	max = 1,
+	default = 0.5,
+	page = ETWTraitsSettings,
+	translation = ETW_SunSensitivityUmbrellaMultiplier,
 }
 option EvolvingTraitsWorld.BloodlustMultiplier
 {

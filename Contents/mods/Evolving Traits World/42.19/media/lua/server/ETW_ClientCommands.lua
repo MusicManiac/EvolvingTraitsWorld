@@ -1,11 +1,15 @@
 local ETWCombinedTraitChecks = require("ETW_CombinedTraitChecks")
 local ETW_CommonLogicChecks = require("ETW_CommonLogicChecks")
+local ETW_Registry = require("ETW_Registry")
+local ETW_FightingTraits = require("TraitsLogic/ETW_FightingTraits")
 
 ---@type ETW_CommonFunctions
 local ETW_CommonFunctions = require("ETW_CommonFunctions")
 
 local gameMode = ETW_CommonFunctions.gameMode()
 local Commands = {}
+---@type EvolvingTraitsWorldTraitsRegistries
+local ETWTraitsRegistry = ETW_Registry.traits
 
 local FILENAME = "ETW_ClientCommands.lua"
 if
@@ -53,6 +57,28 @@ function Commands.checkEngineCondition(player, args)
 		local serverArgs = { repairedPercentage = repairedPercentage }
 		sendServerCommand(player, "ETW", "carRepairCheck", serverArgs)
 	end
+end
+
+---Validates an MP client's aiming report and applies Anti-Gun Activist's mood effect on the server.
+---@param player IsoPlayer
+function Commands.applyAntiGunAimingMood(player)
+	local playerIdentifier = tostring(player:getUsername()) .. " (OnlineID=" .. player:getOnlineID() .. ")"
+	if not player:hasTrait(ETWTraitsRegistry.ANTI_GUN_ACTIVIST) then
+		logETW("ETW Logger | antigun mood server: rejected missing trait for " .. playerIdentifier)
+		return
+	end
+	local weapon = player:getPrimaryHandItem()
+	if not weapon or not instanceof(weapon, "HandWeapon") or weapon:getSubCategory() ~= "Firearm" then
+		logETW("ETW Logger | antigun mood server: rejected missing firearm for " .. playerIdentifier)
+		return
+	end
+	ETW_FightingTraits.antiGunMentalTrait(player)
+	logETW(
+		"ETW Logger | antigun mood server: applied for "
+			.. playerIdentifier
+			.. " while holding "
+			.. weapon:getFullType()
+	)
 end
 
 Commands.OnClientCommand = function(module, command, player, args)

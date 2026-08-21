@@ -17,6 +17,82 @@ ETW_CommonFunctions.gameModeSafeguard(
 	{ ETW_CommonFunctions.GameMode.SP, ETW_CommonFunctions.GameMode.MP_CLIENT, ETW_CommonFunctions.GameMode.MP_SERVER }
 )
 
+---Calculates Anti-Gun Activist's protected XP penalty for a firearm skill.
+---@param player IsoPlayer
+---@param perk PerkFactory.Perk
+---@param earnedAmount number
+---@param penaltyPercent number
+---@return number xpToRemove
+---@return number|nil progress
+---@return string|nil reason
+function ETWCombinedTraitChecks.calculateAntiGunXPPenalty(player, perk, earnedAmount, penaltyPercent)
+	earnedAmount = tonumber(earnedAmount)
+	if not earnedAmount or earnedAmount <= 0 then
+		return 0, nil, "invalid earned amount"
+	end
+	if not player:hasTrait(ETWTraitsRegistry.ANTI_GUN_ACTIVIST) then
+		return 0, nil, "trait missing"
+	end
+
+	local level = player:getPerkLevel(perk)
+	if level >= 10 then
+		return 0, nil, "maximum level"
+	end
+	local perkDefinition = PerkFactory.getPerk(perk)
+	local lowerXP = perkDefinition:getTotalXpForLevel(level)
+	local upperXP = perkDefinition:getTotalXpForLevel(level + 1)
+	local levelSpan = upperXP - lowerXP
+	if levelSpan <= 0 then
+		return 0, nil, "invalid level span"
+	end
+
+	local currentXP = player:getXp():getXP(perk)
+	local progress = PZMath.clamp((currentXP - lowerXP) / levelSpan, 0, 1)
+	local lowerBoundary = 0.05
+	local upperBoundary = 0.95
+	if progress < lowerBoundary or progress > upperBoundary then
+		return 0, progress, "outside 5%-95% range"
+	end
+
+	local penaltyMultiplier = PZMath.clamp(penaltyPercent or 25, 0, 100) / 100
+	local protectedXP = lowerXP + levelSpan * lowerBoundary
+	local xpToRemove = math.min(earnedAmount * penaltyMultiplier, math.max(0, currentXP - protectedXP))
+	if xpToRemove <= 0 then
+		return 0, progress, "protected lower boundary"
+	end
+	return xpToRemove, progress, nil
+end
+
+---Calculates Anti-Gun Activist's protected Aiming XP penalty.
+---@param player IsoPlayer
+---@param earnedAmount number
+---@return number xpToRemove
+---@return number|nil progress
+---@return string|nil reason
+function ETWCombinedTraitChecks.calculateAntiGunAimingXPPenalty(player, earnedAmount)
+	return ETWCombinedTraitChecks.calculateAntiGunXPPenalty(
+		player,
+		Perks.Aiming,
+		earnedAmount,
+		SBvars.AntiGunAimingXPPenaltyPercent or 25
+	)
+end
+
+---Calculates Anti-Gun Activist's protected Reloading XP penalty.
+---@param player IsoPlayer
+---@param earnedAmount number
+---@return number xpToRemove
+---@return number|nil progress
+---@return string|nil reason
+function ETWCombinedTraitChecks.calculateAntiGunReloadingXPPenalty(player, earnedAmount)
+	return ETWCombinedTraitChecks.calculateAntiGunXPPenalty(
+		player,
+		Perks.Reloading,
+		earnedAmount,
+		SBvars.AntiGunReloadingXPPenaltyPercent or 25
+	)
+end
+
 ---Function responsible for checking if player qualifies for Bodywork Enthusiast trait
 ---@param player IsoPlayer
 function ETWCombinedTraitChecks.bodyworkEnthusiastCheck(player)

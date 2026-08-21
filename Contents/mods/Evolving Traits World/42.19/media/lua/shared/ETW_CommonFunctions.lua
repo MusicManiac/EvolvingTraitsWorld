@@ -609,6 +609,42 @@ function ETW_CommonFunctions.displayButterfingersPopup(player)
 	end
 end
 
+---Drops held items locally, or asks the owning client to do so when called by an MP server.
+---@param player IsoPlayer
+function ETW_CommonFunctions.dropButterfingersHandItems(player)
+	if gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
+		sendServerCommand(player, "ETW", "dropButterfingersHandItems", {})
+		ETW_CommonFunctions.log(
+			"ETW Logger | dropButterfingersHandItems(): requested client-side drop for " .. player:getUsername()
+		)
+	else
+		player:dropHandItems()
+		ETW_CommonFunctions.log("ETW Logger | dropButterfingersHandItems(): executed locally")
+	end
+end
+
+---Triggers a Noodle Legs fall locally, or asks the owning client to do so when called by an MP server.
+---@param player IsoPlayer
+---@param side "left"|"right"
+function ETW_CommonFunctions.triggerNoodleLegsTrip(player, side)
+	if gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
+		sendServerCommand(player, "ETW", "triggerNoodleLegsTrip", { side = side })
+		ETW_CommonFunctions.log(
+			"ETW Logger | triggerNoodleLegsTrip(): requested client-side trip for "
+				.. player:getUsername()
+				.. "; side: "
+				.. side
+		)
+		return
+	end
+	player:setBumpFallType("FallForward")
+	player:setBumpType(side)
+	player:setBumpDone(false)
+	player:setBumpFall(true)
+	player:reportEvent("wasBumped")
+	ETW_CommonFunctions.log("ETW Logger | triggerNoodleLegsTrip(): executed locally; side: " .. side)
+end
+
 ---Shows notification for trait gain/loss. If it's SP client, it's displayed trait gain/loss notification to client. If it's called on a server, it sends a command to the client to display the notification. Then the client checks if notification should be displayed based on per-client mod settings.
 ---@param player IsoPlayer player to show notification for
 ---@param traitRegistryId string the trait registry id of the trait
