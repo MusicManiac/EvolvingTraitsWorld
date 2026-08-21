@@ -1,5 +1,16 @@
 module ETW
 {
+    character_trait_definition ETW:AntiGunActivist
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:AntiGunActivist,
+        Cost = -6,
+        UIName = UI_trait_AntiGunActivist,
+        UIDescription = UI_trait_AntiGunActivistDesc,
+        MutuallyExclusiveTraits = ETW:GunEnthusiast,
+    }
+
     character_trait_definition ETW:Anemic
     {
         IsProfessionTrait = false,
@@ -18,6 +29,7 @@ module ETW
         Cost = -3,
         UIName = UI_trait_BadTeeth,
         UIDescription = UI_trait_BadTeethDesc,
+        MutuallyExclusiveTraits = ETW:PainTolerance,
     }
 
     character_trait_definition ETW:Blissful
@@ -93,6 +105,27 @@ module ETW
         UIDescription = UI_trait_MundaneDesc,
     }
 
+    character_trait_definition ETW:NaturalEater
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:NaturalEater,
+        Cost = 4,
+        UIName = UI_trait_NaturalEater,
+        UIDescription = UI_trait_NaturalEaterDesc,
+        XPBoosts = Cooking=1;PlantScavenging=1,
+    }
+
+    character_trait_definition ETW:NoodleLegs
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:NoodleLegs,
+        Cost = -6,
+        UIName = UI_trait_NoodleLegs,
+        UIDescription = UI_trait_NoodleLegsDesc,
+    }
+
     character_trait_definition ETW:PackMouse
     {
         IsProfessionTrait = false,
@@ -101,7 +134,18 @@ module ETW
         Cost = -7,
         UIName = UI_trait_PackMouse,
         UIDescription = UI_trait_PackMouseDesc,
-        MutuallyExclusiveTraits = ETW:Hoarder,
+        MutuallyExclusiveTraits = ETW:Hoarder;ETW:PackMule,
+    }
+
+    character_trait_definition ETW:PackMule
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:PackMule,
+        Cost = 7,
+        UIName = UI_trait_PackMule,
+        UIDescription = UI_trait_PackMuleDesc,
+        MutuallyExclusiveTraits = ETW:PackMouse,
     }
 
     character_trait_definition ETW:QuickRest
@@ -133,6 +177,17 @@ module ETW
         UIName = UI_trait_ThickBlooded,
         UIDescription = UI_trait_ThickBloodedDesc,
         MutuallyExclusiveTraits = ETW:Anemic,
+    }
+
+    character_trait_definition ETW:SunSensitivity
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:SunSensitivity,
+        Cost = -5,
+        UIName = UI_trait_SunSensitivity,
+        UIDescription = UI_trait_SunSensitivityDesc,
+        MutuallyExclusiveTraits = ETW:PainTolerance,
     }
 
     character_trait_definition ETW:AVClub
@@ -342,6 +397,7 @@ module ETW
         Cost = 2,
         UIName = UI_trait_PainTolerance,
         UIDescription = UI_trait_PainToleranceDesc,
+        MutuallyExclusiveTraits = ETW:BadTeeth;ETW:SunSensitivity,
     }
 
     character_trait_definition ETW:PetTherapy

@@ -18,6 +18,43 @@ local ETWTraitsRegistry = ETW_Registry.traits
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld
 local logETW = ETW_CommonFunctions.log
+local random_instance = newrandom()
+
+---Rolls Noodle Legs' chance to trip while running or sprinting.
+---@param player IsoPlayer
+function ETW_HealthTraits.noodleLegsTrait(player)
+	local isSprinting = player:isSprinting()
+	if not player:isRunning() and not isSprinting then
+		return
+	end
+	local sprintingLevel = player:getPerkLevel(Perks.Sprinting)
+	local nimble = player:getPerkLevel(Perks.Nimble)
+	local chanceIn = math.max(1, SBvars.NoodleLegsTripChanceOneIn or 5000)
+	chanceIn = chanceIn * (1 + (nimble + sprintingLevel) * 0.025)
+	if player:hasTrait(CharacterTrait.GRACEFUL) then
+		chanceIn = chanceIn * 1.2
+	elseif player:hasTrait(CharacterTrait.CLUMSY) then
+		chanceIn = chanceIn * 0.8
+	end
+	if isSprinting then
+		chanceIn = chanceIn * 0.6
+	end
+	chanceIn = math.max(1, math.floor(chanceIn))
+	if random_instance:random(1, chanceIn) ~= 1 then
+		return
+	end
+
+	local side = random_instance:random(1, 2) == 1 and "left" or "right"
+	ETW_CommonFunctions.triggerNoodleLegsTrip(player, side)
+	logETW(
+		"ETW Logger | noodleLegsTrait(): triggered trip while "
+			.. (isSprinting and "sprinting" or "running")
+			.. "; chance: 1/"
+			.. chanceIn
+			.. ", side: "
+			.. side
+	)
+end
 
 ---Caps pain for a player with Pain Tolerance.
 ---@param player IsoPlayer

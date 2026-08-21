@@ -4,6 +4,7 @@ ETW_Registry = ETW_Registry or {}
 ---@class EvolvingTraitsWorldTraitsRegistries
 ---@field AV_CLUB CharacterTrait
 ---@field ANEMIC CharacterTrait
+---@field ANTI_GUN_ACTIVIST CharacterTrait
 ---@field AXE_THROWER CharacterTrait
 ---@field BLOODLUST CharacterTrait
 ---@field BLISSFUL CharacterTrait
@@ -27,20 +28,25 @@ ETW_Registry = ETW_Registry or {}
 ---@field LIGHTSTEP CharacterTrait
 ---@field LOW_PROFILE CharacterTrait
 ---@field MUNDANE CharacterTrait
+---@field NATURAL_EATER CharacterTrait
+---@field NOODLE_LEGS CharacterTrait
 ---@field PLUVIOPHILE CharacterTrait
 ---@field PLUVIOPHOBIA CharacterTrait
 ---@field PAIN_TOLERANCE CharacterTrait
 ---@field PACK_MOUSE CharacterTrait
+---@field PACK_MULE CharacterTrait
 ---@field PET_THERAPY CharacterTrait
 ---@field POLEARM_FIGHTER CharacterTrait
 ---@field RESTORATION_EXPERT CharacterTrait
 ---@field QUICK_REST CharacterTrait
 ---@field SLOW_EATER CharacterTrait
+---@field SUN_SENSITIVITY CharacterTrait
 ---@field THICK_BLOODED CharacterTrait
 ---@field WELL_FITTED CharacterTrait
 ETW_Registry.traits = {
 	AV_CLUB = CharacterTrait.register("ETW:AVClub"),
 	ANEMIC = CharacterTrait.register("ETW:Anemic"),
+	ANTI_GUN_ACTIVIST = CharacterTrait.register("ETW:AntiGunActivist"),
 	AXE_THROWER = CharacterTrait.register("ETW:AxeThrower"),
 	BLOODLUST = CharacterTrait.register("ETW:Bloodlust"),
 	BLISSFUL = CharacterTrait.register("ETW:Blissful"),
@@ -64,15 +70,19 @@ ETW_Registry.traits = {
 	LIGHTSTEP = CharacterTrait.register("ETW:LightStep"),
 	LOW_PROFILE = CharacterTrait.register("ETW:LowProfile"),
 	MUNDANE = CharacterTrait.register("ETW:Mundane"),
+	NATURAL_EATER = CharacterTrait.register("ETW:NaturalEater"),
+	NOODLE_LEGS = CharacterTrait.register("ETW:NoodleLegs"),
 	PLUVIOPHILE = CharacterTrait.register("ETW:Pluviophile"),
 	PLUVIOPHOBIA = CharacterTrait.register("ETW:Pluviophobia"),
 	PAIN_TOLERANCE = CharacterTrait.register("ETW:PainTolerance"),
 	PACK_MOUSE = CharacterTrait.register("ETW:PackMouse"),
+	PACK_MULE = CharacterTrait.register("ETW:PackMule"),
 	PET_THERAPY = CharacterTrait.register("ETW:PetTherapy"),
 	POLEARM_FIGHTER = CharacterTrait.register("ETW:PolearmFighter"),
 	RESTORATION_EXPERT = CharacterTrait.register("ETW:RestorationExpert"),
 	QUICK_REST = CharacterTrait.register("ETW:QuickRest"),
 	SLOW_EATER = CharacterTrait.register("ETW:SlowEater"),
+	SUN_SENSITIVITY = CharacterTrait.register("ETW:SunSensitivity"),
 	THICK_BLOODED = CharacterTrait.register("ETW:ThickBlooded"),
 	WELL_FITTED = CharacterTrait.register("ETW:WellFitted"),
 	STICK_FIGHTER = CharacterTrait.register("ETW:StickFighter"),

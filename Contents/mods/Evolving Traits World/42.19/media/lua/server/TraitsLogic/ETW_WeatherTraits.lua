@@ -19,6 +19,80 @@ local ETWTraitsRegistry = ETW_Registry.traits
 local SBvars = SandboxVars.EvolvingTraitsWorld
 local logETW = ETW_CommonFunctions.log
 
+---Applies and recovers Sun Sensitivity exposure and its contribution to head pain.
+---@param player IsoPlayer
+---@param bodyDamage BodyDamage
+---@param modData EvolvingTraitsWorldModData
+---@param hasTrait boolean
+function ETW_WeatherTraits.sunSensitivityTrait(player, bodyDamage, modData, hasTrait)
+	local previousAppliedPain = modData.SunSensitivityAppliedPain or 0
+	if not hasTrait then
+		if previousAppliedPain > 0 then
+			local head = bodyDamage:getBodyPart(BodyPartType.Head)
+			head:setAdditionalPain(math.max(0, head:getAdditionalPain() - previousAppliedPain))
+			logETW("ETW Logger | sunSensitivityTrait(): removed lingering ETW head pain")
+		end
+		modData.SunSensitivityExposure = nil
+		modData.SunSensitivityAppliedPain = nil
+		return
+	end
+
+	local exposure = modData.SunSensitivityExposure or 0
+	local maximumPain = math.max(0, SBvars.SunSensitivityMaximumPain or 40)
+	local exposurePerMinute = math.max(0, SBvars.SunSensitivityExposurePerMinute or 1)
+	local recoveryPerMinute = math.max(0, SBvars.SunSensitivityRecoveryPerMinute or 2)
+	local umbrellaMultiplier = PZMath.clamp(SBvars.SunSensitivityUmbrellaMultiplier or 0.5, 0, 1)
+	local daylightStrength = PZMath.clamp(getClimateManager():getDayLightStrength(), 0, 1)
+	local outside = player:isOutside()
+	local exposedToDaylight = outside and daylightStrength > 0
+	local primaryItem = player:getPrimaryHandItem()
+	local secondaryItem = player:getSecondaryHandItem()
+	local hasUmbrella = (primaryItem and primaryItem:isProtectFromRainWhileEquipped())
+		or (secondaryItem and secondaryItem:isProtectFromRainWhileEquipped())
+
+	if exposedToDaylight then
+		exposure = math.min(
+			maximumPain,
+			exposure + exposurePerMinute * daylightStrength * (hasUmbrella and umbrellaMultiplier or 1)
+		)
+	elseif outside then
+		exposure = math.max(0, exposure - recoveryPerMinute / 2)
+	else
+		exposure = math.max(0, exposure - recoveryPerMinute)
+	end
+	modData.SunSensitivityExposure = exposure
+
+	local desiredPain = exposure
+	if exposedToDaylight and hasUmbrella then
+		desiredPain = desiredPain * umbrellaMultiplier
+	elseif outside and not exposedToDaylight then
+		desiredPain = desiredPain / 2
+	elseif not outside then
+		desiredPain = desiredPain / 4
+	end
+	local head = bodyDamage:getBodyPart(BodyPartType.Head)
+	local currentPain = head:getAdditionalPain()
+	local baselinePain = math.max(0, currentPain - previousAppliedPain)
+	local resultingPain = PZMath.clamp(baselinePain + desiredPain, 0, 100)
+	local appliedPain = resultingPain - baselinePain
+	head:setAdditionalPain(resultingPain)
+	modData.SunSensitivityAppliedPain = appliedPain
+	if appliedPain ~= previousAppliedPain then
+		logETW(
+			"ETW Logger | sunSensitivityTrait(): exposure: "
+				.. exposure
+				.. ", applied head pain: "
+				.. previousAppliedPain
+				.. "->"
+				.. appliedPain
+				.. ", daylight strength: "
+				.. daylightStrength
+				.. ", umbrella: "
+				.. tostring(hasUmbrella == true)
+		)
+	end
+end
+
 ---@param player IsoPlayer
 ---@param rainIntensity number
 function ETW_WeatherTraits.rainTraits(player, rainIntensity)

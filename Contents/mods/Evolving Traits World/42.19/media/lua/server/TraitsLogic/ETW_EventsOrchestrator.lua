@@ -38,7 +38,11 @@ local function oneMinuteUpdate()
 		end
 		local hasAnemic = player:hasTrait(ETWTraitsRegistry.ANEMIC)
 		local hasThickBlooded = player:hasTrait(ETWTraitsRegistry.THICK_BLOODED)
-		if hasAnemic or hasThickBlooded then
+		local hasSunSensitivity = player:hasTrait(ETWTraitsRegistry.SUN_SENSITIVITY)
+		local modData = ETW_CommonFunctions.getETWModData(player)
+		local hasSunSensitivityState = modData
+			and (modData.SunSensitivityExposure ~= nil or modData.SunSensitivityAppliedPain ~= nil)
+		if hasAnemic or hasThickBlooded or hasSunSensitivity or hasSunSensitivityState then
 			local bodyDamage = player:getBodyDamage()
 			if hasAnemic then
 				ETW_HealthTraits.anemicTrait(bodyDamage)
@@ -46,11 +50,23 @@ local function oneMinuteUpdate()
 			if hasThickBlooded then
 				ETW_HealthTraits.thickBloodedTrait(bodyDamage)
 			end
+			if modData and (hasSunSensitivity or hasSunSensitivityState) then
+				ETW_WeatherTraits.sunSensitivityTrait(player, bodyDamage, modData, hasSunSensitivity)
+			end
 		end
 		if player:hasTrait(ETWTraitsRegistry.BLISSFUL) then
 			ETW_MentalTraits.blissfulTrait(player)
 		end
-		local modData = ETW_CommonFunctions.getETWModData(player)
+		if
+			gameMode == ETW_CommonFunctions.GameMode.SP
+			and player:hasTrait(ETWTraitsRegistry.ANTI_GUN_ACTIVIST)
+			and player:isAiming()
+		then
+			local weapon = player:getPrimaryHandItem()
+			if weapon and instanceof(weapon, "HandWeapon") and weapon:getSubCategory() == "Firearm" then
+				ETW_FightingTraits.antiGunMentalTrait(player)
+			end
+		end
 		if modData then
 			ETW_MentalTraits.depressiveTrait(player, modData, false)
 			ETW_HealthTraits.hardyTrait(player, modData)
@@ -80,9 +96,20 @@ local function everyTickUpdate()
 		if player:hasTrait(ETWTraitsRegistry.PAIN_TOLERANCE) then
 			ETW_HealthTraits.painToleranceTrait(player)
 		end
+		if player:hasTrait(ETWTraitsRegistry.NOODLE_LEGS) then
+			ETW_HealthTraits.noodleLegsTrait(player)
+		end
 		local modData = ETW_CommonFunctions.getETWModData(player)
-		if modData and player:hasTrait(ETWTraitsRegistry.QUICK_REST) then
-			ETW_HealthTraits.quickRestTrait(player, modData)
+		if modData then
+			if
+				modData.AntiGunAimingXPCheckPending
+				and player:hasTrait(ETWTraitsRegistry.ANTI_GUN_ACTIVIST)
+			then
+				ETW_FightingTraits.antiGunAimingXPPenalty(player, modData)
+			end
+			if player:hasTrait(ETWTraitsRegistry.QUICK_REST) then
+				ETW_HealthTraits.quickRestTrait(player, modData)
+			end
 		end
 	end
 end
@@ -92,6 +119,9 @@ end
 local function initializeTraitsLogic(playerIndex, player)
 	Events.OnZombieDead.Remove(ETW_FightingTraits.onZombieDead)
 	Events.OnZombieDead.Add(ETW_FightingTraits.onZombieDead)
+	Events.OnWeaponHitXp.Remove(ETW_FightingTraits.onWeaponHitXP)
+	Events.OnWeaponHitXp.Add(ETW_FightingTraits.onWeaponHitXP)
+	logETW("ETW Logger | antigun XP weapon-hit event: Events.OnWeaponHitXp handler registered")
 	Events.EveryOneMinute.Remove(oneMinuteUpdate)
 	Events.EveryOneMinute.Add(oneMinuteUpdate)
 	Events.EveryHours.Remove(oneHourUpdate)
@@ -105,6 +135,7 @@ end
 
 local function clearEventsETW()
 	Events.OnZombieDead.Remove(ETW_FightingTraits.onZombieDead)
+	Events.OnWeaponHitXp.Remove(ETW_FightingTraits.onWeaponHitXP)
 	Events.EveryOneMinute.Remove(oneMinuteUpdate)
 	Events.EveryHours.Remove(oneHourUpdate)
 	Events.OnTick.Remove(everyTickUpdate)

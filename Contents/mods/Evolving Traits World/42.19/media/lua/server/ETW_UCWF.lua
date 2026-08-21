@@ -51,3 +51,18 @@ UnifiedCarryWeightFramework.registerMaxModifier({
 		return {}
 	end,
 })
+
+UnifiedCarryWeightFramework.registerMaxModifier({
+	id = "ETW.PackMuleTraitCarryWeight",
+
+	resolve = function(ctx)
+		local player = ctx.player
+		---@cast player IsoPlayer
+		if player:hasTrait(ETWTraitsRegistry.PACK_MULE) then
+			return {
+				mult = 1 + PZMath.clamp(SBvars.PackMuleMaxCapacityPercent or 20, 0, 1000) / 100,
+			}
+		end
+		return {}
+	end,
+})

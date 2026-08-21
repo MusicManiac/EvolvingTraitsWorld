@@ -19,6 +19,7 @@ local random_instance = newrandom()
 
 local leadFootShoes = {}
 local mundaneWeapons = {}
+local antiGunWeapons = {}
 local Commands = {}
 
 local function restoreWellFittedItem(item, data)
@@ -179,6 +180,70 @@ local function mundaneTrait(player)
 	mundaneWeapons[player] = weapon
 end
 
+local function restoreAntiGunWeapon(item)
+	local data = item:getModData().ETWAntiGun
+	if data and data.Applied then
+		item:setAimingTime(data.OriginalAimingTime)
+		item:setMaxRange(data.OriginalMaxRange)
+		data.Applied = false
+		data.OriginalAimingTime = nil
+		data.OriginalMaxRange = nil
+		logETW("ETW Logger | antiGunWeaponTrait(): restored " .. item:getFullType())
+	end
+end
+
+---@param player IsoPlayer
+---@param hasTrait boolean
+local function antiGunWeaponTrait(player, hasTrait)
+	local weapon = player:getPrimaryHandItem()
+	if
+		weapon
+		and (not instanceof(weapon, "HandWeapon") or weapon:getSubCategory() ~= "Firearm")
+	then
+		weapon = nil
+	end
+	local previousWeapon = antiGunWeapons[player]
+	if previousWeapon and (previousWeapon ~= weapon or not hasTrait) then
+		restoreAntiGunWeapon(previousWeapon)
+		antiGunWeapons[player] = nil
+	end
+	if not hasTrait then
+		if weapon then
+			restoreAntiGunWeapon(weapon)
+		end
+		return
+	end
+	if not weapon then
+		return
+	end
+
+	local itemData = weapon:getModData()
+	itemData.ETWAntiGun = itemData.ETWAntiGun or {}
+	local data = itemData.ETWAntiGun
+	if not data.Applied then
+		data.OriginalAimingTime = weapon:getAimingTime()
+		data.OriginalMaxRange = weapon:getMaxRange()
+		local aimingTimeMultiplier = math.max(0, SBvars.AntiGunAimingTimeMultiplier or 0.8)
+		local rangePenalty = math.max(0, SBvars.AntiGunMaxRangePenalty or 5)
+		weapon:setAimingTime(data.OriginalAimingTime * aimingTimeMultiplier)
+		weapon:setMaxRange(math.max(5, data.OriginalMaxRange - rangePenalty))
+		data.Applied = true
+		logETW(
+			"ETW Logger | antiGunWeaponTrait(): applied to "
+				.. weapon:getFullType()
+				.. "; aiming time: "
+				.. data.OriginalAimingTime
+				.. "->"
+				.. weapon:getAimingTime()
+				.. ", max range: "
+				.. data.OriginalMaxRange
+				.. "->"
+				.. weapon:getMaxRange()
+		)
+	end
+	antiGunWeapons[player] = weapon
+end
+
 ---Rolls for Butterfingers to drop held items while moving.
 ---@param player IsoPlayer
 local function butterfingersTrait(player)
@@ -205,10 +270,10 @@ local function butterfingersTrait(player)
 	if random_instance:random(1, chanceIn) <= math.min(chanceIn, math.max(1, chance)) then
 		local primaryItem = player:getPrimaryHandItem()
 		local secondaryItem = player:getSecondaryHandItem()
-		player:dropHandItems()
+		ETW_CommonFunctions.dropButterfingersHandItems(player)
 		ETW_CommonFunctions.displayButterfingersPopup(player)
 		logETW(
-			"ETW Logger | butterfingersTrait(): dropped held items; primary: "
+			"ETW Logger | butterfingersTrait(): triggered held-item drop; primary: "
 				.. (primaryItem and primaryItem:getFullType() or "nil")
 				.. ", secondary: "
 				.. (secondaryItem and secondaryItem:getFullType() or "nil")
@@ -228,6 +293,16 @@ local function updateItemTraits(player)
 	wellFittedTrait(player)
 	leadFootTrait(player)
 	mundaneTrait(player)
+	local primaryItem = player:getPrimaryHandItem()
+	local antiGunData = primaryItem and primaryItem:getModData().ETWAntiGun
+	local hasAntiGunTrait = player:hasTrait(ETWTraitsRegistry.ANTI_GUN_ACTIVIST)
+	if
+		hasAntiGunTrait
+		or antiGunWeapons[player]
+		or (antiGunData and antiGunData.Applied)
+	then
+		antiGunWeaponTrait(player, hasAntiGunTrait)
+	end
 	butterfingersTrait(player)
 end
 
@@ -258,6 +333,11 @@ local function onPlayerDeath(player)
 	if weapon then
 		restoreMundaneWeapon(weapon)
 		mundaneWeapons[player] = nil
+	end
+	local antiGunWeapon = antiGunWeapons[player]
+	if antiGunWeapon then
+		restoreAntiGunWeapon(antiGunWeapon)
+		antiGunWeapons[player] = nil
 	end
 
 	local wornItems = player:getWornItems()
