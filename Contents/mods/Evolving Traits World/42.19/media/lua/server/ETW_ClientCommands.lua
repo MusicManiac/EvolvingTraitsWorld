@@ -1,4 +1,4 @@
-local ETWCombinedTraitChecks = require("ETW_CombinedTraitChecks")
+local ETWCombinedTraitChecks = require("ETW_CombinedTraitFunctions")
 local ETW_CommonLogicChecks = require("ETW_CommonLogicChecks")
 local ETW_Registry = require("ETW_Registry")
 local ETW_FightingTraits = require("TraitsLogic/ETW_FightingTraits")

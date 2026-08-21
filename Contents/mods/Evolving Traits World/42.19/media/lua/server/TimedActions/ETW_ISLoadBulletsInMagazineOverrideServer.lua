@@ -2,7 +2,7 @@ require("TimedActions/ISLoadBulletsInMagazine")
 
 local ETW_CommonFunctions = require("ETW_CommonFunctions")
 local ETW_Registry = require("ETW_Registry")
-local ETWCombinedTraitChecks = require("ETW_CombinedTraitChecks")
+local ETWCombinedTraitChecks = require("ETW_CombinedTraitFunctions")
 local ETW_FightingTraits = require("TraitsLogic/ETW_FightingTraits")
 
 local FILENAME = "ETW_ISLoadBulletsInMagazineOverrideServer.lua"
@@ -59,10 +59,7 @@ function ISLoadBulletsInMagazine:animEvent(event, parameter)
 		return originalReturn
 	end
 
-	local xpToRemove, progress, reason = ETWCombinedTraitChecks.calculateAntiGunReloadingXPPenalty(
-		player,
-		gainedXP
-	)
+	local xpToRemove, progress, reason = ETWCombinedTraitChecks.calculateAntiGunReloadingXPPenalty(player, gainedXP)
 	if xpToRemove <= 0 then
 		logETW(
 			"ETW Logger | Anti-gun | ISLoadBulletsInMagazine:animEvent(): Reloading XP penalty skipped for "

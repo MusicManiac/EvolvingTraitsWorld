@@ -14,7 +14,7 @@ then
 end
 
 local ETW_CommonLogicChecks = require("ETW_CommonLogicChecks")
-local ETW_CombinedTraitChecks = require("ETW_CombinedTraitChecks")
+local ETW_CombinedTraitFunctions = require("ETW_CombinedTraitFunctions")
 local ETW_ExportedFunctions = require("ETW_ExportedFunctions")
 
 local function logETW(...)
@@ -49,7 +49,7 @@ function RecipeCodeOnCreate.ripClothing(data, character)
 			local itemName = item:getClothingItemName()
 			if itemName then
 				ETW_CommonFunctions.log("ETW Logger | RecipeCodeOnCreate.ripClothing() item: " .. itemName)
-				ETW_CombinedTraitChecks.addClothingToUniqueRippedClothingList(character, itemName)
+				ETW_CombinedTraitFunctions.addClothingToUniqueRippedClothingList(character, itemName)
 				if gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
 					sendServerCommand(character, "ETW", "refreshETWModDataFromServer", { ETWModData = modData })
 				end

@@ -1,4 +1,4 @@
-local ETW_CombinedTraitChecks = require("ETW_CombinedTraitChecks")
+local ETW_CombinedTraitFunctions = require("ETW_CombinedTraitFunctions")
 local ETW_CommonFunctions = require("ETW_CommonFunctions")
 local ETW_CommonLogicChecks = require("ETW_CommonLogicChecks")
 
@@ -36,10 +36,10 @@ function ISRepairEngine:complete()
 				.. modData.VehiclePartRepairs
 		)
 		if bodyWorkEnthusiastShouldExecute then
-			ETW_CombinedTraitChecks.bodyworkEnthusiastCheck(self.character)
+			ETW_CombinedTraitFunctions.bodyworkEnthusiastCheck(self.character)
 		end
 		if mechanicsShouldExecute then
-			ETW_CombinedTraitChecks.mechanicsCheck(self.character)
+			ETW_CombinedTraitFunctions.mechanicsCheck(self.character)
 		end
 	end
 	return originalReturn

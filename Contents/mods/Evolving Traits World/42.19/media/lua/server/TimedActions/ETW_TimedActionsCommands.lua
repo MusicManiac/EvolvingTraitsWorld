@@ -1,4 +1,4 @@
-local ETW_CombinedTraitChecks = require("ETW_CombinedTraitChecks")
+local ETW_CombinedTraitFunctions = require("ETW_CombinedTraitFunctions")
 local ETW_CommonLogicChecks = require("ETW_CommonLogicChecks")
 local ETW_TimedActionsSharedLogic = require("TimedActions/ETW_TimedActionsSharedLogic")
 local ETW_CommonFunctions = require("ETW_CommonFunctions")
