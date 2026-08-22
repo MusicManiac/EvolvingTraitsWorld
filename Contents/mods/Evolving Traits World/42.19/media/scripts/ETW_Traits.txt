@@ -8,7 +8,7 @@ module ETW
         Cost = -6,
         UIName = UI_trait_AntiGunActivist,
         UIDescription = UI_trait_AntiGunActivistDesc,
-        MutuallyExclusiveTraits = ETW:GunEnthusiast,
+        MutuallyExclusiveTraits = ETW:GunEnthusiast;ETW:ProwessGuns,
     }
 
     character_trait_definition ETW:Anemic
@@ -156,6 +156,54 @@ module ETW
         Cost = 3,
         UIName = UI_trait_QuickRest,
         UIDescription = UI_trait_QuickRestDesc,
+    }
+
+    character_trait_definition ETW:ProwessBlade
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:ProwessBlade,
+        Cost = 7,
+        UIName = UI_trait_ProwessBlade,
+        UIDescription = UI_trait_ProwessBladeDesc,
+        XPBoosts = SmallBlade=1;LongBlade=1;Axe=1,
+        MutuallyExclusiveTraits = ETW:ProwessBlunt;ETW:ProwessGuns;ETW:ProwessSpear,
+    }
+
+    character_trait_definition ETW:ProwessBlunt
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:ProwessBlunt,
+        Cost = 7,
+        UIName = UI_trait_ProwessBlunt,
+        UIDescription = UI_trait_ProwessBluntDesc,
+        XPBoosts = SmallBlunt=1;Blunt=1,
+        MutuallyExclusiveTraits = ETW:ProwessBlade;ETW:ProwessGuns;ETW:ProwessSpear,
+    }
+
+    character_trait_definition ETW:ProwessGuns
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:ProwessGuns,
+        Cost = 7,
+        UIName = UI_trait_ProwessGuns,
+        UIDescription = UI_trait_ProwessGunsDesc,
+        XPBoosts = Aiming=1;Reloading=1,
+        MutuallyExclusiveTraits = ETW:AntiGunActivist;ETW:ProwessBlade;ETW:ProwessBlunt;ETW:ProwessSpear,
+    }
+
+    character_trait_definition ETW:ProwessSpear
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:ProwessSpear,
+        Cost = 7,
+        UIName = UI_trait_ProwessSpear,
+        UIDescription = UI_trait_ProwessSpearDesc,
+        XPBoosts = Spear=2,
+        MutuallyExclusiveTraits = ETW:ProwessBlade;ETW:ProwessBlunt;ETW:ProwessGuns,
     }
 
     character_trait_definition ETW:WellFitted

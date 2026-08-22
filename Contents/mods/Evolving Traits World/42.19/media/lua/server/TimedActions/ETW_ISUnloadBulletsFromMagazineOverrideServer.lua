@@ -2,7 +2,7 @@ require("TimedActions/ISUnloadBulletsFromMagazine")
 
 local ETW_CommonFunctions = require("ETW_CommonFunctions")
 local ETW_Registry = require("ETW_Registry")
-local ETW_FightingTraits = require("TraitsLogic/ETW_FightingTraits")
+local ETW_CombatTraits = require("TraitsLogic/ETW_CombatTraits")
 
 local FILENAME = "ETW_ISUnloadBulletsFromMagazineOverrideServer.lua"
 if
@@ -38,7 +38,7 @@ function ISUnloadBulletsFromMagazine:animEvent(event, parameter)
 		return originalReturn
 	end
 
-	ETW_FightingTraits.antiGunMentalTrait(
+	ETW_CombatTraits.antiGunMentalTrait(
 		player,
 		SBvars.AntiGunMagazineHandlingUnhappinessPerBullet or 0.1,
 		"magazine unloading"

@@ -9,16 +9,42 @@ end
 local logETW = ETW_CommonFunctions.log
 ---@type EvolvingTraitsWorldTraitsRegistries
 local ETWTraitsRegistry = ETW_Registry.traits
+local lastClothingRefreshRequest
+
+---@param character IsoGameCharacter
+---@param source string
+local function equippedItemTraitsRefreshOnServer(character, source)
+	if not character or not instanceof(character, "IsoPlayer") or not character:isLocalPlayer() then
+		return
+	end
+	local player = character
+	---@cast player IsoPlayer
+	sendClientCommand(player, "ETW", "refreshEquippedItemTraits", {})
+	logETW(
+		"ETW Logger | equippedItemTraitsRefreshOnServer(): requested server item-trait refresh; source: "
+			.. source
+	)
+end
 
 ---@param character IsoGameCharacter
 local function clothingRefreshOnServer(character)
 	if not character or not instanceof(character, "IsoPlayer") or not character:isLocalPlayer() then
 		return
 	end
-	local player = character
-	---@cast player IsoPlayer
-	sendClientCommand(player, "ETW", "refreshClothingTraits", {})
-	logETW("ETW Logger | clothingRefreshOnServer(): requested server clothing-trait refresh")
+	local now = getTimestampMs()
+	if lastClothingRefreshRequest and now < lastClothingRefreshRequest + 1000 then
+		logETW(
+			"ETW Logger | clothingRefreshOnServer(): throttled refresh request"
+		)
+		return
+	end
+	lastClothingRefreshRequest = now
+	equippedItemTraitsRefreshOnServer(character, "clothing updated")
+end
+
+---@param character IsoGameCharacter
+local function deathRefreshOnServer(character)
+	equippedItemTraitsRefreshOnServer(character, "player death")
 end
 
 ---Reports client-authoritative firearm aiming for Anti-Gun Activist's server-authoritative mood effect.
@@ -41,7 +67,7 @@ end
 
 Events.OnClothingUpdated.Remove(clothingRefreshOnServer)
 Events.OnClothingUpdated.Add(clothingRefreshOnServer)
-Events.OnPlayerDeath.Remove(clothingRefreshOnServer)
-Events.OnPlayerDeath.Add(clothingRefreshOnServer)
+Events.OnPlayerDeath.Remove(deathRefreshOnServer)
+Events.OnPlayerDeath.Add(deathRefreshOnServer)
 Events.EveryOneMinute.Remove(antiGunAimingMoodOnServer)
 Events.EveryOneMinute.Add(antiGunAimingMoodOnServer)

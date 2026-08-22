@@ -1,7 +1,7 @@
 local ETWCombinedTraitChecks = require("ETW_CombinedTraitFunctions")
 local ETW_CommonLogicChecks = require("ETW_CommonLogicChecks")
 local ETW_Registry = require("ETW_Registry")
-local ETW_FightingTraits = require("TraitsLogic/ETW_FightingTraits")
+local ETW_CombatTraits = require("TraitsLogic/ETW_CombatTraits")
 
 ---@type ETW_CommonFunctions
 local ETW_CommonFunctions = require("ETW_CommonFunctions")
@@ -72,7 +72,7 @@ function Commands.applyAntiGunAimingMood(player)
 		logETW("ETW Logger | antigun mood server: rejected missing firearm for " .. playerIdentifier)
 		return
 	end
-	ETW_FightingTraits.antiGunMentalTrait(player)
+	ETW_CombatTraits.antiGunMentalTrait(player)
 	logETW(
 		"ETW Logger | antigun mood server: applied for "
 			.. playerIdentifier
