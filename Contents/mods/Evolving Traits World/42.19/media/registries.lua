@@ -37,6 +37,10 @@ ETW_Registry = ETW_Registry or {}
 ---@field PACK_MULE CharacterTrait
 ---@field PET_THERAPY CharacterTrait
 ---@field POLEARM_FIGHTER CharacterTrait
+---@field PROWESS_BLADE CharacterTrait
+---@field PROWESS_BLUNT CharacterTrait
+---@field PROWESS_GUNS CharacterTrait
+---@field PROWESS_SPEAR CharacterTrait
 ---@field RESTORATION_EXPERT CharacterTrait
 ---@field QUICK_REST CharacterTrait
 ---@field SLOW_EATER CharacterTrait
@@ -79,6 +83,10 @@ ETW_Registry.traits = {
 	PACK_MULE = CharacterTrait.register("ETW:PackMule"),
 	PET_THERAPY = CharacterTrait.register("ETW:PetTherapy"),
 	POLEARM_FIGHTER = CharacterTrait.register("ETW:PolearmFighter"),
+	PROWESS_BLADE = CharacterTrait.register("ETW:ProwessBlade"),
+	PROWESS_BLUNT = CharacterTrait.register("ETW:ProwessBlunt"),
+	PROWESS_GUNS = CharacterTrait.register("ETW:ProwessGuns"),
+	PROWESS_SPEAR = CharacterTrait.register("ETW:ProwessSpear"),
 	RESTORATION_EXPERT = CharacterTrait.register("ETW:RestorationExpert"),
 	QUICK_REST = CharacterTrait.register("ETW:QuickRest"),
 	SLOW_EATER = CharacterTrait.register("ETW:SlowEater"),

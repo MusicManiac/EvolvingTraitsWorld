@@ -18,7 +18,7 @@ local logETW = ETW_CommonFunctions.log
 local random_instance = newrandom()
 
 local leadFootShoes = {}
-local mundaneWeapons = {}
+local combatTraitWeapons = {}
 local antiGunWeapons = {}
 local Commands = {}
 
@@ -57,17 +57,17 @@ local function wellFittedTrait(player)
 				end
 				local reduction = PZMath.clamp(SBvars.WellFittedWeightReduction or 50, 0, 100) / 100
 				item:setActualWeight(data.OriginalActualWeight * (1 - reduction))
-				if SBvars.WellFittedNegatesSpeedPenalties ~= false then
-					if data.OriginalRunSpeedModifier < 1 then
-						item:setRunSpeedModifier(1)
-					end
-					if data.OriginalCombatSpeedModifier < 1 then
-						item:setCombatSpeedModifier(1)
-					end
-				else
-					item:setRunSpeedModifier(data.OriginalRunSpeedModifier)
-					item:setCombatSpeedModifier(data.OriginalCombatSpeedModifier)
-				end
+				local speedReduction = PZMath.clamp(
+					SBvars.WellFittedSpeedPenaltyReduction or 75,
+					0,
+					100
+				) / 100
+				local runSpeedPenalty = math.max(0, 1 - data.OriginalRunSpeedModifier)
+				local combatSpeedPenalty = math.max(0, 1 - data.OriginalCombatSpeedModifier)
+				item:setRunSpeedModifier(data.OriginalRunSpeedModifier + runSpeedPenalty * speedReduction)
+				item:setCombatSpeedModifier(
+					data.OriginalCombatSpeedModifier + combatSpeedPenalty * speedReduction
+				)
 				if not data.Applied then
 					data.Applied = true
 					changed = true
@@ -78,6 +78,14 @@ local function wellFittedTrait(player)
 							.. data.OriginalActualWeight
 							.. "->"
 							.. item:getActualWeight()
+							.. "; run speed modifier: "
+							.. data.OriginalRunSpeedModifier
+							.. "->"
+							.. item:getRunSpeedModifier()
+							.. "; combat speed modifier: "
+							.. data.OriginalCombatSpeedModifier
+							.. "->"
+							.. item:getCombatSpeedModifier()
 					)
 				end
 			elseif data.Applied then
@@ -135,49 +143,156 @@ local function leadFootTrait(player)
 	leadFootShoes[player] = shoes
 end
 
-local function restoreMundaneWeapon(item)
-	local data = item:getModData().ETWMundane
+local function restoreCombatTraitWeapon(item)
+	local data = item:getModData().ETWCombatTraits
 	if data and data.Applied then
+		item:setMinDamage(data.OriginalMinDamage)
+		item:setMaxDamage(data.OriginalMaxDamage)
 		item:setCriticalChance(data.OriginalCriticalChance)
 		data.Applied = false
+		data.OriginalMinDamage = nil
+		data.OriginalMaxDamage = nil
 		data.OriginalCriticalChance = nil
-		logETW("ETW Logger | mundaneTrait(): restored " .. item:getFullType())
+		data.ProwessName = nil
+		data.RelevantSkillLevels = nil
+		data.DamageBonusPercent = nil
+		data.BaseCriticalChance = nil
+		data.Mundane = nil
+		logETW("ETW Logger | combatWeaponTraits(): restored " .. item:getFullType())
 	end
 end
 
 ---@param player IsoPlayer
-local function mundaneTrait(player)
+---@param weapon HandWeapon
+---@return string|nil prowessName
+---@return number relevantSkillLevels
+local function getMatchingMeleeProwess(player, weapon)
+	if weapon:isRanged() then
+		return nil, 0
+	end
+	if
+		player:hasTrait(ETWTraitsRegistry.PROWESS_BLADE)
+		and (
+			weapon:isOfWeaponCategory(WeaponCategory.AXE)
+			or weapon:isOfWeaponCategory(WeaponCategory.SMALL_BLADE)
+			or weapon:isOfWeaponCategory(WeaponCategory.LONG_BLADE)
+		)
+	then
+		return "Blade",
+			player:getPerkLevel(Perks.Axe)
+				+ player:getPerkLevel(Perks.SmallBlade)
+				+ player:getPerkLevel(Perks.LongBlade)
+	end
+	if
+		player:hasTrait(ETWTraitsRegistry.PROWESS_BLUNT)
+		and (
+			weapon:isOfWeaponCategory(WeaponCategory.SMALL_BLUNT)
+			or weapon:isOfWeaponCategory(WeaponCategory.BLUNT)
+		)
+	then
+		return "Blunt", player:getPerkLevel(Perks.SmallBlunt) + player:getPerkLevel(Perks.Blunt)
+	end
+	if
+		player:hasTrait(ETWTraitsRegistry.PROWESS_SPEAR)
+		and weapon:isOfWeaponCategory(WeaponCategory.SPEAR)
+	then
+		return "Spear", player:getPerkLevel(Perks.Spear)
+	end
+	return nil, 0
+end
+
+---@param player IsoPlayer
+local function combatWeaponTraits(player)
 	local weapon = player:getPrimaryHandItem()
 	if weapon and not instanceof(weapon, "HandWeapon") then
 		weapon = nil
 	end
-	local previousWeapon = mundaneWeapons[player]
-	if previousWeapon and (previousWeapon ~= weapon or not player:hasTrait(ETWTraitsRegistry.MUNDANE)) then
-		restoreMundaneWeapon(previousWeapon)
-		mundaneWeapons[player] = nil
+	local previousWeapon = combatTraitWeapons[player]
+	if previousWeapon and previousWeapon ~= weapon then
+		restoreCombatTraitWeapon(previousWeapon)
+		combatTraitWeapons[player] = nil
 	end
-	if not player:hasTrait(ETWTraitsRegistry.MUNDANE) or not weapon then
-		if weapon then
-			restoreMundaneWeapon(weapon)
+	if not weapon then
+		return
+	end
+
+	local hasMundane = player:hasTrait(ETWTraitsRegistry.MUNDANE)
+	local prowessName, relevantSkillLevels = getMatchingMeleeProwess(player, weapon)
+	local damageBonusPercent = prowessName
+		and math.max(0, SBvars.ProwessMeleeDamageBonusPercent or 20)
+		or 0
+	local baseCriticalChance = prowessName
+		and math.max(0, SBvars.ProwessMeleeBaseCriticalChance or 5)
+		or 0
+	local itemData = weapon:getModData()
+	itemData.ETWCombatTraits = itemData.ETWCombatTraits or {}
+	local data = itemData.ETWCombatTraits
+	if not hasMundane and not prowessName then
+		if data.Applied then
+			restoreCombatTraitWeapon(weapon)
 		end
 		return
 	end
-	local itemData = weapon:getModData()
-	itemData.ETWMundane = itemData.ETWMundane or {}
-	local data = itemData.ETWMundane
-	if not data.Applied then
-		data.OriginalCriticalChance = weapon:getCriticalChance()
-		weapon:setCriticalChance(0)
-		data.Applied = true
-		logETW(
-			"ETW Logger | mundaneTrait(): disabled critical hits for "
-				.. weapon:getFullType()
-				.. "; critical chance: "
-				.. data.OriginalCriticalChance
-				.. "->0"
-		)
+	if
+		data.Applied
+		and data.Mundane == hasMundane
+		and data.ProwessName == prowessName
+		and data.RelevantSkillLevels == relevantSkillLevels
+		and data.DamageBonusPercent == damageBonusPercent
+		and data.BaseCriticalChance == baseCriticalChance
+	then
+		combatTraitWeapons[player] = weapon
+		return
 	end
-	mundaneWeapons[player] = weapon
+	if data.Applied then
+		restoreCombatTraitWeapon(weapon)
+	end
+
+	data.OriginalMinDamage = weapon:getMinDamage()
+	data.OriginalMaxDamage = weapon:getMaxDamage()
+	data.OriginalCriticalChance = weapon:getCriticalChance()
+	data.ProwessName = prowessName
+	data.RelevantSkillLevels = relevantSkillLevels
+	data.DamageBonusPercent = damageBonusPercent
+	data.BaseCriticalChance = baseCriticalChance
+	data.Mundane = hasMundane
+	if prowessName then
+		local damageMultiplier = 1 + damageBonusPercent / 100
+		weapon:setMinDamage(data.OriginalMinDamage * damageMultiplier)
+		weapon:setMaxDamage(data.OriginalMaxDamage * damageMultiplier)
+		if not hasMundane then
+			local criticalBonus = baseCriticalChance + relevantSkillLevels
+			weapon:setCriticalChance(PZMath.clamp(data.OriginalCriticalChance + criticalBonus, 0, 100))
+		end
+	end
+	if hasMundane then
+		weapon:setCriticalChance(0)
+	end
+	data.Applied = true
+	combatTraitWeapons[player] = weapon
+	local playerIdentifier = tostring(player:getUsername()) .. " (OnlineID=" .. player:getOnlineID() .. ")"
+	logETW(
+		"ETW Logger | combatWeaponTraits(): applied to "
+			.. playerIdentifier
+			.. "; weapon: "
+			.. weapon:getFullType()
+			.. "; prowess: "
+			.. tostring(prowessName)
+			.. "; mundane: "
+			.. tostring(hasMundane)
+			.. "; min damage: "
+			.. data.OriginalMinDamage
+			.. "->"
+			.. weapon:getMinDamage()
+			.. "; max damage: "
+			.. data.OriginalMaxDamage
+			.. "->"
+			.. weapon:getMaxDamage()
+			.. "; critical chance: "
+			.. data.OriginalCriticalChance
+			.. "->"
+			.. weapon:getCriticalChance()
+	)
 end
 
 local function restoreAntiGunWeapon(item)
@@ -286,13 +401,13 @@ local function butterfingersTrait(player)
 end
 
 ---@param player IsoPlayer
-local function updateItemTraits(player)
+local function refreshEquippedItemTraits(player)
 	if not player then
 		return
 	end
 	wellFittedTrait(player)
 	leadFootTrait(player)
-	mundaneTrait(player)
+	combatWeaponTraits(player)
 	local primaryItem = player:getPrimaryHandItem()
 	local antiGunData = primaryItem and primaryItem:getModData().ETWAntiGun
 	local hasAntiGunTrait = player:hasTrait(ETWTraitsRegistry.ANTI_GUN_ACTIVIST)
@@ -303,15 +418,72 @@ local function updateItemTraits(player)
 	then
 		antiGunWeaponTrait(player, hasAntiGunTrait)
 	end
+end
+
+---@param player IsoPlayer
+local function updateItemTraits(player)
+	if not player then
+		return
+	end
+	refreshEquippedItemTraits(player)
 	butterfingersTrait(player)
+end
+
+---@param player IsoPlayer
+local function restoreTrackedItemTraits(player)
+	local shoes = leadFootShoes[player]
+	if shoes then
+		restoreLeadFootItem(shoes)
+		leadFootShoes[player] = nil
+	end
+	local weapon = combatTraitWeapons[player]
+	if weapon then
+		restoreCombatTraitWeapon(weapon)
+		combatTraitWeapons[player] = nil
+	end
+	local antiGunWeapon = antiGunWeapons[player]
+	if antiGunWeapon then
+		restoreAntiGunWeapon(antiGunWeapon)
+		antiGunWeapons[player] = nil
+	end
+end
+
+---@param activePlayers table<IsoPlayer, boolean>
+local function cleanupDisconnectedPlayers(activePlayers)
+	local trackedPlayers = {}
+	for player in pairs(leadFootShoes) do
+		trackedPlayers[player] = true
+	end
+	for player in pairs(combatTraitWeapons) do
+		trackedPlayers[player] = true
+	end
+	for player in pairs(antiGunWeapons) do
+		trackedPlayers[player] = true
+	end
+	for player in pairs(trackedPlayers) do
+		if not activePlayers[player] then
+			restoreTrackedItemTraits(player)
+			logETW(
+				"ETW Logger | cleanupDisconnectedPlayers(): restored tracked item traits for "
+					.. tostring(player:getUsername())
+					.. " (OnlineID="
+					.. player:getOnlineID()
+					.. ")"
+			)
+		end
+	end
 end
 
 local function everyOneMinute()
 	if isServer() then
 		local players = getOnlinePlayers()
+		local activePlayers = {}
 		for i = 0, players:size() - 1 do
-			updateItemTraits(players:get(i))
+			local player = players:get(i)
+			activePlayers[player] = true
+			updateItemTraits(player)
 		end
+		cleanupDisconnectedPlayers(activePlayers)
 	else
 		updateItemTraits(getPlayer())
 	end
@@ -319,51 +491,19 @@ end
 
 ---@param player IsoPlayer
 local function onEquipmentChanged(player)
-	updateItemTraits(player)
-end
-
----@param player IsoPlayer
-local function onPlayerDeath(player)
-	local shoes = leadFootShoes[player]
-	if shoes then
-		restoreLeadFootItem(shoes)
-		leadFootShoes[player] = nil
-	end
-	local weapon = mundaneWeapons[player]
-	if weapon then
-		restoreMundaneWeapon(weapon)
-		mundaneWeapons[player] = nil
-	end
-	local antiGunWeapon = antiGunWeapons[player]
-	if antiGunWeapon then
-		restoreAntiGunWeapon(antiGunWeapon)
-		antiGunWeapons[player] = nil
-	end
-
-	local wornItems = player:getWornItems()
-	local items = player:getInventory():getItems()
-	local restoredWellFitted = false
-	for i = 0, items:size() - 1 do
-		local item = items:get(i)
-		local data = item:getModData().ETWWellFitted
-		if data and data.Applied then
-			restoreWellFittedItem(item, data)
-			restoredWellFitted = true
-		end
-	end
-	if restoredWellFitted then
-		player:setWornItems(wornItems)
-		logETW("ETW Logger | onPlayerDeath(): restored Well-Fitted clothing state")
-	end
+	refreshEquippedItemTraits(player)
 end
 
 ---@param player IsoPlayer
 ---@param args table
-function Commands.refreshClothingTraits(player, args)
-	wellFittedTrait(player)
-	leadFootTrait(player)
+function Commands.refreshEquippedItemTraits(player, args)
+	refreshEquippedItemTraits(player)
 	logETW(
-		"ETW Logger | Commands.refreshClothingTraits(): refreshed clothing traits for " .. player:getUsername()
+		"ETW Logger | Commands.refreshEquippedItemTraits(): refreshed equipped item traits for "
+			.. tostring(player:getUsername())
+			.. " (OnlineID="
+			.. player:getOnlineID()
+			.. ")"
 	)
 end
 

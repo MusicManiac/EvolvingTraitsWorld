@@ -2,7 +2,7 @@ require("ETW_ModDataServer")
 
 local ETW_CommonFunctions = require("ETW_CommonFunctions")
 local ETW_Registry = require("ETW_Registry")
-local ETW_FightingTraits = require("TraitsLogic/ETW_FightingTraits")
+local ETW_CombatTraits = require("TraitsLogic/ETW_CombatTraits")
 local ETW_HealthTraits = require("TraitsLogic/ETW_HealthTraits")
 local ETW_MentalTraits = require("TraitsLogic/ETW_MentalTraits")
 local ETW_WeatherTraits = require("TraitsLogic/ETW_WeatherTraits")
@@ -64,7 +64,7 @@ local function oneMinuteUpdate()
 		then
 			local weapon = player:getPrimaryHandItem()
 			if weapon and instanceof(weapon, "HandWeapon") and weapon:getSubCategory() == "Firearm" then
-				ETW_FightingTraits.antiGunMentalTrait(player)
+				ETW_CombatTraits.antiGunMentalTrait(player)
 			end
 		end
 		if modData then
@@ -101,11 +101,8 @@ local function everyTickUpdate()
 		end
 		local modData = ETW_CommonFunctions.getETWModData(player)
 		if modData then
-			if
-				modData.AntiGunAimingXPCheckPending
-				and player:hasTrait(ETWTraitsRegistry.ANTI_GUN_ACTIVIST)
-			then
-				ETW_FightingTraits.antiGunAimingXPPenalty(player, modData)
+			if modData.AntiGunAimingXPCheckPending and player:hasTrait(ETWTraitsRegistry.ANTI_GUN_ACTIVIST) then
+				ETW_CombatTraits.antiGunAimingXPPenalty(player, modData)
 			end
 			if player:hasTrait(ETWTraitsRegistry.QUICK_REST) then
 				ETW_HealthTraits.quickRestTrait(player, modData)
@@ -117,11 +114,12 @@ end
 ---@param playerIndex number
 ---@param player IsoPlayer
 local function initializeTraitsLogic(playerIndex, player)
-	Events.OnZombieDead.Remove(ETW_FightingTraits.onZombieDead)
-	Events.OnZombieDead.Add(ETW_FightingTraits.onZombieDead)
-	Events.OnWeaponHitXp.Remove(ETW_FightingTraits.onWeaponHitXP)
-	Events.OnWeaponHitXp.Add(ETW_FightingTraits.onWeaponHitXP)
-	logETW("ETW Logger | antigun XP weapon-hit event: Events.OnWeaponHitXp handler registered")
+	Events.OnZombieDead.Remove(ETW_CombatTraits.onZombieDead)
+	Events.OnZombieDead.Add(ETW_CombatTraits.onZombieDead)
+	Events.OnWeaponHitXp.Remove(ETW_CombatTraits.onWeaponHitXP)
+	Events.OnWeaponHitXp.Add(ETW_CombatTraits.onWeaponHitXP)
+	Events.OnWeaponSwing.Remove(ETW_CombatTraits.onWeaponSwing)
+	Events.OnWeaponSwing.Add(ETW_CombatTraits.onWeaponSwing)
 	Events.EveryOneMinute.Remove(oneMinuteUpdate)
 	Events.EveryOneMinute.Add(oneMinuteUpdate)
 	Events.EveryHours.Remove(oneHourUpdate)
@@ -134,8 +132,9 @@ local function initializeTraitsLogic(playerIndex, player)
 end
 
 local function clearEventsETW()
-	Events.OnZombieDead.Remove(ETW_FightingTraits.onZombieDead)
-	Events.OnWeaponHitXp.Remove(ETW_FightingTraits.onWeaponHitXP)
+	Events.OnZombieDead.Remove(ETW_CombatTraits.onZombieDead)
+	Events.OnWeaponHitXp.Remove(ETW_CombatTraits.onWeaponHitXP)
+	Events.OnWeaponSwing.Remove(ETW_CombatTraits.onWeaponSwing)
 	Events.EveryOneMinute.Remove(oneMinuteUpdate)
 	Events.EveryHours.Remove(oneHourUpdate)
 	Events.OnTick.Remove(everyTickUpdate)

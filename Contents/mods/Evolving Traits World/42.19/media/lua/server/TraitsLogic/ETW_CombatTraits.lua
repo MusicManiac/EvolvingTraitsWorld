@@ -2,7 +2,7 @@ local ETW_CommonFunctions = require("ETW_CommonFunctions")
 local ETW_Registry = require("ETW_Registry")
 local ETWCombinedTraitChecks = require("ETW_CombinedTraitFunctions")
 
-local FILENAME = "ETW_FightingTraits.lua"
+local FILENAME = "ETW_CombatTraits.lua"
 if
 	not ETW_CommonFunctions.gameModeSafeguard(
 		FILENAME,
@@ -12,26 +12,177 @@ then
 	return
 end
 
-local ETW_FightingTraits = {}
+local ETW_CombatTraits = {}
 
 ---@type EvolvingTraitsWorldTraitsRegistries
 local ETWTraitsRegistry = ETW_Registry.traits
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld
 local logETW = ETW_CommonFunctions.log
+local random_instance = newrandom()
 
----Marks an Anti-Gun Activist firearm hit for an XP-gain check after vanilla awards the XP.
+---@param player IsoPlayer
+---@param weapon HandWeapon
+---@return string|nil prowessName
+local function getMatchingProwess(player, weapon)
+	if weapon:isRanged() then
+		if player:hasTrait(ETWTraitsRegistry.PROWESS_GUNS) then
+			return "Guns"
+		end
+		return nil
+	end
+	if
+		player:hasTrait(ETWTraitsRegistry.PROWESS_BLADE)
+		and (
+			weapon:isOfWeaponCategory(WeaponCategory.AXE)
+			or weapon:isOfWeaponCategory(WeaponCategory.SMALL_BLADE)
+			or weapon:isOfWeaponCategory(WeaponCategory.LONG_BLADE)
+		)
+	then
+		return "Blade"
+	end
+	if
+		player:hasTrait(ETWTraitsRegistry.PROWESS_BLUNT)
+		and (
+			weapon:isOfWeaponCategory(WeaponCategory.SMALL_BLUNT)
+			or weapon:isOfWeaponCategory(WeaponCategory.BLUNT)
+		)
+	then
+		return "Blunt"
+	end
+	if
+		player:hasTrait(ETWTraitsRegistry.PROWESS_SPEAR)
+		and weapon:isOfWeaponCategory(WeaponCategory.SPEAR)
+	then
+		return "Spear"
+	end
+	return nil
+end
+
+---@param player IsoPlayer
+---@param weapon HandWeapon
+---@param prowessName string
+---@param source string
+local function restoreProwessConditionLoss(player, weapon, prowessName, source)
+	local currentCondition = weapon:getCondition()
+	local weaponData = weapon:getModData()
+	local username = tostring(player:getUsername())
+	local onlineID = player:getOnlineID()
+	local samePlayer = weaponData.ETWProwessSnapshotUsername == username
+		and weaponData.ETWProwessSnapshotOnlineID == onlineID
+	local previousCondition = samePlayer and weaponData.ETWProwessLastCondition or nil
+	if previousCondition and previousCondition > currentCondition then
+		local chance = PZMath.clamp(SBvars.ProwessConditionRestoreChance or 33, 0, 100)
+		local roll = random_instance:random(1, 10000)
+		local restored = roll <= chance * 100
+		if restored then
+			local restoredCondition = math.min(weapon:getConditionMax(), currentCondition + 1)
+			weapon:setCondition(restoredCondition)
+		end
+		local playerIdentifier = username .. " (OnlineID=" .. onlineID .. ")"
+		logETW(
+			"ETW Logger | prowess condition roll: "
+				.. playerIdentifier
+				.. "; prowess: "
+				.. prowessName
+				.. "; weapon: "
+				.. weapon:getFullType()
+				.. "; detected condition: "
+				.. previousCondition
+				.. "->"
+				.. currentCondition
+				.. "; roll: "
+				.. roll
+				.. "/10000; chance: "
+				.. chance
+				.. "%; restored: "
+				.. tostring(restored)
+				.. "; resulting condition: "
+				.. weapon:getCondition()
+				.. "; source: "
+				.. source
+		)
+	end
+	weaponData.ETWProwessSnapshotUsername = username
+	weaponData.ETWProwessSnapshotOnlineID = onlineID
+	weaponData.ETWProwessLastCondition = weapon:getCondition()
+end
+
+---@param weapon HandWeapon
+local function clearProwessConditionSnapshot(weapon)
+	local weaponData = weapon:getModData()
+	weaponData.ETWProwessSnapshotUsername = nil
+	weaponData.ETWProwessSnapshotOnlineID = nil
+	weaponData.ETWProwessLastCondition = nil
+end
+
+---Records condition before an attack and resolves condition loss from a previous miss.
+---@param player IsoPlayer
+---@param weapon HandWeapon
+function ETW_CombatTraits.onWeaponSwing(player, weapon)
+	if not player or not weapon then
+		return
+	end
+	if weapon:isRanged() then
+		if not player:hasTrait(ETWTraitsRegistry.PROWESS_GUNS) then
+			clearProwessConditionSnapshot(weapon)
+			return
+		end
+	elseif
+		not player:hasTrait(ETWTraitsRegistry.PROWESS_BLADE)
+		and not player:hasTrait(ETWTraitsRegistry.PROWESS_BLUNT)
+		and not player:hasTrait(ETWTraitsRegistry.PROWESS_SPEAR)
+	then
+		clearProwessConditionSnapshot(weapon)
+		return
+	end
+	local prowessName = getMatchingProwess(player, weapon)
+	if prowessName then
+		restoreProwessConditionLoss(player, weapon, prowessName, "next attack")
+	else
+		clearProwessConditionSnapshot(weapon)
+	end
+end
+
+---Resolves durability recovery after a matching melee Prowess hit.
+---@param player IsoPlayer
+---@param weapon HandWeapon
+local function prowessMeleeTrait(player, weapon)
+	local prowessName = getMatchingProwess(player, weapon)
+	if not prowessName or prowessName == "Guns" then
+		return
+	end
+	restoreProwessConditionLoss(player, weapon, prowessName, "weapon hit")
+end
+
+---Processes firearm Anti-Gun XP tracking and matching melee Prowess hits.
 ---@param player IsoGameCharacter
 ---@param weapon HandWeapon
 ---@param hitObject IsoMovingObject
 ---@param damage number
 ---@param hitCount number
-function ETW_FightingTraits.onWeaponHitXP(player, weapon, hitObject, damage, hitCount)
-	if not instanceof(player, "IsoPlayer") or not weapon or not weapon:isRanged() or not hitCount or hitCount <= 0 then
+function ETW_CombatTraits.onWeaponHitXP(player, weapon, hitObject, damage, hitCount)
+	if not instanceof(player, "IsoPlayer") or not weapon then
 		return
 	end
 	---@cast player IsoPlayer
-	if not player:hasTrait(ETWTraitsRegistry.ANTI_GUN_ACTIVIST) then
+	if not weapon:isRanged() then
+		if
+			player:hasTrait(ETWTraitsRegistry.PROWESS_BLADE)
+			or player:hasTrait(ETWTraitsRegistry.PROWESS_BLUNT)
+			or player:hasTrait(ETWTraitsRegistry.PROWESS_SPEAR)
+		then
+			prowessMeleeTrait(player, weapon)
+		end
+		return
+	end
+	if player:hasTrait(ETWTraitsRegistry.PROWESS_GUNS) then
+		local prowessName = getMatchingProwess(player, weapon)
+		if prowessName == "Guns" then
+			restoreProwessConditionLoss(player, weapon, prowessName, "firearm hit")
+		end
+	end
+	if not hitCount or hitCount <= 0 or not player:hasTrait(ETWTraitsRegistry.ANTI_GUN_ACTIVIST) then
 		return
 	end
 	local modData = ETW_CommonFunctions.getETWModData(player)
@@ -51,7 +202,7 @@ end
 ---Removes the configured percentage of the actual Aiming XP gained since the previous recorded value.
 ---@param player IsoPlayer
 ---@param modData EvolvingTraitsWorldModData
-function ETW_FightingTraits.antiGunAimingXPPenalty(player, modData)
+function ETW_CombatTraits.antiGunAimingXPPenalty(player, modData)
 	local currentXP = player:getXp():getXP(Perks.Aiming)
 	local lastRecordedXP = modData.AntiGunLastRecordedAimingXP
 	local playerIdentifier = tostring(player:getUsername()) .. " (OnlineID=" .. player:getOnlineID() .. ")"
@@ -120,7 +271,7 @@ end
 ---@param player IsoPlayer
 ---@param increase number|nil
 ---@param source string|nil
-function ETW_FightingTraits.antiGunMentalTrait(player, increase, source)
+function ETW_CombatTraits.antiGunMentalTrait(player, increase, source)
 	local stats = player:getStats()
 	local unhappiness = stats:get(CharacterStat.UNHAPPINESS)
 	increase = math.max(0, increase or SBvars.AntiGunUnhappinessPerMinute or 0.6)
@@ -141,7 +292,7 @@ end
 
 ---Processes Bloodlust when a nearby zombie dies.
 ---@param zombie IsoZombie
-function ETW_FightingTraits.onZombieDead(zombie)
+function ETW_CombatTraits.onZombieDead(zombie)
 	local playersList = ETW_CommonFunctions.playersList()
 	for i = 0, playersList:size() - 1 do
 		local player = playersList:get(i)
@@ -173,4 +324,4 @@ function ETW_FightingTraits.onZombieDead(zombie)
 	end
 end
 
-return ETW_FightingTraits
+return ETW_CombatTraits

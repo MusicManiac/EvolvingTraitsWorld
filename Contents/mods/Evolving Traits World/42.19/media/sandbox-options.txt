@@ -916,6 +916,33 @@ option EvolvingTraitsWorld.PackMuleMaxCapacityPercent
 	page = ETWTraitsSettings,
 	translation = ETW_PackMuleMaxCapacityPercent,
 }
+option EvolvingTraitsWorld.ProwessMeleeDamageBonusPercent
+{
+	type = double,
+	min = 0,
+	max = 1000,
+	default = 20,
+	page = ETWTraitsSettings,
+	translation = ETW_ProwessMeleeDamageBonusPercent,
+}
+option EvolvingTraitsWorld.ProwessMeleeBaseCriticalChance
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 5,
+	page = ETWTraitsSettings,
+	translation = ETW_ProwessMeleeBaseCriticalChance,
+}
+option EvolvingTraitsWorld.ProwessConditionRestoreChance
+{
+	type = integer,
+	min = 0,
+	max = 100,
+	default = 33,
+	page = ETWTraitsSettings,
+	translation = ETW_ProwessConditionRestoreChance,
+}
 option EvolvingTraitsWorld.QuickRestRecoveryMultiplier
 {
 	type = double,
@@ -934,12 +961,14 @@ option EvolvingTraitsWorld.WellFittedWeightReduction
 	page = ETWTraitsSettings,
 	translation = ETW_WellFittedWeightReduction,
 }
-option EvolvingTraitsWorld.WellFittedNegatesSpeedPenalties
+option EvolvingTraitsWorld.WellFittedSpeedPenaltyReduction
 {
-	type = boolean,
-	default = true,
+	type = integer,
+	min = 0,
+	max = 100,
+	default = 75,
 	page = ETWTraitsSettings,
-	translation = ETW_WellFittedNegatesSpeedPenalties,
+	translation = ETW_WellFittedSpeedPenaltyReduction,
 }
 option EvolvingTraitsWorld.ThickBloodedBleedingHealthPerMinute
 {
