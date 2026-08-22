@@ -27,7 +27,7 @@ local function traitShouldExecute(enabledOption)
 	local traitSandboxVars = SandboxVars.ETWTraitSandbox
 	return traitSandboxVars == nil
 		or traitSandboxVars.DisabledTraitsAcquirableViaGameplay == true
-		or traitSandboxVars[enabledOption] ~= false
+		or (traitSandboxVars.DisableAllCustomTraits == false and traitSandboxVars[enabledOption] == true)
 end
 
 ---Returns true if the Immunity System should execute
@@ -628,14 +628,11 @@ end
 ---Returns true if the Eating Speed System should execute
 ---@param player IsoPlayer|nil the player to check for
 ---@return boolean boolean true if the Eating Speed System should execute, false otherwise
-function ETW_CommonLogicChecks.	EatingSpeedSystemShouldExecute(player)
+function ETW_CommonLogicChecks.EatingSpeedSystemShouldExecute(player)
 	if
 		SBvars.EatingSpeedSystem == true
 		and traitShouldExecute("EatingSpeedTraitsEnabled")
-		and (
-			(player and not player:hasTrait(ETWTraitsRegistry.FAST_EATER))
-			or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER
-		)
+		and ((player and not player:hasTrait(ETWTraitsRegistry.FAST_EATER)) or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER)
 		and (SBvars.TraitsLockSystemCanLoseNegative or SBvars.TraitsLockSystemCanGainPositive)
 	then
 		return true
