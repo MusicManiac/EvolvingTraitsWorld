@@ -1,10 +1,9 @@
 [url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
 
-v.12.10.0
+v.12.11.0
 
 General:
-  - Added a configurable exercise-pain multiplier for Pain Tolerance progression. Only pain contributed by exercise stiffness is multiplied; wounds and other pain sources still count at their full value.
-  - Added a configurable sleeping multiplier for Healer System counter changes, reducing the impact of wounds that cannot be tended while asleep.
+  - Added a checkbox to disable all traits added by ETW, located in a submod.
 
-Translations:
-  - Updated CN translation thanks to [url=https://steamcommunity.com/profiles/76561199210012731]爱看歌剧的长颈鹿[/url].
+Fix:
+  - Fixed bravery system early exit on MP servers leaving traits stuck in "awarded on next action".

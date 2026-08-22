@@ -1,3 +1,11 @@
+## v.12.11.0
+###### 23 Aug 2026
+
+- General:
+  - Added a checkbox to disable all traits added by ETW, located in a submod.
+- Fix:
+  - Fixed bravery system early exit on MP servers leaving traits stuck in "awarded on next action".
+
 ## v.12.10.0
 ###### 20 Aug 2026
 
