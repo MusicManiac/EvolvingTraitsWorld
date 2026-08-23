@@ -604,3 +604,212 @@ option ETWTraitSandbox.ThickBloodedPointValue
 	translation = ETWTS_ThickBloodedPointValue,
 }
 
+option ETWTraitSandbox.AntiGunActivistEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_AntiGunActivistEnabled,
+}
+option ETWTraitSandbox.AntiGunActivistPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = 6,
+	page = ETWTraitSandbox,
+	translation = ETWTS_AntiGunActivistPointValue,
+}
+option ETWTraitSandbox.GourmandEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_GourmandEnabled,
+}
+option ETWTraitSandbox.GourmandPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = -4,
+	page = ETWTraitSandbox,
+	translation = ETWTS_GourmandPointValue,
+}
+option ETWTraitSandbox.NaturalEaterEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_NaturalEaterEnabled,
+}
+option ETWTraitSandbox.NaturalEaterPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = -4,
+	page = ETWTraitSandbox,
+	translation = ETWTS_NaturalEaterPointValue,
+}
+option ETWTraitSandbox.NoodleLegsEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_NoodleLegsEnabled,
+}
+option ETWTraitSandbox.NoodleLegsPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = 6,
+	page = ETWTraitSandbox,
+	translation = ETWTS_NoodleLegsPointValue,
+}
+option ETWTraitSandbox.PackMuleEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_PackMuleEnabled,
+}
+option ETWTraitSandbox.PackMulePointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = -7,
+	page = ETWTraitSandbox,
+	translation = ETWTS_PackMulePointValue,
+}
+option ETWTraitSandbox.ProwessBladeEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_ProwessBladeEnabled,
+}
+option ETWTraitSandbox.ProwessBladePointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = -7,
+	page = ETWTraitSandbox,
+	translation = ETWTS_ProwessBladePointValue,
+}
+option ETWTraitSandbox.ProwessBluntEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_ProwessBluntEnabled,
+}
+option ETWTraitSandbox.ProwessBluntPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = -7,
+	page = ETWTraitSandbox,
+	translation = ETWTS_ProwessBluntPointValue,
+}
+option ETWTraitSandbox.ProwessGunsEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_ProwessGunsEnabled,
+}
+option ETWTraitSandbox.ProwessGunsPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = -7,
+	page = ETWTraitSandbox,
+	translation = ETWTS_ProwessGunsPointValue,
+}
+option ETWTraitSandbox.ProwessSpearEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_ProwessSpearEnabled,
+}
+option ETWTraitSandbox.ProwessSpearPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = -7,
+	page = ETWTraitSandbox,
+	translation = ETWTS_ProwessSpearPointValue,
+}
+option ETWTraitSandbox.QuietEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_QuietEnabled,
+}
+option ETWTraitSandbox.QuietPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = -2,
+	page = ETWTraitSandbox,
+	translation = ETWTS_QuietPointValue,
+}
+option ETWTraitSandbox.ScrapperEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_ScrapperEnabled,
+}
+option ETWTraitSandbox.ScrapperPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = -3,
+	page = ETWTraitSandbox,
+	translation = ETWTS_ScrapperPointValue,
+}
+option ETWTraitSandbox.SunSensitivityEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_SunSensitivityEnabled,
+}
+option ETWTraitSandbox.SunSensitivityPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = 5,
+	page = ETWTraitSandbox,
+	translation = ETWTS_SunSensitivityPointValue,
+}
+option ETWTraitSandbox.TavernBrawlerEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_TavernBrawlerEnabled,
+}
+option ETWTraitSandbox.TavernBrawlerPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = -3,
+	page = ETWTraitSandbox,
+	translation = ETWTS_TavernBrawlerPointValue,
+}
+
