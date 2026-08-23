@@ -2,7 +2,12 @@ local ETW_CommonFunctions = require("ETW_CommonFunctions")
 local ETW_Registry = require("ETW_Registry")
 
 local FILENAME = "ETW_ClientEventTriggers.lua"
-if not ETW_CommonFunctions.gameModeSafeguard(FILENAME, { ETW_CommonFunctions.GameMode.MP_CLIENT }) then
+if
+	not ETW_CommonFunctions.gameModeSafeguard(
+		FILENAME,
+		{ ETW_CommonFunctions.GameMode.MP_CLIENT }
+	)
+then
 	return
 end
 

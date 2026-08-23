@@ -10,6 +10,8 @@ local gameMode = ETW_CommonFunctions.gameMode()
 local Commands = {}
 ---@type EvolvingTraitsWorldTraitsRegistries
 local ETWTraitsRegistry = ETW_Registry.traits
+---@type EvolvingTraitsWorldSandboxVars
+local SBvars = SandboxVars.EvolvingTraitsWorld
 
 local FILENAME = "ETW_ClientCommands.lua"
 if
@@ -78,6 +80,80 @@ function Commands.applyAntiGunAimingMood(player)
 			.. playerIdentifier
 			.. " while holding "
 			.. weapon:getFullType()
+	)
+end
+
+---@class GymRatStiffnessIncrementArgs
+---@field group string
+---@field increments number
+
+---Validates and mirrors a Gym Rat client's suppressed stiffness increments on the server.
+---@param player IsoPlayer
+---@param args GymRatStiffnessIncrementArgs
+function Commands.undoGymRatStiffnessIncrements(player, args)
+	local playerIdentifier = tostring(player:getUsername()) .. " (OnlineID=" .. player:getOnlineID() .. ")"
+	local increments = math.floor(tonumber(args.increments) or 0)
+	if
+		not player:hasTrait(ETWTraitsRegistry.GYM_RAT)
+		or PZMath.clamp(SBvars.GymRatExerciseFatigueReductionPercent or 50, 0, 100) <= 0
+		or increments < 1
+		or increments > 10
+	then
+		logETW("ETW Logger | Gym Rat fatigue server: rejected undo request for " .. playerIdentifier)
+		return
+	end
+	local groupName = tostring(args.group)
+	local removedStiffness = ETWCombinedTraitChecks.undoGymRatStiffnessIncrements(player, groupName, increments)
+	if removedStiffness == nil then
+		logETW("ETW Logger | Gym Rat fatigue server: rejected invalid group for " .. playerIdentifier)
+		return
+	end
+	logETW(
+		"ETW Logger | Gym Rat fatigue server: suppressed "
+			.. increments
+			.. " "
+			.. groupName
+			.. " increment(s) for "
+			.. playerIdentifier
+			.. "; applied stiffness removed: "
+			.. removedStiffness
+	)
+end
+
+---@class GymRatStiffnessDecayArgs
+---@field group string
+---@field amountPerPart number
+
+---Validates and mirrors accumulated vanilla-rate Gym Rat stiffness decay on the server.
+---@param player IsoPlayer
+---@param args GymRatStiffnessDecayArgs
+function Commands.applyGymRatStiffnessDecay(player, args)
+	local playerIdentifier = tostring(player:getUsername()) .. " (OnlineID=" .. player:getOnlineID() .. ")"
+	local amountPerPart = tonumber(args.amountPerPart) or 0
+	if
+		not player:hasTrait(ETWTraitsRegistry.GYM_RAT)
+		or PZMath.clamp(SBvars.GymRatExerciseFatigueReductionPercent or 50, 0, 100) <= 0
+		or amountPerPart <= 0
+		or amountPerPart > 100
+	then
+		logETW("ETW Logger | Gym Rat fatigue server: rejected decay request for " .. playerIdentifier)
+		return
+	end
+	local groupName = tostring(args.group)
+	local removedStiffness = ETWCombinedTraitChecks.reduceGymRatStiffness(player, groupName, amountPerPart)
+	if removedStiffness == nil then
+		logETW("ETW Logger | Gym Rat fatigue server: rejected invalid decay group for " .. playerIdentifier)
+		return
+	end
+	logETW(
+		"ETW Logger | Gym Rat fatigue server: applied accumulated "
+			.. groupName
+			.. " decay for "
+			.. playerIdentifier
+			.. "; amount per part: "
+			.. amountPerPart
+			.. ", stiffness removed: "
+			.. removedStiffness
 	)
 end
 

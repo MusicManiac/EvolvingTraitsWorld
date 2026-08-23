@@ -43,6 +43,8 @@ ETW_Registry = ETW_Registry or {}
 ---@field PROWESS_SPEAR CharacterTrait
 ---@field RESTORATION_EXPERT CharacterTrait
 ---@field QUICK_REST CharacterTrait
+---@field QUIET CharacterTrait
+---@field SCRAPPER CharacterTrait
 ---@field SLOW_EATER CharacterTrait
 ---@field SUN_SENSITIVITY CharacterTrait
 ---@field THICK_BLOODED CharacterTrait
@@ -89,6 +91,8 @@ ETW_Registry.traits = {
 	PROWESS_SPEAR = CharacterTrait.register("ETW:ProwessSpear"),
 	RESTORATION_EXPERT = CharacterTrait.register("ETW:RestorationExpert"),
 	QUICK_REST = CharacterTrait.register("ETW:QuickRest"),
+	QUIET = CharacterTrait.register("ETW:Quiet"),
+	SCRAPPER = CharacterTrait.register("ETW:Scrapper"),
 	SLOW_EATER = CharacterTrait.register("ETW:SlowEater"),
 	SUN_SENSITIVITY = CharacterTrait.register("ETW:SunSensitivity"),
 	THICK_BLOODED = CharacterTrait.register("ETW:ThickBlooded"),

@@ -158,6 +158,29 @@ module ETW
         UIDescription = UI_trait_QuickRestDesc,
     }
 
+    character_trait_definition ETW:Quiet
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:Quiet,
+        Cost = 2,
+        UIName = UI_trait_Quiet,
+        UIDescription = UI_trait_QuietDesc,
+        XPBoosts = Sneak=1;Lightfoot=1,
+        MutuallyExclusiveTraits = base:clumsy,
+    }
+
+    character_trait_definition ETW:Scrapper
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:Scrapper,
+        Cost = 3,
+        UIName = UI_trait_Scrapper,
+        UIDescription = UI_trait_ScrapperDesc,
+        XPBoosts = MetalWelding=1;Maintenance=1;Blacksmith=1,
+    }
+
     character_trait_definition ETW:ProwessBlade
     {
         IsProfessionTrait = false,
@@ -321,7 +344,7 @@ module ETW
         IsProfessionTrait = false,
         DisabledInMultiplayer = false,
         CharacterTrait = ETW:GymRat,
-        Cost = 6,
+        Cost = 8,
         UIName = UI_trait_GymRat,
         UIDescription = UI_trait_GymRatDesc,
         XPBoosts = Fitness=1;Strength=1,

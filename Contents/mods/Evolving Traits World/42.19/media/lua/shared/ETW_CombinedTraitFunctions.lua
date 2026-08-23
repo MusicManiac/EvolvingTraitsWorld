@@ -7,15 +7,168 @@ local SBvars = SandboxVars.EvolvingTraitsWorld
 
 local ETW_Registry = require("ETW_Registry")
 local ETWTraitsRegistry = ETW_Registry.traits
+local gameMode = ETW_CommonFunctions.gameMode()
 
 ---@type fun(...: string)
 local logETW = ETW_CommonFunctions.log
 
-local FILENAME = "ETWCombinedTraitChecks.lua"
+local FILENAME = "ETW_CombinedTraitFunctions.lua"
 ETW_CommonFunctions.gameModeSafeguard(
 	FILENAME,
 	{ ETW_CommonFunctions.GameMode.SP, ETW_CommonFunctions.GameMode.MP_CLIENT, ETW_CommonFunctions.GameMode.MP_SERVER }
 )
+
+local gymRatMuscleGroups = {
+	arms = {
+		BodyPartType.UpperArm_L,
+		BodyPartType.UpperArm_R,
+		BodyPartType.ForeArm_L,
+		BodyPartType.ForeArm_R,
+		BodyPartType.Hand_L,
+		BodyPartType.Hand_R,
+	},
+	legs = {
+		BodyPartType.UpperLeg_L,
+		BodyPartType.UpperLeg_R,
+		BodyPartType.LowerLeg_L,
+		BodyPartType.LowerLeg_R,
+	},
+	chest = { BodyPartType.Torso_Upper },
+	abs = { BodyPartType.Torso_Lower },
+}
+
+---Reduces each body part in a Gym Rat muscle group by the requested amount.
+---@param player IsoPlayer
+---@param groupName string
+---@param amountPerPart number
+---@return number|nil removedStiffness
+function ETWCombinedTraitChecks.reduceGymRatStiffness(player, groupName, amountPerPart)
+	local parts = gymRatMuscleGroups[groupName]
+	if not parts then
+		return nil
+	end
+	amountPerPart = math.max(0, amountPerPart)
+	local removedStiffness = 0
+	local bodyDamage = player:getBodyDamage()
+	for _, partType in ipairs(parts) do
+		local bodyPart = bodyDamage:getBodyPart(partType)
+		local stiffness = bodyPart:getStiffness()
+		local amount = math.min(stiffness, amountPerPart)
+		if amount > 0 then
+			bodyPart:setStiffness(stiffness - amount)
+			removedStiffness = removedStiffness + amount
+		end
+	end
+	return removedStiffness
+end
+
+---Removes only stiffness added by suppressed Gym Rat queue increments.
+---@param player IsoPlayer
+---@param groupName string
+---@param increments integer
+---@return number|nil removedStiffness
+function ETWCombinedTraitChecks.undoGymRatStiffnessIncrements(player, groupName, increments)
+	return ETWCombinedTraitChecks.reduceGymRatStiffness(player, groupName, math.max(0, increments) * 2.5)
+end
+
+---Applies vanilla-rate stiffness decay while the vanilla Fitness queue blocks natural decay.
+---@param player IsoPlayer
+---@param stiffnessState table
+---@param decayPerPart number
+---@param pendingServerDecay table|nil
+function ETWCombinedTraitChecks.decayGymRatSuppressedStiffness(
+	player,
+	stiffnessState,
+	decayPerPart,
+	pendingServerDecay
+)
+	for groupName, state in pairs(stiffnessState) do
+		if state.suppressing then
+			ETWCombinedTraitChecks.reduceGymRatStiffness(player, groupName, decayPerPart)
+			if pendingServerDecay then
+				pendingServerDecay[groupName] = (pendingServerDecay[groupName] or 0) + decayPerPart
+			end
+		end
+	end
+end
+
+---Tracks Gym Rat's vanilla queue and suppresses new stiffness after the configured threshold.
+---@param player IsoPlayer
+---@param stiffnessState table
+---@param reduction number Fraction of peak queued stiffness after which further application is suppressed.
+---@return boolean suppressionActive
+function ETWCombinedTraitChecks.processGymRatExerciseFatigue(player, stiffnessState, reduction)
+	local fitness = player:getFitness()
+	local suppressionActive = false
+	for groupName, _ in pairs(gymRatMuscleGroups) do
+		local currentStiffness = fitness:getCurrentExeStiffnessInc(groupName)
+		local state = stiffnessState[groupName]
+		if not state and currentStiffness > 0 then
+			state = {
+				peak = currentStiffness,
+				previous = currentStiffness,
+				suppressing = reduction >= 1,
+			}
+			stiffnessState[groupName] = state
+		elseif state then
+			if currentStiffness > state.previous then
+				state.peak = currentStiffness
+				state.suppressing = reduction >= 1
+			elseif state.suppressing and currentStiffness < state.previous then
+				local increments = currentStiffness <= 0 and math.ceil(state.previous)
+					or math.max(1, math.floor(state.previous - currentStiffness + 0.5))
+				local removedStiffness =
+					ETWCombinedTraitChecks.undoGymRatStiffnessIncrements(player, groupName, increments)
+				local serverUndoRequested = gameMode == ETW_CommonFunctions.GameMode.MP_CLIENT
+				if serverUndoRequested then
+					sendClientCommand(
+						player,
+						"ETW",
+						"undoGymRatStiffnessIncrements",
+						{ group = groupName, increments = increments }
+					)
+				end
+				logETW(
+					"ETW Logger | Gym Rat fatigue: suppressed "
+						.. increments
+						.. " "
+						.. groupName
+						.. " queue increment(s) for "
+						.. tostring(player:getUsername())
+						.. " (OnlineID="
+						.. player:getOnlineID()
+						.. "); queued stiffness: "
+						.. state.previous
+						.. "->"
+						.. currentStiffness
+						.. ", applied stiffness removed: "
+						.. removedStiffness
+						.. ", server undo requested: "
+						.. tostring(serverUndoRequested)
+				)
+			elseif not state.suppressing and currentStiffness <= state.peak * reduction then
+				state.suppressing = true
+				logETW(
+					"ETW Logger | Gym Rat fatigue: began suppressing "
+						.. groupName
+						.. " at queued stiffness "
+						.. currentStiffness
+						.. "/"
+						.. state.peak
+				)
+			end
+			state.previous = currentStiffness
+			if currentStiffness <= 0 then
+				stiffnessState[groupName] = nil
+			end
+		end
+		state = stiffnessState[groupName]
+		if state and state.suppressing then
+			suppressionActive = true
+		end
+	end
+	return suppressionActive
+end
 
 ---Calculates Anti-Gun Activist's protected XP penalty for a firearm skill.
 ---@param player IsoPlayer

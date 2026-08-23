@@ -10,6 +10,7 @@ CharacterTraitDefinition.setMutualExclusive(CharacterTrait.FEEBLE, ETWTraitsRegi
 CharacterTraitDefinition.setMutualExclusive(CharacterTrait.OBESE, ETWTraitsRegistry.GYM_RAT)
 CharacterTraitDefinition.setMutualExclusive(CharacterTrait.VERY_UNDERWEIGHT, ETWTraitsRegistry.GYM_RAT)
 CharacterTraitDefinition.setMutualExclusive(CharacterTrait.SMOKER, ETWTraitsRegistry.BLISSFUL)
+CharacterTraitDefinition.setMutualExclusive(CharacterTrait.CLUMSY, ETWTraitsRegistry.QUIET)
 CharacterTraitDefinition.setMutualExclusive(ETWTraitsRegistry.BLISSFUL, ETWTraitsRegistry.DEPRESSIVE)
 CharacterTraitDefinition.setMutualExclusive(ETWTraitsRegistry.ANEMIC, ETWTraitsRegistry.THICK_BLOODED)
 CharacterTraitDefinition.setMutualExclusive(ETWTraitsRegistry.HOARDER, ETWTraitsRegistry.PACK_MOUSE)
