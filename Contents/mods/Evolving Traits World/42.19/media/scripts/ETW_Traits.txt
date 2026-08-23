@@ -148,6 +148,18 @@ module ETW
         UIDescription = UI_trait_NoodleLegsDesc,
     }
 
+    character_trait_definition ETW:Olympian
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:Olympian,
+        Cost = 5,
+        UIName = UI_trait_Olympian,
+        UIDescription = UI_trait_OlympianDesc,
+        XPBoosts = Sprinting=1;Fitness=1,
+        MutuallyExclusiveTraits = base:jogger;base:unfit,
+    }
+
     character_trait_definition ETW:PackMouse
     {
         IsProfessionTrait = false,
@@ -213,6 +225,17 @@ module ETW
         UIDescription = UI_trait_ProwessBladeDesc,
         XPBoosts = SmallBlade=1;LongBlade=1;Axe=1,
         MutuallyExclusiveTraits = ETW:ProwessBlunt;ETW:ProwessGuns;ETW:ProwessSpear,
+    }
+
+    character_trait_definition ETW:PracticedSwordsman
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:PracticedSwordsman,
+        Cost = 6,
+        UIName = UI_trait_PracticedSwordsman,
+        UIDescription = UI_trait_PracticedSwordsmanDesc,
+        XPBoosts = LongBlade=1;SmallBlade=1,
     }
 
     character_trait_definition ETW:ProwessBlunt

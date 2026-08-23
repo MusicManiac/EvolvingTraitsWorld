@@ -32,6 +32,7 @@ ETW_Registry = ETW_Registry or {}
 ---@field MUNDANE CharacterTrait
 ---@field NATURAL_EATER CharacterTrait
 ---@field NOODLE_LEGS CharacterTrait
+---@field OLYMPIAN CharacterTrait
 ---@field PLUVIOPHILE CharacterTrait
 ---@field PLUVIOPHOBIA CharacterTrait
 ---@field PAIN_TOLERANCE CharacterTrait
@@ -43,6 +44,7 @@ ETW_Registry = ETW_Registry or {}
 ---@field PROWESS_BLUNT CharacterTrait
 ---@field PROWESS_GUNS CharacterTrait
 ---@field PROWESS_SPEAR CharacterTrait
+---@field PRACTICED_SWORDSMAN CharacterTrait
 ---@field RESTORATION_EXPERT CharacterTrait
 ---@field QUICK_REST CharacterTrait
 ---@field QUIET CharacterTrait
@@ -83,6 +85,7 @@ ETW_Registry.traits = {
 	MUNDANE = CharacterTrait.register("ETW:Mundane"),
 	NATURAL_EATER = CharacterTrait.register("ETW:NaturalEater"),
 	NOODLE_LEGS = CharacterTrait.register("ETW:NoodleLegs"),
+	OLYMPIAN = CharacterTrait.register("ETW:Olympian"),
 	PLUVIOPHILE = CharacterTrait.register("ETW:Pluviophile"),
 	PLUVIOPHOBIA = CharacterTrait.register("ETW:Pluviophobia"),
 	PAIN_TOLERANCE = CharacterTrait.register("ETW:PainTolerance"),
@@ -94,6 +97,7 @@ ETW_Registry.traits = {
 	PROWESS_BLUNT = CharacterTrait.register("ETW:ProwessBlunt"),
 	PROWESS_GUNS = CharacterTrait.register("ETW:ProwessGuns"),
 	PROWESS_SPEAR = CharacterTrait.register("ETW:ProwessSpear"),
+	PRACTICED_SWORDSMAN = CharacterTrait.register("ETW:PracticedSwordsman"),
 	RESTORATION_EXPERT = CharacterTrait.register("ETW:RestorationExpert"),
 	QUICK_REST = CharacterTrait.register("ETW:QuickRest"),
 	QUIET = CharacterTrait.register("ETW:Quiet"),
