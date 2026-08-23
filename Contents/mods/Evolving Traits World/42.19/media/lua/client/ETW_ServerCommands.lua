@@ -120,6 +120,30 @@ Commands.triggerNoodleLegsTrip = function(player, args)
 	ETW_CommonFunctions.triggerNoodleLegsTrip(player, side)
 end
 
+---Mirrors a server-authoritative Bouncer stagger on the owning client.
+Commands.triggerBouncerStagger = function(player, args)
+	local zombieOnlineID = tonumber(args.zombieOnlineID)
+	if not zombieOnlineID then
+		logETW("ETW Logger | Commands.triggerBouncerStagger(): invalid zombie OnlineID, skipping")
+		return
+	end
+	local zombies = getCell():getZombieList()
+	for i = 0, zombies:size() - 1 do
+		local zombie = zombies:get(i)
+		if zombie:getOnlineID() == zombieOnlineID then
+			zombie:setStaggerBack(true)
+			logETW(
+				"ETW Logger | Commands.triggerBouncerStagger(): mirrored stagger; zombie OnlineID="
+					.. zombieOnlineID
+			)
+			return
+		end
+	end
+	logETW(
+		"ETW Logger | Commands.triggerBouncerStagger(): zombie not found; OnlineID=" .. zombieOnlineID
+	)
+end
+
 Commands.OnServerCommand = function(module, command, args)
 	if module == "ETW" and Commands[command] then
 		local argStr = ""

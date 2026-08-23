@@ -645,6 +645,29 @@ function ETW_CommonFunctions.triggerNoodleLegsTrip(player, side)
 	ETW_CommonFunctions.log("ETW Logger | triggerNoodleLegsTrip(): executed locally; side: " .. side)
 end
 
+---Staggers a Bouncer target authoritatively and mirrors the result on the owning MP client.
+---@param player IsoPlayer
+---@param zombie IsoZombie
+function ETW_CommonFunctions.triggerBouncerStagger(player, zombie)
+	zombie:setStaggerBack(true)
+	if gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
+		local zombieOnlineID = zombie:getOnlineID()
+		sendServerCommand(player, "ETW", "triggerBouncerStagger", { zombieOnlineID = zombieOnlineID })
+		ETW_CommonFunctions.log(
+			"ETW Logger | triggerBouncerStagger(): applied on server and requested client mirror for "
+				.. tostring(player:getUsername())
+				.. " (OnlineID="
+				.. player:getOnlineID()
+				.. "); zombie OnlineID="
+				.. zombieOnlineID
+		)
+		return
+	end
+	ETW_CommonFunctions.log(
+		"ETW Logger | triggerBouncerStagger(): executed locally; zombie OnlineID=" .. zombie:getOnlineID()
+	)
+end
+
 ---Shows notification for trait gain/loss. If it's SP client, it's displayed trait gain/loss notification to client. If it's called on a server, it sends a command to the client to display the notification. Then the client checks if notification should be displayed based on per-client mod settings.
 ---@param player IsoPlayer player to show notification for
 ---@param traitRegistryId string the trait registry id of the trait

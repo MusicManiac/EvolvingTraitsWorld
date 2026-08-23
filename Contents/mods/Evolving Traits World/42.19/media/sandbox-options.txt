@@ -943,6 +943,33 @@ option EvolvingTraitsWorld.NoodleLegsTripChanceOneIn
 	page = ETWTraitsSettings,
 	translation = ETW_NoodleLegsTripChanceOneIn,
 }
+option EvolvingTraitsWorld.BouncerChance
+{
+	type = integer,
+	min = 0,
+	max = 100,
+	default = 5,
+	page = ETWTraitsSettings,
+	translation = ETW_BouncerChance,
+}
+option EvolvingTraitsWorld.BouncerCooldown
+{
+	type = integer,
+	min = 0,
+	max = 240,
+	default = 60,
+	page = ETWTraitsSettings,
+	translation = ETW_BouncerCooldown,
+}
+option EvolvingTraitsWorld.BouncerDistance
+{
+	type = double,
+	min = 0.25,
+	max = 5,
+	default = 1.75,
+	page = ETWTraitsSettings,
+	translation = ETW_BouncerDistance,
+}
 option EvolvingTraitsWorld.PackMouseWeight
 {
 	type = double,

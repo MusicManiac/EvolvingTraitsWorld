@@ -18,6 +18,7 @@
 --- @field DepressiveEpisodeActive boolean
 --- @field AntiGunLastRecordedAimingXP number|nil
 --- @field AntiGunAimingXPCheckPending boolean|nil
+--- @field BouncerCooldownTicks integer|nil
 --- @field SunSensitivityExposure number|nil
 --- @field SunSensitivityAppliedPain number|nil
 --- @field injuriesCounter number

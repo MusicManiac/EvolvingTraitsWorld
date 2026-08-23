@@ -21,6 +21,72 @@ local SBvars = SandboxVars.EvolvingTraitsWorld
 local logETW = ETW_CommonFunctions.log
 local random_instance = newrandom()
 
+---Attempts to stagger a nearby zombie when the player is surrounded.
+---@param player IsoPlayer
+---@param modData EvolvingTraitsWorldModData
+function ETW_CombatTraits.bouncerTrait(player, modData)
+	local cooldownTicks = modData.BouncerCooldownTicks or 0
+	if cooldownTicks > 0 then
+		modData.BouncerCooldownTicks = cooldownTicks - 1
+		return
+	end
+
+	local spottedZombies = player:getSpottedList()
+	if not spottedZombies or spottedZombies:size() < 3 then
+		return
+	end
+
+	local maximumDistance = math.max(0, SBvars.BouncerDistance or 1.75)
+	local nearbyCount = 0
+	local closestTarget = nil
+	local closestDistance = maximumDistance + 1
+	for i = 0, spottedZombies:size() - 1 do
+		local zombie = spottedZombies:get(i)
+		if zombie and zombie:isZombie() and not zombie:isDead() then
+			local distance = zombie:DistTo(player)
+			if distance <= maximumDistance then
+				nearbyCount = nearbyCount + 1
+				if not zombie:isKnockedDown() and distance < closestDistance then
+					closestTarget = zombie
+					closestDistance = distance
+				end
+			end
+		end
+	end
+	if nearbyCount < 3 or not closestTarget then
+		return
+	end
+
+	local chance = PZMath.clamp(SBvars.BouncerChance or 5, 0, 100)
+	local roll = random_instance:random(1, 100)
+	if roll > chance then
+		return
+	end
+
+	local configuredCooldown = math.max(0, SBvars.BouncerCooldown or 60)
+	modData.BouncerCooldownTicks = math.floor(configuredCooldown)
+	ETW_CommonFunctions.triggerBouncerStagger(player, closestTarget)
+	logETW(
+		"ETW Logger | bouncerTrait(): triggered for "
+			.. tostring(player:getUsername())
+			.. " (OnlineID="
+			.. player:getOnlineID()
+			.. "); zombie OnlineID="
+			.. closestTarget:getOnlineID()
+			.. "; nearby zombies: "
+			.. nearbyCount
+			.. "; distance: "
+			.. closestDistance
+			.. "; roll: "
+			.. roll
+			.. "/100; chance: "
+			.. chance
+			.. "%; cooldown: "
+			.. modData.BouncerCooldownTicks
+			.. " ticks"
+	)
+end
+
 ---@param player IsoPlayer
 ---@param weapon HandWeapon
 ---@return string|nil prowessName
