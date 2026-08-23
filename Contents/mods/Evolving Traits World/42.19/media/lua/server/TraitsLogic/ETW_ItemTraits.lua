@@ -22,6 +22,22 @@ local combatTraitWeapons = {}
 local antiGunWeapons = {}
 local Commands = {}
 
+local tavernBrawlerDisplayCategories = {
+	Cooking = true,
+	CookingWeapon = true,
+	FirstAid = true,
+	FirstAidWeapon = true,
+	Gardening = true,
+	GardeningWeapon = true,
+	Household = true,
+	HouseholdWeapon = true,
+	Sports = true,
+	SportsWeapon = true,
+	ToolWeapon = true,
+	WeaponCrafted = true,
+	WeaponImprovised = true,
+}
+
 local function restoreWellFittedItem(item, data)
 	if data.OriginalActualWeight ~= nil then
 		item:setActualWeight(data.OriginalActualWeight)
@@ -143,23 +159,116 @@ local function leadFootTrait(player)
 	leadFootShoes[player] = shoes
 end
 
+---@param weapon HandWeapon
+---@param minDamage number
+---@param displayedMaxDamage number
+---@return number rawMaxDamage
+local function getRawMaxDamage(weapon, minDamage, displayedMaxDamage)
+	if not weapon:hasSharpness() then
+		return displayedMaxDamage
+	end
+	local sharpnessMultiplier = weapon:getSharpnessMultiplier()
+	if sharpnessMultiplier <= 0 or displayedMaxDamage <= minDamage then
+		return displayedMaxDamage
+	end
+	return minDamage + (displayedMaxDamage - minDamage) / sharpnessMultiplier
+end
+
+---@param weapon HandWeapon
+---@param displayedCriticalChance number
+---@return number rawCriticalChance
+local function getRawCriticalChance(weapon, displayedCriticalChance)
+	if not weapon:hasSharpness() then
+		return displayedCriticalChance
+	end
+	local sharpness = weapon:getSharpness()
+	if sharpness > 0 then
+		return displayedCriticalChance / sharpness
+	end
+	local scriptItem = weapon:getScriptItem()
+	return scriptItem and scriptItem.criticalChance or displayedCriticalChance
+end
+
 local function restoreCombatTraitWeapon(item)
 	local data = item:getModData().ETWCombatTraits
 	if data and data.Applied then
+		if not data.SnapshotUsesRawValues then
+			data.OriginalMaxDamage = getRawMaxDamage(
+				item,
+				data.OriginalMinDamage,
+				data.OriginalMaxDamage
+			)
+			data.OriginalCriticalChance = getRawCriticalChance(item, data.OriginalCriticalChance)
+		end
 		item:setMinDamage(data.OriginalMinDamage)
 		item:setMaxDamage(data.OriginalMaxDamage)
-		item:setCriticalChance(data.OriginalCriticalChance)
+		local criticalChanceModified = data.CriticalChanceModified
+		if criticalChanceModified == nil then
+			criticalChanceModified = data.ProwessName ~= nil
+				or data.Mundane == true
+				or data.TavernBrawler == true
+		end
+		if criticalChanceModified then
+			item:setCriticalChance(data.OriginalCriticalChance)
+		end
+		if data.OriginalConditionLowerChance ~= nil then
+			item:setConditionLowerChance(data.OriginalConditionLowerChance)
+		end
 		data.Applied = false
 		data.OriginalMinDamage = nil
 		data.OriginalMaxDamage = nil
 		data.OriginalCriticalChance = nil
+		data.OriginalConditionLowerChance = nil
+		data.SnapshotUsesRawValues = nil
+		data.CriticalChanceModified = nil
 		data.ProwessName = nil
 		data.RelevantSkillLevels = nil
 		data.DamageBonusPercent = nil
 		data.BaseCriticalChance = nil
 		data.Mundane = nil
+		data.TavernBrawler = nil
+		data.TavernBrawlerDamageBonusPercent = nil
+		data.TavernBrawlerConditionLossReductionPercent = nil
 		logETW("ETW Logger | combatWeaponTraits(): restored " .. item:getFullType())
 	end
+end
+
+---@param weapon HandWeapon
+---@return boolean
+local function isTavernBrawlerWeapon(weapon)
+	return not weapon:isRanged()
+		and (
+			weapon:isOfWeaponCategory(WeaponCategory.IMPROVISED)
+			or tavernBrawlerDisplayCategories[weapon:getDisplayCategory()] == true
+		)
+end
+
+---@param weapon HandWeapon
+---@param conditionLowerChance integer
+---@return number damageBonusPercent
+---@return number conditionLossReductionPercent
+local function getTavernBrawlerBonuses(weapon, conditionLowerChance)
+	local baseDamageBonusPercent = math.max(0, SBvars.TavernBrawlerDamageBonusPercent or 10)
+	local baseConditionLossReductionPercent = PZMath.clamp(
+		SBvars.TavernBrawlerConditionLossReductionPercent or 50,
+		0,
+		95
+	)
+	local damageBonusPercent = baseDamageBonusPercent
+	local conditionLossReductionPercent = baseConditionLossReductionPercent
+	if conditionLowerChance <= 2 then
+		damageBonusPercent = damageBonusPercent * 1.5
+		conditionLossReductionPercent = conditionLossReductionPercent * 1.5
+	end
+	if weapon:getConditionMax() <= 5 then
+		damageBonusPercent = damageBonusPercent + baseDamageBonusPercent * 0.5
+		conditionLossReductionPercent = conditionLossReductionPercent
+			+ baseConditionLossReductionPercent * 0.5
+	end
+	if weapon:isOfWeaponCategory(WeaponCategory.SPEAR) then
+		return damageBonusPercent * 0.25, 0
+	end
+	return damageBonusPercent, PZMath.clamp(conditionLossReductionPercent, 0, 95)
 end
 
 ---@param player IsoPlayer
@@ -216,18 +325,28 @@ local function combatWeaponTraits(player)
 		return
 	end
 
+	local itemData = weapon:getModData()
+	itemData.ETWCombatTraits = itemData.ETWCombatTraits or {}
+	local data = itemData.ETWCombatTraits
 	local hasMundane = player:hasTrait(ETWTraitsRegistry.MUNDANE)
 	local prowessName, relevantSkillLevels = getMatchingMeleeProwess(player, weapon)
+	local hasTavernBrawler = player:hasTrait(ETWTraitsRegistry.TAVERN_BRAWLER)
+		and isTavernBrawlerWeapon(weapon)
+	local tavernBrawlerDamageBonusPercent, tavernBrawlerConditionLossReductionPercent = 0, 0
+	if hasTavernBrawler then
+		local originalConditionLowerChance = data.Applied and data.OriginalConditionLowerChance
+			or weapon:getConditionLowerChance()
+		tavernBrawlerDamageBonusPercent, tavernBrawlerConditionLossReductionPercent =
+			getTavernBrawlerBonuses(weapon, originalConditionLowerChance)
+	end
 	local damageBonusPercent = prowessName
 		and math.max(0, SBvars.ProwessMeleeDamageBonusPercent or 20)
 		or 0
 	local baseCriticalChance = prowessName
 		and math.max(0, SBvars.ProwessMeleeBaseCriticalChance or 5)
 		or 0
-	local itemData = weapon:getModData()
-	itemData.ETWCombatTraits = itemData.ETWCombatTraits or {}
-	local data = itemData.ETWCombatTraits
-	if not hasMundane and not prowessName then
+	local criticalChanceModified = prowessName ~= nil or hasMundane
+	if not hasMundane and not prowessName and not hasTavernBrawler then
 		if data.Applied then
 			restoreCombatTraitWeapon(weapon)
 		end
@@ -240,6 +359,12 @@ local function combatWeaponTraits(player)
 		and data.RelevantSkillLevels == relevantSkillLevels
 		and data.DamageBonusPercent == damageBonusPercent
 		and data.BaseCriticalChance == baseCriticalChance
+		and data.TavernBrawler == hasTavernBrawler
+		and data.TavernBrawlerDamageBonusPercent == tavernBrawlerDamageBonusPercent
+		and data.TavernBrawlerConditionLossReductionPercent
+			== tavernBrawlerConditionLossReductionPercent
+		and data.SnapshotUsesRawValues == true
+		and data.CriticalChanceModified == criticalChanceModified
 	then
 		combatTraitWeapons[player] = weapon
 		return
@@ -248,22 +373,43 @@ local function combatWeaponTraits(player)
 		restoreCombatTraitWeapon(weapon)
 	end
 
-	data.OriginalMinDamage = weapon:getMinDamage()
-	data.OriginalMaxDamage = weapon:getMaxDamage()
-	data.OriginalCriticalChance = weapon:getCriticalChance()
+	local originalDisplayedMinDamage = weapon:getMinDamage()
+	local originalDisplayedMaxDamage = weapon:getMaxDamage()
+	local originalDisplayedCriticalChance = weapon:getCriticalChance()
+	data.OriginalMinDamage = originalDisplayedMinDamage
+	data.OriginalMaxDamage = getRawMaxDamage(
+		weapon,
+		originalDisplayedMinDamage,
+		originalDisplayedMaxDamage
+	)
+	data.OriginalCriticalChance = criticalChanceModified
+		and getRawCriticalChance(weapon, originalDisplayedCriticalChance)
+		or nil
+	data.OriginalConditionLowerChance = weapon:getConditionLowerChance()
+	data.SnapshotUsesRawValues = true
+	data.CriticalChanceModified = criticalChanceModified
 	data.ProwessName = prowessName
 	data.RelevantSkillLevels = relevantSkillLevels
 	data.DamageBonusPercent = damageBonusPercent
 	data.BaseCriticalChance = baseCriticalChance
 	data.Mundane = hasMundane
-	if prowessName then
-		local damageMultiplier = 1 + damageBonusPercent / 100
+	data.TavernBrawler = hasTavernBrawler
+	data.TavernBrawlerDamageBonusPercent = tavernBrawlerDamageBonusPercent
+	data.TavernBrawlerConditionLossReductionPercent = tavernBrawlerConditionLossReductionPercent
+	if prowessName or hasTavernBrawler then
+		local damageMultiplier = 1 + (damageBonusPercent + tavernBrawlerDamageBonusPercent) / 100
 		weapon:setMinDamage(data.OriginalMinDamage * damageMultiplier)
 		weapon:setMaxDamage(data.OriginalMaxDamage * damageMultiplier)
-		if not hasMundane then
+		if prowessName and not hasMundane then
 			local criticalBonus = baseCriticalChance + relevantSkillLevels
 			weapon:setCriticalChance(PZMath.clamp(data.OriginalCriticalChance + criticalBonus, 0, 100))
 		end
+	end
+	if hasTavernBrawler and tavernBrawlerConditionLossReductionPercent > 0 then
+		local conditionChanceMultiplier = 100 / (100 - tavernBrawlerConditionLossReductionPercent)
+		weapon:setConditionLowerChance(
+			math.floor(data.OriginalConditionLowerChance * conditionChanceMultiplier + 0.5)
+		)
 	end
 	if hasMundane then
 		weapon:setCriticalChance(0)
@@ -280,18 +426,24 @@ local function combatWeaponTraits(player)
 			.. tostring(prowessName)
 			.. "; mundane: "
 			.. tostring(hasMundane)
+			.. "; tavern brawler: "
+			.. tostring(hasTavernBrawler)
 			.. "; min damage: "
-			.. data.OriginalMinDamage
+			.. originalDisplayedMinDamage
 			.. "->"
 			.. weapon:getMinDamage()
 			.. "; max damage: "
-			.. data.OriginalMaxDamage
+			.. originalDisplayedMaxDamage
 			.. "->"
 			.. weapon:getMaxDamage()
 			.. "; critical chance: "
-			.. data.OriginalCriticalChance
+			.. originalDisplayedCriticalChance
 			.. "->"
 			.. weapon:getCriticalChance()
+			.. "; condition lower chance: "
+			.. data.OriginalConditionLowerChance
+			.. "->"
+			.. weapon:getConditionLowerChance()
 	)
 end
 

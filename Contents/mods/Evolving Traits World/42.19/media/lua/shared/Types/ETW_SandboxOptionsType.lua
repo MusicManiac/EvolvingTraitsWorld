@@ -134,6 +134,8 @@
 --- @field SunSensitivityExposurePerMinute number
 --- @field SunSensitivityRecoveryPerMinute number
 --- @field SunSensitivityUmbrellaMultiplier number
+--- @field TavernBrawlerDamageBonusPercent number
+--- @field TavernBrawlerConditionLossReductionPercent number
 --- @field WellFittedWeightReduction integer
 --- @field WellFittedSpeedPenaltyReduction integer
 -- Complex Perks

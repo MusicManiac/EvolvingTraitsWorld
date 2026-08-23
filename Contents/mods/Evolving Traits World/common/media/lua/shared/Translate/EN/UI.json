@@ -166,6 +166,8 @@
     "UI_trait_SlowEaterDesc": "You take your time eating. Food takes longer to consume.",
     "UI_trait_SunSensitivity": "Sun Sensitivity",
     "UI_trait_SunSensitivityDesc": "You are extremely sensitive to sunlight.<br>Being outside during daylight causes progressively worsening head pain. Holding an umbrella reduces exposure and pain.",
+    "UI_trait_TavernBrawler": "Tavern Brawler",
+    "UI_trait_TavernBrawlerDesc": "You are more effective with improvised melee weapons.<br>They deal more damage and are less likely to lose condition. Especially fragile items receive larger bonuses, while improvised spears receive a smaller damage bonus and no durability benefit.",
     "UI_trait_ThickBlooded": "Thick Blooded",
     "UI_trait_ThickBloodedDesc": "You bleed more slowly from all wounds.",
     "UI_trait_StickFighter": "Stick Fighter",

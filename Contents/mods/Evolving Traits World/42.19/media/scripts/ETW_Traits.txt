@@ -261,6 +261,16 @@ module ETW
         MutuallyExclusiveTraits = ETW:PainTolerance,
     }
 
+    character_trait_definition ETW:TavernBrawler
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:TavernBrawler,
+        Cost = 3,
+        UIName = UI_trait_TavernBrawler,
+        UIDescription = UI_trait_TavernBrawlerDesc,
+    }
+
     character_trait_definition ETW:AVClub
     {
         IsProfessionTrait = false,
