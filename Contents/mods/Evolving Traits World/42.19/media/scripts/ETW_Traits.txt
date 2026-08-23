@@ -85,6 +85,17 @@ module ETW
         XPBoosts = Cooking=1,
     }
 
+    character_trait_definition ETW:Bouncer
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:Bouncer,
+        Cost = 5,
+        UIName = UI_trait_Bouncer,
+        UIDescription = UI_trait_BouncerDesc,
+        XPBoosts = Strength=1;SmallBlunt=1,
+    }
+
     character_trait_definition ETW:IdealWeight
     {
         IsProfessionTrait = false,

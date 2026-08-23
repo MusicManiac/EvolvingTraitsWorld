@@ -101,6 +101,9 @@ local function everyTickUpdate()
 		end
 		local modData = ETW_CommonFunctions.getETWModData(player)
 		if modData then
+			if player:hasTrait(ETWTraitsRegistry.BOUNCER) then
+				ETW_CombatTraits.bouncerTrait(player, modData)
+			end
 			if modData.AntiGunAimingXPCheckPending and player:hasTrait(ETWTraitsRegistry.ANTI_GUN_ACTIVIST) then
 				ETW_CombatTraits.antiGunAimingXPPenalty(player, modData)
 			end

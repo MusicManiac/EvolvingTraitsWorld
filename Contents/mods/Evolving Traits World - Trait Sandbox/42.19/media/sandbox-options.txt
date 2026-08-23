@@ -620,6 +620,22 @@ option ETWTraitSandbox.AntiGunActivistPointValue
 	page = ETWTraitSandbox,
 	translation = ETWTS_AntiGunActivistPointValue,
 }
+option ETWTraitSandbox.BouncerEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_BouncerEnabled,
+}
+option ETWTraitSandbox.BouncerPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = -5,
+	page = ETWTraitSandbox,
+	translation = ETWTS_BouncerPointValue,
+}
 option ETWTraitSandbox.GourmandEnabled
 {
 	type = boolean,

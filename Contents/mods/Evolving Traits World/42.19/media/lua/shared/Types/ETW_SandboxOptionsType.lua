@@ -139,6 +139,9 @@
 --- @field SunSensitivityUmbrellaMultiplier number
 --- @field TavernBrawlerDamageBonusPercent number
 --- @field TavernBrawlerConditionLossReductionPercent number
+--- @field BouncerChance integer
+--- @field BouncerCooldown integer
+--- @field BouncerDistance number
 --- @field WellFittedWeightReduction integer
 --- @field WellFittedSpeedPenaltyReduction integer
 -- Complex Perks

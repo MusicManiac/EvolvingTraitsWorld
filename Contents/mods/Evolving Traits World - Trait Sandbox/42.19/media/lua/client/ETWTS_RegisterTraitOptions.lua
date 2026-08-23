@@ -9,6 +9,7 @@ local traits = {
 	{ id = "Anemic", pointValue = 4 },
 	{ id = "BadTeeth", pointValue = 3 },
 	{ id = "Blissful", pointValue = -3 },
+	{ id = "Bouncer", pointValue = -5 },
 	{ id = "Butterfingers", pointValue = 12 },
 	{ id = "Depressive", pointValue = 4 },
 	{ id = "Gourmand", pointValue = -4 },
