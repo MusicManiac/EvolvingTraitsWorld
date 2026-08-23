@@ -684,6 +684,22 @@ option ETWTraitSandbox.NoodleLegsPointValue
 	page = ETWTraitSandbox,
 	translation = ETWTS_NoodleLegsPointValue,
 }
+option ETWTraitSandbox.OlympianEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_OlympianEnabled,
+}
+option ETWTraitSandbox.OlympianPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = -5,
+	page = ETWTraitSandbox,
+	translation = ETWTS_OlympianPointValue,
+}
 option ETWTraitSandbox.PackMuleEnabled
 {
 	type = boolean,
@@ -763,6 +779,22 @@ option ETWTraitSandbox.ProwessSpearPointValue
 	default = -7,
 	page = ETWTraitSandbox,
 	translation = ETWTS_ProwessSpearPointValue,
+}
+option ETWTraitSandbox.PracticedSwordsmanEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_PracticedSwordsmanEnabled,
+}
+option ETWTraitSandbox.PracticedSwordsmanPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = -6,
+	page = ETWTraitSandbox,
+	translation = ETWTS_PracticedSwordsmanPointValue,
 }
 option ETWTraitSandbox.QuietEnabled
 {
