@@ -26,4 +26,14 @@ if forageSkills then
 			["Mushrooms"] = 2,
 		},
 	}
+	forageSkills.Gourmand = {
+		name = "ETW:Gourmand",
+		type = "trait",
+		specialisations = {
+			["Animals"] = 3,
+			["Berries"] = 3,
+			["Mushrooms"] = 25,
+			["JunkFood"] = 3,
+		},
+	}
 end

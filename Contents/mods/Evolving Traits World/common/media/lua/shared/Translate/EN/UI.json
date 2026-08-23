@@ -110,6 +110,8 @@
     "UI_trait_HoarderDesc": "You have trouble throwing anything away and tend to carry a lot of stuff with you.<br> You can carry additional load per each point of Strength",
     "UI_trait_HomeCook": "Home Cook",
     "UI_trait_HomeCookDesc": "You enjoy making your own meals and bake the occasional cake",
+    "UI_trait_Gourmand": "Gourmand",
+    "UI_trait_GourmandDesc": "You delight in food of all kinds and enjoy cooking.<br>Food you cook cooks faster and takes longer to burn. Food you cook or prepare is more satisfying, and its temperature or preparation method does not bother you.",
     "UI_trait_Hardy": "Hardy",
     "UI_trait_HardyDesc": "You have a reserve of endurance beyond your normal limits.",
     "UI_trait_IdealWeight": "Ideal Weight",

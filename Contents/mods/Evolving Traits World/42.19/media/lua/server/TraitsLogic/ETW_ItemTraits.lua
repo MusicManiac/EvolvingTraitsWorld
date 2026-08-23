@@ -16,6 +16,7 @@ local SBvars = SandboxVars.EvolvingTraitsWorld
 local ETWTraitsRegistry = ETW_Registry.traits
 local logETW = ETW_CommonFunctions.log
 local random_instance = newrandom()
+local ETW_ItemTraits = {}
 
 local leadFootShoes = {}
 local combatTraitWeapons = {}
@@ -552,6 +553,238 @@ local function butterfingersTrait(player)
 	end
 end
 
+---@param food Food
+---@return boolean
+local function isPreparedFood(food)
+	local ingredients = food:getExtraItems()
+	local spices = food:getSpices()
+	return (ingredients and not ingredients:isEmpty()) or (spices and not spices:isEmpty())
+end
+
+---@param food Food
+---@param player IsoPlayer
+local function restoreGourmandFood(food, player)
+	local itemData = food:getModData()
+	local data = itemData.ETWGourmand
+	if not data or not data.Applied then
+		return
+	end
+	food:setMinutesToCook(data.OriginalMinutesToCook)
+	food:setMinutesToBurn(data.OriginalMinutesToBurn)
+	food:setHungChange(data.OriginalHungChange)
+	food:setUnhappyChange(data.OriginalUnhappyChange)
+	food:setBoredomChange(data.OriginalBoredomChange)
+	food:setThirstChange(data.OriginalThirstChange)
+	food:setGoodHot(data.OriginalGoodHot)
+	food:setBadInMicrowave(data.OriginalBadInMicrowave)
+	food:setBadCold(data.OriginalBadCold)
+	itemData.ETWGourmand = nil
+	food:syncItemFields()
+	logETW(
+		"ETW Logger | gourmandTrait(): restored "
+			.. food:getFullType()
+			.. " for "
+			.. tostring(player:getUsername())
+			.. " (OnlineID="
+			.. player:getOnlineID()
+			.. ")"
+	)
+end
+ETW_ItemTraits.restoreGourmandFood = restoreGourmandFood
+
+---@param food Food
+---@param data table
+local function snapshotGourmandFood(food, data)
+	data.OriginalMinutesToCook = food:getMinutesToCook()
+	data.OriginalMinutesToBurn = food:getMinutesToBurn()
+	data.OriginalHungChange = food:getHungChange()
+	data.OriginalUnhappyChange = food:getUnhappyChangeUnmodified()
+	data.OriginalBoredomChange = food:getBoredomChangeUnmodified()
+	data.OriginalThirstChange = food:getThirstChangeUnmodified()
+	data.OriginalGoodHot = food:isGoodHot()
+	data.OriginalBadInMicrowave = food:isBadInMicrowave()
+	data.OriginalBadCold = food:isBadCold()
+	data.Applied = true
+end
+
+---@class GourmandSettings
+---@field CookingTimeMultiplier number
+---@field BurnTimeMultiplier number
+---@field BenefitMultiplier number
+---@field PlayerIdentifier string
+
+---@param player IsoPlayer
+---@return GourmandSettings
+local function getGourmandSettings(player)
+	return {
+		CookingTimeMultiplier = math.max(0.1, SBvars.GourmandCookingTimeMultiplier or 0.5),
+		BurnTimeMultiplier = math.max(0.1, SBvars.GourmandBurnTimeMultiplier or 2),
+		BenefitMultiplier = math.max(1, SBvars.GourmandCookedFoodBenefitMultiplier or 1.5),
+		PlayerIdentifier = tostring(player:getUsername()) .. " (OnlineID=" .. player:getOnlineID() .. ")",
+	}
+end
+
+---@param food Food
+---@param player IsoPlayer|nil
+---@param settings GourmandSettings|nil
+---@return boolean changed
+function ETW_ItemTraits.applyGourmandFood(food, player, settings)
+	local itemData = food:getModData()
+	local data = itemData.ETWGourmand
+	if
+		(not data and (not player or not player:hasTrait(ETWTraitsRegistry.GOURMAND)))
+		or (not food:isIsCookable() and not food:isCooked() and not isPreparedFood(food))
+	then
+		return false
+	end
+	settings = settings
+		or (data and {
+			CookingTimeMultiplier = data.CookingTimeMultiplier,
+			BurnTimeMultiplier = data.BurnTimeMultiplier,
+			BenefitMultiplier = data.BenefitMultiplier,
+			PlayerIdentifier = data.AuthorIdentifier,
+		})
+		or getGourmandSettings(player)
+	local settingsChanged = data
+		and player
+		and data.Applied
+		and (
+			data.CookingTimeMultiplier ~= settings.CookingTimeMultiplier
+			or data.BurnTimeMultiplier ~= settings.BurnTimeMultiplier
+			or data.BenefitMultiplier ~= settings.BenefitMultiplier
+		)
+	if settingsChanged then
+		restoreGourmandFood(food, player)
+		data = nil
+	end
+	if not data then
+		data = {}
+		itemData.ETWGourmand = data
+		snapshotGourmandFood(food, data)
+		data.CookingTimeMultiplier = settings.CookingTimeMultiplier
+		data.BurnTimeMultiplier = settings.BurnTimeMultiplier
+		data.BenefitMultiplier = settings.BenefitMultiplier
+		data.AuthorUsername = player:getUsername()
+		data.AuthorIdentifier = settings.PlayerIdentifier
+	end
+
+	local changed = false
+	if food:isIsCookable() and not food:isCooked() and not data.CookingApplied then
+		food:setMinutesToCook(data.OriginalMinutesToCook * settings.CookingTimeMultiplier)
+		food:setMinutesToBurn(data.OriginalMinutesToBurn * settings.BurnTimeMultiplier)
+		data.CookingApplied = true
+		changed = true
+		logETW(
+			"ETW Logger | gourmandTrait(): adjusted cooking for "
+				.. settings.PlayerIdentifier
+				.. "; food: "
+				.. food:getFullType()
+				.. "; minutes to cook: "
+				.. data.OriginalMinutesToCook
+				.. "->"
+				.. food:getMinutesToCook()
+				.. "; minutes to burn: "
+				.. data.OriginalMinutesToBurn
+				.. "->"
+				.. food:getMinutesToBurn()
+		)
+	end
+	if (food:isCooked() or isPreparedFood(food)) and not food:isRotten() and not data.CookedFoodApplied then
+		local thirstChange = data.OriginalThirstChange
+		if thirstChange < 0 then
+			thirstChange = thirstChange * settings.BenefitMultiplier
+		elseif thirstChange > 0 then
+			thirstChange = thirstChange * math.max(0, 2 - settings.BenefitMultiplier)
+		end
+		food:setHungChange(data.OriginalHungChange * settings.BenefitMultiplier)
+		food:setUnhappyChange(
+			data.OriginalUnhappyChange < 0 and data.OriginalUnhappyChange * settings.BenefitMultiplier or 0
+		)
+		food:setBoredomChange(
+			data.OriginalBoredomChange < 0 and data.OriginalBoredomChange * settings.BenefitMultiplier or 0
+		)
+		food:setThirstChange(thirstChange)
+		food:setGoodHot(false)
+		food:setBadInMicrowave(false)
+		food:setBadCold(false)
+		data.CookedFoodApplied = true
+		changed = true
+		logETW(
+			"ETW Logger | gourmandTrait(): improved cooked/prepared food for "
+				.. settings.PlayerIdentifier
+				.. "; food: "
+				.. food:getFullType()
+				.. "; hunger: "
+				.. data.OriginalHungChange
+				.. "->"
+				.. food:getHungChange()
+				.. "; unhappiness: "
+				.. data.OriginalUnhappyChange
+				.. "->"
+				.. food:getUnhappyChangeUnmodified()
+				.. "; boredom: "
+				.. data.OriginalBoredomChange
+				.. "->"
+				.. food:getBoredomChangeUnmodified()
+				.. "; thirst: "
+				.. data.OriginalThirstChange
+				.. "->"
+				.. food:getThirstChangeUnmodified()
+		)
+	end
+	if changed then
+		food:syncItemFields()
+	end
+	return changed
+end
+
+---@param food Food
+---@return boolean
+local function isFoodHeating(food)
+	local container = food:getContainer()
+	return container ~= nil and container:getTemprature() > 1
+end
+
+---@param players ArrayList<IsoPlayer>
+local function updateGourmandFoods(players)
+	local gourmandsByChef = {}
+	for i = 0, players:size() - 1 do
+		local player = players:get(i)
+		if player:hasTrait(ETWTraitsRegistry.GOURMAND) then
+			gourmandsByChef[player:getUsername()] = player
+			gourmandsByChef[player:getFullName()] = player
+		end
+	end
+
+	local processItems = getCell():getProcessItems()
+	for i = 0, processItems:size() - 1 do
+		local item = processItems:get(i)
+		if instanceof(item, "Food") then
+			local food = item
+			local data = food:getModData().ETWGourmand
+			if data and data.Applied then
+				ETW_ItemTraits.applyGourmandFood(food, nil)
+			elseif food:isIsCookable() and not food:isCooked() and isFoodHeating(food) then
+				local chef = food:getChef()
+				local gourmand = chef and gourmandsByChef[chef]
+				if gourmand then
+					ETW_ItemTraits.applyGourmandFood(food, gourmand)
+					logETW(
+						"ETW Logger | updateGourmandFoods(): attributed cooking of "
+							.. food:getFullType()
+							.. " to "
+							.. tostring(gourmand:getUsername())
+							.. " (OnlineID="
+							.. gourmand:getOnlineID()
+							.. "); container temperature: "
+							.. food:getContainer():getTemprature()
+					)
+				end
+			end
+		end
+	end
+end
+
 ---@param player IsoPlayer
 local function refreshEquippedItemTraits(player)
 	if not player then
@@ -635,9 +868,12 @@ local function everyOneMinute()
 			activePlayers[player] = true
 			updateItemTraits(player)
 		end
+		updateGourmandFoods(players)
 		cleanupDisconnectedPlayers(activePlayers)
 	else
+		local players = ETW_CommonFunctions.playersList()
 		updateItemTraits(getPlayer())
+		updateGourmandFoods(players)
 	end
 end
 
@@ -671,3 +907,5 @@ Events.OnEquipPrimary.Remove(onEquipmentChanged)
 Events.OnEquipPrimary.Add(onEquipmentChanged)
 Events.OnClientCommand.Remove(onClientCommand)
 Events.OnClientCommand.Add(onClientCommand)
+
+return ETW_ItemTraits
