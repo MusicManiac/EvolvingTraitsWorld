@@ -961,6 +961,24 @@ option EvolvingTraitsWorld.ProwessConditionRestoreChance
 	page = ETWTraitsSettings,
 	translation = ETW_ProwessConditionRestoreChance,
 }
+option EvolvingTraitsWorld.TavernBrawlerDamageBonusPercent
+{
+	type = double,
+	min = 0,
+	max = 1000,
+	default = 10,
+	page = ETWTraitsSettings,
+	translation = ETW_TavernBrawlerDamageBonusPercent,
+}
+option EvolvingTraitsWorld.TavernBrawlerConditionLossReductionPercent
+{
+	type = double,
+	min = 0,
+	max = 95,
+	default = 50,
+	page = ETWTraitsSettings,
+	translation = ETW_TavernBrawlerConditionLossReductionPercent,
+}
 option EvolvingTraitsWorld.QuickRestRecoveryMultiplier
 {
 	type = double,
