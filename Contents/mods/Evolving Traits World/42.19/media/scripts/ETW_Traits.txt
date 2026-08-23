@@ -74,6 +74,17 @@ module ETW
         UIDescription = UI_trait_HardyDesc,
     }
 
+    character_trait_definition ETW:Gourmand
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:Gourmand,
+        Cost = 4,
+        UIName = UI_trait_Gourmand,
+        UIDescription = UI_trait_GourmandDesc,
+        XPBoosts = Cooking=1,
+    }
+
     character_trait_definition ETW:IdealWeight
     {
         IsProfessionTrait = false,
