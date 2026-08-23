@@ -24,7 +24,7 @@ local traits = {
 	{ id = "FastEater", pointValue = -1, toggle = "EatingSpeedTraitsEnabled" },
 	{ id = "FurnitureAssembler", pointValue = -4 },
 	{ id = "GunEnthusiast", pointValue = -6 },
-	{ id = "GymRat", pointValue = -6 },
+	{ id = "GymRat", pointValue = -8 },
 	{ id = "Hoarder", pointValue = -4 },
 	{ id = "HomeCook", pointValue = -2 },
 	{ id = "Homichlophobia", pointValue = 1, toggle = "FogTraitsEnabled" },
