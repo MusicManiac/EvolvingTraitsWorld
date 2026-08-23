@@ -970,6 +970,15 @@ option EvolvingTraitsWorld.BouncerDistance
 	page = ETWTraitsSettings,
 	translation = ETW_BouncerDistance,
 }
+option EvolvingTraitsWorld.GordoniteEffectiveness
+{
+	type = integer,
+	min = 0,
+	max = 1000,
+	default = 100,
+	page = ETWTraitsSettings,
+	translation = ETW_GordoniteEffectiveness,
+}
 option EvolvingTraitsWorld.PackMouseWeight
 {
 	type = double,

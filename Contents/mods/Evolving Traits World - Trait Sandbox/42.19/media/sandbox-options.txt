@@ -636,6 +636,22 @@ option ETWTraitSandbox.BouncerPointValue
 	page = ETWTraitSandbox,
 	translation = ETWTS_BouncerPointValue,
 }
+option ETWTraitSandbox.GordoniteEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_GordoniteEnabled,
+}
+option ETWTraitSandbox.GordonitePointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = -6,
+	page = ETWTraitSandbox,
+	translation = ETWTS_GordonitePointValue,
+}
 option ETWTraitSandbox.GourmandEnabled
 {
 	type = boolean,
@@ -795,6 +811,22 @@ option ETWTraitSandbox.PracticedSwordsmanPointValue
 	default = -6,
 	page = ETWTraitSandbox,
 	translation = ETWTS_PracticedSwordsmanPointValue,
+}
+option ETWTraitSandbox.ThuggishEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_ThuggishEnabled,
+}
+option ETWTraitSandbox.ThuggishPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = -5,
+	page = ETWTraitSandbox,
+	translation = ETWTS_ThuggishPointValue,
 }
 option ETWTraitSandbox.QuietEnabled
 {

@@ -17,6 +17,7 @@ ETW_Registry = ETW_Registry or {}
 ---@field FURNITURE_ASSEMBLER CharacterTrait
 ---@field GUN_ENTHUSIAST CharacterTrait
 ---@field GOURMAND CharacterTrait
+---@field GORDONITE CharacterTrait
 ---@field GYM_RAT CharacterTrait
 ---@field HARDY CharacterTrait
 ---@field HOARDER CharacterTrait
@@ -53,6 +54,7 @@ ETW_Registry = ETW_Registry or {}
 ---@field SUN_SENSITIVITY CharacterTrait
 ---@field TAVERN_BRAWLER CharacterTrait
 ---@field THICK_BLOODED CharacterTrait
+---@field THUGGISH CharacterTrait
 ---@field WELL_FITTED CharacterTrait
 ETW_Registry.traits = {
 	AV_CLUB = CharacterTrait.register("ETW:AVClub"),
@@ -70,6 +72,7 @@ ETW_Registry.traits = {
 	FURNITURE_ASSEMBLER = CharacterTrait.register("ETW:FurnitureAssembler"),
 	GUN_ENTHUSIAST = CharacterTrait.register("ETW:GunEnthusiast"),
 	GOURMAND = CharacterTrait.register("ETW:Gourmand"),
+	GORDONITE = CharacterTrait.register("ETW:Gordonite"),
 	GYM_RAT = CharacterTrait.register("ETW:GymRat"),
 	HARDY = CharacterTrait.register("ETW:Hardy"),
 	HOARDER = CharacterTrait.register("ETW:Hoarder"),
@@ -106,6 +109,7 @@ ETW_Registry.traits = {
 	SUN_SENSITIVITY = CharacterTrait.register("ETW:SunSensitivity"),
 	TAVERN_BRAWLER = CharacterTrait.register("ETW:TavernBrawler"),
 	THICK_BLOODED = CharacterTrait.register("ETW:ThickBlooded"),
+	THUGGISH = CharacterTrait.register("ETW:Thuggish"),
 	WELL_FITTED = CharacterTrait.register("ETW:WellFitted"),
 	STICK_FIGHTER = CharacterTrait.register("ETW:StickFighter"),
 }
