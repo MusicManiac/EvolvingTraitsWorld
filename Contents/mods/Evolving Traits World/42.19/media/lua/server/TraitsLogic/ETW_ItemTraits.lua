@@ -208,6 +208,7 @@ local function restoreCombatTraitWeapon(item)
 			criticalChanceModified = data.ProwessName ~= nil
 				or data.Mundane == true
 				or data.TavernBrawler == true
+				or data.Gordonite == true
 		end
 		if criticalChanceModified then
 			item:setCriticalChance(data.OriginalCriticalChance)
@@ -230,6 +231,11 @@ local function restoreCombatTraitWeapon(item)
 		data.TavernBrawler = nil
 		data.TavernBrawlerDamageBonusPercent = nil
 		data.TavernBrawlerConditionLossReductionPercent = nil
+		data.Gordonite = nil
+		data.GordoniteRelevantSkillLevels = nil
+		data.GordoniteEffectiveness = nil
+		data.GordoniteDamageBonus = nil
+		data.GordoniteCriticalChanceBonus = nil
 		logETW("ETW Logger | combatWeaponTraits(): restored " .. item:getFullType())
 	end
 end
@@ -242,6 +248,13 @@ local function isTavernBrawlerWeapon(weapon)
 			weapon:isOfWeaponCategory(WeaponCategory.IMPROVISED)
 			or tavernBrawlerDisplayCategories[weapon:getDisplayCategory()] == true
 		)
+end
+
+---@param weapon HandWeapon
+---@return boolean
+local function isGordoniteCrowbar(weapon)
+	local itemType = weapon:getType()
+	return itemType == "Crowbar" or itemType == "CrowbarForged"
 end
 
 ---@param weapon HandWeapon
@@ -333,6 +346,20 @@ local function combatWeaponTraits(player)
 	local prowessName, relevantSkillLevels = getMatchingMeleeProwess(player, weapon)
 	local hasTavernBrawler = player:hasTrait(ETWTraitsRegistry.TAVERN_BRAWLER)
 		and isTavernBrawlerWeapon(weapon)
+	local hasGordonite = player:hasTrait(ETWTraitsRegistry.GORDONITE)
+		and isGordoniteCrowbar(weapon)
+	local gordoniteRelevantSkillLevels = hasGordonite
+		and player:getPerkLevel(Perks.Blunt) + player:getPerkLevel(Perks.Strength)
+		or 0
+	local gordoniteEffectiveness = hasGordonite
+		and math.max(0, SBvars.GordoniteEffectiveness or 100) / 100
+		or 0
+	local gordoniteDamageBonus = hasGordonite
+		and (0.1 + gordoniteRelevantSkillLevels * 0.025) * gordoniteEffectiveness
+		or 0
+	local gordoniteCriticalChanceBonus = hasGordonite
+		and gordoniteRelevantSkillLevels / 2 * gordoniteEffectiveness
+		or 0
 	local tavernBrawlerDamageBonusPercent, tavernBrawlerConditionLossReductionPercent = 0, 0
 	if hasTavernBrawler then
 		local originalConditionLowerChance = data.Applied and data.OriginalConditionLowerChance
@@ -346,8 +373,8 @@ local function combatWeaponTraits(player)
 	local baseCriticalChance = prowessName
 		and math.max(0, SBvars.ProwessMeleeBaseCriticalChance or 5)
 		or 0
-	local criticalChanceModified = prowessName ~= nil or hasMundane
-	if not hasMundane and not prowessName and not hasTavernBrawler then
+	local criticalChanceModified = prowessName ~= nil or hasMundane or hasGordonite
+	if not hasMundane and not prowessName and not hasTavernBrawler and not hasGordonite then
 		if data.Applied then
 			restoreCombatTraitWeapon(weapon)
 		end
@@ -364,6 +391,11 @@ local function combatWeaponTraits(player)
 		and data.TavernBrawlerDamageBonusPercent == tavernBrawlerDamageBonusPercent
 		and data.TavernBrawlerConditionLossReductionPercent
 			== tavernBrawlerConditionLossReductionPercent
+		and data.Gordonite == hasGordonite
+		and data.GordoniteRelevantSkillLevels == gordoniteRelevantSkillLevels
+		and data.GordoniteEffectiveness == gordoniteEffectiveness
+		and data.GordoniteDamageBonus == gordoniteDamageBonus
+		and data.GordoniteCriticalChanceBonus == gordoniteCriticalChanceBonus
 		and data.SnapshotUsesRawValues == true
 		and data.CriticalChanceModified == criticalChanceModified
 	then
@@ -397,12 +429,20 @@ local function combatWeaponTraits(player)
 	data.TavernBrawler = hasTavernBrawler
 	data.TavernBrawlerDamageBonusPercent = tavernBrawlerDamageBonusPercent
 	data.TavernBrawlerConditionLossReductionPercent = tavernBrawlerConditionLossReductionPercent
-	if prowessName or hasTavernBrawler then
+	data.Gordonite = hasGordonite
+	data.GordoniteRelevantSkillLevels = gordoniteRelevantSkillLevels
+	data.GordoniteEffectiveness = gordoniteEffectiveness
+	data.GordoniteDamageBonus = gordoniteDamageBonus
+	data.GordoniteCriticalChanceBonus = gordoniteCriticalChanceBonus
+	if prowessName or hasTavernBrawler or hasGordonite then
 		local damageMultiplier = 1 + (damageBonusPercent + tavernBrawlerDamageBonusPercent) / 100
-		weapon:setMinDamage(data.OriginalMinDamage * damageMultiplier)
-		weapon:setMaxDamage(data.OriginalMaxDamage * damageMultiplier)
-		if prowessName and not hasMundane then
-			local criticalBonus = baseCriticalChance + relevantSkillLevels
+		weapon:setMinDamage(data.OriginalMinDamage * damageMultiplier + gordoniteDamageBonus)
+		weapon:setMaxDamage(data.OriginalMaxDamage * damageMultiplier + gordoniteDamageBonus)
+		if (prowessName or hasGordonite) and not hasMundane then
+			local criticalBonus = gordoniteCriticalChanceBonus
+			if prowessName then
+				criticalBonus = criticalBonus + baseCriticalChance + relevantSkillLevels
+			end
 			weapon:setCriticalChance(PZMath.clamp(data.OriginalCriticalChance + criticalBonus, 0, 100))
 		end
 	end
@@ -429,6 +469,13 @@ local function combatWeaponTraits(player)
 			.. tostring(hasMundane)
 			.. "; tavern brawler: "
 			.. tostring(hasTavernBrawler)
+			.. "; gordonite: "
+			.. tostring(hasGordonite)
+			.. "; gordonite skill levels: "
+			.. gordoniteRelevantSkillLevels
+			.. "; gordonite effectiveness: "
+			.. gordoniteEffectiveness * 100
+			.. "%"
 			.. "; min damage: "
 			.. originalDisplayedMinDamage
 			.. "->"

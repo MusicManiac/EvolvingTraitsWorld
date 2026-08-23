@@ -142,6 +142,7 @@
 --- @field BouncerChance integer
 --- @field BouncerCooldown integer
 --- @field BouncerDistance number
+--- @field GordoniteEffectiveness integer
 --- @field WellFittedWeightReduction integer
 --- @field WellFittedSpeedPenaltyReduction integer
 -- Complex Perks

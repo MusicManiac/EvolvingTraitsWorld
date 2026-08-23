@@ -75,6 +75,8 @@
     "Sandbox_ETW_BouncerCooldown_tooltip": "Ticks before Bouncer can trigger again. The game normally runs at 60 ticks per second.",
     "Sandbox_ETW_BouncerDistance": "Bouncer detection distance",
     "Sandbox_ETW_BouncerDistance_tooltip": "Maximum distance at which a zombie counts as surrounding the player and can be staggered.",
+    "Sandbox_ETW_GordoniteEffectiveness": "Gordonite effectiveness (%%)",
+    "Sandbox_ETW_GordoniteEffectiveness_tooltip": "Scales Gordonite's skill-based crowbar damage and critical-chance bonuses. At 100%%, each Long Blunt or Strength level adds 0.025 damage and 0.5 critical chance, in addition to 0.1 base damage.",
     "Sandbox_ETW_PackMuleMaxCapacityPercent": "Pack Mule maximum-capacity increase (%%)",
     "Sandbox_ETW_PackMuleMaxCapacityPercent_tooltip": "Percentage multiplier added to the character's maximum carrying capacity through Unified Carry Weight Framework.",
     "Sandbox_ETW_ProwessMeleeDamageBonusPercent": "Prowess melee damage bonus (%%)",

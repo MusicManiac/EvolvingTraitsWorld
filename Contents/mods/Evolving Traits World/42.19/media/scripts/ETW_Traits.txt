@@ -85,6 +85,17 @@ module ETW
         XPBoosts = Cooking=1,
     }
 
+    character_trait_definition ETW:Gordonite
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:Gordonite,
+        Cost = 6,
+        UIName = UI_trait_Gordonite,
+        UIDescription = UI_trait_GordoniteDesc,
+        XPBoosts = Blunt=1,
+    }
+
     character_trait_definition ETW:Bouncer
     {
         IsProfessionTrait = false,
@@ -236,6 +247,17 @@ module ETW
         UIName = UI_trait_PracticedSwordsman,
         UIDescription = UI_trait_PracticedSwordsmanDesc,
         XPBoosts = LongBlade=1;SmallBlade=1,
+    }
+
+    character_trait_definition ETW:Thuggish
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:Thuggish,
+        Cost = 5,
+        UIName = UI_trait_Thuggish,
+        UIDescription = UI_trait_ThuggishDesc,
+        XPBoosts = SmallBlunt=1;Blunt=1,
     }
 
     character_trait_definition ETW:ProwessBlunt
