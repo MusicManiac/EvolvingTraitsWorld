@@ -2,6 +2,7 @@ local ETWCombinedTraitChecks = require("ETW_CombinedTraitFunctions")
 local ETW_CommonLogicChecks = require("ETW_CommonLogicChecks")
 local ETW_Registry = require("ETW_Registry")
 local ETW_CombatTraits = require("TraitsLogic/ETW_CombatTraits")
+local ETW_HealthTraits = require("TraitsLogic/ETW_HealthTraits")
 
 ---@type ETW_CommonFunctions
 local ETW_CommonFunctions = require("ETW_CommonFunctions")
@@ -81,6 +82,29 @@ function Commands.applyAntiGunAimingMood(player)
 			.. " while holding "
 			.. weapon:getFullType()
 	)
+end
+
+---Validates an MP client's MT-style Indefatigable crowd trigger.
+---@param player IsoPlayer
+---@param args table
+function Commands.triggerIndefatigableCrowd(player, args)
+	local playerIdentifier = tostring(player:getUsername()) .. " (OnlineID=" .. player:getOnlineID() .. ")"
+	if not player:hasTrait(ETWTraitsRegistry.INDEFATIGABLE) then
+		logETW("ETW Logger | triggerIndefatigableCrowd(): rejected missing trait for " .. playerIdentifier)
+		return
+	end
+	local modData = ETW_CommonFunctions.getETWModData(player)
+	if not modData then
+		logETW("ETW Logger | triggerIndefatigableCrowd(): rejected missing modData for " .. playerIdentifier)
+		return
+	end
+	logETW(
+		"ETW Logger | triggerIndefatigableCrowd(): received crowd report for "
+			.. playerIdentifier
+			.. "; client count within 1.5: "
+			.. tostring(args.nearbyCount)
+	)
+	ETW_HealthTraits.indefatigableTrait(player, player:getBodyDamage(), modData, true)
 end
 
 ---@class GymRatStiffnessIncrementArgs

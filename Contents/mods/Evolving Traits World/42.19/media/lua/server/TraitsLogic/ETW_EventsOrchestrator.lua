@@ -105,13 +105,22 @@ local function everyTickUpdate()
 	local playersList = ETW_CommonFunctions.playersList()
 	for i = 0, playersList:size() - 1 do
 		local player = playersList:get(i)
+		local modData = ETW_CommonFunctions.getETWModData(player)
+		local bodyDamage
+		if modData and modData.IndefatigableProtectionExpiresAt then
+			bodyDamage = player:getBodyDamage()
+			ETW_HealthTraits.indefatigableProtection(player, bodyDamage, modData)
+		end
+		if modData and player:hasTrait(ETWTraitsRegistry.INDEFATIGABLE) then
+			bodyDamage = bodyDamage or player:getBodyDamage()
+			ETW_HealthTraits.indefatigableTrait(player, bodyDamage, modData)
+		end
 		if player:hasTrait(ETWTraitsRegistry.PAIN_TOLERANCE) then
 			ETW_HealthTraits.painToleranceTrait(player)
 		end
 		if player:hasTrait(ETWTraitsRegistry.NOODLE_LEGS) then
 			ETW_HealthTraits.noodleLegsTrait(player)
 		end
-		local modData = ETW_CommonFunctions.getETWModData(player)
 		if modData then
 			if player:hasTrait(ETWTraitsRegistry.BOUNCER) then
 				ETW_CombatTraits.bouncerTrait(player, modData)

@@ -24,6 +24,7 @@ ETW_Registry = ETW_Registry or {}
 ---@field HOARDER CharacterTrait
 ---@field HOME_COOK CharacterTrait
 ---@field IDEAL_WEIGHT CharacterTrait
+---@field INDEFATIGABLE CharacterTrait
 ---@field LEAD_FOOT CharacterTrait
 ---@field HOMICHLOPHOBIA CharacterTrait
 ---@field HOMICHLOPHILE CharacterTrait
@@ -81,6 +82,7 @@ ETW_Registry.traits = {
 	HOARDER = CharacterTrait.register("ETW:Hoarder"),
 	HOME_COOK = CharacterTrait.register("ETW:HomeCook"),
 	IDEAL_WEIGHT = CharacterTrait.register("ETW:IdealWeight"),
+	INDEFATIGABLE = CharacterTrait.register("ETW:Indefatigable"),
 	LEAD_FOOT = CharacterTrait.register("ETW:LeadFoot"),
 	HOMICHLOPHOBIA = CharacterTrait.register("ETW:Homichlophobia"),
 	HOMICHLOPHILE = CharacterTrait.register("ETW:Homichlophile"),

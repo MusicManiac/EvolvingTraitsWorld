@@ -117,6 +117,16 @@ module ETW
         XPBoosts = Strength=1;SmallBlunt=1,
     }
 
+    character_trait_definition ETW:Indefatigable
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:Indefatigable,
+        Cost = 10,
+        UIName = UI_trait_Indefatigable,
+        UIDescription = UI_trait_IndefatigableDesc,
+    }
+
     character_trait_definition ETW:IdealWeight
     {
         IsProfessionTrait = false,
