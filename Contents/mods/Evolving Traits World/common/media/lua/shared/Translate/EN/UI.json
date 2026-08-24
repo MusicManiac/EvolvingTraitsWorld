@@ -182,6 +182,8 @@
     "UI_trait_ThickBloodedDesc": "You bleed more slowly from all wounds.",
     "UI_trait_Thuggish": "Thuggish",
     "UI_trait_ThuggishDesc": "Sure, you've capped a few knees in your time. That experience could prove useful.",
+    "UI_trait_Unwavering": "Unwavering",
+    "UI_trait_UnwaveringDesc": "Low endurance, fatigue, and pain reduce your weapon damage much less.<br>Wounds impair your movement less.",
     "UI_trait_StickFighter": "Stick Fighter",
     "UI_trait_StickFighterDesc": "You have practiced stick fighting martial arts",
     "UI_trait_WellFitted": "Well-Fitted",

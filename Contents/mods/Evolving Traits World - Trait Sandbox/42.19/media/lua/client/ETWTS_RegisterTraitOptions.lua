@@ -29,6 +29,7 @@ local traits = {
 	{ id = "ProwessSpear", pointValue = -7 },
 	{ id = "PracticedSwordsman", pointValue = -5 },
 	{ id = "Thuggish", pointValue = -5 },
+	{ id = "Unwavering", pointValue = -6 },
 	{ id = "QuickRest", pointValue = -3 },
 	{ id = "Quiet", pointValue = -2 },
 	{ id = "Scrapper", pointValue = -3 },

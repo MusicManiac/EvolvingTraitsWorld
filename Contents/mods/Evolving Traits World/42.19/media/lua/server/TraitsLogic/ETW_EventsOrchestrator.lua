@@ -40,9 +40,18 @@ local function oneMinuteUpdate()
 		local hasThickBlooded = player:hasTrait(ETWTraitsRegistry.THICK_BLOODED)
 		local hasSunSensitivity = player:hasTrait(ETWTraitsRegistry.SUN_SENSITIVITY)
 		local modData = ETW_CommonFunctions.getETWModData(player)
+		local shouldApplyUnwavering = player:hasTrait(ETWTraitsRegistry.UNWAVERING)
+			and modData
+			and not modData.UnwaveringInjurySpeedApplied
 		local hasSunSensitivityState = modData
 			and (modData.SunSensitivityExposure ~= nil or modData.SunSensitivityAppliedPain ~= nil)
-		if hasAnemic or hasThickBlooded or hasSunSensitivity or hasSunSensitivityState then
+		if
+			hasAnemic
+			or hasThickBlooded
+			or hasSunSensitivity
+			or hasSunSensitivityState
+			or shouldApplyUnwavering
+		then
 			local bodyDamage = player:getBodyDamage()
 			if hasAnemic then
 				ETW_HealthTraits.anemicTrait(bodyDamage)
@@ -52,6 +61,9 @@ local function oneMinuteUpdate()
 			end
 			if modData and (hasSunSensitivity or hasSunSensitivityState) then
 				ETW_WeatherTraits.sunSensitivityTrait(player, bodyDamage, modData, hasSunSensitivity)
+			end
+			if shouldApplyUnwavering then
+				ETW_HealthTraits.unwaveringTrait(player, bodyDamage, modData)
 			end
 		end
 		if player:hasTrait(ETWTraitsRegistry.BLISSFUL) then

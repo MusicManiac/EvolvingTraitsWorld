@@ -236,6 +236,7 @@ local function restoreCombatTraitWeapon(item)
 		data.GordoniteEffectiveness = nil
 		data.GordoniteDamageBonus = nil
 		data.GordoniteCriticalChanceBonus = nil
+		data.UnwaveringDamageMultiplier = nil
 		logETW("ETW Logger | combatWeaponTraits(): restored " .. item:getFullType())
 	end
 end
@@ -325,6 +326,25 @@ local function getMatchingMeleeProwess(player, weapon)
 end
 
 ---@param player IsoPlayer
+---@return number damageMultiplier
+local function getUnwaveringDamageMultiplier(player)
+	local stats = player:getStats()
+	local endurance = stats:get(CharacterStat.ENDURANCE)
+	local fatigue = stats:get(CharacterStat.FATIGUE)
+	local pain = stats:get(CharacterStat.PAIN)
+	local maximumMultiplier = math.max(1, SBvars.UnwaveringMaximumDamageMultiplier or 2)
+	local bonus = maximumMultiplier - 1
+	if endurance <= 0.25 or fatigue >= 0.8 or pain >= 75 then
+		return maximumMultiplier
+	elseif endurance <= 0.5 or fatigue >= 0.7 or pain >= 50 then
+		return 1 + bonus * 0.5
+	elseif endurance <= 0.75 or fatigue >= 0.6 or pain >= 20 then
+		return 1 + bonus * 0.25
+	end
+	return 1
+end
+
+---@param player IsoPlayer
 local function combatWeaponTraits(player)
 	local weapon = player:getPrimaryHandItem()
 	if weapon and not instanceof(weapon, "HandWeapon") then
@@ -360,6 +380,11 @@ local function combatWeaponTraits(player)
 	local gordoniteCriticalChanceBonus = hasGordonite
 		and gordoniteRelevantSkillLevels / 2 * gordoniteEffectiveness
 		or 0
+	local hasUnwavering = player:hasTrait(ETWTraitsRegistry.UNWAVERING)
+	local unwaveringDamageMultiplier = hasUnwavering
+		and getUnwaveringDamageMultiplier(player)
+		or 1
+	local hasUnwaveringDamageBoost = unwaveringDamageMultiplier > 1
 	local tavernBrawlerDamageBonusPercent, tavernBrawlerConditionLossReductionPercent = 0, 0
 	if hasTavernBrawler then
 		local originalConditionLowerChance = data.Applied and data.OriginalConditionLowerChance
@@ -374,7 +399,13 @@ local function combatWeaponTraits(player)
 		and math.max(0, SBvars.ProwessMeleeBaseCriticalChance or 5)
 		or 0
 	local criticalChanceModified = prowessName ~= nil or hasMundane or hasGordonite
-	if not hasMundane and not prowessName and not hasTavernBrawler and not hasGordonite then
+	if
+		not hasMundane
+		and not prowessName
+		and not hasTavernBrawler
+		and not hasGordonite
+		and not hasUnwaveringDamageBoost
+	then
 		if data.Applied then
 			restoreCombatTraitWeapon(weapon)
 		end
@@ -396,6 +427,7 @@ local function combatWeaponTraits(player)
 		and data.GordoniteEffectiveness == gordoniteEffectiveness
 		and data.GordoniteDamageBonus == gordoniteDamageBonus
 		and data.GordoniteCriticalChanceBonus == gordoniteCriticalChanceBonus
+		and data.UnwaveringDamageMultiplier == unwaveringDamageMultiplier
 		and data.SnapshotUsesRawValues == true
 		and data.CriticalChanceModified == criticalChanceModified
 	then
@@ -434,10 +466,17 @@ local function combatWeaponTraits(player)
 	data.GordoniteEffectiveness = gordoniteEffectiveness
 	data.GordoniteDamageBonus = gordoniteDamageBonus
 	data.GordoniteCriticalChanceBonus = gordoniteCriticalChanceBonus
-	if prowessName or hasTavernBrawler or hasGordonite then
+	data.UnwaveringDamageMultiplier = unwaveringDamageMultiplier
+	if prowessName or hasTavernBrawler or hasGordonite or hasUnwaveringDamageBoost then
 		local damageMultiplier = 1 + (damageBonusPercent + tavernBrawlerDamageBonusPercent) / 100
-		weapon:setMinDamage(data.OriginalMinDamage * damageMultiplier + gordoniteDamageBonus)
-		weapon:setMaxDamage(data.OriginalMaxDamage * damageMultiplier + gordoniteDamageBonus)
+		weapon:setMinDamage(
+			(data.OriginalMinDamage * damageMultiplier + gordoniteDamageBonus)
+				* unwaveringDamageMultiplier
+		)
+		weapon:setMaxDamage(
+			(data.OriginalMaxDamage * damageMultiplier + gordoniteDamageBonus)
+				* unwaveringDamageMultiplier
+		)
 		if (prowessName or hasGordonite) and not hasMundane then
 			local criticalBonus = gordoniteCriticalChanceBonus
 			if prowessName then
@@ -476,6 +515,8 @@ local function combatWeaponTraits(player)
 			.. "; gordonite effectiveness: "
 			.. gordoniteEffectiveness * 100
 			.. "%"
+			.. "; unwavering damage multiplier: "
+			.. unwaveringDamageMultiplier
 			.. "; min damage: "
 			.. originalDisplayedMinDamage
 			.. "->"
@@ -930,6 +971,11 @@ local function onEquipmentChanged(player)
 end
 
 ---@param player IsoPlayer
+local function onWeaponSwing(player)
+	combatWeaponTraits(player)
+end
+
+---@param player IsoPlayer
 ---@param args table
 function Commands.refreshEquippedItemTraits(player, args)
 	refreshEquippedItemTraits(player)
@@ -952,6 +998,8 @@ Events.EveryOneMinute.Remove(everyOneMinute)
 Events.EveryOneMinute.Add(everyOneMinute)
 Events.OnEquipPrimary.Remove(onEquipmentChanged)
 Events.OnEquipPrimary.Add(onEquipmentChanged)
+Events.OnWeaponSwing.Remove(onWeaponSwing)
+Events.OnWeaponSwing.Add(onWeaponSwing)
 Events.OnClientCommand.Remove(onClientCommand)
 Events.OnClientCommand.Add(onClientCommand)
 
