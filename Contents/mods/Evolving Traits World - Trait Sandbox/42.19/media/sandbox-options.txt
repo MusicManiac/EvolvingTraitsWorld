@@ -652,6 +652,22 @@ option ETWTraitSandbox.BouncerPointValue
 	page = ETWTraitSandbox,
 	translation = ETWTS_BouncerPointValue,
 }
+option ETWTraitSandbox.IndefatigableEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_IndefatigableEnabled,
+}
+option ETWTraitSandbox.IndefatigablePointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = -10,
+	page = ETWTraitSandbox,
+	translation = ETWTS_IndefatigablePointValue,
+}
 option ETWTraitSandbox.GordoniteEnabled
 {
 	type = boolean,

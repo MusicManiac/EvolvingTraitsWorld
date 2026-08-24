@@ -1,5 +1,6 @@
 local ETW_CommonFunctions = require("ETW_CommonFunctions")
 local ETW_Registry = require("ETW_Registry")
+local ETWCombinedTraitChecks = require("ETW_CombinedTraitFunctions")
 
 local FILENAME = "ETW_HealthTraits.lua"
 if
@@ -19,6 +20,179 @@ local ETWTraitsRegistry = ETW_Registry.traits
 local SBvars = SandboxVars.EvolvingTraitsWorld
 local logETW = ETW_CommonFunctions.log
 local random_instance = newrandom()
+local INDEFATIGABLE_PROTECTION_DURATION_MS = 120000
+local INDEFATIGABLE_TRIGGER_RADIUS = 1.5
+local INDEFATIGABLE_KNOCKDOWN_RADIUS = 2.5
+
+---Maintains or expires Indefatigable's temporary pain and wound-movement protection.
+---@param player IsoPlayer
+---@param bodyDamage BodyDamage
+---@param modData EvolvingTraitsWorldModData
+function ETW_HealthTraits.indefatigableProtection(player, bodyDamage, modData)
+	local expiresAt = modData.IndefatigableProtectionExpiresAt
+	if not expiresAt then
+		return
+	end
+	if getTimestampMs() >= expiresAt then
+		ETW_CommonFunctions.restoreWoundSpeedModifiers(
+			bodyDamage,
+			modData.IndefatigableWoundSpeedModifiers
+		)
+		modData.IndefatigableProtectionExpiresAt = nil
+		modData.IndefatigableWoundSpeedModifiers = nil
+		logETW(
+			"ETW Logger | indefatigableProtection(): expired for "
+				.. tostring(player:getUsername())
+				.. " (OnlineID="
+				.. player:getOnlineID()
+				.. ")"
+		)
+		return
+	end
+
+	player:getStats():set(CharacterStat.PAIN, 0)
+	ETW_CommonFunctions.suppressWoundMovementPenalties(bodyDamage)
+end
+
+---Activates Indefatigable at low health or preemptively when at least four zombies crowd the player.
+---@param player IsoPlayer
+---@param bodyDamage BodyDamage
+---@param modData EvolvingTraitsWorldModData
+---@param clientCrowdTrigger boolean|nil
+function ETW_HealthTraits.indefatigableTrait(player, bodyDamage, modData, clientCrowdTrigger)
+	local health = bodyDamage:getHealth()
+	local playerIdentifier = tostring(player:getUsername()) .. " (OnlineID=" .. player:getOnlineID() .. ")"
+	if player:isDead() or health <= 0 then
+		if clientCrowdTrigger == true then
+			logETW("ETW Logger | indefatigableTrait(): rejected client crowd trigger after death for " .. playerIdentifier)
+		end
+		return
+	end
+
+	local maximumUses = math.max(0, math.floor(SBvars.IndefatigableUses or 1))
+	local uses = math.max(0, math.floor(modData.IndefatigableUses or 0))
+	if maximumUses > 0 and uses >= maximumUses then
+		if clientCrowdTrigger == true then
+			logETW("ETW Logger | indefatigableTrait(): rejected client crowd trigger; uses exhausted for " .. playerIdentifier)
+		end
+		return
+	end
+
+	local worldAgeHours = getGameTime():getWorldAgeHours()
+	local cooldownUntil = tonumber(modData.IndefatigableCooldownUntilHours) or 0
+	if worldAgeHours < cooldownUntil then
+		if clientCrowdTrigger == true then
+			logETW(
+				"ETW Logger | indefatigableTrait(): rejected client crowd trigger; cooldown remaining for "
+					.. playerIdentifier
+					.. ": "
+					.. (cooldownUntil - worldAgeHours)
+					.. " hours"
+			)
+		end
+		return
+	end
+
+	local serverCrowdCount = ETWCombinedTraitChecks.forEachNearbyLivingZombie(
+		player,
+		INDEFATIGABLE_TRIGGER_RADIUS,
+		nil
+	)
+	local crowdTrigger = serverCrowdCount >= 4 or clientCrowdTrigger == true
+	local triggerHealth = PZMath.clamp(SBvars.IndefatigableTriggerHealthPercent or 20, 15, 40)
+	if not crowdTrigger and health > triggerHealth then
+		return
+	end
+
+	local requiresNearbyZombie = SBvars.IndefatigableRequiresNearbyZombie ~= false
+	local knockdownTargets = {}
+	local nearbyCount = ETWCombinedTraitChecks.forEachNearbyLivingZombie(
+		player,
+		(requiresNearbyZombie or crowdTrigger) and 5 or INDEFATIGABLE_KNOCKDOWN_RADIUS,
+		function(zombie, distanceSquared)
+			if
+				distanceSquared <= INDEFATIGABLE_KNOCKDOWN_RADIUS * INDEFATIGABLE_KNOCKDOWN_RADIUS
+				and not zombie:isKnockedDown()
+			then
+				table.insert(knockdownTargets, zombie)
+			end
+		end
+	)
+	if clientCrowdTrigger == true and serverCrowdCount < 4 and nearbyCount < 4 then
+		logETW(
+			"ETW Logger | indefatigableTrait(): rejected client crowd trigger for "
+				.. playerIdentifier
+				.. "; server zombies within 1.5: "
+				.. serverCrowdCount
+				.. "; within 5: "
+				.. nearbyCount
+		)
+		return
+	end
+	if requiresNearbyZombie and nearbyCount == 0 then
+		return
+	end
+
+	for _, zombie in ipairs(knockdownTargets) do
+		ETW_CommonFunctions.triggerBouncerStagger(player, zombie, true)
+	end
+
+	local parts = bodyDamage:getBodyParts()
+	for i = 0, parts:size() - 1 do
+		parts:get(i):SetHealth(100)
+	end
+	bodyDamage:setOverallBodyHealth(100)
+
+	local stats = player:getStats()
+	stats:set(CharacterStat.PAIN, 0)
+	stats:set(CharacterStat.FATIGUE, 0)
+	stats:set(CharacterStat.ENDURANCE, 1)
+
+	if not modData.IndefatigableWoundSpeedModifiers then
+		modData.IndefatigableWoundSpeedModifiers = ETW_CommonFunctions.captureWoundSpeedModifiers(bodyDamage)
+	end
+	ETW_CommonFunctions.suppressWoundMovementPenalties(bodyDamage)
+	modData.IndefatigableProtectionExpiresAt = getTimestampMs() + INDEFATIGABLE_PROTECTION_DURATION_MS
+	modData.IndefatigableUses = uses + 1
+	local cooldownDays = math.max(0, SBvars.IndefatigableCooldownDays or 7)
+	modData.IndefatigableCooldownUntilHours = worldAgeHours + cooldownDays * 24
+
+	if isServer() then
+		sendServerCommand(player, "ETW", "startIndefatigableProtection", {
+			durationMs = INDEFATIGABLE_PROTECTION_DURATION_MS,
+			woundSpeedModifiers = modData.IndefatigableWoundSpeedModifiers,
+			uses = modData.IndefatigableUses,
+			cooldownUntilHours = modData.IndefatigableCooldownUntilHours,
+		})
+	end
+	ETW_CommonFunctions.displayTraitNotification(player, ETWTraitsRegistry.INDEFATIGABLE:toString(), true, "GREEN")
+	logETW(
+		"ETW Logger | indefatigableTrait(): activated for "
+			.. tostring(player:getUsername())
+			.. " (OnlineID="
+			.. player:getOnlineID()
+			.. "); health: "
+			.. health
+			.. "->100; use: "
+			.. modData.IndefatigableUses
+			.. "/"
+			.. (maximumUses == 0 and "infinite" or tostring(maximumUses))
+			.. "; nearby zombies: "
+			.. nearbyCount
+			.. "; trigger: "
+			.. (crowdTrigger and "four-zombie crowd" or "low health")
+			.. "; server crowd within 1.5: "
+			.. serverCrowdCount
+			.. "; knocked down: "
+			.. #knockdownTargets
+			.. " within "
+			.. INDEFATIGABLE_KNOCKDOWN_RADIUS
+			.. " tiles"
+			.. "; cooldown: "
+			.. cooldownDays
+			.. " days; protection: 120 real-time seconds"
+	)
+end
 
 ---Applies Unwavering's persistent wound movement-speed modifiers once.
 ---@param player IsoPlayer

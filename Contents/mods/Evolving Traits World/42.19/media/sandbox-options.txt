@@ -1006,6 +1006,40 @@ option EvolvingTraitsWorld.BouncerDistance
 	page = ETWTraitsSettings,
 	translation = ETW_BouncerDistance,
 }
+option EvolvingTraitsWorld.IndefatigableUses
+{
+	type = integer,
+	min = 0,
+	max = 10000,
+	default = 1,
+	page = ETWTraitsSettings,
+	translation = ETW_IndefatigableUses,
+}
+option EvolvingTraitsWorld.IndefatigableCooldownDays
+{
+	type = integer,
+	min = 1,
+	max = 10000,
+	default = 7,
+	page = ETWTraitsSettings,
+	translation = ETW_IndefatigableCooldownDays,
+}
+option EvolvingTraitsWorld.IndefatigableTriggerHealthPercent
+{
+	type = integer,
+	min = 15,
+	max = 40,
+	default = 20,
+	page = ETWTraitsSettings,
+	translation = ETW_IndefatigableTriggerHealthPercent,
+}
+option EvolvingTraitsWorld.IndefatigableRequiresNearbyZombie
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitsSettings,
+	translation = ETW_IndefatigableRequiresNearbyZombie,
+}
 option EvolvingTraitsWorld.GordoniteEffectiveness
 {
 	type = integer,

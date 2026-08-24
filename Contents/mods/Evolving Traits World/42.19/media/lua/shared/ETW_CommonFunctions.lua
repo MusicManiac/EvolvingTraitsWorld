@@ -648,11 +648,18 @@ end
 ---Staggers a Bouncer target authoritatively and mirrors the result on the owning MP client.
 ---@param player IsoPlayer
 ---@param zombie IsoZombie
-function ETW_CommonFunctions.triggerBouncerStagger(player, zombie)
+---@param knockDown boolean|nil
+function ETW_CommonFunctions.triggerBouncerStagger(player, zombie, knockDown)
 	zombie:setStaggerBack(true)
+	if knockDown then
+		zombie:setKnockedDown(true)
+	end
 	if gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
 		local zombieOnlineID = zombie:getOnlineID()
-		sendServerCommand(player, "ETW", "triggerBouncerStagger", { zombieOnlineID = zombieOnlineID })
+		sendServerCommand(player, "ETW", "triggerBouncerStagger", {
+			zombieOnlineID = zombieOnlineID,
+			knockDown = knockDown == true,
+		})
 		ETW_CommonFunctions.log(
 			"ETW Logger | triggerBouncerStagger(): applied on server and requested client mirror for "
 				.. tostring(player:getUsername())
@@ -660,12 +667,86 @@ function ETW_CommonFunctions.triggerBouncerStagger(player, zombie)
 				.. player:getOnlineID()
 				.. "); zombie OnlineID="
 				.. zombieOnlineID
+				.. "; knockdown: "
+				.. tostring(knockDown == true)
 		)
 		return
 	end
 	ETW_CommonFunctions.log(
-		"ETW Logger | triggerBouncerStagger(): executed locally; zombie OnlineID=" .. zombie:getOnlineID()
+		"ETW Logger | triggerBouncerStagger(): executed locally; zombie OnlineID="
+			.. zombie:getOnlineID()
+			.. "; knockdown: "
+			.. tostring(knockDown == true)
 	)
+end
+
+---Captures the wound movement-speed modifiers for every body part.
+---@param bodyDamage BodyDamage
+---@return table[] snapshots
+function ETW_CommonFunctions.captureWoundSpeedModifiers(bodyDamage)
+	local snapshots = {}
+	local parts = bodyDamage:getBodyParts()
+	for i = 0, parts:size() - 1 do
+		local part = parts:get(i)
+		snapshots[i + 1] = {
+			scratch = part:getScratchSpeedModifier(),
+			cut = part:getCutSpeedModifier(),
+			deepWound = part:getDeepWoundSpeedModifier(),
+			burn = part:getBurnSpeedModifier(),
+		}
+	end
+	return snapshots
+end
+
+---Suppresses all wound movement-speed penalties without reducing stronger existing modifiers.
+---@param bodyDamage BodyDamage
+function ETW_CommonFunctions.suppressWoundMovementPenalties(bodyDamage)
+	local parts = bodyDamage:getBodyParts()
+	for i = 0, parts:size() - 1 do
+		local part = parts:get(i)
+		part:setScratchSpeedModifier(math.max(100, part:getScratchSpeedModifier()))
+		part:setCutSpeedModifier(math.max(100, part:getCutSpeedModifier()))
+		part:setDeepWoundSpeedModifier(math.max(100, part:getDeepWoundSpeedModifier()))
+		part:setBurnSpeedModifier(math.max(100, part:getBurnSpeedModifier()))
+	end
+end
+
+---Removes only the temporary contribution required to raise captured wound-speed modifiers to 100.
+---Modifiers added by other effects while suppression was active are preserved.
+---@param current number
+---@param captured unknown
+---@return number
+local function restoreSuppressedWoundSpeedModifier(current, captured)
+	captured = tonumber(captured) or 0
+	local protectedValue = math.max(100, captured)
+	return captured + math.max(0, current - protectedValue)
+end
+
+---@param bodyDamage BodyDamage
+---@param snapshots table[]|nil
+function ETW_CommonFunctions.restoreWoundSpeedModifiers(bodyDamage, snapshots)
+	if not snapshots then
+		return
+	end
+	local parts = bodyDamage:getBodyParts()
+	for i = 0, parts:size() - 1 do
+		local snapshot = snapshots[i + 1]
+		if snapshot then
+			local part = parts:get(i)
+			part:setScratchSpeedModifier(
+				restoreSuppressedWoundSpeedModifier(part:getScratchSpeedModifier(), snapshot.scratch)
+			)
+			part:setCutSpeedModifier(
+				restoreSuppressedWoundSpeedModifier(part:getCutSpeedModifier(), snapshot.cut)
+			)
+			part:setDeepWoundSpeedModifier(
+				restoreSuppressedWoundSpeedModifier(part:getDeepWoundSpeedModifier(), snapshot.deepWound)
+			)
+			part:setBurnSpeedModifier(
+				restoreSuppressedWoundSpeedModifier(part:getBurnSpeedModifier(), snapshot.burn)
+			)
+		end
+	end
 end
 
 ---Reduces the movement-speed penalties contributed by common wound types.

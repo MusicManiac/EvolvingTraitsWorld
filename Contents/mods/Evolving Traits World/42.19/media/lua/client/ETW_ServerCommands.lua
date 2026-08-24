@@ -15,6 +15,7 @@ then
 end
 
 local Commands = {}
+local indefatigableProtection
 
 ---Returns the local player when the passed player is invalid or not ready yet.
 ---@param player unknown
@@ -132,9 +133,14 @@ Commands.triggerBouncerStagger = function(player, args)
 		local zombie = zombies:get(i)
 		if zombie:getOnlineID() == zombieOnlineID then
 			zombie:setStaggerBack(true)
+			if args.knockDown == true then
+				zombie:setKnockedDown(true)
+			end
 			logETW(
 				"ETW Logger | Commands.triggerBouncerStagger(): mirrored stagger; zombie OnlineID="
 					.. zombieOnlineID
+					.. "; knockdown: "
+					.. tostring(args.knockDown == true)
 			)
 			return
 		end
@@ -164,6 +170,82 @@ Commands.applyUnwaveringInjurySpeedModifiers = function(player, args)
 	)
 end
 
+---Starts the owning client's local mirror of Indefatigable's wound-movement protection.
+Commands.startIndefatigableProtection = function(player, args)
+	player = resolveLocalPlayer(player)
+	if not player then
+		logETW("ETW Logger | Commands.startIndefatigableProtection(): player not ready, skipping")
+		return
+	end
+	local bodyDamage = player:getBodyDamage()
+	if not indefatigableProtection or indefatigableProtection.player ~= player then
+		indefatigableProtection = {
+			player = player,
+			woundSpeedModifiers = type(args.woundSpeedModifiers) == "table"
+				and args.woundSpeedModifiers
+				or ETW_CommonFunctions.captureWoundSpeedModifiers(bodyDamage),
+		}
+	end
+	local durationMs = math.max(0, tonumber(args.durationMs) or 120000)
+	indefatigableProtection.expiresAt = getTimestampMs() + durationMs
+	local modData = ETW_CommonFunctions.getETWModData(player)
+	if modData then
+		modData.IndefatigableUses = math.max(0, math.floor(tonumber(args.uses) or 0))
+		modData.IndefatigableCooldownUntilHours = tonumber(args.cooldownUntilHours) or 0
+	end
+	ETW_CommonFunctions.suppressWoundMovementPenalties(bodyDamage)
+	logETW(
+		"ETW Logger | Commands.startIndefatigableProtection(): started local protection for "
+			.. tostring(player:getUsername())
+			.. "; duration: "
+			.. durationMs
+			.. " ms; authoritative uses: "
+			.. tostring(args.uses)
+			.. "; cooldown until world age hour: "
+			.. tostring(args.cooldownUntilHours)
+	)
+end
+
+---Maintains and restores the owning client's temporary wound-speed modifiers.
+local function updateIndefatigableProtection()
+	local protection = indefatigableProtection
+	if not protection then
+		return
+	end
+	local player = protection.player
+	if not player then
+		indefatigableProtection = nil
+		return
+	end
+	local bodyDamage = player:getBodyDamage()
+	if getTimestampMs() >= (protection.expiresAt or 0) then
+		ETW_CommonFunctions.restoreWoundSpeedModifiers(bodyDamage, protection.woundSpeedModifiers)
+		indefatigableProtection = nil
+		logETW(
+			"ETW Logger | updateIndefatigableProtection(): restored local wound-speed modifiers for "
+				.. tostring(player:getUsername())
+		)
+		return
+	end
+	ETW_CommonFunctions.suppressWoundMovementPenalties(bodyDamage)
+end
+
+---@param player IsoPlayer
+local function clearIndefatigableProtection(player)
+	local protection = indefatigableProtection
+	if not protection then
+		return
+	end
+	player = resolveLocalPlayer(player) or protection.player
+	if player then
+		ETW_CommonFunctions.restoreWoundSpeedModifiers(
+			player:getBodyDamage(),
+			protection.woundSpeedModifiers
+		)
+	end
+	indefatigableProtection = nil
+end
+
 Commands.OnServerCommand = function(module, command, args)
 	if module == "ETW" and Commands[command] then
 		local argStr = ""
@@ -177,3 +259,7 @@ Commands.OnServerCommand = function(module, command, args)
 end
 
 Events.OnServerCommand.Add(Commands.OnServerCommand)
+Events.OnTick.Remove(updateIndefatigableProtection)
+Events.OnTick.Add(updateIndefatigableProtection)
+Events.OnPlayerDeath.Remove(clearIndefatigableProtection)
+Events.OnPlayerDeath.Add(clearIndefatigableProtection)
