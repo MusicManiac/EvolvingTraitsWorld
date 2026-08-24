@@ -260,6 +260,16 @@ module ETW
         XPBoosts = SmallBlunt=1;Blunt=1,
     }
 
+    character_trait_definition ETW:Unwavering
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:Unwavering,
+        Cost = 6,
+        UIName = UI_trait_Unwavering,
+        UIDescription = UI_trait_UnwaveringDesc,
+    }
+
     character_trait_definition ETW:ProwessBlunt
     {
         IsProfessionTrait = false,

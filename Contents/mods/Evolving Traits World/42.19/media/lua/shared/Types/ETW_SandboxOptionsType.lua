@@ -143,6 +143,7 @@
 --- @field BouncerCooldown integer
 --- @field BouncerDistance number
 --- @field GordoniteEffectiveness integer
+--- @field UnwaveringMaximumDamageMultiplier number
 --- @field WellFittedWeightReduction integer
 --- @field WellFittedSpeedPenaltyReduction integer
 -- Complex Perks

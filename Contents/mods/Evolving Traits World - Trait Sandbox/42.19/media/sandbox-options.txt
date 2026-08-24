@@ -828,6 +828,22 @@ option ETWTraitSandbox.ThuggishPointValue
 	page = ETWTraitSandbox,
 	translation = ETWTS_ThuggishPointValue,
 }
+option ETWTraitSandbox.UnwaveringEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_UnwaveringEnabled,
+}
+option ETWTraitSandbox.UnwaveringPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = -6,
+	page = ETWTraitSandbox,
+	translation = ETWTS_UnwaveringPointValue,
+}
 option ETWTraitSandbox.QuietEnabled
 {
 	type = boolean,

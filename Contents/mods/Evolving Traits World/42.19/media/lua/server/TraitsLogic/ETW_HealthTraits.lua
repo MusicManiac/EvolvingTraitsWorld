@@ -20,6 +20,49 @@ local SBvars = SandboxVars.EvolvingTraitsWorld
 local logETW = ETW_CommonFunctions.log
 local random_instance = newrandom()
 
+---Applies Unwavering's persistent wound movement-speed modifiers once.
+---@param player IsoPlayer
+---@param bodyDamage BodyDamage
+---@param modData EvolvingTraitsWorldModData
+function ETW_HealthTraits.unwaveringTrait(player, bodyDamage, modData)
+	local scratchModifier = 30
+	local cutModifier = 30
+	local deepWoundModifier = 60
+	local burnModifier = 60
+	local affectedParts = ETW_CommonFunctions.applyUnwaveringInjurySpeedModifiers(
+		bodyDamage,
+		scratchModifier,
+		cutModifier,
+		deepWoundModifier,
+		burnModifier
+	)
+	modData.UnwaveringInjurySpeedApplied = true
+	if isServer() then
+		sendServerCommand(player, "ETW", "applyUnwaveringInjurySpeedModifiers", {
+			scratchModifier = scratchModifier,
+			cutModifier = cutModifier,
+			deepWoundModifier = deepWoundModifier,
+			burnModifier = burnModifier,
+		})
+	end
+	logETW(
+		"ETW Logger | unwaveringTrait(): applied injury speed modifiers to "
+			.. tostring(player:getUsername())
+			.. " (OnlineID="
+			.. player:getOnlineID()
+			.. "); body parts: "
+			.. affectedParts
+			.. "; scratch/cut/deep wound/burn: +"
+			.. scratchModifier
+			.. "/+"
+			.. cutModifier
+			.. "/+"
+			.. deepWoundModifier
+			.. "/+"
+			.. burnModifier
+	)
+end
+
 ---Rolls Noodle Legs' chance to trip while running or sprinting.
 ---@param player IsoPlayer
 function ETW_HealthTraits.noodleLegsTrait(player)

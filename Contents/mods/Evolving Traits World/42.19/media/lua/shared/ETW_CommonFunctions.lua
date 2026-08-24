@@ -668,6 +668,31 @@ function ETW_CommonFunctions.triggerBouncerStagger(player, zombie)
 	)
 end
 
+---Reduces the movement-speed penalties contributed by common wound types.
+---@param bodyDamage BodyDamage
+---@param scratchModifier number
+---@param cutModifier number
+---@param deepWoundModifier number
+---@param burnModifier number
+---@return integer affectedParts
+function ETW_CommonFunctions.applyUnwaveringInjurySpeedModifiers(
+	bodyDamage,
+	scratchModifier,
+	cutModifier,
+	deepWoundModifier,
+	burnModifier
+)
+	local parts = bodyDamage:getBodyParts()
+	for i = 0, parts:size() - 1 do
+		local part = parts:get(i)
+		part:setScratchSpeedModifier(part:getScratchSpeedModifier() + scratchModifier)
+		part:setCutSpeedModifier(part:getCutSpeedModifier() + cutModifier)
+		part:setDeepWoundSpeedModifier(part:getDeepWoundSpeedModifier() + deepWoundModifier)
+		part:setBurnSpeedModifier(part:getBurnSpeedModifier() + burnModifier)
+	end
+	return parts:size()
+end
+
 ---Shows notification for trait gain/loss. If it's SP client, it's displayed trait gain/loss notification to client. If it's called on a server, it sends a command to the client to display the notification. Then the client checks if notification should be displayed based on per-client mod settings.
 ---@param player IsoPlayer player to show notification for
 ---@param traitRegistryId string the trait registry id of the trait

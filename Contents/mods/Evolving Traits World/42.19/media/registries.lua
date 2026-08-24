@@ -55,6 +55,7 @@ ETW_Registry = ETW_Registry or {}
 ---@field TAVERN_BRAWLER CharacterTrait
 ---@field THICK_BLOODED CharacterTrait
 ---@field THUGGISH CharacterTrait
+---@field UNWAVERING CharacterTrait
 ---@field WELL_FITTED CharacterTrait
 ETW_Registry.traits = {
 	AV_CLUB = CharacterTrait.register("ETW:AVClub"),
@@ -110,6 +111,7 @@ ETW_Registry.traits = {
 	TAVERN_BRAWLER = CharacterTrait.register("ETW:TavernBrawler"),
 	THICK_BLOODED = CharacterTrait.register("ETW:ThickBlooded"),
 	THUGGISH = CharacterTrait.register("ETW:Thuggish"),
+	UNWAVERING = CharacterTrait.register("ETW:Unwavering"),
 	WELL_FITTED = CharacterTrait.register("ETW:WellFitted"),
 	STICK_FIGHTER = CharacterTrait.register("ETW:StickFighter"),
 }

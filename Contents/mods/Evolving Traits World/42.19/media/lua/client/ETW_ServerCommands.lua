@@ -144,6 +144,26 @@ Commands.triggerBouncerStagger = function(player, args)
 	)
 end
 
+---Mirrors Unwavering's wound movement-speed modifiers on the owning MP client.
+Commands.applyUnwaveringInjurySpeedModifiers = function(player, args)
+	player = resolveLocalPlayer(player)
+	if not player then
+		logETW("ETW Logger | Commands.applyUnwaveringInjurySpeedModifiers(): player not ready, skipping")
+		return
+	end
+	local affectedParts = ETW_CommonFunctions.applyUnwaveringInjurySpeedModifiers(
+		player:getBodyDamage(),
+		tonumber(args.scratchModifier) or 30,
+		tonumber(args.cutModifier) or 30,
+		tonumber(args.deepWoundModifier) or 60,
+		tonumber(args.burnModifier) or 60
+	)
+	logETW(
+		"ETW Logger | Commands.applyUnwaveringInjurySpeedModifiers(): applied locally; body parts: "
+			.. affectedParts
+	)
+end
+
 Commands.OnServerCommand = function(module, command, args)
 	if module == "ETW" and Commands[command] then
 		local argStr = ""
