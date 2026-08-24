@@ -24,15 +24,24 @@ function ISInventoryTransferAction:perform()
 		if gameMode == ETW_CommonFunctions.GameMode.SP then
 			local modData = ETW_CommonFunctions.getETWModData(self.character)
 			local transferModData = modData.TransferSystem
+			local initialItemsTransferred = transferModData.ItemsTransferred
+			local initialWeightTransferred = transferModData.WeightTransferred
 			transferModData.ItemsTransferred = transferModData.ItemsTransferred + 1
-			transferModData.WeightTransferred =
-				ETW_CommonFunctions.round(transferModData.WeightTransferred + itemWeight, 2)
+			transferModData.WeightTransferred = transferModData.WeightTransferred + itemWeight
 			logETW(
-				"ETW Logger | ISInventoryTransferAction.perform(): Moving an item with weight of " .. itemWeight,
-				"ETW Logger | ISInventoryTransferAction.perform(): Moved weight: "
-					.. transferModData.WeightTransferred
-					.. ", Moved Items: "
-					.. transferModData.ItemsTransferred
+				"ETW Logger | ISInventoryTransferAction:perform(): "
+					.. ": itemsMoved="
+					.. tostring(1)
+					.. ", weightMoved="
+					.. tostring(itemWeight)
+					.. "ItemsTransferred="
+					.. tostring(initialItemsTransferred)
+					.. "->"
+					.. tostring(transferModData.ItemsTransferred)
+					.. ", WeightTransferred="
+					.. tostring(initialWeightTransferred)
+					.. "->"
+					.. tostring(transferModData.WeightTransferred)
 			)
 			ETW_TimedActionsSharedLogic.checkInventoryTransferPerks(self.character, modData)
 		elseif gameMode == ETW_CommonFunctions.GameMode.MP_CLIENT then
