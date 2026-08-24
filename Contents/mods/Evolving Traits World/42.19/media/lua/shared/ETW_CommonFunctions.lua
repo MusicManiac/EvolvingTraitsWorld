@@ -149,15 +149,6 @@ function ETW_CommonFunctions.indexOf(tbl, value)
 	return -1
 end
 
----Rounds a number to the specified number of decimal places
----@param num number the number to round
----@param numDecimalPlaces number the number of decimal places to round to
----@return number number the rounded number
-function ETW_CommonFunctions.round(num, numDecimalPlaces)
-	local mult = 10 ^ (numDecimalPlaces or 0)
-	return math.floor(num * mult + 0.5) / mult
-end
-
 ---Applies Affinity System gain/loss rates to progress toward either of two opposing starting traits. This function assumes that negative change = moving towards negative change, and positive change = moving towards positive change.
 ---@param modData ETW_ModData
 ---@param change number the change to apply to progress, can be positive or negative

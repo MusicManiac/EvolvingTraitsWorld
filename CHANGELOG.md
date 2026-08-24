@@ -1,3 +1,9 @@
+## v.12.11.1
+###### 24 Aug 2026
+
+- Fix:
+  - Possible fix on moved items not always being registered + added more detailed logs there.
+
 ## v.12.11.0
 ###### 23 Aug 2026
 
