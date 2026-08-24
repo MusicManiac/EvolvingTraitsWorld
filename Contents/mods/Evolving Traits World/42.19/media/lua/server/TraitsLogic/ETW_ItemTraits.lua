@@ -1,5 +1,6 @@
 local ETW_Registry = require("ETW_Registry")
 local ETW_CommonFunctions = require("ETW_CommonFunctions")
+local ETWCombinedTraitChecks = require("ETW_CombinedTraitFunctions")
 
 local FILENAME = "ETW_ItemTraits.lua"
 if
@@ -21,7 +22,10 @@ local ETW_ItemTraits = {}
 local leadFootShoes = {}
 local combatTraitWeapons = {}
 local antiGunWeapons = {}
+local actionHeroThreatCache = {}
 local Commands = {}
+
+local ACTION_HERO_SCAN_CACHE_MS = 500
 
 local tavernBrawlerDisplayCategories = {
 	Cooking = true,
@@ -209,6 +213,7 @@ local function restoreCombatTraitWeapon(item)
 				or data.Mundane == true
 				or data.TavernBrawler == true
 				or data.Gordonite == true
+				or data.ActionHero == true
 		end
 		if criticalChanceModified then
 			item:setCriticalChance(data.OriginalCriticalChance)
@@ -236,6 +241,9 @@ local function restoreCombatTraitWeapon(item)
 		data.GordoniteEffectiveness = nil
 		data.GordoniteDamageBonus = nil
 		data.GordoniteCriticalChanceBonus = nil
+		data.ActionHero = nil
+		data.ActionHeroDamageMultiplier = nil
+		data.ActionHeroCriticalChanceBonus = nil
 		data.UnwaveringDamageMultiplier = nil
 		logETW("ETW Logger | combatWeaponTraits(): restored " .. item:getFullType())
 	end
@@ -344,6 +352,57 @@ local function getUnwaveringDamageMultiplier(player)
 	return 1
 end
 
+---Calculates Action Hero's weapon bonuses from nearby living zombies.
+---@param player IsoPlayer
+---@return number damageMultiplier
+---@return number criticalChanceBonus
+---@return integer nearbyZombies
+local function getActionHeroBonuses(player)
+	local now = getTimestampMs()
+	local cached = actionHeroThreatCache[player]
+	if cached and now < cached.timestamp + ACTION_HERO_SCAN_CACHE_MS then
+		return cached.damageMultiplier, cached.criticalChanceBonus, cached.nearbyZombies
+	end
+
+	local damageMultiplier = math.max(0, SBvars.ActionHeroBaseDamagePercent or 50) / 100
+	local criticalChanceBonus = math.max(0, SBvars.ActionHeroBaseCriticalChance or 10)
+	local closeDamageBonus = math.max(0, SBvars.ActionHeroCloseDamageBonusPercent or 10) / 100
+	local closeCriticalChanceBonus = math.max(
+		0,
+		SBvars.ActionHeroCloseCriticalChanceBonus or 10
+	)
+	local nearbyZombies = 0
+	local weightedDamageThreat = 0
+	local weightedCriticalThreat = 0
+	nearbyZombies = ETWCombinedTraitChecks.forEachNearbyLivingZombie(
+		player,
+		10,
+		function(_, distanceSquared)
+			if distanceSquared < 4 then
+				weightedDamageThreat = weightedDamageThreat + 1
+				weightedCriticalThreat = weightedCriticalThreat + 1
+			elseif distanceSquared < 25 then
+				weightedDamageThreat = weightedDamageThreat + 0.4
+				weightedCriticalThreat = weightedCriticalThreat + 0.5
+			else
+				weightedDamageThreat = weightedDamageThreat + 0.2
+				weightedCriticalThreat = weightedCriticalThreat + 0.2
+			end
+		end
+	)
+	damageMultiplier = damageMultiplier + closeDamageBonus * weightedDamageThreat
+	criticalChanceBonus = criticalChanceBonus
+		+ closeCriticalChanceBonus * weightedCriticalThreat
+	criticalChanceBonus = PZMath.clamp(criticalChanceBonus, 0, 100)
+	actionHeroThreatCache[player] = {
+		timestamp = now,
+		damageMultiplier = damageMultiplier,
+		criticalChanceBonus = criticalChanceBonus,
+		nearbyZombies = nearbyZombies,
+	}
+	return damageMultiplier, criticalChanceBonus, nearbyZombies
+end
+
 ---@param player IsoPlayer
 local function combatWeaponTraits(player)
 	local weapon = player:getPrimaryHandItem()
@@ -380,6 +439,16 @@ local function combatWeaponTraits(player)
 	local gordoniteCriticalChanceBonus = hasGordonite
 		and gordoniteRelevantSkillLevels / 2 * gordoniteEffectiveness
 		or 0
+	local hasActionHero = player:hasTrait(ETWTraitsRegistry.ACTION_HERO)
+	if not hasActionHero then
+		actionHeroThreatCache[player] = nil
+	end
+	local actionHeroDamageMultiplier, actionHeroCriticalChanceBonus, actionHeroNearbyZombies =
+		1, 0, 0
+	if hasActionHero then
+		actionHeroDamageMultiplier, actionHeroCriticalChanceBonus, actionHeroNearbyZombies =
+			getActionHeroBonuses(player)
+	end
 	local hasUnwavering = player:hasTrait(ETWTraitsRegistry.UNWAVERING)
 	local unwaveringDamageMultiplier = hasUnwavering
 		and getUnwaveringDamageMultiplier(player)
@@ -398,12 +467,16 @@ local function combatWeaponTraits(player)
 	local baseCriticalChance = prowessName
 		and math.max(0, SBvars.ProwessMeleeBaseCriticalChance or 5)
 		or 0
-	local criticalChanceModified = prowessName ~= nil or hasMundane or hasGordonite
+	local criticalChanceModified = prowessName ~= nil
+		or hasMundane
+		or hasGordonite
+		or hasActionHero
 	if
 		not hasMundane
 		and not prowessName
 		and not hasTavernBrawler
 		and not hasGordonite
+		and not hasActionHero
 		and not hasUnwaveringDamageBoost
 	then
 		if data.Applied then
@@ -427,6 +500,9 @@ local function combatWeaponTraits(player)
 		and data.GordoniteEffectiveness == gordoniteEffectiveness
 		and data.GordoniteDamageBonus == gordoniteDamageBonus
 		and data.GordoniteCriticalChanceBonus == gordoniteCriticalChanceBonus
+		and data.ActionHero == hasActionHero
+		and data.ActionHeroDamageMultiplier == actionHeroDamageMultiplier
+		and data.ActionHeroCriticalChanceBonus == actionHeroCriticalChanceBonus
 		and data.UnwaveringDamageMultiplier == unwaveringDamageMultiplier
 		and data.SnapshotUsesRawValues == true
 		and data.CriticalChanceModified == criticalChanceModified
@@ -466,19 +542,30 @@ local function combatWeaponTraits(player)
 	data.GordoniteEffectiveness = gordoniteEffectiveness
 	data.GordoniteDamageBonus = gordoniteDamageBonus
 	data.GordoniteCriticalChanceBonus = gordoniteCriticalChanceBonus
+	data.ActionHero = hasActionHero
+	data.ActionHeroDamageMultiplier = actionHeroDamageMultiplier
+	data.ActionHeroCriticalChanceBonus = actionHeroCriticalChanceBonus
 	data.UnwaveringDamageMultiplier = unwaveringDamageMultiplier
-	if prowessName or hasTavernBrawler or hasGordonite or hasUnwaveringDamageBoost then
+	if
+		prowessName
+		or hasTavernBrawler
+		or hasGordonite
+		or hasActionHero
+		or hasUnwaveringDamageBoost
+	then
 		local damageMultiplier = 1 + (damageBonusPercent + tavernBrawlerDamageBonusPercent) / 100
 		weapon:setMinDamage(
 			(data.OriginalMinDamage * damageMultiplier + gordoniteDamageBonus)
+				* actionHeroDamageMultiplier
 				* unwaveringDamageMultiplier
 		)
 		weapon:setMaxDamage(
 			(data.OriginalMaxDamage * damageMultiplier + gordoniteDamageBonus)
+				* actionHeroDamageMultiplier
 				* unwaveringDamageMultiplier
 		)
-		if (prowessName or hasGordonite) and not hasMundane then
-			local criticalBonus = gordoniteCriticalChanceBonus
+		if (prowessName or hasGordonite or hasActionHero) and not hasMundane then
+			local criticalBonus = gordoniteCriticalChanceBonus + actionHeroCriticalChanceBonus
 			if prowessName then
 				criticalBonus = criticalBonus + baseCriticalChance + relevantSkillLevels
 			end
@@ -515,6 +602,14 @@ local function combatWeaponTraits(player)
 			.. "; gordonite effectiveness: "
 			.. gordoniteEffectiveness * 100
 			.. "%"
+			.. "; action hero: "
+			.. tostring(hasActionHero)
+			.. "; nearby zombies: "
+			.. actionHeroNearbyZombies
+			.. "; action hero damage multiplier: "
+			.. actionHeroDamageMultiplier
+			.. "; action hero critical chance bonus: "
+			.. actionHeroCriticalChanceBonus
 			.. "; unwavering damage multiplier: "
 			.. unwaveringDamageMultiplier
 			.. "; min damage: "
@@ -919,6 +1014,7 @@ local function restoreTrackedItemTraits(player)
 		restoreAntiGunWeapon(antiGunWeapon)
 		antiGunWeapons[player] = nil
 	end
+	actionHeroThreatCache[player] = nil
 end
 
 ---@param activePlayers table<IsoPlayer, boolean>
@@ -931,6 +1027,9 @@ local function cleanupDisconnectedPlayers(activePlayers)
 		trackedPlayers[player] = true
 	end
 	for player in pairs(antiGunWeapons) do
+		trackedPlayers[player] = true
+	end
+	for player in pairs(actionHeroThreatCache) do
 		trackedPlayers[player] = true
 	end
 	for player in pairs(trackedPlayers) do
@@ -948,8 +1047,8 @@ local function cleanupDisconnectedPlayers(activePlayers)
 end
 
 local function everyOneMinute()
-	if isServer() then
-		local players = getOnlinePlayers()
+	if ETW_CommonFunctions.gameMode() == ETW_CommonFunctions.GameMode.MP_SERVER then
+		local players = ETW_CommonFunctions.playersList()
 		local activePlayers = {}
 		for i = 0, players:size() - 1 do
 			local player = players:get(i)
@@ -966,19 +1065,8 @@ local function everyOneMinute()
 end
 
 ---@param player IsoPlayer
-local function onEquipmentChanged(player)
-	refreshEquippedItemTraits(player)
-end
-
----@param player IsoPlayer
-local function onWeaponSwing(player)
-	combatWeaponTraits(player)
-end
-
----@param player IsoPlayer
 ---@param args table
 function Commands.refreshEquippedItemTraits(player, args)
-	refreshEquippedItemTraits(player)
 	logETW(
 		"ETW Logger | Commands.refreshEquippedItemTraits(): refreshed equipped item traits for "
 			.. tostring(player:getUsername())
@@ -986,6 +1074,20 @@ function Commands.refreshEquippedItemTraits(player, args)
 			.. player:getOnlineID()
 			.. ")"
 	)
+	refreshEquippedItemTraits(player)
+end
+
+---@param player IsoPlayer
+---@param args table
+function Commands.refreshEquippedWeaponTraits(player, args)
+	logETW(
+		"ETW Logger | Commands.refreshEquippedWeaponTraits(): refreshed equipped weapon traits for "
+			.. tostring(player:getUsername())
+			.. " (OnlineID="
+			.. player:getOnlineID()
+			.. ")"
+	)
+	combatWeaponTraits(player)
 end
 
 local function onClientCommand(module, command, player, args)
@@ -996,11 +1098,13 @@ end
 
 Events.EveryOneMinute.Remove(everyOneMinute)
 Events.EveryOneMinute.Add(everyOneMinute)
-Events.OnEquipPrimary.Remove(onEquipmentChanged)
-Events.OnEquipPrimary.Add(onEquipmentChanged)
-Events.OnWeaponSwing.Remove(onWeaponSwing)
-Events.OnWeaponSwing.Add(onWeaponSwing)
+Events.OnEquipPrimary.Remove(refreshEquippedItemTraits)
+Events.OnEquipPrimary.Add(refreshEquippedItemTraits)
 Events.OnClientCommand.Remove(onClientCommand)
 Events.OnClientCommand.Add(onClientCommand)
+if ETW_CommonFunctions.gameMode() == ETW_CommonFunctions.GameMode.SP then
+	Events.OnWeaponSwing.Remove(combatWeaponTraits)
+	Events.OnWeaponSwing.Add(combatWeaponTraits)
+end
 
 return ETW_ItemTraits

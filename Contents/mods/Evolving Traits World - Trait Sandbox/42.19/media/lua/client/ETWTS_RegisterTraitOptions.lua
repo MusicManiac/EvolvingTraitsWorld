@@ -4,6 +4,7 @@ local StarlitTraits = require("Starlit/sandbox/Traits")
 -- then negates it to obtain CharacterTraitDefinition:getCost(). Therefore each
 -- default below is the inverse of the Cost in ETW_Traits.txt.
 local traits = {
+	{ id = "ActionHero", pointValue = -8 },
 	{ id = "AntiGunActivist", pointValue = 6 },
 	{ id = "AVClub", pointValue = -4 },
 	{ id = "Anemic", pointValue = 4 },

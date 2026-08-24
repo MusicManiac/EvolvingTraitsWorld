@@ -18,6 +18,53 @@ ETW_CommonFunctions.gameModeSafeguard(
 	{ ETW_CommonFunctions.GameMode.SP, ETW_CommonFunctions.GameMode.MP_CLIENT, ETW_CommonFunctions.GameMode.MP_SERVER }
 )
 
+---Visits every living zombie within a bounded two-dimensional radius of the player.
+---Only loaded moving objects on the player's current Z-level are considered.
+---@param player IsoPlayer
+---@param radius number
+---@param visitor fun(zombie: IsoZombie, distanceSquared: number)|nil
+---@return integer nearbyCount
+function ETWCombinedTraitChecks.forEachNearbyLivingZombie(player, radius, visitor)
+	radius = math.max(0, radius)
+	local cell = player:getCell()
+	if not cell then
+		return 0
+	end
+
+	local playerX = player:getX()
+	local playerY = player:getY()
+	local playerZ = math.floor(player:getZ())
+	local tileX = math.floor(playerX)
+	local tileY = math.floor(playerY)
+	local tileRadius = math.ceil(radius)
+	local radiusSquared = radius * radius
+	local nearbyCount = 0
+
+	for x = tileX - tileRadius, tileX + tileRadius do
+		for y = tileY - tileRadius, tileY + tileRadius do
+			local square = cell:getGridSquare(x, y, playerZ)
+			if square then
+				local movingObjects = square:getMovingObjects()
+				for i = 0, movingObjects:size() - 1 do
+					local object = movingObjects:get(i)
+					if instanceof(object, "IsoZombie") and not object:isDead() then
+						local deltaX = object:getX() - playerX
+						local deltaY = object:getY() - playerY
+						local distanceSquared = deltaX * deltaX + deltaY * deltaY
+						if distanceSquared <= radiusSquared then
+							nearbyCount = nearbyCount + 1
+							if visitor then
+								visitor(object, distanceSquared)
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+	return nearbyCount
+end
+
 local gymRatMuscleGroups = {
 	arms = {
 		BodyPartType.UpperArm_L,

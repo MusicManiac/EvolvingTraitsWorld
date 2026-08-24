@@ -1,5 +1,15 @@
 module ETW
 {
+    character_trait_definition ETW:ActionHero
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:ActionHero,
+        Cost = 8,
+        UIName = UI_trait_ActionHero,
+        UIDescription = UI_trait_ActionHeroDesc,
+    }
+
     character_trait_definition ETW:AntiGunActivist
     {
         IsProfessionTrait = false,

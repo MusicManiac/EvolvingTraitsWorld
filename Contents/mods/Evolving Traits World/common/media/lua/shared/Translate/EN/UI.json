@@ -78,6 +78,8 @@
     "UI_optionscreen_binding_ETW_UI_Toggle": "Toggle Evolving Traits World UI",
     "UI_trait_AVClub": "AV Club Member",
     "UI_trait_AVClubDesc": "You are a part of the AV Club",
+    "UI_trait_ActionHero": "Action Hero",
+    "UI_trait_ActionHeroDesc": "You live for the thick of the fight.<br>Your weapons deal half their normal damage when no enemies are nearby, but gain damage and critical chance for every living zombie within 10 tiles. Closer zombies provide larger bonuses.",
     "UI_trait_Anemic": "Anemic",
     "UI_trait_AnemicDesc": "You lose health more rapidly from unstemmed bleeding wounds.",
     "UI_trait_AntiGunActivist": "Anti-Gun Activist",
