@@ -1,63 +1,63 @@
 version=1
 id=2914075159
 title=Evolving Traits World (ETW) - alternative to "Dynamic Traits"
-description=[h1]Welcome to the world of Evolving Traits[/h1]
-description=This mod allows you to get really ripped in PZ and see an actual character progression besides getting your skills from lvl 0 to lvl10. You'll be able to purge the majority of negative traits and earn a lot of positive ones (but also earn some negative ones as well). This would help you to go from your average Joe to actual GigaChad in-game. You repair a lot of cars? You get better at it. You train yourself to take long-range kills with proper rifles? Why wouldn't it warranty getting Eagle-Eyed? You pick up thousands of plants through your lifetime and still can't call yourself Herbalist? Yea, that doesn't sound right to me. You maintain great sleeping schedule but for some reason you still need same amount of sleep as when you were sleeping whenever? Not anymore. Welcome to the Dynamic Traits World, ladies and gentlemen!
-description=
-description=[h1]Features[/h1]
-description=[list]
-description=[*]UI with all needed mod information in-game! Default hotkey is "[", changeable in settings.
-description=[*]70+ dynamic traits (vanilla + added by the mod).
-description=[*][h3][b]FULL sandbox customization[/b]. Choose which perks you want to be dynamic, choose how fast you get them, choose how fast you lose them, customize anything with more than 150 sandbox options. Nothing is forced upon player, if you like 1% of the mod, you can literally set it up so you get to use that 1% and nothing else.[/h3]
-description=[*]Advanced systems that affect a lot of traits. Affinity system, that allows you to stick to your starting traits better. Delayed traits system, that allows you to get/remove traits with random delay.
-description=[*]Supported by [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3766701843]Mark Dynamic Traits Framework (MDTF)[/url]
-description=[*]For new traits (aka not vanilla game), customization is also present. Want Hoarder perk to give you more carry weight per point of STR? Go adjust it in Sandbox. Want to be even happier under rain with Pluviophile? Sandbox it is.
-description=[*]Optional [b]Trait Sandbox[/b] submod: enable/disable ETW-added traits and change their point values. Requires [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3378285185]Starlit Library[/url].
-description=[*]Client-sided configuration available.
-description=[*]Legacy (b41) version can be found [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3773982162]here[/url].
-description=[/list]
-description=
-description=[h1]Compatibility and Installation[/h1]
-description=Installation instructions can be found in [url=https://steamcommunity.com/workshop/filedetails/discussion/2914075159/3767857092594929252/]this discussion[/url].
-description=List of compatible/incompatible mods can be found in [url=https://steamcommunity.com/workshop/filedetails/discussion/2914075159/4290313152633468883/]this discussion[/url], including details on: Dynamic Traits, More Traits, zRe ARMOR PACK by kERHUS, Simple Overhaul: Traits and Occupations (SOTO), More Simple Traits (MST), Explorer Trait, SixthSense, Superb Survivors!
-description=
-description=[h1]Recommended Mods (b41)[/h1]
-description=[list]
-description=[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=2894296454]Change Sandbox Options (by Star)[/url] - use this to change SP starting options mid-game. [b]ATTENTION[/b]: upon changing any settings it's highly recommended to reload save (if SP) or rejoin server (if MP) for technical reasons (mod decides what to run based on sandbox settings when character is loaded in game world)
-description=[/list]
-description=
-description=[h1]GitHub and Discord[/h1]
-description=If you want to submit translation files, make suggestions or report bugs, the easiest way to do it would be on Discord.
-description=[url=https://discord.gg/8pBN5Ccm7z][img]https://cdn.iconscout.com/icon/free/png-256/discord-3691244-3073764.png[/img][/url][url=https://github.com/MusicManiac/DynamicTraitsWorld][img]https://cdn.iconscout.com/icon/free/png-256/github-163-761603.png[/img][/url]
-description=
-description=[h1]Credits and Translations[/h1]
-description=List of credits, contributors and translators can be found in [url=https://steamcommunity.com/workshop/filedetails/discussion/2914075159/3785877016603169742/]this discussion[/url] (hitting description limit so had to move it).
-description=Currently mod supports following languages (note that not all translations are 100% complete as mod is getting updates):
-description=[list]
-description=[*]English
-description=[*]Italiano / Italian
-description=[*]Español / Spanish
-description=[*]簡体中文 / Chinese
-description=[*]繁體中文 / Traditional Chinese
-description=[*]Português Brasileiro / Brazilian Portuguese
-description=[*]한국어 / Korean
-description=[*]日本語 / Japanese
-description=[*]Türkçe / Turkish
-description=[*]Deutsch / German
-description=[*]Українська / Ukrainian
-description=[*]Русский/Russian
-description=[/list]
-description=
-description=[h1]Afterword and Permission[/h1]
-description=If you like this mod, check out collection on top of page for other mods I made or collaborated on! Rate ups are appreciated, and if you wanna send me a coffee, that's a real homie move, and you can do it here:
-description=[url=https://ko-fi.com/musicmaniac][img]https://uploads-ssl.webflow.com/5c14e387dab576fe667689cf/61e11d5cf697cee7ca5b65d9_Button-p-500.png[/img][/url]
-description=
-description=[quote]⛔ Permissions
-description=Redistribution of this mod without explicit permission from the creator is prohibited under any circumstances. This includes, but not limited to, uploading this mod to the Steam Workshop or any other site, distribution as part of another mod or modpack, distribution of modified versions.
-description=© 2026 [url=https://steamcommunity.com/profiles/76561198152820942]MusicManiac[/url] (SteamID64: 76561198152820942)[/quote]
-description=
-description=Workshop ID: 2914075159
-description=Mod ID: EvolvingTraitsWorld
-description=Mod ID: EvolvingTraitsWorldTraitSandbox
+description=[h1]Welcome to the world of Evolving Traits[/h1]
+description=This mod allows you to get really ripped in PZ and see an actual character progression besides getting your skills from lvl 0 to lvl10. You'll be able to purge the majority of negative traits and earn a lot of positive ones (but also earn some negative ones as well). This would help you to go from your average Joe to actual GigaChad in-game. You repair a lot of cars? You get better at it. You train yourself to take long-range kills with proper rifles? Why wouldn't it warranty getting Eagle-Eyed? You pick up thousands of plants through your lifetime and still can't call yourself Herbalist? Yea, that doesn't sound right to me. You maintain great sleeping schedule but for some reason you still need same amount of sleep as when you were sleeping whenever? Not anymore. Welcome to the Dynamic Traits World, ladies and gentlemen!
+description=
+description=[h1]Features[/h1]
+description=[list]
+description=[*]UI with all needed mod information in-game! Default hotkey is "[", changeable in settings.
+description=[*]70+ dynamic traits (vanilla + added by the mod).
+description=[*][h3][b]FULL sandbox customization[/b]. Choose which perks you want to be dynamic, choose how fast you get them, choose how fast you lose them, customize anything with more than 150 sandbox options. Nothing is forced upon player, if you like 1% of the mod, you can literally set it up so you get to use that 1% and nothing else.[/h3]
+description=[*]Advanced systems that affect a lot of traits. Affinity system, that allows you to stick to your starting traits better. Delayed traits system, that allows you to get/remove traits with random delay.
+description=[*]Supported by [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3766701843]Mark Dynamic Traits Framework (MDTF)[/url]
+description=[*]For new traits (aka not vanilla game), customization is also present. Want Hoarder perk to give you more carry weight per point of STR? Go adjust it in Sandbox. Want to be even happier under rain with Pluviophile? Sandbox it is.
+description=[*]Optional [b]Trait Sandbox[/b] submod: enable/disable ETW-added traits and change their point values. Requires [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3378285185]Starlit Library[/url].
+description=[*]Client-sided configuration available.
+description=[*]Legacy (b41) version can be found [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3773982162]here[/url].
+description=[/list]
+description=
+description=[h1]Compatibility and Installation[/h1]
+description=Installation instructions can be found in [url=https://steamcommunity.com/workshop/filedetails/discussion/2914075159/3767857092594929252/]this discussion[/url].
+description=List of compatible/incompatible mods can be found in [url=https://steamcommunity.com/workshop/filedetails/discussion/2914075159/4290313152633468883/]this discussion[/url], including details on: Dynamic Traits, More Traits, zRe ARMOR PACK by kERHUS, Simple Overhaul: Traits and Occupations (SOTO), More Simple Traits (MST), Explorer Trait, SixthSense, Superb Survivors!
+description=
+description=[h1]Recommended Mods (b41)[/h1]
+description=[list]
+description=[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=2894296454]Change Sandbox Options (by Star)[/url] - use this to change SP starting options mid-game. [b]ATTENTION[/b]: upon changing any settings it's highly recommended to reload save (if SP) or rejoin server (if MP) for technical reasons (mod decides what to run based on sandbox settings when character is loaded in game world)
+description=[/list]
+description=
+description=[h1]GitHub and Discord[/h1]
+description=If you want to submit translation files, make suggestions or report bugs, the easiest way to do it would be on Discord.
+description=[url=https://discord.gg/8pBN5Ccm7z][img]https://cdn.iconscout.com/icon/free/png-256/discord-3691244-3073764.png[/img][/url][url=https://github.com/MusicManiac/DynamicTraitsWorld][img]https://cdn.iconscout.com/icon/free/png-256/github-163-761603.png[/img][/url]
+description=
+description=[h1]Credits and Translations[/h1]
+description=List of credits, contributors and translators can be found in [url=https://steamcommunity.com/workshop/filedetails/discussion/2914075159/3785877016603169742/]this discussion[/url] (hitting description limit so had to move it).
+description=Currently mod supports following languages (note that not all translations are 100% complete as mod is getting updates):
+description=[list]
+description=[*]English
+description=[*]Italiano / Italian
+description=[*]Español / Spanish
+description=[*]簡体中文 / Chinese
+description=[*]繁體中文 / Traditional Chinese
+description=[*]Português Brasileiro / Brazilian Portuguese
+description=[*]한국어 / Korean
+description=[*]日本語 / Japanese
+description=[*]Türkçe / Turkish
+description=[*]Deutsch / German
+description=[*]Українська / Ukrainian
+description=[*]Русский/Russian
+description=[/list]
+description=
+description=[h1]Afterword and Permission[/h1]
+description=If you like this mod, check out collection on top of page for other mods I made or collaborated on! Rate ups are appreciated, and if you wanna send me a coffee, that's a real homie move, and you can do it here:
+description=[url=https://ko-fi.com/musicmaniac][img]https://uploads-ssl.webflow.com/5c14e387dab576fe667689cf/61e11d5cf697cee7ca5b65d9_Button-p-500.png[/img][/url]
+description=
+description=[quote]⛔ Permissions
+description=Redistribution of this mod without explicit permission from the creator is prohibited under any circumstances. This includes, but not limited to, uploading this mod to the Steam Workshop or any other site, distribution as part of another mod or modpack, distribution of modified versions.
+description=© 2026 [url=https://steamcommunity.com/profiles/76561198152820942]MusicManiac[/url] (SteamID64: 76561198152820942)[/quote]
+description=
+description=Workshop ID: 2914075159
+description=Mod ID: EvolvingTraitsWorld
+description=Mod ID: EvolvingTraitsWorldTraitSandbox
 tags=Build 42;Balance;Hardmode;Interface;Misc;Multiplayer;Realistic;Silly/Fun;Skills;Traits;QoL;WIP
 visibility=public
