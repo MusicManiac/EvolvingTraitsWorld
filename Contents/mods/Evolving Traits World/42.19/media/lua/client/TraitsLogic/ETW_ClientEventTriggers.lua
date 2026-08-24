@@ -67,9 +67,19 @@ local function antiGunAimingMoodOnServer()
 		return
 	end
 	sendClientCommand(player, "ETW", "applyAntiGunAimingMood", {})
-	logETW("ETW Logger | antigun mood client: requested server mood effect while aiming " .. weapon:getFullType())
+	logETW("ETW Logger | antiGunAimingMoodOnServer(): requested server mood effect while aiming " .. weapon:getFullType())
 end
 
+---Reports client-authoritative firearm aiming for Anti-Gun Activist's server-authoritative mood effect.
+local function weaponSwingOnServer()
+	local player = getPlayer()
+	sendClientCommand(player, "ETW", "refreshEquippedWeaponTraits", {})
+	logETW("ETW Logger | weaponSwingOnServer(): requested server weapon-trait refresh")
+end
+
+
+Events.OnWeaponSwing.Remove(weaponSwingOnServer)
+Events.OnWeaponSwing.Add(weaponSwingOnServer)
 Events.OnClothingUpdated.Remove(clothingRefreshOnServer)
 Events.OnClothingUpdated.Add(clothingRefreshOnServer)
 Events.OnPlayerDeath.Remove(deathRefreshOnServer)

@@ -3,6 +3,7 @@ ETW_Registry = ETW_Registry or {}
 
 ---@class EvolvingTraitsWorldTraitsRegistries
 ---@field AV_CLUB CharacterTrait
+---@field ACTION_HERO CharacterTrait
 ---@field ANEMIC CharacterTrait
 ---@field ANTI_GUN_ACTIVIST CharacterTrait
 ---@field AXE_THROWER CharacterTrait
@@ -59,6 +60,7 @@ ETW_Registry = ETW_Registry or {}
 ---@field WELL_FITTED CharacterTrait
 ETW_Registry.traits = {
 	AV_CLUB = CharacterTrait.register("ETW:AVClub"),
+	ACTION_HERO = CharacterTrait.register("ETW:ActionHero"),
 	ANEMIC = CharacterTrait.register("ETW:Anemic"),
 	ANTI_GUN_ACTIVIST = CharacterTrait.register("ETW:AntiGunActivist"),
 	AXE_THROWER = CharacterTrait.register("ETW:AxeThrower"),

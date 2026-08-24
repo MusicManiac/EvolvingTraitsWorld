@@ -31,28 +31,19 @@ function ETW_CombatTraits.bouncerTrait(player, modData)
 		return
 	end
 
-	local spottedZombies = player:getSpottedList()
-	if not spottedZombies or spottedZombies:size() < 3 then
-		return
-	end
-
 	local maximumDistance = math.max(0, SBvars.BouncerDistance or 1.75)
-	local nearbyCount = 0
 	local closestTarget = nil
-	local closestDistance = maximumDistance + 1
-	for i = 0, spottedZombies:size() - 1 do
-		local zombie = spottedZombies:get(i)
-		if zombie and zombie:isZombie() and not zombie:isDead() then
-			local distance = zombie:DistTo(player)
-			if distance <= maximumDistance then
-				nearbyCount = nearbyCount + 1
-				if not zombie:isKnockedDown() and distance < closestDistance then
-					closestTarget = zombie
-					closestDistance = distance
-				end
+	local closestDistanceSquared = maximumDistance * maximumDistance + 1
+	local nearbyCount = ETWCombinedTraitChecks.forEachNearbyLivingZombie(
+		player,
+		maximumDistance,
+		function(zombie, distanceSquared)
+			if not zombie:isKnockedDown() and distanceSquared < closestDistanceSquared then
+				closestTarget = zombie
+				closestDistanceSquared = distanceSquared
 			end
 		end
-	end
+	)
 	if nearbyCount < 3 or not closestTarget then
 		return
 	end
@@ -66,6 +57,7 @@ function ETW_CombatTraits.bouncerTrait(player, modData)
 	local configuredCooldown = math.max(0, SBvars.BouncerCooldown or 60)
 	modData.BouncerCooldownTicks = math.floor(configuredCooldown)
 	ETW_CommonFunctions.triggerBouncerStagger(player, closestTarget)
+	local closestDistance = math.sqrt(closestDistanceSquared)
 	logETW(
 		"ETW Logger | bouncerTrait(): triggered for "
 			.. tostring(player:getUsername())

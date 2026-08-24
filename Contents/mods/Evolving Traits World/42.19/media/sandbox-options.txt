@@ -943,6 +943,42 @@ option EvolvingTraitsWorld.NoodleLegsTripChanceOneIn
 	page = ETWTraitsSettings,
 	translation = ETW_NoodleLegsTripChanceOneIn,
 }
+option EvolvingTraitsWorld.ActionHeroBaseDamagePercent
+{
+	type = double,
+	min = 0,
+	max = 200,
+	default = 50,
+	page = ETWTraitsSettings,
+	translation = ETW_ActionHeroBaseDamagePercent,
+}
+option EvolvingTraitsWorld.ActionHeroCloseDamageBonusPercent
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 10,
+	page = ETWTraitsSettings,
+	translation = ETW_ActionHeroCloseDamageBonusPercent,
+}
+option EvolvingTraitsWorld.ActionHeroBaseCriticalChance
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 10,
+	page = ETWTraitsSettings,
+	translation = ETW_ActionHeroBaseCriticalChance,
+}
+option EvolvingTraitsWorld.ActionHeroCloseCriticalChanceBonus
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 10,
+	page = ETWTraitsSettings,
+	translation = ETW_ActionHeroCloseCriticalChanceBonus,
+}
 option EvolvingTraitsWorld.BouncerChance
 {
 	type = integer,
@@ -965,7 +1001,7 @@ option EvolvingTraitsWorld.BouncerDistance
 {
 	type = double,
 	min = 0.25,
-	max = 5,
+	max = 3,
 	default = 1.75,
 	page = ETWTraitsSettings,
 	translation = ETW_BouncerDistance,
