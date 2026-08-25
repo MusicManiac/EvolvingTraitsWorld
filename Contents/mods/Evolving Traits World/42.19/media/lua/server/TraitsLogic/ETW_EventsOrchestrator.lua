@@ -70,13 +70,20 @@ local function oneMinuteUpdate()
 		if
 			-- server doesn't know when player is aiming, so in MP it's covered via command from MP Client, but in SP we can check it here
 			gameMode == ETW_CommonFunctions.GameMode.SP
-			and player:hasTrait(ETWTraitsRegistry.ANTI_GUN_ACTIVIST)
+			and (
+				player:hasTrait(ETWTraitsRegistry.ANTI_GUN_ACTIVIST)
+				or player:hasTrait(ETWTraitsRegistry.TERMINATOR)
+			)
 			and player:isAiming()
 		then
 			local weapon = player:getPrimaryHandItem()
 			stats = stats or player:getStats()
 			if weapon and instanceof(weapon, "HandWeapon") and weapon:getSubCategory() == "Firearm" then
-				ETW_CombatTraits.antiGunMentalTrait(player, stats)
+				if player:hasTrait(ETWTraitsRegistry.TERMINATOR) then
+					ETW_CombatTraits.terminatorMentalTrait(player, stats)
+				else
+					ETW_CombatTraits.antiGunMentalTrait(player, stats)
+				end
 			end
 		end
 		if player:hasTrait(ETWTraitsRegistry.DEPRESSIVE) then

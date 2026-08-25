@@ -56,6 +56,7 @@ ETW_Registry = ETW_Registry or {}
 ---@field SUN_SENSITIVITY CharacterTrait
 ---@field SUPER_IMMUNE CharacterTrait
 ---@field TAVERN_BRAWLER CharacterTrait
+---@field TERMINATOR CharacterTrait
 ---@field THICK_BLOODED CharacterTrait
 ---@field THUGGISH CharacterTrait
 ---@field UNWAVERING CharacterTrait
@@ -115,6 +116,7 @@ ETW_Registry.traits = {
 	SUN_SENSITIVITY = CharacterTrait.register("ETW:SunSensitivity"),
 	SUPER_IMMUNE = CharacterTrait.register("ETW:SuperImmune"),
 	TAVERN_BRAWLER = CharacterTrait.register("ETW:TavernBrawler"),
+	TERMINATOR = CharacterTrait.register("ETW:Terminator"),
 	THICK_BLOODED = CharacterTrait.register("ETW:ThickBlooded"),
 	THUGGISH = CharacterTrait.register("ETW:Thuggish"),
 	UNWAVERING = CharacterTrait.register("ETW:Unwavering"),

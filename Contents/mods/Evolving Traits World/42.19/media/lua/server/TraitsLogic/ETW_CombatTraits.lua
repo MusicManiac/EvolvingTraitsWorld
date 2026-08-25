@@ -348,6 +348,37 @@ function ETW_CombatTraits.antiGunMentalTrait(player, stats, increase, source)
 	)
 end
 
+---Reduces panic and stress while Terminator aims a firearm.
+---@param player IsoPlayer
+---@param stats Stats
+---@param source string|nil
+function ETW_CombatTraits.terminatorMentalTrait(player, stats, source)
+	local panic = stats:get(CharacterStat.PANIC)
+	local stress = stats:get(CharacterStat.STRESS)
+	local panicReduction = math.max(0, SBvars.TerminatorPanicReductionPerMinute or 10)
+	local stressReduction = math.max(0, SBvars.TerminatorStressReductionPercentPerMinute or 1) / 100
+	local resultingPanic = math.max(0, panic - panicReduction)
+	local resultingStress = math.max(0, stress - stressReduction)
+	stats:set(CharacterStat.PANIC, resultingPanic)
+	stats:set(CharacterStat.STRESS, resultingStress)
+	logETW(
+		"ETW Logger | terminator mood: "
+			.. tostring(player:getUsername())
+			.. " (OnlineID="
+			.. player:getOnlineID()
+			.. "); panic: "
+			.. panic
+			.. "->"
+			.. resultingPanic
+			.. "; stress: "
+			.. stress
+			.. "->"
+			.. resultingStress
+			.. "; source: "
+			.. (source or "aiming")
+	)
+end
+
 ---Processes Bloodlust when a nearby zombie dies.
 ---@param zombie IsoZombie
 function ETW_CombatTraits.onZombieDead(zombie)

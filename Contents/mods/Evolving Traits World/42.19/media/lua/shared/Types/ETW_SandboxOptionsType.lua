@@ -83,6 +83,12 @@
 --- @field SleepMoodle boolean
 -- Traits
 --- @field AntiGunAimingTimeMultiplier number
+--- @field TerminatorDamageBonusPercent integer
+--- @field TerminatorAimingTimeMultiplier number
+--- @field TerminatorMaxRangeBonus number
+--- @field TerminatorJamChanceMultiplier number
+--- @field TerminatorPanicReductionPerMinute number
+--- @field TerminatorStressReductionPercentPerMinute number
 --- @field AntiGunMaxRangePenalty number
 --- @field AntiGunUnhappinessPerMinute number
 --- @field AntiGunAimingXPPenaltyPercent integer
