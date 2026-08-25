@@ -24,6 +24,65 @@ local INDEFATIGABLE_PROTECTION_DURATION_MS = 120000
 local INDEFATIGABLE_TRIGGER_RADIUS = 1.5
 local INDEFATIGABLE_KNOCKDOWN_RADIUS = 2.5
 
+---Prevents Knox Infection, wound infections, colds, and disease.
+---@param player IsoPlayer
+---@param bodyDamage BodyDamage
+function ETW_HealthTraits.superImmuneTrait(player, bodyDamage)
+	local stats = player:getStats()
+	local zombieInfection = stats:get(CharacterStat.ZOMBIE_INFECTION)
+	local zombieFever = stats:get(CharacterStat.ZOMBIE_FEVER)
+	local bodyInfected = bodyDamage:isInfected()
+	local hasCold = bodyDamage:isHasACold()
+	local catchACold = bodyDamage:getCatchACold()
+	local coldStrength = bodyDamage:getColdStrength()
+	local infectedParts = 0
+	local parts = bodyDamage:getBodyParts()
+	for i = 0, parts:size() - 1 do
+		local part = parts:get(i)
+		if part:IsInfected() or part:isInfectedWound() or part:getWoundInfectionLevel() > 0 then
+			part:SetInfected(false)
+			part:setInfectedWound(false)
+			part:setWoundInfectionLevel(0)
+			infectedParts = infectedParts + 1
+		end
+	end
+
+	if
+		not bodyInfected
+		and not hasCold
+		and zombieInfection <= 0
+		and zombieFever <= 0
+		and catchACold <= 0
+		and coldStrength <= 0
+		and infectedParts == 0
+	then
+		return
+	end
+
+	bodyDamage:setInfected(false)
+	bodyDamage:setInfectionMortalityDuration(-1)
+	bodyDamage:setInfectionTime(-1)
+	bodyDamage:setHasACold(false)
+	bodyDamage:setCatchACold(0)
+	bodyDamage:setColdStrength(0)
+	stats:set(CharacterStat.ZOMBIE_INFECTION, 0)
+	stats:set(CharacterStat.ZOMBIE_FEVER, 0)
+	logETW(
+		"ETW Logger | superImmuneTrait(): cleared infection or disease for "
+			.. tostring(player:getUsername())
+			.. " (OnlineID="
+			.. player:getOnlineID()
+			.. "); Knox infection: "
+			.. zombieInfection
+			.. "; zombie fever: "
+			.. zombieFever
+			.. "; cold strength: "
+			.. coldStrength
+			.. "; infected body parts: "
+			.. infectedParts
+	)
+end
+
 ---Maintains or expires Indefatigable's temporary pain and wound-movement protection.
 ---@param player IsoPlayer
 ---@param bodyDamage BodyDamage
@@ -275,8 +334,8 @@ end
 
 ---Caps pain for a player with Pain Tolerance.
 ---@param player IsoPlayer
-function ETW_HealthTraits.painToleranceTrait(player)
-	local stats = player:getStats()
+---@param stats Stats
+function ETW_HealthTraits.painToleranceTrait(player, stats)
 	local pain = stats:get(CharacterStat.PAIN)
 	if pain > SBvars.PainToleranceThreshold then
 		stats:set(CharacterStat.PAIN, SBvars.PainToleranceThreshold)
@@ -354,9 +413,9 @@ end
 
 ---Applies Quick Rest to endurance recovered since the previous tick.
 ---@param player IsoPlayer
+---@param stats Stats
 ---@param modData EvolvingTraitsWorldModData
-function ETW_HealthTraits.quickRestTrait(player, modData)
-	local stats = player:getStats()
+function ETW_HealthTraits.quickRestTrait(player, stats, modData)
 	local endurance = stats:get(CharacterStat.ENDURANCE)
 	if (player:isSitOnGround() or player:isSittingOnFurniture())
 		and endurance > modData.QuickRestLastEndurance
@@ -370,14 +429,10 @@ end
 
 ---Transfers endurance between Hardy's reserve and the normal endurance bar.
 ---@param player IsoPlayer
+---@param stats Stats
 ---@param modData EvolvingTraitsWorldModData
-function ETW_HealthTraits.hardyTrait(player, modData)
+function ETW_HealthTraits.hardyTrait(player, stats,  modData)
 	-- TODO: moodle support as a display of available endurance reserve
-	if not player:hasTrait(ETWTraitsRegistry.HARDY) then
-		modData.HardyReserve = nil
-		return
-	end
-	local stats = player:getStats()
 	local endurance = stats:get(CharacterStat.ENDURANCE)
 	local maximumReserve = PZMath.clamp((SBvars.HardyExtraEndurancePercent or 25) / 100, 0, 1)
 	local transfer = PZMath.clamp(SBvars.HardyTransferPerMinute or 0.05, 0, 1)

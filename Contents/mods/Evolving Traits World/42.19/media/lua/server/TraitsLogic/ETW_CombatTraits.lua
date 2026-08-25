@@ -327,10 +327,10 @@ end
 
 ---Adds Anti-Gun Activist unhappiness from firearm use.
 ---@param player IsoPlayer
+---@param stats Stats
 ---@param increase number|nil
 ---@param source string|nil
-function ETW_CombatTraits.antiGunMentalTrait(player, increase, source)
-	local stats = player:getStats()
+function ETW_CombatTraits.antiGunMentalTrait(player, stats, increase, source)
 	local unhappiness = stats:get(CharacterStat.UNHAPPINESS)
 	increase = math.max(0, increase or SBvars.AntiGunUnhappinessPerMinute or 0.6)
 	local resultingUnhappiness = math.min(100, unhappiness + increase)

@@ -668,6 +668,22 @@ option ETWTraitSandbox.IndefatigablePointValue
 	page = ETWTraitSandbox,
 	translation = ETWTS_IndefatigablePointValue,
 }
+option ETWTraitSandbox.SuperImmuneEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_SuperImmuneEnabled,
+}
+option ETWTraitSandbox.SuperImmunePointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = -10,
+	page = ETWTraitSandbox,
+	translation = ETWTS_SuperImmunePointValue,
+}
 option ETWTraitSandbox.GordoniteEnabled
 {
 	type = boolean,

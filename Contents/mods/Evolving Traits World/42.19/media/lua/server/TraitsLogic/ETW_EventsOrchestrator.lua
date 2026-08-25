@@ -30,59 +30,69 @@ local function oneMinuteUpdate()
 	local playersList = ETW_CommonFunctions.playersList()
 	for i = 0, playersList:size() - 1 do
 		local player = playersList:get(i)
+		local bodyDamage
+		local stats
+		local modData
 		if rainIntensity > 0 then
-			ETW_WeatherTraits.rainTraits(player, rainIntensity)
+			stats = stats or player:getStats()
+			ETW_WeatherTraits.rainTraits(player, stats, rainIntensity)
 		end
 		if fogIntensity > 0 then
-			ETW_WeatherTraits.fogTraits(player, fogIntensity)
+			stats = stats or player:getStats()
+			ETW_WeatherTraits.fogTraits(player, stats, fogIntensity)
 		end
-		local hasAnemic = player:hasTrait(ETWTraitsRegistry.ANEMIC)
-		local hasThickBlooded = player:hasTrait(ETWTraitsRegistry.THICK_BLOODED)
-		local hasSunSensitivity = player:hasTrait(ETWTraitsRegistry.SUN_SENSITIVITY)
-		local modData = ETW_CommonFunctions.getETWModData(player)
-		local shouldApplyUnwavering = player:hasTrait(ETWTraitsRegistry.UNWAVERING)
-			and modData
-			and not modData.UnwaveringInjurySpeedApplied
-		local hasSunSensitivityState = modData
-			and (modData.SunSensitivityExposure ~= nil or modData.SunSensitivityAppliedPain ~= nil)
-		if
-			hasAnemic
-			or hasThickBlooded
-			or hasSunSensitivity
-			or hasSunSensitivityState
-			or shouldApplyUnwavering
-		then
-			local bodyDamage = player:getBodyDamage()
-			if hasAnemic then
-				ETW_HealthTraits.anemicTrait(bodyDamage)
-			end
-			if hasThickBlooded then
-				ETW_HealthTraits.thickBloodedTrait(bodyDamage)
-			end
-			if modData and (hasSunSensitivity or hasSunSensitivityState) then
-				ETW_WeatherTraits.sunSensitivityTrait(player, bodyDamage, modData, hasSunSensitivity)
-			end
-			if shouldApplyUnwavering then
-				ETW_HealthTraits.unwaveringTrait(player, bodyDamage, modData)
-			end
+		if player:hasTrait(ETWTraitsRegistry.ANEMIC) then
+			bodyDamage = bodyDamage or player:getBodyDamage()
+			ETW_HealthTraits.anemicTrait(bodyDamage)
+		end
+		if player:hasTrait(ETWTraitsRegistry.THICK_BLOODED) then
+			bodyDamage = bodyDamage or player:getBodyDamage()
+			ETW_HealthTraits.thickBloodedTrait(bodyDamage)
+		end
+		if player:hasTrait(ETWTraitsRegistry.SUN_SENSITIVITY) then
+			bodyDamage = bodyDamage or player:getBodyDamage()
+			modData = modData or ETW_CommonFunctions.getETWModData(player)
+			ETW_WeatherTraits.sunSensitivityTrait(player, bodyDamage, modData)
+		end
+		if player:hasTrait(ETWTraitsRegistry.UNWAVERING) then
+			bodyDamage = bodyDamage or player:getBodyDamage()
+			modData = modData or ETW_CommonFunctions.getETWModData(player)
+			ETW_HealthTraits.unwaveringTrait(player, bodyDamage, modData)
+		end
+		if player:hasTrait(ETWTraitsRegistry.SUPER_IMMUNE) then
+			bodyDamage = bodyDamage or player:getBodyDamage()
+			ETW_HealthTraits.superImmuneTrait(player, bodyDamage)
 		end
 		if player:hasTrait(ETWTraitsRegistry.BLISSFUL) then
-			ETW_MentalTraits.blissfulTrait(player)
+			stats = stats or player:getStats()
+			ETW_MentalTraits.blissfulTrait(player, stats)
 		end
 		if
+			-- server doesn't know when player is aiming, so in MP it's covered via command from MP Client, but in SP we can check it here
 			gameMode == ETW_CommonFunctions.GameMode.SP
 			and player:hasTrait(ETWTraitsRegistry.ANTI_GUN_ACTIVIST)
 			and player:isAiming()
 		then
 			local weapon = player:getPrimaryHandItem()
+			stats = stats or player:getStats()
 			if weapon and instanceof(weapon, "HandWeapon") and weapon:getSubCategory() == "Firearm" then
-				ETW_CombatTraits.antiGunMentalTrait(player)
+				ETW_CombatTraits.antiGunMentalTrait(player, stats)
 			end
 		end
-		if modData then
-			ETW_MentalTraits.depressiveTrait(player, modData, false)
-			ETW_HealthTraits.hardyTrait(player, modData)
+		if player:hasTrait(ETWTraitsRegistry.DEPRESSIVE) then
+			stats = stats or player:getStats()
+			ETW_MentalTraits.depressiveTrait(player, modData, stats, false)
+		end
+		if player:hasTrait(ETWTraitsRegistry.HARDY) then
+			stats = stats or player:getStats()
+			ETW_HealthTraits.hardyTrait(player, stats, modData)
+		end
+		if player:hasTrait(ETWTraitsRegistry.QUICK_REST) then
+			modData = modData or ETW_CommonFunctions.getETWModData(player)
 			modData.QuickRestLastEndurance = player:getStats():get(CharacterStat.ENDURANCE)
+		end
+		if player:hasTrait(ETWTraitsRegistry.IDEAL_WEIGHT) then
+			modData = modData or ETW_CommonFunctions.getETWModData(player)
 			ETW_HealthTraits.idealWeightTrait(player, modData)
 		end
 	end
@@ -107,21 +117,23 @@ local function everyTickUpdate()
 		local player = playersList:get(i)
 		local modData = ETW_CommonFunctions.getETWModData(player)
 		local bodyDamage
-		if modData and modData.IndefatigableProtectionExpiresAt then
-			bodyDamage = player:getBodyDamage()
-			ETW_HealthTraits.indefatigableProtection(player, bodyDamage, modData)
-		end
-		if modData and player:hasTrait(ETWTraitsRegistry.INDEFATIGABLE) then
-			bodyDamage = bodyDamage or player:getBodyDamage()
-			ETW_HealthTraits.indefatigableTrait(player, bodyDamage, modData)
-		end
+		local stats
 		if player:hasTrait(ETWTraitsRegistry.PAIN_TOLERANCE) then
-			ETW_HealthTraits.painToleranceTrait(player)
+			stats = stats or player:getStats()
+			ETW_HealthTraits.painToleranceTrait(player, stats)
 		end
 		if player:hasTrait(ETWTraitsRegistry.NOODLE_LEGS) then
 			ETW_HealthTraits.noodleLegsTrait(player)
 		end
 		if modData then
+			if modData.IndefatigableProtectionExpiresAt then
+				bodyDamage = player:getBodyDamage()
+				ETW_HealthTraits.indefatigableProtection(player, bodyDamage, modData)
+			end
+			if player:hasTrait(ETWTraitsRegistry.INDEFATIGABLE) then
+				bodyDamage = bodyDamage or player:getBodyDamage()
+				ETW_HealthTraits.indefatigableTrait(player, bodyDamage, modData)
+			end
 			if player:hasTrait(ETWTraitsRegistry.BOUNCER) then
 				ETW_CombatTraits.bouncerTrait(player, modData)
 			end
@@ -129,7 +141,8 @@ local function everyTickUpdate()
 				ETW_CombatTraits.antiGunAimingXPPenalty(player, modData)
 			end
 			if player:hasTrait(ETWTraitsRegistry.QUICK_REST) then
-				ETW_HealthTraits.quickRestTrait(player, modData)
+				stats = stats or player:getStats()
+				ETW_HealthTraits.quickRestTrait(player, stats, modData)
 			end
 		end
 	end

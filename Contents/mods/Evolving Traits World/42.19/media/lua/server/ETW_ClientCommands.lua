@@ -75,7 +75,7 @@ function Commands.applyAntiGunAimingMood(player)
 		logETW("ETW Logger | antigun mood server: rejected missing firearm for " .. playerIdentifier)
 		return
 	end
-	ETW_CombatTraits.antiGunMentalTrait(player)
+	ETW_CombatTraits.antiGunMentalTrait(player, player:getStats())
 	logETW(
 		"ETW Logger | antigun mood server: applied for "
 			.. playerIdentifier
