@@ -684,6 +684,22 @@ option ETWTraitSandbox.SuperImmunePointValue
 	page = ETWTraitSandbox,
 	translation = ETWTS_SuperImmunePointValue,
 }
+option ETWTraitSandbox.TerminatorEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_TerminatorEnabled,
+}
+option ETWTraitSandbox.TerminatorPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = -14,
+	page = ETWTraitSandbox,
+	translation = ETWTS_TerminatorPointValue,
+}
 option ETWTraitSandbox.GordoniteEnabled
 {
 	type = boolean,

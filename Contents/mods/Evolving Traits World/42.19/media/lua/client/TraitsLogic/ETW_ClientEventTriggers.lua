@@ -56,12 +56,15 @@ local function deathRefreshOnServer(character)
 	equippedItemTraitsRefreshOnServer(character, "player death")
 end
 
----Reports client-authoritative firearm aiming for Anti-Gun Activist's server-authoritative mood effect.
-local function antiGunAimingMoodOnServer()
+---Reports client-authoritative firearm aiming for server-authoritative firearm-trait mood effects.
+local function firearmAimingMoodOnServer()
 	local player = getPlayer()
 	if
 		not player
-		or not player:hasTrait(ETWTraitsRegistry.ANTI_GUN_ACTIVIST)
+		or (
+			not player:hasTrait(ETWTraitsRegistry.ANTI_GUN_ACTIVIST)
+			and not player:hasTrait(ETWTraitsRegistry.TERMINATOR)
+		)
 		or not player:isAiming()
 	then
 		return
@@ -70,11 +73,19 @@ local function antiGunAimingMoodOnServer()
 	if not weapon or not instanceof(weapon, "HandWeapon") or weapon:getSubCategory() ~= "Firearm" then
 		return
 	end
-	sendClientCommand(player, "ETW", "applyAntiGunAimingMood", {})
-	logETW("ETW Logger | antiGunAimingMoodOnServer(): requested server mood effect while aiming " .. weapon:getFullType())
+	local command = player:hasTrait(ETWTraitsRegistry.TERMINATOR)
+		and "applyTerminatorAimingMood"
+		or "applyAntiGunAimingMood"
+	sendClientCommand(player, "ETW", command, {})
+	logETW(
+		"ETW Logger | firearmAimingMoodOnServer(): requested "
+			.. command
+			.. " while aiming "
+			.. weapon:getFullType()
+	)
 end
 
----Reports client-authoritative firearm aiming for Anti-Gun Activist's server-authoritative mood effect.
+---Requests a server refresh for weapon traits after a client-authoritative swing.
 local function weaponSwingOnServer()
 	local player = getPlayer()
 	sendClientCommand(player, "ETW", "refreshEquippedWeaponTraits", {})
@@ -143,7 +154,7 @@ Events.OnClothingUpdated.Remove(clothingRefreshOnServer)
 Events.OnClothingUpdated.Add(clothingRefreshOnServer)
 Events.OnPlayerDeath.Remove(deathRefreshOnServer)
 Events.OnPlayerDeath.Add(deathRefreshOnServer)
-Events.EveryOneMinute.Remove(antiGunAimingMoodOnServer)
-Events.EveryOneMinute.Add(antiGunAimingMoodOnServer)
+Events.EveryOneMinute.Remove(firearmAimingMoodOnServer)
+Events.EveryOneMinute.Add(firearmAimingMoodOnServer)
 Events.OnTick.Remove(indefatigableCrowdTriggerOnServer)
 Events.OnTick.Add(indefatigableCrowdTriggerOnServer)

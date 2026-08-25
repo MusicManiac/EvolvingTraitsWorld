@@ -37,6 +37,7 @@ local traits = {
 	{ id = "Scrapper", pointValue = -3 },
 	{ id = "SunSensitivity", pointValue = 5 },
 	{ id = "SuperImmune", pointValue = -10 },
+	{ id = "Terminator", pointValue = -14 },
 	{ id = "TavernBrawler", pointValue = -3 },
 	{ id = "WellFitted", pointValue = -4 },
 	{ id = "ThickBlooded", pointValue = -4 },

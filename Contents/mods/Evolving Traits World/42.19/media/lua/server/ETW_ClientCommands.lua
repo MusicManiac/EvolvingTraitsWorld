@@ -84,6 +84,28 @@ function Commands.applyAntiGunAimingMood(player)
 	)
 end
 
+---Validates an MP client's aiming report and applies Terminator's mood effect on the server.
+---@param player IsoPlayer
+function Commands.applyTerminatorAimingMood(player)
+	local playerIdentifier = tostring(player:getUsername()) .. " (OnlineID=" .. player:getOnlineID() .. ")"
+	if not player:hasTrait(ETWTraitsRegistry.TERMINATOR) then
+		logETW("ETW Logger | terminator mood server: rejected missing trait for " .. playerIdentifier)
+		return
+	end
+	local weapon = player:getPrimaryHandItem()
+	if not weapon or not instanceof(weapon, "HandWeapon") or weapon:getSubCategory() ~= "Firearm" then
+		logETW("ETW Logger | terminator mood server: rejected missing firearm for " .. playerIdentifier)
+		return
+	end
+	ETW_CombatTraits.terminatorMentalTrait(player, player:getStats())
+	logETW(
+		"ETW Logger | terminator mood server: applied for "
+			.. playerIdentifier
+			.. " while aiming "
+			.. weapon:getFullType()
+	)
+end
+
 ---Validates an MP client's MT-style Indefatigable crowd trigger.
 ---@param player IsoPlayer
 ---@param args table

@@ -18,7 +18,7 @@ module ETW
         Cost = -6,
         UIName = UI_trait_AntiGunActivist,
         UIDescription = UI_trait_AntiGunActivistDesc,
-        MutuallyExclusiveTraits = ETW:GunEnthusiast;ETW:ProwessGuns,
+        MutuallyExclusiveTraits = ETW:GunEnthusiast;ETW:ProwessGuns;ETW:Terminator,
     }
 
     character_trait_definition ETW:Anemic
@@ -136,6 +136,18 @@ module ETW
         UIName = UI_trait_SuperImmune,
         UIDescription = UI_trait_SuperImmuneDesc,
         MutuallyExclusiveTraits = base:pronetoillness;base:resilient,
+    }
+
+    character_trait_definition ETW:Terminator
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:Terminator,
+        Cost = 14,
+        UIName = UI_trait_Terminator,
+        UIDescription = UI_trait_TerminatorDesc,
+        XPBoosts = Aiming=3;Reloading=2;Nimble=1,
+        MutuallyExclusiveTraits = ETW:AntiGunActivist,
     }
 
     character_trait_definition ETW:IdealWeight

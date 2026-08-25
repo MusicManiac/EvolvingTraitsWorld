@@ -221,6 +221,11 @@ local function restoreCombatTraitWeapon(item)
 		if data.OriginalConditionLowerChance ~= nil then
 			item:setConditionLowerChance(data.OriginalConditionLowerChance)
 		end
+		if data.OriginalAimingTime ~= nil then
+			item:setAimingTime(data.OriginalAimingTime)
+			item:setMaxRange(data.OriginalMaxRange)
+			item:setJamGunChance(data.OriginalJamGunChance)
+		end
 		data.Applied = false
 		data.OriginalMinDamage = nil
 		data.OriginalMaxDamage = nil
@@ -245,6 +250,14 @@ local function restoreCombatTraitWeapon(item)
 		data.ActionHeroDamageMultiplier = nil
 		data.ActionHeroCriticalChanceBonus = nil
 		data.UnwaveringDamageMultiplier = nil
+		data.Terminator = nil
+		data.TerminatorDamageMultiplier = nil
+		data.TerminatorAimingTimeMultiplier = nil
+		data.TerminatorMaxRangeBonus = nil
+		data.TerminatorJamChanceMultiplier = nil
+		data.OriginalAimingTime = nil
+		data.OriginalMaxRange = nil
+		data.OriginalJamGunChance = nil
 		logETW("ETW Logger | combatWeaponTraits(): restored " .. item:getFullType())
 	end
 end
@@ -454,6 +467,20 @@ local function combatWeaponTraits(player)
 		and getUnwaveringDamageMultiplier(player)
 		or 1
 	local hasUnwaveringDamageBoost = unwaveringDamageMultiplier > 1
+	local hasTerminator = player:hasTrait(ETWTraitsRegistry.TERMINATOR)
+		and weapon:getSubCategory() == "Firearm"
+	local terminatorDamageMultiplier = hasTerminator
+		and 1 + math.max(0, SBvars.TerminatorDamageBonusPercent or 25) / 100
+		or 1
+	local terminatorAimingTimeMultiplier = hasTerminator
+		and math.max(0, SBvars.TerminatorAimingTimeMultiplier or 2)
+		or 1
+	local terminatorMaxRangeBonus = hasTerminator
+		and math.max(0, SBvars.TerminatorMaxRangeBonus or 5)
+		or 0
+	local terminatorJamChanceMultiplier = hasTerminator
+		and PZMath.clamp(SBvars.TerminatorJamChanceMultiplier or 0.5, 0, 1)
+		or 1
 	local tavernBrawlerDamageBonusPercent, tavernBrawlerConditionLossReductionPercent = 0, 0
 	if hasTavernBrawler then
 		local originalConditionLowerChance = data.Applied and data.OriginalConditionLowerChance
@@ -478,6 +505,7 @@ local function combatWeaponTraits(player)
 		and not hasGordonite
 		and not hasActionHero
 		and not hasUnwaveringDamageBoost
+		and not hasTerminator
 	then
 		if data.Applied then
 			restoreCombatTraitWeapon(weapon)
@@ -504,6 +532,11 @@ local function combatWeaponTraits(player)
 		and data.ActionHeroDamageMultiplier == actionHeroDamageMultiplier
 		and data.ActionHeroCriticalChanceBonus == actionHeroCriticalChanceBonus
 		and data.UnwaveringDamageMultiplier == unwaveringDamageMultiplier
+		and data.Terminator == hasTerminator
+		and data.TerminatorDamageMultiplier == terminatorDamageMultiplier
+		and data.TerminatorAimingTimeMultiplier == terminatorAimingTimeMultiplier
+		and data.TerminatorMaxRangeBonus == terminatorMaxRangeBonus
+		and data.TerminatorJamChanceMultiplier == terminatorJamChanceMultiplier
 		and data.SnapshotUsesRawValues == true
 		and data.CriticalChanceModified == criticalChanceModified
 	then
@@ -546,23 +579,36 @@ local function combatWeaponTraits(player)
 	data.ActionHeroDamageMultiplier = actionHeroDamageMultiplier
 	data.ActionHeroCriticalChanceBonus = actionHeroCriticalChanceBonus
 	data.UnwaveringDamageMultiplier = unwaveringDamageMultiplier
+	data.Terminator = hasTerminator
+	data.TerminatorDamageMultiplier = terminatorDamageMultiplier
+	data.TerminatorAimingTimeMultiplier = terminatorAimingTimeMultiplier
+	data.TerminatorMaxRangeBonus = terminatorMaxRangeBonus
+	data.TerminatorJamChanceMultiplier = terminatorJamChanceMultiplier
+	if hasTerminator then
+		data.OriginalAimingTime = weapon:getAimingTime()
+		data.OriginalMaxRange = weapon:getMaxRange()
+		data.OriginalJamGunChance = weapon:getJamGunChance()
+	end
 	if
 		prowessName
 		or hasTavernBrawler
 		or hasGordonite
 		or hasActionHero
 		or hasUnwaveringDamageBoost
+		or hasTerminator
 	then
 		local damageMultiplier = 1 + (damageBonusPercent + tavernBrawlerDamageBonusPercent) / 100
 		weapon:setMinDamage(
 			(data.OriginalMinDamage * damageMultiplier + gordoniteDamageBonus)
 				* actionHeroDamageMultiplier
 				* unwaveringDamageMultiplier
+				* terminatorDamageMultiplier
 		)
 		weapon:setMaxDamage(
 			(data.OriginalMaxDamage * damageMultiplier + gordoniteDamageBonus)
 				* actionHeroDamageMultiplier
 				* unwaveringDamageMultiplier
+				* terminatorDamageMultiplier
 		)
 		if (prowessName or hasGordonite or hasActionHero) and not hasMundane then
 			local criticalBonus = gordoniteCriticalChanceBonus + actionHeroCriticalChanceBonus
@@ -581,9 +627,31 @@ local function combatWeaponTraits(player)
 	if hasMundane then
 		weapon:setCriticalChance(0)
 	end
+	if hasTerminator then
+		weapon:setAimingTime(data.OriginalAimingTime * terminatorAimingTimeMultiplier)
+		weapon:setMaxRange(data.OriginalMaxRange + terminatorMaxRangeBonus)
+		weapon:setJamGunChance(data.OriginalJamGunChance * terminatorJamChanceMultiplier)
+	end
 	data.Applied = true
 	combatTraitWeapons[player] = weapon
 	local playerIdentifier = tostring(player:getUsername()) .. " (OnlineID=" .. player:getOnlineID() .. ")"
+	local terminatorDetails = ""
+	if hasTerminator then
+		terminatorDetails = "; terminator: true; terminator damage multiplier: "
+			.. terminatorDamageMultiplier
+			.. "; aiming time: "
+			.. data.OriginalAimingTime
+			.. "->"
+			.. weapon:getAimingTime()
+			.. "; max range: "
+			.. data.OriginalMaxRange
+			.. "->"
+			.. weapon:getMaxRange()
+			.. "; jam chance: "
+			.. data.OriginalJamGunChance
+			.. "->"
+			.. weapon:getJamGunChance()
+	end
 	logETW(
 		"ETW Logger | combatWeaponTraits(): applied to "
 			.. playerIdentifier
@@ -612,6 +680,7 @@ local function combatWeaponTraits(player)
 			.. actionHeroCriticalChanceBonus
 			.. "; unwavering damage multiplier: "
 			.. unwaveringDamageMultiplier
+			.. terminatorDetails
 			.. "; min damage: "
 			.. originalDisplayedMinDamage
 			.. "->"
