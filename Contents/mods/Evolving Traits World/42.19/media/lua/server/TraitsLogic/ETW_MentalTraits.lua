@@ -119,8 +119,8 @@ end
 
 ---Applies Blissful's passive mood recovery.
 ---@param player IsoPlayer
-function ETW_MentalTraits.blissfulTrait(player)
-	local stats = player:getStats()
+---@param stats Stats
+function ETW_MentalTraits.blissfulTrait(player, stats)
 	local unhappiness = stats:get(CharacterStat.UNHAPPINESS)
 	local boredom = stats:get(CharacterStat.BOREDOM)
 	local unhappinessReduction = PZMath.clamp(SBvars.BlissfulUnhappinessReductionPerMinute or 1, 0, 100)
@@ -146,12 +146,9 @@ end
 ---Starts hourly Depressive episodes and recovers their unhappiness every minute.
 ---@param player IsoPlayer
 ---@param modData EvolvingTraitsWorldModData
+---@param stats Stats
 ---@param attemptEpisode boolean
-function ETW_MentalTraits.depressiveTrait(player, modData, attemptEpisode)
-	if not player:hasTrait(ETWTraitsRegistry.DEPRESSIVE) then
-		modData.DepressiveEpisodeActive = false
-		return
-	end
+function ETW_MentalTraits.depressiveTrait(player, modData, stats, attemptEpisode)
 	local stats = player:getStats()
 	local unhappiness = stats:get(CharacterStat.UNHAPPINESS)
 	local episodeIncrease = PZMath.clamp(SBvars.DepressiveUnhappinessIncrease or 25, 0, 100)

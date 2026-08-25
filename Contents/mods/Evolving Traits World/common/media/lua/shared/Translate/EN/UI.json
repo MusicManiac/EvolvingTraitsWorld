@@ -92,6 +92,8 @@
     "UI_trait_BouncerDesc": "You've roughed people up now and again.<br>When three or more zombies crowd around you, you may automatically stagger one of them.",
     "UI_trait_Indefatigable": "Indefatigable",
     "UI_trait_IndefatigableDesc": "You are exceptionally difficult to kill.<br>Falling near death or having four zombies crowd within 1.5 tiles restores your health and endurance, removes fatigue, and knocks down zombies within 2.5 tiles. For two real-time minutes, pain and wound movement penalties are suppressed.<br>This does not close wounds or cure zombification.",
+    "UI_trait_SuperImmune": "Super-Immune",
+    "UI_trait_SuperImmuneDesc": "You are immune to the Knox Infection, ordinary wound infections, colds, and disease.",
     "UI_trait_Butterfingers": "Butterfingers",
     "UI_trait_ButterfingersDesc": "You may drop held items while moving. Heavy loads and running make this more likely.<br>You may also accidentally drop items on the ground while transferring them.",
     "UI_trait_Depressive": "Depressive",

@@ -23,20 +23,8 @@ local logETW = ETW_CommonFunctions.log
 ---@param player IsoPlayer
 ---@param bodyDamage BodyDamage
 ---@param modData EvolvingTraitsWorldModData
----@param hasTrait boolean
-function ETW_WeatherTraits.sunSensitivityTrait(player, bodyDamage, modData, hasTrait)
+function ETW_WeatherTraits.sunSensitivityTrait(player, bodyDamage, modData)
 	local previousAppliedPain = modData.SunSensitivityAppliedPain or 0
-	if not hasTrait then
-		if previousAppliedPain > 0 then
-			local head = bodyDamage:getBodyPart(BodyPartType.Head)
-			head:setAdditionalPain(math.max(0, head:getAdditionalPain() - previousAppliedPain))
-			logETW("ETW Logger | sunSensitivityTrait(): removed lingering ETW head pain")
-		end
-		modData.SunSensitivityExposure = nil
-		modData.SunSensitivityAppliedPain = nil
-		return
-	end
-
 	local exposure = modData.SunSensitivityExposure or 0
 	local maximumPain = math.max(0, SBvars.SunSensitivityMaximumPain or 40)
 	local exposurePerMinute = math.max(0, SBvars.SunSensitivityExposurePerMinute or 1)
@@ -94,8 +82,9 @@ function ETW_WeatherTraits.sunSensitivityTrait(player, bodyDamage, modData, hasT
 end
 
 ---@param player IsoPlayer
+---@param stats Stats
 ---@param rainIntensity number
-function ETW_WeatherTraits.rainTraits(player, rainIntensity)
+function ETW_WeatherTraits.rainTraits(player, stats, rainIntensity)
 	local pluviophobia = player:hasTrait(ETWTraitsRegistry.PLUVIOPHOBIA)
 	local pluviophile = player:hasTrait(ETWTraitsRegistry.PLUVIOPHILE)
 	-- TODO: vehicle front window check, if its broken
@@ -104,7 +93,6 @@ function ETW_WeatherTraits.rainTraits(player, rainIntensity)
 		local secondaryItem = player:getSecondaryHandItem()
 		local rainProtection = (primaryItem and primaryItem:isProtectFromRainWhileEquipped())
 			or (secondaryItem and secondaryItem:isProtectFromRainWhileEquipped())
-		local stats = player:getStats()
 		local nicotineWithdrawal = stats:get(CharacterStat.NICOTINE_WITHDRAWAL)
 		if pluviophobia then
 			local unhappinessIncrease = 0.1
@@ -153,12 +141,12 @@ function ETW_WeatherTraits.rainTraits(player, rainIntensity)
 end
 
 ---@param player IsoPlayer
+---@param stats Stats
 ---@param fogIntensity number
-function ETW_WeatherTraits.fogTraits(player, fogIntensity)
+function ETW_WeatherTraits.fogTraits(player, stats, fogIntensity)
 	local homichlophobia = player:hasTrait(ETWTraitsRegistry.HOMICHLOPHOBIA)
 	local homichlophile = player:hasTrait(ETWTraitsRegistry.HOMICHLOPHILE)
 	if (homichlophobia or homichlophile) and player:isOutside() and player:getVehicle() == nil then
-		local stats = player:getStats()
 		local nicotineWithdrawal = stats:get(CharacterStat.NICOTINE_WITHDRAWAL)
 		if homichlophobia then
 			local panicIncrease = 4 * fogIntensity * SBvars.HomichlophobiaMultiplier

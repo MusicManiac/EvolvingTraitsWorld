@@ -127,6 +127,17 @@ module ETW
         UIDescription = UI_trait_IndefatigableDesc,
     }
 
+    character_trait_definition ETW:SuperImmune
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:SuperImmune,
+        Cost = 10,
+        UIName = UI_trait_SuperImmune,
+        UIDescription = UI_trait_SuperImmuneDesc,
+        MutuallyExclusiveTraits = base:pronetoillness;base:resilient,
+    }
+
     character_trait_definition ETW:IdealWeight
     {
         IsProfessionTrait = false,

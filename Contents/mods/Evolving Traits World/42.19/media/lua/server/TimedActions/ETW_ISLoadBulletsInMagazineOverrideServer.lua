@@ -43,6 +43,7 @@ function ISLoadBulletsInMagazine:animEvent(event, parameter)
 
 	ETW_CombatTraits.antiGunMentalTrait(
 		player,
+		player:getStats(),
 		SBvars.AntiGunMagazineHandlingUnhappinessPerBullet or 0.1,
 		"magazine loading"
 	)
