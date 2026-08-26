@@ -183,4 +183,27 @@ function ETW_MentalTraits.depressiveTrait(player, modData, stats, attemptEpisode
 	end
 end
 
+function ETW_MentalTraits.asceticTrait(player, stats)
+	local unhappiness = stats:get(CharacterStat.UNHAPPINESS)
+	local boredom = stats:get(CharacterStat.BOREDOM)
+	local unhappinessReduction = PZMath.clamp(SBvars.AsceticUnhappinessReductionPerMinute or 0.25, 0, 100)
+	local boredomReduction = PZMath.clamp(SBvars.AsceticBoredomReductionPerMinute or 0.25, 0, 100)
+	local resultingUnhappiness = math.max(0, unhappiness - unhappinessReduction)
+	local resultingBoredom = math.max(0, boredom - boredomReduction)
+	if resultingUnhappiness ~= unhappiness or resultingBoredom ~= boredom then
+		stats:set(CharacterStat.UNHAPPINESS, resultingUnhappiness)
+		stats:set(CharacterStat.BOREDOM, resultingBoredom)
+		logETW(
+			"ETW Logger | asceticTrait(): unhappiness: "
+				.. unhappiness
+				.. "->"
+				.. resultingUnhappiness
+				.. ", boredom: "
+				.. boredom
+				.. "->"
+				.. resultingBoredom
+		)
+	end
+end
+
 return ETW_MentalTraits

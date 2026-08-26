@@ -1,11 +1,15 @@
 local ETW_CommonFunctions = require("ETW_CommonFunctions")
 local ETW_CommonLogicChecks = require("ETW_CommonLogicChecks")
+local ETW_Registry = require("ETW_Registry")
 
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld
 
 ---@type fun(...: string)
 local logETW = ETW_CommonFunctions.log
+
+---@type EvolvingTraitsWorldTraitsRegistries
+local ETWTraitsRegistry = ETW_Registry.traits
 
 local FILENAME = "ETW_ISReadABookOverrideServer.lua"
 
@@ -20,6 +24,75 @@ end
 
 local currentlyReadingBook = {}
 local DEFAULT_NUMBER_OF_PAGES = 5
+
+local asceticComicTypes = {
+	["Base.ComicBook"] = true,
+	["Base.ComicBook_Retail"] = true,
+}
+
+---@class AsceticComicMoodSnapshot
+---@field boredom number
+---@field stress number
+---@field unhappiness number
+
+---Captures the mood state that reading a comic must not improve for an Ascetic.
+---@param action ISReadABook
+---@param completed boolean
+---@return AsceticComicMoodSnapshot|nil
+local function captureAsceticComicMood(action, completed)
+	if
+		not completed
+		or SBvars.AsceticReadingEffect == false
+		or not action.character:hasTrait(ETWTraitsRegistry.ASCETIC)
+		or not asceticComicTypes[action.item:getFullType()]
+	then
+		return nil
+	end
+
+	local stats = action.character:getStats()
+	return {
+		boredom = stats:get(CharacterStat.BOREDOM),
+		stress = stats:get(CharacterStat.STRESS),
+		unhappiness = stats:get(CharacterStat.UNHAPPINESS),
+	}
+end
+
+---Restores any mood reductions granted by a completed comic.
+---@param action ISReadABook
+---@param snapshot AsceticComicMoodSnapshot|nil
+local function suppressAsceticComicMood(action, snapshot)
+	if not snapshot then
+		return
+	end
+
+	local stats = action.character:getStats()
+	local boredomAfter = stats:get(CharacterStat.BOREDOM)
+	local stressAfter = stats:get(CharacterStat.STRESS)
+	local unhappinessAfter = stats:get(CharacterStat.UNHAPPINESS)
+	stats:set(CharacterStat.BOREDOM, math.max(boredomAfter, snapshot.boredom))
+	stats:set(CharacterStat.STRESS, math.max(stressAfter, snapshot.stress))
+	stats:set(CharacterStat.UNHAPPINESS, math.max(unhappinessAfter, snapshot.unhappiness))
+	logETW(
+		"ETW Logger | Ascetic comic: suppressed mood benefits for "
+			.. tostring(action.character:getUsername())
+			.. " (OnlineID="
+			.. action.character:getOnlineID()
+			.. "); item: "
+			.. action.item:getFullType()
+			.. "; boredom: "
+			.. boredomAfter
+			.. "->"
+			.. stats:get(CharacterStat.BOREDOM)
+			.. "; stress: "
+			.. stressAfter
+			.. "->"
+			.. stats:get(CharacterStat.STRESS)
+			.. "; unhappiness: "
+			.. unhappinessAfter
+			.. "->"
+			.. stats:get(CharacterStat.UNHAPPINESS)
+	)
+end
 
 ---@param action ISReadABook
 local function startReadingSession(action)
@@ -188,6 +261,7 @@ local original_ISReadABook_complete = ISReadABook.complete
 function ISReadABook:complete()
 	logETW("ETW Logger | ISReadABook:complete(): caught")
 	local completed = not (isServer() and self.forceStopped)
+	local asceticComicMood = captureAsceticComicMood(self, completed)
 	local learnedRecipes = self.item:getLearnedRecipes()
 	local isHerbalistJournal = learnedRecipes
 		and not learnedRecipes:isEmpty()
@@ -195,6 +269,7 @@ function ISReadABook:complete()
 	local herbalistJournalAlreadyRead = isHerbalistJournal
 		and self.character:getAlreadyReadBook():contains(self.item:getFullType())
 	local originalReturn = original_ISReadABook_complete(self)
+	suppressAsceticComicMood(self, asceticComicMood)
 	local modData = ETW_CommonFunctions.getETWModData(self.character)
 	creditReadingSession(self, completed)
 	if
