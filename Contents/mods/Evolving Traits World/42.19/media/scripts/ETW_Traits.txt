@@ -31,6 +31,17 @@ module ETW
         UIDescription = UI_trait_AnemicDesc,
     }
 
+    character_trait_definition ETW:Ascetic
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:Ascetic,
+        Cost = -6,
+        UIName = UI_trait_Ascetic,
+        UIDescription = UI_trait_AsceticDesc,
+        MutuallyExclusiveTraits = ETW:Gourmand,
+    }
+
     character_trait_definition ETW:BadTeeth
     {
         IsProfessionTrait = false,
@@ -93,6 +104,7 @@ module ETW
         UIName = UI_trait_Gourmand,
         UIDescription = UI_trait_GourmandDesc,
         XPBoosts = Cooking=1,
+        MutuallyExclusiveTraits = ETW:Ascetic,
     }
 
     character_trait_definition ETW:Gordonite

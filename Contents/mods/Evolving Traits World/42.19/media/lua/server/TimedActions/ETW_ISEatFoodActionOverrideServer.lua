@@ -78,6 +78,165 @@ local function naturalEaterTrait(player, item, portion, hungerValue)
 	)
 end
 
+---@class AsceticFoodAdjustment
+---@field mode "neutralize"|"flip"|nil
+---@field reason string
+---@field portion number
+---@field ingredientCount integer
+---@field spiceCount integer
+---@field hungerBefore number
+---@field caloriesBefore number
+---@field boredomBefore number
+---@field unhappinessBefore number
+---@field boredomBenefit number
+---@field unhappinessBenefit number
+
+---Captures the food effects Ascetic should apply after vanilla consumes a food portion.
+---@param player IsoPlayer
+---@param item Food
+---@param portion number
+---@return AsceticFoodAdjustment|nil
+local function captureAsceticFoodAdjustment(player, item, portion)
+	if not player:hasTrait(ETWTraitsRegistry.ASCETIC) or SBvars.AsceticFoodEffect == false then
+		return nil
+	end
+
+	local ingredients = item:getExtraItems()
+	local spices = item:getSpices()
+	local ingredientCount = ingredients and ingredients:size() or 0
+	local spiceCount = spices and spices:size() or 0
+	local mode
+	local reason
+	if item:isPackaged() then
+		mode = "flip"
+		reason = "packaged"
+	elseif ingredientCount + spiceCount >= 3 then
+		mode = "flip"
+		reason = "prepared meal with at least three ingredients/spices"
+	elseif ingredientCount + spiceCount >= 2 then
+		mode = "neutralize"
+		reason = "prepared meal with two ingredients/spices"
+	else
+		reason = "simple food"
+	end
+
+	portion = PZMath.clamp(portion, 0, 1)
+	local stats = player:getStats()
+	local nutrition = player:getNutrition()
+	return {
+		mode = mode,
+		reason = reason,
+		portion = portion,
+		ingredientCount = ingredientCount,
+		spiceCount = spiceCount,
+		hungerBefore = stats:get(CharacterStat.HUNGER),
+		caloriesBefore = nutrition:getCalories(),
+		boredomBefore = stats:get(CharacterStat.BOREDOM),
+		unhappinessBefore = stats:get(CharacterStat.UNHAPPINESS),
+		boredomBenefit = math.max(0, -item:getBoredomChange()) * portion,
+		unhappinessBenefit = math.max(0, -item:getUnhappyChange()) * portion,
+	}
+end
+
+---Applies Ascetic's mood penalties or simple-food nutrition bonus after vanilla eats the portion.
+---@param player IsoPlayer
+---@param item Food
+---@param adjustment AsceticFoodAdjustment|nil
+local function applyAsceticFoodAdjustment(player, item, adjustment)
+	if not adjustment then
+		return
+	end
+
+	local stats = player:getStats()
+	if not adjustment.mode then
+		local nutrition = player:getNutrition()
+		local vanillaHunger = stats:get(CharacterStat.HUNGER)
+		local vanillaCalories = nutrition:getCalories()
+		local bonusMultiplier = math.max(0, SBvars.AsceticSimpleFoodGainPercent or 25) / 100
+		local fullnessGain = math.max(0, adjustment.hungerBefore - vanillaHunger)
+		local calorieGain = math.max(0, vanillaCalories - adjustment.caloriesBefore)
+		local resultingHunger = math.max(0, vanillaHunger - fullnessGain * bonusMultiplier)
+		local resultingCalories = vanillaCalories + calorieGain * bonusMultiplier
+		stats:set(CharacterStat.HUNGER, resultingHunger)
+		nutrition:setCalories(resultingCalories)
+		logETW(
+			"ETW Logger | asceticTrait(): boosted simple food "
+				.. item:getFullType()
+				.. " for "
+				.. tostring(player:getUsername())
+				.. " (OnlineID="
+				.. player:getOnlineID()
+				.. "); bonus: "
+				.. bonusMultiplier * 100
+				.. "%; portion: "
+				.. adjustment.portion
+				.. "; hunger: "
+				.. adjustment.hungerBefore
+				.. "->"
+				.. vanillaHunger
+				.. "->"
+				.. resultingHunger
+				.. "; calories: "
+				.. adjustment.caloriesBefore
+				.. "->"
+				.. vanillaCalories
+				.. "->"
+				.. resultingCalories
+		)
+		return
+	end
+
+	local vanillaBoredom = stats:get(CharacterStat.BOREDOM)
+	local vanillaUnhappiness = stats:get(CharacterStat.UNHAPPINESS)
+	local penaltyMultiplier = adjustment.mode == "flip" and 1 or 0
+	local resultingBoredom = vanillaBoredom
+	if adjustment.boredomBenefit > 0 then
+		resultingBoredom = math.min(
+			100,
+			adjustment.boredomBefore + adjustment.boredomBenefit * penaltyMultiplier
+		)
+	end
+	local resultingUnhappiness = vanillaUnhappiness
+	if adjustment.unhappinessBenefit > 0 then
+		resultingUnhappiness = math.min(
+			100,
+			adjustment.unhappinessBefore + adjustment.unhappinessBenefit * penaltyMultiplier
+		)
+	end
+	stats:set(CharacterStat.BOREDOM, resultingBoredom)
+	stats:set(CharacterStat.UNHAPPINESS, resultingUnhappiness)
+	logETW(
+		"ETW Logger | asceticTrait(): applied runtime mood adjustment to "
+			.. item:getFullType()
+			.. " for "
+			.. tostring(player:getUsername())
+			.. " (OnlineID="
+			.. player:getOnlineID()
+			.. "); mode: "
+			.. adjustment.mode
+			.. "; reason: "
+			.. adjustment.reason
+			.. "; ingredients: "
+			.. adjustment.ingredientCount
+			.. "; spices: "
+			.. adjustment.spiceCount
+			.. "; portion: "
+			.. adjustment.portion
+			.. "; boredom: "
+			.. adjustment.boredomBefore
+			.. "->"
+			.. vanillaBoredom
+			.. "->"
+			.. resultingBoredom
+			.. "; unhappiness: "
+			.. adjustment.unhappinessBefore
+			.. "->"
+			.. vanillaUnhappiness
+			.. "->"
+			.. resultingUnhappiness
+	)
+end
+
 local original_ISEatFoodAction_getDuration = ISEatFoodAction.getDuration
 
 ---Applies the eating-speed traits after vanilla has calculated the duration so
@@ -210,16 +369,37 @@ local function recordEatingTime(action)
 end
 
 local original_ISEatFoodAction_complete = ISEatFoodAction.complete
+local original_ISEatFoodAction_eat = ISEatFoodAction.eat
+
+---Applies Ascetic to portions consumed when an eating action is interrupted.
+---@param food Food
+---@param percentage number
+function ISEatFoodAction:eat(food, percentage)
+	local actionPercentage = percentage > 0.95 and 1 or percentage
+	local portion = PZMath.clamp(self.percentage * actionPercentage, 0, 1)
+	local adjustment = captureAsceticFoodAdjustment(self.character, food, portion)
+	local originalReturn = original_ISEatFoodAction_eat(self, food, percentage)
+	applyAsceticFoodAdjustment(self.character, food, adjustment)
+	return originalReturn
+end
+
 ---Records the full duration when an eating action completes in single-player or on the server.
 function ISEatFoodAction:complete()
 	local item = self.item
 	local portion = PZMath.clamp(tonumber(self.percentage) or 1, 0, 1)
+	local asceticAdjustment = item
+		and instanceof(item, "Food")
+		and captureAsceticFoodAdjustment(self.character, item, portion)
+		or nil
 	local naturalEaterHungerValue = item
 		and instanceof(item, "Food")
 		and math.max(0, -item:getHungerChange()) * portion
 		or 0
 	logETW("ETW Logger | ISEatFoodAction:complete(): caught")
 	local originalReturn = original_ISEatFoodAction_complete(self)
+	if item and instanceof(item, "Food") then
+		applyAsceticFoodAdjustment(self.character, item, asceticAdjustment)
+	end
 	recordEatingTime(self)
 	local isFood = item ~= nil
 		and item:getCustomMenuOption() ~= getText("ContextMenu_Drink")

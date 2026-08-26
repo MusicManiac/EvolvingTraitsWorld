@@ -772,6 +772,61 @@ option EvolvingTraitsWorld.AnemicBleedingDamage
 	page = ETWTraitsSettings,
 	translation = ETW_AnemicBleedingDamage,
 }
+option EvolvingTraitsWorld.AsceticFoodEffect
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitsSettings,
+	translation = ETW_AsceticFoodEffect,
+}
+option EvolvingTraitsWorld.AsceticUnhappinessReductionPerMinute
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 0.25,
+	page = ETWTraitsSettings,
+	translation = ETW_AsceticUnhappinessReductionPerMinute,
+}
+option EvolvingTraitsWorld.AsceticBoredomReductionPerMinute
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 0.25,
+	page = ETWTraitsSettings,
+	translation = ETW_AsceticBoredomReductionPerMinute,
+}
+option EvolvingTraitsWorld.AsceticSimpleFoodGainPercent
+{
+	type = integer,
+	min = 0,
+	max = 1000,
+	default = 25,
+	page = ETWTraitsSettings,
+	translation = ETW_AsceticSimpleFoodGainPercent,
+}
+option EvolvingTraitsWorld.AsceticSleepEffect
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitsSettings,
+	translation = ETW_AsceticSleepEffect,
+}
+option EvolvingTraitsWorld.AsceticTelevisionEffect
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitsSettings,
+	translation = ETW_AsceticTelevisionEffect,
+}
+option EvolvingTraitsWorld.AsceticReadingEffect
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitsSettings,
+	translation = ETW_AsceticReadingEffect,
+}
 option EvolvingTraitsWorld.BadTeethPainChance
 {
 	type = integer,

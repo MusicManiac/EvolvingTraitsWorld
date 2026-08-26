@@ -1,7 +1,7 @@
 local ETW_ModDataServer = require("ETW_ModDataServer")
 local ETW_CommonFunctions = require("ETW_CommonFunctions")
 local ETW_CommonLogicChecks = require("ETW_CommonLogicChecks")
-local ETW_EagleEyedTracking = require("ETW_EagleEyedTracking")
+local ETW_EagleEyedTracking = require("TraitSpecific/ETW_EagleEyedTracking")
 local ETW_Moodles
 
 local gameMode = ETW_CommonFunctions.gameMode()
@@ -142,9 +142,7 @@ local function bloodlustTimeETW()
 		end
 		logETW("ETW Logger | bloodlustTimeETW(): Bloodlust Meter: " .. bloodlustModData.BloodlustMeter)
 		if bloodlustModData.BloodlustMeter >= bloodlustMeterCapacity / 2 then -- gain if above 50%
-			local bloodLustProgressIncrease = bloodlustModData.BloodlustMeter
-				* 0.1
-				* (1 + bloodiedClothesLevel(player))
+			local bloodLustProgressIncrease = bloodlustModData.BloodlustMeter * 0.1 * (1 + bloodiedClothesLevel(player))
 			bloodLustProgressIncrease = ETW_CommonFunctions.applyAffinityToDirectionalChange(
 				modData,
 				bloodLustProgressIncrease,
@@ -167,10 +165,8 @@ local function bloodlustTimeETW()
 				nil,
 				ETWTraitsRegistry.BLOODLUST
 			)
-			bloodlustModData.BloodlustProgress = math.max(
-				0,
-				bloodlustModData.BloodlustProgress + bloodLustProgressChange
-			)
+			bloodlustModData.BloodlustProgress =
+				math.max(0, bloodlustModData.BloodlustProgress + bloodLustProgressChange)
 			logETW(
 				"ETW Logger | bloodlustTimeETW(): BloodlustMeter is below 50%, BloodlustProgress ="
 					.. bloodlustModData.BloodlustProgress
@@ -221,7 +217,10 @@ local function grantEagleEyedKill(player, distance)
 		return
 	end
 
-	if SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.EAGLE_EYED) then
+	if
+		SBvars.DelayedTraitsSystem
+		and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.EAGLE_EYED)
+	then
 		ETW_CommonFunctions.addTraitToDelayTable({
 			modData = modData,
 			trait = CharacterTrait.EAGLE_EYED,

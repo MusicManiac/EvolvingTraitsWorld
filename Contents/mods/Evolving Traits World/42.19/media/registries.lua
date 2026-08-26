@@ -6,6 +6,7 @@ ETW_Registry = ETW_Registry or {}
 ---@field ACTION_HERO CharacterTrait
 ---@field ANEMIC CharacterTrait
 ---@field ANTI_GUN_ACTIVIST CharacterTrait
+---@field ASCETIC CharacterTrait
 ---@field AXE_THROWER CharacterTrait
 ---@field BLOODLUST CharacterTrait
 ---@field BLISSFUL CharacterTrait
@@ -66,6 +67,7 @@ ETW_Registry.traits = {
 	ACTION_HERO = CharacterTrait.register("ETW:ActionHero"),
 	ANEMIC = CharacterTrait.register("ETW:Anemic"),
 	ANTI_GUN_ACTIVIST = CharacterTrait.register("ETW:AntiGunActivist"),
+	ASCETIC = CharacterTrait.register("ETW:Ascetic"),
 	AXE_THROWER = CharacterTrait.register("ETW:AxeThrower"),
 	BLOODLUST = CharacterTrait.register("ETW:Bloodlust"),
 	BLISSFUL = CharacterTrait.register("ETW:Blissful"),

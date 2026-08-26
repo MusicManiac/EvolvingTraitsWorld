@@ -1,6 +1,6 @@
 local ETW_CommonFunctions = require("ETW_CommonFunctions")
 local ETW_CommonLogicChecks = require("ETW_CommonLogicChecks")
-local ETW_EagleEyedTracking = require("ETW_EagleEyedTracking")
+local ETW_EagleEyedTracking = require("TraitSpecific/ETW_EagleEyedTracking")
 
 ---@type fun(...: string)
 local logETW = ETW_CommonFunctions.log

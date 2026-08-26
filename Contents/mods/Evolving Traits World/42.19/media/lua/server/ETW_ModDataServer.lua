@@ -3,7 +3,7 @@ local ETW_CommonFunctions = require("ETW_CommonFunctions")
 
 ---@type ETW_ModData
 local ETW_ModData = require("ETW_ModData")
-local ETW_EagleEyedTracking = require("ETW_EagleEyedTracking")
+local ETW_EagleEyedTracking = require("TraitSpecific/ETW_EagleEyedTracking")
 local ETW_CommonLogicChecks = require("ETW_CommonLogicChecks")
 
 local ETW_BySkills = require("ETW_BySkills")
@@ -115,7 +115,10 @@ function Commands.catEyesRecordProgress(player, args)
 			.. tostring(modData.CatEyesCounter)
 	)
 
-	if player:hasTrait(CharacterTrait.NIGHT_VISION) or modData.CatEyesCounter < SandboxVars.EvolvingTraitsWorld.CatEyesCounter then
+	if
+		player:hasTrait(CharacterTrait.NIGHT_VISION)
+		or modData.CatEyesCounter < SandboxVars.EvolvingTraitsWorld.CatEyesCounter
+	then
 		return
 	end
 
