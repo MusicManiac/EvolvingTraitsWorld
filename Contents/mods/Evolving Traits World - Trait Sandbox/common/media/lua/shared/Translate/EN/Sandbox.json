@@ -243,5 +243,9 @@
     "Sandbox_ETWTS_ParanoiaEnabled_tooltip": "Controls character-creation availability.",
     "Sandbox_ETWTS_ParanoiaPointValue": "Paranoia point value",
     "Sandbox_ETWTS_ParanoiaPointValue_tooltip": "Character-creation point adjustment: negative values cost points; positive values grant points.",
+    "Sandbox_ETWTS_SelfDestructiveEnabled": "Enable Self-Destructive",
+    "Sandbox_ETWTS_SelfDestructiveEnabled_tooltip": "Controls character-creation availability.",
+    "Sandbox_ETWTS_SelfDestructivePointValue": "Self-Destructive point value",
+    "Sandbox_ETWTS_SelfDestructivePointValue_tooltip": "Character-creation point adjustment: negative values cost points; positive values grant points.",
     "Sandbox_ETWTraitSandbox": "Evolving Traits World - Trait Sandbox"
 }

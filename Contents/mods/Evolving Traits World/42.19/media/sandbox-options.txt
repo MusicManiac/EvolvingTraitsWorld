@@ -908,6 +908,51 @@ option EvolvingTraitsWorld.DepressiveRecoveryPerMinute
 	page = ETWTraitsSettings,
 	translation = ETW_DepressiveRecoveryPerMinute,
 }
+option EvolvingTraitsWorld.SelfDestructiveUnhappinessThreshold
+{
+	type = integer,
+	min = 0,
+	max = 100,
+	default = 25,
+	page = ETWTraitsSettings,
+	translation = ETW_SelfDestructiveUnhappinessThreshold,
+}
+option EvolvingTraitsWorld.SelfDestructiveDamagePerMinute
+{
+	type = double,
+	min = 0,
+	max = 10,
+	default = 0.15,
+	page = ETWTraitsSettings,
+	translation = ETW_SelfDestructiveDamagePerMinute,
+}
+option EvolvingTraitsWorld.SelfDestructiveMaximumHealthLossPercent
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 33.33,
+	page = ETWTraitsSettings,
+	translation = ETW_SelfDestructiveMaximumHealthLossPercent,
+}
+option EvolvingTraitsWorld.SelfDestructiveMaxHealthLossWithDepressive
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 50,
+	page = ETWTraitsSettings,
+	translation = ETW_SelfDestructiveMaxHealthLossWithDepressive,
+}
+option EvolvingTraitsWorld.SelfDestructiveDepressiveEpisodeChanceBonus
+{
+	type = integer,
+	min = 0,
+	max = 100,
+	default = 1,
+	page = ETWTraitsSettings,
+	translation = ETW_SelfDestructiveDepressiveEpisodeChanceBonus,
+}
 option EvolvingTraitsWorld.GymRatExerciseXPMultiplier
 {
 	type = double,

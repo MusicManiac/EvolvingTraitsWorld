@@ -1004,4 +1004,20 @@ option ETWTraitSandbox.ParanoiaPointValue
 	page = ETWTraitSandbox,
 	translation = ETWTS_ParanoiaPointValue,
 }
+option ETWTraitSandbox.SelfDestructiveEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_SelfDestructiveEnabled,
+}
+option ETWTraitSandbox.SelfDestructivePointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = 4,
+	page = ETWTraitSandbox,
+	translation = ETWTS_SelfDestructivePointValue,
+}
 

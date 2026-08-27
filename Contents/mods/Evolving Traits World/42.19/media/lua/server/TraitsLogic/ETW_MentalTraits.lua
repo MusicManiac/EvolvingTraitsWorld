@@ -149,10 +149,10 @@ end
 ---Starts hourly Depressive episodes and recovers their unhappiness every minute.
 ---@param player IsoPlayer
 ---@param modData EvolvingTraitsWorldModData
----@param stats Stats
+---@param stats Stats|nil
 ---@param attemptEpisode boolean
 function ETW_MentalTraits.depressiveTrait(player, modData, stats, attemptEpisode)
-	local stats = player:getStats()
+	stats = stats or player:getStats()
 	local unhappiness = stats:get(CharacterStat.UNHAPPINESS)
 	local episodeIncrease = PZMath.clamp(SBvars.DepressiveUnhappinessIncrease or 25, 0, 100)
 	if episodeIncrease == 0 then
@@ -162,7 +162,14 @@ function ETW_MentalTraits.depressiveTrait(player, modData, stats, attemptEpisode
 	if modData.DepressiveEpisodeActive then
 		if unhappiness < episodeIncrease then
 			modData.DepressiveEpisodeActive = false
-			logETW("ETW Logger | depressiveTrait(): episode ended at unhappiness " .. unhappiness)
+			logETW(
+				"ETW Logger | depressiveTrait(): episode ended for "
+					.. tostring(player:getUsername())
+					.. " (OnlineID="
+					.. player:getOnlineID()
+					.. ") at unhappiness "
+					.. unhappiness
+			)
 			return
 		end
 		local recovery = PZMath.clamp(SBvars.DepressiveRecoveryPerMinute or 0.01, 0, 100)
@@ -173,17 +180,94 @@ function ETW_MentalTraits.depressiveTrait(player, modData, stats, attemptEpisode
 		return
 	end
 	local chance = PZMath.clamp(SBvars.DepressiveEpisodeChance or 2, 0, 100)
-	if random_instance:random(1, 100) <= chance then
+	local hasSelfDestructive = player:hasTrait(ETWTraitsRegistry.SELF_DESTRUCTIVE)
+	if hasSelfDestructive then
+		chance = PZMath.clamp(
+			chance + (SBvars.SelfDestructiveDepressiveEpisodeChanceBonus or 1),
+			0,
+			100
+		)
+	end
+	local roll = random_instance:random(1, 100)
+	logETW(
+		"ETW Logger | depressiveTrait(): episode roll for "
+			.. tostring(player:getUsername())
+			.. " (OnlineID="
+			.. player:getOnlineID()
+			.. "); roll: "
+			.. roll
+			.. "/100; chance: "
+			.. chance
+			.. "%; Self-Destructive interaction: "
+			.. tostring(hasSelfDestructive)
+	)
+	if roll <= chance then
 		local resultingUnhappiness = math.min(100, unhappiness + episodeIncrease)
 		stats:set(CharacterStat.UNHAPPINESS, resultingUnhappiness)
 		modData.DepressiveEpisodeActive = true
 		logETW(
-			"ETW Logger | depressiveTrait(): episode started; unhappiness: "
+			"ETW Logger | depressiveTrait(): episode started for "
+				.. tostring(player:getUsername())
+				.. " (OnlineID="
+				.. player:getOnlineID()
+				.. "); unhappiness: "
 				.. unhappiness
 				.. "->"
 				.. resultingUnhappiness
 		)
 	end
+end
+
+---Reduces health toward an unhappiness-scaled floor for Self-Destructive characters.
+---@param player IsoPlayer
+---@param stats Stats
+---@param bodyDamage BodyDamage
+function ETW_MentalTraits.selfDestructiveTrait(player, stats, bodyDamage)
+	local unhappiness = stats:get(CharacterStat.UNHAPPINESS)
+	local threshold = PZMath.clamp(SBvars.SelfDestructiveUnhappinessThreshold or 25, 0, 100)
+	if unhappiness < threshold then
+		return
+	end
+
+	local hasDepressive = player:hasTrait(ETWTraitsRegistry.DEPRESSIVE)
+	local maximumHealthLoss = SBvars.SelfDestructiveMaximumHealthLossPercent or 33.33
+	if hasDepressive then
+		maximumHealthLoss = SBvars.SelfDestructiveMaxHealthLossWithDepressive or 50
+	end
+	maximumHealthLoss = PZMath.clamp(maximumHealthLoss, 0, 100)
+	local healthFloor = PZMath.clamp(100 - unhappiness / 100 * maximumHealthLoss, 0, 100)
+	local currentHealth = bodyDamage:getOverallBodyHealth()
+	if currentHealth <= healthFloor then
+		return
+	end
+
+	local configuredDamage = math.max(0, SBvars.SelfDestructiveDamagePerMinute or 0.15)
+	local damage = math.min(configuredDamage, currentHealth - healthFloor)
+	if damage <= 0 then
+		return
+	end
+	local bodyParts = bodyDamage:getBodyParts()
+	for i = 0, bodyParts:size() - 1 do
+		bodyParts:get(i):AddDamage(damage)
+	end
+	logETW(
+		"ETW Logger | selfDestructiveTrait(): damaged "
+			.. tostring(player:getUsername())
+			.. " (OnlineID="
+			.. player:getOnlineID()
+			.. "); unhappiness: "
+			.. unhappiness
+			.. "; overall health: "
+			.. currentHealth
+			.. "->"
+			.. bodyDamage:getOverallBodyHealth()
+			.. "; health floor: "
+			.. healthFloor
+			.. "; damage per body part: "
+			.. damage
+			.. "; Depressive interaction: "
+			.. tostring(hasDepressive)
+	)
 end
 
 ---Periodically triggers a false scare while a Paranoia character is moving.
