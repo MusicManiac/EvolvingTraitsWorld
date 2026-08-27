@@ -54,6 +54,7 @@ ETW_Registry = ETW_Registry or {}
 ---@field QUICK_REST CharacterTrait
 ---@field QUIET CharacterTrait
 ---@field SCRAPPER CharacterTrait
+---@field SELF_DESTRUCTIVE CharacterTrait
 ---@field SLOW_EATER CharacterTrait
 ---@field SUN_SENSITIVITY CharacterTrait
 ---@field SUPER_IMMUNE CharacterTrait
@@ -116,6 +117,7 @@ ETW_Registry.traits = {
 	QUICK_REST = CharacterTrait.register("ETW:QuickRest"),
 	QUIET = CharacterTrait.register("ETW:Quiet"),
 	SCRAPPER = CharacterTrait.register("ETW:Scrapper"),
+	SELF_DESTRUCTIVE = CharacterTrait.register("ETW:SelfDestructive"),
 	SLOW_EATER = CharacterTrait.register("ETW:SlowEater"),
 	SUN_SENSITIVITY = CharacterTrait.register("ETW:SunSensitivity"),
 	SUPER_IMMUNE = CharacterTrait.register("ETW:SuperImmune"),

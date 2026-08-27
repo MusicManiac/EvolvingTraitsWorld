@@ -97,7 +97,13 @@ local function oneMinuteUpdate()
 		end
 		if player:hasTrait(ETWTraitsRegistry.DEPRESSIVE) then
 			stats = stats or player:getStats()
+			modData = modData or ETW_CommonFunctions.getETWModData(player)
 			ETW_MentalTraits.depressiveTrait(player, modData, stats, false)
+		end
+		if player:hasTrait(ETWTraitsRegistry.SELF_DESTRUCTIVE) then
+			stats = stats or player:getStats()
+			bodyDamage = bodyDamage or player:getBodyDamage()
+			ETW_MentalTraits.selfDestructiveTrait(player, stats, bodyDamage)
 		end
 		if player:hasTrait(ETWTraitsRegistry.HARDY) then
 			stats = stats or player:getStats()
@@ -119,9 +125,11 @@ local function oneHourUpdate()
 	local playersList = ETW_CommonFunctions.playersList()
 	for i = 0, playersList:size() - 1 do
 		local player = playersList:get(i)
-		local modData = ETW_CommonFunctions.getETWModData(player)
-		if modData then
-			ETW_MentalTraits.depressiveTrait(player, modData, true)
+		if player:hasTrait(ETWTraitsRegistry.DEPRESSIVE) then
+			local modData = ETW_CommonFunctions.getETWModData(player)
+			if modData then
+				ETW_MentalTraits.depressiveTrait(player, modData, nil, true)
+			end
 		end
 	end
 end

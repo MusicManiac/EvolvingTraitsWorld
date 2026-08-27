@@ -61,7 +61,7 @@ module ETW
         Cost = 3,
         UIName = UI_trait_Blissful,
         UIDescription = UI_trait_BlissfulDesc,
-        MutuallyExclusiveTraits = base:smoker;ETW:Depressive,
+        MutuallyExclusiveTraits = base:smoker;ETW:Depressive;ETW:SelfDestructive,
     }
 
     character_trait_definition ETW:Butterfingers
@@ -654,6 +654,17 @@ module ETW
         UIName = UI_trait_RestorationExpert,
         UIDescription = UI_trait_RestorationExpertDesc,
         XPBoosts = Maintenance=1,
+    }
+
+    character_trait_definition ETW:SelfDestructive
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:SelfDestructive,
+        Cost = -4,
+        UIName = UI_trait_SelfDestructive,
+        UIDescription = UI_trait_SelfDestructiveDesc,
+        MutuallyExclusiveTraits = ETW:Blissful,
     }
 
     character_trait_definition ETW:SlowEater
