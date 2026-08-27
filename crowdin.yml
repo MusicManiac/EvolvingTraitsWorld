@@ -1,0 +1,5 @@
+files:
+  - source: Contents/mods/Evolving Traits World/common/media/lua/shared/Translate/EN
+    translation: /Contents/mods/Evolving Trait World/common/media/lua/shared/Transalte/%two_letters_code%/%original_file_name%
+  - source: /Contents/mods/Evolving Traits World - Trait Sandbox/common/media/lua/shared/Translate/EN/
+    translation: /Contents/mods/Evolving Traits World - Trait Sandbox/common/media/lua/shared/Translate/%two_letters_code%/%original_file_name%
