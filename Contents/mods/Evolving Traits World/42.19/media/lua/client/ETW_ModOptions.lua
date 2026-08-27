@@ -36,7 +36,6 @@ SoundNotificationSoundSelectComboBox:addTickBox(getText("UI_ETW_Options_Sound_Wi
 SoundNotificationSoundSelectComboBox:addTickBox(getText("UI_ETW_Options_Sound_FalloutNV"), false)
 SoundNotificationSoundSelectComboBox:addTickBox(getText("UI_ETW_Options_Sound_AgeOfEmpires3"), false)
 SoundNotificationSoundSelectComboBox:addTickBox(getText("UI_ETW_Options_Sound_WorldOfWarcraft"), false)
-etwOptions:addSeparator()
 
 function SoundNotificationSoundSelectComboBox:onChange(index, selected)
 	if selected then
@@ -56,6 +55,18 @@ function SoundNotificationSoundSelectComboBox:onChange(index, selected)
 		getSoundManager():playUISound(soundTable[index])
 	end
 end
+
+etwOptions:addDescription(getText("UI_ETW_Options_ParanoiaScreamVolume_tooltip"))
+etwOptions:addSlider(
+	"ParanoiaScreamVolume",
+	getText("UI_ETW_Options_ParanoiaScreamVolume"),
+	0,
+	100,
+	5,
+	100,
+	getText("UI_ETW_Options_ParanoiaScreamVolume_tooltip")
+)
+etwOptions:addSeparator()
 
 etwOptions:addTickBox(
 	"EnableNotifications",

@@ -42,6 +42,7 @@ ETW_Registry = ETW_Registry or {}
 ---@field PAIN_TOLERANCE CharacterTrait
 ---@field PACK_MOUSE CharacterTrait
 ---@field PACK_MULE CharacterTrait
+---@field PARANOIA CharacterTrait
 ---@field PET_THERAPY CharacterTrait
 ---@field POLEARM_FIGHTER CharacterTrait
 ---@field PROWESS_BLADE CharacterTrait
@@ -103,6 +104,7 @@ ETW_Registry.traits = {
 	PAIN_TOLERANCE = CharacterTrait.register("ETW:PainTolerance"),
 	PACK_MOUSE = CharacterTrait.register("ETW:PackMouse"),
 	PACK_MULE = CharacterTrait.register("ETW:PackMule"),
+	PARANOIA = CharacterTrait.register("ETW:Paranoia"),
 	PET_THERAPY = CharacterTrait.register("ETW:PetTherapy"),
 	POLEARM_FIGHTER = CharacterTrait.register("ETW:PolearmFighter"),
 	PROWESS_BLADE = CharacterTrait.register("ETW:ProwessBlade"),

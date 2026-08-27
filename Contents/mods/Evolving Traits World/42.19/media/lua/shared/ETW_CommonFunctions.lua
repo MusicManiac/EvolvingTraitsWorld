@@ -8,6 +8,68 @@ local modOptions
 
 local random_instance = newrandom()
 
+local paranoiaManScreams = {
+	"ETW_ParanoiaManScream1",
+	"ETW_ParanoiaManScream2",
+	"ETW_ParanoiaManScream3",
+	"ETW_ParanoiaManScream4",
+	"ETW_ParanoiaManScream5",
+	"ETW_ParanoiaManScream6",
+}
+
+local paranoiaWomanScreams = {
+	"ETW_ParanoiaWomanScream1",
+	"ETW_ParanoiaWomanScream2",
+	"ETW_ParanoiaWomanScream3",
+	"ETW_ParanoiaWomanScream4",
+	"ETW_ParanoiaWomanScream5",
+	"ETW_ParanoiaWomanScream6",
+}
+
+---Returns the client-configured Paranoia scream volume as a 0-1 multiplier.
+---@return number
+local function paranoiaScreamVolume()
+	if modOptions then
+		local option = modOptions:getOption("ParanoiaScreamVolume")
+		if option then
+			return PZMath.clamp(option:getValue(), 0, 100) / 100
+		end
+	end
+	return 1
+end
+
+---Plays the local false-scare sounds used by Paranoia.
+---@param player IsoPlayer
+---@param yell boolean
+function ETW_CommonFunctions.playParanoiaScare(player, yell)
+	local surprisedSoundID = player:playSound("ZombieSurprisedPlayer")
+	local yellSound
+	local yellSoundID
+	local screamVolume = paranoiaScreamVolume()
+	if yell then
+		local screams = player:isFemale() and paranoiaWomanScreams or paranoiaManScreams
+		yellSound = screams[random_instance:random(1, #screams)]
+		if screamVolume > 0 then
+			yellSoundID = player:playSound(yellSound)
+			if yellSoundID and yellSoundID >= 0 then
+				player:getEmitter():setVolume(yellSoundID, screamVolume)
+			end
+		end
+	end
+	ETW_CommonFunctions.log(
+		"ETW Logger | playParanoiaScare(): played ZombieSurprisedPlayer; sound ID="
+			.. tostring(surprisedSoundID)
+			.. "; yell: "
+			.. tostring(yellSound ~= nil)
+			.. "; scream volume: "
+			.. screamVolume * 100
+			.. "%"
+			.. (yellSound and "; " .. yellSound .. " sound ID=" .. tostring(yellSoundID) or "")
+			.. "; player: "
+			.. tostring(player:getUsername())
+	)
+end
+
 --- @field GameMode {SP: '"SP"', MP_CLIENT: '"MP_Client"', MP_SERVER: '"MP_Server"'}
 ETW_CommonFunctions.GameMode = {
 	SP = "SP",
@@ -477,9 +539,7 @@ function ETW_CommonFunctions.addTraitToDelayTable(context)
 			false,
 		})
 		ETW_CommonFunctions.traitSound(player)
-	elseif
-		positiveTrait
-	then
+	elseif positiveTrait then
 		ETW_CommonFunctions.log(
 			"ETW Logger | Delayed Traits System: player qualifies for positive trait "
 				.. traitRegistryId
@@ -488,9 +548,7 @@ function ETW_CommonFunctions.addTraitToDelayTable(context)
 		table.insert(modData.DelayedTraits, { traitRegistryId, SBvars.DelayedTraitsSystemDefaultDelay, false })
 		ETW_CommonFunctions.displayDelayedTraitNotification(player, gainingTrait, traitRegistryId, true, "GREEN")
 		ETW_CommonFunctions.traitSound(player)
-	elseif
-		not positiveTrait
-	then
+	elseif not positiveTrait then
 		ETW_CommonFunctions.log(
 			"ETW Logger | Delayed Traits System: player qualifies for removing negative trait "
 				.. traitRegistryId
@@ -736,15 +794,11 @@ function ETW_CommonFunctions.restoreWoundSpeedModifiers(bodyDamage, snapshots)
 			part:setScratchSpeedModifier(
 				restoreSuppressedWoundSpeedModifier(part:getScratchSpeedModifier(), snapshot.scratch)
 			)
-			part:setCutSpeedModifier(
-				restoreSuppressedWoundSpeedModifier(part:getCutSpeedModifier(), snapshot.cut)
-			)
+			part:setCutSpeedModifier(restoreSuppressedWoundSpeedModifier(part:getCutSpeedModifier(), snapshot.cut))
 			part:setDeepWoundSpeedModifier(
 				restoreSuppressedWoundSpeedModifier(part:getDeepWoundSpeedModifier(), snapshot.deepWound)
 			)
-			part:setBurnSpeedModifier(
-				restoreSuppressedWoundSpeedModifier(part:getBurnSpeedModifier(), snapshot.burn)
-			)
+			part:setBurnSpeedModifier(restoreSuppressedWoundSpeedModifier(part:getBurnSpeedModifier(), snapshot.burn))
 		end
 	end
 end

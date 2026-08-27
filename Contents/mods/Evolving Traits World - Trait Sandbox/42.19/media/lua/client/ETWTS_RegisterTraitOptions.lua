@@ -24,6 +24,7 @@ local traits = {
 	{ id = "NaturalEater", pointValue = -4 },
 	{ id = "NoodleLegs", pointValue = 6 },
 	{ id = "Olympian", pointValue = -5 },
+	{ id = "Paranoia", pointValue = 4 },
 	{ id = "PackMouse", pointValue = 7 },
 	{ id = "PackMule", pointValue = -7 },
 	{ id = "ProwessBlade", pointValue = -7 },

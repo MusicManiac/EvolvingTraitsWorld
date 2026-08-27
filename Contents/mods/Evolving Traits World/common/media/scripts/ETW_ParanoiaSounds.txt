@@ -1,0 +1,122 @@
+module Base
+{
+	sound ETW_ParanoiaManScream1
+	{
+		category = Player,
+		clip
+		{
+			file = media/sound/Man Scream 1 - Freesound Community.mp3,
+			distanceMax = 50,
+		}
+	}
+
+	sound ETW_ParanoiaManScream2
+	{
+		category = Player,
+		clip
+		{
+			file = media/sound/Man Scream 2 - Universfield.mp3,
+			distanceMax = 50,
+		}
+	}
+
+	sound ETW_ParanoiaManScream3
+	{
+		category = Player,
+		clip
+		{
+			file = media/sound/Man Scream 3 - Universfield.mp3,
+			distanceMax = 50,
+		}
+	}
+
+	sound ETW_ParanoiaManScream4
+	{
+		category = Player,
+		clip
+		{
+			file = media/sound/Man Scream 4 - Universfield.mp3,
+			distanceMax = 50,
+		}
+	}
+
+	sound ETW_ParanoiaManScream5
+	{
+		category = Player,
+		clip
+		{
+			file = media/sound/Man Scream 5 - Universfield.mp3,
+			distanceMax = 50,
+		}
+	}
+
+	sound ETW_ParanoiaManScream6
+	{
+		category = Player,
+		clip
+		{
+			file = media/sound/Man Scream 6 - Universfield.mp3,
+			distanceMax = 50,
+		}
+	}
+
+	sound ETW_ParanoiaWomanScream1
+	{
+		category = Player,
+		clip
+		{
+			file = media/sound/Woman Scream 1 - Freesound Community.mp3,
+			distanceMax = 50,
+		}
+	}
+
+	sound ETW_ParanoiaWomanScream2
+	{
+		category = Player,
+		clip
+		{
+			file = media/sound/Woman Scream 2 - Freesound Community.mp3,
+			distanceMax = 50,
+		}
+	}
+
+	sound ETW_ParanoiaWomanScream3
+	{
+		category = Player,
+		clip
+		{
+			file = media/sound/Woman Scream 3 - Freesound Community.mp3,
+			distanceMax = 50,
+		}
+	}
+
+	sound ETW_ParanoiaWomanScream4
+	{
+		category = Player,
+		clip
+		{
+			file = media/sound/Woman Scream 4 - Universfield.mp3,
+			distanceMax = 50,
+		}
+	}
+
+	sound ETW_ParanoiaWomanScream5
+	{
+		category = Player,
+		clip
+		{
+			file = media/sound/Woman Scream 5 - Wakanatsukiko.mp3,
+			distanceMax = 50,
+		}
+	}
+
+	sound ETW_ParanoiaWomanScream6
+	{
+		category = Player,
+		clip
+		{
+			file = media/sound/Woman Scream 6 - Wakanatsukiko.mp3,
+			distanceMax = 50,
+		}
+	}
+}

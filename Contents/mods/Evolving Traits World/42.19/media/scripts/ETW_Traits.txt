@@ -613,6 +613,16 @@ module ETW
         MutuallyExclusiveTraits = ETW:BadTeeth;ETW:SunSensitivity,
     }
 
+    character_trait_definition ETW:Paranoia
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:Paranoia,
+        Cost = -5,
+        UIName = UI_trait_Paranoia,
+        UIDescription = UI_trait_ParanoiaDesc,
+    }
+
     character_trait_definition ETW:PetTherapy
     {
         IsProfessionTrait = false,

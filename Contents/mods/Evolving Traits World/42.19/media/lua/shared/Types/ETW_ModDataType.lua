@@ -16,6 +16,7 @@
 --- @field QuickRestLastEndurance number
 --- @field IdealWeightLastCalories number
 --- @field DepressiveEpisodeActive boolean
+--- @field ParanoiaCooldownMinutes integer|nil
 --- @field AntiGunLastRecordedAimingXP number|nil
 --- @field AntiGunAimingXPCheckPending boolean|nil
 --- @field BouncerCooldownTicks integer|nil

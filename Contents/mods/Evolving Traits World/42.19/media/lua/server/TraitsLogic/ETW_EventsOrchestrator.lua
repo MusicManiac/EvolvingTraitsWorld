@@ -71,6 +71,11 @@ local function oneMinuteUpdate()
 			stats = stats or player:getStats()
 			ETW_MentalTraits.asceticTrait(player, stats)
 		end
+		if player:hasTrait(ETWTraitsRegistry.PARANOIA) then
+			stats = stats or player:getStats()
+			modData = modData or ETW_CommonFunctions.getETWModData(player)
+			ETW_MentalTraits.paranoiaTrait(player, stats, modData)
+		end
 		if
 			-- server doesn't know when player is aiming, so in MP it's covered via command from MP Client, but in SP we can check it here
 			gameMode == ETW_CommonFunctions.GameMode.SP
