@@ -988,4 +988,20 @@ option ETWTraitSandbox.TavernBrawlerPointValue
 	page = ETWTraitSandbox,
 	translation = ETWTS_TavernBrawlerPointValue,
 }
+option ETWTraitSandbox.ParanoiaEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_ParanoiaEnabled,
+}
+option ETWTraitSandbox.ParanoiaPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = 5,
+	page = ETWTraitSandbox,
+	translation = ETWTS_ParanoiaPointValue,
+}
 

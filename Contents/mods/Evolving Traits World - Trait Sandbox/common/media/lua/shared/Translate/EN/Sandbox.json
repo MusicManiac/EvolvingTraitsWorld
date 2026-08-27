@@ -239,5 +239,9 @@
     "Sandbox_ETWTS_TavernBrawlerEnabled_tooltip": "Controls character-creation availability.",
     "Sandbox_ETWTS_TavernBrawlerPointValue": "Tavern Brawler point value",
     "Sandbox_ETWTS_TavernBrawlerPointValue_tooltip": "Character-creation point adjustment: negative values cost points; positive values grant points.",
+    "Sandbox_ETWTS_ParanoiaEnabled": "Enable Paranoia",
+    "Sandbox_ETWTS_ParanoiaEnabled_tooltip": "Controls character-creation availability.",
+    "Sandbox_ETWTS_ParanoiaPointValue": "Paranoia point value",
+    "Sandbox_ETWTS_ParanoiaPointValue_tooltip": "Character-creation point adjustment: negative values cost points; positive values grant points.",
     "Sandbox_ETWTraitSandbox": "Evolving Traits World - Trait Sandbox"
 }

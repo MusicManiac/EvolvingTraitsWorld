@@ -121,6 +121,23 @@ Commands.triggerNoodleLegsTrip = function(player, args)
 	ETW_CommonFunctions.triggerNoodleLegsTrip(player, side)
 end
 
+---Plays a server-authorized Paranoia false scare on the owning MP client.
+---@class TriggerParanoiaScareArgs
+---@field yell boolean
+---@param args TriggerParanoiaScareArgs
+Commands.triggerParanoiaScare = function(player, args)
+	player = resolveLocalPlayer(player)
+	if not player then
+		logETW("ETW Logger | Commands.triggerParanoiaScare(): player not ready, skipping")
+		return
+	end
+	ETW_CommonFunctions.playParanoiaScare(player, args.yell == true)
+	logETW(
+		"ETW Logger | Commands.triggerParanoiaScare(): played locally for "
+			.. tostring(player:getUsername())
+	)
+end
+
 ---Mirrors a server-authoritative Bouncer stagger on the owning client.
 Commands.triggerBouncerStagger = function(player, args)
 	local zombieOnlineID = tonumber(args.zombieOnlineID)

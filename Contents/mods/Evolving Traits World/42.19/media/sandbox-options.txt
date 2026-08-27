@@ -1185,6 +1185,60 @@ option EvolvingTraitsWorld.PackMuleMaxCapacityPercent
 	page = ETWTraitsSettings,
 	translation = ETW_PackMuleMaxCapacityPercent,
 }
+option EvolvingTraitsWorld.ParanoiaBaseChancePercent
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 1,
+	page = ETWTraitsSettings,
+	translation = ETW_ParanoiaBaseChancePercent,
+}
+option EvolvingTraitsWorld.ParanoiaStressChanceBonusPercent
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 2,
+	page = ETWTraitsSettings,
+	translation = ETW_ParanoiaStressChanceBonusPercent,
+}
+option EvolvingTraitsWorld.ParanoiaPanicIncrease
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 35,
+	page = ETWTraitsSettings,
+	translation = ETW_ParanoiaPanicIncrease,
+}
+option EvolvingTraitsWorld.ParanoiaStressIncreasePercent
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 10,
+	page = ETWTraitsSettings,
+	translation = ETW_ParanoiaStressIncreasePercent,
+}
+option EvolvingTraitsWorld.ParanoiaYellChancePercent
+{
+	type = integer,
+	min = 0,
+	max = 100,
+	default = 25,
+	page = ETWTraitsSettings,
+	translation = ETW_ParanoiaYellChancePercent,
+}
+option EvolvingTraitsWorld.ParanoiaCooldownMinutes
+{
+	type = integer,
+	min = 0,
+	max = 1440,
+	default = 30,
+	page = ETWTraitsSettings,
+	translation = ETW_ParanoiaCooldownMinutes,
+}
 option EvolvingTraitsWorld.ProwessMeleeDamageBonusPercent
 {
 	type = double,

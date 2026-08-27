@@ -20,6 +20,9 @@ local ETWTraitsRegistry = ETW_Registry.traits
 local SBvars = SandboxVars.EvolvingTraitsWorld
 local random_instance = newrandom()
 local logETW = ETW_CommonFunctions.log
+local gameMode = ETW_CommonFunctions.gameMode()
+local PARANOIA_YELL_RADIUS = 50
+local PARANOIA_YELL_VOLUME = 50
 
 local original_ISPetAnimal_animEvent = ISPetAnimal.animEvent
 
@@ -181,6 +184,89 @@ function ETW_MentalTraits.depressiveTrait(player, modData, stats, attemptEpisode
 				.. resultingUnhappiness
 		)
 	end
+end
+
+---Periodically triggers a false scare while a Paranoia character is moving.
+---@param player IsoPlayer
+---@param stats Stats
+---@param modData EvolvingTraitsWorldModData
+function ETW_MentalTraits.paranoiaTrait(player, stats, modData)
+	if modData.ParanoiaCooldownMinutes == nil then
+		modData.ParanoiaCooldownMinutes = 10
+		return
+	end
+	if modData.ParanoiaCooldownMinutes > 0 then
+		modData.ParanoiaCooldownMinutes = modData.ParanoiaCooldownMinutes - 1
+		return
+	end
+	if not player:isPlayerMoving() then
+		return
+	end
+
+	local stress = stats:get(CharacterStat.STRESS)
+	local baseChance = PZMath.clamp(SBvars.ParanoiaBaseChancePercent or 1, 0, 100)
+	local stressBonus = PZMath.clamp(SBvars.ParanoiaStressChanceBonusPercent or 2, 0, 100)
+	local chance = PZMath.clamp(baseChance + stress * stressBonus, 0, 100)
+	local roll = random_instance:random(1, 100)
+	if roll > chance then
+		return
+	end
+
+	local panic = stats:get(CharacterStat.PANIC)
+	local panicIncrease = PZMath.clamp(SBvars.ParanoiaPanicIncrease or 25, 0, 100)
+	local stressIncrease = PZMath.clamp(SBvars.ParanoiaStressIncreasePercent or 10, 0, 100) / 100
+	local resultingPanic = math.min(100, panic + panicIncrease)
+	local resultingStress = math.min(1, stress + stressIncrease)
+	stats:set(CharacterStat.PANIC, resultingPanic)
+	stats:set(CharacterStat.STRESS, resultingStress)
+	modData.ParanoiaCooldownMinutes = math.max(0, math.floor(SBvars.ParanoiaCooldownMinutes or 30))
+	local yellChance = PZMath.clamp(SBvars.ParanoiaYellChancePercent or 25, 0, 100)
+	local yellRoll = random_instance:random(1, 100)
+	local yell = yellRoll <= yellChance
+	if yell then
+		addSound(
+			player,
+			player:getX(),
+			player:getY(),
+			player:getZ(),
+			PARANOIA_YELL_RADIUS,
+			PARANOIA_YELL_VOLUME
+		)
+	end
+
+	if gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
+		sendServerCommand(player, "ETW", "triggerParanoiaScare", { yell = yell })
+	else
+		ETW_CommonFunctions.playParanoiaScare(player, yell)
+	end
+	logETW(
+		"ETW Logger | paranoiaTrait(): triggered for "
+			.. tostring(player:getUsername())
+			.. " (OnlineID="
+			.. player:getOnlineID()
+			.. "); roll: "
+			.. roll
+			.. "/100; chance: "
+			.. chance
+			.. "%; panic: "
+			.. panic
+			.. "->"
+			.. resultingPanic
+			.. "; stress: "
+			.. stress
+			.. "->"
+			.. resultingStress
+			.. "; yell roll: "
+			.. yellRoll
+			.. "/100; yell chance: "
+			.. yellChance
+			.. "%; yelled: "
+			.. tostring(yell)
+			.. (yell and "; world sound: radius=50, volume=50" or "")
+			.. "; cooldown: "
+			.. modData.ParanoiaCooldownMinutes
+			.. " minutes"
+	)
 end
 
 function ETW_MentalTraits.asceticTrait(player, stats)
