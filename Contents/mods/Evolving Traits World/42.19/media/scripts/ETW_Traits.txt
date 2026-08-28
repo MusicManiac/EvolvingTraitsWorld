@@ -147,7 +147,7 @@ module ETW
         Cost = 10,
         UIName = UI_trait_SuperImmune,
         UIDescription = UI_trait_SuperImmuneDesc,
-        MutuallyExclusiveTraits = base:pronetoillness;base:resilient,
+        MutuallyExclusiveTraits = base:pronetoillness;base:resilient;ETW:Immunocompromised,
     }
 
     character_trait_definition ETW:Terminator
@@ -665,6 +665,17 @@ module ETW
         UIName = UI_trait_SelfDestructive,
         UIDescription = UI_trait_SelfDestructiveDesc,
         MutuallyExclusiveTraits = ETW:Blissful,
+    }
+
+    character_trait_definition ETW:Immunocompromised
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:Immunocompromised,
+        Cost = -10,
+        UIName = UI_trait_Immunocompromised,
+        UIDescription = UI_trait_ImmunocompromisedDesc,
+        MutuallyExclusiveTraits = base:resilient;ETW:SuperImmune,
     }
 
     character_trait_definition ETW:SlowEater

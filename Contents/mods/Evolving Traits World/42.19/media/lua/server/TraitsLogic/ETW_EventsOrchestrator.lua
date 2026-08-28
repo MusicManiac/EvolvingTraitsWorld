@@ -63,6 +63,10 @@ local function oneMinuteUpdate()
 			bodyDamage = bodyDamage or player:getBodyDamage()
 			ETW_HealthTraits.superImmuneTrait(player, bodyDamage)
 		end
+		if player:hasTrait(ETWTraitsRegistry.IMMUNOCOMPROMISED) then
+			bodyDamage = bodyDamage or player:getBodyDamage()
+			ETW_HealthTraits.immunocompromisedTrait(player, bodyDamage)
+		end
 		if player:hasTrait(ETWTraitsRegistry.BLISSFUL) then
 			stats = stats or player:getStats()
 			ETW_MentalTraits.blissfulTrait(player, stats)

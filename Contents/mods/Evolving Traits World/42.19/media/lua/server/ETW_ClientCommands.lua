@@ -129,6 +129,27 @@ function Commands.triggerIndefatigableCrowd(player, args)
 	ETW_HealthTraits.indefatigableTrait(player, player:getBodyDamage(), modData, true)
 end
 
+---Validates a client's new-zombie-injury report and performs the Knox infection roll on the server.
+---@param player IsoPlayer
+---@param args table
+function Commands.immunocompromisedKnoxInjury(player, args)
+	local playerIdentifier = tostring(player:getUsername()) .. " (OnlineID=" .. player:getOnlineID() .. ")"
+	if not player:hasTrait(ETWTraitsRegistry.IMMUNOCOMPROMISED) then
+		logETW(
+			"ETW Logger | Commands.immunocompromisedKnoxInjury(): rejected missing trait for "
+				.. playerIdentifier
+		)
+		return
+	end
+	logETW(
+		"ETW Logger | Commands.immunocompromisedKnoxInjury(): accepted new zombie injury report for "
+			.. playerIdentifier
+			.. "; client body part index: "
+			.. tostring(args.bodyPartIndex)
+	)
+	ETWCombinedTraitChecks.immunocompromisedKnoxInfectionRoll(player)
+end
+
 ---@class GymRatStiffnessIncrementArgs
 ---@field group string
 ---@field increments number

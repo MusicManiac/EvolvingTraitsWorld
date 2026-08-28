@@ -953,6 +953,24 @@ option EvolvingTraitsWorld.SelfDestructiveDepressiveEpisodeChanceBonus
 	page = ETWTraitsSettings,
 	translation = ETW_SelfDestructiveDepressiveEpisodeChanceBonus,
 }
+option EvolvingTraitsWorld.ImmunocompromisedKnoxInfectionChance
+{
+	type = integer,
+	min = 0,
+	max = 100,
+	default = 25,
+	page = ETWTraitsSettings,
+	translation = ETW_ImmunocompromisedKnoxInfectionChance,
+}
+option EvolvingTraitsWorld.ImmunocompromisedWoundInfectionIncreasePerMinute
+{
+	type = double,
+	min = 0,
+	max = 10,
+	default = 0.05,
+	page = ETWTraitsSettings,
+	translation = ETW_ImmunocompromisedWoundInfectionIncreasePerMinute,
+}
 option EvolvingTraitsWorld.GymRatExerciseXPMultiplier
 {
 	type = double,

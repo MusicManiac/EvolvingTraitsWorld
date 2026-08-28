@@ -24,6 +24,44 @@ local INDEFATIGABLE_PROTECTION_DURATION_MS = 120000
 local INDEFATIGABLE_TRIGGER_RADIUS = 1.5
 local INDEFATIGABLE_KNOCKDOWN_RADIUS = 2.5
 
+---Accelerates untreated wound infections for Immunocompromised characters.
+---@param player IsoPlayer
+---@param bodyDamage BodyDamage
+function ETW_HealthTraits.immunocompromisedTrait(player, bodyDamage)
+	local increase = math.max(0, SBvars.ImmunocompromisedWoundInfectionIncreasePerMinute or 0.05)
+	if increase <= 0 or not bodyDamage:HasInjury() then
+		return
+	end
+
+	local affectedParts = 0
+	local totalIncrease = 0
+	local parts = bodyDamage:getBodyParts()
+	for i = 0, parts:size() - 1 do
+		local part = parts:get(i)
+		local infectionLevel = part:getWoundInfectionLevel()
+		if part:isInfectedWound() and part:getAlcoholLevel() <= 0 and infectionLevel < 10 then
+			local resultingLevel = math.min(10, infectionLevel + increase)
+			part:setWoundInfectionLevel(resultingLevel)
+			affectedParts = affectedParts + 1
+			totalIncrease = totalIncrease + (resultingLevel - infectionLevel)
+		end
+	end
+	if affectedParts == 0 then
+		return
+	end
+
+	logETW(
+		"ETW Logger | immunocompromisedTrait(): worsened untreated wound infections for "
+			.. tostring(player:getUsername())
+			.. " (OnlineID="
+			.. player:getOnlineID()
+			.. "); affected body parts: "
+			.. affectedParts
+			.. "; total infection increase: "
+			.. totalIncrease
+	)
+end
+
 ---Prevents Knox Infection, wound infections, colds, and disease.
 ---@param player IsoPlayer
 ---@param bodyDamage BodyDamage
