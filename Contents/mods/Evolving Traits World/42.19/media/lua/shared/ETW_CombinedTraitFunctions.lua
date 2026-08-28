@@ -100,6 +100,68 @@ function ETWCombinedTraitChecks.forEachNearbyLivingZombie(player, radius, visito
 	return nearbyCount
 end
 
+local nearbyZombieCachePlayer
+local nearbyZombieCacheFrame = -1
+local nearbyZombieCacheRadius = 0
+local nearbyZombieCacheCount = 0
+local nearbyZombieCacheZombies = {}
+local nearbyZombieCacheDistancesSquared = {}
+local nearbyZombieCacheFillVisitor
+
+---Stores a zombie in the current-frame cache while forwarding the initial scan to its caller.
+---@param zombie IsoZombie
+---@param distanceSquared number
+local function cacheNearbyLivingZombie(zombie, distanceSquared)
+	nearbyZombieCacheCount = nearbyZombieCacheCount + 1
+	nearbyZombieCacheZombies[nearbyZombieCacheCount] = zombie
+	nearbyZombieCacheDistancesSquared[nearbyZombieCacheCount] = distanceSquared
+	if nearbyZombieCacheFillVisitor then
+		nearbyZombieCacheFillVisitor(zombie, distanceSquared)
+	end
+end
+
+---Visits nearby zombies while reusing a same-player scan already made during the current world frame.
+---A request with a larger radius replaces the cache; smaller-radius consumers filter the cached results.
+---@param player IsoPlayer
+---@param radius number
+---@param visitor fun(zombie: IsoZombie, distanceSquared: number)|nil
+---@return integer nearbyCount
+function ETWCombinedTraitChecks.forEachNearbyLivingZombieCachedThisFrame(player, radius, visitor)
+	radius = math.max(0, radius)
+	local frame = getWorld():getFrameNo()
+	if
+		nearbyZombieCachePlayer ~= player
+		or nearbyZombieCacheFrame ~= frame
+		or nearbyZombieCacheRadius < radius
+	then
+		for i = nearbyZombieCacheCount, 1, -1 do
+			nearbyZombieCacheZombies[i] = nil
+			nearbyZombieCacheDistancesSquared[i] = nil
+		end
+		nearbyZombieCachePlayer = player
+		nearbyZombieCacheFrame = frame
+		nearbyZombieCacheRadius = radius
+		nearbyZombieCacheCount = 0
+		nearbyZombieCacheFillVisitor = visitor
+		ETWCombinedTraitChecks.forEachNearbyLivingZombie(player, radius, cacheNearbyLivingZombie)
+		nearbyZombieCacheFillVisitor = nil
+		return nearbyZombieCacheCount
+	end
+
+	local radiusSquared = radius * radius
+	local nearbyCount = 0
+	for i = 1, nearbyZombieCacheCount do
+		local distanceSquared = nearbyZombieCacheDistancesSquared[i]
+		if distanceSquared <= radiusSquared then
+			nearbyCount = nearbyCount + 1
+			if visitor then
+				visitor(nearbyZombieCacheZombies[i], distanceSquared)
+			end
+		end
+	end
+	return nearbyCount
+end
+
 local gymRatMuscleGroups = {
 	arms = {
 		BodyPartType.UpperArm_L,

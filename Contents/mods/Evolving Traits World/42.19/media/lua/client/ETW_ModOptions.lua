@@ -23,8 +23,10 @@ etwOptions:addTickBox(
 	true,
 	getText("UI_ETW_Options_EnableSoundNotifications_tooltip")
 )
-local SoundNotificationSoundSelectComboBox =
-	etwOptions:addMultipleTickBox("SoundNotificationSoundSelect", getText("UI_ETW_Options_SoundNotificationSoundSelect"))
+local SoundNotificationSoundSelectComboBox = etwOptions:addMultipleTickBox(
+	"SoundNotificationSoundSelect",
+	getText("UI_ETW_Options_SoundNotificationSoundSelect")
+)
 SoundNotificationSoundSelectComboBox:addTickBox(getText("UI_ETW_Options_Sound_B42"), false)
 SoundNotificationSoundSelectComboBox:addTickBox(getText("UI_ETW_Options_Sound_B41"), false)
 SoundNotificationSoundSelectComboBox:addTickBox(getText("UI_ETW_Options_Sound_TheLastOfUs"), true)
@@ -59,12 +61,12 @@ end
 etwOptions:addDescription(getText("UI_ETW_Options_ParanoiaScreamVolume_tooltip"))
 etwOptions:addSlider(
 	"ParanoiaScreamVolume",
-	getText("UI_ETW_Options_ParanoiaScreamVolume"),
+	"UI_ETW_Options_ParanoiaScreamVolume",
 	0,
 	100,
 	5,
 	100,
-	getText("UI_ETW_Options_ParanoiaScreamVolume_tooltip")
+	"UI_ETW_Options_ParanoiaScreamVolume_tooltip"
 )
 etwOptions:addSeparator()
 
@@ -99,16 +101,17 @@ etwOptions:addTickBox(
 	getText("UI_ETW_Options_EnableSleepHealthMoodle_tooltip")
 )
 
-etwOptions:addDescription(
-	"Sliders in new mod options don't properly display tooltip yet, so I'll put description here in the meantime.\n"
-		.. getText("UI_ETW_Options_UIWidth_tooltip")
-		.. "\n"
-		.. getText("UI_ETW_Options_TooltipWidth_tooltip")
-		.. "\n"
-		.. getText("UI_ETW_Options_TraitColumns_tooltip")
+etwOptions:addDescription(getText("UI_ETW_Options_UIWidth_tooltip"))
+etwOptions:addSlider(
+	"UIWidth",
+	getText("UI_ETW_Options_UIWidth"),
+	500,
+	3000,
+	10,
+	900,
+	getText("UI_ETW_Options_UIWidth_tooltip")
 )
-
-etwOptions:addSlider("UIWidth", getText("UI_ETW_Options_UIWidth"), 500, 3000, 10, 900, getText("UI_ETW_Options_UIWidth_tooltip"))
+etwOptions:addDescription(getText("UI_ETW_Options_TooltipWidth_tooltip"))
 etwOptions:addSlider(
 	"TooltipWidth",
 	getText("UI_ETW_Options_TooltipWidth"),
@@ -118,6 +121,20 @@ etwOptions:addSlider(
 	500,
 	getText("UI_ETW_Options_TooltipWidth_tooltip")
 )
-etwOptions:addSlider("TraitColumns", getText("UI_ETW_Options_TraitColumns"), 1, 10, 1, 4, getText("UI_ETW_Options_TraitColumns_tooltip"))
+etwOptions:addDescription(getText("UI_ETW_Options_TraitColumns_tooltip"))
+etwOptions:addSlider(
+	"TraitColumns",
+	getText("UI_ETW_Options_TraitColumns"),
+	1,
+	10,
+	1,
+	4,
+	getText("UI_ETW_Options_TraitColumns_tooltip")
+)
 
-etwOptions:addTickBox("HideSmokerUI", getText("UI_ETW_Options_HideSmokerUI"), false, getText("UI_ETW_Options_HideSmokerUI_tooltip"))
+etwOptions:addTickBox(
+	"HideSmokerUI",
+	getText("UI_ETW_Options_HideSmokerUI"),
+	false,
+	getText("UI_ETW_Options_HideSmokerUI_tooltip")
+)

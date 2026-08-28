@@ -34,7 +34,7 @@ function ETW_CombatTraits.bouncerTrait(player, modData)
 	local maximumDistance = math.max(0, SBvars.BouncerDistance or 1.75)
 	local closestTarget = nil
 	local closestDistanceSquared = maximumDistance * maximumDistance + 1
-	local nearbyCount = ETWCombinedTraitChecks.forEachNearbyLivingZombie(
+	local nearbyCount = ETWCombinedTraitChecks.forEachNearbyLivingZombieCachedThisFrame(
 		player,
 		maximumDistance,
 		function(zombie, distanceSquared)

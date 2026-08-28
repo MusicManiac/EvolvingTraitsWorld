@@ -190,7 +190,7 @@ function ETW_HealthTraits.indefatigableTrait(player, bodyDamage, modData, client
 		return
 	end
 
-	local serverCrowdCount = ETWCombinedTraitChecks.forEachNearbyLivingZombie(
+	local serverCrowdCount = ETWCombinedTraitChecks.forEachNearbyLivingZombieCachedThisFrame(
 		player,
 		INDEFATIGABLE_TRIGGER_RADIUS,
 		nil
@@ -203,7 +203,7 @@ function ETW_HealthTraits.indefatigableTrait(player, bodyDamage, modData, client
 
 	local requiresNearbyZombie = SBvars.IndefatigableRequiresNearbyZombie ~= false
 	local knockdownTargets = {}
-	local nearbyCount = ETWCombinedTraitChecks.forEachNearbyLivingZombie(
+	local nearbyCount = ETWCombinedTraitChecks.forEachNearbyLivingZombieCachedThisFrame(
 		player,
 		(requiresNearbyZombie or crowdTrigger) and 5 or INDEFATIGABLE_KNOCKDOWN_RADIUS,
 		function(zombie, distanceSquared)
