@@ -1,5 +1,6 @@
 ---@class ETW_CommonFunctions
 local ETW_CommonFunctions = {}
+local ETW_ModData
 
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld
@@ -340,19 +341,15 @@ function ETW_CommonFunctions.getETWModData(player)
 	if not player or not player.getModData then
 		return nil
 	end
-	local ok, modData = pcall(function()
-		return player:getModData()
-	end)
-	if not ok or not modData then
+	local modData = player:getModData()
+	if not modData then
 		return nil
 	end
+	if not ETW_ModData then
+		ETW_ModData = require("ETW_ModData")
+	end
 	if not modData.EvolvingTraitsWorld then
-		local okRequire, ETW_ModData = pcall(require, "ETW_ModData")
-		if okRequire and ETW_ModData and ETW_ModData.createETWModData and player.getPlayerNum then
-			pcall(function()
-				ETW_ModData.createETWModData(player:getPlayerNum(), player)
-			end)
-		end
+		ETW_ModData.createETWModData(player:getPlayerNum(), player)
 	end
 	return modData.EvolvingTraitsWorld
 end

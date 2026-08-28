@@ -1,6 +1,7 @@
 local ETW_CommonFunctions = require("ETW_CommonFunctions")
 local ETW_Registry = require("ETW_Registry")
 local ETWCombinedTraitChecks = require("ETW_CombinedTraitFunctions")
+local ETW_NearbyZombieScanner = require("TraitsLogic/ETW_NearbyZombieScanner")
 
 local FILENAME = "ETW_ImmunocompromisedClient.lua"
 if
@@ -21,6 +22,7 @@ local pendingZombieAttackExpiresAt
 local PENDING_ZOMBIE_ATTACK_DURATION_MS = 1000
 local ZOMBIE_ATTACK_SCAN_RADIUS = 3
 local ATTACK_OUTCOME_MOD_DATA_KEY = "ETWImmunocompromisedAttackOutcome"
+local ZOMBIE_SCANNER_CONSUMER_ID = "Immunocompromised"
 
 ---@class ImmunocompromisedInjuryState
 ---@field scratched boolean
@@ -180,25 +182,17 @@ local function detectZombieAttack(player, zombie)
 	queueZombieAttackCheck(player, zombie, currentAttackOutcome, player:getHitReaction())
 end
 
-local zombieAttackScanPlayer
-
----Passes a nearby zombie from the shared radius iterator to Immunocompromised's attack detector.
+---Passes a nearby zombie from the shared scanner to Immunocompromised's attack detector.
+---@param player IsoPlayer
 ---@param zombie IsoZombie
-local function inspectNearbyZombie(zombie)
-	detectZombieAttack(zombieAttackScanPlayer, zombie)
+local function inspectNearbyZombie(player, zombie)
+	detectZombieAttack(player, zombie)
 end
 
----Scans only the area around the local player for zombie attack transitions.
-local function scanNearbyZombieAttacks()
-	local player = getPlayer()
-	if not player or player:isDead() or not player:hasTrait(ETWTraitsRegistry.IMMUNOCOMPROMISED) then
-		Events.OnTick.Remove(scanNearbyZombieAttacks)
-		return
-	end
-
-	zombieAttackScanPlayer = player
-	ETWCombinedTraitChecks.forEachNearbyLivingZombie(player, ZOMBIE_ATTACK_SCAN_RADIUS, inspectNearbyZombie)
-	zombieAttackScanPlayer = nil
+---@param player IsoPlayer
+---@return boolean
+local function immunocompromisedScanEnabled(player)
+	return player:hasTrait(ETWTraitsRegistry.IMMUNOCOMPROMISED)
 end
 
 ---Refreshes the injury baseline so healed wounds and their decreasing timers are forgotten.
@@ -217,13 +211,14 @@ end
 ---@param playerIndex integer
 ---@param player IsoPlayer
 local function onCreatePlayer(playerIndex, player)
-	Events.OnTick.Remove(scanNearbyZombieAttacks)
+	ETW_NearbyZombieScanner.unregister(ZOMBIE_SCANNER_CONSUMER_ID)
 	Events.EveryOneMinute.Remove(refreshKnownInjuries)
-	-- if not player or player ~= getPlayer() or not player:hasTrait(ETWTraitsRegistry.IMMUNOCOMPROMISED) then
-	-- 	return
-	-- end
 	initializeKnownInjuries(player)
-	Events.OnTick.Add(scanNearbyZombieAttacks)
+	ETW_NearbyZombieScanner.register(ZOMBIE_SCANNER_CONSUMER_ID, {
+		radius = ZOMBIE_ATTACK_SCAN_RADIUS,
+		isEnabled = immunocompromisedScanEnabled,
+		onZombie = inspectNearbyZombie,
+	})
 	Events.EveryOneMinute.Add(refreshKnownInjuries)
 	logETW(
 		"ETW Logger | Immunocompromised | onCreatePlayer(): registered nearby zombie attack scan for player index "

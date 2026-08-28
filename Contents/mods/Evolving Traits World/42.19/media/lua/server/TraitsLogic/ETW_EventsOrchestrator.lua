@@ -158,12 +158,12 @@ local function everyTickUpdate()
 				bodyDamage = player:getBodyDamage()
 				ETW_HealthTraits.indefatigableProtection(player, bodyDamage, modData)
 			end
+			if player:hasTrait(ETWTraitsRegistry.BOUNCER) then
+				ETW_CombatTraits.bouncerTrait(player, modData)
+			end
 			if player:hasTrait(ETWTraitsRegistry.INDEFATIGABLE) then
 				bodyDamage = bodyDamage or player:getBodyDamage()
 				ETW_HealthTraits.indefatigableTrait(player, bodyDamage, modData)
-			end
-			if player:hasTrait(ETWTraitsRegistry.BOUNCER) then
-				ETW_CombatTraits.bouncerTrait(player, modData)
 			end
 			if modData.AntiGunAimingXPCheckPending and player:hasTrait(ETWTraitsRegistry.ANTI_GUN_ACTIVIST) then
 				ETW_CombatTraits.antiGunAimingXPPenalty(player, modData)

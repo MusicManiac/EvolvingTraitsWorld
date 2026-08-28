@@ -1,6 +1,6 @@
 local ETW_CommonFunctions = require("ETW_CommonFunctions")
 local ETW_Registry = require("ETW_Registry")
-local ETWCombinedTraitChecks = require("ETW_CombinedTraitFunctions")
+local ETW_NearbyZombieScanner = require("TraitsLogic/ETW_NearbyZombieScanner")
 
 local FILENAME = "ETW_ClientEventTriggers.lua"
 if
@@ -19,6 +19,12 @@ local lastClothingRefreshRequest
 local indefatigableCrowdRequestSent = false
 local INDEFATIGABLE_TRIGGER_RADIUS = 1.5
 local INDEFATIGABLE_KNOCKDOWN_RADIUS = 2.5
+local INDEFATIGABLE_TRIGGER_RADIUS_SQUARED = INDEFATIGABLE_TRIGGER_RADIUS * INDEFATIGABLE_TRIGGER_RADIUS
+local INDEFATIGABLE_KNOCKDOWN_RADIUS_SQUARED = INDEFATIGABLE_KNOCKDOWN_RADIUS
+	* INDEFATIGABLE_KNOCKDOWN_RADIUS
+local INDEFATIGABLE_SCANNER_CONSUMER_ID = "Indefatigable"
+local indefatigableNearbyCount = 0
+local indefatigableKnockdownTargets = {}
 
 ---@param character IsoGameCharacter
 ---@param source string
@@ -92,30 +98,53 @@ local function weaponSwingOnServer()
 	logETW("ETW Logger | weaponSwingOnServer(): requested server weapon-trait refresh")
 end
 
----Reports MT-style client crowd detection before MP drag-down death can begin.
-local function indefatigableCrowdTriggerOnServer()
-	local player = getPlayer()
-	if not player or not player:hasTrait(ETWTraitsRegistry.INDEFATIGABLE) then
+---Returns whether Indefatigable currently needs nearby-zombie information.
+---@param player IsoPlayer
+---@return boolean
+local function indefatigableScanEnabled(player)
+	if not player:hasTrait(ETWTraitsRegistry.INDEFATIGABLE) then
 		indefatigableCrowdRequestSent = false
-		return
+		return false
 	end
 	local modData = ETW_CommonFunctions.getETWModData(player)
 	if not modData then
-		return
+		return false
 	end
 	local maximumUses = math.max(0, math.floor(SandboxVars.EvolvingTraitsWorld.IndefatigableUses or 1))
 	if maximumUses > 0 and (modData.IndefatigableUses or 0) >= maximumUses then
-		return
+		return false
 	end
 	if getGameTime():getWorldAgeHours() < (modData.IndefatigableCooldownUntilHours or 0) then
-		return
+		return false
 	end
-	local nearbyCount = ETWCombinedTraitChecks.forEachNearbyLivingZombie(
-		player,
-		INDEFATIGABLE_TRIGGER_RADIUS,
-		nil
-	)
-	if nearbyCount < 4 then
+	return true
+end
+
+---Clears Indefatigable's accumulated results before the shared traversal.
+local function beginIndefatigableScan()
+	indefatigableNearbyCount = 0
+	for i = #indefatigableKnockdownTargets, 1, -1 do
+		indefatigableKnockdownTargets[i] = nil
+	end
+end
+
+---Collects Indefatigable's crowd count and knockdown targets from one shared traversal.
+---@param _ IsoPlayer
+---@param zombie IsoZombie
+---@param distanceSquared number
+local function inspectZombieForIndefatigable(_, zombie, distanceSquared)
+	if distanceSquared <= INDEFATIGABLE_TRIGGER_RADIUS_SQUARED then
+		indefatigableNearbyCount = indefatigableNearbyCount + 1
+	end
+	if distanceSquared <= INDEFATIGABLE_KNOCKDOWN_RADIUS_SQUARED and not zombie:isKnockedDown() then
+		table.insert(indefatigableKnockdownTargets, zombie)
+	end
+end
+
+---Reports MT-style client crowd detection before MP drag-down death can begin.
+---@param player IsoPlayer
+local function finishIndefatigableScan(player)
+	if indefatigableNearbyCount < 4 then
 		indefatigableCrowdRequestSent = false
 		return
 	end
@@ -123,27 +152,17 @@ local function indefatigableCrowdTriggerOnServer()
 		return
 	end
 	indefatigableCrowdRequestSent = true
-	local knockdownTargets = {}
-	ETWCombinedTraitChecks.forEachNearbyLivingZombie(
-		player,
-		INDEFATIGABLE_KNOCKDOWN_RADIUS,
-		function(zombie)
-			if not zombie:isKnockedDown() then
-				table.insert(knockdownTargets, zombie)
-			end
-		end
-	)
-	for _, zombie in ipairs(knockdownTargets) do
+	for _, zombie in ipairs(indefatigableKnockdownTargets) do
 		ETW_CommonFunctions.triggerBouncerStagger(player, zombie, true)
 	end
-	sendClientCommand(player, "ETW", "triggerIndefatigableCrowd", { nearbyCount = nearbyCount })
+	sendClientCommand(player, "ETW", "triggerIndefatigableCrowd", { nearbyCount = indefatigableNearbyCount })
 	logETW(
 		"ETW Logger | indefatigableCrowdTriggerOnServer(): requested preemptive activation; zombies within 1.5 tiles: "
-			.. nearbyCount
+			.. indefatigableNearbyCount
 			.. "; locally knocked down within "
 			.. INDEFATIGABLE_KNOCKDOWN_RADIUS
 			.. " tiles: "
-			.. #knockdownTargets
+			.. #indefatigableKnockdownTargets
 	)
 end
 
@@ -156,5 +175,11 @@ Events.OnPlayerDeath.Remove(deathRefreshOnServer)
 Events.OnPlayerDeath.Add(deathRefreshOnServer)
 Events.EveryOneMinute.Remove(firearmAimingMoodOnServer)
 Events.EveryOneMinute.Add(firearmAimingMoodOnServer)
-Events.OnTick.Remove(indefatigableCrowdTriggerOnServer)
-Events.OnTick.Add(indefatigableCrowdTriggerOnServer)
+ETW_NearbyZombieScanner.unregister(INDEFATIGABLE_SCANNER_CONSUMER_ID)
+ETW_NearbyZombieScanner.register(INDEFATIGABLE_SCANNER_CONSUMER_ID, {
+	radius = INDEFATIGABLE_KNOCKDOWN_RADIUS,
+	isEnabled = indefatigableScanEnabled,
+	beforeScan = beginIndefatigableScan,
+	onZombie = inspectZombieForIndefatigable,
+	afterScan = finishIndefatigableScan,
+})

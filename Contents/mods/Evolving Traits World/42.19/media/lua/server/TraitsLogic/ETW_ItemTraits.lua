@@ -387,7 +387,7 @@ local function getActionHeroBonuses(player)
 	local nearbyZombies = 0
 	local weightedDamageThreat = 0
 	local weightedCriticalThreat = 0
-	nearbyZombies = ETWCombinedTraitChecks.forEachNearbyLivingZombie(
+	nearbyZombies = ETWCombinedTraitChecks.forEachNearbyLivingZombieCachedThisFrame(
 		player,
 		10,
 		function(_, distanceSquared)
