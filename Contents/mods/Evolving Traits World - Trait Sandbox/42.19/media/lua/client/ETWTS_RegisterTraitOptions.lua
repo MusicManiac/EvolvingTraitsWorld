@@ -19,6 +19,7 @@ local traits = {
 	{ id = "Gordonite", pointValue = -6 },
 	{ id = "Hardy", pointValue = -6 },
 	{ id = "IdealWeight", pointValue = -4 },
+	{ id = "Immunocompromised", pointValue = 10 },
 	{ id = "LeadFoot", pointValue = -2 },
 	{ id = "Mundane", pointValue = 9 },
 	{ id = "NaturalEater", pointValue = -4 },

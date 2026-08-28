@@ -1020,4 +1020,20 @@ option ETWTraitSandbox.SelfDestructivePointValue
 	page = ETWTraitSandbox,
 	translation = ETWTS_SelfDestructivePointValue,
 }
+option ETWTraitSandbox.ImmunocompromisedEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_ImmunocompromisedEnabled,
+}
+option ETWTraitSandbox.ImmunocompromisedPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = 10,
+	page = ETWTraitSandbox,
+	translation = ETWTS_ImmunocompromisedPointValue,
+}
 

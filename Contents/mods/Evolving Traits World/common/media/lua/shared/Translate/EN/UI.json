@@ -106,6 +106,8 @@
     "UI_trait_DepressiveDesc": "You are prone to bouts of sadness.<br>You occasionally gain a large amount of unhappiness that slowly recedes until the episode ends.",
     "UI_trait_SelfDestructive": "Self-Destructive",
     "UI_trait_SelfDestructiveDesc": "When the going gets tough, you crumble.<br>At high unhappiness, your health declines toward a floor determined by your unhappiness. Depressive makes the health loss more severe and its episodes more likely.",
+    "UI_trait_Immunocompromised": "Immunocompromised",
+    "UI_trait_ImmunocompromisedDesc": "Your immune system is dangerously vulnerable.<br>Untreated wound infections worsen faster. Every new zombie injury may cause Knox infection, even when transmission is disabled.",
     "UI_trait_AxeThrower": "Axe Thrower",
     "UI_trait_AxeThrowerDesc": "You have participated in axe throwing competitions",
     "UI_trait_BladeEnthusiast": "Blade Enthusiast",

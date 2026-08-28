@@ -8,6 +8,7 @@ local SBvars = SandboxVars.EvolvingTraitsWorld
 local ETW_Registry = require("ETW_Registry")
 local ETWTraitsRegistry = ETW_Registry.traits
 local gameMode = ETW_CommonFunctions.gameMode()
+local random_instance = newrandom()
 
 ---@type fun(...: string)
 local logETW = ETW_CommonFunctions.log
@@ -17,6 +18,40 @@ ETW_CommonFunctions.gameModeSafeguard(
 	FILENAME,
 	{ ETW_CommonFunctions.GameMode.SP, ETW_CommonFunctions.GameMode.MP_CLIENT, ETW_CommonFunctions.GameMode.MP_SERVER }
 )
+
+---Rolls and applies Immunocompromised's forced Knox infection.
+---The caller is responsible for establishing that a new zombie injury occurred.
+---@param player IsoPlayer
+---@return boolean infected
+function ETWCombinedTraitChecks.immunocompromisedKnoxInfectionRoll(player)
+	local playerIdentifier = tostring(player:getUsername()) .. " (OnlineID=" .. player:getOnlineID() .. ")"
+	local bodyDamage = player:getBodyDamage()
+	if bodyDamage:isInfected() then
+		logETW(
+			"ETW Logger | immunocompromisedKnoxInfectionRoll(): skipped already infected player "
+				.. playerIdentifier
+		)
+		return false
+	end
+
+	local chance = PZMath.clamp(SBvars.ImmunocompromisedKnoxInfectionChance or 25, 0, 100)
+	local roll = random_instance:random(1, 100)
+	local infected = roll <= chance
+	if infected then
+		bodyDamage:setInfected(true)
+	end
+	logETW(
+		"ETW Logger | immunocompromisedKnoxInfectionRoll(): rolled for "
+			.. playerIdentifier
+			.. "; roll: "
+			.. roll
+			.. "/100; chance: "
+			.. chance
+			.. "%; infected: "
+			.. tostring(infected)
+	)
+	return infected
+end
 
 ---Visits every living zombie within a bounded two-dimensional radius of the player.
 ---Only loaded moving objects on the player's current Z-level are considered.

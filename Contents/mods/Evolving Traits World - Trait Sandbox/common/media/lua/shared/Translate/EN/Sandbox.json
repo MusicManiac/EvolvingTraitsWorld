@@ -247,5 +247,9 @@
     "Sandbox_ETWTS_SelfDestructiveEnabled_tooltip": "Controls character-creation availability.",
     "Sandbox_ETWTS_SelfDestructivePointValue": "Self-Destructive point value",
     "Sandbox_ETWTS_SelfDestructivePointValue_tooltip": "Character-creation point adjustment: negative values cost points; positive values grant points.",
+    "Sandbox_ETWTS_ImmunocompromisedEnabled": "Enable Immunocompromised",
+    "Sandbox_ETWTS_ImmunocompromisedEnabled_tooltip": "Controls character-creation availability.",
+    "Sandbox_ETWTS_ImmunocompromisedPointValue": "Immunocompromised point value",
+    "Sandbox_ETWTS_ImmunocompromisedPointValue_tooltip": "Character-creation point adjustment: negative values cost points; positive values grant points.",
     "Sandbox_ETWTraitSandbox": "Evolving Traits World - Trait Sandbox"
 }
