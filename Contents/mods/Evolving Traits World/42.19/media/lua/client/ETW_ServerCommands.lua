@@ -83,6 +83,17 @@ Commands.traitSound = function(player, args)
 	ETW_CommonFunctions.traitSound(player)
 end
 
+---Plays the Indefatigable theme if enabled in this client's mod options.
+Commands.indefatigableTheme = function(player, args)
+	player = resolveLocalPlayer(player)
+	if not player then
+		logETW("ETW Logger | Commands.indefatigableTheme(): player not ready, skipping")
+		return
+	end
+	logETW("ETW Logger | Commands.indefatigableTheme received")
+	ETW_CommonFunctions.indefatigableTheme(player)
+end
+
 ---Displays the Butterfingers effect popup if enabled in this client's mod options.
 Commands.displayButterfingersPopup = function(player, args)
 	player = resolveLocalPlayer(player)

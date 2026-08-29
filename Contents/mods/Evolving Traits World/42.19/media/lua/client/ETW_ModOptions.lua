@@ -23,6 +23,12 @@ etwOptions:addTickBox(
 	true,
 	getText("UI_ETW_Options_EnableSoundNotifications_tooltip")
 )
+etwOptions:addTickBox(
+	"EnableIndefatigableTheme",
+	getText("UI_ETW_Options_EnableIndefatigableTheme"),
+	false,
+	getText("UI_ETW_Options_EnableIndefatigableTheme_tooltip")
+)
 local SoundNotificationSoundSelectComboBox = etwOptions:addMultipleTickBox(
 	"SoundNotificationSoundSelect",
 	getText("UI_ETW_Options_SoundNotificationSoundSelect")

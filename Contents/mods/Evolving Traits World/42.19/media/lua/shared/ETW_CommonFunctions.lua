@@ -325,6 +325,16 @@ function ETW_CommonFunctions.traitSound(player)
 	end
 end
 
+---Plays the Indefatigable theme for the owning player if enabled in their client settings.
+---@param player IsoPlayer|IsoGameCharacter the player to play the theme for
+function ETW_CommonFunctions.indefatigableTheme(player)
+	if gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
+		sendServerCommand(player, "ETW", "indefatigableTheme", {})
+	elseif modOptions and modOptions:getOption("EnableIndefatigableTheme"):getValue() then
+		player:playSoundLocal("ETW_IndefatigableTheme")
+	end
+end
+
 ---Returns ETW mod data
 ---@param player IsoPlayer|IsoGameCharacter the player for whom to get mod data
 ---@return EvolvingTraitsWorldModData|nil EvolvingTraitsWorldModData mod data for the player
