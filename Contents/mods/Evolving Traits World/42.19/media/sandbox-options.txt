@@ -5,6 +5,13 @@ option EvolvingTraitsWorld.SETTINGS
 	translation = ---------------------------------------------SETTINGS-------------------------------------------------------------------,
 }
 
+option EvolvingTraitsWorld.DisableAllDynamicTraits
+{
+	type = boolean,
+	default = false,
+	page = ETWSettings,
+	translation = ETW_DisableAllDynamicTraits,
+}
 option EvolvingTraitsWorld.AffinitySystem
 {
 	type = boolean,

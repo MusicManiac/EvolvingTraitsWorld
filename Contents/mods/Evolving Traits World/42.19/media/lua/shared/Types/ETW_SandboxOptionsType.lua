@@ -5,6 +5,7 @@
 
 --- @class EvolvingTraitsWorldSandboxVars
 -- Settings
+--- @field DisableAllDynamicTraits boolean
 --- @field AffinitySystem boolean
 --- @field AffinitySystemLoseDivider number
 --- @field AffinitySystemGainMultiplier number

@@ -4655,4 +4655,6 @@ function ISETWUI:onJoypadDirLeft() end
 
 function ISETWUI:onJoypadDirRight() end
 
-addCharacterPageTab("ETW", ISETWUI:new(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0))
+addCharacterPageTab("ETW", ISETWUI:new(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0), function()
+	return SandboxVars.EvolvingTraitsWorld.DisableAllDynamicTraits ~= true
+end)

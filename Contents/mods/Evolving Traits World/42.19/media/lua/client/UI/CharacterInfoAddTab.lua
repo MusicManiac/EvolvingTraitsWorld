@@ -2,12 +2,19 @@
 ---@field current string|nil
 ---@field tabs string|nil
 
-function addCharacterPageTab(tabName, pageType)
+---@param tabName string
+---@param pageType ISUIElement
+---@param shouldAdd fun(): boolean|nil
+function addCharacterPageTab(tabName, pageType, shouldAdd)
 	local viewName = tabName .. "View"
 
 	local upperLayer_ISCharacterInfoWindow_createChildren = ISCharacterInfoWindow.createChildren
 	function ISCharacterInfoWindow:createChildren()
 		upperLayer_ISCharacterInfoWindow_createChildren(self)
+		if shouldAdd and not shouldAdd() then
+			self[viewName] = nil
+			return
+		end
 		self[viewName] = pageType:new(0, 8, self.width, self.height - 8, self.playerNum)
 		self[viewName]:initialise()
 		self[viewName].infoText = getText("UI_" .. tabName .. "Panel") --UI_<tabName>Panel is full text of tooltip

@@ -30,7 +30,10 @@ local original_ISPetAnimal_animEvent = ISPetAnimal.animEvent
 function ISPetAnimal:animEvent(event, parameter)
 	if event == "pettingFinished" then
 		local player = self.character
-		if ETW_CommonLogicChecks.PetTherapyShouldExecute(player) then
+		if
+			player:hasTrait(ETWTraitsRegistry.PET_THERAPY)
+			or ETW_CommonLogicChecks.PetTherapyShouldExecute(player)
+		then
 			local modData = ETW_CommonFunctions.getETWModData(player)
 			local animalsSystemModData = modData.AnimalsSystem
 			local currentMinute = GameTime.getInstance():getMinutesStamp()

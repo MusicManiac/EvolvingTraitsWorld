@@ -734,6 +734,9 @@ local skillTraitRules = {
 ---@param player IsoPlayer
 ---@param trigger PerkFactory.Perk|string|CharacterTrait
 function ETW_BySkills.traitsGainsBySkill(player, trigger)
+	if SBvars.DisableAllDynamicTraits == true then
+		return
+	end
 	logETW(
 		"ETW Logger | traitsGainsBySkill(): running for player "
 			.. player:getUsername()
@@ -851,6 +854,9 @@ local random_instance = newrandom()
 
 ---Function responsible for hourly check on Delayed Traits system
 local function progressDelayedTraits()
+	if SBvars.DisableAllDynamicTraits == true then
+		return
+	end
 	local playersList = ETW_CommonFunctions.playersList()
 	for i = 0, playersList:size() - 1 do
 		local player = playersList:get(i)
@@ -953,6 +959,12 @@ end
 ---@param playerIndex number
 ---@param player IsoPlayer
 local function initializeEventsETW(playerIndex, player)
+	if SBvars.DisableAllDynamicTraits == true then
+		if gameMode == CommonFunctions.GameMode.MP_SERVER then
+			Events.OnTick.Remove(initializeEventsETW)
+		end
+		return
+	end
 	if SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLoseNegative then
 		if gameMode == CommonFunctions.GameMode.SP then
 			ETW_BySkills.traitsGainsBySkill(player, "characterInitialization")

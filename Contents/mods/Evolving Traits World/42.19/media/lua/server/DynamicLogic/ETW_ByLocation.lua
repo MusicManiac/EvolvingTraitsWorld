@@ -325,6 +325,12 @@ end
 ---@param playerIndex number
 ---@param player IsoPlayer
 local function initializeEventsETW(playerIndex, player)
+	if SBvars.DisableAllDynamicTraits == true then
+		if gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
+			Events.OnTick.Remove(initializeEventsETW)
+		end
+		return
+	end
 	Events.EveryOneMinute.Remove(outdoorsman)
 	Events.OnZombieDead.Remove(outdoorsmanKill)
 	if ETW_CommonLogicChecks.OutdoorsmanShouldExecute(player) then

@@ -1096,4 +1096,13 @@ function ETW_CommonLogicChecks.Blacksmith2ShouldExecute(player)
 	end
 end
 
+-- Apply the master toggle to every dynamic-system check in one place. Keeping
+-- the individual checks intact preserves their normal sandbox and trait rules.
+for checkName, systemShouldExecute in pairs(ETW_CommonLogicChecks) do
+	local originalSystemCheck = systemShouldExecute
+	ETW_CommonLogicChecks[checkName] = function(...)
+		return SBvars.DisableAllDynamicTraits ~= true and originalSystemCheck(...)
+	end
+end
+
 return ETW_CommonLogicChecks

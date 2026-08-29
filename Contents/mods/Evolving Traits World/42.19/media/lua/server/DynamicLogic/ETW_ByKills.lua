@@ -557,6 +557,12 @@ end
 ---@param playerIndex number
 ---@param player IsoPlayer
 local function initializeEventsETW(playerIndex, player)
+	if SBvars.DisableAllDynamicTraits == true then
+		if gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
+			Events.OnTick.Remove(initializeEventsETW)
+		end
+		return
+	end
 	if ETW_CommonLogicChecks.BloodlustShouldExecute(player) then
 		Events.OnZombieDead.Remove(bloodlustKillETW)
 		Events.OnZombieDead.Add(bloodlustKillETW)

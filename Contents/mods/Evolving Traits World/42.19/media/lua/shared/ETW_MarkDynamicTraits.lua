@@ -13,6 +13,9 @@ local function registerTraits(traits)
 end
 
 local function registerDynamicTraits()
+	if SandboxVars.EvolvingTraitsWorld.DisableAllDynamicTraits == true then
+		return
+	end
 	-- Custom ETW Traits
 	registerTraits({
 		ETW_Registry.traits.AV_CLUB,
