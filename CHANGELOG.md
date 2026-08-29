@@ -1,3 +1,9 @@
+## v.13.0.1
+###### 30 Aug 2026
+
+- Fix:
+  - EventOrchestrator fix
+
 ## v.13.0.0 - More Traits merger
 ###### 30 Aug 2026
 
