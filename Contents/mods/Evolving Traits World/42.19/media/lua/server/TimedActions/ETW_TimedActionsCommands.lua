@@ -22,6 +22,13 @@ local logETW = ETW_CommonFunctions.log
 ---@param player IsoPlayer
 ---@param args ISInventoryTransferActionPerformedArgs
 function Commands.ISInventoryTransferActionPerformed(player, args)
+	---@type EvolvingTraitsWorldModData
+	local modData = ETW_CommonFunctions.getETWModData(player)
+	local transferModData = modData.TransferSystem
+	local initialItemsTransferred = transferModData.ItemsTransferred
+	local initialWeightTransferred = transferModData.WeightTransferred
+	transferModData.ItemsTransferred = transferModData.ItemsTransferred + args.itemsMoved
+	transferModData.WeightTransferred = transferModData.WeightTransferred + args.weightMoved
 	logETW(
 		"ETW Logger | ISInventoryTransferActionPerformed(): received from player "
 			.. player:getUsername()
@@ -29,13 +36,15 @@ function Commands.ISInventoryTransferActionPerformed(player, args)
 			.. tostring(args.itemsMoved)
 			.. ", weightMoved="
 			.. tostring(args.weightMoved)
+			.. ", ItemsTransferred="
+			.. tostring(initialItemsTransferred)
+			.. "->"
+			.. tostring(transferModData.ItemsTransferred)
+			.. ", WeightTransferred="
+			.. tostring(initialWeightTransferred)
+			.. "->"
+			.. tostring(transferModData.WeightTransferred)
 	)
-	---@type EvolvingTraitsWorldModData
-	local modData = ETW_CommonFunctions.getETWModData(player)
-	local transferModData = modData.TransferSystem
-	transferModData.ItemsTransferred = transferModData.ItemsTransferred + args.itemsMoved
-	transferModData.WeightTransferred =
-		ETW_CommonFunctions.round(transferModData.WeightTransferred + args.weightMoved, 2)
 	ETW_TimedActionsSharedLogic.checkInventoryTransferPerks(player, modData)
 end
 

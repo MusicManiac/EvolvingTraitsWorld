@@ -870,9 +870,27 @@ local function progressDelayedTraits()
 			if not traitEntry then
 				logETW("ETW Logger | Delayed Traits System: nil trait entry found at index " .. index .. ", skipping")
 			else
-				local traitRegistryId, traitValue, gained = traitEntry[1], traitEntry[2], traitEntry[3]
+				local traitRegistryId, traitValue, gained, gainingTrait =
+					traitEntry[1], traitEntry[2], traitEntry[3], traitEntry[4]
 				local trait = CharacterTrait.get(ResourceLocation.of(traitRegistryId))
-				if not gained then
+				if gainingTrait == nil and trait then
+					local traitDefinition = CharacterTraitDefinition.getCharacterTraitDefinition(trait)
+					if traitDefinition then
+						gainingTrait = traitDefinition:getCost() >= 0
+						traitEntry[4] = gainingTrait
+					end
+				end
+				local requestedChangeAlreadyApplied = trait ~= nil
+					and gainingTrait ~= nil
+					and ((gainingTrait and player:hasTrait(trait)) or (not gainingTrait and not player:hasTrait(trait)))
+				if requestedChangeAlreadyApplied then
+					table.remove(traitTable, index)
+					logETW(
+						"ETW Logger | Delayed Traits System: removed completed entry "
+							.. traitRegistryId
+							.. " because the requested trait state is already applied"
+					)
+				elseif not gained then
 					-- `newrandom():random(min, max)` uses an inclusive upper bound in PZ.
 					-- Roll directly from 1 to N so a stored value of N means "1 in N".
 					local randomValue = traitValue > 1 and random_instance:random(1, traitValue) or 1
@@ -909,6 +927,8 @@ local function progressDelayedTraits()
 				end
 			end
 		end
+		-- Refresh immediately so the client cannot later retransmit the pre-roll queue.
+		CommonFunctions.syncETWModDataToClient(player)
 	end
 	logETW("ETW Logger | Delayed Traits System: finished progressDelayedTraits() execution ----------")
 end

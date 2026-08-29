@@ -357,6 +357,15 @@ option EvolvingTraitsWorld.HealerSystemNeedsAttentionMultiplier
 	page = ETWSystems,
 	translation = ETW_HealerSystemNeedsAttentionMultiplier,
 }
+option EvolvingTraitsWorld.HealerSystemSleepingMultiplier
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 0.1,
+	page = ETWSystems,
+	translation = ETW_HealerSystemSleepingMultiplier,
+}
 option EvolvingTraitsWorld.BodyScratchContribution
 {
 	type = double,
@@ -2410,6 +2419,15 @@ option EvolvingTraitsWorld.PainToleranceCounter
 	default = 30000,
 	page = ETWSimplePerks,
 	translation = ETW_PainToleranceCounter,
+}
+option EvolvingTraitsWorld.PainToleranceExerciseMultiplier
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 0.1,
+	page = ETWSimplePerks,
+	translation = ETW_PainToleranceExerciseMultiplier,
 }
 option EvolvingTraitsWorld.PetTherapy
 {

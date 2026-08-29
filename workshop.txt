@@ -6,26 +6,23 @@ description=This mod allows you to get really ripped in PZ and see an actual cha
 description=
 description=[h1]Features[/h1]
 description=[list]
-description=[*]UI with all needed mod information in-game! Default hotkey is "["
+description=[*]UI with all needed mod information in-game! Default hotkey is "[", changeable in settings.
 description=[*]70+ dynamic traits (vanilla + added by the mod).
 description=[*][h3][b]FULL sandbox customization[/b]. Choose which perks you want to be dynamic, choose how fast you get them, choose how fast you lose them, customize anything with more than 150 sandbox options. Nothing is forced upon player, if you like 1% of the mod, you can literally set it up so you get to use that 1% and nothing else.[/h3]
 description=[*]Advanced systems that affect a lot of traits. Affinity system, that allows you to stick to your starting traits better. Delayed traits system, that allows you to get/remove traits with random delay.
-description=[*](B41 ONLY) QOL (Quality of Life) submod - mark all traits that are dynamic so in character creating you can see which perks are obtainable during gameplay! Can be enabled without enabling main mod, so if you don't like main features added by this mod and just want to see which traits are dynamic in your game with SOTO/MST/MT/DT - you can do that.
+description=[*]Supported by [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3766701843]Mark Dynamic Traits Framework (MDTF)[/url]
 description=[*]For new traits (aka not vanilla game), customization is also present. Want Hoarder perk to give you more carry weight per point of STR? Go adjust it in Sandbox. Want to be even happier under rain with Pluviophile? Sandbox it is.
-description=[*]Optional [b]Trait Sandbox[/b] submod: choose which ETW-added traits appear during character creation and change their point values. Requires [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3378285185]Starlit Library[/url].
-description=[*](B41 requires mod, B42 has in-game mod options now)Client-sided configuration available with [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2169435993]Mod Options[/url].
+description=[*]Optional [b]Trait Sandbox[/b] submod: enable/disable ETW-added traits and change their point values. Requires [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3378285185]Starlit Library[/url].
+description=[*]Client-sided configuration available.
+description=[*]Legacy (b41) version can be found [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3773982162]here[/url].
 description=[/list]
 description=
 description=[h1]Compatibility and Installation[/h1]
 description=Installation instructions can be found in [url=https://steamcommunity.com/workshop/filedetails/discussion/2914075159/3767857092594929252/]this discussion[/url].
-description=List of compatible/incompatible mods can be found in [url=https://steamcommunity.com/workshop/filedetails/discussion/2914075159/4290313152633468883/]this discussion[/url], including details on: Dynamic Traits, Expanded Taits, More Traits, zRe ARMOR PACK by kERHUS, Simple Overhaul: Traits and Occupations (SOTO), More Simple Traits (MST), Explorer Trait, SixthSense, Superb Survivors!, Snake's Mod Pack 41.77
+description=List of compatible/incompatible mods can be found in [url=https://steamcommunity.com/workshop/filedetails/discussion/2914075159/4290313152633468883/]this discussion[/url], including details on: Dynamic Traits, More Traits, zRe ARMOR PACK by kERHUS, Simple Overhaul: Traits and Occupations (SOTO), More Simple Traits (MST), Explorer Trait, SixthSense, Superb Survivors!
 description=
 description=[h1]Recommended Mods (b41)[/h1]
 description=[list]
-description=[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=2694448564]Mod Manager[/url] and [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2725216703]Mod Manager: Server[/url] - for the love of god, use these and not vanilla mod manager
-description=[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=2854030563]Moodle Quarters[/url] - so you can clearly see which stage your moodle is in right now
-description=[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=2763647806]Clear description for Moodles[/url] - so you know what your moodles do
-description=[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=2685168362]More Description for Traits[/url] - so you can read what your traits do
 description=[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=2894296454]Change Sandbox Options (by Star)[/url] - use this to change SP starting options mid-game. [b]ATTENTION[/b]: upon changing any settings it's highly recommended to reload save (if SP) or rejoin server (if MP) for technical reasons (mod decides what to run based on sandbox settings when character is loaded in game world)
 description=[/list]
 description=
@@ -44,6 +41,7 @@ description=[*]簡体中文 / Chinese
 description=[*]繁體中文 / Traditional Chinese
 description=[*]Português Brasileiro / Brazilian Portuguese
 description=[*]한국어 / Korean
+description=[*]日本語 / Japanese
 description=[*]Türkçe / Turkish
 description=[*]Deutsch / German
 description=[*]Українська / Ukrainian
@@ -60,7 +58,6 @@ description=© 2026 [url=https://steamcommunity.com/profiles/76561198152820942]M
 description=
 description=Workshop ID: 2914075159
 description=Mod ID: EvolvingTraitsWorld
-description=Mod ID: EvolvingTraitsWorldMarkDynamicTraits (doesn't work for b42)
 description=Mod ID: EvolvingTraitsWorldTraitSandbox
 tags=Build 42;Balance;Hardmode;Interface;Misc;Multiplayer;Realistic;Silly/Fun;Skills;Traits;QoL;WIP
 visibility=public

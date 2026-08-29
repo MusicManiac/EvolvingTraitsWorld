@@ -212,6 +212,14 @@ function ETW_ModData.createETWModData(playerIndex, player)
 					.. " doesn't match expected format, deleting it."
 			)
 			table.remove(modData.DelayedTraits, i)
+		elseif entry[4] == nil then
+			local trait = ETW_CommonFunctions.resolveTrait(entry[1])
+			local traitDefinition = trait and CharacterTraitDefinition.getCharacterTraitDefinition(trait)
+			if traitDefinition then
+				-- ETW gains positive traits and removes negative traits. Persist the
+				-- intended direction so completed entries can be reconciled safely.
+				entry[4] = traitDefinition:getCost() >= 0
+			end
 		end
 	end
 

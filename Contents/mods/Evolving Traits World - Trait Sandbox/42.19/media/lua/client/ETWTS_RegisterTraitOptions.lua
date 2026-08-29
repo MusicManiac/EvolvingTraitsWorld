@@ -92,18 +92,3 @@ for _, traitOptions in ipairs(traits) do
 		print("[ETW Trait Sandbox] Could not find ETW trait definition: " .. traitId)
 	end
 end
-
--- Starlit 42.15 clears lastCost when a trait is disabled, but subtracts from
--- lastCost without restoring it when the trait is enabled again or its cost is
--- changed. Restore the previous (pre-apply) cost before Starlit applies the new
--- SandboxVars, preventing its updateTraits() from subtracting nil.
--- local starlitSetSandboxVars = SandboxOptionsScreen.setSandboxVars
--- SandboxOptionsScreen.setSandboxVars = function(...)
--- 	for _, registeredTrait in ipairs(registeredTraits) do
--- 		if registeredTrait.info.lastCost == nil then
--- 			registeredTrait.info.lastCost = registeredTrait.definition:getCost()
--- 		end
--- 	end
-
--- 	return starlitSetSandboxVars(...)
--- end

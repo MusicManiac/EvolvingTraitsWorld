@@ -71,6 +71,8 @@
     "Sandbox_ETWTS_BodyWorkEnthusiastEnabled_tooltip": "Controls character-creation availability and, unless the global override is enabled, ETW gameplay acquisition.",
     "Sandbox_ETWTS_BodyWorkEnthusiastPointValue": "Bodywork Enthusiast point value",
     "Sandbox_ETWTS_BodyWorkEnthusiastPointValue_tooltip": "Character-creation point adjustment: negative values cost points; positive values grant points.",
+    "Sandbox_ETWTS_DisableAllCustomTraits": "Disable all custom traits",
+    "Sandbox_ETWTS_DisableAllCustomTraits_tooltip": "When enabled, all custom traits will be disabled for character creation and gameplay progression. This setting overrides all other trait-specific settings below.",
     "Sandbox_ETWTS_DisabledTraitsAcquirableViaGameplay": "Disabled traits acquirable via gameplay",
     "Sandbox_ETWTS_DisabledTraitsAcquirableViaGameplay_tooltip": "When enabled, ETW can dynamically grant traits that are disabled for character creation below. When disabled, those traits cannot be acquired through ETW gameplay progression.",
     "Sandbox_ETWTS_EatingSpeedTraitsEnabled": "Enable Fast Eater and Slow Eater",
