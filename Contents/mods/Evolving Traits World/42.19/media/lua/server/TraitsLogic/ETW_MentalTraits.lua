@@ -275,10 +275,6 @@ end
 ---@param stats Stats
 ---@param modData EvolvingTraitsWorldModData
 function ETW_MentalTraits.paranoiaTrait(player, stats, modData)
-	if modData.ParanoiaCooldownMinutes == nil then
-		modData.ParanoiaCooldownMinutes = 10
-		return
-	end
 	if modData.ParanoiaCooldownMinutes > 0 then
 		modData.ParanoiaCooldownMinutes = modData.ParanoiaCooldownMinutes - 1
 		return

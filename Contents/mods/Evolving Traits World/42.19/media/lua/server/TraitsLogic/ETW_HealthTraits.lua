@@ -28,12 +28,12 @@ local MADE_OF_GLASS_LOG_INTERVAL_MS = 1000
 ---@param player IsoPlayer
 ---@param madeOfGlass MadeOfGlassSystem
 local function flushMadeOfGlassDamageLog(player, madeOfGlass)
-	local eventCount = madeOfGlass.LogEventCount or 0
+	local eventCount = madeOfGlass.LogEventCount
 	if eventCount <= 0 then
 		return
 	end
 	local now = getTimestampMs()
-	local windowStartedAt = madeOfGlass.LogWindowStartedAt or now
+	local windowStartedAt = madeOfGlass.LogWindowStartedAt
 	if now < windowStartedAt + MADE_OF_GLASS_LOG_INTERVAL_MS then
 		return
 	end
@@ -45,15 +45,15 @@ local function flushMadeOfGlassDamageLog(player, madeOfGlass)
 			.. "); events: "
 			.. eventCount
 			.. "; observed loss: "
-			.. (madeOfGlass.LogObservedDamage or 0)
+			.. madeOfGlass.LogObservedDamage
 			.. "; ignored queued ETW damage: "
-			.. (madeOfGlass.LogIgnoredDamage or 0)
+			.. madeOfGlass.LogIgnoredDamage
 			.. "; original loss: "
-			.. (madeOfGlass.LogOriginalDamage or 0)
+			.. madeOfGlass.LogOriginalDamage
 			.. "; extra damage: "
-			.. (madeOfGlass.LogExtraDamage or 0)
+			.. madeOfGlass.LogExtraDamage
 	)
-	madeOfGlass.LogWindowStartedAt = nil
+	madeOfGlass.LogWindowStartedAt = 0
 	madeOfGlass.LogEventCount = 0
 	madeOfGlass.LogObservedDamage = 0
 	madeOfGlass.LogIgnoredDamage = 0
@@ -73,14 +73,14 @@ local function aggregateMadeOfGlassDamageLog(
 	healthLoss,
 	extraDamage
 )
-	if (madeOfGlass.LogEventCount or 0) <= 0 then
+	if madeOfGlass.LogEventCount <= 0 then
 		madeOfGlass.LogWindowStartedAt = getTimestampMs()
 	end
-	madeOfGlass.LogEventCount = (madeOfGlass.LogEventCount or 0) + 1
-	madeOfGlass.LogObservedDamage = (madeOfGlass.LogObservedDamage or 0) + observedHealthLoss
-	madeOfGlass.LogIgnoredDamage = (madeOfGlass.LogIgnoredDamage or 0) + pendingExtraDamage
-	madeOfGlass.LogOriginalDamage = (madeOfGlass.LogOriginalDamage or 0) + healthLoss
-	madeOfGlass.LogExtraDamage = (madeOfGlass.LogExtraDamage or 0) + extraDamage
+	madeOfGlass.LogEventCount = madeOfGlass.LogEventCount + 1
+	madeOfGlass.LogObservedDamage = madeOfGlass.LogObservedDamage + observedHealthLoss
+	madeOfGlass.LogIgnoredDamage = madeOfGlass.LogIgnoredDamage + pendingExtraDamage
+	madeOfGlass.LogOriginalDamage = madeOfGlass.LogOriginalDamage + healthLoss
+	madeOfGlass.LogExtraDamage = madeOfGlass.LogExtraDamage + extraDamage
 end
 
 ---Amplifies newly detected health loss and may add a scratch or fracture to a random body part.
@@ -88,12 +88,11 @@ end
 ---@param bodyDamage BodyDamage
 ---@param modData EvolvingTraitsWorldModData
 function ETW_HealthTraits.madeOfGlassTrait(player, bodyDamage, modData)
-	modData.MadeOfGlass = modData.MadeOfGlass or {}
 	local madeOfGlass = modData.MadeOfGlass
 	flushMadeOfGlassDamageLog(player, madeOfGlass)
 	local currentHealth = bodyDamage:getHealth()
 	local previousHealth = madeOfGlass.LastHealth
-	local pendingExtraDamage = math.max(0, madeOfGlass.PendingExtraDamage or 0)
+	local pendingExtraDamage = math.max(0, madeOfGlass.PendingExtraDamage)
 	if previousHealth == nil or player:isAsleep() then
 		madeOfGlass.LastHealth = currentHealth
 		madeOfGlass.PendingExtraDamage = 0
@@ -288,7 +287,7 @@ end
 ---@param modData EvolvingTraitsWorldModData
 function ETW_HealthTraits.indefatigableProtection(player, bodyDamage, modData)
 	local expiresAt = modData.IndefatigableProtectionExpiresAt
-	if not expiresAt then
+	if expiresAt <= 0 then
 		return
 	end
 	if getTimestampMs() >= expiresAt then
@@ -296,8 +295,8 @@ function ETW_HealthTraits.indefatigableProtection(player, bodyDamage, modData)
 			bodyDamage,
 			modData.IndefatigableWoundSpeedModifiers
 		)
-		modData.IndefatigableProtectionExpiresAt = nil
-		modData.IndefatigableWoundSpeedModifiers = nil
+		modData.IndefatigableProtectionExpiresAt = 0
+		modData.IndefatigableWoundSpeedModifiers = {}
 		logETW(
 			"ETW Logger | indefatigableProtection(): expired for "
 				.. tostring(player:getUsername())
@@ -328,7 +327,7 @@ function ETW_HealthTraits.indefatigableTrait(player, bodyDamage, modData, client
 	end
 
 	local maximumUses = math.max(0, math.floor(SBvars.IndefatigableUses or 1))
-	local uses = math.max(0, math.floor(modData.IndefatigableUses or 0))
+	local uses = math.max(0, math.floor(modData.IndefatigableUses))
 	if maximumUses > 0 and uses >= maximumUses then
 		if clientCrowdTrigger == true then
 			logETW("ETW Logger | indefatigableTrait(): rejected client crowd trigger; uses exhausted for " .. playerIdentifier)
@@ -337,7 +336,7 @@ function ETW_HealthTraits.indefatigableTrait(player, bodyDamage, modData, client
 	end
 
 	local worldAgeHours = getGameTime():getWorldAgeHours()
-	local cooldownUntil = tonumber(modData.IndefatigableCooldownUntilHours) or 0
+	local cooldownUntil = modData.IndefatigableCooldownUntilHours
 	if worldAgeHours < cooldownUntil then
 		if clientCrowdTrigger == true then
 			logETW(
@@ -406,7 +405,7 @@ function ETW_HealthTraits.indefatigableTrait(player, bodyDamage, modData, client
 	stats:set(CharacterStat.FATIGUE, 0)
 	stats:set(CharacterStat.ENDURANCE, 1)
 
-	if not modData.IndefatigableWoundSpeedModifiers then
+	if #modData.IndefatigableWoundSpeedModifiers == 0 then
 		modData.IndefatigableWoundSpeedModifiers = ETW_CommonFunctions.captureWoundSpeedModifiers(bodyDamage)
 	end
 	ETW_CommonFunctions.suppressWoundMovementPenalties(bodyDamage)
@@ -635,7 +634,7 @@ function ETW_HealthTraits.hardyTrait(player, stats,  modData)
 	local endurance = stats:get(CharacterStat.ENDURANCE)
 	local maximumReserve = PZMath.clamp((SBvars.HardyExtraEndurancePercent or 25) / 100, 0, 1)
 	local transfer = PZMath.clamp(SBvars.HardyTransferPerMinute or 0.05, 0, 1)
-	modData.HardyReserve = PZMath.clamp(modData.HardyReserve or maximumReserve, 0, maximumReserve)
+	modData.HardyReserve = PZMath.clamp(modData.HardyReserve, 0, maximumReserve)
 	if endurance < 0.85 and modData.HardyReserve > 0 then
 		local amount = math.min(transfer, modData.HardyReserve, 1 - endurance)
 		stats:set(CharacterStat.ENDURANCE, endurance + amount)
