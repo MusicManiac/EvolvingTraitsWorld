@@ -8,6 +8,7 @@
   - Added a toggle to disable ALL traits being dynamic.
 - Fix:
   - Possible fix on occasional client-server desync for delayed traits caused by other mod overwriting server moddata by client moddata (BAD THING TO DO, someone's mod doing a whoopsie)
+  - Disabled Affinity System adjustments for food and thirst samples so their rolling averages reflect the character's actual hunger and thirst.
 
 ## v.12.11.1
 ###### 24 Aug 2026
