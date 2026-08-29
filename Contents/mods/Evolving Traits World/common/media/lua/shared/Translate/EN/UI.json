@@ -27,6 +27,8 @@
     "UI_ETW_Options_EnableSleepHealthMoodle_tooltip": "Shows if you're sleeping within your optimal hours or not. Only active while character is sleeping.",
     "UI_ETW_Options_EnableSoundNotifications": "Enable Sound Notifications",
     "UI_ETW_Options_EnableSoundNotifications_tooltip": "Play a sound whenever you gain/lose a trait or have a trait added to Delayed Traits System",
+    "UI_ETW_Options_EnableIndefatigableTheme": "Play Indefatigable theme",
+    "UI_ETW_Options_EnableIndefatigableTheme_tooltip": "Play the Indefatigable theme when Indefatigable activates",
     "UI_ETW_Options_GatherDetailedDebug": "Gather Detailed Debug Data",
     "UI_ETW_Options_GatherDetailedDebug_tooltip": "Enables prints into console.txt. Useful for debug purposes, also allows you to find data about internal counters. Ctrl+F for 'ETW' to find the loggers. Adds a lot of unneeded (for players) info into console.txt which might have performance impact the longer you play, enable this only when reporting bugs with console logs.",
     "UI_ETW_Options_HideSmokerUI": "[UI] Hide Smoker Bar",

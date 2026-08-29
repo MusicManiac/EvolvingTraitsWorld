@@ -423,6 +423,7 @@ function ETW_HealthTraits.indefatigableTrait(player, bodyDamage, modData, client
 		})
 	end
 	ETW_CommonFunctions.displayTraitNotification(player, ETWTraitsRegistry.INDEFATIGABLE:toString(), true, "GREEN")
+	ETW_CommonFunctions.indefatigableTheme(player)
 	logETW(
 		"ETW Logger | indefatigableTrait(): activated for "
 			.. tostring(player:getUsername())

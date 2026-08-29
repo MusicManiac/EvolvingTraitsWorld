@@ -1,0 +1,11 @@
+module Base
+{
+	sound ETW_IndefatigableTheme
+	{
+		category = Player,
+		clip
+		{
+			file = media/sound/Indefatigable Theme.ogg,
+		}
+	}
+}
