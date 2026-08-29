@@ -1,5 +1,11 @@
 ---@meta
 
+--- @class ETWDelayedTraitEntry
+--- @field [1] string Trait registry id.
+--- @field [2] number Current one-in-N roll.
+--- @field [3] boolean Whether the roll succeeded and the entry is waiting for its trait trigger.
+--- @field [4] boolean Whether the requested change is gaining rather than removing the trait.
+
 --- @class EvolvingTraitsWorldModData
 --- @field VehiclePartRepairs number
 --- @field EagleEyedKills number
@@ -28,7 +34,7 @@
 --- @field RecentAverageThirst number
 --- @field StartingTraits table<string, boolean>
 --- @field DelayedStartingTraitsFilled boolean
---- @field DelayedTraits table<string, number, boolean>
+--- @field DelayedTraits ETWDelayedTraitEntry[]
 --- @field AsthmaticCounter number
 --- @field HerbsPickedUp number
 --- @field RainCounter number

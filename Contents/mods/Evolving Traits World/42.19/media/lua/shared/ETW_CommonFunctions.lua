@@ -277,6 +277,18 @@ function ETW_CommonFunctions.getETWModData(player)
 	return modData.EvolvingTraitsWorld
 end
 
+---Immediately refreshes ETW ModData on the owning multiplayer client.
+---@param player IsoPlayer|IsoGameCharacter
+function ETW_CommonFunctions.syncETWModDataToClient(player)
+	if gameMode ~= ETW_CommonFunctions.GameMode.MP_SERVER then
+		return
+	end
+	local modData = ETW_CommonFunctions.getETWModData(player)
+	if modData then
+		sendServerCommand(player, "ETW", "refreshETWModDataFromServer", { ETWModData = modData })
+	end
+end
+
 ---Function responsible printing whole Delayed Traits table into console
 ---@param player IsoPlayer|IsoGameCharacter the player to dump mod data for
 function ETW_CommonFunctions.delayedTraitsDataDump(player)
@@ -457,6 +469,7 @@ function ETW_CommonFunctions.addTraitToDelayTable(context)
 			traitRegistryId,
 			SBvars.DelayedTraitsSystemDefaultDelay + SBvars.DelayedTraitsSystemDefaultStartingDelay,
 			false,
+			gainingTrait,
 		})
 		ETW_CommonFunctions.traitSound(player)
 	elseif
@@ -467,7 +480,10 @@ function ETW_CommonFunctions.addTraitToDelayTable(context)
 				.. traitRegistryId
 				.. ", adding it to delayed traits table"
 		)
-		table.insert(modData.DelayedTraits, { traitRegistryId, SBvars.DelayedTraitsSystemDefaultDelay, false })
+		table.insert(
+			modData.DelayedTraits,
+			{ traitRegistryId, SBvars.DelayedTraitsSystemDefaultDelay, false, gainingTrait }
+		)
 		ETW_CommonFunctions.displayDelayedTraitNotification(player, gainingTrait, traitRegistryId, true, "GREEN")
 		ETW_CommonFunctions.traitSound(player)
 	elseif
@@ -478,7 +494,10 @@ function ETW_CommonFunctions.addTraitToDelayTable(context)
 				.. traitRegistryId
 				.. ", adding it to delayed traits table"
 		)
-		table.insert(modData.DelayedTraits, { traitRegistryId, SBvars.DelayedTraitsSystemDefaultDelay, false })
+		table.insert(
+			modData.DelayedTraits,
+			{ traitRegistryId, SBvars.DelayedTraitsSystemDefaultDelay, false, gainingTrait }
+		)
 		ETW_CommonFunctions.displayDelayedTraitNotification(player, gainingTrait, traitRegistryId, false, "GREEN")
 		ETW_CommonFunctions.traitSound(player)
 	else
@@ -497,6 +516,7 @@ function ETW_CommonFunctions.addTraitToDelayTable(context)
 			"ETW Logger | Delayed Traits System | Data Dump after ETW_CommonFunctions.addTraitToDelayTable() END --------------"
 		)
 	end
+	ETW_CommonFunctions.syncETWModDataToClient(player)
 end
 
 ---Function responsible for checking if specific trait should be gained/lost, returns true if yes and removes it from the table. Otherwise, returns false.
@@ -545,6 +565,7 @@ function ETW_CommonFunctions.checkDelayedTraits(player, traitToCheck)
 				.. ": player qualifies for it, removing it from the table"
 		)
 		table.remove(traitTable, traitIndex)
+		ETW_CommonFunctions.syncETWModDataToClient(player)
 		return true
 	end
 	return false
