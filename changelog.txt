@@ -1,6 +1,11 @@
 [url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
 
-v.12.11.1
+v.13.0.0 - More Traits merger
 
+General:
+  - Merged More Traits into ETW. Migrated traits: Well Fitted, Hardy, Blissful, Ideal Weight, Quick Rest, Pack Mouse, Anemic, Butterfingers, Bad Teeth, Depressive, Thick Blooded, Lead Foot, Mundane, Anti-Gun Activist, Natural Eater, Noodle Legs, Pack Mule, Sun Sensitivity, Prowess: Blade/Blunt/Guns/Spear, Quiet, Scrapper, Tavern Brawler, Gourmand, Bouncer, Olympian, Practiced Swordman, Gordonite, Unwavering, Action Hero, Indefatigable, Superimmune, Terminator, Ascetic, Paranoia, Self-Destructive, Immunocompromised.
+  - Some newly added traits were changed compared to what they were doing in More Traits and pretty all of them were rewritten. For additional details refer to More Traits workshop page.
+  - At the moment none of migrated traits are dynamic. I'll be adding dynamic support for new traits slowly.
+  - Added a toggle to disable ALL traits being dynamic.
 Fix:
-  - Possible fix on moved items not always being registered + added more detailed logs there.
+  - Possible fix on occasional client-server desync for delayed traits caused by other mod overwriting server moddata by client moddata (BAD THING TO DO, someone's mod doing a whoopsie)
