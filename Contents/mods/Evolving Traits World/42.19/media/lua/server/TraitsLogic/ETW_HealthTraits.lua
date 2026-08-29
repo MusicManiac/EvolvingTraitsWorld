@@ -23,6 +23,167 @@ local random_instance = newrandom()
 local INDEFATIGABLE_PROTECTION_DURATION_MS = 120000
 local INDEFATIGABLE_TRIGGER_RADIUS = 1.5
 local INDEFATIGABLE_KNOCKDOWN_RADIUS = 2.5
+local MADE_OF_GLASS_LOG_INTERVAL_MS = 1000
+
+---@param player IsoPlayer
+---@param madeOfGlass MadeOfGlassSystem
+local function flushMadeOfGlassDamageLog(player, madeOfGlass)
+	local eventCount = madeOfGlass.LogEventCount or 0
+	if eventCount <= 0 then
+		return
+	end
+	local now = getTimestampMs()
+	local windowStartedAt = madeOfGlass.LogWindowStartedAt or now
+	if now < windowStartedAt + MADE_OF_GLASS_LOG_INTERVAL_MS then
+		return
+	end
+	logETW(
+		"ETW Logger | madeOfGlassTrait(): one-second damage summary for "
+			.. tostring(player:getUsername())
+			.. " (OnlineID="
+			.. player:getOnlineID()
+			.. "); events: "
+			.. eventCount
+			.. "; observed loss: "
+			.. (madeOfGlass.LogObservedDamage or 0)
+			.. "; ignored queued ETW damage: "
+			.. (madeOfGlass.LogIgnoredDamage or 0)
+			.. "; original loss: "
+			.. (madeOfGlass.LogOriginalDamage or 0)
+			.. "; extra damage: "
+			.. (madeOfGlass.LogExtraDamage or 0)
+	)
+	madeOfGlass.LogWindowStartedAt = nil
+	madeOfGlass.LogEventCount = 0
+	madeOfGlass.LogObservedDamage = 0
+	madeOfGlass.LogIgnoredDamage = 0
+	madeOfGlass.LogOriginalDamage = 0
+	madeOfGlass.LogExtraDamage = 0
+end
+
+---@param madeOfGlass MadeOfGlassSystem
+---@param observedHealthLoss number
+---@param pendingExtraDamage number
+---@param healthLoss number
+---@param extraDamage number
+local function aggregateMadeOfGlassDamageLog(
+	madeOfGlass,
+	observedHealthLoss,
+	pendingExtraDamage,
+	healthLoss,
+	extraDamage
+)
+	if (madeOfGlass.LogEventCount or 0) <= 0 then
+		madeOfGlass.LogWindowStartedAt = getTimestampMs()
+	end
+	madeOfGlass.LogEventCount = (madeOfGlass.LogEventCount or 0) + 1
+	madeOfGlass.LogObservedDamage = (madeOfGlass.LogObservedDamage or 0) + observedHealthLoss
+	madeOfGlass.LogIgnoredDamage = (madeOfGlass.LogIgnoredDamage or 0) + pendingExtraDamage
+	madeOfGlass.LogOriginalDamage = (madeOfGlass.LogOriginalDamage or 0) + healthLoss
+	madeOfGlass.LogExtraDamage = (madeOfGlass.LogExtraDamage or 0) + extraDamage
+end
+
+---Amplifies newly detected health loss and may add a scratch or fracture to a random body part.
+---@param player IsoPlayer
+---@param bodyDamage BodyDamage
+---@param modData EvolvingTraitsWorldModData
+function ETW_HealthTraits.madeOfGlassTrait(player, bodyDamage, modData)
+	modData.MadeOfGlass = modData.MadeOfGlass or {}
+	local madeOfGlass = modData.MadeOfGlass
+	flushMadeOfGlassDamageLog(player, madeOfGlass)
+	local currentHealth = bodyDamage:getHealth()
+	local previousHealth = madeOfGlass.LastHealth
+	local pendingExtraDamage = math.max(0, madeOfGlass.PendingExtraDamage or 0)
+	if previousHealth == nil or player:isAsleep() then
+		madeOfGlass.LastHealth = currentHealth
+		madeOfGlass.PendingExtraDamage = 0
+		return
+	end
+	if currentHealth >= previousHealth then
+		madeOfGlass.LastHealth = currentHealth
+		madeOfGlass.PendingExtraDamage = 0
+		return
+	end
+
+	local observedHealthLoss = previousHealth - currentHealth
+	local healthLoss = math.max(0, observedHealthLoss - pendingExtraDamage)
+	madeOfGlass.PendingExtraDamage = 0
+	if healthLoss <= 0 then
+		madeOfGlass.LastHealth = currentHealth
+		return
+	end
+	local damageMultiplier = math.max(1, SBvars.MadeOfGlassDamageMultiplier or 2)
+	local extraDamage = healthLoss * (damageMultiplier - 1)
+	if extraDamage > 0 then
+		extraDamage = math.min(extraDamage, currentHealth)
+		bodyDamage:ReduceGeneralHealth(extraDamage)
+		madeOfGlass.PendingExtraDamage = extraDamage
+	end
+
+	local fractureThreshold = math.max(0, SBvars.MadeOfGlassFractureMinimumHealthLoss or 0.33)
+	local scratchThreshold = math.max(0, SBvars.MadeOfGlassScratchMinimumHealthLoss or 0.1)
+	local minimumInjuryThreshold = math.min(fractureThreshold, scratchThreshold)
+	local injuryChance = PZMath.clamp(SBvars.MadeOfGlassInjuryChance or 33, 0, 100)
+	local injury = nil
+	local bodyPartName = nil
+	local injuryRoll = nil
+	if healthLoss > minimumInjuryThreshold and injuryChance > 0 then
+		injuryRoll = random_instance:random(1, 100)
+	end
+	if injuryRoll and injuryRoll <= injuryChance then
+		local parts = bodyDamage:getBodyParts()
+		if parts:size() > 0 then
+			local part = parts:get(random_instance:random(1, parts:size()) - 1)
+			bodyPartName = BodyPartType.ToString(part:getType())
+			if healthLoss > fractureThreshold then
+				local minimumFractureTime = math.max(0, math.floor(SBvars.MadeOfGlassMinimumFractureTime or 10))
+				local maximumFractureTime = math.max(
+					minimumFractureTime,
+					math.floor(SBvars.MadeOfGlassMaximumFractureTime or 29)
+				)
+				local fractureTime = minimumFractureTime
+				if maximumFractureTime > minimumFractureTime then
+					fractureTime = random_instance:random(minimumFractureTime, maximumFractureTime)
+				end
+				if fractureTime > 0 and part:getFractureTime() <= 0 then
+					part:setFractureTime(fractureTime)
+					injury = "fracture (" .. fractureTime .. ")"
+				end
+			elseif healthLoss > scratchThreshold then
+				part:setScratched(true, true)
+				injury = "scratch"
+			end
+		end
+	end
+
+	local expectedResultingHealth = math.max(0, currentHealth - extraDamage)
+	madeOfGlass.LastHealth = currentHealth
+	aggregateMadeOfGlassDamageLog(madeOfGlass, observedHealthLoss, pendingExtraDamage, healthLoss, extraDamage)
+	if injury then
+		logETW(
+			"ETW Logger | madeOfGlassTrait(): caused "
+				.. injury
+				.. " for "
+				.. tostring(player:getUsername())
+				.. " (OnlineID="
+				.. player:getOnlineID()
+				.. "); original loss: "
+				.. healthLoss
+				.. "; multiplier: "
+				.. damageMultiplier
+				.. "; extra damage: "
+				.. extraDamage
+				.. "; health: "
+				.. previousHealth
+				.. "->"
+				.. expectedResultingHealth
+				.. "; injury roll: "
+				.. injuryRoll
+				.. "/100; body part: "
+				.. bodyPartName
+		)
+	end
+end
 
 ---Accelerates untreated wound infections for Immunocompromised characters.
 ---@param player IsoPlayer

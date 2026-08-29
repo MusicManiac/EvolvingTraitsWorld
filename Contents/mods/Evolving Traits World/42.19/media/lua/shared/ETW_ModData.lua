@@ -121,6 +121,17 @@ function ETW_ModData.createETWModData(playerIndex, player)
 		modData.SunSensitivityExposure = modData.SunSensitivityExposure or 0
 		modData.SunSensitivityAppliedPain = modData.SunSensitivityAppliedPain or 0
 	end
+	if player:hasTrait(ETWTraitsRegistry.MADE_OF_GLASS) then
+		modData.MadeOfGlass = {
+			LastHealth = player:getBodyDamage():getHealth(),
+			PendingExtraDamage = 0,
+			LogEventCount = 0,
+			LogObservedDamage = 0,
+			LogIgnoredDamage = 0,
+			LogOriginalDamage = 0,
+			LogExtraDamage = 0,
+		}
+	end
 	modData.MentalStateInLast60Min = modData.MentalStateInLast60Min or { 0.75 }
 	modData.MentalStateInLast24Hours = modData.MentalStateInLast24Hours or { 0.75 }
 	modData.MentalStateInLast31Days = modData.MentalStateInLast31Days or { 0.75 }

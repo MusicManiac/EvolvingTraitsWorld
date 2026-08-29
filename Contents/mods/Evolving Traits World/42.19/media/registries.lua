@@ -34,6 +34,7 @@ ETW_Registry = ETW_Registry or {}
 ---@field KNIFE_FIGHTER CharacterTrait
 ---@field LIGHTSTEP CharacterTrait
 ---@field LOW_PROFILE CharacterTrait
+---@field MADE_OF_GLASS CharacterTrait
 ---@field MUNDANE CharacterTrait
 ---@field NATURAL_EATER CharacterTrait
 ---@field NOODLE_LEGS CharacterTrait
@@ -98,6 +99,7 @@ ETW_Registry.traits = {
 	KNIFE_FIGHTER = CharacterTrait.register("ETW:KnifeFighter"),
 	LIGHTSTEP = CharacterTrait.register("ETW:LightStep"),
 	LOW_PROFILE = CharacterTrait.register("ETW:LowProfile"),
+	MADE_OF_GLASS = CharacterTrait.register("ETW:MadeOfGlass"),
 	MUNDANE = CharacterTrait.register("ETW:Mundane"),
 	NATURAL_EATER = CharacterTrait.register("ETW:NaturalEater"),
 	NOODLE_LEGS = CharacterTrait.register("ETW:NoodleLegs"),
