@@ -23,8 +23,7 @@ local function refreshETWModDataForAllClients()
 	for i = 0, onlinePlayers:size() - 1 do
 		local player = onlinePlayers:get(i)
 		ETW_CommonFunctions.log("ETW Logger | System: refreshing modData for player " .. player:getUsername())
-		local modData = ETW_CommonFunctions.getETWModData(player)
-		sendServerCommand(player, "ETW", "refreshETWModDataFromServer", { ETWModData = modData })
+		ETW_CommonFunctions.syncETWModDataToClient(player)
 	end
 end
 
@@ -41,6 +40,7 @@ function Commands.createETWModData(player, args)
 	)
 	ETW_ModData.createETWModData(player:getPlayerNum(), player)
 	ETW_BySkills.traitsGainsBySkill(player, "characterInitialization")
+	ETW_CommonFunctions.syncETWModDataToClient(player)
 end
 
 ---@param player IsoPlayer

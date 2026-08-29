@@ -1,3 +1,26 @@
+## v.12.11.1
+###### 24 Aug 2026
+
+- Fix:
+  - Possible fix on moved items not always being registered + added more detailed logs there.
+
+## v.12.11.0
+###### 23 Aug 2026
+
+- General:
+  - Added a checkbox to disable all traits added by ETW, located in a submod.
+- Fix:
+  - Fixed bravery system early exit on MP servers leaving traits stuck in "awarded on next action".
+
+## v.12.10.0
+###### 20 Aug 2026
+
+- General:
+  - Added a configurable exercise-pain multiplier for Pain Tolerance progression. Only pain contributed by exercise stiffness is multiplied; wounds and other pain sources still count at their full value.
+  - Added a configurable sleeping multiplier for Healer System counter changes, reducing the impact of wounds that cannot be tended while asleep.
+- Translations:
+  - Updated CN translation thanks to [爱看歌剧的长颈鹿](<https://steamcommunity.com/profiles/76561199210012731>).
+
 ## v.12.9.0
 ###### 18 Aug 2026
 

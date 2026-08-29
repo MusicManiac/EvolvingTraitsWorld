@@ -221,15 +221,6 @@ function ETW_CommonFunctions.indexOf(tbl, value)
 	return -1
 end
 
----Rounds a number to the specified number of decimal places
----@param num number the number to round
----@param numDecimalPlaces number the number of decimal places to round to
----@return number number the rounded number
-function ETW_CommonFunctions.round(num, numDecimalPlaces)
-	local mult = 10 ^ (numDecimalPlaces or 0)
-	return math.floor(num * mult + 0.5) / mult
-end
-
 ---Applies Affinity System gain/loss rates to progress toward either of two opposing starting traits. This function assumes that negative change = moving towards negative change, and positive change = moving towards positive change.
 ---@param modData EvolvingTraitsWorldModData
 ---@param change number the change to apply to progress, can be positive or negative
@@ -352,6 +343,18 @@ function ETW_CommonFunctions.getETWModData(player)
 		ETW_ModData.createETWModData(player:getPlayerNum(), player)
 	end
 	return modData.EvolvingTraitsWorld
+end
+
+---Immediately refreshes ETW ModData on the owning multiplayer client.
+---@param player IsoPlayer|IsoGameCharacter
+function ETW_CommonFunctions.syncETWModDataToClient(player)
+	if gameMode ~= ETW_CommonFunctions.GameMode.MP_SERVER then
+		return
+	end
+	local modData = ETW_CommonFunctions.getETWModData(player)
+	if modData then
+		sendServerCommand(player, "ETW", "refreshETWModDataFromServer", { ETWModData = modData })
+	end
 end
 
 ---Function responsible printing whole Delayed Traits table into console
@@ -534,6 +537,7 @@ function ETW_CommonFunctions.addTraitToDelayTable(context)
 			traitRegistryId,
 			SBvars.DelayedTraitsSystemDefaultDelay + SBvars.DelayedTraitsSystemDefaultStartingDelay,
 			false,
+			gainingTrait,
 		})
 		ETW_CommonFunctions.traitSound(player)
 	elseif positiveTrait then
@@ -542,7 +546,10 @@ function ETW_CommonFunctions.addTraitToDelayTable(context)
 				.. traitRegistryId
 				.. ", adding it to delayed traits table"
 		)
-		table.insert(modData.DelayedTraits, { traitRegistryId, SBvars.DelayedTraitsSystemDefaultDelay, false })
+		table.insert(
+			modData.DelayedTraits,
+			{ traitRegistryId, SBvars.DelayedTraitsSystemDefaultDelay, false, gainingTrait }
+		)
 		ETW_CommonFunctions.displayDelayedTraitNotification(player, gainingTrait, traitRegistryId, true, "GREEN")
 		ETW_CommonFunctions.traitSound(player)
 	elseif not positiveTrait then
@@ -551,7 +558,10 @@ function ETW_CommonFunctions.addTraitToDelayTable(context)
 				.. traitRegistryId
 				.. ", adding it to delayed traits table"
 		)
-		table.insert(modData.DelayedTraits, { traitRegistryId, SBvars.DelayedTraitsSystemDefaultDelay, false })
+		table.insert(
+			modData.DelayedTraits,
+			{ traitRegistryId, SBvars.DelayedTraitsSystemDefaultDelay, false, gainingTrait }
+		)
 		ETW_CommonFunctions.displayDelayedTraitNotification(player, gainingTrait, traitRegistryId, false, "GREEN")
 		ETW_CommonFunctions.traitSound(player)
 	else
@@ -570,6 +580,7 @@ function ETW_CommonFunctions.addTraitToDelayTable(context)
 			"ETW Logger | Delayed Traits System | Data Dump after ETW_CommonFunctions.addTraitToDelayTable() END --------------"
 		)
 	end
+	ETW_CommonFunctions.syncETWModDataToClient(player)
 end
 
 ---Function responsible for checking if specific trait should be gained/lost, returns true if yes and removes it from the table. Otherwise, returns false.
@@ -618,6 +629,7 @@ function ETW_CommonFunctions.checkDelayedTraits(player, traitToCheck)
 				.. ": player qualifies for it, removing it from the table"
 		)
 		table.remove(traitTable, traitIndex)
+		ETW_CommonFunctions.syncETWModDataToClient(player)
 		return true
 	end
 	return false

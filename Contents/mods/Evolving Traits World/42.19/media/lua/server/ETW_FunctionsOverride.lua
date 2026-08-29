@@ -51,7 +51,7 @@ function RecipeCodeOnCreate.ripClothing(data, character)
 				ETW_CommonFunctions.log("ETW Logger | RecipeCodeOnCreate.ripClothing() item: " .. itemName)
 				ETW_CombinedTraitFunctions.addClothingToUniqueRippedClothingList(character, itemName)
 				if gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
-					sendServerCommand(character, "ETW", "refreshETWModDataFromServer", { ETWModData = modData })
+					ETW_CommonFunctions.syncETWModDataToClient(character)
 				end
 			end
 		end

@@ -479,7 +479,7 @@ local function braverySystemETW(zombie)
 							positiveTrait = false,
 						})
 					end
-					return
+					break
 				elseif
 					not player:hasTrait(trait)
 					and positiveTrait
@@ -546,7 +546,7 @@ local function braverySystemETW(zombie)
 							end
 						end
 					end
-					return
+					break
 				end
 			end
 		end

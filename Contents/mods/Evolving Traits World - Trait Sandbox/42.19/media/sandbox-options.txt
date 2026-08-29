@@ -1,5 +1,13 @@
 VERSION = 1,
 
+option ETWTraitSandbox.DisableAllCustomTraits
+{
+	type = boolean,
+	default = false,
+	page = ETWTraitSandbox,
+	translation = ETWTS_DisableAllCustomTraits,
+}
+
 option ETWTraitSandbox.DisabledTraitsAcquirableViaGameplay
 {
 	type = boolean,

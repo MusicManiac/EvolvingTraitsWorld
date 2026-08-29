@@ -26,7 +26,7 @@ local function traitShouldExecute(enabledOption)
 	local traitSandboxVars = SandboxVars.ETWTraitSandbox
 	return traitSandboxVars == nil
 		or traitSandboxVars.DisabledTraitsAcquirableViaGameplay == true
-		or traitSandboxVars[enabledOption] ~= false
+		or (traitSandboxVars.DisableAllCustomTraits == false and traitSandboxVars[enabledOption] == true)
 end
 
 ---Returns true if the Immunity System should execute

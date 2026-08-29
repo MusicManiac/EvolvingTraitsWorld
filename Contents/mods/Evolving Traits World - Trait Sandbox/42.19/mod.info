@@ -4,6 +4,6 @@ require=\StarlitLibrary,\EvolvingTraitsWorld
 url=https://steamcommunity.com/sharedfiles/filedetails/?id=2914075159
 id=EvolvingTraitsWorldTraitSandbox
 versionMin=42.19
-modversion=1.0.0
+modversion=1.1.0
 description=Adds sandbox options for enabling, disabling, and changing the point value of character-creation traits added by Evolving Traits World. Requires ETW and Starlit Library.
 author=MusicManiac
