@@ -20,11 +20,14 @@ local logETW = ETW_CommonFunctions.log
 
 ---Function responsible for refreshing modData from server when the local player is ready.
 ---@param player IsoPlayer
----@param args {ETWModData: table}
+---@param args table
 function Commands.refreshETWModDataFromServer(player, args)
 	player = player or getPlayer()
-	if not player or not player.getModData or not args then
-		logETW("ETW Logger | Commands.refreshETWModDataFromServer(): player or args not ready, skipping update")
+	local receivedModData = args and args["ETWModData"]
+	if not player or not player.getModData or type(receivedModData) ~= "table" then
+		logETW(
+			"ETW Logger | Commands.refreshETWModDataFromServer(): player or ETWModData not ready, skipping update"
+		)
 		return
 	end
 	local ok, modData = pcall(function()
@@ -34,13 +37,13 @@ function Commands.refreshETWModDataFromServer(player, args)
 		logETW("ETW Logger | Commands.refreshETWModDataFromServer(): getModData unavailable, skipping update")
 		return
 	end
-	modData.EvolvingTraitsWorld = args.ETWModData
+	modData.EvolvingTraitsWorld = receivedModData
 end
 
 ---Function responsible for handling server commands
 ---@param module string
 ---@param command string
----@param args {string: any}
+---@param args table|nil
 function Commands.OnServerCommand(module, command, args)
 	if module == "ETW" and Commands[command] then
 		local argStr = ""

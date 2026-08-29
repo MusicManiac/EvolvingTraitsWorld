@@ -71,7 +71,12 @@ function Commands.applyAntiGunAimingMood(player)
 		return
 	end
 	local weapon = player:getPrimaryHandItem()
-	if not weapon or not instanceof(weapon, "HandWeapon") or weapon:getSubCategory() ~= "Firearm" then
+	if not weapon or not instanceof(weapon, "HandWeapon") then
+		logETW("ETW Logger | antigun mood server: rejected missing firearm for " .. playerIdentifier)
+		return
+	end
+	---@cast weapon HandWeapon
+	if weapon:getSubCategory() ~= "Firearm" then
 		logETW("ETW Logger | antigun mood server: rejected missing firearm for " .. playerIdentifier)
 		return
 	end
@@ -93,7 +98,12 @@ function Commands.applyTerminatorAimingMood(player)
 		return
 	end
 	local weapon = player:getPrimaryHandItem()
-	if not weapon or not instanceof(weapon, "HandWeapon") or weapon:getSubCategory() ~= "Firearm" then
+	if not weapon or not instanceof(weapon, "HandWeapon") then
+		logETW("ETW Logger | terminator mood server: rejected missing firearm for " .. playerIdentifier)
+		return
+	end
+	---@cast weapon HandWeapon
+	if weapon:getSubCategory() ~= "Firearm" then
 		logETW("ETW Logger | terminator mood server: rejected missing firearm for " .. playerIdentifier)
 		return
 	end

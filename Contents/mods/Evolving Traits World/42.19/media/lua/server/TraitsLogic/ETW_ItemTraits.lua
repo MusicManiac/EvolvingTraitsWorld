@@ -715,12 +715,14 @@ end
 ---@param player IsoPlayer
 ---@param hasTrait boolean
 local function antiGunWeaponTrait(player, hasTrait)
-	local weapon = player:getPrimaryHandItem()
-	if
-		weapon
-		and (not instanceof(weapon, "HandWeapon") or weapon:getSubCategory() ~= "Firearm")
-	then
-		weapon = nil
+	local equippedItem = player:getPrimaryHandItem()
+	---@type HandWeapon|nil
+	local weapon
+	if equippedItem and instanceof(equippedItem, "HandWeapon") then
+		---@cast equippedItem HandWeapon
+		if equippedItem:getSubCategory() == "Firearm" then
+			weapon = equippedItem
+		end
 	end
 	local previousWeapon = antiGunWeapons[player]
 	if previousWeapon and (previousWeapon ~= weapon or not hasTrait) then

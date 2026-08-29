@@ -12,18 +12,24 @@ then
 end
 
 local ETW_NearbyZombieScanner = {}
-local consumers = {}
-local activeConsumers = {}
-local activeConsumerCount = 0
-local scanPlayer
 
----@class ETWNearbyZombieConsumer
+---@class ETWNearbyZombieConsumerDefinition
 ---@field radius number
----@field radiusSquared number|nil
----@field isEnabled fun(player: IsoPlayer): boolean|nil
+---@field isEnabled (fun(player: IsoPlayer): boolean)|nil
 ---@field beforeScan fun(player: IsoPlayer)|nil
 ---@field onZombie fun(player: IsoPlayer, zombie: IsoZombie, distanceSquared: number)|nil
 ---@field afterScan fun(player: IsoPlayer)|nil
+
+---@class ETWNearbyZombieConsumer : ETWNearbyZombieConsumerDefinition
+---@field radiusSquared number
+
+---@type table<string, ETWNearbyZombieConsumer>
+local consumers = {}
+---@type table<integer, ETWNearbyZombieConsumer|nil>
+local activeConsumers = {}
+local activeConsumerCount = 0
+---@type IsoPlayer|nil
+local scanPlayer
 
 ---Dispatches one nearby zombie to every active consumer whose radius contains it.
 ---@param zombie IsoZombie
@@ -31,8 +37,11 @@ local scanPlayer
 local function dispatchNearbyZombie(zombie, distanceSquared)
 	for i = 1, activeConsumerCount do
 		local consumer = activeConsumers[i]
+		---@cast consumer ETWNearbyZombieConsumer
 		if distanceSquared <= consumer.radiusSquared and consumer.onZombie then
-			consumer.onZombie(scanPlayer, zombie, distanceSquared)
+			local player = scanPlayer
+			---@cast player IsoPlayer
+			consumer.onZombie(player, zombie, distanceSquared)
 		end
 	end
 end
@@ -44,7 +53,7 @@ local function scanNearbyZombies()
 		return
 	end
 
-	local maximumRadius = 0
+	local maximumRadius = 0.0
 	local count = 0
 	for _, consumer in pairs(consumers) do
 		if not consumer.isEnabled or consumer.isEnabled(player) then
@@ -64,7 +73,9 @@ local function scanNearbyZombies()
 	end
 
 	for i = 1, count do
-		local beforeScan = activeConsumers[i].beforeScan
+		local consumer = activeConsumers[i]
+		---@cast consumer ETWNearbyZombieConsumer
+		local beforeScan = consumer.beforeScan
 		if beforeScan then
 			beforeScan(player)
 		end
@@ -79,7 +90,9 @@ local function scanNearbyZombies()
 	scanPlayer = nil
 
 	for i = 1, count do
-		local afterScan = activeConsumers[i].afterScan
+		local consumer = activeConsumers[i]
+		---@cast consumer ETWNearbyZombieConsumer
+		local afterScan = consumer.afterScan
 		if afterScan then
 			afterScan(player)
 		end
@@ -88,10 +101,11 @@ end
 
 ---Registers or replaces one consumer of the shared nearby-zombie traversal.
 ---@param id string
----@param definition ETWNearbyZombieConsumer
+---@param definition ETWNearbyZombieConsumerDefinition
 function ETW_NearbyZombieScanner.register(id, definition)
 	local radius = math.max(0, definition.radius or 0)
 	definition.radius = radius
+	---@cast definition ETWNearbyZombieConsumer
 	definition.radiusSquared = radius * radius
 	consumers[id] = definition
 	Events.OnTick.Remove(scanNearbyZombies)

@@ -21,6 +21,15 @@ local ETWTraitsRegistry = ETW_Registry.traits
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld
 local random_instance = newrandom()
+
+---@class PendingButterfingersDrop
+---@field character IsoPlayer
+---@field itemId integer
+---@field itemType string
+---@field sourceContainer ItemContainer
+---@field queuedAt number
+
+---@type PendingButterfingersDrop[]
 local pendingButterfingersDrops = {}
 
 ---Waits for MP inventory synchronization before queuing a triggered Butterfingers ground transfer.
@@ -28,6 +37,7 @@ local function processPendingButterfingersDrops()
 	local now = getTimestampMs()
 	for i = #pendingButterfingersDrops, 1, -1 do
 		local pendingDrop = pendingButterfingersDrops[i]
+		---@cast pendingDrop PendingButterfingersDrop
 		local item = pendingDrop.sourceContainer:getItemById(pendingDrop.itemId)
 		if item then
 			local floorContainer = ISInventoryPage.GetFloorContainer(pendingDrop.character:getPlayerNum())
@@ -115,9 +125,12 @@ local original_ISInventoryTransferAction_perform = ISInventoryTransferAction.per
 ---Overwriting ISInventoryTransferAction:perform() here to insert ETW logic catching player transferring items
 function ISInventoryTransferAction:perform()
 	if ETW_CommonLogicChecks.InventoryTransferSystemShouldExecute(self.character) and self.character == getPlayer() then
-		local itemWeight = math.max(0, self.item:getWeight())
+		local item = self.item
+		---@cast item InventoryItem
+		local itemWeight = math.max(0, item:getWeight())
 		if gameMode == ETW_CommonFunctions.GameMode.SP then
 			local modData = ETW_CommonFunctions.getETWModData(self.character)
+			---@cast modData EvolvingTraitsWorldModData
 			local transferModData = modData.TransferSystem
 			local initialItemsTransferred = transferModData.ItemsTransferred
 			local initialWeightTransferred = transferModData.WeightTransferred

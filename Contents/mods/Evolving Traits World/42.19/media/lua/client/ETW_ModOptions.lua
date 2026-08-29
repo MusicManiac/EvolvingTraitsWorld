@@ -54,7 +54,10 @@ function SoundNotificationSoundSelectComboBox:onChange(index, selected)
 			"ETW_AoE3",
 			"ETW_WoW",
 		}
-		getSoundManager():playUISound(soundTable[index])
+		local sound = soundTable[index]
+		if sound then
+			getSoundManager():playUISound(sound)
+		end
 	end
 end
 
