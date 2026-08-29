@@ -50,7 +50,7 @@ function ETW_CommonFunctions.playParanoiaScare(player, yell)
 	if yell then
 		local screams = player:isFemale() and paranoiaWomanScreams or paranoiaManScreams
 		yellSound = screams[random_instance:random(1, #screams)]
-		if screamVolume > 0 then
+		if yellSound and screamVolume > 0 then
 			yellSoundID = player:playSound(yellSound)
 			if yellSoundID and yellSoundID >= 0 then
 				player:getEmitter():setVolume(yellSoundID, screamVolume)
@@ -71,7 +71,7 @@ function ETW_CommonFunctions.playParanoiaScare(player, yell)
 	)
 end
 
---- @field GameMode {SP: '"SP"', MP_CLIENT: '"MP_Client"', MP_SERVER: '"MP_Server"'}
+--- @type {SP: "SP", MP_CLIENT: "MP_Client", MP_SERVER: "MP_Server"}
 ETW_CommonFunctions.GameMode = {
 	SP = "SP",
 	MP_CLIENT = "MP_Client",
@@ -79,7 +79,7 @@ ETW_CommonFunctions.GameMode = {
 }
 
 ---Function responsible for determining the current game mode, returns "SP" for single player, "MP_Client" for multiplayer client and "MP_Server" for multiplayer server
----@return '"SP"'|'"MP_Client"'|'"MP_Server"'
+---@return "SP"|"MP_Client"|"MP_Server"
 function ETW_CommonFunctions.gameMode()
 	if not isClient() and not isServer() then
 		return ETW_CommonFunctions.GameMode.SP
@@ -231,7 +231,7 @@ function ETW_CommonFunctions.round(num, numDecimalPlaces)
 end
 
 ---Applies Affinity System gain/loss rates to progress toward either of two opposing starting traits. This function assumes that negative change = moving towards negative change, and positive change = moving towards positive change.
----@param modData ETW_ModData
+---@param modData EvolvingTraitsWorldModData
 ---@param change number the change to apply to progress, can be positive or negative
 ---@param negativeTrait CharacterTrait|nil Trait favored by negative progress
 ---@param positiveTrait CharacterTrait|nil Trait favored by positive progress

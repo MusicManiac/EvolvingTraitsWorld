@@ -5,7 +5,7 @@ local SBvars = SandboxVars.EvolvingTraitsWorld
 
 local ETW_CommonFunctions = require("ETW_CommonFunctions")
 
----Checks if player qualifies for gaining or losing innventory transfer system perks
+---Checks if player qualifies for gaining or losing inventory transfer system perks
 ---@param player IsoPlayer player
 ---@param modData EvolvingTraitsWorldModData ETW modData table
 function ETW_TimedActionsSharedLogic.checkInventoryTransferPerks(player, modData)
