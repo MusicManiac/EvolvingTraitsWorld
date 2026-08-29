@@ -154,8 +154,12 @@ local function everyTickUpdate()
 			ETW_HealthTraits.noodleLegsTrait(player)
 		end
 		if modData then
-			if modData.IndefatigableProtectionExpiresAt then
+			if player:hasTrait(ETWTraitsRegistry.MADE_OF_GLASS) then
 				bodyDamage = player:getBodyDamage()
+				ETW_HealthTraits.madeOfGlassTrait(player, bodyDamage, modData)
+			end
+			if modData.IndefatigableProtectionExpiresAt then
+				bodyDamage = bodyDamage or player:getBodyDamage()
 				ETW_HealthTraits.indefatigableProtection(player, bodyDamage, modData)
 			end
 			if player:hasTrait(ETWTraitsRegistry.BOUNCER) then

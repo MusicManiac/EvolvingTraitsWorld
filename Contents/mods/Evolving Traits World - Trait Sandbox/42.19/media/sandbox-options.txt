@@ -1036,4 +1036,20 @@ option ETWTraitSandbox.ImmunocompromisedPointValue
 	page = ETWTraitSandbox,
 	translation = ETWTS_ImmunocompromisedPointValue,
 }
+option ETWTraitSandbox.MadeOfGlassEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_MadeOfGlassEnabled,
+}
+option ETWTraitSandbox.MadeOfGlassPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = 10,
+	page = ETWTraitSandbox,
+	translation = ETWTS_MadeOfGlassPointValue,
+}
 

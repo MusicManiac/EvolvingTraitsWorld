@@ -678,6 +678,16 @@ module ETW
         MutuallyExclusiveTraits = base:resilient;ETW:SuperImmune,
     }
 
+    character_trait_definition ETW:MadeOfGlass
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:MadeOfGlass,
+        Cost = -10,
+        UIName = UI_trait_MadeOfGlass,
+        UIDescription = UI_trait_MadeOfGlassDesc,
+    }
+
     character_trait_definition ETW:SlowEater
     {
         IsProfessionTrait = false,

@@ -148,6 +148,8 @@
     "UI_trait_LightStepDesc": "You are naturally light on your feet and make little sound moving",
     "UI_trait_LowProfile": "Low Profile",
     "UI_trait_LowProfileDesc": "You are a shady character and good at hiding",
+    "UI_trait_MadeOfGlass": "Made of Glass",
+    "UI_trait_MadeOfGlassDesc": "You are exceptionally fragile.<br>Health loss is amplified, and sufficiently damaging impacts may scratch or fracture a random body part.",
     "UI_trait_Mundane": "Mundane",
     "UI_trait_MundaneDesc": "Your weapon attacks never critically hit.<br>Other damage bonuses still apply normally.",
     "UI_trait_NaturalEater": "Natural Eater",

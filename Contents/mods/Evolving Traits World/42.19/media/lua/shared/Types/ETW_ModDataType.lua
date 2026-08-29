@@ -24,6 +24,7 @@
 --- @field IndefatigableCooldownUntilHours number|nil
 --- @field IndefatigableProtectionExpiresAt number|nil
 --- @field IndefatigableWoundSpeedModifiers table[]|nil
+--- @field MadeOfGlass MadeOfGlassSystem|nil
 --- @field UnwaveringInjurySpeedApplied boolean|nil
 --- @field SunSensitivityExposure number|nil
 --- @field SunSensitivityAppliedPain number|nil
@@ -56,6 +57,16 @@
 --- @field BloodlustSystem BloodlustSystem
 --- @field AnimalsSystem AnimalsSystem
 --- @field KillCount KillCount
+
+--- @class MadeOfGlassSystem
+--- @field LastHealth number|nil
+--- @field PendingExtraDamage number|nil
+--- @field LogWindowStartedAt number|nil
+--- @field LogEventCount integer|nil
+--- @field LogObservedDamage number|nil
+--- @field LogIgnoredDamage number|nil
+--- @field LogOriginalDamage number|nil
+--- @field LogExtraDamage number|nil
 
 --- @class OutdoorsmanSystem
 --- @field OutdoorsmanCounter number

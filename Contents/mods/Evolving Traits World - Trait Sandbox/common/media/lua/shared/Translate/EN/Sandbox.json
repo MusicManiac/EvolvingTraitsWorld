@@ -251,5 +251,9 @@
     "Sandbox_ETWTS_ImmunocompromisedEnabled_tooltip": "Controls character-creation availability.",
     "Sandbox_ETWTS_ImmunocompromisedPointValue": "Immunocompromised point value",
     "Sandbox_ETWTS_ImmunocompromisedPointValue_tooltip": "Character-creation point adjustment: negative values cost points; positive values grant points.",
+    "Sandbox_ETWTS_MadeOfGlassEnabled": "Enable Made of Glass",
+    "Sandbox_ETWTS_MadeOfGlassEnabled_tooltip": "Controls character-creation availability.",
+    "Sandbox_ETWTS_MadeOfGlassPointValue": "Made of Glass point value",
+    "Sandbox_ETWTS_MadeOfGlassPointValue_tooltip": "Character-creation point adjustment: negative values cost points; positive values grant points.",
     "Sandbox_ETWTraitSandbox": "Evolving Traits World - Trait Sandbox"
 }
