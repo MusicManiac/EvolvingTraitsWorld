@@ -113,25 +113,27 @@ function ETW_ModData.createETWModData(playerIndex, player)
 		or player:getStats():get(CharacterStat.ENDURANCE)
 	modData.IdealWeightLastCalories = modData.IdealWeightLastCalories or player:getNutrition():getCalories()
 	modData.DepressiveEpisodeActive = modData.DepressiveEpisodeActive or false
-	if player:hasTrait(ETWTraitsRegistry.ANTI_GUN_ACTIVIST) then
-		modData.AntiGunLastRecordedAimingXP = player:getXp():getXP(Perks.Aiming)
-		modData.AntiGunAimingXPCheckPending = nil
-	end
-	if player:hasTrait(ETWTraitsRegistry.SUN_SENSITIVITY) then
-		modData.SunSensitivityExposure = modData.SunSensitivityExposure or 0
-		modData.SunSensitivityAppliedPain = modData.SunSensitivityAppliedPain or 0
-	end
-	if player:hasTrait(ETWTraitsRegistry.MADE_OF_GLASS) then
-		modData.MadeOfGlass = {
-			LastHealth = player:getBodyDamage():getHealth(),
-			PendingExtraDamage = 0,
-			LogEventCount = 0,
-			LogObservedDamage = 0,
-			LogIgnoredDamage = 0,
-			LogOriginalDamage = 0,
-			LogExtraDamage = 0,
-		}
-	end
+	modData.ParanoiaCooldownMinutes = modData.ParanoiaCooldownMinutes or 10
+	modData.AntiGunLastRecordedAimingXP = player:getXp():getXP(Perks.Aiming)
+	modData.AntiGunAimingXPCheckPending = false
+	modData.BouncerCooldownTicks = modData.BouncerCooldownTicks or 0
+	modData.IndefatigableUses = modData.IndefatigableUses or 0
+	modData.IndefatigableCooldownUntilHours = modData.IndefatigableCooldownUntilHours or 0
+	modData.IndefatigableProtectionExpiresAt = modData.IndefatigableProtectionExpiresAt or 0
+	modData.IndefatigableWoundSpeedModifiers = modData.IndefatigableWoundSpeedModifiers or {}
+	modData.UnwaveringInjurySpeedApplied = modData.UnwaveringInjurySpeedApplied or false
+	modData.SunSensitivityExposure = modData.SunSensitivityExposure or 0
+	modData.SunSensitivityAppliedPain = modData.SunSensitivityAppliedPain or 0
+	modData.MadeOfGlass = modData.MadeOfGlass or {}
+	local madeOfGlass = modData.MadeOfGlass
+	madeOfGlass.LastHealth = player:getBodyDamage():getHealth()
+	madeOfGlass.PendingExtraDamage = 0
+	madeOfGlass.LogWindowStartedAt = 0
+	madeOfGlass.LogEventCount = 0
+	madeOfGlass.LogObservedDamage = 0
+	madeOfGlass.LogIgnoredDamage = 0
+	madeOfGlass.LogOriginalDamage = 0
+	madeOfGlass.LogExtraDamage = 0
 	modData.MentalStateInLast60Min = modData.MentalStateInLast60Min or { 0.75 }
 	modData.MentalStateInLast24Hours = modData.MentalStateInLast24Hours or { 0.75 }
 	modData.MentalStateInLast31Days = modData.MentalStateInLast31Days or { 0.75 }

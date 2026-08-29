@@ -25,7 +25,7 @@ local random_instance = newrandom()
 ---@param player IsoPlayer
 ---@param modData EvolvingTraitsWorldModData
 function ETW_CombatTraits.bouncerTrait(player, modData)
-	local cooldownTicks = modData.BouncerCooldownTicks or 0
+	local cooldownTicks = modData.BouncerCooldownTicks
 	if cooldownTicks > 0 then
 		modData.BouncerCooldownTicks = cooldownTicks - 1
 		return
@@ -264,17 +264,7 @@ function ETW_CombatTraits.antiGunAimingXPPenalty(player, modData)
 	local currentXP = player:getXp():getXP(Perks.Aiming)
 	local lastRecordedXP = modData.AntiGunLastRecordedAimingXP
 	local playerIdentifier = tostring(player:getUsername()) .. " (OnlineID=" .. player:getOnlineID() .. ")"
-	modData.AntiGunAimingXPCheckPending = nil
-	if lastRecordedXP == nil then
-		modData.AntiGunLastRecordedAimingXP = currentXP
-		logETW(
-			"ETW Logger | antigun XP check: initialized missing XP snapshot for "
-				.. playerIdentifier
-				.. " to "
-				.. currentXP
-		)
-		return
-	end
+	modData.AntiGunAimingXPCheckPending = false
 
 	local gainedXP = currentXP - lastRecordedXP
 	if gainedXP <= 0 then

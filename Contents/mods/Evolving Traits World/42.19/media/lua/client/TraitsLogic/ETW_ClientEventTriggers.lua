@@ -111,10 +111,10 @@ local function indefatigableScanEnabled(player)
 		return false
 	end
 	local maximumUses = math.max(0, math.floor(SandboxVars.EvolvingTraitsWorld.IndefatigableUses or 1))
-	if maximumUses > 0 and (modData.IndefatigableUses or 0) >= maximumUses then
+	if maximumUses > 0 and modData.IndefatigableUses >= maximumUses then
 		return false
 	end
-	if getGameTime():getWorldAgeHours() < (modData.IndefatigableCooldownUntilHours or 0) then
+	if getGameTime():getWorldAgeHours() < modData.IndefatigableCooldownUntilHours then
 		return false
 	end
 	return true

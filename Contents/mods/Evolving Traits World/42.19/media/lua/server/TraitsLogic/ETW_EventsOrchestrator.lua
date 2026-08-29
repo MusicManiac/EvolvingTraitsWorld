@@ -158,7 +158,7 @@ local function everyTickUpdate()
 				bodyDamage = player:getBodyDamage()
 				ETW_HealthTraits.madeOfGlassTrait(player, bodyDamage, modData)
 			end
-			if modData.IndefatigableProtectionExpiresAt then
+			if modData.IndefatigableProtectionExpiresAt > 0 then
 				bodyDamage = bodyDamage or player:getBodyDamage()
 				ETW_HealthTraits.indefatigableProtection(player, bodyDamage, modData)
 			end

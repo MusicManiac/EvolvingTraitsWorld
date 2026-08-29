@@ -24,8 +24,8 @@ local logETW = ETW_CommonFunctions.log
 ---@param bodyDamage BodyDamage
 ---@param modData EvolvingTraitsWorldModData
 function ETW_WeatherTraits.sunSensitivityTrait(player, bodyDamage, modData)
-	local previousAppliedPain = modData.SunSensitivityAppliedPain or 0
-	local exposure = modData.SunSensitivityExposure or 0
+	local previousAppliedPain = modData.SunSensitivityAppliedPain
+	local exposure = modData.SunSensitivityExposure
 	local maximumPain = math.max(0, SBvars.SunSensitivityMaximumPain or 40)
 	local exposurePerMinute = math.max(0, SBvars.SunSensitivityExposurePerMinute or 1)
 	local recoveryPerMinute = math.max(0, SBvars.SunSensitivityRecoveryPerMinute or 2)
