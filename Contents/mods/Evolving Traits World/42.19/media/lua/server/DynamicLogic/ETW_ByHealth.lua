@@ -267,20 +267,6 @@ local function normalizeInvertedVital(value)
 	return 1 - numericValue
 end
 
----Adjusts a normalized habit sample so its movement toward or away from a starting trait uses Affinity rates.
----@param modData EvolvingTraitsWorldModData
----@param latestValue number
----@param currentAverage number
----@param negativeTrait CharacterTrait
----@param positiveTrait CharacterTrait
----@return number
-local function applyAffinityToHabitSample(modData, latestValue, currentAverage, negativeTrait, positiveTrait)
-	local change = latestValue - currentAverage
-	local adjustedValue = currentAverage
-		+ ETW_CommonFunctions.applyAffinityToDirectionalChange(modData, change, negativeTrait, positiveTrait)
-	return math.max(0, math.min(1, adjustedValue))
-end
-
 ---Records the player's current normalized food score into food-system rolling averages.
 local function recordFoodStateETW()
 	local playersList = ETW_CommonFunctions.playersList()
@@ -294,21 +280,11 @@ local function recordFoodStateETW()
 				"ETW Logger | recordFoodStateETW(): skipping sleeping player " .. player:getUsername()
 			)
 		else
-			local rawHunger = normalizeInvertedVital(stats:get(CharacterStat.HUNGER))
-			local hunger = rawHunger
-			hunger = applyAffinityToHabitSample(
-				modData,
-				hunger,
-				modData.RecentAverageFood,
-				CharacterTrait.HEARTY_APPETITE,
-				CharacterTrait.LIGHT_EATER
-			)
+			local hunger = normalizeInvertedVital(stats:get(CharacterStat.HUNGER))
 			logETW(
 				"ETW Logger | recordFoodStateETW(): player "
 					.. player:getUsername()
-					.. ", raw normalized hunger = "
-					.. rawHunger
-					.. ", affinity-adjusted hunger = "
+					.. ", normalized hunger = "
 					.. hunger
 			)
 			modData.RecentAverageFood = updateRollingHabitAverage(
@@ -335,21 +311,11 @@ local function recordThirstStateETW()
 				"ETW Logger | recordThirstStateETW(): skipping sleeping player " .. player:getUsername()
 			)
 		else
-			local rawThirst = normalizeInvertedVital(stats:get(CharacterStat.THIRST))
-			local thirst = rawThirst
-			thirst = applyAffinityToHabitSample(
-				modData,
-				thirst,
-				modData.RecentAverageThirst,
-				CharacterTrait.HIGH_THIRST,
-				CharacterTrait.LOW_THIRST
-			)
+			local thirst = normalizeInvertedVital(stats:get(CharacterStat.THIRST))
 			logETW(
 				"ETW Logger | recordThirstStateETW(): player "
 					.. player:getUsername()
-					.. ", raw normalized thirst = "
-					.. rawThirst
-					.. ", affinity-adjusted thirst = "
+					.. ", normalized thirst = "
 					.. thirst
 			)
 			modData.RecentAverageThirst = updateRollingHabitAverage(
