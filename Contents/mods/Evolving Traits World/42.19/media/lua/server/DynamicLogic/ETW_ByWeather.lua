@@ -238,6 +238,12 @@ end
 ---@param playerIndex number
 ---@param player IsoPlayer
 local function initializeEventsETW(playerIndex, player)
+	if SBvars.DisableAllDynamicTraits == true then
+		if gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
+			Events.OnTick.Remove(initializeEventsETW)
+		end
+		return
+	end
 	Events.EveryOneMinute.Remove(rainTraits)
 	Events.OnZombieDead.Remove(rainTraitsKill)
 	if ETW_CommonLogicChecks.RainSystemShouldExecute(player) then

@@ -295,6 +295,12 @@ end
 ---@param playerIndex number
 ---@param player IsoPlayer
 local function initializeEventsETW(playerIndex, player)
+	if SBvars.DisableAllDynamicTraits == true then
+		if gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
+			Events.OnTick.Remove(initializeEventsETW)
+		end
+		return
+	end
 	Events.EveryTenMinutes.Remove(sleepSystem)
 	if ETW_CommonLogicChecks.SleepSystemShouldExecute(player) then
 		Events.EveryTenMinutes.Add(sleepSystem)

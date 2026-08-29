@@ -1037,6 +1037,12 @@ end
 ---@param playerIndex number
 ---@param player IsoPlayer
 local function initializeEventsETW(playerIndex, player)
+	if SBvars.DisableAllDynamicTraits == true then
+		if gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
+			Events.OnTick.Remove(initializeEventsETW)
+		end
+		return
+	end
 	Events.EveryOneMinute.Remove(immunitySystemTraits)
 	if ETW_CommonLogicChecks.ImmunitySystemShouldExecute(player) then
 		Events.EveryOneMinute.Add(immunitySystemTraits)

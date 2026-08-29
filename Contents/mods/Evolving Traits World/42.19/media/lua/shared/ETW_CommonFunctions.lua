@@ -457,6 +457,9 @@ end
 ---Adds trait to a player, its exp boosts, recipes, sound and notification.
 ---@param context ETWAddTraitToPlayerContext
 function ETW_CommonFunctions.addTraitToPlayer(context)
+	if SBvars.DisableAllDynamicTraits == true then
+		return
+	end
 	local player = context.player
 	local trait = context.trait
 	if player:hasTrait(trait) then
@@ -489,6 +492,9 @@ end
 ---Removes trait from a player, plays the sound and shows notification.
 ---@param context ETWRemoveTraitFromPlayerContext
 function ETW_CommonFunctions.removeTraitFromPlayer(context)
+	if SBvars.DisableAllDynamicTraits == true then
+		return
+	end
 	local player = context.player
 	local trait = context.trait
 	ETW_CommonFunctions.log(
@@ -514,7 +520,7 @@ end
 ---Function responsible for adding a trait to a Delayed Traits System. Plays a sound as well.
 ---@param context ETWAddTraitToDelayTableContext
 function ETW_CommonFunctions.addTraitToDelayTable(context)
-	if not SBvars.DelayedTraitsSystem then
+	if SBvars.DisableAllDynamicTraits == true or not SBvars.DelayedTraitsSystem then
 		return
 	end
 	local player = context.player
@@ -599,6 +605,9 @@ end
 ---@param traitToCheck CharacterTrait the trait to check
 ---@return boolean boolean true if trait should be gained/lost, false otherwise
 function ETW_CommonFunctions.checkDelayedTraits(player, traitToCheck)
+	if SBvars.DisableAllDynamicTraits == true then
+		return false
+	end
 	if not SBvars.DelayedTraitsSystem then
 		return true
 	end
