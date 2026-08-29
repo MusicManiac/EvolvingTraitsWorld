@@ -1,5 +1,8 @@
 ---@meta
 
+--- @class SandboxVars
+--- @field EvolvingTraitsWorld EvolvingTraitsWorldSandboxVars
+
 --- @class EvolvingTraitsWorldSandboxVars
 -- Settings
 --- @field AffinitySystem boolean

@@ -268,7 +268,7 @@ local function normalizeInvertedVital(value)
 end
 
 ---Adjusts a normalized habit sample so its movement toward or away from a starting trait uses Affinity rates.
----@param modData ETW_ModData
+---@param modData EvolvingTraitsWorldModData
 ---@param latestValue number
 ---@param currentAverage number
 ---@param negativeTrait CharacterTrait
