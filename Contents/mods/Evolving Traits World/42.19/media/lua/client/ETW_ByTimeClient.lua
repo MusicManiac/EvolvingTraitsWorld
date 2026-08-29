@@ -18,6 +18,7 @@ then
 	return
 end
 
+---@type fun(player?: IsoPlayer, isKill?: boolean)
 local catEyes
 
 ---Applies Cat Eyes progress locally in SP or forwards it to the server in MP.
@@ -92,8 +93,8 @@ local function applyCatEyesProgress(player, progressIncrease, isKill)
 end
 
 ---Calculates Cat Eyes progress client-side and records it.
----@param player IsoPlayer
----@param isKill boolean
+---@param player IsoPlayer|nil
+---@param isKill boolean|nil
 catEyes = function(player, isKill)
 	player = player or getPlayer()
 	if not player or not ETW_CommonLogicChecks.CatEyesShouldExecute(player) then
@@ -114,7 +115,7 @@ catEyes = function(player, isKill)
 	local radius = 30
 	local playerIsInside = player:isInARoom()
 	local hasEagleEyed = player:hasTrait(CharacterTrait.EAGLE_EYED)
-	local progressIncrease = 0
+	local progressIncrease = 0.0
 
 	-- print(player:getDisplayName() .. " is checking for cat eyes with nightStrength: " .. tostring(nightStrength))
 	-- print("Position: x=" .. tostring(plX) .. ", y=" .. tostring(plY) .. ", z=" .. tostring(plZ))

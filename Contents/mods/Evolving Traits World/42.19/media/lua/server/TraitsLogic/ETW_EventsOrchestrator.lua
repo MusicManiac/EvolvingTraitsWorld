@@ -91,11 +91,14 @@ local function oneMinuteUpdate()
 		then
 			local weapon = player:getPrimaryHandItem()
 			stats = stats or player:getStats()
-			if weapon and instanceof(weapon, "HandWeapon") and weapon:getSubCategory() == "Firearm" then
-				if player:hasTrait(ETWTraitsRegistry.TERMINATOR) then
-					ETW_CombatTraits.terminatorMentalTrait(player, stats)
-				else
-					ETW_CombatTraits.antiGunMentalTrait(player, stats)
+			if weapon and instanceof(weapon, "HandWeapon") then
+				---@cast weapon HandWeapon
+				if weapon:getSubCategory() == "Firearm" then
+					if player:hasTrait(ETWTraitsRegistry.TERMINATOR) then
+						ETW_CombatTraits.terminatorMentalTrait(player, stats)
+					else
+						ETW_CombatTraits.antiGunMentalTrait(player, stats)
+					end
 				end
 			end
 		end

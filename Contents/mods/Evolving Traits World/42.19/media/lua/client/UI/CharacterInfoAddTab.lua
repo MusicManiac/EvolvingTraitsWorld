@@ -1,3 +1,7 @@
+---@class ETWCharacterInfoLayout : umbrella.ISLayoutManager.Layout
+---@field current string|nil
+---@field tabs string|nil
+
 function addCharacterPageTab(tabName, pageType)
 	local viewName = tabName .. "View"
 
@@ -21,6 +25,7 @@ function addCharacterPageTab(tabName, pageType)
 	local upperLayer_ISCharacterInfoWindow_SaveLayout = ISCharacterInfoWindow.SaveLayout
 	function ISCharacterInfoWindow:SaveLayout(name, layout)
 		upperLayer_ISCharacterInfoWindow_SaveLayout(self, name, layout)
+		---@cast layout ETWCharacterInfoLayout
 		local addTabName = false
 		local subSelf = self[viewName]
 		if subSelf and subSelf.parent == self.panel then

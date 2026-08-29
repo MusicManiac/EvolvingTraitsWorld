@@ -1,4 +1,5 @@
 ---@diagnostic disable: undefined-global
+---@diagnostic disable-next-line: unresolved-require
 require("MF_ISMoodle")
 local ETW_CommonFunctions = require("ETW_CommonFunctions")
 
@@ -12,6 +13,7 @@ then
 	return
 end
 
+---@type PZAPI.ModOptions.Options|nil
 local modOptions
 
 ---Function responsible for setting up mod options on character load
@@ -19,6 +21,22 @@ local modOptions
 ---@param player IsoPlayer
 local function initializeModOptions(playerIndex, player)
 	modOptions = PZAPI.ModOptions:getOptions("ETWModOptions")
+end
+
+---Returns a boolean ETW mod option, defaulting to enabled while options are unavailable.
+---@param optionID string
+---@return boolean
+local function isMoodleEnabled(optionID)
+	modOptions = modOptions or PZAPI.ModOptions:getOptions("ETWModOptions")
+	if not modOptions then
+		return true
+	end
+	local option = modOptions:getOption(optionID)
+	if not option then
+		return true
+	end
+	---@cast option umbrella.ModOptions.TickBox
+	return option:getValue()
 end
 
 Events.OnCreatePlayer.Remove(initializeModOptions)
@@ -118,7 +136,7 @@ function ETW_Moodles.bloodlustMoodleUpdate(player, args)
 		moodle:setThresholds(0.1, 0.2, 0.35, 0.4999, 0.5001, 0.65, 0.8, 0.9)
 		if
 			player == getPlayer()
-			and modOptions:getOption("EnableBloodLustMoodle"):getValue()
+			and isMoodleEnabled("EnableBloodLustMoodle")
 			and not args.hide
 			and timeSinceLastKill <= SBvars.BloodlustMoodleVisibilityHours
 		then
@@ -155,9 +173,8 @@ function ETW_Moodles.sleepHealthMoodleUpdate(player, args)
 		if not moodle or not ensureMoodleModData(player, "SleepHealthMoodle") then
 			return
 		end
-		modOptions = PZAPI.ModOptions:getOptions("ETWModOptions")
 		moodle:setThresholds(1.5, 3, 4.5, 5.999, 6.001, 7.5, 9, 10.5)
-		if player == getPlayer() and modOptions:getOption("EnableSleepHealthMoodle"):getValue() and not args.hide then
+		if player == getPlayer() and isMoodleEnabled("EnableSleepHealthMoodle") and not args.hide then
 			logETW(
 				"ETW Logger | ETWMoodles.sleepHealthMoodleUpdate(): hoursAwayFromPreferredHour: "
 					.. args.hoursAwayFromPreferredHour

@@ -1,3 +1,4 @@
+---@diagnostic disable-next-line: unresolved-require
 local StarlitTraits = require("Starlit/sandbox/Traits")
 
 -- Starlit uses the sandbox value as the character-creation point adjustment,

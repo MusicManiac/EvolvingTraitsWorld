@@ -29,12 +29,14 @@ local indefatigableKnockdownTargets = {}
 ---@param character IsoGameCharacter
 ---@param source string
 local function equippedItemTraitsRefreshOnServer(character, source)
-	if not character or not instanceof(character, "IsoPlayer") or not character:isLocalPlayer() then
+	if not character or not instanceof(character, "IsoPlayer") then
 		return
 	end
-	local player = character
-	---@cast player IsoPlayer
-	sendClientCommand(player, "ETW", "refreshEquippedItemTraits", {})
+	---@cast character IsoPlayer
+	if not character:isLocalPlayer() then
+		return
+	end
+	sendClientCommand(character, "ETW", "refreshEquippedItemTraits", {})
 	logETW(
 		"ETW Logger | equippedItemTraitsRefreshOnServer(): requested server item-trait refresh; source: "
 			.. source
@@ -43,7 +45,11 @@ end
 
 ---@param character IsoGameCharacter
 local function clothingRefreshOnServer(character)
-	if not character or not instanceof(character, "IsoPlayer") or not character:isLocalPlayer() then
+	if not character or not instanceof(character, "IsoPlayer") then
+		return
+	end
+	---@cast character IsoPlayer
+	if not character:isLocalPlayer() then
 		return
 	end
 	local now = getTimestampMs()
@@ -76,7 +82,11 @@ local function firearmAimingMoodOnServer()
 		return
 	end
 	local weapon = player:getPrimaryHandItem()
-	if not weapon or not instanceof(weapon, "HandWeapon") or weapon:getSubCategory() ~= "Firearm" then
+	if not weapon or not instanceof(weapon, "HandWeapon") then
+		return
+	end
+	---@cast weapon HandWeapon
+	if weapon:getSubCategory() ~= "Firearm" then
 		return
 	end
 	local command = player:hasTrait(ETWTraitsRegistry.TERMINATOR)

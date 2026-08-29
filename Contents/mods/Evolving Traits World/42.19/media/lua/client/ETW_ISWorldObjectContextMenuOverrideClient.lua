@@ -19,6 +19,8 @@ local ETWTraitsRegistry = ETW_Registry.traits
 local SBvars = SandboxVars.EvolvingTraitsWorld
 local logETW = ETW_CommonFunctions.log
 
+---@diagnostic disable-next-line: assign-type-mismatch
+---@type fun(player: IsoPlayer, bed: IsoObject|nil): string
 local original_ISWorldObjectContextMenu_getBedQuality = ISWorldObjectContextMenu.getBedQuality
 
 ---Reverses good and poor bed quality for Ascetic, improves bare floors, and makes every pillow-equipped bed poor.

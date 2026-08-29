@@ -1,4 +1,4 @@
----@diagnostic disable: param-type-mismatch, undefined-global
+---@diagnostic disable: param-type-mismatch, undefined-global, need-check-nil, undefined-field, unresolved-require, assign-type-mismatch, inject-field, redundant-parameter
 require("ISUI/ISPanelJoypad")
 require("ISUI/ISRichTextPanel")
 require("UI/CharacterInfoAddTab")

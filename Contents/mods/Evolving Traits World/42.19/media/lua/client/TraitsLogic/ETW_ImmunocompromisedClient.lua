@@ -106,6 +106,7 @@ local function processNewZombieInjuries(player)
 	return detectedInjuries
 end
 
+---@type Callback_OnTick
 local processPendingZombieAttack
 
 ---Stops the temporary tick check after the attack reaches a terminal state.

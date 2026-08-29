@@ -21,12 +21,13 @@ local indefatigableProtection
 ---@param player unknown
 ---@return IsoPlayer|nil
 local function resolveLocalPlayer(player)
-	if not player or type(player) ~= "userdata" or not player.getModData then
+	if not player or not instanceof(player, "IsoPlayer") then
 		player = getPlayer()
 	end
-	if not player or type(player) ~= "userdata" then
+	if not player then
 		return nil
 	end
+	---@cast player IsoPlayer
 	return player
 end
 
