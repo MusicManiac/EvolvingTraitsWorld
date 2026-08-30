@@ -263,7 +263,7 @@ module ETW
         IsProfessionTrait = false,
         DisabledInMultiplayer = false,
         CharacterTrait = ETW:Quiet,
-        Cost = 2,
+        Cost = 5,
         UIName = UI_trait_Quiet,
         UIDescription = UI_trait_QuietDesc,
         XPBoosts = Sneak=1;Lightfoot=1,
