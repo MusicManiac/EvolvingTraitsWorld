@@ -1,3 +1,12 @@
+## v.13.0.3
+###### 30 Aug 2026
+
+- Fix:
+  - Fixed Quiet price to be more in-line with normal PZ trait prices.
+- Translations:
+  - Updated CN to 13.0.2
+  - Updated ES to 12.11.1
+
 ## v.13.0.2
 ###### 30 Aug 2026
 
