@@ -1,3 +1,9 @@
+## v.13.0.2
+###### 30 Aug 2026
+
+- Fix:
+  - Fixed incorrect require after mod restructure
+
 ## v.13.0.1
 ###### 30 Aug 2026
 
