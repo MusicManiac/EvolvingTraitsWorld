@@ -43,7 +43,7 @@ end
 ---@param player IsoPlayer
 ---@param yell boolean
 function ETW_CommonFunctions.playParanoiaScare(player, yell)
-	local surprisedSoundID = player:playSound("ZombieSurprisedPlayer")
+	local surprisedSoundID = player:playSoundLocal("ZombieSurprisedPlayer")
 	local yellSound
 	local yellSoundID
 	local screamVolume = paranoiaScreamVolume()
@@ -51,7 +51,7 @@ function ETW_CommonFunctions.playParanoiaScare(player, yell)
 		local screams = player:isFemale() and paranoiaWomanScreams or paranoiaManScreams
 		yellSound = screams[random_instance:random(1, #screams)]
 		if yellSound and screamVolume > 0 then
-			yellSoundID = player:playSound(yellSound)
+			yellSoundID = player:playSoundLocal(yellSound)
 			if yellSoundID and yellSoundID >= 0 then
 				player:getEmitter():setVolume(yellSoundID, screamVolume)
 			end
