@@ -944,7 +944,7 @@ option ETWTraitSandbox.QuietPointValue
 	type = integer,
 	min = -100,
 	max = 100,
-	default = -2,
+	default = -5,
 	page = ETWTraitSandbox,
 	translation = ETWTS_QuietPointValue,
 }
