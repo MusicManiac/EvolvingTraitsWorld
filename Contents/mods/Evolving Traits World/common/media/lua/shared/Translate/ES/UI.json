@@ -123,6 +123,6 @@
     "UI_trait_SlowEaterDesc": "te tomas tu tiempo para comer. La comida toma mas tiempo en ser consumida.",
     "UI_trait_StickFighter": "Luchador con palos",
     "UI_trait_StickFighterDesc": "haz practicado el arte marcial de la lucha con palos",
-    "note_to_LANGUAGE_translators": "Make sure file is saved in <ENCODING> encoding, so game display correct characters"
+    "note_to_LANGUAGE_translators": "Make sure file is saved in <ENCODING> encoding, so game display correct characters",
     "note_to_ES_translators": "Make sure file is saved in UTF-8 encoding, so game display correct characters"
 }

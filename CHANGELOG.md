@@ -1,3 +1,9 @@
+## v.13.0.5
+###### 30 Aug 2026
+
+- Fix:
+  - Fixed Spanish translation breaking the game
+
 ## v.13.0.4
 ###### 30 Aug 2026
 
