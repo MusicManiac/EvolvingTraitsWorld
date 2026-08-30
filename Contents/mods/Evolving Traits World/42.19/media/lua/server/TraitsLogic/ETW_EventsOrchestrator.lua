@@ -114,6 +114,7 @@ local function oneMinuteUpdate()
 		end
 		if player:hasTrait(ETWTraitsRegistry.HARDY) then
 			stats = stats or player:getStats()
+			modData = modData or ETW_CommonFunctions.getETWModData(player)
 			ETW_HealthTraits.hardyTrait(player, stats, modData)
 		end
 		if player:hasTrait(ETWTraitsRegistry.QUICK_REST) then
