@@ -106,7 +106,7 @@
     "Sandbox_ETW_EagleEyedDistance_tooltip": "A qué distancia debe estar un zombi para contar como una muerte para el contador de muertes de Vista de águila. Para vanilla recomendaría dejar en 20, para mods que agregan buenas armas de fuego (Gunfighter + Brita por ejemplo), recomendaría establecer en 25 más o menos",
     "Sandbox_ETW_EagleEyedKills": "Asesinatos de Vista de águila",
     "Sandbox_ETW_EatingSpeedSystem": "Sistema de velocidad al comer",
-    "Sandbox_ETW_EatingSpeedSystemCounter": "Contador de velocidad al comer"
+    "Sandbox_ETW_EatingSpeedSystemCounter": "Contador de velocidad al comer",
 	"Sandbox_ETW_EatingSpeedSystemCounter_tooltip": "Balor total de la duracion basica al completar acciones relacionadas con comer, requeridas para obtener Comedor rapido. Comedor lento puede se perdido despues de la mitad de este valor. las acciones interrumpidas no cuentan, y rasgos relacionados con la velocidad al comer no cambian la cantidad registrada",
     "Sandbox_ETW_EatingSpeedSystem_tooltip": "Sigue la duracion base de los valores al completar acciones relacionadas con la comida. acciones de comer interrumpidas, beber, y fumar no cuentan. a la mitad del contador configurado puedes perder comedor lento; al final del contador puedes obtener comedor rapido.",
     "Sandbox_ETW_FastEaterSpeed": "Reduccion de tiempo de comedor rapido (%%)",
