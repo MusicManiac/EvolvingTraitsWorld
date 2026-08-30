@@ -1,9 +1,6 @@
 [url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
 
-v.13.0.3
+v.13.0.4
 
 - Fix:
-  - Fixed Quiet price to be more in-line with normal PZ trait prices.
-- Translations:
-  - Updated CN to 13.0.2
-  - Updated ES to 12.11.1
+  - Fixed Hardy error due to missing modData field

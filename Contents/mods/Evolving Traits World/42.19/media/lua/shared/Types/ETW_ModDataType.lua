@@ -7,6 +7,7 @@
 --- @field [4] boolean Whether the requested change is gaining rather than removing the trait.
 
 --- @class EvolvingTraitsWorldModData
+--- @field ModDataVersion integer
 --- @field VehiclePartRepairs number
 --- @field EagleEyedKills number
 --- @field CatEyesCounter number

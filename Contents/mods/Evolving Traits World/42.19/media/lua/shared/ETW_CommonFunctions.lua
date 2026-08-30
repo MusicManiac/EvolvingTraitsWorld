@@ -349,10 +349,9 @@ function ETW_CommonFunctions.getETWModData(player)
 	if not ETW_ModData then
 		ETW_ModData = require("ETW_ModData")
 	end
-	if not modData.EvolvingTraitsWorld then
-		ETW_ModData.createETWModData(player:getPlayerNum(), player)
-	end
-	return modData.EvolvingTraitsWorld
+	-- Existing saves can have an ETW table from an older version while still
+	-- missing fields added by newer code.
+	return ETW_ModData.ensureETWModData(player:getPlayerNum(), player)
 end
 
 ---Immediately refreshes ETW ModData on the owning multiplayer client.
