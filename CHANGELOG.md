@@ -1,3 +1,9 @@
+## v.13.0.7
+###### 30 Aug 2026
+
+- Fix:
+  - Companion Dogs compatibility fix
+
 ## v.13.0.6
 ###### 30 Aug 2026
 

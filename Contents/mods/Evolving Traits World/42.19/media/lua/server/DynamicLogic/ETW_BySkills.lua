@@ -947,6 +947,7 @@ local function OnZombieDeadETW(zombie)
 	if
 		not player
 		or not instanceof(player, "IsoPlayer")
+		or instanceof(player, "IsoAnimal")
 		or (gameMode == CommonFunctions.GameMode.SP and not player:isLocalPlayer())
 	then
 		return

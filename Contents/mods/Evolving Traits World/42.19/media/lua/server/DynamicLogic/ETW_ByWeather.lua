@@ -215,7 +215,7 @@ end
 local function rainTraitsKill(zombie)
 	local player = zombie:getAttackedBy()
 	---@cast player IsoPlayer
-	if not player or not instanceof(player, "IsoPlayer") or not player:isLocalPlayer() then
+	if not player or not instanceof(player, "IsoPlayer") or instanceof(player, "IsoAnimal") or not player:isLocalPlayer() then
 		return
 	else
 		rainTraits(player, true)
@@ -227,7 +227,7 @@ end
 local function fogTraitsKill(zombie)
 	local player = zombie:getAttackedBy()
 	---@cast player IsoPlayer
-	if not player or not instanceof(player, "IsoPlayer") or not player:isLocalPlayer() then
+	if not player or not instanceof(player, "IsoPlayer") or instanceof(player, "IsoAnimal") or not player:isLocalPlayer() then
 		return
 	else
 		fogTraits(player, true)

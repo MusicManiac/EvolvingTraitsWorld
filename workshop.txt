@@ -1,6 +1,6 @@
 version=1
 id=2914075159
-title=Evolving Traits World (ETW) - alternative to "Dynamic Traits"
+title=Evolving Traits World (ETW) + More Traits continuation
 description=[h1]Running ETW+MT[/h1]
 description=You have to install [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3378285185]Starlit Library[/url], enable submod and disable all ETW analogues of MT traits in sandbox. No, there won't be a toggle to disable all MT traits. No, MT wont be getting update. Yes, if there was a bug in MT it's fixed here. No, not all traits are migrated. Yes you can run ETW+MT, just gotta do what I said above.
 description=

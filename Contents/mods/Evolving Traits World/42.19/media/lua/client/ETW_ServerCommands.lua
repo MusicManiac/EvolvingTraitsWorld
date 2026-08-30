@@ -21,7 +21,7 @@ local indefatigableProtection
 ---@param player unknown
 ---@return IsoPlayer|nil
 local function resolveLocalPlayer(player)
-	if not player or not instanceof(player, "IsoPlayer") then
+	if not player or not instanceof(player, "IsoPlayer") or instanceof(player,"IsoAnimal") then
 		player = getPlayer()
 	end
 	if not player then

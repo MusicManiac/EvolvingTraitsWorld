@@ -297,6 +297,7 @@ local function outdoorsmanKill(zombie)
 	if
 		not player
 		or not instanceof(player, "IsoPlayer")
+		or instanceof(player, "IsoAnimal")
 		or (gameMode == ETW_CommonFunctions.GameMode.SP and not player:isLocalPlayer())
 	then
 		return
@@ -313,6 +314,7 @@ local function fearOfLocationsKill(zombie)
 	if
 		not player
 		or not instanceof(player, "IsoPlayer")
+		or instanceof(player, "IsoAnimal")
 		or (gameMode == ETW_CommonFunctions.GameMode.SP and not player:isLocalPlayer())
 	then
 		return
