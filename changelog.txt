@@ -3,4 +3,4 @@
 v.13.0.1
 
 - Fix:
-  - EventOrchestrator fix
+  - Fixed incorrect require after mod restructure

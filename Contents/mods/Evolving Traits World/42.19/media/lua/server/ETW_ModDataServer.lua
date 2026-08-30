@@ -6,7 +6,7 @@ local ETW_ModData = require("ETW_ModData")
 local ETW_EagleEyedTracking = require("TraitSpecific/ETW_EagleEyedTracking")
 local ETW_CommonLogicChecks = require("ETW_CommonLogicChecks")
 
-local ETW_BySkills = require("ETW_BySkills")
+local ETW_BySkills = require("DynamicLogic/ETW_BySkills")
 
 local Commands = {}
 
