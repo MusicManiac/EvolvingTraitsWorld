@@ -3,6 +3,7 @@
 
 - Fix:
   - Companion Dogs compatibility fix
+  - For the moment changed paranoia sounds to be local only to a player who has the trait.
 
 ## v.13.0.6
 ###### 30 Aug 2026
