@@ -1,3 +1,9 @@
+## v.13.0.4
+###### 30 Aug 2026
+
+- Fix:
+  - Fixed Hardy error due to missing modData field.
+
 ## v.13.0.3
 ###### 30 Aug 2026
 

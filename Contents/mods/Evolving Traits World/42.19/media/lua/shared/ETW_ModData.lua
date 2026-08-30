@@ -14,6 +14,9 @@ local SBvars = SandboxVars.EvolvingTraitsWorld
 local ETW_Registry = require("ETW_Registry")
 local ETWTraitsRegistry = ETW_Registry.traits
 
+---Increment when fields are added to or migrated in EvolvingTraitsWorld modData.
+local MOD_DATA_VERSION = 1
+
 ---Returns the midpoint between two numeric values.
 ---@param a number
 ---@param b number
@@ -34,19 +37,16 @@ local function buildFilledSamples(value, sampleCount)
 	return samples
 end
 
----Seeds a rolling samples array for new saves and migrates legacy single-sample defaults.
+---Seeds a rolling samples array when no valid saved samples exist.
 ---@param existingSamples number[]|nil
 ---@param initialValue number
 ---@param sampleCount integer
 ---@return number[]
 local function initializeRollingSamples(existingSamples, initialValue, sampleCount)
-	if type(existingSamples) ~= "table" or #existingSamples == 0 then
-		return buildFilledSamples(initialValue, sampleCount)
+	if type(existingSamples) == "table" and #existingSamples > 0 then
+		return existingSamples
 	end
-	if #existingSamples == 1 then
-		return buildFilledSamples(tonumber(existingSamples[1]) or initialValue, sampleCount)
-	end
-	return existingSamples
+	return buildFilledSamples(initialValue, sampleCount)
 end
 
 ---Checks if player has trait and adds it to modData.StartingTraits if it's not there
@@ -89,6 +89,7 @@ end
 ---Creates modData for player if it doesn't exist and fills it with default values if they don't exist. Should be ran on character creation and loading.
 ---@param playerIndex number -- The index of the player
 ---@param player IsoPlayer   -- The player object
+---@return EvolvingTraitsWorldModData
 function ETW_ModData.createETWModData(playerIndex, player)
 	local playerModData = player:getModData()
 	print("ETW Logger | System: initializing modData for player " .. player:getUsername())
@@ -127,13 +128,13 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	modData.MadeOfGlass = modData.MadeOfGlass or {}
 	local madeOfGlass = modData.MadeOfGlass
 	madeOfGlass.LastHealth = player:getBodyDamage():getHealth()
-	madeOfGlass.PendingExtraDamage = 0
-	madeOfGlass.LogWindowStartedAt = 0
-	madeOfGlass.LogEventCount = 0
-	madeOfGlass.LogObservedDamage = 0
-	madeOfGlass.LogIgnoredDamage = 0
-	madeOfGlass.LogOriginalDamage = 0
-	madeOfGlass.LogExtraDamage = 0
+	madeOfGlass.PendingExtraDamage = madeOfGlass.PendingExtraDamage or 0
+	madeOfGlass.LogWindowStartedAt = madeOfGlass.LogWindowStartedAt or 0
+	madeOfGlass.LogEventCount = madeOfGlass.LogEventCount or 0
+	madeOfGlass.LogObservedDamage = madeOfGlass.LogObservedDamage or 0
+	madeOfGlass.LogIgnoredDamage = madeOfGlass.LogIgnoredDamage or 0
+	madeOfGlass.LogOriginalDamage = madeOfGlass.LogOriginalDamage or 0
+	madeOfGlass.LogExtraDamage = madeOfGlass.LogExtraDamage or 0
 	modData.MentalStateInLast60Min = modData.MentalStateInLast60Min or { 0.75 }
 	modData.MentalStateInLast24Hours = modData.MentalStateInLast24Hours or { 0.75 }
 	modData.MentalStateInLast31Days = modData.MentalStateInLast31Days or { 0.75 }
@@ -183,13 +184,17 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	end
 
 	local initialFoodAverage = getInitialFoodAverage(startingTraits)
-	modData.FoodStateInLast60Min = initializeRollingSamples(modData.FoodStateInLast60Min, initialFoodAverage, 60)
-	modData.FoodStateInLast24Hours = initializeRollingSamples(modData.FoodStateInLast24Hours, initialFoodAverage, 24)
-	modData.FoodStateInLast31Days = initializeRollingSamples(modData.FoodStateInLast31Days, initialFoodAverage, 31)
+	modData.FoodStateInLast60Min =
+		initializeRollingSamples(modData.FoodStateInLast60Min, initialFoodAverage, 60)
+	modData.FoodStateInLast24Hours =
+		initializeRollingSamples(modData.FoodStateInLast24Hours, initialFoodAverage, 24)
+	modData.FoodStateInLast31Days =
+		initializeRollingSamples(modData.FoodStateInLast31Days, initialFoodAverage, 31)
 	modData.RecentAverageFood = modData.RecentAverageFood or initialFoodAverage
 
 	local initialThirstAverage = getInitialThirstAverage(startingTraits)
-	modData.ThirstStateInLast60Min = initializeRollingSamples(modData.ThirstStateInLast60Min, initialThirstAverage, 60)
+	modData.ThirstStateInLast60Min =
+		initializeRollingSamples(modData.ThirstStateInLast60Min, initialThirstAverage, 60)
 	modData.ThirstStateInLast24Hours =
 		initializeRollingSamples(modData.ThirstStateInLast24Hours, initialThirstAverage, 24)
 	modData.ThirstStateInLast31Days =
@@ -310,7 +315,7 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	bloodlustSystem.LastKillTimestamp = bloodlustSystem.LastKillTimestamp or 0
 	if bloodlustSystem.BloodlustProgress == nil and startingTraits[ETWTraitsRegistry.BLOODLUST:toString()] == true then
 		bloodlustSystem.BloodlustProgress = SBvars.BloodlustProgress
-		bloodlustSystem.BloodlustMeter = 18
+		bloodlustSystem.BloodlustMeter = bloodlustSystem.BloodlustMeter or 18
 	else
 		bloodlustSystem.BloodlustProgress = bloodlustSystem.BloodlustProgress or SBvars.BloodlustProgress * 0.75
 		bloodlustSystem.BloodlustMeter = bloodlustSystem.BloodlustMeter or 0
@@ -335,6 +340,32 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	killCount["Vehicles"] = killCount["Vehicles"] or { count = 0, WeaponType = {} }
 	killCount["Unarmed"] = killCount["Unarmed"] or { count = 0, WeaponType = {} }
 	killCount["Explosives"] = killCount["Explosives"] or { count = 0, WeaponType = {} }
+
+	modData.ModDataVersion = MOD_DATA_VERSION
+	return modData
+end
+
+---Creates missing ETW modData or migrates data written by an older schema.
+---@param playerIndex number
+---@param player IsoPlayer
+---@return EvolvingTraitsWorldModData
+function ETW_ModData.ensureETWModData(playerIndex, player)
+	local modData = player:getModData().EvolvingTraitsWorld
+	if modData and modData.ModDataVersion ~= MOD_DATA_VERSION then
+		print(
+			"ETW Logger | System: migrating modData for player "
+				.. player:getUsername()
+				.. " from version "
+				.. tostring(modData.ModDataVersion)
+				.. " to version "
+				.. MOD_DATA_VERSION
+		)
+		return ETW_ModData.createETWModData(playerIndex, player)
+	end
+	if not modData then
+		return ETW_ModData.createETWModData(playerIndex, player)
+	end
+	return modData
 end
 
 ---Function responsible for resetting modData on character death
