@@ -220,7 +220,7 @@ end
 ---@param damage number
 ---@param hitCount number
 function ETW_CombatTraits.onWeaponHitXP(player, weapon, hitObject, damage, hitCount)
-	if not instanceof(player, "IsoPlayer") or not weapon then
+	if not instanceof(player, "IsoPlayer") or instanceof(player, "IsoAnimal") or not weapon then
 		return
 	end
 	---@cast player IsoPlayer
