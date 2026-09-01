@@ -68,6 +68,7 @@
 --- @class MadeOfGlassSystem
 --- @field LastHealth number
 --- @field PendingExtraDamage number
+--- @field WasAsleep boolean
 --- @field LogWindowStartedAt number
 --- @field LogEventCount integer
 --- @field LogObservedDamage number

@@ -1,3 +1,9 @@
+## v.13.0.8
+###### 30 Aug 2026
+
+- Fix:
+  - Fixed Made of Glass damage after sleep.
+
 ## v.13.0.7
 ###### 30 Aug 2026
 
