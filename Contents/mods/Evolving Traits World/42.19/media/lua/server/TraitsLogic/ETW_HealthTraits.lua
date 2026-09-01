@@ -93,7 +93,14 @@ function ETW_HealthTraits.madeOfGlassTrait(player, bodyDamage, modData)
 	local currentHealth = bodyDamage:getHealth()
 	local previousHealth = madeOfGlass.LastHealth
 	local pendingExtraDamage = math.max(0, madeOfGlass.PendingExtraDamage)
-	if previousHealth == nil or player:isAsleep() then
+	if player:isAsleep() then
+		madeOfGlass.WasAsleep = true
+		madeOfGlass.LastHealth = currentHealth
+		madeOfGlass.PendingExtraDamage = 0
+		return
+	end
+	if previousHealth == nil or madeOfGlass.WasAsleep then
+		madeOfGlass.WasAsleep = false
 		madeOfGlass.LastHealth = currentHealth
 		madeOfGlass.PendingExtraDamage = 0
 		return

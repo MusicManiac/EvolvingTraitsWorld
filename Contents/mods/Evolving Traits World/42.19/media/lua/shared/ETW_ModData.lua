@@ -15,7 +15,7 @@ local ETW_Registry = require("ETW_Registry")
 local ETWTraitsRegistry = ETW_Registry.traits
 
 ---Increment when fields are added to or migrated in EvolvingTraitsWorld modData.
-local MOD_DATA_VERSION = 1
+local MOD_DATA_VERSION = 1.1
 
 ---Returns the midpoint between two numeric values.
 ---@param a number
@@ -129,6 +129,7 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	local madeOfGlass = modData.MadeOfGlass
 	madeOfGlass.LastHealth = player:getBodyDamage():getHealth()
 	madeOfGlass.PendingExtraDamage = madeOfGlass.PendingExtraDamage or 0
+	madeOfGlass.WasAsleep = player:isAsleep()
 	madeOfGlass.LogWindowStartedAt = madeOfGlass.LogWindowStartedAt or 0
 	madeOfGlass.LogEventCount = madeOfGlass.LogEventCount or 0
 	madeOfGlass.LogObservedDamage = madeOfGlass.LogObservedDamage or 0
