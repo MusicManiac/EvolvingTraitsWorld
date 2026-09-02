@@ -87,6 +87,7 @@
 --- @field BloodlustMoodleVisibilityHours integer
 --- @field SleepMoodle boolean
 -- Traits
+--- @field InjuredBurns boolean
 --- @field AntiGunAimingTimeMultiplier number
 --- @field TerminatorDamageBonusPercent integer
 --- @field TerminatorAimingTimeMultiplier number

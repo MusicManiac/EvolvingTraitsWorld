@@ -1,6 +1,8 @@
 [url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
 
-v.13.0.8
+v.13.1.0
 
+- General:
+  - Added Inured, Deprived, Broken Leg.
 - Fix:
-  - Fixed Made of Glass damage after sleep.
+  - Fixed Prone to Illness and Super-Immune exclusivity

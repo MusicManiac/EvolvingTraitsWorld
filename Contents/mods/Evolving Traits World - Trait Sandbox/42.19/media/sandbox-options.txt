@@ -16,6 +16,57 @@ option ETWTraitSandbox.DisabledTraitsAcquirableViaGameplay
 	translation = ETWTS_DisabledTraitsAcquirableViaGameplay,
 }
 
+option ETWTraitSandbox.BrokenLegEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_BrokenLegEnabled,
+}
+option ETWTraitSandbox.BrokenLegPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = 4,
+	page = ETWTraitSandbox,
+	translation = ETWTS_BrokenLegPointValue,
+}
+
+option ETWTraitSandbox.DeprivedEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_DeprivedEnabled,
+}
+option ETWTraitSandbox.DeprivedPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = 2,
+	page = ETWTraitSandbox,
+	translation = ETWTS_DeprivedPointValue,
+}
+
+option ETWTraitSandbox.InjuredEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_InjuredEnabled,
+}
+option ETWTraitSandbox.InjuredPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = 2,
+	page = ETWTraitSandbox,
+	translation = ETWTS_InjuredPointValue,
+}
+
 option ETWTraitSandbox.AVClubEnabled
 {
 	type = boolean,
