@@ -671,6 +671,13 @@ option EvolvingTraitsWorld.TRAITS
 {
 	translation = --------------------------------------------------TRAITS-----------------------------------------------------------------,
 }
+option EvolvingTraitsWorld.InjuredBurns
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitsSettings,
+	translation = ETW_InjuredBurns,
+}
 option EvolvingTraitsWorld.AntiGunAimingTimeMultiplier
 {
 	type = double,

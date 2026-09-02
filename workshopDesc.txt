@@ -1,16 +1,14 @@
 [h1]Running ETW+MT[/h1]
-You have to install [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3378285185]Starlit Library[/url], enable submod and disable all ETW analogues of MT traits in sandbox. No, there won't be a toggle to disable all MT traits (you still can disable them 1by1 like the rest of ETW traits). No, MT wont be getting update. Yes, if there was a bug in MT it's fixed here. No, not all traits are migrated. Yes you can run ETW+MT, just gotta do what I said above.
-
-[h1]Welcome to the world of Evolving Traits[/h1]
-This mod adds a lot of traits (65). Additionally (AND OPTIONALLY), this mod allows you to get really ripped in PZ and see an actual character progression besides getting your skills from lvl 0 to lvl10. You'll be able to purge the majority of negative traits and earn a lot of positive ones (but also earn some negative ones as well). This would help you to go from your average Joe to actual GigaChad in-game. You repair a lot of cars? You get better at it. You train yourself to take long-range kills with proper rifles? Why wouldn't it warranty getting Eagle-Eyed? You pick up thousands of plants through your lifetime and still can't call yourself Herbalist? Yea, that doesn't sound right to me. You maintain great sleeping schedule but for some reason you still need same amount of sleep as when you were sleeping whenever? Not anymore. Welcome to the Dynamic Traits World, ladies and gentlemen!
+You can run both mods at the same time, but some traits will be duplicated. You can try disabling ETW analogues of MT, but I heard it makes character creation a bit buggy. Your best bet is to just let the traits be and not duplicate them. Until you finish current playthrough. And in the next one - drop MT. I am still migrating MT traits, majority is migrated already, some will be added later and some won't be added at all.
 
 [h1]Features[/h1]
 [list]
-[*]Extensive UI with all needed mod information in-game! No more needing 3 screens to play PZ and keep track of your progress. Just hover over UI elements in new UI for all needed info.
-[*]65 new traits.
+[*]65 new traits. If you don't like them - you can disable ones you don't like.
+[*]Dynamic trait loss/gain based on relevant actions. Optional, if you want - all traits will be static permanently. By default all dynamic options are on.
+[*][Dynamic-related] Extensive UI with all needed mod information in-game! No more needing 3 screens to play PZ and keep track of your progress. Just hover over UI elements in new UI for all needed info.
 [*][h3][b]FULL sandbox customization[/b]. Choose which perks you want to be dynamic, choose how fast you get them, choose how fast you lose them, customize anything with sandbox options. Nothing is forced upon player, if you like 1% of the mod, you can literally set it up so you get to use that 1% and nothing else.[/h3]
-[*]Advanced systems that affect a lot of traits. Affinity system, that allows you to stick to your starting traits better. Delayed traits system, that allows you to get/remove traits with random delay.
-[*]Mark dynamic traits in character creation with the help of [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3766701843]Mark Dynamic Traits Framework (MDTF)[/url]
+[*][Dynamic-related] Advanced systems that affect a lot of traits. Affinity system, that allows you to stick to your starting traits better. Delayed traits system, that allows you to get/remove traits with random delay.
+[*][Dynamic-related] Mark dynamic traits in character creation with the help of [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3766701843]Mark Dynamic Traits Framework (MDTF)[/url]
 [*]For new traits, extensive sandbox customization is also present.
 [*]Optional [b]Trait Sandbox[/b] submod: enable/disable ETW-added traits and change their point values. Requires [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3378285185]Starlit Library[/url].
 [*]Client-sided configuration available (Exc -> Options -> Mod Options).

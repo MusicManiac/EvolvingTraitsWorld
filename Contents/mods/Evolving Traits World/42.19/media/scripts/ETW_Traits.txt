@@ -85,6 +85,36 @@ module ETW
         MutuallyExclusiveTraits = ETW:Blissful,
     }
 
+    character_trait_definition ETW:Deprived
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:Deprived,
+        Cost = -1,
+        UIName = UI_trait_Deprived,
+        UIDescription = UI_trait_DeprivedDesc,
+    }
+
+    character_trait_definition ETW:Injured
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:Injured,
+        Cost = -1,
+        UIName = UI_trait_Injured,
+        UIDescription = UI_trait_InjuredDesc,
+    }
+
+    character_trait_definition ETW:BrokenLeg
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:BrokenLeg,
+        Cost = -3,
+        UIName = UI_trait_BrokenLeg,
+        UIDescription = UI_trait_BrokenLegDesc,
+    }
+
     character_trait_definition ETW:Hardy
     {
         IsProfessionTrait = false,
@@ -675,7 +705,7 @@ module ETW
         Cost = -10,
         UIName = UI_trait_Immunocompromised,
         UIDescription = UI_trait_ImmunocompromisedDesc,
-        MutuallyExclusiveTraits = base:resilient;ETW:SuperImmune,
+        MutuallyExclusiveTraits = base:resilient;ETW:SuperImmune;base:pronetoillness,
     }
 
     character_trait_definition ETW:MadeOfGlass

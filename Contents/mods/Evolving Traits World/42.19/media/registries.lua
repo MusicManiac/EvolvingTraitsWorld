@@ -15,6 +15,8 @@ ETW_Registry = ETW_Registry or {}
 ---@field FAST_EATER CharacterTrait
 ---@field BAD_TEETH CharacterTrait
 ---@field BUTTERFINGERS CharacterTrait
+---@field BROKEN_LEG CharacterTrait
+---@field DEPRIVED CharacterTrait
 ---@field DEPRESSIVE CharacterTrait
 ---@field FURNITURE_ASSEMBLER CharacterTrait
 ---@field GUN_ENTHUSIAST CharacterTrait
@@ -27,6 +29,7 @@ ETW_Registry = ETW_Registry or {}
 ---@field IDEAL_WEIGHT CharacterTrait
 ---@field IMMUNOCOMPROMISED CharacterTrait
 ---@field INDEFATIGABLE CharacterTrait
+---@field INJURED CharacterTrait
 ---@field LEAD_FOOT CharacterTrait
 ---@field HOMICHLOPHOBIA CharacterTrait
 ---@field HOMICHLOPHILE CharacterTrait
@@ -80,6 +83,8 @@ ETW_Registry.traits = {
 	FAST_EATER = CharacterTrait.register("ETW:FastEater"),
 	BAD_TEETH = CharacterTrait.register("ETW:BadTeeth"),
 	BUTTERFINGERS = CharacterTrait.register("ETW:Butterfingers"),
+	BROKEN_LEG = CharacterTrait.register("ETW:BrokenLeg"),
+	DEPRIVED = CharacterTrait.register("ETW:Deprived"),
 	DEPRESSIVE = CharacterTrait.register("ETW:Depressive"),
 	FURNITURE_ASSEMBLER = CharacterTrait.register("ETW:FurnitureAssembler"),
 	GUN_ENTHUSIAST = CharacterTrait.register("ETW:GunEnthusiast"),
@@ -92,6 +97,7 @@ ETW_Registry.traits = {
 	IDEAL_WEIGHT = CharacterTrait.register("ETW:IdealWeight"),
 	IMMUNOCOMPROMISED = CharacterTrait.register("ETW:Immunocompromised"),
 	INDEFATIGABLE = CharacterTrait.register("ETW:Indefatigable"),
+	INJURED = CharacterTrait.register("ETW:Injured"),
 	LEAD_FOOT = CharacterTrait.register("ETW:LeadFoot"),
 	HOMICHLOPHOBIA = CharacterTrait.register("ETW:Homichlophobia"),
 	HOMICHLOPHILE = CharacterTrait.register("ETW:Homichlophile"),
