@@ -4,5 +4,7 @@ v.13.1.0
 
 - General:
   - Added Inured, Deprived, Broken Leg.
+  - Broken Leg and Injured now remember their starting body parts and make repeat injuries there more severe.
+  - Deprived now gradually increases unhappiness above a configurable carry-capacity threshold.
 - Fix:
   - Fixed Prone to Illness and Super-Immune exclusivity

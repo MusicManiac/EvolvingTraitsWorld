@@ -678,6 +678,42 @@ option EvolvingTraitsWorld.InjuredBurns
 	page = ETWTraitsSettings,
 	translation = ETW_InjuredBurns,
 }
+option EvolvingTraitsWorld.InjuredWoundTimeMultiplier
+{
+	type = double,
+	min = 1,
+	max = 10,
+	default = 2,
+	page = ETWTraitsSettings,
+	translation = ETW_InjuredWoundTimeMultiplier,
+}
+option EvolvingTraitsWorld.BrokenLegFractureTimeMultiplier
+{
+	type = double,
+	min = 1,
+	max = 10,
+	default = 2,
+	page = ETWTraitsSettings,
+	translation = ETW_BrokenLegFractureTimeMultiplier,
+}
+option EvolvingTraitsWorld.DeprivedUnhappinessPerMinute
+{
+	type = double,
+	min = 0,
+	max = 10,
+	default = 0.1,
+	page = ETWTraitsSettings,
+	translation = ETW_DeprivedUnhappinessPerMinute,
+}
+option EvolvingTraitsWorld.DeprivedCapacityThresholdPercent
+{
+	type = integer,
+	min = 0,
+	max = 100,
+	default = 50,
+	page = ETWTraitsSettings,
+	translation = ETW_DeprivedCapacityThresholdPercent,
+}
 option EvolvingTraitsWorld.AntiGunAimingTimeMultiplier
 {
 	type = double,
