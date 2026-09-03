@@ -88,6 +88,10 @@
 --- @field SleepMoodle boolean
 -- Traits
 --- @field InjuredBurns boolean
+--- @field InjuredWoundTimeMultiplier number
+--- @field BrokenLegFractureTimeMultiplier number
+--- @field DeprivedCapacityThresholdPercent integer
+--- @field DeprivedUnhappinessPerMinute number
 --- @field AntiGunAimingTimeMultiplier number
 --- @field TerminatorDamageBonusPercent integer
 --- @field TerminatorAimingTimeMultiplier number

@@ -5,6 +5,7 @@ local ETW_Registry = require("ETW_Registry")
 local ETW_CombatTraits = require("TraitsLogic/ETW_CombatTraits")
 local ETW_HealthTraits = require("TraitsLogic/ETW_HealthTraits")
 local ETW_MentalTraits = require("TraitsLogic/ETW_MentalTraits")
+local ETW_StartingTraits = require("TraitsLogic/ETW_StartingTraits")
 local ETW_WeatherTraits = require("TraitsLogic/ETW_WeatherTraits")
 
 ---@type EvolvingTraitsWorldTraitsRegistries
@@ -12,6 +13,16 @@ local ETWTraitsRegistry = ETW_Registry.traits
 local gameMode = ETW_CommonFunctions.gameMode()
 local logETW = ETW_CommonFunctions.log
 local FILENAME = "ETW_EventsOrchestrator.lua"
+
+---Returns whether a Lua table contains at least one entry without relying on unsupported Kahlua next().
+---@param values table Table to inspect.
+---@return boolean hasEntries True when pairs() yields at least one key.
+local function hasEntries(values)
+	for _ in pairs(values) do
+		return true
+	end
+	return false
+end
 
 if
 	not ETW_CommonFunctions.gameModeSafeguard(
@@ -71,6 +82,10 @@ local function oneMinuteUpdate()
 			stats = stats or player:getStats()
 			ETW_MentalTraits.blissfulTrait(player, stats)
 		end
+		if player:hasTrait(ETWTraitsRegistry.DEPRIVED) then
+			stats = stats or player:getStats()
+			ETW_StartingTraits.updateDeprivedMood(player, stats)
+		end
 		if player:hasTrait(ETWTraitsRegistry.ASCETIC) then
 			stats = stats or player:getStats()
 			ETW_MentalTraits.asceticTrait(player, stats)
@@ -83,10 +98,7 @@ local function oneMinuteUpdate()
 		if
 			-- server doesn't know when player is aiming, so in MP it's covered via command from MP Client, but in SP we can check it here
 			gameMode == ETW_CommonFunctions.GameMode.SP
-			and (
-				player:hasTrait(ETWTraitsRegistry.ANTI_GUN_ACTIVIST)
-				or player:hasTrait(ETWTraitsRegistry.TERMINATOR)
-			)
+			and (player:hasTrait(ETWTraitsRegistry.ANTI_GUN_ACTIVIST) or player:hasTrait(ETWTraitsRegistry.TERMINATOR))
 			and player:isAiming()
 		then
 			local weapon = player:getPrimaryHandItem()
@@ -158,15 +170,24 @@ local function everyTickUpdate()
 			ETW_HealthTraits.noodleLegsTrait(player)
 		end
 		if modData then
+			local startingInjuries = modData.StartingInjurySystem
+			if
+				(player:hasTrait(ETWTraitsRegistry.INJURED) or player:hasTrait(ETWTraitsRegistry.BROKEN_LEG))
+				and startingInjuries
+				and (
+					hasEntries(startingInjuries.InjuredBodyParts or {})
+					or hasEntries(startingInjuries.BrokenBodyParts or {})
+				)
+			then
+				bodyDamage = bodyDamage or player:getBodyDamage()
+				ETW_StartingTraits.updateStartingInjuries(player, bodyDamage, modData)
+			end
 			if player:hasTrait(ETWTraitsRegistry.MADE_OF_GLASS) then
 				bodyDamage = player:getBodyDamage()
 				ETW_HealthTraits.madeOfGlassTrait(player, bodyDamage, modData)
 			end
 			local indefatigableProtectionExpiresAt = modData.IndefatigableProtectionExpiresAt
-			if
-				type(indefatigableProtectionExpiresAt) == "number"
-				and indefatigableProtectionExpiresAt > 0
-			then
+			if type(indefatigableProtectionExpiresAt) == "number" and indefatigableProtectionExpiresAt > 0 then
 				bodyDamage = bodyDamage or player:getBodyDamage()
 				ETW_HealthTraits.indefatigableProtection(player, bodyDamage, modData)
 			end

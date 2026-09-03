@@ -35,6 +35,7 @@
 --- @field UnwaveringInjurySpeedApplied boolean
 --- @field SunSensitivityExposure number
 --- @field SunSensitivityAppliedPain number
+--- @field StartingInjurySystem StartingInjurySystem
 --- @field injuriesCounter number
 --- @field healerCounter number
 --- @field MentalStateInLast60Min number[]
@@ -64,6 +65,26 @@
 --- @field BloodlustSystem BloodlustSystem
 --- @field AnimalsSystem AnimalsSystem
 --- @field KillCount KillCount
+
+---Serializable wound snapshot used to detect new wounds and timer increases without storing PZ objects.
+--- @class StartingInjuryState
+--- @field Scratched boolean Whether a scratch was active in the previous update.
+--- @field ScratchTime number Previous scratch duration.
+--- @field Cut boolean Whether a laceration was active in the previous update.
+--- @field CutTime number Previous laceration duration.
+--- @field DeepWounded boolean Whether a deep wound was active in the previous update.
+--- @field DeepWoundTime number Previous deep-wound duration.
+--- @field Burned boolean Whether a burn was active in the previous update.
+--- @field BurnTime number Previous burn duration.
+--- @field Bitten boolean Whether a bite was active in the previous update.
+--- @field BiteTime number Previous bite duration.
+--- @field FractureTime number Previous fracture duration.
+
+---Persistent starting-injury data keyed exclusively by serialized BodyPartType names.
+--- @class StartingInjurySystem
+--- @field InjuredBodyParts table<string, boolean> Parts randomly injured at character creation.
+--- @field BrokenBodyParts table<string, boolean> Parts fractured by Broken Leg at character creation.
+--- @field LastStates table<string, StartingInjuryState> Previous wound snapshot for each remembered part.
 
 --- @class MadeOfGlassSystem
 --- @field LastHealth number

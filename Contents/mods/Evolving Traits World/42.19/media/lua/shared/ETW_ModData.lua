@@ -15,7 +15,7 @@ local ETW_Registry = require("ETW_Registry")
 local ETWTraitsRegistry = ETW_Registry.traits
 
 ---Increment when fields are added to or migrated in EvolvingTraitsWorld modData.
-local MOD_DATA_VERSION = 1.1
+local MOD_DATA_VERSION = 1.2
 
 ---Returns the midpoint between two numeric values.
 ---@param a number
@@ -125,6 +125,11 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	modData.UnwaveringInjurySpeedApplied = modData.UnwaveringInjurySpeedApplied or false
 	modData.SunSensitivityExposure = modData.SunSensitivityExposure or 0
 	modData.SunSensitivityAppliedPain = modData.SunSensitivityAppliedPain or 0
+	modData.StartingInjurySystem = modData.StartingInjurySystem or {}
+	local startingInjurySystem = modData.StartingInjurySystem
+	startingInjurySystem.InjuredBodyParts = startingInjurySystem.InjuredBodyParts or {}
+	startingInjurySystem.BrokenBodyParts = startingInjurySystem.BrokenBodyParts or {}
+	startingInjurySystem.LastStates = startingInjurySystem.LastStates or {}
 	modData.MadeOfGlass = modData.MadeOfGlass or {}
 	local madeOfGlass = modData.MadeOfGlass
 	madeOfGlass.LastHealth = player:getBodyDamage():getHealth()
