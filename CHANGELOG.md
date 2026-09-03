@@ -6,6 +6,14 @@
   - Deprived now gradually increases unhappiness above a configurable carry-capacity threshold. Affects existing characters. Sandbox available.
   - Some traits price balancing. 
 
+## v.13.1.0
+###### 30 Aug 2026
+
+- General:
+  - Added Inured, Deprived, Broken Leg.
+- Fix:
+  - Fixed Prone to Illness and Super-Immune exclusivity
+
 ## v.13.0.8
 ###### 30 Aug 2026
 
