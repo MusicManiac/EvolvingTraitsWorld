@@ -755,7 +755,7 @@ option ETWTraitSandbox.SuperImmunePointValue
 	type = integer,
 	min = -100,
 	max = 100,
-	default = -10,
+	default = -16,
 	page = ETWTraitSandbox,
 	translation = ETWTS_SuperImmunePointValue,
 }
@@ -883,7 +883,7 @@ option ETWTraitSandbox.ProwessBladePointValue
 	type = integer,
 	min = -100,
 	max = 100,
-	default = -7,
+	default = -9,
 	page = ETWTraitSandbox,
 	translation = ETWTS_ProwessBladePointValue,
 }
@@ -1059,7 +1059,7 @@ option ETWTraitSandbox.ParanoiaPointValue
 	type = integer,
 	min = -100,
 	max = 100,
-	default = 5,
+	default = 6,
 	page = ETWTraitSandbox,
 	translation = ETWTS_ParanoiaPointValue,
 }
