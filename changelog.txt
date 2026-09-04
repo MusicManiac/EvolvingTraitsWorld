@@ -1,9 +1,6 @@
 [url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
 
-v.13.2.0
+v.13.2.1
 
-- General:
-  - Broken Leg and Injured now remember their starting body parts and make repeat injuries there more severe. Doesn't affect existing characters. Sandbox available.
-  - Deprived now gradually increases unhappiness above a configurable carry-capacity threshold. Affects existing characters. Sandbox available.
-  - Some traits price balancing. 
-  - Some internal code changes here and there.
+- Fixed:
+  - Injured, Broken Leg and Deprived pont values

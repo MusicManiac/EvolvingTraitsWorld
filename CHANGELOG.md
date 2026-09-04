@@ -1,5 +1,11 @@
+## v.13.2.1
+###### 04 Sep 2026
+
+- Fixed:
+  - Injured, Broken Leg and Deprived pont values
+
 ## v.13.2.0
-###### 30 Aug 2026
+###### 04 Sep 2026
 
 - General:
   - Broken Leg and Injured now remember their starting body parts and make repeat injuries there more severe. Doesn't affect existing characters. Sandbox available.

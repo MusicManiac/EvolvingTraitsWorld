@@ -3,7 +3,7 @@ You can run both mods at the same time, but some traits will be duplicated. You 
 
 [h1]Features[/h1]
 [list]
-[*]65 new traits. If you don't like them - you can disable ones you don't like.
+[*]68 new traits. If you don't like them - you can disable ones you don't like.
 [*]Dynamic trait loss/gain based on relevant actions. Optional, if you want - all traits will be static permanently. By default all dynamic options are on.
 [*][Dynamic-related] Extensive UI with all needed mod information in-game! No more needing 3 screens to play PZ and keep track of your progress. Just hover over UI elements in new UI for all needed info.
 [*][h3][b]FULL sandbox customization[/b]. Choose which perks you want to be dynamic, choose how fast you get them, choose how fast you lose them, customize anything with sandbox options. Nothing is forced upon player, if you like 1% of the mod, you can literally set it up so you get to use that 1% and nothing else.[/h3]
