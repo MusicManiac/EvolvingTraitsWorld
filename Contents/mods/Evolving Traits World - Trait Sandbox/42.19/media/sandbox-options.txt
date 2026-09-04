@@ -45,7 +45,7 @@ option ETWTraitSandbox.DeprivedPointValue
 	type = integer,
 	min = -100,
 	max = 100,
-	default = 2,
+	default = 8,
 	page = ETWTraitSandbox,
 	translation = ETWTS_DeprivedPointValue,
 }
@@ -62,7 +62,7 @@ option ETWTraitSandbox.InjuredPointValue
 	type = integer,
 	min = -100,
 	max = 100,
-	default = 2,
+	default = 3,
 	page = ETWTraitSandbox,
 	translation = ETWTS_InjuredPointValue,
 }

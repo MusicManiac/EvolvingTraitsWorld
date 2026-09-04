@@ -90,7 +90,7 @@ module ETW
         IsProfessionTrait = false,
         DisabledInMultiplayer = false,
         CharacterTrait = ETW:Deprived,
-        Cost = -1,
+        Cost = -8,
         UIName = UI_trait_Deprived,
         UIDescription = UI_trait_DeprivedDesc,
     }
@@ -100,7 +100,7 @@ module ETW
         IsProfessionTrait = false,
         DisabledInMultiplayer = false,
         CharacterTrait = ETW:Injured,
-        Cost = -1,
+        Cost = -3,
         UIName = UI_trait_Injured,
         UIDescription = UI_trait_InjuredDesc,
     }
@@ -110,7 +110,7 @@ module ETW
         IsProfessionTrait = false,
         DisabledInMultiplayer = false,
         CharacterTrait = ETW:BrokenLeg,
-        Cost = -3,
+        Cost = -4,
         UIName = UI_trait_BrokenLeg,
         UIDescription = UI_trait_BrokenLegDesc,
     }
