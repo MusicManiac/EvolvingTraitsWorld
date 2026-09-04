@@ -5,6 +5,7 @@
   - Broken Leg and Injured now remember their starting body parts and make repeat injuries there more severe. Doesn't affect existing characters. Sandbox available.
   - Deprived now gradually increases unhappiness above a configurable carry-capacity threshold. Affects existing characters. Sandbox available.
   - Some traits price balancing. 
+  - Some internal code changes here and there.
 
 ## v.13.1.0
 ###### 30 Aug 2026
