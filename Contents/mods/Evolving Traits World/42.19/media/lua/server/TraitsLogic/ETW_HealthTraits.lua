@@ -143,10 +143,8 @@ function ETW_HealthTraits.madeOfGlassTrait(player, bodyDamage, modData)
 			bodyPartName = BodyPartType.ToString(part:getType())
 			if healthLoss > fractureThreshold then
 				local minimumFractureTime = math.max(0, math.floor(SBvars.MadeOfGlassMinimumFractureTime or 10))
-				local maximumFractureTime = math.max(
-					minimumFractureTime,
-					math.floor(SBvars.MadeOfGlassMaximumFractureTime or 29)
-				)
+				local maximumFractureTime =
+					math.max(minimumFractureTime, math.floor(SBvars.MadeOfGlassMaximumFractureTime or 29))
 				local fractureTime = minimumFractureTime
 				if maximumFractureTime > minimumFractureTime then
 					fractureTime = random_instance:random(minimumFractureTime, maximumFractureTime)
@@ -201,7 +199,7 @@ function ETW_HealthTraits.immunocompromisedTrait(player, bodyDamage)
 	end
 
 	local affectedParts = 0
-	local totalIncrease = 0
+	local totalIncrease = 0.0
 	local parts = bodyDamage:getBodyParts()
 	for i = 0, parts:size() - 1 do
 		local part = parts:get(i)
@@ -298,10 +296,7 @@ function ETW_HealthTraits.indefatigableProtection(player, bodyDamage, modData)
 		return
 	end
 	if getTimestampMs() >= expiresAt then
-		ETW_CommonFunctions.restoreWoundSpeedModifiers(
-			bodyDamage,
-			modData.IndefatigableWoundSpeedModifiers
-		)
+		ETW_CommonFunctions.restoreWoundSpeedModifiers(bodyDamage, modData.IndefatigableWoundSpeedModifiers)
 		modData.IndefatigableProtectionExpiresAt = 0
 		modData.IndefatigableWoundSpeedModifiers = {}
 		logETW(
@@ -328,7 +323,9 @@ function ETW_HealthTraits.indefatigableTrait(player, bodyDamage, modData, client
 	local playerIdentifier = tostring(player:getUsername()) .. " (OnlineID=" .. player:getOnlineID() .. ")"
 	if player:isDead() or health <= 0 then
 		if clientCrowdTrigger == true then
-			logETW("ETW Logger | indefatigableTrait(): rejected client crowd trigger after death for " .. playerIdentifier)
+			logETW(
+				"ETW Logger | indefatigableTrait(): rejected client crowd trigger after death for " .. playerIdentifier
+			)
 		end
 		return
 	end
@@ -337,7 +334,10 @@ function ETW_HealthTraits.indefatigableTrait(player, bodyDamage, modData, client
 	local uses = math.max(0, math.floor(modData.IndefatigableUses))
 	if maximumUses > 0 and uses >= maximumUses then
 		if clientCrowdTrigger == true then
-			logETW("ETW Logger | indefatigableTrait(): rejected client crowd trigger; uses exhausted for " .. playerIdentifier)
+			logETW(
+				"ETW Logger | indefatigableTrait(): rejected client crowd trigger; uses exhausted for "
+					.. playerIdentifier
+			)
 		end
 		return
 	end
@@ -357,11 +357,8 @@ function ETW_HealthTraits.indefatigableTrait(player, bodyDamage, modData, client
 		return
 	end
 
-	local serverCrowdCount = ETWCombinedTraitChecks.forEachNearbyLivingZombieCachedThisFrame(
-		player,
-		INDEFATIGABLE_TRIGGER_RADIUS,
-		nil
-	)
+	local serverCrowdCount =
+		ETWCombinedTraitChecks.forEachNearbyLivingZombieCachedThisFrame(player, INDEFATIGABLE_TRIGGER_RADIUS, nil)
 	local crowdTrigger = serverCrowdCount >= 4 or clientCrowdTrigger == true
 	local triggerHealth = PZMath.clamp(SBvars.IndefatigableTriggerHealthPercent or 20, 15, 40)
 	if not crowdTrigger and health > triggerHealth then
@@ -512,6 +509,7 @@ function ETW_HealthTraits.noodleLegsTrait(player)
 	local sprintingLevel = player:getPerkLevel(Perks.Sprinting)
 	local nimble = player:getPerkLevel(Perks.Nimble)
 	local chanceIn = math.max(1, SBvars.NoodleLegsTripChanceOneIn or 5000)
+	--- @cast chanceIn number
 	chanceIn = chanceIn * (1 + (nimble + sprintingLevel) * 0.025)
 	if player:hasTrait(CharacterTrait.GRACEFUL) then
 		chanceIn = chanceIn * 1.2
@@ -557,7 +555,7 @@ function ETW_HealthTraits.anemicTrait(bodyDamage)
 	local damage = math.max(0, SBvars.AnemicBleedingDamage or 0.4)
 	local parts = bodyDamage:getBodyParts()
 	local damagedParts = 0
-	local totalDamage = 0
+	local totalDamage = 0.0
 	for i = 0, parts:size() - 1 do
 		local part = parts:get(i)
 		if part:bleeding() and not part:IsBleedingStemmed() then
@@ -593,7 +591,7 @@ function ETW_HealthTraits.thickBloodedTrait(bodyDamage)
 	end
 	local parts = bodyDamage:getBodyParts()
 	local restoredParts = 0
-	local totalHealth = 0
+	local totalHealth = 0.0
 	for i = 0, parts:size() - 1 do
 		local part = parts:get(i)
 		if part:bleeding() and not part:IsBleedingStemmed() then
@@ -623,9 +621,7 @@ end
 ---@param modData EvolvingTraitsWorldModData
 function ETW_HealthTraits.quickRestTrait(player, stats, modData)
 	local endurance = stats:get(CharacterStat.ENDURANCE)
-	if (player:isSitOnGround() or player:isSittingOnFurniture())
-		and endurance > modData.QuickRestLastEndurance
-	then
+	if (player:isSitOnGround() or player:isSittingOnFurniture()) and endurance > modData.QuickRestLastEndurance then
 		local multiplier = math.max(1, SBvars.QuickRestRecoveryMultiplier or 2)
 		local bonus = (endurance - modData.QuickRestLastEndurance) * (multiplier - 1)
 		stats:set(CharacterStat.ENDURANCE, math.min(1, endurance + bonus))
@@ -637,7 +633,7 @@ end
 ---@param player IsoPlayer
 ---@param stats Stats
 ---@param modData EvolvingTraitsWorldModData
-function ETW_HealthTraits.hardyTrait(player, stats,  modData)
+function ETW_HealthTraits.hardyTrait(player, stats, modData)
 	-- TODO: moodle support as a display of available endurance reserve
 	local endurance = stats:get(CharacterStat.ENDURANCE)
 	local maximumReserve = PZMath.clamp((SBvars.HardyExtraEndurancePercent or 25) / 100, 0, 1)

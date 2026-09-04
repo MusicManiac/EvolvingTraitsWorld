@@ -12,6 +12,7 @@ then
 	return
 end
 
+---@diagnostic disable-next-line: unresolved-require
 require("UnifiedCarryWeightFramework")
 
 ---@type EvolvingTraitsWorldRegistries

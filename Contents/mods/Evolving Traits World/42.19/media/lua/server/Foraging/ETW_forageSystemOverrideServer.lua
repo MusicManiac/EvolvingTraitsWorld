@@ -32,7 +32,8 @@ local function iterList(_list)
 	end
 end
 
-local filteredForageHashMap
+---@type table<string, boolean>
+local filteredForageHashMap = {}
 
 ---Generates a set of herb types from the valid forage categories.
 local function generateHerbsList()
@@ -69,18 +70,20 @@ function forageSystem.addOrDropItems(_character, _inventory, _items)
 			logETW("ETW Logger | forageSystem.addOrDropItems(): picking up foraging item: " .. item:getFullType())
 			if filteredForageHashMap[item:getFullType()] then
 				local modData = ETW_CommonFunctions.getETWModData(_character)
-				modData.HerbsPickedUp = modData.HerbsPickedUp + 1
-				logETW("ETW Logger | forageSystem.addOrDropItems(): modData.HerbsPickedUp: " .. modData.HerbsPickedUp)
-				if
-					not _character:hasTrait(CharacterTrait.HERBALIST)
-					and modData.HerbsPickedUp >= SBvars.HerbalistHerbsPicked
-					and SBvars.TraitsLockSystemCanGainPositive
-				then
-					ETW_CommonFunctions.addTraitToPlayer({
-						player = _character,
-						trait = CharacterTrait.HERBALIST,
-						positiveTrait = true,
-					})
+				if modData then
+					modData.HerbsPickedUp = modData.HerbsPickedUp + 1
+					logETW("ETW Logger | forageSystem.addOrDropItems(): modData.HerbsPickedUp: " .. modData.HerbsPickedUp)
+					if
+						not _character:hasTrait(CharacterTrait.HERBALIST)
+						and modData.HerbsPickedUp >= SBvars.HerbalistHerbsPicked
+						and SBvars.TraitsLockSystemCanGainPositive
+					then
+						ETW_CommonFunctions.addTraitToPlayer({
+							player = _character,
+							trait = CharacterTrait.HERBALIST,
+							positiveTrait = true,
+						})
+					end
 				end
 			end
 		end

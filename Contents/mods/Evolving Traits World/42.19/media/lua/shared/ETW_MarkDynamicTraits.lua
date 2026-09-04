@@ -2,6 +2,7 @@ if not getActivatedMods():contains("MarkDynamicTraitsFramework") then
 	return
 end
 
+---@diagnostic disable-next-line: unresolved-require
 local MarkDynamicTraitsFramework = require("MDTF_Main")
 local ETW_Registry = require("ETW_Registry")
 

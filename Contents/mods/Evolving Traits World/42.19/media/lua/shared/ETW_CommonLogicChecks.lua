@@ -1081,21 +1081,6 @@ function ETW_CommonLogicChecks.TargetShooterShouldExecute(player)
 	end
 end
 
----Returns true if the Blacksmith2 System should execute
----@param player IsoPlayer|nil the player to check for
----@return boolean boolean true if the Blacksmith2 System should execute, false otherwise
-function ETW_CommonLogicChecks.Blacksmith2ShouldExecute(player)
-	if
-		SBvars.Blacksmith2 == true
-		and ((player and not player:hasTrait(CharacterTrait.BLACKSMITH2)) or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER)
-		and SBvars.TraitsLockSystemCanGainPositive
-	then
-		return true
-	else
-		return false
-	end
-end
-
 -- Apply the master toggle to every dynamic-system check in one place. Keeping
 -- the individual checks intact preserves their normal sandbox and trait rules.
 for checkName, systemShouldExecute in pairs(ETW_CommonLogicChecks) do

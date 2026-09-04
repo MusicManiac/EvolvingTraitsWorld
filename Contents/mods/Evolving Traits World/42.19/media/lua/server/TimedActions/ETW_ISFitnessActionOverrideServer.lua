@@ -28,18 +28,14 @@ function ISFitnessAction:exeLooped()
 	local shouldProcess = instanceof(player, "IsoPlayer")
 		and player:hasTrait(ETWTraitsRegistry.GYM_RAT)
 		and xpMultiplier > 1
-	local fitnessXPBefore
-	local strengthXPBefore
-	if shouldProcess then
-		fitnessXPBefore = player:getXp():getXP(Perks.Fitness)
-		strengthXPBefore = player:getXp():getXP(Perks.Strength)
+	if not shouldProcess then
+		return original_ISFitnessAction_exeLooped(self)
 	end
+	---@cast player IsoPlayer
+	local fitnessXPBefore = player:getXp():getXP(Perks.Fitness)
+	local strengthXPBefore = player:getXp():getXP(Perks.Strength)
 
 	local originalReturn = original_ISFitnessAction_exeLooped(self)
-	if not shouldProcess then
-		return originalReturn
-	end
-
 	local fitnessXPAfter = player:getXp():getXP(Perks.Fitness)
 	local strengthXPAfter = player:getXp():getXP(Perks.Strength)
 	local fitnessGain = math.max(0, fitnessXPAfter - fitnessXPBefore)

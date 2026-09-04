@@ -33,6 +33,7 @@ end
 ---Removes expired completed zombie ids and keeps the buffer small.
 local function pruneRecentCompletedZombieIds()
 	local now = getTimestampMs() or 0
+	---@type { zombieId: string, completedAtMs: number }[]
 	local keptEntries = {}
 
 	for zombieId, completedAtMs in pairs(recentCompletedZombieIds) do
@@ -55,7 +56,10 @@ local function pruneRecentCompletedZombieIds()
 	end)
 
 	for i = RECENT_COMPLETED_ZOMBIE_IDS_MAX + 1, #keptEntries do
-		recentCompletedZombieIds[keptEntries[i].zombieId] = nil
+		local entry = keptEntries[i]
+		if entry then
+			recentCompletedZombieIds[entry.zombieId] = nil
+		end
 	end
 end
 
@@ -77,17 +81,12 @@ function ETW_EagleEyedTracking.getZombieTrackingId(zombie)
 		return nil
 	end
 
-	local zombieId = zombie.zombieId
-	if type(zombieId) == "number" and zombieId >= 0 then
-		return "zombieId:" .. tostring(zombieId)
-	end
-
-	local onlineID = zombie.getOnlineID and zombie:getOnlineID() or nil
+	local onlineID = zombie:getOnlineID()
 	if type(onlineID) == "number" and onlineID >= 0 then
 		return "online:" .. tostring(onlineID)
 	end
 
-	local uid = zombie.getUID and zombie:getUID() or nil
+	local uid = zombie:getUID()
 	if type(uid) == "string" and uid ~= "" then
 		return "uid:" .. uid
 	end

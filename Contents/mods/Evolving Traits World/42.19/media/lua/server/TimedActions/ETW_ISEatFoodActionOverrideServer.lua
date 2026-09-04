@@ -332,9 +332,13 @@ local function checkEatingSpeedTraits(player, modData)
 	end
 end
 
+---@class ETWISEatFoodAction : ISEatFoodAction
+---@field etwEatingTimeRecorded boolean?
+
 ---Records a completed food action's base duration and checks the Slow/Fast Eater thresholds.
 ---@param action ISEatFoodAction
 local function recordEatingTime(action)
+	---@cast action ETWISEatFoodAction
 	if action.etwEatingTimeRecorded then
 		return
 	end
@@ -359,13 +363,15 @@ local function recordEatingTime(action)
 	end
 	action.etwEatingTimeRecorded = true
 	local modData = ETW_CommonFunctions.getETWModData(action.character)
-	modData.EatingSpeedSystemCounter = (modData.EatingSpeedSystemCounter or 0) + baseDuration
-	logETW(
-		"ETW Logger | ISEatFoodAction: recordedDuration = " .. baseDuration,
-		"ETW Logger | ISEatFoodAction: modData.EatingSpeedSystemCounter = "
-			.. modData.EatingSpeedSystemCounter
-	)
-	checkEatingSpeedTraits(action.character, modData)
+	if modData then
+		modData.EatingSpeedSystemCounter = (modData.EatingSpeedSystemCounter or 0) + baseDuration
+		logETW(
+			"ETW Logger | ISEatFoodAction: recordedDuration = " .. baseDuration,
+			"ETW Logger | ISEatFoodAction: modData.EatingSpeedSystemCounter = "
+				.. modData.EatingSpeedSystemCounter
+		)
+		checkEatingSpeedTraits(action.character, modData)
+	end
 end
 
 local original_ISEatFoodAction_complete = ISEatFoodAction.complete

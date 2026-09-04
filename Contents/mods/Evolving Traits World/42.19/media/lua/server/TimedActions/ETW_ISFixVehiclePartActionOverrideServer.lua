@@ -25,7 +25,7 @@ function ISFixVehiclePartAction:complete()
 	local mechanicsShouldExecute = ETW_CommonLogicChecks.MechanicsShouldExecute(self.character)
 	local bodyWorkEnthusiastShouldExecute = ETW_CommonLogicChecks.BodyWorkEnthusiastShouldExecute(self.character)
 	if
-		conditionAfterRepair > partConditionBeforeRepair and (mechanicsShouldExecute or bodyWorkEnthusiastShouldExecute)
+		conditionAfterRepair > partConditionBeforeRepair and (mechanicsShouldExecute or bodyWorkEnthusiastShouldExecute) and modData
 	then
 		modData.VehiclePartRepairs = modData.VehiclePartRepairs + (conditionAfterRepair - partConditionBeforeRepair)
 		logETW(

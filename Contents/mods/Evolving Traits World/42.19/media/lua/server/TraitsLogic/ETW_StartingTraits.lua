@@ -28,11 +28,14 @@ local SPLINT_STRENGTH = 0.9
 ---Returns the serializable state used to remember body parts affected at character creation.
 ---Body parts are stored by name because player mod data must not contain Java/PZ objects.
 ---@param player IsoPlayer Character whose persistent ETW data should be initialized.
----@return StartingInjurySystem system Persistent starting-injury state.
+---@return StartingInjurySystem|nil system Persistent starting-injury state, or nil when player ModData is unavailable.
 local function getStartingInjurySystem(player)
-	local modData = ETW_CommonFunctions.getETWModData(player)
-	modData.StartingInjurySystem = modData.StartingInjurySystem or {}
-	local system = modData.StartingInjurySystem
+    local modData = ETW_CommonFunctions.getETWModData(player)
+    if not modData then
+        return nil
+    end
+    modData.StartingInjurySystem = modData.StartingInjurySystem or {}
+    local system = modData.StartingInjurySystem
 	system.InjuredBodyParts = system.InjuredBodyParts or {}
 	system.BrokenBodyParts = system.BrokenBodyParts or {}
 	system.LastStates = system.LastStates or {}
@@ -74,9 +77,11 @@ end
 ---@return InventoryItem? item Created item, or nil when creation failed.
 local function addAndWear(player, inventory, fullType)
 	local item = inventory:AddItem(fullType)
-	if item then
-		player:setWornItem(item:getBodyLocation(), item)
+	if not item or not instanceof(item, "InventoryItem") then
+		return nil
 	end
+	---@cast item InventoryItem
+	player:setWornItem(item:getBodyLocation(), item)
 	return item
 end
 
@@ -130,9 +135,12 @@ end
 ---Recording after wound creation prevents starting wounds from being mistaken for future wounds.
 ---@param player IsoPlayer Newly created character with the Injured trait.
 local function applyInjured(player)
-	local bodyDamage = player:getBodyDamage()
-	local injurySystem = getStartingInjurySystem(player)
-	injurySystem.InjuredBodyParts = {}
+    local injurySystem = getStartingInjurySystem(player)
+    if not injurySystem then
+        return
+    end
+    local bodyDamage = player:getBodyDamage()
+    injurySystem.InjuredBodyParts = {}
 	local bodyParts = bodyDamage:getBodyParts()
 	local availableParts = {}
 	for i = 0, bodyParts:size() - 1 do
@@ -160,10 +168,13 @@ end
 ---The initial snapshot prevents the starting fracture from receiving the repeat-fracture multiplier.
 ---@param player IsoPlayer Newly created character with the Broken Leg trait.
 local function applyBrokenLeg(player)
-	local bodyDamage = player:getBodyDamage()
-	local lowerRightLeg = bodyDamage:getBodyPart(BodyPartType.LowerLeg_R)
-	local injurySystem = getStartingInjurySystem(player)
-	injurySystem.BrokenBodyParts = {}
+    local injurySystem = getStartingInjurySystem(player)
+    if not injurySystem then
+        return
+    end
+    local bodyDamage = player:getBodyDamage()
+    local lowerRightLeg = bodyDamage:getBodyPart(BodyPartType.LowerLeg_R)
+    injurySystem.BrokenBodyParts = {}
 	lowerRightLeg:AddDamage(STARTING_DAMAGE)
 	lowerRightLeg:setFractureTime(FRACTURE_TIME)
 	lowerRightLeg:setSplint(true, SPLINT_STRENGTH)
@@ -305,7 +316,7 @@ local function updateRememberedBodyPart(
 				or currentFractureTime > (previous.FractureTime or 0) + 0.001
 			)
 		if (worsensInjuries or worsensFractures) and isNewFracture then
-			local appliedFractureMultiplier = 1
+			local appliedFractureMultiplier = 1.0
 			if worsensInjuries then
 				appliedFractureMultiplier = appliedFractureMultiplier * injuryDurationMultiplier
 			end

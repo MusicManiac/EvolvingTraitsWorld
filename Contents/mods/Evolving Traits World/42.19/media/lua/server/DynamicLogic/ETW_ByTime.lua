@@ -1,6 +1,7 @@
 local ETW_ModDataServer = require("ETW_ModDataServer")
 local ETW_CommonFunctions = require("ETW_CommonFunctions")
 local ETW_CommonLogicChecks = require("ETW_CommonLogicChecks")
+---@diagnostic disable-next-line: unresolved-require
 local UCWF = require("UnifiedCarryWeightFramework")
 local ETW_Moodles
 
@@ -37,7 +38,7 @@ end
 ---@param time2 number
 ---@return number
 local function findMidpoint(time1, time2)
-	local midPoint = 0
+	local midPoint = 0.0
 	if time1 > time2 then
 		midPoint = (time1 + time2 + 24) / 2
 	else
@@ -91,7 +92,7 @@ local function sleepSystem()
 				sleepModData.SleepHealthinessBar =
 					math.max(-200, sleepModData.SleepHealthinessBar + sleepHealthinessBarDecrease)
 			end
-			if gameMode == ETW_CommonFunctions.GameMode.SP then
+			if gameMode == ETW_CommonFunctions.GameMode.SP and ETW_Moodles then
 				ETW_Moodles.sleepHealthMoodleUpdate(
 					player,
 					{ hoursAwayFromPreferredHour = hoursAwayFromPreferredHour, hide = false }
@@ -106,7 +107,7 @@ local function sleepSystem()
 			end
 		end
 		if not player:isAsleep() and sleepModData.CurrentlySleeping == true then
-			if gameMode == ETW_CommonFunctions.GameMode.SP then
+			if gameMode == ETW_CommonFunctions.GameMode.SP and ETW_Moodles then
 				ETW_Moodles.sleepHealthMoodleUpdate(player, { hoursAwayFromPreferredHour = 0, hide = true })
 			elseif gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
 				sendServerCommand(
@@ -202,12 +203,8 @@ local function smoker()
 		local panic = stats:get(CharacterStat.PANIC) -- 0-100
 		local addictionDecay = SBvars.SmokingAddictionDecay * (0.0167 / 10) * (1 - stress) * (1 - panic / 100)
 		addictionDecay = math.max(0, addictionDecay) -- make sure values doesn't go into negative
-		local addictionChange = ETW_CommonFunctions.applyAffinityToDirectionalChange(
-			modData,
-			-addictionDecay,
-			nil,
-			CharacterTrait.SMOKER
-		)
+		local addictionChange =
+			ETW_CommonFunctions.applyAffinityToDirectionalChange(modData, -addictionDecay, nil, CharacterTrait.SMOKER)
 		smokerModData.SmokingAddiction =
 			math.max(SBvars.SmokerCounter * -2, smokerModData.SmokingAddiction + addictionChange)
 		logETW(
@@ -255,7 +252,7 @@ local function hoarder()
 
 		if ETW_CommonLogicChecks.HoarderShouldExecute(player) and not player:hasTrait(ETWTraitsRegistry.HOARDER) then
 			local maxWeight = player:getMaxWeight()
-			local inventoryFullness = 0
+			local inventoryFullness = 0.0
 			if maxWeight > 0 then
 				inventoryFullness = math.min(1, math.max(0, player:getInventoryWeight() / maxWeight))
 			end

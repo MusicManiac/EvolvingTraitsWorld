@@ -1,17 +1,29 @@
 local DEFAULT_ETW_TOOLTIP_WIDTH = 300
 local modOptions
 
+---@class ETWTooltipElement : ISUIElement
+---@field etwUseCustomTooltipWidth boolean?
+---@field tooltip string?
+---@field tooltipUI ISToolTip?
+
+---@class ETWGradientBar : ISGradientBar
+---@field etwUseCustomTooltipWidth boolean?
+---@field tooltip string?
+---@field tooltipUI ISToolTip?
+
 ---Returns the configured maximum width for tooltips belonging to ETW UI elements.
 ---@return number
 local function getETWTooltipWidth()
 	modOptions = modOptions or PZAPI.ModOptions:getOptions("ETWModOptions")
 	local tooltipWidthOption = modOptions and modOptions:getOption("TooltipWidth")
+	---@cast tooltipWidthOption umbrella.ModOptions.Slider?
 	return tooltipWidthOption and tooltipWidthOption:getValue() or DEFAULT_ETW_TOOLTIP_WIDTH
 end
 
 ---Applies the configured ETW tooltip width without affecting non-ETW UI elements.
 ---@param element ISUIElement
 local function applyETWTooltipWidth(element)
+	---@cast element ETWTooltipElement
 	if element.etwUseCustomTooltipWidth and element.tooltipUI then
 		element.tooltipUI.maxLineWidth = getETWTooltipWidth()
 	end
@@ -32,7 +44,7 @@ function ISButton:updateTooltip()
 end
 
 local gradientPreRender = ISGradientBar.prerender
----Overwriting pererender to allow tooltips on gradient bars
+---Overwriting prerender to allow tooltips on gradient bars
 ---@diagnostic disable-next-line: duplicate-set-field
 function ISGradientBar:prerender()
 	self:updateTooltip()
@@ -50,7 +62,7 @@ end
 
 ---Function that renders a tooltip when hovering over gradient bar. Direct steal from ISLabel:updateTooltip()
 function ISGradientBar:updateTooltip()
-	if self.disabled then return end
+	---@cast self ETWGradientBar
 	if self:isMouseOver() and self.tooltip then
 		local text = self.tooltip
 		if not self.tooltipUI then

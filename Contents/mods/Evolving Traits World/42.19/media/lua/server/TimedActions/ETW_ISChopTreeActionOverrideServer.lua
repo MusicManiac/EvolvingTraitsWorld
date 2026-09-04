@@ -21,32 +21,34 @@ local original_ISChopTreeAction_complete = ISChopTreeAction.complete
 function ISChopTreeAction:complete()
 	local originalReturn = original_ISChopTreeAction_complete(self)
 	local modData = ETW_CommonFunctions.getETWModData(self.character)
-	modData.TreesChopped = modData.TreesChopped + 1
-	logETW("ETW Logger | ISChopTreeAction.complete(): modData.TreesChopped = " .. modData.TreesChopped)
-	if modData.TreesChopped >= SBvars.AxemanTrees then
-		if
-			SBvars.DelayedTraitsSystem
-			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(self.character, CharacterTrait.AXEMAN)
-		then
-			ETW_CommonFunctions.addTraitToDelayTable({
-				modData = modData,
-				trait = CharacterTrait.AXEMAN,
-				player = self.character,
-				positiveTrait = true,
-				gainingTrait = true,
-			})
-		elseif
-			not SBvars.DelayedTraitsSystem
-			or (
+	if modData then
+		modData.TreesChopped = modData.TreesChopped + 1
+		logETW("ETW Logger | ISChopTreeAction.complete(): modData.TreesChopped = " .. modData.TreesChopped)
+		if modData.TreesChopped >= SBvars.AxemanTrees then
+			if
 				SBvars.DelayedTraitsSystem
-				and ETW_CommonFunctions.checkDelayedTraits(self.character, CharacterTrait.AXEMAN)
-			)
-		then
-			ETW_CommonFunctions.addTraitToPlayer({
-				player = self.character,
-				trait = CharacterTrait.AXEMAN,
-				positiveTrait = true,
-			})
+				and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(self.character, CharacterTrait.AXEMAN)
+			then
+				ETW_CommonFunctions.addTraitToDelayTable({
+					modData = modData,
+					trait = CharacterTrait.AXEMAN,
+					player = self.character,
+					positiveTrait = true,
+					gainingTrait = true,
+				})
+			elseif
+				not SBvars.DelayedTraitsSystem
+				or (
+					SBvars.DelayedTraitsSystem
+					and ETW_CommonFunctions.checkDelayedTraits(self.character, CharacterTrait.AXEMAN)
+				)
+			then
+				ETW_CommonFunctions.addTraitToPlayer({
+					player = self.character,
+					trait = CharacterTrait.AXEMAN,
+					positiveTrait = true,
+				})
+			end
 		end
 	end
 	return originalReturn

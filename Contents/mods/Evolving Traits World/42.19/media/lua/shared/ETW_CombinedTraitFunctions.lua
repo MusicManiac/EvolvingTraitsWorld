@@ -82,14 +82,17 @@ function ETWCombinedTraitChecks.forEachNearbyLivingZombie(player, radius, visito
 				local movingObjects = square:getMovingObjects()
 				for i = 0, movingObjects:size() - 1 do
 					local object = movingObjects:get(i)
-					if instanceof(object, "IsoZombie") and not object:isDead() then
-						local deltaX = object:getX() - playerX
-						local deltaY = object:getY() - playerY
-						local distanceSquared = deltaX * deltaX + deltaY * deltaY
-						if distanceSquared <= radiusSquared then
-							nearbyCount = nearbyCount + 1
-							if visitor then
-								visitor(object, distanceSquared)
+					if instanceof(object, "IsoZombie") then
+						---@cast object IsoZombie
+						if not object:isDead() then
+							local deltaX = object:getX() - playerX
+							local deltaY = object:getY() - playerY
+							local distanceSquared = deltaX * deltaX + deltaY * deltaY
+							if distanceSquared <= radiusSquared then
+								nearbyCount = nearbyCount + 1
+								if visitor then
+									visitor(object, distanceSquared)
+								end
 							end
 						end
 					end
@@ -102,9 +105,11 @@ end
 
 local nearbyZombieCachePlayer
 local nearbyZombieCacheFrame = -1
-local nearbyZombieCacheRadius = 0
+local nearbyZombieCacheRadius = 0.0
 local nearbyZombieCacheCount = 0
+---@type IsoZombie[]
 local nearbyZombieCacheZombies = {}
+---@type number[]
 local nearbyZombieCacheDistancesSquared = {}
 local nearbyZombieCacheFillVisitor
 
@@ -151,11 +156,12 @@ function ETWCombinedTraitChecks.forEachNearbyLivingZombieCachedThisFrame(player,
 	local radiusSquared = radius * radius
 	local nearbyCount = 0
 	for i = 1, nearbyZombieCacheCount do
+		local zombie = nearbyZombieCacheZombies[i]
 		local distanceSquared = nearbyZombieCacheDistancesSquared[i]
-		if distanceSquared <= radiusSquared then
+		if zombie and distanceSquared and distanceSquared <= radiusSquared then
 			nearbyCount = nearbyCount + 1
 			if visitor then
-				visitor(nearbyZombieCacheZombies[i], distanceSquared)
+				visitor(zombie, distanceSquared)
 			end
 		end
 	end
@@ -192,7 +198,7 @@ function ETWCombinedTraitChecks.reduceGymRatStiffness(player, groupName, amountP
 		return nil
 	end
 	amountPerPart = math.max(0, amountPerPart)
-	local removedStiffness = 0
+	local removedStiffness = 0.0
 	local bodyDamage = player:getBodyDamage()
 	for _, partType in ipairs(parts) do
 		local bodyPart = bodyDamage:getBodyPart(partType)
@@ -323,8 +329,8 @@ end
 ---@return number|nil progress
 ---@return string|nil reason
 function ETWCombinedTraitChecks.calculateAntiGunXPPenalty(player, perk, earnedAmount, penaltyPercent)
-	earnedAmount = tonumber(earnedAmount)
-	if not earnedAmount or earnedAmount <= 0 then
+	local numericEarnedAmount = tonumber(earnedAmount)
+	if not numericEarnedAmount or numericEarnedAmount <= 0 then
 		return 0, nil, "invalid earned amount"
 	end
 	if not player:hasTrait(ETWTraitsRegistry.ANTI_GUN_ACTIVIST) then
@@ -353,7 +359,7 @@ function ETWCombinedTraitChecks.calculateAntiGunXPPenalty(player, perk, earnedAm
 
 	local penaltyMultiplier = PZMath.clamp(penaltyPercent or 25, 0, 100) / 100
 	local protectedXP = lowerXP + levelSpan * lowerBoundary
-	local xpToRemove = math.min(earnedAmount * penaltyMultiplier, math.max(0, currentXP - protectedXP))
+	local xpToRemove = math.min(numericEarnedAmount * penaltyMultiplier, math.max(0, currentXP - protectedXP))
 	if xpToRemove <= 0 then
 		return 0, progress, "protected lower boundary"
 	end
@@ -395,34 +401,36 @@ end
 function ETWCombinedTraitChecks.bodyworkEnthusiastCheck(player)
 	local player = player or getPlayer()
 	local modData = ETW_CommonFunctions.getETWModData(player)
-	local level = player:getPerkLevel(Perks.MetalWelding) + player:getPerkLevel(Perks.Mechanics)
-	if level >= SBvars.BodyworkEnthusiastSkill and modData.VehiclePartRepairs >= SBvars.BodyworkEnthusiastRepairs then
-		if
-			SBvars.DelayedTraitsSystem
-			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(
-				player,
-				ETWTraitsRegistry.BODYWORK_ENTHUSIAST
-			)
-		then
-			ETW_CommonFunctions.addTraitToDelayTable({
-				modData = modData,
-				trait = ETWTraitsRegistry.BODYWORK_ENTHUSIAST,
-				player = player,
-				positiveTrait = true,
-				gainingTrait = true,
-			})
-		elseif
-			not SBvars.DelayedTraitsSystem
-			or (
+	if modData then
+		local level = player:getPerkLevel(Perks.MetalWelding) + player:getPerkLevel(Perks.Mechanics)
+		if level >= SBvars.BodyworkEnthusiastSkill and modData.VehiclePartRepairs >= SBvars.BodyworkEnthusiastRepairs then
+			if
 				SBvars.DelayedTraitsSystem
-				and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.BODYWORK_ENTHUSIAST)
-			)
-		then
-			ETW_CommonFunctions.addTraitToPlayer({
-				player = player,
-				trait = ETWTraitsRegistry.BODYWORK_ENTHUSIAST,
-				positiveTrait = true,
-			})
+				and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(
+					player,
+					ETWTraitsRegistry.BODYWORK_ENTHUSIAST
+				)
+			then
+				ETW_CommonFunctions.addTraitToDelayTable({
+					modData = modData,
+					trait = ETWTraitsRegistry.BODYWORK_ENTHUSIAST,
+					player = player,
+					positiveTrait = true,
+					gainingTrait = true,
+				})
+			elseif
+				not SBvars.DelayedTraitsSystem
+				or (
+					SBvars.DelayedTraitsSystem
+					and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.BODYWORK_ENTHUSIAST)
+				)
+			then
+				ETW_CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = ETWTraitsRegistry.BODYWORK_ENTHUSIAST,
+					positiveTrait = true,
+				})
+			end
 		end
 	end
 end
@@ -434,7 +442,7 @@ function ETWCombinedTraitChecks.mechanicsCheck(player)
 	local modData = ETW_CommonFunctions.getETWModData(player)
 	if
 		player:getPerkLevel(Perks.Mechanics) >= SBvars.MechanicsSkill
-		and modData.VehiclePartRepairs >= SBvars.MechanicsRepairs
+		and modData and modData.VehiclePartRepairs >= SBvars.MechanicsRepairs
 	then
 		if
 			SBvars.DelayedTraitsSystem
@@ -467,7 +475,7 @@ function ETWCombinedTraitChecks.sewerCheck(player)
 	local modData = ETW_CommonFunctions.getETWModData(player)
 	if
 		player:getPerkLevel(Perks.Tailoring) >= SBvars.SewerSkill
-		and #modData.UniqueClothingRipped >= SBvars.SewerUniqueClothesRipped
+		and modData and #modData.UniqueClothingRipped >= SBvars.SewerUniqueClothesRipped
 	then
 		if
 			SBvars.DelayedTraitsSystem
@@ -495,10 +503,10 @@ end
 
 ---Adds item name to the table of unique ripped clothes
 ---@param player IsoPlayer
----@param itemName String
+---@param itemName string
 function ETWCombinedTraitChecks.addClothingToUniqueRippedClothingList(player, itemName)
 	local modData = ETW_CommonFunctions.getETWModData(player)
-	if ETW_CommonFunctions.indexOf(modData.UniqueClothingRipped, itemName) == -1 then
+	if modData and ETW_CommonFunctions.indexOf(modData.UniqueClothingRipped, itemName) == -1 then
 		table.insert(modData.UniqueClothingRipped, itemName)
 		ETWCombinedTraitChecks.sewerCheck(player)
 	end
