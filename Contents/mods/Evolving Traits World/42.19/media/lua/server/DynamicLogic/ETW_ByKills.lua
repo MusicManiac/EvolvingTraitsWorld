@@ -46,7 +46,7 @@ end
 ---@return number -- percentage of bloodied clothes (0-1)
 local function bloodiedClothesLevel(player)
 	local wornItems = player:getWornItems()
-	local totalBloodLevelPercentage = 0
+	local totalBloodLevelPercentage = 0.0
 	local amountOfWornItems = 0
 	if wornItems ~= nil and wornItems:size() > 1 then
 		for i = 0, wornItems:size() - 1, 1 do
@@ -98,26 +98,28 @@ local function bloodlustKillETW(zombie)
 			)
 			if distance <= 10 then
 				local modData = ETW_CommonFunctions.getETWModData(player)
-				local bloodlust = modData.BloodlustSystem
-				bloodlust.LastKillTimestamp = player:getHoursSurvived()
-				if bloodlust.BloodlustMeter <= bloodlustMeterCapacity then
-					bloodlust.BloodlustMeter = bloodlust.BloodlustMeter
-						+ math.min(1.4 / distance, 1)
-							* SBvars.BloodlustMeterFillMultiplier
-							* (1 + bloodiedClothesLevel(player))
-					logETW("ETW Logger | bloodlustKillETW(): BloodlustMeter=" .. bloodlust.BloodlustMeter)
-				elseif bloodlust.BloodlustMeter < bloodlustMeterCapacity * SBvars.BloodlustMeterMaxCapMultiplier then
-					bloodlust.BloodlustMeter = bloodlust.BloodlustMeter
-						+ math.min(1.4 / distance, 1)
-							* SBvars.BloodlustMeterFillMultiplier
-							* (1 + bloodiedClothesLevel(player))
-							* 0.5
-					logETW("ETW Logger | bloodlustKillETW(): BloodlustMeter (soft-capped)=" .. bloodlust.BloodlustMeter)
-				end
-				if gameMode == ETW_CommonFunctions.GameMode.SP then
-					ETW_Moodles.bloodlustMoodleUpdate(player, { hide = false })
-				elseif gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
-					sendServerCommand(player, "ETW", "bloodlustMoodleUpdate", { hide = false })
+				if modData then
+					local bloodlust = modData.BloodlustSystem
+					bloodlust.LastKillTimestamp = player:getHoursSurvived()
+					if bloodlust.BloodlustMeter <= bloodlustMeterCapacity then
+						bloodlust.BloodlustMeter = bloodlust.BloodlustMeter
+							+ math.min(1.4 / distance, 1)
+								* SBvars.BloodlustMeterFillMultiplier
+								* (1 + bloodiedClothesLevel(player))
+						logETW("ETW Logger | bloodlustKillETW(): BloodlustMeter=" .. bloodlust.BloodlustMeter)
+					elseif bloodlust.BloodlustMeter < bloodlustMeterCapacity * SBvars.BloodlustMeterMaxCapMultiplier then
+						bloodlust.BloodlustMeter = bloodlust.BloodlustMeter
+							+ math.min(1.4 / distance, 1)
+								* SBvars.BloodlustMeterFillMultiplier
+								* (1 + bloodiedClothesLevel(player))
+								* 0.5
+						logETW("ETW Logger | bloodlustKillETW(): BloodlustMeter (soft-capped)=" .. bloodlust.BloodlustMeter)
+					end
+					if gameMode == ETW_CommonFunctions.GameMode.SP and ETW_Moodles then
+						ETW_Moodles.bloodlustMoodleUpdate(player, { hide = false })
+					elseif gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
+						sendServerCommand(player, "ETW", "bloodlustMoodleUpdate", { hide = false })
+					end
 				end
 			end
 		end
@@ -131,67 +133,69 @@ local function bloodlustTimeETW()
 		local player = playersList:get(i)
 		logETW("ETW Logger | bloodlustTimeETW(): Processing player: " .. player:getUsername())
 		local modData = ETW_CommonFunctions.getETWModData(player)
-		local bloodlustModData = modData.BloodlustSystem
-		bloodlustModData.BloodlustMeter =
-			math.min(bloodlustModData.BloodlustMeter, bloodlustMeterCapacity * SBvars.BloodlustMeterMaxCapMultiplier)
-		bloodlustModData.BloodlustMeter = math.max(bloodlustModData.BloodlustMeter - 1, 0) -- hourly decay
-		if gameMode == ETW_CommonFunctions.GameMode.SP then
-			ETW_Moodles.bloodlustMoodleUpdate(player, { hide = false })
-		elseif gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
-			sendServerCommand(player, "ETW", "bloodlustMoodleUpdate", { hide = false })
-		end
-		logETW("ETW Logger | bloodlustTimeETW(): Bloodlust Meter: " .. bloodlustModData.BloodlustMeter)
-		if bloodlustModData.BloodlustMeter >= bloodlustMeterCapacity / 2 then -- gain if above 50%
-			local bloodLustProgressIncrease = bloodlustModData.BloodlustMeter * 0.1 * (1 + bloodiedClothesLevel(player))
-			bloodLustProgressIncrease = ETW_CommonFunctions.applyAffinityToDirectionalChange(
-				modData,
-				bloodLustProgressIncrease,
-				nil,
-				ETWTraitsRegistry.BLOODLUST
-			)
-			bloodlustModData.BloodlustProgress =
-				math.min(SBvars.BloodlustProgress * 2, bloodlustModData.BloodlustProgress + bloodLustProgressIncrease)
-			logETW(
-				"ETW Logger | bloodlustTimeETW(): BloodlustMeter is above 50%, BloodlustProgress ="
-					.. bloodlustModData.BloodlustProgress
-			)
-		else -- lose if below 50%
-			local bloodLustProgressMitigation = bloodlustModData.BloodlustMeter
-				* 0.1
-				* (1 - bloodiedClothesLevel(player))
-			local bloodLustProgressChange = ETW_CommonFunctions.applyAffinityToDirectionalChange(
-				modData,
-				-(bloodlustMeterCapacity / 10 - bloodLustProgressMitigation),
-				nil,
-				ETWTraitsRegistry.BLOODLUST
-			)
-			bloodlustModData.BloodlustProgress =
-				math.max(0, bloodlustModData.BloodlustProgress + bloodLustProgressChange)
-			logETW(
-				"ETW Logger | bloodlustTimeETW(): BloodlustMeter is below 50%, BloodlustProgress ="
-					.. bloodlustModData.BloodlustProgress
-			)
-		end
-		if
-			player:hasTrait(ETWTraitsRegistry.BLOODLUST)
-			and bloodlustModData.BloodlustProgress <= SBvars.BloodlustProgress / 2
-			and SBvars.TraitsLockSystemCanLosePositive
-		then
-			ETW_CommonFunctions.removeTraitFromPlayer({
-				player = player,
-				trait = ETWTraitsRegistry.BLOODLUST,
-				positiveTrait = true,
-			})
-		elseif
-			not player:hasTrait(ETWTraitsRegistry.BLOODLUST)
-			and bloodlustModData.BloodlustProgress >= SBvars.BloodlustProgress
-			and SBvars.TraitsLockSystemCanGainPositive
-		then
-			ETW_CommonFunctions.addTraitToPlayer({
-				player = player,
-				trait = ETWTraitsRegistry.BLOODLUST,
-				positiveTrait = true,
-			})
+		if modData then
+			local bloodlustModData = modData.BloodlustSystem
+			bloodlustModData.BloodlustMeter =
+				math.min(bloodlustModData.BloodlustMeter, bloodlustMeterCapacity * SBvars.BloodlustMeterMaxCapMultiplier)
+			bloodlustModData.BloodlustMeter = math.max(bloodlustModData.BloodlustMeter - 1, 0) -- hourly decay
+			if gameMode == ETW_CommonFunctions.GameMode.SP and ETW_Moodles then
+				ETW_Moodles.bloodlustMoodleUpdate(player, { hide = false })
+			elseif gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
+				sendServerCommand(player, "ETW", "bloodlustMoodleUpdate", { hide = false })
+			end
+			logETW("ETW Logger | bloodlustTimeETW(): Bloodlust Meter: " .. bloodlustModData.BloodlustMeter)
+			if bloodlustModData.BloodlustMeter >= bloodlustMeterCapacity / 2 then -- gain if above 50%
+				local bloodLustProgressIncrease = bloodlustModData.BloodlustMeter * 0.1 * (1 + bloodiedClothesLevel(player))
+				bloodLustProgressIncrease = ETW_CommonFunctions.applyAffinityToDirectionalChange(
+					modData,
+					bloodLustProgressIncrease,
+					nil,
+					ETWTraitsRegistry.BLOODLUST
+				)
+				bloodlustModData.BloodlustProgress =
+					math.min(SBvars.BloodlustProgress * 2, bloodlustModData.BloodlustProgress + bloodLustProgressIncrease)
+				logETW(
+					"ETW Logger | bloodlustTimeETW(): BloodlustMeter is above 50%, BloodlustProgress ="
+						.. bloodlustModData.BloodlustProgress
+				)
+			else -- lose if below 50%
+				local bloodLustProgressMitigation = bloodlustModData.BloodlustMeter
+					* 0.1
+					* (1 - bloodiedClothesLevel(player))
+				local bloodLustProgressChange = ETW_CommonFunctions.applyAffinityToDirectionalChange(
+					modData,
+					-(bloodlustMeterCapacity / 10 - bloodLustProgressMitigation),
+					nil,
+					ETWTraitsRegistry.BLOODLUST
+				)
+				bloodlustModData.BloodlustProgress =
+					math.max(0, bloodlustModData.BloodlustProgress + bloodLustProgressChange)
+				logETW(
+					"ETW Logger | bloodlustTimeETW(): BloodlustMeter is below 50%, BloodlustProgress ="
+						.. bloodlustModData.BloodlustProgress
+				)
+			end
+			if
+				player:hasTrait(ETWTraitsRegistry.BLOODLUST)
+				and bloodlustModData.BloodlustProgress <= SBvars.BloodlustProgress / 2
+				and SBvars.TraitsLockSystemCanLosePositive
+			then
+				ETW_CommonFunctions.removeTraitFromPlayer({
+					player = player,
+					trait = ETWTraitsRegistry.BLOODLUST,
+					positiveTrait = true,
+				})
+			elseif
+				not player:hasTrait(ETWTraitsRegistry.BLOODLUST)
+				and bloodlustModData.BloodlustProgress >= SBvars.BloodlustProgress
+				and SBvars.TraitsLockSystemCanGainPositive
+			then
+				ETW_CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = ETWTraitsRegistry.BLOODLUST,
+					positiveTrait = true,
+				})
+			end
 		end
 	end
 end
@@ -310,11 +314,16 @@ end
 local function eagleEyedETW(zombie)
 	local attacker = zombie:getAttackedBy()
 	local zombieId = ETW_EagleEyedTracking.getZombieTrackingId(zombie)
+	local attackerUsername = "nil"
+	if attacker and instanceof(attacker, "IsoPlayer") then
+		---@cast attacker IsoPlayer
+		attackerUsername = tostring(attacker:getUsername())
+	end
 	logETW(
 		"ETW Logger | eagleEyedETW(): OnZombieDead zombieId="
 			.. tostring(zombieId)
 			.. " attacker="
-			.. tostring(attacker and attacker.getUsername and attacker:getUsername() or "nil")
+			.. attackerUsername
 	)
 	if not attacker or not instanceof(attacker, "IsoPlayer") then
 		return
@@ -421,132 +430,134 @@ local function braverySystemETW(zombie)
 		local totalKills = player:getZombieKills()
 		local modDataGlobal = player:getModData()
 		local killCountModData = (modDataGlobal.KillCount or {}).WeaponCategory or {}
-		local ETWModData = modDataGlobal.EvolvingTraitsWorld
-		local fireKills = (killCountModData["Fire"] or {}).count or 0
-		local firearmsKills = (killCountModData["Firearm"] or {}).count or 0
-		local vehiclesKills = (killCountModData["Vehicles"] or {}).count or 0
-		local explosivesKills = (killCountModData["Explosives"] or {}).count or 0
-		local meleeKills = totalKills - firearmsKills - fireKills - vehiclesKills - explosivesKills
+		local ETWModData = ETW_CommonFunctions.getETWModData(player)
+		if ETWModData then
+			local fireKills = (killCountModData["Fire"] or {}).count or 0
+			local firearmsKills = (killCountModData["Firearm"] or {}).count or 0
+			local vehiclesKills = (killCountModData["Vehicles"] or {}).count or 0
+			local explosivesKills = (killCountModData["Explosives"] or {}).count or 0
+			local meleeKills = totalKills - firearmsKills - fireKills - vehiclesKills - explosivesKills
 
-		for i = 1, #braverySystemTraitInfo do
-			local info = braverySystemTraitInfo[i]
-			local trait = info.trait
-			local threshold = SBvars.BraverySystemKills * info.thresholdMultiplier
-			local negativeTrait = info.remove
-			local positiveTrait = info.add
-			local cantHaveTrait = info.cantHaveTrait
-			local requiredTrait = info.requiredTrait
-			local translationString = info.translationString
-			logETW(
-				"ETW Logger | braverySystemETW(): Checking trait "
-					.. translationString
-					.. " ("
-					.. trait:getName()
-					.. ") for player "
-					.. player:getUsername()
-					.. " with totalKills="
-					.. totalKills
-					.. ", meleeKills="
-					.. meleeKills
-					.. ", threshold="
-					.. threshold
-			)
-			if (totalKills + meleeKills) >= threshold then -- melee kills counted double
-				if
-					player:hasTrait(trait)
-					and negativeTrait
-					and (not cantHaveTrait or not player:hasTrait(cantHaveTrait))
-					and SBvars.TraitsLockSystemCanLoseNegative
-				then
+			for i = 1, #braverySystemTraitInfo do
+				local info = braverySystemTraitInfo[i]
+				local trait = info.trait
+				local threshold = SBvars.BraverySystemKills * info.thresholdMultiplier
+				local negativeTrait = info.remove
+				local positiveTrait = info.add
+				local cantHaveTrait = info.cantHaveTrait
+				local requiredTrait = info.requiredTrait
+				local translationString = info.translationString
+				logETW(
+					"ETW Logger | braverySystemETW(): Checking trait "
+						.. translationString
+						.. " ("
+						.. trait:getName()
+						.. ") for player "
+						.. player:getUsername()
+						.. " with totalKills="
+						.. totalKills
+						.. ", meleeKills="
+						.. meleeKills
+						.. ", threshold="
+						.. threshold
+				)
+				if (totalKills + meleeKills) >= threshold then -- melee kills counted double
 					if
-						SBvars.DelayedTraitsSystem
-						and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, trait)
+						player:hasTrait(trait)
+						and negativeTrait
+						and (not cantHaveTrait or not player:hasTrait(cantHaveTrait))
+						and SBvars.TraitsLockSystemCanLoseNegative
 					then
-						ETW_CommonFunctions.addTraitToDelayTable({
-							modData = ETWModData,
-							trait = trait,
-							player = player,
-							positiveTrait = false,
-							gainingTrait = false,
-						})
+						if
+							SBvars.DelayedTraitsSystem
+							and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, trait)
+						then
+							ETW_CommonFunctions.addTraitToDelayTable({
+								modData = ETWModData,
+								trait = trait,
+								player = player,
+								positiveTrait = false,
+								gainingTrait = false,
+							})
+						elseif
+							not SBvars.DelayedTraitsSystem
+							or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, trait))
+						then
+							ETW_CommonFunctions.removeTraitFromPlayer({
+								player = player,
+								trait = trait,
+								positiveTrait = false,
+							})
+						end
+						break
 					elseif
-						not SBvars.DelayedTraitsSystem
-						or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, trait))
+						not player:hasTrait(trait)
+						and positiveTrait
+						and (not cantHaveTrait or not player:hasTrait(cantHaveTrait))
+						and (not requiredTrait or player:hasTrait(requiredTrait))
+						and SBvars.TraitsLockSystemCanGainPositive
 					then
-						ETW_CommonFunctions.removeTraitFromPlayer({
-							player = player,
-							trait = trait,
-							positiveTrait = false,
-						})
-					end
-					break
-				elseif
-					not player:hasTrait(trait)
-					and positiveTrait
-					and (not cantHaveTrait or not player:hasTrait(cantHaveTrait))
-					and (not requiredTrait or player:hasTrait(requiredTrait))
-					and SBvars.TraitsLockSystemCanGainPositive
-				then
-					if
-						SBvars.DelayedTraitsSystem
-						and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, trait)
-					then
-						ETW_CommonFunctions.addTraitToDelayTable({
-							modData = ETWModData,
-							trait = trait,
-							player = player,
-							positiveTrait = true,
-							gainingTrait = true,
-						})
-					elseif
-						not SBvars.DelayedTraitsSystem
-						or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, trait))
-					then
-						ETW_CommonFunctions.addTraitToPlayer({
-							player = player,
-							trait = trait,
-							positiveTrait = true,
-						})
-						if trait == CharacterTrait.DESENSITIZED then
-							if gameMode == ETW_CommonFunctions.GameMode.SP then
-								Events.OnZombieDead.Remove(braverySystemETW)
-							end
-							if
-								SBvars.BraverySystemRemovesOtherFearPerks == true
-								and SBvars.TraitsLockSystemCanLoseNegative
-							then
-								if player:hasTrait(CharacterTrait.AGORAPHOBIC) then
-									ETW_CommonFunctions.removeTraitFromPlayer({
-										player = player,
-										trait = CharacterTrait.AGORAPHOBIC,
-										positiveTrait = false,
-									})
+						if
+							SBvars.DelayedTraitsSystem
+							and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, trait)
+						then
+							ETW_CommonFunctions.addTraitToDelayTable({
+								modData = ETWModData,
+								trait = trait,
+								player = player,
+								positiveTrait = true,
+								gainingTrait = true,
+							})
+						elseif
+							not SBvars.DelayedTraitsSystem
+							or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, trait))
+						then
+							ETW_CommonFunctions.addTraitToPlayer({
+								player = player,
+								trait = trait,
+								positiveTrait = true,
+							})
+							if trait == CharacterTrait.DESENSITIZED then
+								if gameMode == ETW_CommonFunctions.GameMode.SP then
+									Events.OnZombieDead.Remove(braverySystemETW)
 								end
-								if player:hasTrait(CharacterTrait.CLAUSTROPHOBIC) then
-									ETW_CommonFunctions.removeTraitFromPlayer({
-										player = player,
-										trait = CharacterTrait.CLAUSTROPHOBIC,
-										positiveTrait = false,
-									})
-								end
-								if player:hasTrait(ETWTraitsRegistry.PLUVIOPHOBIA) then
-									ETW_CommonFunctions.removeTraitFromPlayer({
-										player = player,
-										trait = ETWTraitsRegistry.PLUVIOPHOBIA,
-										positiveTrait = false,
-									})
-								end
-								if player:hasTrait(ETWTraitsRegistry.HOMICHLOPHOBIA) then
-									ETW_CommonFunctions.removeTraitFromPlayer({
-										player = player,
-										trait = ETWTraitsRegistry.HOMICHLOPHOBIA,
-										positiveTrait = false,
-									})
+								if
+									SBvars.BraverySystemRemovesOtherFearPerks == true
+									and SBvars.TraitsLockSystemCanLoseNegative
+								then
+									if player:hasTrait(CharacterTrait.AGORAPHOBIC) then
+										ETW_CommonFunctions.removeTraitFromPlayer({
+											player = player,
+											trait = CharacterTrait.AGORAPHOBIC,
+											positiveTrait = false,
+										})
+									end
+									if player:hasTrait(CharacterTrait.CLAUSTROPHOBIC) then
+										ETW_CommonFunctions.removeTraitFromPlayer({
+											player = player,
+											trait = CharacterTrait.CLAUSTROPHOBIC,
+											positiveTrait = false,
+										})
+									end
+									if player:hasTrait(ETWTraitsRegistry.PLUVIOPHOBIA) then
+										ETW_CommonFunctions.removeTraitFromPlayer({
+											player = player,
+											trait = ETWTraitsRegistry.PLUVIOPHOBIA,
+											positiveTrait = false,
+										})
+									end
+									if player:hasTrait(ETWTraitsRegistry.HOMICHLOPHOBIA) then
+										ETW_CommonFunctions.removeTraitFromPlayer({
+											player = player,
+											trait = ETWTraitsRegistry.HOMICHLOPHOBIA,
+											positiveTrait = false,
+										})
+									end
 								end
 							end
 						end
+						break
 					end
-					break
 				end
 			end
 		end

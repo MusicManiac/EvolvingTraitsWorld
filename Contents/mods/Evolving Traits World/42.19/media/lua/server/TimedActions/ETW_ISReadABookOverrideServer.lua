@@ -234,7 +234,7 @@ local function creditReadingSession(action, completed)
 		return
 	end
 
-	local pagesRead = 0
+	local pagesRead = 0.0
 	if readingSession.hasDefinedPages then
 		local endPage = completed and readingSession.numberOfPages or action.item:getAlreadyReadPages()
 		pagesRead = math.max(
@@ -247,12 +247,14 @@ local function creditReadingSession(action, completed)
 
 	if pagesRead > 0 then
 		local modData = ETW_CommonFunctions.getETWModData(action.character)
-		modData.PagesReadCounter = modData.PagesReadCounter + pagesRead
-		logETW(
-			"ETW Logger | ISReadABook: pagesRead = " .. pagesRead,
-			"ETW Logger | ISReadABook: modData.PagesReadCounter = " .. modData.PagesReadCounter
-		)
-		checkReaderTraits(action.character, modData)
+		if modData then
+			modData.PagesReadCounter = modData.PagesReadCounter + pagesRead
+			logETW(
+				"ETW Logger | ISReadABook: pagesRead = " .. pagesRead,
+				"ETW Logger | ISReadABook: modData.PagesReadCounter = " .. modData.PagesReadCounter
+			)
+			checkReaderTraits(action.character, modData)
+		end
 	end
 end
 
@@ -277,6 +279,7 @@ function ISReadABook:complete()
 		and isHerbalistJournal
 		and not herbalistJournalAlreadyRead
 		and not (isServer() and self.forceStopped)
+		and modData
 	then
 		modData.HerbsPickedUp = modData.HerbsPickedUp
 			+ SBvars.HerbalistHerbsPicked * SBvars.HerbalistJournalCounterIncrease / 100

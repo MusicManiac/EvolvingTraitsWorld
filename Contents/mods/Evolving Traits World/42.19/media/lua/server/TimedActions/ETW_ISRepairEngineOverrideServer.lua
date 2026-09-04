@@ -25,7 +25,7 @@ function ISRepairEngine:complete()
 	local conditionAfterRepair = self.part:getCondition()
 	local mechanicsShouldExecute = ETW_CommonLogicChecks.MechanicsShouldExecute(self.character)
 	local bodyWorkEnthusiastShouldExecute = ETW_CommonLogicChecks.BodyWorkEnthusiastShouldExecute(self.character)
-	if conditionAfterRepair > conditionBefore and (mechanicsShouldExecute or bodyWorkEnthusiastShouldExecute) then
+	if conditionAfterRepair > conditionBefore and (mechanicsShouldExecute or bodyWorkEnthusiastShouldExecute) and modData then
 		modData.VehiclePartRepairs = modData.VehiclePartRepairs + (conditionAfterRepair - conditionBefore)
 		logETW(
 			"ETW Logger | ISRepairEngine.complete(): car part "

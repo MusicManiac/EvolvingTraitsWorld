@@ -262,6 +262,7 @@ function ETW_CommonFunctions.playersList(player)
 	if player then
 		local playerList = ArrayList.new()
 		playerList:add(player)
+		---@cast playerList ArrayList<IsoPlayer>
 		return playerList
 	end
 
@@ -283,6 +284,7 @@ function ETW_CommonFunctions.resolveTrait(traitOrRegistryId)
 	ETW_CommonFunctions.log("Resolving type " .. tostring(type(traitOrRegistryId)))
 	if instanceof(traitOrRegistryId, "CharacterTrait") then
 		ETW_CommonFunctions.log("Resolving trait CharacterTrait: " .. tostring(traitOrRegistryId))
+		---@cast traitOrRegistryId CharacterTrait
 		return traitOrRegistryId
 	end
 	if type(traitOrRegistryId) == "string" then
@@ -297,7 +299,7 @@ end
 function ETW_CommonFunctions.traitSound(player)
 	if gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
 		sendServerCommand(player, "ETW", "traitSound", {})
-	else
+	elseif modOptions then
 		if modOptions:getOption("EnableSoundNotifications"):getValue() then
 			local soundTable = {
 				"ETW_b42",
@@ -336,12 +338,17 @@ function ETW_CommonFunctions.indefatigableTheme(player)
 end
 
 ---Returns ETW mod data
+---@overload fun(player: IsoPlayer): EvolvingTraitsWorldModData
 ---@param player IsoPlayer|IsoGameCharacter the player for whom to get mod data
 ---@return EvolvingTraitsWorldModData|nil EvolvingTraitsWorldModData mod data for the player
 function ETW_CommonFunctions.getETWModData(player)
 	if not player or not player.getModData then
 		return nil
 	end
+	if not instanceof(player, "IsoPlayer") then
+		return nil
+	end
+	---@cast player IsoPlayer
 	local modData = player:getModData()
 	if not modData then
 		return nil
@@ -351,7 +358,7 @@ function ETW_CommonFunctions.getETWModData(player)
 	end
 	-- Existing saves can have an ETW table from an older version while still
 	-- missing fields added by newer code.
-	return ETW_ModData.ensureETWModData(player:getPlayerNum(), player)
+	return ETW_ModData.ensureETWModData(IsoPlayer.getPlayerIndex(player), player)
 end
 
 ---Immediately refreshes ETW ModData on the owning multiplayer client.
@@ -370,7 +377,12 @@ end
 ---@param player IsoPlayer|IsoGameCharacter the player to dump mod data for
 function ETW_CommonFunctions.delayedTraitsDataDump(player)
 	if SBvars.DelayedTraitsSystem then
-		ETW_CommonFunctions.log("ETW Logger | delayedTraitsDataDump() for player " .. player:getUsername())
+		local playerUsername = "unknown"
+		if instanceof(player, "IsoPlayer") then
+			---@cast player IsoPlayer
+			playerUsername = tostring(player:getUsername())
+		end
+		ETW_CommonFunctions.log("ETW Logger | delayedTraitsDataDump() for player " .. playerUsername)
 		local traitTable = player:getModData().EvolvingTraitsWorld.DelayedTraits
 		for index = 1, #traitTable do
 			local traitEntry = traitTable[index]
@@ -407,17 +419,20 @@ local function addXPBoostsFromTrait(player, trait)
 					.. ", boostLevel:"
 					.. tostring(boostLevel)
 			)
-			local oldBoost = player:getXp():getPerkBoost(perk)
-			local newBoost = math.min(oldBoost + tonumber(tostring(boostLevel)), 3)
-			---@cast newBoost integer
-			player:getXp():setPerkBoost(perk, newBoost)
-			ETW_CommonFunctions.log(
-				"ETW Logger | ETW_CommonFunctions.addXPBoostsFromTrait(): "
-					.. tostring(perk)
-					.. "old/new boost level:"
-					.. oldBoost
-					.. player:getXp():getPerkBoost(perk)
-			)
+			local numericBoostLevel = tonumber(tostring(boostLevel))
+			if numericBoostLevel then
+				local oldBoost = player:getXp():getPerkBoost(perk)
+				local newBoost = math.min(oldBoost + numericBoostLevel, 3)
+				---@cast newBoost integer
+				player:getXp():setPerkBoost(perk, newBoost)
+				ETW_CommonFunctions.log(
+					"ETW Logger | ETW_CommonFunctions.addXPBoostsFromTrait(): "
+						.. tostring(perk)
+						.. "old/new boost level:"
+						.. oldBoost
+						.. player:getXp():getPerkBoost(perk)
+				)
+			end
 		end
 	end
 end
@@ -461,6 +476,10 @@ function ETW_CommonFunctions.addTraitToPlayer(context)
 	end
 	local player = context.player
 	local trait = context.trait
+	if not instanceof(player, "IsoPlayer") then
+		return
+	end
+	---@cast player IsoPlayer
 	if player:hasTrait(trait) then
 		ETW_CommonFunctions.log(
 			"ETW Logger | addTraitToPlayer() : player "
@@ -494,6 +513,10 @@ function ETW_CommonFunctions.removeTraitFromPlayer(context)
 	if SBvars.DisableAllDynamicTraits == true then
 		return
 	end
+	if not instanceof(context.player, "IsoPlayer") then
+		return
+	end
+	---@cast context.player IsoPlayer
 	local player = context.player
 	local trait = context.trait
 	ETW_CommonFunctions.log(
@@ -610,45 +633,51 @@ function ETW_CommonFunctions.checkDelayedTraits(player, traitToCheck)
 	if not SBvars.DelayedTraitsSystem then
 		return true
 	end
+	if not instanceof(player, "IsoPlayer") then
+		return false
+	end
+	---@cast player IsoPlayer
 	ETW_CommonFunctions.log(
 		"ETW Logger | ETW_CommonFunctions.checkDelayedTraits(): running for player " .. player:getUsername()
 	)
 	local traitRegistryId = traitToCheck:toString()
 	local modData = ETW_CommonFunctions.getETWModData(player)
-	local traitTable = modData.DelayedTraits
-	local traitIndex = indexOfDelayedTrait(modData.DelayedTraits, traitRegistryId)
-	if traitIndex == -1 then
+	if modData then
+		local traitTable = modData.DelayedTraits
+		local traitIndex = indexOfDelayedTrait(modData.DelayedTraits, traitRegistryId)
+		if traitIndex == -1 then
+			ETW_CommonFunctions.log(
+				"ETW Logger | ETW_CommonFunctions.checkDelayedTraits(): "
+					.. traitRegistryId
+					.. " is not in DelayedTraits, returning false"
+			)
+			return false
+		end
+		local traitEntry = traitTable[traitIndex]
+		if not traitEntry then
+			ETW_CommonFunctions.log(
+				"ETW Logger | ETW_CommonFunctions.checkDelayedTraits(): "
+					.. traitRegistryId
+					.. " has a nil DelayedTraits entry at index "
+					.. traitIndex
+					.. ", returning false"
+			)
+			return false
+		end
+		local traitNameInTable, gained = traitEntry[1], traitEntry[3]
 		ETW_CommonFunctions.log(
-			"ETW Logger | ETW_CommonFunctions.checkDelayedTraits(): "
-				.. traitRegistryId
-				.. " is not in DelayedTraits, returning false"
+			"ETW Logger | ETW_CommonFunctions.checkDelayedTraits(): caught check on " .. traitRegistryId
 		)
-		return false
-	end
-	local traitEntry = traitTable[traitIndex]
-	if not traitEntry then
-		ETW_CommonFunctions.log(
-			"ETW Logger | ETW_CommonFunctions.checkDelayedTraits(): "
-				.. traitRegistryId
-				.. " has a nil DelayedTraits entry at index "
-				.. traitIndex
-				.. ", returning false"
-		)
-		return false
-	end
-	local traitNameInTable, gained = traitEntry[1], traitEntry[3]
-	ETW_CommonFunctions.log(
-		"ETW Logger | ETW_CommonFunctions.checkDelayedTraits(): caught check on " .. traitRegistryId
-	)
-	if traitNameInTable == traitRegistryId and gained then
-		ETW_CommonFunctions.log(
-			"ETW Logger | ETW_CommonFunctions.checkDelayedTraits(): caught check on "
-				.. traitRegistryId
-				.. ": player qualifies for it, removing it from the table"
-		)
-		table.remove(traitTable, traitIndex)
-		ETW_CommonFunctions.syncETWModDataToClient(player)
-		return true
+		if traitNameInTable == traitRegistryId and gained then
+			ETW_CommonFunctions.log(
+				"ETW Logger | ETW_CommonFunctions.checkDelayedTraits(): caught check on "
+					.. traitRegistryId
+					.. ": player qualifies for it, removing it from the table"
+			)
+			table.remove(traitTable, traitIndex)
+			ETW_CommonFunctions.syncETWModDataToClient(player)
+			return true
+		end
 	end
 	return false
 end
@@ -658,11 +687,17 @@ end
 ---@param trait CharacterTrait the trait to check
 ---@return boolean boolean true if trait is in Delayed Traits table, false otherwise
 function ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, trait)
+	if not instanceof(player, "IsoPlayer") then
+		return false
+	end
+	---@cast player IsoPlayer
 	ETW_CommonFunctions.log(
 		"ETW Logger | checkIfTraitIsInDelayedTraitsTable(): running for player " .. player:getUsername()
 	)
 	local modData = ETW_CommonFunctions.getETWModData(player)
-	local traitTable = modData.DelayedTraits
+	if not modData then
+		return false
+	end
 	local traitRegistryId = trait:toString()
 	if indexOfDelayedTrait(modData.DelayedTraits, traitRegistryId) ~= -1 then
 		ETW_CommonFunctions.log(

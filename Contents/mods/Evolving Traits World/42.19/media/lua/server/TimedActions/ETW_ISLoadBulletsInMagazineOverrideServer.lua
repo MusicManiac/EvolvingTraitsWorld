@@ -29,15 +29,15 @@ function ISLoadBulletsInMagazine:animEvent(event, parameter)
 	local shouldProcess = event == "InsertBullet"
 		and instanceof(player, "IsoPlayer")
 		and player:hasTrait(ETWTraitsRegistry.ANTI_GUN_ACTIVIST)
-	local ammoBefore
-	local reloadingXPBefore
-	if shouldProcess then
-		ammoBefore = self.magazine:getCurrentAmmoCount()
-		reloadingXPBefore = player:getXp():getXP(Perks.Reloading)
+	if not shouldProcess then
+		return original_ISLoadBulletsInMagazine_animEvent(self, event, parameter)
 	end
+	---@cast player IsoPlayer
+	local ammoBefore = self.magazine:getCurrentAmmoCount()
+	local reloadingXPBefore = player:getXp():getXP(Perks.Reloading)
 
 	local originalReturn = original_ISLoadBulletsInMagazine_animEvent(self, event, parameter)
-	if not shouldProcess or self.magazine:getCurrentAmmoCount() <= ammoBefore then
+	if self.magazine:getCurrentAmmoCount() <= ammoBefore then
 		return originalReturn
 	end
 
@@ -70,6 +70,14 @@ function ISLoadBulletsInMagazine:animEvent(event, parameter)
 				.. "; reason: "
 				.. tostring(reason)
 				.. (progress and "; level progress: " .. progress * 100 .. "%" or "")
+		)
+		return originalReturn
+	end
+	if not progress then
+		logETW(
+			"ETW Logger | Anti-gun | ISLoadBulletsInMagazine:animEvent(): Reloading XP penalty skipped for "
+				.. playerIdentifier
+				.. "; missing level progress"
 		)
 		return originalReturn
 	end

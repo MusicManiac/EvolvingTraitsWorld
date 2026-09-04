@@ -63,12 +63,16 @@ local function oneMinuteUpdate()
 		if player:hasTrait(ETWTraitsRegistry.SUN_SENSITIVITY) then
 			bodyDamage = bodyDamage or player:getBodyDamage()
 			modData = modData or ETW_CommonFunctions.getETWModData(player)
-			ETW_WeatherTraits.sunSensitivityTrait(player, bodyDamage, modData)
+			if modData then
+				ETW_WeatherTraits.sunSensitivityTrait(player, bodyDamage, modData)
+			end
 		end
 		if player:hasTrait(ETWTraitsRegistry.UNWAVERING) then
 			bodyDamage = bodyDamage or player:getBodyDamage()
 			modData = modData or ETW_CommonFunctions.getETWModData(player)
-			ETW_HealthTraits.unwaveringTrait(player, bodyDamage, modData)
+			if modData then
+				ETW_HealthTraits.unwaveringTrait(player, bodyDamage, modData)
+			end
 		end
 		if player:hasTrait(ETWTraitsRegistry.SUPER_IMMUNE) then
 			bodyDamage = bodyDamage or player:getBodyDamage()
@@ -93,7 +97,9 @@ local function oneMinuteUpdate()
 		if player:hasTrait(ETWTraitsRegistry.PARANOIA) then
 			stats = stats or player:getStats()
 			modData = modData or ETW_CommonFunctions.getETWModData(player)
-			ETW_MentalTraits.paranoiaTrait(player, stats, modData)
+			if modData then
+				ETW_MentalTraits.paranoiaTrait(player, stats, modData)
+			end
 		end
 		if
 			-- server doesn't know when player is aiming, so in MP it's covered via command from MP Client, but in SP we can check it here
@@ -117,7 +123,9 @@ local function oneMinuteUpdate()
 		if player:hasTrait(ETWTraitsRegistry.DEPRESSIVE) then
 			stats = stats or player:getStats()
 			modData = modData or ETW_CommonFunctions.getETWModData(player)
-			ETW_MentalTraits.depressiveTrait(player, modData, stats, false)
+			if modData then
+				ETW_MentalTraits.depressiveTrait(player, modData, stats, false)
+			end
 		end
 		if player:hasTrait(ETWTraitsRegistry.SELF_DESTRUCTIVE) then
 			stats = stats or player:getStats()
@@ -127,15 +135,21 @@ local function oneMinuteUpdate()
 		if player:hasTrait(ETWTraitsRegistry.HARDY) then
 			stats = stats or player:getStats()
 			modData = modData or ETW_CommonFunctions.getETWModData(player)
-			ETW_HealthTraits.hardyTrait(player, stats, modData)
+			if modData then
+				ETW_HealthTraits.hardyTrait(player, stats, modData)
+			end
 		end
 		if player:hasTrait(ETWTraitsRegistry.QUICK_REST) then
 			modData = modData or ETW_CommonFunctions.getETWModData(player)
-			modData.QuickRestLastEndurance = player:getStats():get(CharacterStat.ENDURANCE)
+			if modData then
+				modData.QuickRestLastEndurance = player:getStats():get(CharacterStat.ENDURANCE)
+			end
 		end
 		if player:hasTrait(ETWTraitsRegistry.IDEAL_WEIGHT) then
 			modData = modData or ETW_CommonFunctions.getETWModData(player)
-			ETW_HealthTraits.idealWeightTrait(player, modData)
+			if modData then
+				ETW_HealthTraits.idealWeightTrait(player, modData)
+			end
 		end
 	end
 end

@@ -73,11 +73,12 @@ end
 ---@param gainingTrait boolean
 ---@param onApply? fun(ctx: table<string, any>)
 local function applyTraitChange(ctx, trait, positiveTrait, gainingTrait, onApply)
-	trait = ETW_CommonFunctions.resolveTrait(trait)
-	if not trait then
+	local resolvedTrait = ETW_CommonFunctions.resolveTrait(trait)
+	if not resolvedTrait then
 		logETW("ETW Logger | applyTraitChange(): could not resolve trait, skipping trait change")
 		return
 	end
+	trait = resolvedTrait
 	if gainingTrait and ctx.player:hasTrait(trait) then
 		logETW(
 			"ETW Logger | applyTraitChange(): skipping gain for "
@@ -106,12 +107,19 @@ local function applyTraitChange(ctx, trait, positiveTrait, gainingTrait, onApply
 	end
 
 	if not SBvars.DelayedTraitsSystem or CommonFunctions.checkDelayedTraits(ctx.player, trait) then
-		local action = gainingTrait and CommonFunctions.addTraitToPlayer or CommonFunctions.removeTraitFromPlayer
-		action({
-			player = ctx.player,
-			trait = trait,
-			positiveTrait = positiveTrait,
-		})
+		if gainingTrait then
+			CommonFunctions.addTraitToPlayer({
+				player = ctx.player,
+				trait = trait,
+				positiveTrait = positiveTrait,
+			})
+		else
+			CommonFunctions.removeTraitFromPlayer({
+				player = ctx.player,
+				trait = trait,
+				positiveTrait = positiveTrait,
+			})
+		end
 
 		if onApply then
 			onApply(ctx)
@@ -626,7 +634,7 @@ local skillTraitRules = {
 		gainingTrait = true,
 	},
 	{
-		triggers = makeTriggerSet("characterInitialization", Perks.Fishing, ETWTraitsRegistry.ANGLER),
+		triggers = makeTriggerSet("characterInitialization", Perks.Fishing, CharacterTrait.ANGLER),
 		shouldExecute = ETW_CommonLogicChecks.AnglerShouldExecute,
 		condition = function(ctx)
 			return ctx.fishing >= SBvars.FishingSkill

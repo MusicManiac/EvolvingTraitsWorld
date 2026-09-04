@@ -35,85 +35,87 @@ function ISPetAnimal:animEvent(event, parameter)
 			or ETW_CommonLogicChecks.PetTherapyShouldExecute(player)
 		then
 			local modData = ETW_CommonFunctions.getETWModData(player)
-			local animalsSystemModData = modData.AnimalsSystem
-			local currentMinute = GameTime.getInstance():getMinutesStamp()
-			if
-				currentMinute - animalsSystemModData.LastMinuteTimestampWhenPettedWithBoost
-				>= SBvars.PetTherapyMinutesBetweenPets
-			then
-				local animalID = self.animal:getAnimalID()
-				logETW(
-					"ETW Logger | ISPetAnimal:animEvent(pettingFinished): caught, petting animal with ID " .. animalID
-				)
-				if player:hasTrait(ETWTraitsRegistry.PET_THERAPY) then
-					animalsSystemModData.LastMinuteTimestampWhenPettedWithBoost = currentMinute
-					local stats = player:getStats()
-					local nicotineWithdrawal = stats:get(CharacterStat.NICOTINE_WITHDRAWAL)
-					local unhappiness = stats:get(CharacterStat.UNHAPPINESS)
-					local stress = math.max(0, stats:get(CharacterStat.STRESS) - nicotineWithdrawal)
-					local panic = stats:get(CharacterStat.PANIC)
-					local boredom = stats:get(CharacterStat.BOREDOM)
-					local moodMultiplier = SBvars.PetTherapyMoodBoostMultiplier
-					stats:set(CharacterStat.UNHAPPINESS, math.max(0, unhappiness - moodMultiplier))
-					stats:set(CharacterStat.STRESS, math.max(0, stress - 0.01 * moodMultiplier))
-					stats:set(CharacterStat.PANIC, math.max(0, panic - moodMultiplier))
-					stats:set(CharacterStat.BOREDOM, math.max(0, boredom - moodMultiplier))
+			if modData then
+				local animalsSystemModData = modData.AnimalsSystem
+				local currentMinute = GameTime.getInstance():getMinutesStamp()
+				if
+					currentMinute - animalsSystemModData.LastMinuteTimestampWhenPettedWithBoost
+					>= SBvars.PetTherapyMinutesBetweenPets
+				then
+					local animalID = self.animal:getAnimalID()
 					logETW(
-						"ETW Logger | ISPetAnimal:animEvent(): Petting Animal. Unhappiness:"
-							.. unhappiness
-							.. "->"
-							.. stats:get(CharacterStat.UNHAPPINESS)
-							.. ", stress: "
-							.. math.min(1, stress + nicotineWithdrawal)
-							.. "->"
-							.. stats:get(CharacterStat.STRESS)
-							.. ", panic: "
-							.. panic
-							.. "->"
-							.. stats:get(CharacterStat.PANIC)
-							.. ", boredom: "
-							.. boredom
-							.. "->"
-							.. stats:get(CharacterStat.BOREDOM)
+						"ETW Logger | ISPetAnimal:animEvent(pettingFinished): caught, petting animal with ID " .. animalID
 					)
-				else
-					if ETW_CommonFunctions.indexOf(animalsSystemModData.UniqueAnimalsPetted, animalID) == -1 then
-						table.insert(animalsSystemModData.UniqueAnimalsPetted, animalID)
+					if player:hasTrait(ETWTraitsRegistry.PET_THERAPY) then
+						animalsSystemModData.LastMinuteTimestampWhenPettedWithBoost = currentMinute
+						local stats = player:getStats()
+						local nicotineWithdrawal = stats:get(CharacterStat.NICOTINE_WITHDRAWAL)
+						local unhappiness = stats:get(CharacterStat.UNHAPPINESS)
+						local stress = math.max(0, stats:get(CharacterStat.STRESS) - nicotineWithdrawal)
+						local panic = stats:get(CharacterStat.PANIC)
+						local boredom = stats:get(CharacterStat.BOREDOM)
+						local moodMultiplier = SBvars.PetTherapyMoodBoostMultiplier
+						stats:set(CharacterStat.UNHAPPINESS, math.max(0, unhappiness - moodMultiplier))
+						stats:set(CharacterStat.STRESS, math.max(0, stress - 0.01 * moodMultiplier))
+						stats:set(CharacterStat.PANIC, math.max(0, panic - moodMultiplier))
+						stats:set(CharacterStat.BOREDOM, math.max(0, boredom - moodMultiplier))
 						logETW(
-							"ETW Logger | ISPetAnimal:animEvent(pettingFinished): petting animal that's not in UniqueAnimalsPetted, added it"
+							"ETW Logger | ISPetAnimal:animEvent(): Petting Animal. Unhappiness:"
+								.. unhappiness
+								.. "->"
+								.. stats:get(CharacterStat.UNHAPPINESS)
+								.. ", stress: "
+								.. math.min(1, stress + nicotineWithdrawal)
+								.. "->"
+								.. stats:get(CharacterStat.STRESS)
+								.. ", panic: "
+								.. panic
+								.. "->"
+								.. stats:get(CharacterStat.PANIC)
+								.. ", boredom: "
+								.. boredom
+								.. "->"
+								.. stats:get(CharacterStat.BOREDOM)
 						)
-					end
-					local husbandry = player:getPerkLevel(Perks.Husbandry)
-					if
-						#animalsSystemModData.UniqueAnimalsPetted >= SBvars.PetTherapyUniqueAnimalsPetted
-						and husbandry >= SBvars.PetTherapySkill
-					then
+					else
+						if ETW_CommonFunctions.indexOf(animalsSystemModData.UniqueAnimalsPetted, animalID) == -1 then
+							table.insert(animalsSystemModData.UniqueAnimalsPetted, animalID)
+							logETW(
+								"ETW Logger | ISPetAnimal:animEvent(pettingFinished): petting animal that's not in UniqueAnimalsPetted, added it"
+							)
+						end
+						local husbandry = player:getPerkLevel(Perks.Husbandry)
 						if
-							SBvars.DelayedTraitsSystem
-							and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(
-								player,
-								ETWTraitsRegistry.PET_THERAPY
-							)
+							#animalsSystemModData.UniqueAnimalsPetted >= SBvars.PetTherapyUniqueAnimalsPetted
+							and husbandry >= SBvars.PetTherapySkill
 						then
-							ETW_CommonFunctions.addTraitToDelayTable({
-								modData = modData,
-								trait = ETWTraitsRegistry.PET_THERAPY,
-								player = player,
-								positiveTrait = true,
-								gainingTrait = true,
-							})
-						elseif
-							not SBvars.DelayedTraitsSystem
-							or (
+							if
 								SBvars.DelayedTraitsSystem
-								and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.PET_THERAPY)
-							)
-						then
-							ETW_CommonFunctions.addTraitToPlayer({
-								player = player,
-								trait = ETWTraitsRegistry.PET_THERAPY,
-								positiveTrait = true,
-							})
+								and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(
+									player,
+									ETWTraitsRegistry.PET_THERAPY
+								)
+							then
+								ETW_CommonFunctions.addTraitToDelayTable({
+									modData = modData,
+									trait = ETWTraitsRegistry.PET_THERAPY,
+									player = player,
+									positiveTrait = true,
+									gainingTrait = true,
+								})
+							elseif
+								not SBvars.DelayedTraitsSystem
+								or (
+									SBvars.DelayedTraitsSystem
+									and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.PET_THERAPY)
+								)
+							then
+								ETW_CommonFunctions.addTraitToPlayer({
+									player = player,
+									trait = ETWTraitsRegistry.PET_THERAPY,
+									positiveTrait = true,
+								})
+							end
 						end
 					end
 				end
@@ -131,8 +133,8 @@ function ETW_MentalTraits.blissfulTrait(player, stats)
 	local boredom = stats:get(CharacterStat.BOREDOM)
 	local unhappinessReduction = PZMath.clamp(SBvars.BlissfulUnhappinessReductionPerMinute or 1, 0, 100)
 	local boredomReduction = PZMath.clamp(SBvars.BlissfulBoredomReductionPerMinute or 0.5, 0, 100)
-	local resultingUnhappiness = math.max(0, unhappiness - unhappinessReduction)
-	local resultingBoredom = math.max(0, boredom - boredomReduction)
+	local resultingUnhappiness = math.max(0.0, unhappiness - unhappinessReduction)
+	local resultingBoredom = math.max(0.0, boredom - boredomReduction)
 	stats:set(CharacterStat.UNHAPPINESS, resultingUnhappiness)
 	stats:set(CharacterStat.BOREDOM, resultingBoredom)
 	if resultingUnhappiness ~= unhappiness or resultingBoredom ~= boredom then
@@ -309,9 +311,9 @@ function ETW_MentalTraits.paranoiaTrait(player, stats, modData)
 	if yell then
 		addSound(
 			player,
-			player:getX(),
-			player:getY(),
-			player:getZ(),
+			math.floor(player:getX()),
+			math.floor(player:getY()),
+			math.floor(player:getZ()),
 			PARANOIA_YELL_RADIUS,
 			PARANOIA_YELL_VOLUME
 		)
@@ -357,8 +359,14 @@ function ETW_MentalTraits.asceticTrait(player, stats)
 	local boredom = stats:get(CharacterStat.BOREDOM)
 	local unhappinessReduction = PZMath.clamp(SBvars.AsceticUnhappinessReductionPerMinute or 0.25, 0, 100)
 	local boredomReduction = PZMath.clamp(SBvars.AsceticBoredomReductionPerMinute or 0.25, 0, 100)
-	local resultingUnhappiness = math.max(0, unhappiness - unhappinessReduction)
-	local resultingBoredom = math.max(0, boredom - boredomReduction)
+	local resultingUnhappiness = unhappiness - unhappinessReduction
+	local resultingBoredom = boredom - boredomReduction
+	if resultingUnhappiness < 0 then
+		resultingUnhappiness = 0
+	end
+	if resultingBoredom < 0 then
+		resultingBoredom = 0
+	end
 	if resultingUnhappiness ~= unhappiness or resultingBoredom ~= boredom then
 		stats:set(CharacterStat.UNHAPPINESS, resultingUnhappiness)
 		stats:set(CharacterStat.BOREDOM, resultingBoredom)

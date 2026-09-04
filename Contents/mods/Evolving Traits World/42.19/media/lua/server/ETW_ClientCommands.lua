@@ -28,7 +28,7 @@ end
 local logETW = ETW_CommonFunctions.log
 
 ---@class EngineCheckArgs
----@field vehicleID number
+---@field vehicleID integer
 ---@field conditionBefore number
 
 ---Function to check by how much engine was repaired. If SP - updates relative moddata and checks traits. If MP - sends command back to client
@@ -54,7 +54,7 @@ function Commands.checkEngineCondition(player, args)
 			ETWCombinedTraitChecks.bodyworkEnthusiastCheck(player)
 		end
 		if ETW_CommonLogicChecks.MechanicsShouldExecute(player) then
-			ETWCombinedTraitChecks.mechanicsCheck(args.DebugAndNotificationArgs)
+			ETWCombinedTraitChecks.mechanicsCheck(player)
 		end
 	elseif gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
 		local serverArgs = { repairedPercentage = repairedPercentage }
@@ -67,22 +67,22 @@ end
 function Commands.applyAntiGunAimingMood(player)
 	local playerIdentifier = tostring(player:getUsername()) .. " (OnlineID=" .. player:getOnlineID() .. ")"
 	if not player:hasTrait(ETWTraitsRegistry.ANTI_GUN_ACTIVIST) then
-		logETW("ETW Logger | antigun mood server: rejected missing trait for " .. playerIdentifier)
+		logETW("ETW Logger | Antigun mood server: rejected missing trait for " .. playerIdentifier)
 		return
 	end
 	local weapon = player:getPrimaryHandItem()
 	if not weapon or not instanceof(weapon, "HandWeapon") then
-		logETW("ETW Logger | antigun mood server: rejected missing firearm for " .. playerIdentifier)
+		logETW("ETW Logger | Antigun mood server: rejected missing firearm for " .. playerIdentifier)
 		return
 	end
 	---@cast weapon HandWeapon
 	if weapon:getSubCategory() ~= "Firearm" then
-		logETW("ETW Logger | antigun mood server: rejected missing firearm for " .. playerIdentifier)
+		logETW("ETW Logger | Antigun mood server: rejected missing firearm for " .. playerIdentifier)
 		return
 	end
 	ETW_CombatTraits.antiGunMentalTrait(player, player:getStats())
 	logETW(
-		"ETW Logger | antigun mood server: applied for "
+		"ETW Logger | Antigun mood server: applied for "
 			.. playerIdentifier
 			.. " while holding "
 			.. weapon:getFullType()
@@ -145,10 +145,7 @@ end
 function Commands.immunocompromisedKnoxInjury(player, args)
 	local playerIdentifier = tostring(player:getUsername()) .. " (OnlineID=" .. player:getOnlineID() .. ")"
 	if not player:hasTrait(ETWTraitsRegistry.IMMUNOCOMPROMISED) then
-		logETW(
-			"ETW Logger | Commands.immunocompromisedKnoxInjury(): rejected missing trait for "
-				.. playerIdentifier
-		)
+		logETW("ETW Logger | Commands.immunocompromisedKnoxInjury(): rejected missing trait for " .. playerIdentifier)
 		return
 	end
 	logETW(

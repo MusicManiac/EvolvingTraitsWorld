@@ -36,7 +36,7 @@ end
 ---@param isKill boolean
 local function rainTraits(player, isKill)
 	isKill = isKill or false
-	rainIntensity = getClimateManager():getRainIntensity()
+	local rainIntensity = getClimateManager():getRainIntensity()
 	if rainIntensity == 0 then
 		return
 	end
@@ -128,7 +128,7 @@ end
 ---@param isKill boolean
 local function fogTraits(player, isKill)
 	isKill = isKill or false
-	fogIntensity = getClimateManager():getFogIntensity()
+	local fogIntensity = getClimateManager():getFogIntensity()
 	if fogIntensity == 0 then
 		return
 	end
@@ -215,7 +215,12 @@ end
 local function rainTraitsKill(zombie)
 	local player = zombie:getAttackedBy()
 	---@cast player IsoPlayer
-	if not player or not instanceof(player, "IsoPlayer") or instanceof(player, "IsoAnimal") or not player:isLocalPlayer() then
+	if
+		not player
+		or not instanceof(player, "IsoPlayer")
+		or instanceof(player, "IsoAnimal")
+		or not player:isLocalPlayer()
+	then
 		return
 	else
 		rainTraits(player, true)
@@ -227,7 +232,12 @@ end
 local function fogTraitsKill(zombie)
 	local player = zombie:getAttackedBy()
 	---@cast player IsoPlayer
-	if not player or not instanceof(player, "IsoPlayer") or instanceof(player, "IsoAnimal") or not player:isLocalPlayer() then
+	if
+		not player
+		or not instanceof(player, "IsoPlayer")
+		or instanceof(player, "IsoAnimal")
+		or not player:isLocalPlayer()
+	then
 		return
 	else
 		fogTraits(player, true)

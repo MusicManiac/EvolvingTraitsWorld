@@ -38,9 +38,11 @@ function RecipeCodeOnCreate.ripClothing(data, character)
 	local modData = character and ETW_CommonFunctions.getETWModData(character)
 	if
 		modData
+		and instanceof(character, "IsoPlayer")
 		and #modData.UniqueClothingRipped < SBvars.SewerUniqueClothesRipped
 		and ETW_CommonLogicChecks.SewerShouldExecute(character)
 	then
+		---@cast character IsoPlayer
 		logETW("ETW Logger | RecipeCodeOnCreate.ripClothing() Executing for player " .. character:getUsername())
 		local items = data:getAllConsumedItems()
 		local item = items and items:get(0)

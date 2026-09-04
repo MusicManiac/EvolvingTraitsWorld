@@ -34,76 +34,78 @@ local function immunitySystemTraits()
 		local infectionLevel = bodyDamage:getApparentInfectionLevel() / 100 -- 0-100 -> 0-1
 		if coldStrength > 0 or infectionLevel > 0 then
 			local modData = ETW_CommonFunctions.getETWModData(player)
-			modData.ImmunitySystemCounter = (
-				modData.ImmunitySystemCounter
-				+ coldStrength
-				+ infectionLevel * SBvars.ImmunitySystemInfectionMultiplier
-			)
-			logETW(
-				"ETW Logger | immunitySystemTraits(): modData.ImmunitySystemCounter = " .. modData.ImmunitySystemCounter
-			)
-			if
-				player:hasTrait(CharacterTrait.PRONE_TO_ILLNESS)
-				and modData.ImmunitySystemCounter >= SBvars.ImmunitySystemCounter / 2
-				and SBvars.TraitsLockSystemCanLoseNegative
-			then
+			if modData then
+				modData.ImmunitySystemCounter = (
+					modData.ImmunitySystemCounter
+					+ coldStrength
+					+ infectionLevel * SBvars.ImmunitySystemInfectionMultiplier
+				)
+				logETW(
+					"ETW Logger | immunitySystemTraits(): modData.ImmunitySystemCounter = " .. modData.ImmunitySystemCounter
+				)
 				if
-					SBvars.DelayedTraitsSystem
-					and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(
-						player,
-						CharacterTrait.PRONE_TO_ILLNESS
-					)
+					player:hasTrait(CharacterTrait.PRONE_TO_ILLNESS)
+					and modData.ImmunitySystemCounter >= SBvars.ImmunitySystemCounter / 2
+					and SBvars.TraitsLockSystemCanLoseNegative
 				then
-					ETW_CommonFunctions.addTraitToDelayTable({
-						modData = modData,
-						trait = CharacterTrait.PRONE_TO_ILLNESS,
-						player = player,
-						positiveTrait = false,
-						gainingTrait = false,
-					})
-				elseif
-					not SBvars.DelayedTraitsSystem
-					or (
+					if
 						SBvars.DelayedTraitsSystem
-						and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.PRONE_TO_ILLNESS)
-					)
-				then
-					ETW_CommonFunctions.removeTraitFromPlayer({
-						player = player,
-						trait = CharacterTrait.PRONE_TO_ILLNESS,
-						positiveTrait = false,
-					})
-				end
-			elseif
-				not player:hasTrait(CharacterTrait.PRONE_TO_ILLNESS)
-				and not player:hasTrait(CharacterTrait.RESILIENT)
-				and modData.ImmunitySystemCounter >= SBvars.ImmunitySystemCounter
-				and SBvars.TraitsLockSystemCanGainPositive
-			then
-				if
-					SBvars.DelayedTraitsSystem
-					and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.RESILIENT)
-				then
-					ETW_CommonFunctions.addTraitToDelayTable({
-						modData = modData,
-						trait = CharacterTrait.RESILIENT,
-						player = player,
-						positiveTrait = true,
-						gainingTrait = true,
-					})
+						and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(
+							player,
+							CharacterTrait.PRONE_TO_ILLNESS
+						)
+					then
+						ETW_CommonFunctions.addTraitToDelayTable({
+							modData = modData,
+							trait = CharacterTrait.PRONE_TO_ILLNESS,
+							player = player,
+							positiveTrait = false,
+							gainingTrait = false,
+						})
+					elseif
+						not SBvars.DelayedTraitsSystem
+						or (
+							SBvars.DelayedTraitsSystem
+							and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.PRONE_TO_ILLNESS)
+						)
+					then
+						ETW_CommonFunctions.removeTraitFromPlayer({
+							player = player,
+							trait = CharacterTrait.PRONE_TO_ILLNESS,
+							positiveTrait = false,
+						})
+					end
 				elseif
-					not SBvars.DelayedTraitsSystem
-					or (
-						SBvars.DelayedTraitsSystem
-						and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.RESILIENT)
-					)
+					not player:hasTrait(CharacterTrait.PRONE_TO_ILLNESS)
+					and not player:hasTrait(CharacterTrait.RESILIENT)
+					and modData.ImmunitySystemCounter >= SBvars.ImmunitySystemCounter
+					and SBvars.TraitsLockSystemCanGainPositive
 				then
-					ETW_CommonFunctions.addTraitToPlayer({
-						player = player,
-						trait = CharacterTrait.RESILIENT,
-						positiveTrait = true,
-					})
-					Events.EveryOneMinute.Remove(immunitySystemTraits)
+					if
+						SBvars.DelayedTraitsSystem
+						and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.RESILIENT)
+					then
+						ETW_CommonFunctions.addTraitToDelayTable({
+							modData = modData,
+							trait = CharacterTrait.RESILIENT,
+							player = player,
+							positiveTrait = true,
+							gainingTrait = true,
+						})
+					elseif
+						not SBvars.DelayedTraitsSystem
+						or (
+							SBvars.DelayedTraitsSystem
+							and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.RESILIENT)
+						)
+					then
+						ETW_CommonFunctions.addTraitToPlayer({
+							player = player,
+							trait = CharacterTrait.RESILIENT,
+							positiveTrait = true,
+						})
+						Events.EveryOneMinute.Remove(immunitySystemTraits)
+					end
 				end
 			end
 		end
@@ -116,82 +118,84 @@ local function foodSicknessTraitsETW()
 
 	for i = 0, playersList:size() - 1 do
 		local player = playersList:get(i)
-		logETW("ETW Logger | foodSicknessTraitsETW(): running for player " .. player:getUsername())
-		local stats = player:getStats()
-		local foodSicknessStrength = stats:get(CharacterStat.FOOD_SICKNESS) / 100 -- 0-100 -> 0-1
-		local normalSickness = stats:get(CharacterStat.SICKNESS) -- 0-1
-		logETW(
-			"ETW Logger | foodSicknessTraitsETW(): foodSicknessStrength = "
-				.. foodSicknessStrength
-				.. ", normal sickness: "
-				.. normalSickness
-		)
 		local modData = ETW_CommonFunctions.getETWModData(player)
-		modData.FoodSicknessWeathered = (
-			modData.FoodSicknessWeathered
-			+ foodSicknessStrength
-			+ math.max((normalSickness - foodSicknessStrength), 0)
-				* SBvars.FoodSicknessSystemNormalSicknessMultiplier
-		)
-		if
-			player:hasTrait(CharacterTrait.WEAK_STOMACH)
-			and modData.FoodSicknessWeathered >= SBvars.FoodSicknessSystemCounter / 2
-			and SBvars.TraitsLockSystemCanLoseNegative
-		then
+		if modData then
+			logETW("ETW Logger | foodSicknessTraitsETW(): running for player " .. player:getUsername())
+			local stats = player:getStats()
+			local foodSicknessStrength = stats:get(CharacterStat.FOOD_SICKNESS) / 100 -- 0-100 -> 0-1
+			local normalSickness = stats:get(CharacterStat.SICKNESS) -- 0-1
+			logETW(
+				"ETW Logger | foodSicknessTraitsETW(): foodSicknessStrength = "
+					.. foodSicknessStrength
+					.. ", normal sickness: "
+					.. normalSickness
+			)
+			modData.FoodSicknessWeathered = (
+				modData.FoodSicknessWeathered
+				+ foodSicknessStrength
+				+ math.max((normalSickness - foodSicknessStrength), 0)
+					* SBvars.FoodSicknessSystemNormalSicknessMultiplier
+			)
 			if
-				SBvars.DelayedTraitsSystem
-				and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.WEAK_STOMACH)
+				player:hasTrait(CharacterTrait.WEAK_STOMACH)
+				and modData.FoodSicknessWeathered >= SBvars.FoodSicknessSystemCounter / 2
+				and SBvars.TraitsLockSystemCanLoseNegative
 			then
-				ETW_CommonFunctions.addTraitToDelayTable({
-					modData = modData,
-					trait = CharacterTrait.WEAK_STOMACH,
-					player = player,
-					positiveTrait = false,
-					gainingTrait = false,
-				})
-			elseif
-				not SBvars.DelayedTraitsSystem
-				or (
+				if
 					SBvars.DelayedTraitsSystem
-					and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.WEAK_STOMACH)
-				)
-			then
-				ETW_CommonFunctions.removeTraitFromPlayer({
-					player = player,
-					trait = CharacterTrait.WEAK_STOMACH,
-					positiveTrait = false,
-				})
-			end
-		elseif
-			not player:hasTrait(CharacterTrait.WEAK_STOMACH)
-			and not player:hasTrait(CharacterTrait.IRON_GUT)
-			and modData.FoodSicknessWeathered >= SBvars.FoodSicknessSystemCounter
-			and SBvars.TraitsLockSystemCanGainPositive
-		then
-			if
-				SBvars.DelayedTraitsSystem
-				and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.IRON_GUT)
-			then
-				ETW_CommonFunctions.addTraitToDelayTable({
-					modData = modData,
-					trait = CharacterTrait.IRON_GUT,
-					player = player,
-					positiveTrait = true,
-					gainingTrait = true,
-				})
+					and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.WEAK_STOMACH)
+				then
+					ETW_CommonFunctions.addTraitToDelayTable({
+						modData = modData,
+						trait = CharacterTrait.WEAK_STOMACH,
+						player = player,
+						positiveTrait = false,
+						gainingTrait = false,
+					})
+				elseif
+					not SBvars.DelayedTraitsSystem
+					or (
+						SBvars.DelayedTraitsSystem
+						and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.WEAK_STOMACH)
+					)
+				then
+					ETW_CommonFunctions.removeTraitFromPlayer({
+						player = player,
+						trait = CharacterTrait.WEAK_STOMACH,
+						positiveTrait = false,
+					})
+				end
 			elseif
-				not SBvars.DelayedTraitsSystem
-				or (
-					SBvars.DelayedTraitsSystem
-					and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.IRON_GUT)
-				)
+				not player:hasTrait(CharacterTrait.WEAK_STOMACH)
+				and not player:hasTrait(CharacterTrait.IRON_GUT)
+				and modData.FoodSicknessWeathered >= SBvars.FoodSicknessSystemCounter
+				and SBvars.TraitsLockSystemCanGainPositive
 			then
-				ETW_CommonFunctions.addTraitToPlayer({
-					player = player,
-					trait = CharacterTrait.IRON_GUT,
-					positiveTrait = true,
-				})
-				Events.EveryOneMinute.Remove(foodSicknessTraitsETW)
+				if
+					SBvars.DelayedTraitsSystem
+					and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.IRON_GUT)
+				then
+					ETW_CommonFunctions.addTraitToDelayTable({
+						modData = modData,
+						trait = CharacterTrait.IRON_GUT,
+						player = player,
+						positiveTrait = true,
+						gainingTrait = true,
+					})
+				elseif
+					not SBvars.DelayedTraitsSystem
+					or (
+						SBvars.DelayedTraitsSystem
+						and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.IRON_GUT)
+					)
+				then
+					ETW_CommonFunctions.addTraitToPlayer({
+						player = player,
+						trait = CharacterTrait.IRON_GUT,
+						positiveTrait = true,
+					})
+					Events.EveryOneMinute.Remove(foodSicknessTraitsETW)
+				end
 			end
 		end
 	end
@@ -206,9 +210,13 @@ local function getRollingAverage(samples, requiredSamples)
 		return nil
 	end
 
-	local sum = 0
+	local sum = 0.0
 	for i = 1, requiredSamples do
-		sum = sum + samples[i]
+		local sample = samples[i]
+		if sample == nil then
+			return nil
+		end
+		sum = sum + sample
 	end
 	return sum / requiredSamples
 end
@@ -240,7 +248,7 @@ local function updateRollingHabitAverage(samples60, samples24, samples31, latest
 				table.remove(samples24, i)
 			end
 
-			local sum = 0
+			local sum = 0.0
 			for i = 1, #samples31 do
 				sum = sum + samples31[i]
 			end
@@ -251,7 +259,7 @@ local function updateRollingHabitAverage(samples60, samples24, samples31, latest
 		end
 	end
 
-	local sum = 0
+	local sum = 0.0
 	for i = 1, #samples31 do
 		sum = sum + samples31[i]
 	end
@@ -274,26 +282,28 @@ local function recordFoodStateETW()
 	for i = 0, playersList:size() - 1 do
 		local player = playersList:get(i)
 		local modData = ETW_CommonFunctions.getETWModData(player)
-		local stats = player:getStats()
-		if player:isAsleep() then
-			logETW(
-				"ETW Logger | recordFoodStateETW(): skipping sleeping player " .. player:getUsername()
-			)
-		else
-			local hunger = normalizeInvertedVital(stats:get(CharacterStat.HUNGER))
-			logETW(
-				"ETW Logger | recordFoodStateETW(): player "
-					.. player:getUsername()
-					.. ", normalized hunger = "
-					.. hunger
-			)
-			modData.RecentAverageFood = updateRollingHabitAverage(
-				modData.FoodStateInLast60Min,
-				modData.FoodStateInLast24Hours,
-				modData.FoodStateInLast31Days,
-				hunger,
-				"recordFoodStateETW"
-			)
+		if modData then
+			local stats = player:getStats()
+			if player:isAsleep() then
+				logETW(
+					"ETW Logger | recordFoodStateETW(): skipping sleeping player " .. player:getUsername()
+				)
+			else
+				local hunger = normalizeInvertedVital(stats:get(CharacterStat.HUNGER))
+				logETW(
+					"ETW Logger | recordFoodStateETW(): player "
+						.. player:getUsername()
+						.. ", normalized hunger = "
+						.. hunger
+				)
+				modData.RecentAverageFood = updateRollingHabitAverage(
+					modData.FoodStateInLast60Min,
+					modData.FoodStateInLast24Hours,
+					modData.FoodStateInLast31Days,
+					hunger,
+					"recordFoodStateETW"
+				)
+			end
 		end
 	end
 end
@@ -305,26 +315,28 @@ local function recordThirstStateETW()
 	for i = 0, playersList:size() - 1 do
 		local player = playersList:get(i)
 		local modData = ETW_CommonFunctions.getETWModData(player)
-		local stats = player:getStats()
-		if player:isAsleep() then
-			logETW(
-				"ETW Logger | recordThirstStateETW(): skipping sleeping player " .. player:getUsername()
-			)
-		else
-			local thirst = normalizeInvertedVital(stats:get(CharacterStat.THIRST))
-			logETW(
-				"ETW Logger | recordThirstStateETW(): player "
-					.. player:getUsername()
-					.. ", normalized thirst = "
-					.. thirst
-			)
-			modData.RecentAverageThirst = updateRollingHabitAverage(
-				modData.ThirstStateInLast60Min,
-				modData.ThirstStateInLast24Hours,
-				modData.ThirstStateInLast31Days,
-				thirst,
-				"recordThirstStateETW"
-			)
+		if modData then
+			local stats = player:getStats()
+			if player:isAsleep() then
+				logETW(
+					"ETW Logger | recordThirstStateETW(): skipping sleeping player " .. player:getUsername()
+				)
+			else
+				local thirst = normalizeInvertedVital(stats:get(CharacterStat.THIRST))
+				logETW(
+					"ETW Logger | recordThirstStateETW(): player "
+						.. player:getUsername()
+						.. ", normalized thirst = "
+						.. thirst
+				)
+				modData.RecentAverageThirst = updateRollingHabitAverage(
+					modData.ThirstStateInLast60Min,
+					modData.ThirstStateInLast24Hours,
+					modData.ThirstStateInLast31Days,
+					thirst,
+					"recordThirstStateETW"
+				)
+			end
 		end
 	end
 end
@@ -336,58 +348,60 @@ local function foodSystemETW()
 	for i = 0, playersList:size() - 1 do
 		local player = playersList:get(i)
 		local modData = ETW_CommonFunctions.getETWModData(player)
-		local averageFood = modData.RecentAverageFood
-		logETW(
-			"ETW Logger | foodSystemETW(): running for player "
-				.. player:getUsername()
-				.. ", RecentAverageFood = "
-				.. averageFood
-		)
+		if modData then
+			local averageFood = modData.RecentAverageFood
+			logETW(
+				"ETW Logger | foodSystemETW(): running for player "
+					.. player:getUsername()
+					.. ", RecentAverageFood = "
+					.. averageFood
+			)
 
-		if
-			player:hasTrait(CharacterTrait.HEARTY_APPETITE)
-			and averageFood >= SBvars.FoodSystemLoseNegativeThreshold
-			and SBvars.TraitsLockSystemCanLoseNegative
-		then
-			ETW_CommonFunctions.removeTraitFromPlayer({
-				player = player,
-				trait = CharacterTrait.HEARTY_APPETITE,
-				positiveTrait = false,
-			})
-		elseif
-			not player:hasTrait(CharacterTrait.HEARTY_APPETITE)
-			and not player:hasTrait(CharacterTrait.LIGHT_EATER)
-			and averageFood <= SBvars.FoodSystemGainNegativeThreshold
-			and SBvars.TraitsLockSystemCanGainNegative
-		then
-			ETW_CommonFunctions.addTraitToPlayer({
-				player = player,
-				trait = CharacterTrait.HEARTY_APPETITE,
-				positiveTrait = false,
-			})
-		end
+			if
+				player:hasTrait(CharacterTrait.HEARTY_APPETITE)
+				and averageFood >= SBvars.FoodSystemLoseNegativeThreshold
+				and SBvars.TraitsLockSystemCanLoseNegative
+			then
+				ETW_CommonFunctions.removeTraitFromPlayer({
+					player = player,
+					trait = CharacterTrait.HEARTY_APPETITE,
+					positiveTrait = false,
+				})
+			elseif
+				not player:hasTrait(CharacterTrait.HEARTY_APPETITE)
+				and not player:hasTrait(CharacterTrait.LIGHT_EATER)
+				and averageFood <= SBvars.FoodSystemGainNegativeThreshold
+				and SBvars.TraitsLockSystemCanGainNegative
+			then
+				ETW_CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = CharacterTrait.HEARTY_APPETITE,
+					positiveTrait = false,
+				})
+			end
 
-		if
-			player:hasTrait(CharacterTrait.LIGHT_EATER)
-			and averageFood <= SBvars.FoodSystemLosePositiveThreshold
-			and SBvars.TraitsLockSystemCanLosePositive
-		then
-			ETW_CommonFunctions.removeTraitFromPlayer({
-				player = player,
-				trait = CharacterTrait.LIGHT_EATER,
-				positiveTrait = true,
-			})
-		elseif
-			not player:hasTrait(CharacterTrait.LIGHT_EATER)
-			and not player:hasTrait(CharacterTrait.HEARTY_APPETITE)
-			and averageFood >= SBvars.FoodSystemGainPositiveThreshold
-			and SBvars.TraitsLockSystemCanGainPositive
-		then
-			ETW_CommonFunctions.addTraitToPlayer({
-				player = player,
-				trait = CharacterTrait.LIGHT_EATER,
-				positiveTrait = true,
-			})
+			if
+				player:hasTrait(CharacterTrait.LIGHT_EATER)
+				and averageFood <= SBvars.FoodSystemLosePositiveThreshold
+				and SBvars.TraitsLockSystemCanLosePositive
+			then
+				ETW_CommonFunctions.removeTraitFromPlayer({
+					player = player,
+					trait = CharacterTrait.LIGHT_EATER,
+					positiveTrait = true,
+				})
+			elseif
+				not player:hasTrait(CharacterTrait.LIGHT_EATER)
+				and not player:hasTrait(CharacterTrait.HEARTY_APPETITE)
+				and averageFood >= SBvars.FoodSystemGainPositiveThreshold
+				and SBvars.TraitsLockSystemCanGainPositive
+			then
+				ETW_CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = CharacterTrait.LIGHT_EATER,
+					positiveTrait = true,
+				})
+			end
 		end
 	end
 end
@@ -399,58 +413,60 @@ local function thirstSystemETW()
 	for i = 0, playersList:size() - 1 do
 		local player = playersList:get(i)
 		local modData = ETW_CommonFunctions.getETWModData(player)
-		local averageThirst = modData.RecentAverageThirst
-		logETW(
-			"ETW Logger | thirstSystemETW(): running for player "
-				.. player:getUsername()
-				.. ", RecentAverageThirst = "
-				.. averageThirst
-		)
+		if modData then
+			local averageThirst = modData.RecentAverageThirst
+			logETW(
+				"ETW Logger | thirstSystemETW(): running for player "
+					.. player:getUsername()
+					.. ", RecentAverageThirst = "
+					.. averageThirst
+			)
 
-		if
-			player:hasTrait(CharacterTrait.HIGH_THIRST)
-			and averageThirst >= SBvars.ThirstSystemLoseNegativeThreshold
-			and SBvars.TraitsLockSystemCanLoseNegative
-		then
-			ETW_CommonFunctions.removeTraitFromPlayer({
-				player = player,
-				trait = CharacterTrait.HIGH_THIRST,
-				positiveTrait = false,
-			})
-		elseif
-			not player:hasTrait(CharacterTrait.HIGH_THIRST)
-			and not player:hasTrait(CharacterTrait.LOW_THIRST)
-			and averageThirst <= SBvars.ThirstSystemGainNegativeThreshold
-			and SBvars.TraitsLockSystemCanGainNegative
-		then
-			ETW_CommonFunctions.addTraitToPlayer({
-				player = player,
-				trait = CharacterTrait.HIGH_THIRST,
-				positiveTrait = false,
-			})
-		end
+			if
+				player:hasTrait(CharacterTrait.HIGH_THIRST)
+				and averageThirst >= SBvars.ThirstSystemLoseNegativeThreshold
+				and SBvars.TraitsLockSystemCanLoseNegative
+			then
+				ETW_CommonFunctions.removeTraitFromPlayer({
+					player = player,
+					trait = CharacterTrait.HIGH_THIRST,
+					positiveTrait = false,
+				})
+			elseif
+				not player:hasTrait(CharacterTrait.HIGH_THIRST)
+				and not player:hasTrait(CharacterTrait.LOW_THIRST)
+				and averageThirst <= SBvars.ThirstSystemGainNegativeThreshold
+				and SBvars.TraitsLockSystemCanGainNegative
+			then
+				ETW_CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = CharacterTrait.HIGH_THIRST,
+					positiveTrait = false,
+				})
+			end
 
-		if
-			player:hasTrait(CharacterTrait.LOW_THIRST)
-			and averageThirst <= SBvars.ThirstSystemLosePositiveThreshold
-			and SBvars.TraitsLockSystemCanLosePositive
-		then
-			ETW_CommonFunctions.removeTraitFromPlayer({
-				player = player,
-				trait = CharacterTrait.LOW_THIRST,
-				positiveTrait = true,
-			})
-		elseif
-			not player:hasTrait(CharacterTrait.LOW_THIRST)
-			and not player:hasTrait(CharacterTrait.HIGH_THIRST)
-			and averageThirst >= SBvars.ThirstSystemGainPositiveThreshold
-			and SBvars.TraitsLockSystemCanGainPositive
-		then
-			ETW_CommonFunctions.addTraitToPlayer({
-				player = player,
-				trait = CharacterTrait.LOW_THIRST,
-				positiveTrait = true,
-			})
+			if
+				player:hasTrait(CharacterTrait.LOW_THIRST)
+				and averageThirst <= SBvars.ThirstSystemLosePositiveThreshold
+				and SBvars.TraitsLockSystemCanLosePositive
+			then
+				ETW_CommonFunctions.removeTraitFromPlayer({
+					player = player,
+					trait = CharacterTrait.LOW_THIRST,
+					positiveTrait = true,
+				})
+			elseif
+				not player:hasTrait(CharacterTrait.LOW_THIRST)
+				and not player:hasTrait(CharacterTrait.HIGH_THIRST)
+				and averageThirst >= SBvars.ThirstSystemGainPositiveThreshold
+				and SBvars.TraitsLockSystemCanGainPositive
+			then
+				ETW_CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = CharacterTrait.LOW_THIRST,
+					positiveTrait = true,
+				})
+			end
 		end
 	end
 end
@@ -488,7 +504,7 @@ end
 ---@return number injuryContribution
 ---@return boolean hasTrackedInjury
 local function getBodyPartInjuryContribution(bodyPart)
-	local injuryContribution = 0
+	local injuryContribution = 0.0
 	local hasTrackedInjury = false
 
 	if hasScratch(bodyPart) then
@@ -533,7 +549,7 @@ end
 ---@return boolean hasTrackedInjury
 local function getInjuryContribution(player)
 	local bodyParts = player:getBodyDamage():getBodyParts()
-	local injuryContribution = 0
+	local injuryContribution = 0.0
 	local hasTrackedInjury = false
 
 	for i = 0, bodyParts:size() - 1 do
@@ -557,69 +573,71 @@ local function injuriesSystemETW()
 	for i = 0, playersList:size() - 1 do
 		local player = playersList:get(i)
 		local modData = ETW_CommonFunctions.getETWModData(player)
-		local injuryContribution, hasTrackedInjury = getInjuryContribution(player)
-		local counterChange = hasTrackedInjury and injuryContribution or -SBvars.InjuriesSystemPassiveCounterDecay
-		counterChange = ETW_CommonFunctions.applyAffinityToDirectionalChange(
-			modData,
-			counterChange,
-			CharacterTrait.THIN_SKINNED,
-			CharacterTrait.THICK_SKINNED
-		)
-		modData.injuriesCounter = math.max(-maxCounter, math.min(maxCounter, modData.injuriesCounter + counterChange))
+		if modData then
+			local injuryContribution, hasTrackedInjury = getInjuryContribution(player)
+			local counterChange = hasTrackedInjury and injuryContribution or -SBvars.InjuriesSystemPassiveCounterDecay
+			counterChange = ETW_CommonFunctions.applyAffinityToDirectionalChange(
+				modData,
+				counterChange,
+				CharacterTrait.THIN_SKINNED,
+				CharacterTrait.THICK_SKINNED
+			)
+			modData.injuriesCounter = math.max(-maxCounter, math.min(maxCounter, modData.injuriesCounter + counterChange))
 
-		logETW(
-			"ETW Logger | injuriesSystemETW(): player="
-				.. player:getUsername()
-				.. " counterChange="
-				.. counterChange
-				.. " injuriesCounter="
-				.. modData.injuriesCounter
-		)
+			logETW(
+				"ETW Logger | injuriesSystemETW(): player="
+					.. player:getUsername()
+					.. " counterChange="
+					.. counterChange
+					.. " injuriesCounter="
+					.. modData.injuriesCounter
+			)
 
-		if
-			player:hasTrait(CharacterTrait.THIN_SKINNED)
-			and modData.injuriesCounter >= loseNegativeThreshold
-			and SBvars.TraitsLockSystemCanLoseNegative
-		then
-			ETW_CommonFunctions.removeTraitFromPlayer({
-				player = player,
-				trait = CharacterTrait.THIN_SKINNED,
-				positiveTrait = false,
-			})
-		elseif
-			not player:hasTrait(CharacterTrait.THIN_SKINNED)
-			and not player:hasTrait(CharacterTrait.THICK_SKINNED)
-			and modData.injuriesCounter <= gainNegativeThreshold
-			and SBvars.TraitsLockSystemCanGainNegative
-		then
-			ETW_CommonFunctions.addTraitToPlayer({
-				player = player,
-				trait = CharacterTrait.THIN_SKINNED,
-				positiveTrait = false,
-			})
-		end
+			if
+				player:hasTrait(CharacterTrait.THIN_SKINNED)
+				and modData.injuriesCounter >= loseNegativeThreshold
+				and SBvars.TraitsLockSystemCanLoseNegative
+			then
+				ETW_CommonFunctions.removeTraitFromPlayer({
+					player = player,
+					trait = CharacterTrait.THIN_SKINNED,
+					positiveTrait = false,
+				})
+			elseif
+				not player:hasTrait(CharacterTrait.THIN_SKINNED)
+				and not player:hasTrait(CharacterTrait.THICK_SKINNED)
+				and modData.injuriesCounter <= gainNegativeThreshold
+				and SBvars.TraitsLockSystemCanGainNegative
+			then
+				ETW_CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = CharacterTrait.THIN_SKINNED,
+					positiveTrait = false,
+				})
+			end
 
-		if
-			player:hasTrait(CharacterTrait.THICK_SKINNED)
-			and modData.injuriesCounter <= losePositiveThreshold
-			and SBvars.TraitsLockSystemCanLosePositive
-		then
-			ETW_CommonFunctions.removeTraitFromPlayer({
-				player = player,
-				trait = CharacterTrait.THICK_SKINNED,
-				positiveTrait = true,
-			})
-		elseif
-			not player:hasTrait(CharacterTrait.THICK_SKINNED)
-			and not player:hasTrait(CharacterTrait.THIN_SKINNED)
-			and modData.injuriesCounter >= gainPositiveThreshold
-			and SBvars.TraitsLockSystemCanGainPositive
-		then
-			ETW_CommonFunctions.addTraitToPlayer({
-				player = player,
-				trait = CharacterTrait.THICK_SKINNED,
-				positiveTrait = true,
-			})
+			if
+				player:hasTrait(CharacterTrait.THICK_SKINNED)
+				and modData.injuriesCounter <= losePositiveThreshold
+				and SBvars.TraitsLockSystemCanLosePositive
+			then
+				ETW_CommonFunctions.removeTraitFromPlayer({
+					player = player,
+					trait = CharacterTrait.THICK_SKINNED,
+					positiveTrait = true,
+				})
+			elseif
+				not player:hasTrait(CharacterTrait.THICK_SKINNED)
+				and not player:hasTrait(CharacterTrait.THIN_SKINNED)
+				and modData.injuriesCounter >= gainPositiveThreshold
+				and SBvars.TraitsLockSystemCanGainPositive
+			then
+				ETW_CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = CharacterTrait.THICK_SKINNED,
+					positiveTrait = true,
+				})
+			end
 		end
 	end
 end
@@ -656,6 +674,7 @@ end
 ---@return integer needsAttentionCount
 local function getHealerCounterChange(player)
 	local bodyParts = player:getBodyDamage():getBodyParts()
+	---@type number
 	local counterChange = 0
 	local properlyTendedCount = 0
 	local needsAttentionCount = 0
@@ -721,84 +740,86 @@ local function healerSystemETW()
 	for i = 0, playersList:size() - 1 do
 		local player = playersList:get(i)
 		local modData = ETW_CommonFunctions.getETWModData(player)
-		local counterChange, properlyTendedCount, needsAttentionCount = getHealerCounterChange(player)
-		local rawCounterChange = counterChange
-		local isSleeping = player:isAsleep()
-		if isSleeping then
-			counterChange = counterChange * SBvars.HealerSystemSleepingMultiplier
-		end
-		counterChange = counterChange / 10
-		counterChange = ETW_CommonFunctions.applyAffinityToDirectionalChange(
-			modData,
-			counterChange,
-			CharacterTrait.SLOW_HEALER,
-			CharacterTrait.FAST_HEALER
-		)
-		modData.healerCounter = math.max(-maxCounter, math.min(maxCounter, modData.healerCounter + counterChange))
+		if modData then
+			local counterChange, properlyTendedCount, needsAttentionCount = getHealerCounterChange(player)
+			local rawCounterChange = counterChange
+			local isSleeping = player:isAsleep()
+			if isSleeping then
+				counterChange = counterChange * SBvars.HealerSystemSleepingMultiplier
+			end
+			counterChange = counterChange / 10
+			counterChange = ETW_CommonFunctions.applyAffinityToDirectionalChange(
+				modData,
+				counterChange,
+				CharacterTrait.SLOW_HEALER,
+				CharacterTrait.FAST_HEALER
+			)
+			modData.healerCounter = math.max(-maxCounter, math.min(maxCounter, modData.healerCounter + counterChange))
 
-		logETW(
-			"ETW Logger | healerSystemETW(): player="
-				.. player:getUsername()
-				.. " properlyTended="
-				.. properlyTendedCount
-				.. " needsAttention="
-				.. needsAttentionCount
-				.. " rawCounterChange="
-				.. rawCounterChange
-				.. " isSleeping="
-				.. tostring(isSleeping)
-				.. " sleepingMultiplier="
-				.. (isSleeping and SBvars.HealerSystemSleepingMultiplier or 1)
-				.. " counterChange="
-				.. counterChange
-				.. " healerCounter="
-				.. modData.healerCounter
-		)
+			logETW(
+				"ETW Logger | healerSystemETW(): player="
+					.. player:getUsername()
+					.. " properlyTended="
+					.. properlyTendedCount
+					.. " needsAttention="
+					.. needsAttentionCount
+					.. " rawCounterChange="
+					.. rawCounterChange
+					.. " isSleeping="
+					.. tostring(isSleeping)
+					.. " sleepingMultiplier="
+					.. (isSleeping and SBvars.HealerSystemSleepingMultiplier or 1)
+					.. " counterChange="
+					.. counterChange
+					.. " healerCounter="
+					.. modData.healerCounter
+			)
 
-		if
-			player:hasTrait(CharacterTrait.SLOW_HEALER)
-			and modData.healerCounter >= loseNegativeThreshold
-			and SBvars.TraitsLockSystemCanLoseNegative
-		then
-			ETW_CommonFunctions.removeTraitFromPlayer({
-				player = player,
-				trait = CharacterTrait.SLOW_HEALER,
-				positiveTrait = false,
-			})
-		elseif
-			not player:hasTrait(CharacterTrait.SLOW_HEALER)
-			and not player:hasTrait(CharacterTrait.FAST_HEALER)
-			and modData.healerCounter <= gainNegativeThreshold
-			and SBvars.TraitsLockSystemCanGainNegative
-		then
-			ETW_CommonFunctions.addTraitToPlayer({
-				player = player,
-				trait = CharacterTrait.SLOW_HEALER,
-				positiveTrait = false,
-			})
-		end
+			if
+				player:hasTrait(CharacterTrait.SLOW_HEALER)
+				and modData.healerCounter >= loseNegativeThreshold
+				and SBvars.TraitsLockSystemCanLoseNegative
+			then
+				ETW_CommonFunctions.removeTraitFromPlayer({
+					player = player,
+					trait = CharacterTrait.SLOW_HEALER,
+					positiveTrait = false,
+				})
+			elseif
+				not player:hasTrait(CharacterTrait.SLOW_HEALER)
+				and not player:hasTrait(CharacterTrait.FAST_HEALER)
+				and modData.healerCounter <= gainNegativeThreshold
+				and SBvars.TraitsLockSystemCanGainNegative
+			then
+				ETW_CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = CharacterTrait.SLOW_HEALER,
+					positiveTrait = false,
+				})
+			end
 
-		if
-			player:hasTrait(CharacterTrait.FAST_HEALER)
-			and modData.healerCounter <= losePositiveThreshold
-			and SBvars.TraitsLockSystemCanLosePositive
-		then
-			ETW_CommonFunctions.removeTraitFromPlayer({
-				player = player,
-				trait = CharacterTrait.FAST_HEALER,
-				positiveTrait = true,
-			})
-		elseif
-			not player:hasTrait(CharacterTrait.FAST_HEALER)
-			and not player:hasTrait(CharacterTrait.SLOW_HEALER)
-			and modData.healerCounter >= gainPositiveThreshold
-			and SBvars.TraitsLockSystemCanGainPositive
-		then
-			ETW_CommonFunctions.addTraitToPlayer({
-				player = player,
-				trait = CharacterTrait.FAST_HEALER,
-				positiveTrait = true,
-			})
+			if
+				player:hasTrait(CharacterTrait.FAST_HEALER)
+				and modData.healerCounter <= losePositiveThreshold
+				and SBvars.TraitsLockSystemCanLosePositive
+			then
+				ETW_CommonFunctions.removeTraitFromPlayer({
+					player = player,
+					trait = CharacterTrait.FAST_HEALER,
+					positiveTrait = true,
+				})
+			elseif
+				not player:hasTrait(CharacterTrait.FAST_HEALER)
+				and not player:hasTrait(CharacterTrait.SLOW_HEALER)
+				and modData.healerCounter >= gainPositiveThreshold
+				and SBvars.TraitsLockSystemCanGainPositive
+			then
+				ETW_CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = CharacterTrait.FAST_HEALER,
+					positiveTrait = true,
+				})
+			end
 		end
 	end
 end
@@ -811,75 +832,77 @@ local function asthmaticTraitETW()
 		local player = playersList:get(i)
 		logETW("ETW Logger | asthmaticTraitETW(): running for player " .. player:getUsername())
 		local modData = ETW_CommonFunctions.getETWModData(player)
-		local running = player:isRunning()
-		local sprinting = player:isSprinting()
-		local smoker = player:hasTrait(CharacterTrait.SMOKER)
-		local asthmatic = player:hasTrait(CharacterTrait.ASTHMATIC)
-		local outside = player:isOutside()
-		local endurance = player:getStats():get(CharacterStat.ENDURANCE) -- 0-1
-		local temperature = getClimateManager():getAirTemperatureForCharacter(player)
-		local temperatureMultiplier = math.max(0, 1.01 ^ (-7.6 * temperature) + 0.53)
-		local lowerBoundary = -2 * SBvars.AsthmaticCounter
-		local upperBoundary = 2 * SBvars.AsthmaticCounter
-		if (running or sprinting) and (temperature <= 10 or smoker) then
-			local counterDecrease = temperatureMultiplier
-				* (outside and 1.2 or 1)
-				* (smoker and 1.5 or 0.8)
-				* (asthmatic and 1.5 or 0.8)
-				* (sprinting and 1.5 or 1)
-			local counterChange = ETW_CommonFunctions.applyAffinityToDirectionalChange(
-				modData,
-				-counterDecrease,
-				CharacterTrait.ASTHMATIC,
-				nil
-			)
-			modData.AsthmaticCounter = math.max(lowerBoundary, modData.AsthmaticCounter + counterChange)
-			logETW(
-				"ETW Logger | asthmaticTraitETW(): counterDecrease: "
-					.. -counterChange
-					.. ", modData.AsthmaticCounter: "
-					.. modData.AsthmaticCounter
-			)
-		end
-		if not running and not sprinting and temperature >= 0 then
-			local counterIncrease = (1 + player:getPerkLevel(Perks.Fitness) * 0.1)
-				* (smoker and 0.5 or 1)
-				* (asthmatic and 0.5 or 1)
-				* endurance
-			counterIncrease = ETW_CommonFunctions.applyAffinityToDirectionalChange(
-				modData,
-				counterIncrease,
-				CharacterTrait.ASTHMATIC,
-				nil
-			)
-			modData.AsthmaticCounter = math.min(upperBoundary, modData.AsthmaticCounter + counterIncrease)
-			logETW(
-				"ETW Logger | asthmaticTraitETW(): counterDecrease: "
-					.. counterIncrease
-					.. ", modData.AsthmaticCounter: "
-					.. modData.AsthmaticCounter
-			)
-		end
-		if
-			modData.AsthmaticCounter <= -SBvars.AsthmaticCounter
-			and not player:hasTrait(CharacterTrait.ASTHMATIC)
-			and SBvars.TraitsLockSystemCanGainNegative
-		then
-			ETW_CommonFunctions.addTraitToPlayer({
-				player = player,
-				trait = CharacterTrait.ASTHMATIC,
-				positiveTrait = false,
-			})
-		elseif
-			modData.AsthmaticCounter >= SBvars.AsthmaticCounter
-			and player:hasTrait(CharacterTrait.ASTHMATIC)
-			and SBvars.TraitsLockSystemCanLoseNegative
-		then
-			ETW_CommonFunctions.removeTraitFromPlayer({
-				player = player,
-				trait = CharacterTrait.ASTHMATIC,
-				positiveTrait = false,
-			})
+		if modData then
+			local running = player:isRunning()
+			local sprinting = player:isSprinting()
+			local smoker = player:hasTrait(CharacterTrait.SMOKER)
+			local asthmatic = player:hasTrait(CharacterTrait.ASTHMATIC)
+			local outside = player:isOutside()
+			local endurance = player:getStats():get(CharacterStat.ENDURANCE) -- 0-1
+			local temperature = getClimateManager():getAirTemperatureForCharacter(player)
+			local temperatureMultiplier = math.max(0, 1.01 ^ (-7.6 * temperature) + 0.53)
+			local lowerBoundary = -2 * SBvars.AsthmaticCounter
+			local upperBoundary = 2 * SBvars.AsthmaticCounter
+			if (running or sprinting) and (temperature <= 10 or smoker) then
+				local counterDecrease = temperatureMultiplier
+					* (outside and 1.2 or 1)
+					* (smoker and 1.5 or 0.8)
+					* (asthmatic and 1.5 or 0.8)
+					* (sprinting and 1.5 or 1)
+				local counterChange = ETW_CommonFunctions.applyAffinityToDirectionalChange(
+					modData,
+					-counterDecrease,
+					CharacterTrait.ASTHMATIC,
+					nil
+				)
+				modData.AsthmaticCounter = math.max(lowerBoundary, modData.AsthmaticCounter + counterChange)
+				logETW(
+					"ETW Logger | asthmaticTraitETW(): counterDecrease: "
+						.. -counterChange
+						.. ", modData.AsthmaticCounter: "
+						.. modData.AsthmaticCounter
+				)
+			end
+			if not running and not sprinting and temperature >= 0 then
+				local counterIncrease = (1 + player:getPerkLevel(Perks.Fitness) * 0.1)
+					* (smoker and 0.5 or 1)
+					* (asthmatic and 0.5 or 1)
+					* endurance
+				counterIncrease = ETW_CommonFunctions.applyAffinityToDirectionalChange(
+					modData,
+					counterIncrease,
+					CharacterTrait.ASTHMATIC,
+					nil
+				)
+				modData.AsthmaticCounter = math.min(upperBoundary, modData.AsthmaticCounter + counterIncrease)
+				logETW(
+					"ETW Logger | asthmaticTraitETW(): counterDecrease: "
+						.. counterIncrease
+						.. ", modData.AsthmaticCounter: "
+						.. modData.AsthmaticCounter
+				)
+			end
+			if
+				modData.AsthmaticCounter <= -SBvars.AsthmaticCounter
+				and not player:hasTrait(CharacterTrait.ASTHMATIC)
+				and SBvars.TraitsLockSystemCanGainNegative
+			then
+				ETW_CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = CharacterTrait.ASTHMATIC,
+					positiveTrait = false,
+				})
+			elseif
+				modData.AsthmaticCounter >= SBvars.AsthmaticCounter
+				and player:hasTrait(CharacterTrait.ASTHMATIC)
+				and SBvars.TraitsLockSystemCanLoseNegative
+			then
+				ETW_CommonFunctions.removeTraitFromPlayer({
+					player = player,
+					trait = CharacterTrait.ASTHMATIC,
+					positiveTrait = false,
+				})
+			end
 		end
 	end
 end
@@ -891,20 +914,22 @@ local function recordMentalStateETW()
 	for i = 0, playersList:size() - 1 do
 		local player = playersList:get(i)
 		local modData = ETW_CommonFunctions.getETWModData(player)
-		logETW("ETW Logger | recordMentalStateETW(): running for player " .. player:getUsername())
-		local stats = player:getStats()
-		local anger = stats:get(CharacterStat.ANGER) -- 0-1
-		local stress = stats:get(CharacterStat.STRESS) -- 0-1
-		local unhappiness = stats:get(CharacterStat.UNHAPPINESS) / 100 -- 0-100 -> 0-1
-		local panic = stats:get(CharacterStat.PANIC) / 100 -- 0-100 -> 0-1
-		local mentalHealth = 1 - ((anger + stress + unhappiness + panic) / 4)
-		modData.RecentAverageMental = updateRollingHabitAverage(
-			modData.MentalStateInLast60Min,
-			modData.MentalStateInLast24Hours,
-			modData.MentalStateInLast31Days,
-			mentalHealth,
-			"recordMentalStateETW"
-		)
+		if modData then
+			logETW("ETW Logger | recordMentalStateETW(): running for player " .. player:getUsername())
+			local stats = player:getStats()
+			local anger = stats:get(CharacterStat.ANGER) -- 0-1
+			local stress = stats:get(CharacterStat.STRESS) -- 0-1
+			local unhappiness = stats:get(CharacterStat.UNHAPPINESS) / 100 -- 0-100 -> 0-1
+			local panic = stats:get(CharacterStat.PANIC) / 100 -- 0-100 -> 0-1
+			local mentalHealth = 1 - ((anger + stress + unhappiness + panic) / 4)
+			modData.RecentAverageMental = updateRollingHabitAverage(
+				modData.MentalStateInLast60Min,
+				modData.MentalStateInLast24Hours,
+				modData.MentalStateInLast31Days,
+				mentalHealth,
+				"recordMentalStateETW"
+			)
+		end
 	end
 end
 
@@ -918,7 +943,7 @@ end
 ---@param player IsoPlayer
 ---@return number stiffnessPain
 local function getExerciseStiffnessPain(player)
-	local injurySeverityMultiplier = 1
+	local injurySeverityMultiplier = 1.0
 	if SandboxVars.InjurySeverity == 1 then
 		injurySeverityMultiplier = 0.7
 	elseif SandboxVars.InjurySeverity == 3 then
@@ -927,8 +952,8 @@ local function getExerciseStiffnessPain(player)
 
 	local bodyDamage = player:getBodyDamage()
 	local bodyParts = bodyDamage:getBodyParts()
-	local bodyPain = 0
-	local stiffnessPain = 0
+	local bodyPain = 0.0
+	local stiffnessPain = 0.0
 	for i = 0, bodyParts:size() - 1 do
 		local bodyPart = bodyParts:get(i)
 		local painModifier = BodyPartType.getPainModifyer(i)
@@ -951,49 +976,51 @@ local function painToleranceTraitETW()
 		local player = playersList:get(i)
 		logETW("ETW Logger | painToleranceTraitETW(): running for player " .. player:getUsername())
 		local modData = ETW_CommonFunctions.getETWModData(player)
-		local pain = player:getStats():get(CharacterStat.PAIN) -- pain is 0-100
-		local stiffnessPain = math.min(pain, getExerciseStiffnessPain(player))
-		local adjustedPain = pain - stiffnessPain + stiffnessPain * SBvars.PainToleranceExerciseMultiplier
-		logETW(
-			"ETW Logger | painToleranceTraitETW(): player="
-				.. player:getUsername()
-				.. " rawPain="
-				.. pain
-				.. " stiffnessPain="
-				.. stiffnessPain
-				.. " exerciseMultiplier="
-				.. SBvars.PainToleranceExerciseMultiplier
-				.. " adjustedPain="
-				.. adjustedPain
-		)
-		pain = adjustedPain
-		modData.PainToleranceCounter = modData.PainToleranceCounter + pain
-		logETW("ETW Logger | painToleranceTraitETW(): pain counter: " .. modData.PainToleranceCounter)
-		if modData.PainToleranceCounter >= SBvars.PainToleranceCounter then
-			if
-				SBvars.DelayedTraitsSystem
-				and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.PAIN_TOLERANCE)
-			then
-				ETW_CommonFunctions.addTraitToDelayTable({
-					modData = modData,
-					trait = ETWTraitsRegistry.PAIN_TOLERANCE,
-					player = player,
-					positiveTrait = true,
-					gainingTrait = true,
-				})
-			elseif
-				not SBvars.DelayedTraitsSystem
-				or (
+		if modData then
+			local pain = player:getStats():get(CharacterStat.PAIN) -- pain is 0-100
+			local stiffnessPain = math.min(pain, getExerciseStiffnessPain(player))
+			local adjustedPain = pain - stiffnessPain + stiffnessPain * SBvars.PainToleranceExerciseMultiplier
+			logETW(
+				"ETW Logger | painToleranceTraitETW(): player="
+					.. player:getUsername()
+					.. " rawPain="
+					.. pain
+					.. " stiffnessPain="
+					.. stiffnessPain
+					.. " exerciseMultiplier="
+					.. SBvars.PainToleranceExerciseMultiplier
+					.. " adjustedPain="
+					.. adjustedPain
+			)
+			pain = adjustedPain
+			modData.PainToleranceCounter = modData.PainToleranceCounter + pain
+			logETW("ETW Logger | painToleranceTraitETW(): pain counter: " .. modData.PainToleranceCounter)
+			if modData.PainToleranceCounter >= SBvars.PainToleranceCounter then
+				if
 					SBvars.DelayedTraitsSystem
-					and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.PAIN_TOLERANCE)
-				)
-			then
-				ETW_CommonFunctions.addTraitToPlayer({
-					player = player,
-					trait = ETWTraitsRegistry.PAIN_TOLERANCE,
-					positiveTrait = true,
-				})
-				Events.EveryTenMinutes.Remove(painToleranceTraitETW)
+					and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.PAIN_TOLERANCE)
+				then
+					ETW_CommonFunctions.addTraitToDelayTable({
+						modData = modData,
+						trait = ETWTraitsRegistry.PAIN_TOLERANCE,
+						player = player,
+						positiveTrait = true,
+						gainingTrait = true,
+					})
+				elseif
+					not SBvars.DelayedTraitsSystem
+					or (
+						SBvars.DelayedTraitsSystem
+						and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.PAIN_TOLERANCE)
+					)
+				then
+					ETW_CommonFunctions.addTraitToPlayer({
+						player = player,
+						trait = ETWTraitsRegistry.PAIN_TOLERANCE,
+						positiveTrait = true,
+					})
+					Events.EveryTenMinutes.Remove(painToleranceTraitETW)
+				end
 			end
 		end
 	end

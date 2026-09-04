@@ -2,8 +2,12 @@
 ---@field current string|nil
 ---@field tabs string|nil
 
+---@class ETWCharacterInfoPage : ISPanelJoypad
+---@field new fun(self: ETWCharacterInfoPage, x: number, y: number, width: number, height: number, playerNum: integer): ETWCharacterInfoPage
+
+---Adds a lazily-created page to the character-info window.
 ---@param tabName string
----@param pageType ISUIElement
+---@param pageType ETWCharacterInfoPage
 ---@param shouldAdd fun(): boolean|nil
 function addCharacterPageTab(tabName, pageType, shouldAdd)
 	local viewName = tabName .. "View"

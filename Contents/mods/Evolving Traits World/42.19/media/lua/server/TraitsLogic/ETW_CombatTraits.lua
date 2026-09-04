@@ -101,17 +101,11 @@ local function getMatchingProwess(player, weapon)
 	end
 	if
 		player:hasTrait(ETWTraitsRegistry.PROWESS_BLUNT)
-		and (
-			weapon:isOfWeaponCategory(WeaponCategory.SMALL_BLUNT)
-			or weapon:isOfWeaponCategory(WeaponCategory.BLUNT)
-		)
+		and (weapon:isOfWeaponCategory(WeaponCategory.SMALL_BLUNT) or weapon:isOfWeaponCategory(WeaponCategory.BLUNT))
 	then
 		return "Blunt"
 	end
-	if
-		player:hasTrait(ETWTraitsRegistry.PROWESS_SPEAR)
-		and weapon:isOfWeaponCategory(WeaponCategory.SPEAR)
-	then
+	if player:hasTrait(ETWTraitsRegistry.PROWESS_SPEAR) and weapon:isOfWeaponCategory(WeaponCategory.SPEAR) then
 		return "Spear"
 	end
 	return nil
@@ -250,7 +244,7 @@ function ETW_CombatTraits.onWeaponHitXP(player, weapon, hitObject, damage, hitCo
 	modData.AntiGunAimingXPCheckPending = true
 	local playerIdentifier = tostring(player:getUsername()) .. " (OnlineID=" .. player:getOnlineID() .. ")"
 	logETW(
-		"ETW Logger | antigun XP weapon-hit event: marked pending XP check for "
+		"ETW Logger | Antigun XP weapon-hit event: marked pending XP check for "
 			.. playerIdentifier
 			.. "; last recorded XP: "
 			.. tostring(modData.AntiGunLastRecordedAimingXP)
@@ -270,7 +264,7 @@ function ETW_CombatTraits.antiGunAimingXPPenalty(player, modData)
 	if gainedXP <= 0 then
 		modData.AntiGunLastRecordedAimingXP = currentXP
 		logETW(
-			"ETW Logger | antigun XP check: no positive gain for "
+			"ETW Logger | Antigun XP check: no positive gain for "
 				.. playerIdentifier
 				.. "; recorded: "
 				.. lastRecordedXP
@@ -284,7 +278,7 @@ function ETW_CombatTraits.antiGunAimingXPPenalty(player, modData)
 	if xpToRemove <= 0 then
 		modData.AntiGunLastRecordedAimingXP = currentXP
 		logETW(
-			"ETW Logger | antigun XP check: skipped for "
+			"ETW Logger | Antigun XP check: skipped for "
 				.. playerIdentifier
 				.. "; actual gain: "
 				.. gainedXP
@@ -294,12 +288,21 @@ function ETW_CombatTraits.antiGunAimingXPPenalty(player, modData)
 		)
 		return
 	end
+	if not progress then
+		modData.AntiGunLastRecordedAimingXP = currentXP
+		logETW(
+			"ETW Logger | Antigun XP check: skipped for "
+				.. playerIdentifier
+				.. "; missing level progress"
+		)
+		return
+	end
 
 	addXpNoMultiplier(player, Perks.Aiming, -xpToRemove)
 	modData.AntiGunLastRecordedAimingXP = player:getXp():getXP(Perks.Aiming)
 	local actualRemovedXP = currentXP - modData.AntiGunLastRecordedAimingXP
 	logETW(
-		"ETW Logger | antigun XP check: "
+		"ETW Logger | Antigun XP check: "
 			.. playerIdentifier
 			.. "; actual gain: "
 			.. gainedXP
@@ -327,7 +330,7 @@ function ETW_CombatTraits.antiGunMentalTrait(player, stats, increase, source)
 	stats:set(CharacterStat.UNHAPPINESS, resultingUnhappiness)
 	local playerIdentifier = tostring(player:getUsername()) .. " (OnlineID=" .. player:getOnlineID() .. ")"
 	logETW(
-		"ETW Logger | antigun mood: "
+		"ETW Logger | Antigun mood: "
 			.. playerIdentifier
 			.. "; unhappiness: "
 			.. unhappiness

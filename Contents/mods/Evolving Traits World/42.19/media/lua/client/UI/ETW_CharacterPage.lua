@@ -441,6 +441,7 @@ end
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld
 
+---@class ISETWUI : ETWCharacterInfoPage
 ISETWUI = ISPanelJoypad:derive("ISETWUI")
 
 ---Converts a value within a min/max range into a 0..1 percentage for UI bars.
@@ -580,6 +581,7 @@ function ISETWUI:createChildren()
 		self.addChild = function(s, child)
 			child.etwUseCustomTooltipWidth = true
 			subView:addChild(child)
+			---@diagnostic disable-next-line: missing-return
 		end
 		useLayoutCursor(layoutCursor)
 	end
@@ -4655,6 +4657,6 @@ function ISETWUI:onJoypadDirLeft() end
 
 function ISETWUI:onJoypadDirRight() end
 
-addCharacterPageTab("ETW", ISETWUI:new(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0), function()
+addCharacterPageTab("ETW", ISETWUI, function()
 	return SandboxVars.EvolvingTraitsWorld.DisableAllDynamicTraits ~= true
 end)

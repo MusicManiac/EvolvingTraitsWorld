@@ -19,7 +19,9 @@ local logETW = ETW_CommonFunctions.log
 local random_instance = newrandom()
 local ETW_ItemTraits = {}
 
+---@type table<IsoPlayer, Clothing>
 local leadFootShoes = {}
+---@type table<IsoPlayer, HandWeapon>
 local combatTraitWeapons = {}
 local antiGunWeapons = {}
 local actionHeroThreatCache = {}
@@ -43,6 +45,9 @@ local tavernBrawlerDisplayCategories = {
 	WeaponImprovised = true,
 }
 
+---Restores a clothing item's modifiers saved before Well Fitted was applied.
+---@param item Clothing
+---@param data table
 local function restoreWellFittedItem(item, data)
 	if data.OriginalActualWeight ~= nil then
 		item:setActualWeight(data.OriginalActualWeight)
@@ -66,6 +71,7 @@ local function wellFittedTrait(player)
 	for i = 0, items:size() - 1 do
 		local item = items:get(i)
 		if item:IsClothing() then
+			---@cast item Clothing
 			local itemData = item:getModData()
 			itemData.ETWWellFitted = itemData.ETWWellFitted or {}
 			local data = itemData.ETWWellFitted
@@ -122,6 +128,8 @@ local function wellFittedTrait(player)
 	end
 end
 
+---Restores footwear modified by Lead Foot.
+---@param item Clothing
 local function restoreLeadFootItem(item)
 	local data = item:getModData().ETWLeadFoot
 	if data and data.Applied then
@@ -143,6 +151,7 @@ local function leadFootTrait(player)
 	if not player:hasTrait(ETWTraitsRegistry.LEAD_FOOT) or not shoes then
 		return
 	end
+	---@cast shoes Clothing
 	local itemData = shoes:getModData()
 	itemData.ETWLeadFoot = itemData.ETWLeadFoot or {}
 	local data = itemData.ETWLeadFoot
@@ -190,10 +199,21 @@ local function getRawCriticalChance(weapon, displayedCriticalChance)
 	if sharpness > 0 then
 		return displayedCriticalChance / sharpness
 	end
-	local scriptItem = weapon:getScriptItem()
-	return scriptItem and scriptItem.criticalChance or displayedCriticalChance
+	local probeSharpness = weapon:getMaxSharpness()
+	if probeSharpness > 0 then
+		weapon:setSharpness(probeSharpness)
+		local appliedProbeSharpness = weapon:getSharpness()
+		local rawCriticalChance = appliedProbeSharpness > 0
+			and weapon:getCriticalChance() / appliedProbeSharpness
+			or displayedCriticalChance
+		weapon:setSharpness(sharpness)
+		return rawCriticalChance
+	end
+	return displayedCriticalChance
 end
 
+---Restores a weapon's values saved before combat trait modifiers were applied.
+---@param item HandWeapon
 local function restoreCombatTraitWeapon(item)
 	local data = item:getModData().ETWCombatTraits
 	if data and data.Applied then
@@ -385,8 +405,8 @@ local function getActionHeroBonuses(player)
 		SBvars.ActionHeroCloseCriticalChanceBonus or 10
 	)
 	local nearbyZombies = 0
-	local weightedDamageThreat = 0
-	local weightedCriticalThreat = 0
+	local weightedDamageThreat = 0.0
+	local weightedCriticalThreat = 0.0
 	nearbyZombies = ETWCombinedTraitChecks.forEachNearbyLivingZombieCachedThisFrame(
 		player,
 		10,
@@ -418,9 +438,12 @@ end
 
 ---@param player IsoPlayer
 local function combatWeaponTraits(player)
-	local weapon = player:getPrimaryHandItem()
-	if weapon and not instanceof(weapon, "HandWeapon") then
-		weapon = nil
+	local primaryItem = player:getPrimaryHandItem()
+	---@type HandWeapon?
+	local weapon
+	if primaryItem and instanceof(primaryItem, "HandWeapon") then
+		---@cast primaryItem HandWeapon
+		weapon = primaryItem
 	end
 	local previousWeapon = combatTraitWeapons[player]
 	if previousWeapon and previousWeapon ~= weapon then
@@ -457,7 +480,7 @@ local function combatWeaponTraits(player)
 		actionHeroThreatCache[player] = nil
 	end
 	local actionHeroDamageMultiplier, actionHeroCriticalChanceBonus, actionHeroNearbyZombies =
-		1, 0, 0
+		1.0, 0.0, 0
 	if hasActionHero then
 		actionHeroDamageMultiplier, actionHeroCriticalChanceBonus, actionHeroNearbyZombies =
 			getActionHeroBonuses(player)
@@ -481,7 +504,7 @@ local function combatWeaponTraits(player)
 	local terminatorJamChanceMultiplier = hasTerminator
 		and PZMath.clamp(SBvars.TerminatorJamChanceMultiplier or 0.5, 0, 1)
 		or 1
-	local tavernBrawlerDamageBonusPercent, tavernBrawlerConditionLossReductionPercent = 0, 0
+	local tavernBrawlerDamageBonusPercent, tavernBrawlerConditionLossReductionPercent = 0.0, 0.0
 	if hasTavernBrawler then
 		local originalConditionLowerChance = data.Applied and data.OriginalConditionLowerChance
 			or weapon:getConditionLowerChance()
@@ -615,7 +638,10 @@ local function combatWeaponTraits(player)
 			if prowessName then
 				criticalBonus = criticalBonus + baseCriticalChance + relevantSkillLevels
 			end
-			weapon:setCriticalChance(PZMath.clamp(data.OriginalCriticalChance + criticalBonus, 0, 100))
+			local originalCriticalChance = data.OriginalCriticalChance
+			if originalCriticalChance ~= nil then
+				weapon:setCriticalChance(PZMath.clamp(originalCriticalChance + criticalBonus, 0, 100))
+			end
 		end
 	end
 	if hasTavernBrawler and tavernBrawlerConditionLossReductionPercent > 0 then
@@ -628,7 +654,8 @@ local function combatWeaponTraits(player)
 		weapon:setCriticalChance(0)
 	end
 	if hasTerminator then
-		weapon:setAimingTime(data.OriginalAimingTime * terminatorAimingTimeMultiplier)
+		local aimingTime = math.floor(data.OriginalAimingTime * terminatorAimingTimeMultiplier + 0.5)
+		weapon:setAimingTime(aimingTime)
 		weapon:setMaxRange(data.OriginalMaxRange + terminatorMaxRangeBonus)
 		weapon:setJamGunChance(data.OriginalJamGunChance * terminatorJamChanceMultiplier)
 	end
@@ -747,7 +774,8 @@ local function antiGunWeaponTrait(player, hasTrait)
 		data.OriginalMaxRange = weapon:getMaxRange()
 		local aimingTimeMultiplier = math.max(0, SBvars.AntiGunAimingTimeMultiplier or 0.8)
 		local rangePenalty = math.max(0, SBvars.AntiGunMaxRangePenalty or 5)
-		weapon:setAimingTime(data.OriginalAimingTime * aimingTimeMultiplier)
+		local aimingTime = math.floor(data.OriginalAimingTime * aimingTimeMultiplier + 0.5)
+		weapon:setAimingTime(aimingTime)
 		weapon:setMaxRange(math.max(5, data.OriginalMaxRange - rangePenalty))
 		data.Applied = true
 		logETW(
@@ -891,14 +919,20 @@ function ETW_ItemTraits.applyGourmandFood(food, player, settings)
 	then
 		return false
 	end
-	settings = settings
-		or (data and {
-			CookingTimeMultiplier = data.CookingTimeMultiplier,
-			BurnTimeMultiplier = data.BurnTimeMultiplier,
-			BenefitMultiplier = data.BenefitMultiplier,
-			PlayerIdentifier = data.AuthorIdentifier,
-		})
-		or getGourmandSettings(player)
+	if not settings then
+		if data then
+			settings = {
+				CookingTimeMultiplier = data.CookingTimeMultiplier,
+				BurnTimeMultiplier = data.BurnTimeMultiplier,
+				BenefitMultiplier = data.BenefitMultiplier,
+				PlayerIdentifier = data.AuthorIdentifier,
+			}
+		elseif player then
+			settings = getGourmandSettings(player)
+		else
+			return false
+		end
+	end
 	local settingsChanged = data
 		and player
 		and data.Applied
@@ -907,11 +941,14 @@ function ETW_ItemTraits.applyGourmandFood(food, player, settings)
 			or data.BurnTimeMultiplier ~= settings.BurnTimeMultiplier
 			or data.BenefitMultiplier ~= settings.BenefitMultiplier
 		)
-	if settingsChanged then
+	if settingsChanged and player then
 		restoreGourmandFood(food, player)
 		data = nil
 	end
 	if not data then
+		if not player then
+			return false
+		end
 		data = {}
 		itemData.ETWGourmand = data
 		snapshotGourmandFood(food, data)
@@ -1014,6 +1051,7 @@ local function updateGourmandFoods(players)
 	for i = 0, processItems:size() - 1 do
 		local item = processItems:get(i)
 		if instanceof(item, "Food") then
+			---@cast item Food
 			local food = item
 			local data = food:getModData().ETWGourmand
 			if data and data.Applied then
