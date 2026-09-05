@@ -2091,6 +2091,31 @@ option EvolvingTraitsWorld.BodyworkEnthusiastRepairs
 	page = ETWSimplePerks,
 	translation = ETW_BodyworkEnthusiastRepairs,
 }
+option EvolvingTraitsWorld.Thuggish
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_Thuggish,
+}
+option EvolvingTraitsWorld.ThuggishSkill
+{
+	type = integer,
+	min = 0,
+	max = 20,
+	default = 12,
+	page = ETWSimplePerks,
+	translation = ETW_ThuggishSkill,
+}
+option EvolvingTraitsWorld.ThuggishKills
+{
+	type = integer,
+	min = 0,
+	max = 10000000,
+	default = 600,
+	page = ETWSimplePerks,
+	translation = ETW_ThuggishKills,
+}
 option EvolvingTraitsWorld.Brawler
 {
 	type = boolean,

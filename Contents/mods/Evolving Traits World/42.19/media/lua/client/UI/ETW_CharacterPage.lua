@@ -2161,6 +2161,52 @@ function ISETWUI:createChildren()
 			end
 
 			if
+				ETW_CommonLogicChecks.ThuggishShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.THUGGISH)
+			then
+				if (shortBlunt + longBlunt) < SBvars.ThuggishSkill then
+					arrangeColumnsInTable()
+					self.labelThuggishSkillProgress = ISLabel:new(
+						x,
+						y,
+						FONT_HGT_SMALL,
+						getText(""),
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelThuggishSkillProgress:setTooltip(getText("Sandbox_ETW_ThuggishSkill_tooltip"))
+					self:addChild(self.labelThuggishSkillProgress)
+				end
+
+				if (shortBluntKills + longBluntKills) < SBvars.ThuggishKills then
+					arrangeColumnsInTable()
+					self.labelThuggishKillsProgress = ISLabel:new(
+						x,
+						y,
+						FONT_HGT_SMALL,
+						getText(""),
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelThuggishKillsProgress:setTooltip(
+						getText("Sandbox_ETW_ThuggishKills")
+							.. " ("
+							.. getText("Sandbox_ETW_ThuggishKills_tooltip")
+							.. ")"
+					)
+					self:addChild(self.labelThuggishKillsProgress)
+				end
+			end
+
+			if
 				ETW_CommonLogicChecks.BrawlerShouldExecute(player)
 				and not playerHasDelayedTraitNoCache(player, CharacterTrait.BRAWLER)
 			then
@@ -4434,8 +4480,16 @@ function ISETWUI:render()
 			.. "/2"
 	)
 	updateLabel(
+		self.labelThuggishSkillProgress,
+		getCachedTraitUIName(ETWTraitsRegistry.THUGGISH) .. ": " .. shortBlunt + longBlunt .. "/" .. SBvars.ThuggishSkill
+	)
+	updateLabel(
 		self.labelBrawlerSkillProgress,
 		getCachedTraitUIName(CharacterTrait.BRAWLER) .. ": " .. axe + longBlunt .. "/" .. SBvars.BrawlerSkill
+	)
+	updateLabel(
+		self.labelThuggishKillsProgress,
+		getCachedTraitUIName(ETWTraitsRegistry.THUGGISH) .. ": " .. shortBluntKills + longBluntKills .. "/" .. SBvars.ThuggishKills
 	)
 	updateLabel(
 		self.labelBrawlerKillsProgress,

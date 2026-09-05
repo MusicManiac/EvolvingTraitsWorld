@@ -45,6 +45,7 @@ local function registerDynamicTraits()
 		ETW_Registry.traits.RESTORATION_EXPERT,
 		ETW_Registry.traits.SLOW_EATER,
 		ETW_Registry.traits.STICK_FIGHTER,
+		ETW_Registry.traits.THUGGISH,
 		ETW_Registry.traits.QUIET,
 		ETW_Registry.traits.SCRAPPER,
 	})
