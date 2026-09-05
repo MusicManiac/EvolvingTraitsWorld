@@ -622,6 +622,23 @@ local skillTraitRules = {
 			"kill",
 			Perks.Aiming,
 			Perks.Reloading,
+			ETWTraitsRegistry.ANTI_GUN_ACTIVIST
+		),
+		shouldExecute = ETW_CommonLogicChecks.AntiGunActivistShouldExecute,
+		condition = function(ctx)
+			return sumContextValues(ctx, { "aiming", "reloading" }) >= SBvars.AntiGunActivistSkill
+				and ctx.firearmKills >= SBvars.AntiGunActivistKills
+		end,
+		trait = ETWTraitsRegistry.ANTI_GUN_ACTIVIST,
+		positiveTrait = false,
+		gainingTrait = false,
+	},
+	{
+		triggers = makeTriggerSet(
+			"characterInitialization",
+			"kill",
+			Perks.Aiming,
+			Perks.Reloading,
 			ETWTraitsRegistry.GUN_ENTHUSIAST
 		),
 		shouldExecute = ETW_CommonLogicChecks.GunEnthusiastShouldExecute,
@@ -983,7 +1000,7 @@ local function initializeEventsETW(playerIndex, player)
 			Events.LevelPerk.Add(ETW_BySkills.traitsGainsBySkill)
 		end
 		Events.OnZombieDead.Remove(OnZombieDeadETW)
-		if SBvars.TraitsLockSystemCanGainPositive then
+		if SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLoseNegative then
 			Events.OnZombieDead.Add(OnZombieDeadETW)
 		end
 	end

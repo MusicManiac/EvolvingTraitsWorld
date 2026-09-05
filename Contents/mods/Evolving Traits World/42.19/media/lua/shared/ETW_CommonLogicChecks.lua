@@ -467,6 +467,16 @@ function ETW_CommonLogicChecks.AxeThrowerShouldExecute(player)
 	end
 end
 
+---Returns whether Anti-Gun Activist can be removed through firearm experience.
+---@param player IsoPlayer|nil the player to check
+---@return boolean
+function ETW_CommonLogicChecks.AntiGunActivistShouldExecute(player)
+	return SBvars.AntiGunActivist == true
+		and SBvars.TraitsLockSystemCanLoseNegative == true
+		and ((player ~= nil and player:hasTrait(ETWTraitsRegistry.ANTI_GUN_ACTIVIST))
+			or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER)
+end
+
 ---Returns true if the Baseball Player System should execute
 ---@param player IsoPlayer|nil the player to check for
 ---@return boolean boolean true if the Baseball Player System should execute, false otherwise

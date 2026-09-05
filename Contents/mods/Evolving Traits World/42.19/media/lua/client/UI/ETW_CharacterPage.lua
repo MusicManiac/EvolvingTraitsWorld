@@ -2676,6 +2676,46 @@ function ISETWUI:createChildren()
 			end
 
 			if
+				ETW_CommonLogicChecks.AntiGunActivistShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.ANTI_GUN_ACTIVIST)
+			then
+				if aiming + reloading < SBvars.AntiGunActivistSkill then
+					arrangeColumnsInTable()
+					self.labelAntiGunActivistSkillProgress = ISLabel:new(
+						x,
+						y,
+						FONT_HGT_SMALL,
+						getText(""),
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelAntiGunActivistSkillProgress:setTooltip(getText("Sandbox_ETW_AntiGunActivistSkill_tooltip"))
+					self:addChild(self.labelAntiGunActivistSkillProgress)
+				end
+				if firearmKills < SBvars.AntiGunActivistKills then
+					arrangeColumnsInTable()
+					self.labelAntiGunActivistKillsProgress = ISLabel:new(
+						x,
+						y,
+						FONT_HGT_SMALL,
+						getText(""),
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelAntiGunActivistKillsProgress:setTooltip(getText("Sandbox_ETW_AntiGunActivistKills_tooltip"))
+					self:addChild(self.labelAntiGunActivistKillsProgress)
+				end
+			end
+
+			if
 				ETW_CommonLogicChecks.GunEnthusiastShouldExecute(player)
 				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.GUN_ENTHUSIAST)
 			then
@@ -4481,6 +4521,22 @@ function ISETWUI:render()
 			.. #modData.AnimalsSystem.UniqueAnimalsPetted
 			.. "/"
 			.. SBvars.PetTherapyUniqueAnimalsPetted
+	)
+	updateLabel(
+		self.labelAntiGunActivistSkillProgress,
+		getCachedTraitUIName(ETWTraitsRegistry.ANTI_GUN_ACTIVIST)
+			.. ": "
+			.. aiming + reloading
+			.. "/"
+			.. SBvars.AntiGunActivistSkill
+	)
+	updateLabel(
+		self.labelAntiGunActivistKillsProgress,
+		getCachedTraitUIName(ETWTraitsRegistry.ANTI_GUN_ACTIVIST)
+			.. ": "
+			.. firearmKills
+			.. "/"
+			.. SBvars.AntiGunActivistKills
 	)
 	updateLabel(
 		self.labelGunEnthusiastSkillProgress,

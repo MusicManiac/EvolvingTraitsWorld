@@ -1,3 +1,11 @@
+## v.13.3.0
+###### 05 Sep 2026
+
+- General:
+  - Made Anti-Gun Activist Dynamic.
+- Translations:
+  - Updated RU translation to v.13.2.1
+
 ## v.13.2.1
 ###### 04 Sep 2026
 
