@@ -279,6 +279,16 @@ local skillTraitRules = {
 		gainingTrait = true,
 	},
 	{
+		triggers = makeTriggerSet("characterInitialization", Perks.Sneak, Perks.Lightfoot, ETWTraitsRegistry.QUIET),
+		shouldExecute = ETW_CommonLogicChecks.QuietShouldExecute,
+		condition = function(ctx)
+			return sumContextValues(ctx, { "sneaking", "lightfooted" }) >= SBvars.QuietSkill
+		end,
+		trait = ETWTraitsRegistry.QUIET,
+		positiveTrait = true,
+		gainingTrait = true,
+	},
+	{
 		triggers = makeTriggerSet("characterInitialization", Perks.Sneak, ETWTraitsRegistry.LOW_PROFILE),
 		shouldExecute = ETW_CommonLogicChecks.LowProfileShouldExecute,
 		condition = function(ctx)

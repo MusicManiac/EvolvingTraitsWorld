@@ -2346,6 +2346,27 @@ function ISETWUI:createChildren()
 			end
 
 			if
+				ETW_CommonLogicChecks.QuietShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.QUIET)
+			then
+				arrangeColumnsInTable()
+				self.labelQuietSkillProgress = ISLabel:new(
+					x,
+					y,
+					FONT_HGT_SMALL,
+					getText(""),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelQuietSkillProgress:setTooltip(getText("Sandbox_ETW_QuietSkill_tooltip"))
+				self:addChild(self.labelQuietSkillProgress)
+			end
+
+			if
 				ETW_CommonLogicChecks.ScrapperShouldExecute(player)
 				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.SCRAPPER)
 			then
@@ -4454,6 +4475,14 @@ function ISETWUI:render()
 			.. spearKills
 			.. "/"
 			.. SBvars.PolearmFighterKills
+	)
+	updateLabel(
+		self.labelQuietSkillProgress,
+		getCachedTraitUIName(ETWTraitsRegistry.QUIET)
+			.. ": "
+			.. sneaking + lightfooted
+			.. "/"
+			.. SBvars.QuietSkill
 	)
 	updateLabel(
 		self.labelScrapperSkillProgress,
