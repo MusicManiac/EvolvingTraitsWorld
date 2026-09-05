@@ -45,6 +45,8 @@ local function registerDynamicTraits()
 		ETW_Registry.traits.RESTORATION_EXPERT,
 		ETW_Registry.traits.SLOW_EATER,
 		ETW_Registry.traits.STICK_FIGHTER,
+		ETW_Registry.traits.QUIET,
+		ETW_Registry.traits.SCRAPPER,
 	})
 
 	-- ETW_ByTimeClient.lua
@@ -117,7 +119,6 @@ local function registerDynamicTraits()
 		CharacterTrait.CRAFTY,
 		CharacterTrait.TINKERER,
 		CharacterTrait.TARGET_SHOOTER,
-		CharacterTrait.BLACKSMITH2,
 	})
 
 	-- server/ETW_ByTime.lua
