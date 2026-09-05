@@ -2618,6 +2618,22 @@ option EvolvingTraitsWorld.RunnerSkill
 	page = ETWSimplePerks,
 	translation = ETW_RunnerSkill,
 }
+option EvolvingTraitsWorld.Olympian
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_Olympian,
+}
+option EvolvingTraitsWorld.OlympianCounter
+{
+	type = integer,
+	min = 0,
+	max = 10000000,
+	default = 2880,
+	page = ETWSimplePerks,
+	translation = ETW_OlympianCounter,
+}
 option EvolvingTraitsWorld.Sewer
 {
 	type = boolean,

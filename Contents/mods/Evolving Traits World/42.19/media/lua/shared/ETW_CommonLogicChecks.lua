@@ -587,6 +587,22 @@ function ETW_CommonLogicChecks.QuietShouldExecute(player)
 	end
 end
 
+---Returns true if the Olympian System should execute
+---@param player IsoPlayer|nil the player to check for
+---@return boolean boolean true if the Olympian System should execute, false otherwise
+function ETW_CommonLogicChecks.OlympianShouldExecute(player)
+	if
+		SBvars.Olympian == true
+		and traitShouldExecute("OlympianEnabled")
+		and (player and not player:hasTrait(ETWTraitsRegistry.OLYMPIAN))
+		and SBvars.TraitsLockSystemCanGainPositive
+	then
+		return true
+	else
+		return false
+	end
+end
+
 ---Returns true if the Scrapper System should execute
 ---@param player IsoPlayer|nil the player to check for
 ---@return boolean boolean true if the Scrapper System should execute, false otherwise

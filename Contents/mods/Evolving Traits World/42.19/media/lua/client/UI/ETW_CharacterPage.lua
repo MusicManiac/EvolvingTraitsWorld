@@ -1868,6 +1868,27 @@ function ISETWUI:createChildren()
 			end
 
 			if
+				ETW_CommonLogicChecks.OlympianShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.OLYMPIAN)
+			then
+				arrangeColumnsInTable()
+				self.labelOlympianProgress = ISLabel:new(
+					x,
+					y,
+					FONT_HGT_SMALL,
+					"",
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelOlympianProgress:setTooltip(getText("Sandbox_ETW_OlympianCounter_tooltip"))
+				self:addChild(self.labelOlympianProgress)
+			end
+
+			if
 				ETW_CommonLogicChecks.RunnerShouldExecute(player)
 				and not playerHasDelayedTraitNoCache(player, CharacterTrait.JOGGER)
 			then
@@ -4316,6 +4337,10 @@ function ISETWUI:render()
 	updateLabel(
 		self.labelGymRatProgress,
 		getCachedTraitUIName(ETWTraitsRegistry.GYM_RAT) .. ": " .. strength + fitness .. "/" .. SBvars.GymRatSkill
+	)
+	updateLabel(
+		self.labelOlympianProgress,
+		getCachedTraitUIName(ETWTraitsRegistry.OLYMPIAN) .. ": " .. (modData.OlympianCounter or 0) .. "/" .. SBvars.OlympianCounter
 	)
 	updateLabel(
 		self.labelRunnerProgress,

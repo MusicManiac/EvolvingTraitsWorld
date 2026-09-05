@@ -176,7 +176,7 @@
     "UI_trait_Paranoia": "Paranoia",
     "UI_trait_ParanoiaDesc": "While moving, you may suffer a false zombie scare that sharply increases panic and stress and may cause you to scream, attracting nearby zombies.<br>Higher stress makes attacks more likely. After an attack, there is a cooldown before another can occur.",
     "UI_trait_PetTherapy": "Pet Therapy",
-    "UI_trait_PetTherapyDesc": "You have always loved pets more than people. Petting animals gives you mood boost: reduces panic, boredom, unhappiness and stress.<br> By deafult, can only occur once every 5 min and gives 5%% mood boost. Adjustable in sandbox.",
+    "UI_trait_PetTherapyDesc": "You have always loved pets more than people. Petting animals gives you mood boost: reduces panic, boredom, unhappiness and stress.<br> By default, can only occur once every 5 min and gives 5%% mood boost. Adjustable in sandbox.",
     "UI_trait_Pluviophile": "Pluviophile",
     "UI_trait_PluviophileDesc": "You love the rain and being under it. Slowly lose unhappiness, stress and boredom while being outside in rainy weather. Effect is halved if you're under umbrella.",
     "UI_trait_Pluviophobia": "Pluviophobia",

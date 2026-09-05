@@ -19,6 +19,7 @@
 --- @field PagesReadCounter number
 --- @field EatingSpeedSystemCounter number
 --- @field HoarderCounter number
+--- @field OlympianCounter number
 --- @field HardyReserve number
 --- @field QuickRestLastEndurance number
 --- @field IdealWeightLastCalories number

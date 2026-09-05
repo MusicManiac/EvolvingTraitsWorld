@@ -2,7 +2,7 @@
 ###### 05 Sep 2026
 
 - General:
-  - Made Anti-Gun Activist, Quiet dynamic.
+  - Made Anti-Gun Activist, Quiet, Olympian dynamic.
   - Adjusted default sandbox Deprived values.
   - Updated Bloodlust moodle and trait icon.
 - Fix:
@@ -89,7 +89,7 @@
 ###### 30 Aug 2026
 
 - General:
-  - Merged More Traits into ETW. Migrated traits: Well Fitted, Hardy, Blissful, Ideal Weight, Quick Rest, Pack Mouse, Anemic, Butterfingers, Bad Teeth, Depressive, Thick Blooded, Lead Foot, Mundane, Anti-Gun Activist, Natural Eater, Noodle Legs, Pack Mule, Sun Sensitivity, Prowess: Blade/Blunt/Guns/Spear, Quiet, Scrapper, Tavern Brawler, Gourmand, Bouncer, Olympian, Practiced Swordman, Gordonite, Unwavering, Action Hero, Indefatigable, Superimmune, Terminator, Ascetic, Paranoia, Self-Destructive, Immunocompromised.
+  - Merged More Traits into ETW. Migrated traits: Well Fitted, Hardy, Blissful, Ideal Weight, Quick Rest, Pack Mouse, Anemic, Butterfingers, Bad Teeth, Depressive, Thick Blooded, Lead Foot, Mundane, Anti-Gun Activist, Natural Eater, Noodle Legs, Pack Mule, Sun Sensitivity, Prowess: Blade/Blunt/Guns/Spear, Quiet, Scrapper, Tavern Brawler, Gourmand, Bouncer, Olympian, Practiced Swordman, Gordonite, Unwavering, Action Hero, Indefatigable, Super Immune, Terminator, Ascetic, Paranoia, Self-Destructive, Immunocompromised.
   - Some newly added traits were changed compared to what they were doing in More Traits and pretty all of them were rewritten. For additional details refer to More Traits workshop page.
   - At the moment none of migrated traits are dynamic. I'll be adding dynamic support for new traits slowly.
   - Added a toggle to disable ALL traits being dynamic.
@@ -497,7 +497,7 @@
 - General:
   - Changed trait sound from a single selection to multi-selection, it's going to be random from selected if selected more than 1
 - Fixes:
-  - Fixed bug added in v.9.2.0 with player not geting ANY exp boosts when earning traits (ups)
+  - Fixed bug added in v.9.2.0 with player not getting ANY exp boosts when earning traits (ups)
   - Fixed moodles not showing
 - Translations:
   - I am looking for PTBR language maintainer, my current one vanished without a trace??? If maintainer not found, translation will be removed in few updates.
@@ -528,14 +528,14 @@
   - Bravery System default kills value is lowered (20k -> 14k)
   - Home Cook trait price lowered from 3 to 2
 - Fixes:
-  - Fixed Bravery System incorrect behaviour with a very specific set of conditions
+  - Fixed Bravery System incorrect behavior with a very specific set of conditions
   - Fixed Bravery part of UI displaying incorrect tooltip on 2 of its elements
   - Fixed sandbox value display for one of the settings
 
 ## v.8.5.4 - for b41 version of the mod
 ###### 24 Jan 2025
 - Fixes:
-  - Fixed Bravery System incorrect behaviour with a very specific set of conditions
+  - Fixed Bravery System incorrect behavior with a very specific set of conditions
   - Fixed Bravery part of UI displaying incorrect tooltip on 2 of its elements
 
 ## v.9.1.0
@@ -545,7 +545,7 @@
   - Added Blade Enthusiast trait to fill the place of Kenshi
   - Added Polearm Specialist trait to fill the place of Sojutsu Martial Artist
   - Added new trait Pet Therapy which gives mood boost when petting animals and gives +1 Husbandry
-  - Removed dubug option from mod options since its no longer needed after UI was added. All debug outprints are not in detailed debug option.
+  - Removed debug option from mod options since its no longer needed after UI was added. All debug prints are not in detailed debug option.
 - Fixes:
   - Fixed Herbalist not abiding by Traits Lock System
   - Fixed Immunity Bar not showing up in UI
@@ -569,7 +569,7 @@
   - Fixed all repairing-related code. Means now repairing cars gives progress to earning traits that require it. Also means Restoration Expert is actually working now.
   - Fixed submod breaking auto-sort in mod menu.
 - Translations:
-  - Fixed old translation files for b42 (also you should use english while b42 is unstable, I will not be asking translators to update translatons until b42 is out)
+  - Fixed old translation files for b42 (also you should use english while b42 is unstable, I will not be asking translators to update translations until b42 is out)
 
 ## v.9.0.0 - B42 update
 ###### 22 Dec 2024
@@ -907,7 +907,7 @@
 ## v.5.1.5
 ###### 27 Sep 2023
 - Fixes:
-    - Fixed smoking not being detected for purposes of losing smoker trait in singleplayer (oups)
+    - Fixed smoking not being detected for purposes of losing smoker trait in singleplayer (opus)
 
 ## v.5.1.4
 ###### 03 Sep 2023
