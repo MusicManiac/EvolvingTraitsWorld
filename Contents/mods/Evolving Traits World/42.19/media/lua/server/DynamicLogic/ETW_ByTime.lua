@@ -254,7 +254,7 @@ local function hoarder()
 			local maxWeight = player:getMaxWeight()
 			local inventoryFullness = 0.0
 			if maxWeight > 0 then
-				inventoryFullness = math.min(1, math.max(0, player:getInventoryWeight() / maxWeight))
+				inventoryFullness = math.max(0, player:getInventoryWeight() / maxWeight)
 			end
 
 			modData.HoarderCounter = modData.HoarderCounter + inventoryFullness
