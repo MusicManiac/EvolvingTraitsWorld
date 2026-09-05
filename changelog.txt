@@ -1,6 +1,8 @@
 [url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
 
-v.13.2.1
+v.13.3.0
 
-- Fixed:
-  - Injured, Broken Leg and Deprived pont values
+- General:
+  - Made Anti-Gun Activist Dynamic.
+- Translations:
+  - Updated RU translation to v.13.2.1

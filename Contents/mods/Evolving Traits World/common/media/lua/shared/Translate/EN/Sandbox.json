@@ -1,4 +1,10 @@
 {
+    "Sandbox_ETW_AntiGunActivist": "Anti-Gun Activist",
+    "Sandbox_ETW_AntiGunActivist_tooltip": "Allows losing Anti-Gun Activist after meeting the combined Aiming and Reloading level requirement and the firearm kill requirement. Respects negative trait loss and delayed trait settings.",
+    "Sandbox_ETW_AntiGunActivistSkill": "Anti-Gun Activist combined Aiming and Reloading skill requirement",
+    "Sandbox_ETW_AntiGunActivistSkill_tooltip": "Required sum of Aiming and Reloading levels to lose Anti-Gun Activist. The firearm kill requirement must also be met.",
+    "Sandbox_ETW_AntiGunActivistKills": "Anti-Gun Activist firearm kill requirement",
+    "Sandbox_ETW_AntiGunActivistKills_tooltip": "Number of firearm kills required to lose Anti-Gun Activist. The combined Aiming and Reloading level requirement must also be met.",
     "Sandbox_ETW_AntiGunAimingTimeMultiplier": "Anti-Gun Activist aiming-time multiplier",
     "Sandbox_ETW_AntiGunAimingTimeMultiplier_tooltip": "Multiplier applied to firearm aiming time while the trait holder has a firearm equipped. The default 0.8 reproduces the trait's slower aiming behavior.",
     "Sandbox_ETW_TerminatorDamageBonusPercent": "Terminator firearm damage bonus (%%)",

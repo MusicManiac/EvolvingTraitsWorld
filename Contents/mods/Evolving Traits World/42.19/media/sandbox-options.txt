@@ -1975,6 +1975,31 @@ option EvolvingTraitsWorld.AxeThrowerKills
 	page = ETWSimplePerks,
 	translation = ETW_AxeThrowerKills,
 }
+option EvolvingTraitsWorld.AntiGunActivist
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_AntiGunActivist,
+}
+option EvolvingTraitsWorld.AntiGunActivistSkill
+{
+	type = integer,
+	min = 0,
+	max = 20,
+	default = 8,
+	page = ETWSimplePerks,
+	translation = ETW_AntiGunActivistSkill,
+}
+option EvolvingTraitsWorld.AntiGunActivistKills
+{
+	type = integer,
+	min = 0,
+	max = 10000000,
+	default = 300,
+	page = ETWSimplePerks,
+	translation = ETW_AntiGunActivistKills,
+}
 option EvolvingTraitsWorld.BaseballPlayer
 {
 	type = boolean,
