@@ -288,6 +288,50 @@ local function hoarder()
 	end
 end
 
+---Samples running or sprinting once per in-game minute and awards Olympian at the target.
+local function olympian()
+	if SBvars.DisableAllDynamicTraits == true then
+		return
+	end
+	local playersList = ETW_CommonFunctions.playersList()
+	for i = 0, playersList:size() - 1 do
+		local player = playersList:get(i)
+		if not player:hasTrait(ETWTraitsRegistry.OLYMPIAN) then
+			local modData = ETW_CommonFunctions.getETWModData(player)
+			if modData then
+				if player:isSprinting() then
+					modData.OlympianCounter = modData.OlympianCounter + 2
+				elseif player:isRunning() then
+					modData.OlympianCounter = modData.OlympianCounter + 1
+				end
+				if modData.OlympianCounter >= SBvars.OlympianCounter then
+					if
+						SBvars.DelayedTraitsSystem
+						and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.OLYMPIAN)
+					then
+						ETW_CommonFunctions.addTraitToDelayTable({
+							modData = modData,
+							trait = ETWTraitsRegistry.OLYMPIAN,
+							player = player,
+							positiveTrait = true,
+							gainingTrait = true,
+						})
+					elseif
+						not SBvars.DelayedTraitsSystem
+						or ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.OLYMPIAN)
+					then
+						ETW_CommonFunctions.addTraitToPlayer({
+							player = player,
+							trait = ETWTraitsRegistry.OLYMPIAN,
+							positiveTrait = true,
+						})
+					end
+				end
+			end
+		end
+	end
+end
+
 ---Function responsible for setting up events
 ---@param playerIndex number
 ---@param player IsoPlayer
@@ -306,6 +350,10 @@ local function initializeEventsETW(playerIndex, player)
 	if ETW_CommonLogicChecks.SmokerShouldExecute(player) then
 		Events.EveryOneMinute.Add(smoker)
 	end
+	Events.EveryOneMinute.Remove(olympian)
+	if ETW_CommonLogicChecks.OlympianShouldExecute(player) then
+		Events.EveryOneMinute.Add(olympian)
+	end
 	Events.EveryOneMinute.Remove(hoarder)
 	if ETW_CommonLogicChecks.HoarderShouldExecute(player) then
 		Events.EveryOneMinute.Add(hoarder)
@@ -321,6 +369,7 @@ local function clearEventsETW(character)
 	Events.EveryTenMinutes.Remove(sleepSystem)
 	Events.EveryOneMinute.Remove(smoker)
 	Events.EveryOneMinute.Remove(hoarder)
+	Events.EveryOneMinute.Remove(olympian)
 	logETW("ETW Logger | System: clearEventsETW in " .. FILENAME)
 end
 

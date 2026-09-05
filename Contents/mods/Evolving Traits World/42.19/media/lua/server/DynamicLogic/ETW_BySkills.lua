@@ -127,6 +127,16 @@ local function applyTraitChange(ctx, trait, positiveTrait, gainingTrait, onApply
 	end
 end
 
+---@class ETWSkillTraitRule
+---@field triggers table<PerkFactory.Perk|string|CharacterTrait, boolean>
+---@field shouldExecute fun(player: IsoPlayer|nil): boolean
+---@field run? fun(ctx: table<string, any>)
+---@field condition? fun(ctx: table<string, any>): boolean
+---@field trait? CharacterTrait
+---@field positiveTrait? boolean
+---@field gainingTrait? boolean
+---@field onApply? fun(ctx: table<string, any>)
+
 ---Executes a single skill rule when the current trigger and common checks match.
 ---Example: `executeTraitRule(ctx, skillTraitRules[1], trigger)`
 ---@param ctx table<string, any>
@@ -151,6 +161,7 @@ end
 
 ---Rules that map skills and other progression triggers to trait changes.
 ---Example rule shape: `{ triggers = makeTriggerSet(...), shouldExecute = fn, condition = fn, trait = traitId }`
+---@type ETWSkillTraitRule[]
 local skillTraitRules = {
 	{
 		triggers = makeTriggerSet(

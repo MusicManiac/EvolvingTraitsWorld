@@ -3,7 +3,7 @@
 v.13.3.0
 
 - General:
-  - Made Anti-Gun Activist, Quiet dynamic.
+  - Made Anti-Gun Activist, Quiet, Olympian dynamic.
   - Adjusted default sandbox Deprived values.
   - Updated Bloodlust moodle and trait icon.
 - Fix:

@@ -15,7 +15,7 @@ local ETW_Registry = require("ETW_Registry")
 local ETWTraitsRegistry = ETW_Registry.traits
 
 ---Increment when fields are added to or migrated in EvolvingTraitsWorld modData.
-local MOD_DATA_VERSION = 1.2
+local MOD_DATA_VERSION = 1.3
 
 ---Returns the midpoint between two numeric values.
 ---@param a number
@@ -108,6 +108,7 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	modData.PagesReadCounter = modData.PagesReadCounter or 0
 	modData.EatingSpeedSystemCounter = modData.EatingSpeedSystemCounter or 0
 	modData.HoarderCounter = modData.HoarderCounter or 0
+	modData.OlympianCounter = modData.OlympianCounter or 0
 	modData.HardyReserve = modData.HardyReserve
 		or PZMath.clamp((SBvars.HardyExtraEndurancePercent or 25) / 100, 0, 1)
 	modData.QuickRestLastEndurance = modData.QuickRestLastEndurance
