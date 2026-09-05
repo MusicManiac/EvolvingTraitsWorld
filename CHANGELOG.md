@@ -4,6 +4,7 @@
 - General:
   - Made Anti-Gun Activist Dynamic.
   - Adjusted default sandbox Deprived values.
+  - Updated Bloodlust moodle and trait icon.
 - Translations:
   - Updated RU translation to v.13.2.1
 
