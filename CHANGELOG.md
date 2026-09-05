@@ -5,6 +5,7 @@
   - Made Anti-Gun Activist, Quiet, Olympian dynamic.
   - Adjusted default sandbox Deprived values.
   - Updated Bloodlust moodle and trait icon.
+  - Uncapped Hoarder dynamic gain (now carrying above your inventory limit appropriately adds more than 1 to counter)
 - Fix:
   - Fixed typo in Noodle Legs description.
 - Translations:
