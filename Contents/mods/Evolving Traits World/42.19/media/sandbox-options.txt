@@ -2554,6 +2554,22 @@ option EvolvingTraitsWorld.PolearmFighterKills
 	page = ETWSimplePerks,
 	translation = ETW_PolearmFighterKills,
 }
+option EvolvingTraitsWorld.Scrapper
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_Scrapper,
+}
+option EvolvingTraitsWorld.ScrapperSkill
+{
+	type = integer,
+	min = 0,
+	max = 30,
+	default = 18,
+	page = ETWSimplePerks,
+	translation = ETW_ScrapperSkill,
+}
 option EvolvingTraitsWorld.RestorationExpert
 {
 	type = boolean,

@@ -409,6 +409,22 @@ local skillTraitRules = {
 		gainingTrait = true,
 	},
 	{
+		triggers = makeTriggerSet(
+			"characterInitialization",
+			Perks.MetalWelding,
+			Perks.Maintenance,
+			Perks.Blacksmith,
+			ETWTraitsRegistry.SCRAPPER
+		),
+		shouldExecute = ETW_CommonLogicChecks.ScrapperShouldExecute,
+		condition = function(ctx)
+			return sumContextValues(ctx, { "metalworking", "maintenance", "blacksmith" }) >= SBvars.ScrapperSkill
+		end,
+		trait = ETWTraitsRegistry.SCRAPPER,
+		positiveTrait = true,
+		gainingTrait = true,
+	},
+	{
 		triggers = makeTriggerSet("characterInitialization", Perks.Maintenance, ETWTraitsRegistry.RESTORATION_EXPERT),
 		shouldExecute = ETW_CommonLogicChecks.RestorationExpertShouldExecute,
 		condition = function(ctx)

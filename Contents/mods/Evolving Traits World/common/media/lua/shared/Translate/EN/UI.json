@@ -164,7 +164,7 @@
     "UI_trait_NaturalEater": "Natural Eater",
     "UI_trait_NaturalEaterDesc": "You prefer natural foods over heavily preserved food.<br>Eating uncooked beans, berries, citrus, fruit, greens, mushrooms, nuts, or vegetables restores mental stats based on the portion's hunger value, up to 5%%.",
     "UI_trait_NoodleLegs": "Noodle Legs",
-    "UI_trait_NoodleLegsDesc": "You may trip while running or sprinting.<br>The chance decreases with your Sprinting and Nimble levels.",
+    "UI_trait_NoodleLegsDesc": "You may trip while running or sprinting.<br>The chance decreases with your Running and Nimble levels.",
     "UI_trait_Olympian": "Olympian",
     "UI_trait_OlympianDesc": "You are, or once were, an Olympic competitor whose fitness and speed reflect years of training.",
     "UI_trait_PainTolerance": "Pain Tolerance",

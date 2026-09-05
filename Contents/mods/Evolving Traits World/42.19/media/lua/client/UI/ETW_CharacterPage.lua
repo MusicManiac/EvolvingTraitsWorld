@@ -2346,6 +2346,27 @@ function ISETWUI:createChildren()
 			end
 
 			if
+				ETW_CommonLogicChecks.ScrapperShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.SCRAPPER)
+			then
+				arrangeColumnsInTable()
+				self.labelScrapperSkillProgress = ISLabel:new(
+					x,
+					y,
+					FONT_HGT_SMALL,
+					getText(""),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelScrapperSkillProgress:setTooltip(getText("Sandbox_ETW_ScrapperSkill_tooltip"))
+				self:addChild(self.labelScrapperSkillProgress)
+			end
+
+			if
 				ETW_CommonLogicChecks.RestorationExpertShouldExecute(player)
 				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.RESTORATION_EXPERT)
 			then
@@ -4433,6 +4454,14 @@ function ISETWUI:render()
 			.. spearKills
 			.. "/"
 			.. SBvars.PolearmFighterKills
+	)
+	updateLabel(
+		self.labelScrapperSkillProgress,
+		getCachedTraitUIName(ETWTraitsRegistry.SCRAPPER)
+			.. ": "
+			.. metalworking + maintenance + blacksmith
+			.. "/"
+			.. SBvars.ScrapperSkill
 	)
 	updateLabel(
 		self.labelRestorationExpertSkillProgress,

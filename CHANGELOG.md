@@ -5,6 +5,8 @@
   - Made Anti-Gun Activist Dynamic.
   - Adjusted default sandbox Deprived values.
   - Updated Bloodlust moodle and trait icon.
+- Fix:
+  - Fixed typo in Noodle Legs description.
 - Translations:
   - Updated RU translation to v.13.2.1
 
