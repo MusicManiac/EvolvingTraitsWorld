@@ -571,6 +571,22 @@ function ETW_CommonLogicChecks.PolearmFighterShouldExecute(player)
 	end
 end
 
+---Returns true if the Quiet System should execute
+---@param player IsoPlayer|nil the player to check for
+---@return boolean boolean true if the Quiet System should execute, false otherwise
+function ETW_CommonLogicChecks.QuietShouldExecute(player)
+	if
+		SBvars.Quiet == true
+		and traitShouldExecute("QuietEnabled")
+		and (player and not player:hasTrait(ETWTraitsRegistry.QUIET) and not player:hasTrait(CharacterTrait.CLUMSY))
+		and SBvars.TraitsLockSystemCanGainPositive
+	then
+		return true
+	else
+		return false
+	end
+end
+
 ---Returns true if the Scrapper System should execute
 ---@param player IsoPlayer|nil the player to check for
 ---@return boolean boolean true if the Scrapper System should execute, false otherwise

@@ -2,7 +2,7 @@
 ###### 05 Sep 2026
 
 - General:
-  - Made Anti-Gun Activist Dynamic.
+  - Made Anti-Gun Activist, Quiet dynamic.
   - Adjusted default sandbox Deprived values.
   - Updated Bloodlust moodle and trait icon.
 - Fix:

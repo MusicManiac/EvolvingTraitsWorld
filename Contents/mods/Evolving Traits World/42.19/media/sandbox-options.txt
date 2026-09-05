@@ -2554,6 +2554,22 @@ option EvolvingTraitsWorld.PolearmFighterKills
 	page = ETWSimplePerks,
 	translation = ETW_PolearmFighterKills,
 }
+option EvolvingTraitsWorld.Quiet
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_Quiet,
+}
+option EvolvingTraitsWorld.QuietSkill
+{
+	type = integer,
+	min = 0,
+	max = 20,
+	default = 12,
+	page = ETWSimplePerks,
+	translation = ETW_QuietSkill,
+}
 option EvolvingTraitsWorld.Scrapper
 {
 	type = boolean,
