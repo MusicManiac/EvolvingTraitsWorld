@@ -354,6 +354,17 @@ local skillTraitRules = {
 		gainingTrait = true,
 	},
 	{
+		triggers = makeTriggerSet("characterInitialization", "kill", Perks.SmallBlunt, Perks.Blunt, ETWTraitsRegistry.THUGGISH),
+		shouldExecute = ETW_CommonLogicChecks.ThuggishShouldExecute,
+		condition = function(ctx)
+			return sumContextValues(ctx, { "shortBlunt", "longBlunt" }) >= SBvars.ThuggishSkill
+				and (ctx.shortBluntKills + ctx.longBluntKills) >= SBvars.ThuggishKills
+		end,
+		trait = ETWTraitsRegistry.THUGGISH,
+		positiveTrait = true,
+		gainingTrait = true,
+	},
+	{
 		triggers = makeTriggerSet("characterInitialization", "kill", Perks.Axe, Perks.Blunt, CharacterTrait.BRAWLER),
 		shouldExecute = ETW_CommonLogicChecks.BrawlerShouldExecute,
 		condition = function(ctx)

@@ -603,6 +603,22 @@ function ETW_CommonLogicChecks.OlympianShouldExecute(player)
 	end
 end
 
+---Returns true if the Thuggish System should execute
+---@param player IsoPlayer|nil the player to check for
+---@return boolean boolean true if the Thuggish System should execute, false otherwise
+function ETW_CommonLogicChecks.ThuggishShouldExecute(player)
+	if
+		SBvars.Thuggish == true
+		and traitShouldExecute("ThuggishEnabled")
+		and (player and not player:hasTrait(ETWTraitsRegistry.THUGGISH))
+		and SBvars.TraitsLockSystemCanGainPositive
+	then
+		return true
+	else
+		return false
+	end
+end
+
 ---Returns true if the Scrapper System should execute
 ---@param player IsoPlayer|nil the player to check for
 ---@return boolean boolean true if the Scrapper System should execute, false otherwise
