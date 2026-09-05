@@ -571,6 +571,22 @@ function ETW_CommonLogicChecks.PolearmFighterShouldExecute(player)
 	end
 end
 
+---Returns true if the Scrapper System should execute
+---@param player IsoPlayer|nil the player to check for
+---@return boolean boolean true if the Scrapper System should execute, false otherwise
+function ETW_CommonLogicChecks.ScrapperShouldExecute(player)
+	if
+		SBvars.Scrapper == true
+		and traitShouldExecute("ScrapperEnabled")
+		and (player and not player:hasTrait(ETWTraitsRegistry.SCRAPPER))
+		and SBvars.TraitsLockSystemCanGainPositive
+	then
+		return true
+	else
+		return false
+	end
+end
+
 ---Returns true if the Restoration Expert System should execute
 ---@param player IsoPlayer|nil the player to check for
 ---@return boolean boolean true if the Restoration Expert System should execute, false otherwise

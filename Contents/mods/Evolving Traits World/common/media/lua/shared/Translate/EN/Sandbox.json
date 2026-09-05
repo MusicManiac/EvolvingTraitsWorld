@@ -1,4 +1,8 @@
 {
+    "Sandbox_ETW_Scrapper": "Scrapper",
+    "Sandbox_ETW_Scrapper_tooltip": "Allows gaining Scrapper through combined Welding, Maintenance, and Blacksmithing levels. Respects positive trait gain and delayed trait settings.",
+    "Sandbox_ETW_ScrapperSkill": "Scrapper combined skill requirement",
+    "Sandbox_ETW_ScrapperSkill_tooltip": "Required sum of Welding, Maintenance, and Blacksmithing levels to gain Scrapper.",
     "Sandbox_ETW_AntiGunActivist": "Anti-Gun Activist",
     "Sandbox_ETW_AntiGunActivist_tooltip": "Allows losing Anti-Gun Activist after meeting the combined Aiming and Reloading level requirement and the firearm kill requirement. Respects negative trait loss and delayed trait settings.",
     "Sandbox_ETW_AntiGunActivistSkill": "Anti-Gun Activist combined Aiming and Reloading skill requirement",
