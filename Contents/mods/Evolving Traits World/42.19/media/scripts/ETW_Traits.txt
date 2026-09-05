@@ -90,7 +90,7 @@ module ETW
         IsProfessionTrait = false,
         DisabledInMultiplayer = false,
         CharacterTrait = ETW:Deprived,
-        Cost = -8,
+        Cost = -6,
         UIName = UI_trait_Deprived,
         UIDescription = UI_trait_DeprivedDesc,
     }

@@ -3,6 +3,7 @@
 
 - General:
   - Made Anti-Gun Activist Dynamic.
+  - Adjusted default sandbox Deprived values.
 - Translations:
   - Updated RU translation to v.13.2.1
 

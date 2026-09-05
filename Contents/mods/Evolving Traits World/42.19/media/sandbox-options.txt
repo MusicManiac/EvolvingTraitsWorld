@@ -710,7 +710,7 @@ option EvolvingTraitsWorld.DeprivedCapacityThresholdPercent
 	type = integer,
 	min = 0,
 	max = 100,
-	default = 50,
+	default = 75,
 	page = ETWTraitsSettings,
 	translation = ETW_DeprivedCapacityThresholdPercent,
 }
