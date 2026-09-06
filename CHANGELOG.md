@@ -1,3 +1,9 @@
+## v.13.3.2
+###### 06 Sep 2026
+
+- Fix:
+  - Removed leftover lua file
+
 ## v.13.3.1
 ###### 06 Sep 2026
 
