@@ -21,6 +21,31 @@ end
 ---@type fun(player?: IsoPlayer, isKill?: boolean)
 local catEyes
 
+---Samples the local player's movement state and forwards Olympian progress to the MP server.
+---@param player IsoPlayer|nil
+local function olympian(player)
+	if gameMode ~= ETW_CommonFunctions.GameMode.MP_CLIENT or SBvars.DisableAllDynamicTraits == true then
+		return
+	end
+
+	player = player or getPlayer()
+	if not player or not ETW_CommonLogicChecks.OlympianShouldExecute(player) then
+		return
+	end
+
+	local progressIncrease = 0
+	if player:isSprinting() then
+		progressIncrease = 2
+	elseif player:isRunning() then
+		progressIncrease = 1
+	end
+	if progressIncrease == 0 then
+		return
+	end
+
+	sendClientCommand(player, "ETW", "olympianRecordProgress", { progressIncrease = progressIncrease })
+end
+
 ---Applies Cat Eyes progress locally in SP or forwards it to the server in MP.
 ---@param player IsoPlayer
 ---@param progressIncrease number
@@ -201,16 +226,25 @@ end
 ---@param player IsoPlayer
 local function initializeEventsETW(playerIndex, player)
 	Events.EveryOneMinute.Remove(catEyes)
+	Events.EveryOneMinute.Remove(olympian)
 	Events.OnZombieDead.Remove(catEyesKill)
 	if ETW_CommonLogicChecks.CatEyesShouldExecute(player) then
 		Events.EveryOneMinute.Add(catEyes)
 		Events.OnZombieDead.Add(catEyesKill)
+	end
+	if
+		gameMode == ETW_CommonFunctions.GameMode.MP_CLIENT
+		and SBvars.DisableAllDynamicTraits ~= true
+		and ETW_CommonLogicChecks.OlympianShouldExecute(player)
+	then
+		Events.EveryOneMinute.Add(olympian)
 	end
 end
 
 ---@param character IsoPlayer
 local function clearEventsETW(character)
 	Events.EveryOneMinute.Remove(catEyes)
+	Events.EveryOneMinute.Remove(olympian)
 	Events.OnZombieDead.Remove(catEyesKill)
 	logETW("ETW Logger | System: clearEventsETW in " .. FILENAME)
 end

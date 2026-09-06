@@ -1,9 +1,12 @@
 ## v.13.3.1
-###### 05 Sep 2026
+###### 06 Sep 2026
 
 - Fix:
   - Fixed desync for item and food traits (Gourmand, Well-fitted, etc.).
   - Ideal Weight not being marked dynamic.
+  - Fixed Olympian not recording progress in MP.
+- Translations:
+  - Updated CN to 13.3.1
 
 ## v.13.3.0
 ###### 05 Sep 2026

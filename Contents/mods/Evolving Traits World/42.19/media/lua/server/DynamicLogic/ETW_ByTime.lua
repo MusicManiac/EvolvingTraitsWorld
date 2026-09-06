@@ -351,7 +351,7 @@ local function initializeEventsETW(playerIndex, player)
 		Events.EveryOneMinute.Add(smoker)
 	end
 	Events.EveryOneMinute.Remove(olympian)
-	if ETW_CommonLogicChecks.OlympianShouldExecute(player) then
+	if gameMode == ETW_CommonFunctions.GameMode.SP and ETW_CommonLogicChecks.OlympianShouldExecute(player) then
 		Events.EveryOneMinute.Add(olympian)
 	end
 	Events.EveryOneMinute.Remove(hoarder)
