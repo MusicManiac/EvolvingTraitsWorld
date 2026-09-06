@@ -179,6 +179,44 @@ Commands.triggerBouncerStagger = function(player, args)
 	)
 end
 
+---@class WellFittedItemModifiers
+---@field itemId integer
+---@field actualWeight number
+---@field runSpeedModifier number
+---@field combatSpeedModifier number
+
+---@class ApplyWellFittedItemModifiersArgs
+---@field items WellFittedItemModifiers[]
+
+---Mirrors Well-Fitted's clothing modifiers on the owning MP client.
+---@param player IsoPlayer
+---@param args ApplyWellFittedItemModifiersArgs
+Commands.applyWellFittedItemModifiers = function(player, args)
+	player = resolveLocalPlayer(player)
+	if not player then
+		logETW("ETW Logger | Commands.applyWellFittedItemModifiers(): player not ready, skipping")
+		return
+	end
+	local inventory = player:getInventory()
+	local changed = false
+	for _, modifiers in ipairs(args.items or {}) do
+		local item = inventory:getItemById(modifiers.itemId)
+		if item and item:IsClothing() then
+			---@cast item Clothing
+			item:setActualWeight(modifiers.actualWeight)
+			item:setRunSpeedModifier(modifiers.runSpeedModifier)
+			item:setCombatSpeedModifier(modifiers.combatSpeedModifier)
+			changed = true
+		end
+	end
+	if changed then
+		-- Refresh cached speeds without firing the Lua event that requests another server update.
+		player:OnClothingUpdated()
+		inventory:setDrawDirty(true)
+	end
+	logETW("ETW Logger | Commands.applyWellFittedItemModifiers(): applied clothing modifiers locally")
+end
+
 ---Mirrors Unwavering's wound movement-speed modifiers on the owning MP client.
 Commands.applyUnwaveringInjurySpeedModifiers = function(player, args)
 	player = resolveLocalPlayer(player)

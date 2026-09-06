@@ -8,6 +8,7 @@
   - Uncapped Hoarder dynamic gain (now carrying above your inventory limit appropriately adds more than 1 to counter)
   - Recent mental no longer includes anger (it's not really used by the game), instead now included boredom.
 - Fix:
+  - Fixed Well-Fitted clothing weight and speed modifiers not applying in multiplayer.
   - Fixed typo in Noodle Legs description.
 - Translations:
   - Updated RU translation to v.13.2.1 thanks to [Ksarper](https://steamcommunity.com/id/76561198142927505)

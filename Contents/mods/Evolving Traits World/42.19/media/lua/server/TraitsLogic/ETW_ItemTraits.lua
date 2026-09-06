@@ -63,6 +63,8 @@ end
 
 ---@param player IsoPlayer
 local function wellFittedTrait(player)
+	local syncToClient = ETW_CommonFunctions.gameMode() == ETW_CommonFunctions.GameMode.MP_SERVER
+	local itemModifiers = {}
 	local hasTrait = player:hasTrait(ETWTraitsRegistry.WELL_FITTED)
 	local wornItems = player:getWornItems()
 	local items = player:getInventory():getItems()
@@ -120,11 +122,23 @@ local function wellFittedTrait(player)
 				changed = true
 				logETW("ETW Logger | wellFittedTrait(): restored " .. item:getFullType())
 			end
+			-- Resend applied and restored values so client item reloads also receive the modifiers.
+			if syncToClient and data.OriginalActualWeight ~= nil then
+				table.insert(itemModifiers, {
+					itemId = item:getID(),
+					actualWeight = item:getActualWeight(),
+					runSpeedModifier = item:getRunSpeedModifier(),
+					combatSpeedModifier = item:getCombatSpeedModifier(),
+				})
+			end
 		end
 	end
 
 	if changed then
 		player:setWornItems(wornItems)
+	end
+	if syncToClient and #itemModifiers > 0 then
+		sendServerCommand(player, "ETW", "applyWellFittedItemModifiers", { items = itemModifiers })
 	end
 end
 
