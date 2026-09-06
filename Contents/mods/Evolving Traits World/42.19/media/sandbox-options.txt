@@ -221,6 +221,40 @@ option EvolvingTraitsWorld.FoodSicknessSystemNormalSicknessMultiplier
 	page = ETWSystems,
 	translation = ETW_FoodSicknessSystemNormalSicknessMultiplier,
 }
+option EvolvingTraitsWorld.IdealWeight
+{
+	type = boolean,
+	default = true,
+	page = ETWSystems,
+	translation = ETW_IdealWeight,
+}
+option EvolvingTraitsWorld.IdealWeightCounter
+{
+	type = double,
+	min = 1,
+	max = 10000000,
+	default = 18000,
+	page = ETWSystems,
+	translation = ETW_IdealWeightCounter,
+}
+option EvolvingTraitsWorld.IdealWeightProgressGainMultiplier
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 1,
+	page = ETWSystems,
+	translation = ETW_IdealWeightProgressGainMultiplier,
+}
+option EvolvingTraitsWorld.IdealWeightProgressLossMultiplier
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 1,
+	page = ETWSystems,
+	translation = ETW_IdealWeightProgressLossMultiplier,
+}
 option EvolvingTraitsWorld.Blissful
 {
 	type = boolean,

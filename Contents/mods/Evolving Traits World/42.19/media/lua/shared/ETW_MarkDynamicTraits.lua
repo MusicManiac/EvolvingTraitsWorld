@@ -20,6 +20,7 @@ local function registerDynamicTraits()
 	-- Custom ETW Traits
 	registerTraits({
 		ETW_Registry.traits.BLISSFUL,
+		ETW_Registry.traits.IDEAL_WEIGHT,
 		ETW_Registry.traits.AV_CLUB,
 		ETW_Registry.traits.AXE_THROWER,
 		ETW_Registry.traits.BLADE_ENTHUSIAST,

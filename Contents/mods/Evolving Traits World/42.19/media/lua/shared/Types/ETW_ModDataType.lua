@@ -22,6 +22,7 @@
 --- @field OlympianCounter number
 --- @field HardyReserve number
 --- @field QuickRestLastEndurance number
+--- @field IdealWeightCounter number
 --- @field IdealWeightLastCalories number
 --- @field DepressiveEpisodeActive boolean
 --- @field ParanoiaCooldownMinutes integer

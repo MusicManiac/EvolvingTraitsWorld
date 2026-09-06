@@ -710,6 +710,9 @@ function ISETWUI:createChildren()
 			if ETW_CommonLogicChecks.SleepSystemShouldExecute(player) then
 				appendLeftBarLabel(labelTexts, getText("Sandbox_ETW_SleepSystem"))
 			end
+			if ETW_CommonLogicChecks.IdealWeightShouldExecute(player) then
+				appendLeftBarLabel(labelTexts, getText("Sandbox_ETW_IdealWeight"))
+			end
 			if ETW_CommonLogicChecks.RainSystemShouldExecute(player) then
 				appendLeftBarLabel(labelTexts, getText("Sandbox_ETW_RainSystem"))
 			end
@@ -3672,6 +3675,60 @@ function ISETWUI:createChildren()
 				y = y + FONT_HGT_SMALL
 			end
 
+			if ETW_CommonLogicChecks.IdealWeightShouldExecute(player) then
+				str = "- " .. getCachedTraitUIName(ETWTraitsRegistry.IDEAL_WEIGHT)
+				self.labelIdealWeightLose = ISLabel:new(
+					barStartPosition + barLength * 0.33 - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelIdealWeightLose:setTooltip(getText("Sandbox_ETW_IdealWeightCounter_tooltip"))
+				self:addChild(self.labelIdealWeightLose)
+				str = "+ " .. getCachedTraitUIName(ETWTraitsRegistry.IDEAL_WEIGHT)
+				self.labelIdealWeightGain = ISLabel:new(
+					barStartPosition + barLength * 0.66 - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelIdealWeightGain:setTooltip(getText("Sandbox_ETW_IdealWeightCounter_tooltip"))
+				self:addChild(self.labelIdealWeightGain)
+				y = y + FONT_HGT_SMALL
+				self.labelIdealWeightBarName = ISLabel:new(
+					barStartPosition - lineStartPosition,
+					y,
+					FONT_HGT_SMALL,
+					getText("Sandbox_ETW_IdealWeight"),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					false
+				)
+				self.labelIdealWeightBarName:setTooltip(getText("Sandbox_ETW_IdealWeight_tooltip"))
+				self:addChild(self.labelIdealWeightBarName)
+				self.barIdealWeight = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
+				self.barIdealWeight:setGradientTexture(redYellowGreenGradient)
+				self.barIdealWeight:setHighlightRadius(highlightRadius)
+				self.barIdealWeight:setDoKnob(false)
+				self:addChild(self.barIdealWeight)
+				y = y + FONT_HGT_SMALL
+			end
+
 			if ETW_CommonLogicChecks.RainSystemShouldExecute(player) then
 				str = "+/- " .. getCachedTraitUIName(ETWTraitsRegistry.PLUVIOPHOBIA)
 				self.labelPluviophobia = ISLabel:new(
@@ -4267,6 +4324,11 @@ function ISETWUI:render()
 		self.barSmokerSystem,
 		percentile(SBvars.SmokerCounter * -2, SBvars.SmokerCounter * 2, modData.SmokeSystem.SmokingAddiction),
 		getText("UI_ETW_CurrentValue") .. modData.SmokeSystem.SmokingAddiction
+	)
+	updateBar(
+		self.barIdealWeight,
+		percentile(0, SBvars.IdealWeightCounter, modData.IdealWeightCounter or 0),
+		getText("UI_ETW_CurrentValue") .. formatDecimal(modData.IdealWeightCounter or 0)
 	)
 	updateBar(
 		self.barRainSystem,

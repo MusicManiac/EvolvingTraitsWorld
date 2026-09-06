@@ -59,6 +59,15 @@ function ETW_CommonLogicChecks.FoodSicknessSystemShouldExecute(player)
 	end
 end
 
+---Returns whether weight-based progression can gain or remove Ideal Weight.
+---@param player IsoPlayer|nil
+---@return boolean
+function ETW_CommonLogicChecks.IdealWeightShouldExecute(player)
+	return SBvars.IdealWeight == true
+		and traitShouldExecute("IdealWeightEnabled")
+		and (SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLosePositive)
+end
+
 ---Returns whether mental-state progression can gain or remove Blissful.
 ---@param player IsoPlayer|nil
 ---@return boolean
