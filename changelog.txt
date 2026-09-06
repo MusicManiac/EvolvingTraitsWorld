@@ -1,14 +1,7 @@
 [url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
 
-v.13.3.0
+v.13.3.1
 
-- General:
-  - Made Anti-Gun Activist, Quiet, Olympian, Thuggish, Blissful and Ideal Weight dynamic.
-  - Adjusted default sandbox Deprived values.
-  - Updated Bloodlust moodle and trait icon.
-  - Uncapped Hoarder dynamic gain (now carrying above your inventory limit appropriately adds more than 1 to counter)
-  - Recent mental no longer includes anger (it's not really used by the game), instead now included boredom.
 - Fix:
-  - Fixed typo in Noodle Legs description.
-- Translations:
-  - Updated RU translation to v.13.2.1 thanks to [url=https://steamcommunity.com/id/76561198142927505]Ksarper[/url]
+  - Fixed desync for item and food traits (Gourmand, Well-fitted, etc.).
+  - Ideal Weight not being marked dynamic.

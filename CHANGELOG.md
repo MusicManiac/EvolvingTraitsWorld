@@ -1,3 +1,10 @@
+## v.13.3.1
+###### 05 Sep 2026
+
+- Fix:
+  - Fixed desync for item and food traits (Gourmand, Well-fitted, etc.).
+  - Ideal Weight not being marked dynamic.
+
 ## v.13.3.0
 ###### 05 Sep 2026
 

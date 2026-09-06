@@ -50,6 +50,7 @@ local function registerDynamicTraits()
 		ETW_Registry.traits.THUGGISH,
 		ETW_Registry.traits.QUIET,
 		ETW_Registry.traits.SCRAPPER,
+		ETW_Registry.traits.IDEAL_WEIGHT,
 	})
 
 	-- ETW_ByTimeClient.lua
