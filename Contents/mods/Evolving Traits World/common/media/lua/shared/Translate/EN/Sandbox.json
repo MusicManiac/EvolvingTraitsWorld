@@ -1,4 +1,10 @@
 {
+    "Sandbox_ETW_Blissful": "Blissful",
+    "Sandbox_ETW_Blissful_tooltip": "Allows gaining and losing Blissful based on the long-term mental-state average.",
+    "Sandbox_ETW_BlissfulGainThreshold": "Blissful gain threshold",
+    "Sandbox_ETW_BlissfulGainThreshold_tooltip": "Gain Blissful when the mental-state average reaches or exceeds this value.",
+    "Sandbox_ETW_BlissfulLoseThreshold": "Blissful loss threshold",
+    "Sandbox_ETW_BlissfulLoseThreshold_tooltip": "Lose Blissful when the mental-state average reaches or falls below this value.",
     "Sandbox_ETW_Thuggish": "Thuggish",
     "Sandbox_ETW_Thuggish_tooltip": "Allows gaining Thuggish after meeting both the combined Long Blunt and Short Blunt skill and kill requirements.",
     "Sandbox_ETW_ThuggishSkill": "Thuggish combined Long Blunt and Short Blunt skill requirement",

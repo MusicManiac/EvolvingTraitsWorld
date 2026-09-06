@@ -1030,6 +1030,25 @@ function ISETWUI:createChildren()
 
 			y = y + FONT_HGT_SMALL + 6
 
+			if ETW_CommonLogicChecks.BlissfulShouldExecute(player) then
+				str = "- " .. getCachedTraitUIName(ETWTraitsRegistry.BLISSFUL)
+				self.labelVitalsMentalLose = ISLabel:new(
+					barStartPosition + (barLength * SBvars.BlissfulLoseThreshold) - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelVitalsMentalLose:setTooltip(getText("Sandbox_ETW_BlissfulLoseThreshold_tooltip"))
+				self:addChild(self.labelVitalsMentalLose)
+				y = y + FONT_HGT_SMALL
+			end
+
 			self.labelVitalsMental = ISLabel:new(
 				barStartPosition - lineStartPosition,
 				y,
@@ -1052,6 +1071,25 @@ function ISETWUI:createChildren()
 			self:addChild(self.barVitalsMental)
 
 			y = y + FONT_HGT_SMALL + 2
+
+			if ETW_CommonLogicChecks.BlissfulShouldExecute(player) then
+				str = "+ " .. getCachedTraitUIName(ETWTraitsRegistry.BLISSFUL)
+				self.labelVitalsMentalGain = ISLabel:new(
+					barStartPosition + (barLength * SBvars.BlissfulGainThreshold) - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelVitalsMentalGain:setTooltip(getText("Sandbox_ETW_BlissfulGainThreshold_tooltip"))
+				self:addChild(self.labelVitalsMentalGain)
+				y = y + FONT_HGT_SMALL
+			end
 
 			self.labelVitalsMental24Hours = ISLabel:new(
 				barStartPosition,
@@ -4327,7 +4365,7 @@ function ISETWUI:render()
 		self.labelVitalsThirstGainNegative or self.labelVitalsThirstLosePositive or self.labelVitalsThirst,
 		self.labelVitalsThirst24Hours
 	)
-	drawVitalsGroupBorder(self.labelVitalsMental, self.labelVitalsMental24Hours)
+	drawVitalsGroupBorder(self.labelVitalsMentalLose or self.labelVitalsMental, self.labelVitalsMental24Hours)
 
 	if isPermanentTraitsTabActive and self.barBravery ~= nil then
 		local topY = getWidgetTop(self.labelCowardlyLose)

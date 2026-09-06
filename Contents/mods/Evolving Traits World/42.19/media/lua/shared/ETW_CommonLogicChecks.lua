@@ -59,6 +59,15 @@ function ETW_CommonLogicChecks.FoodSicknessSystemShouldExecute(player)
 	end
 end
 
+---Returns whether mental-state progression can gain or remove Blissful.
+---@param player IsoPlayer|nil
+---@return boolean
+function ETW_CommonLogicChecks.BlissfulShouldExecute(player)
+	return SBvars.Blissful == true
+		and traitShouldExecute("BlissfulEnabled")
+		and (SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLosePositive)
+end
+
 ---Returns true if the Food System should execute
 ---@param player IsoPlayer|nil the player to check for
 ---@return boolean boolean true if the Food System should execute, false otherwise
