@@ -32,7 +32,16 @@ end
 local leadFootShoes = {}
 ---@type table<IsoPlayer, HandWeapon>
 local combatTraitWeapons = {}
----@type table<HandWeapon, table<string, number>>
+---@class ETWCombatTraitAppliedValues
+---@field MinDamage number
+---@field MaxDamage number
+---@field CriticalChance number?
+---@field ConditionLowerChance integer
+---@field AimingTime integer?
+---@field MaxRange number?
+---@field JamGunChance number?
+
+---@type table<HandWeapon, ETWCombatTraitAppliedValues>
 local combatTraitAppliedValues = {}
 local antiGunWeapons = {}
 local actionHeroThreatCache = {}

@@ -5,10 +5,16 @@ local ETW_CommonFunctions = require("ETW_CommonFunctions")
 local ETW_ModData = require("ETW_ModData")
 local ETW_EagleEyedTracking = require("TraitSpecific/ETW_EagleEyedTracking")
 local ETW_CommonLogicChecks = require("ETW_CommonLogicChecks")
+local ETW_Registry = require("ETW_Registry")
 
 local ETW_BySkills = require("DynamicLogic/ETW_BySkills")
 
 local Commands = {}
+
+---@type EvolvingTraitsWorldTraitsRegistries
+local ETWTraitsRegistry = ETW_Registry.traits
+---@type EvolvingTraitsWorldSandboxVars
+local SBvars = SandboxVars.EvolvingTraitsWorld
 
 local gameMode = ETW_CommonFunctions.gameMode()
 
@@ -143,6 +149,61 @@ function Commands.catEyesRecordProgress(player, args)
 		ETW_CommonFunctions.addTraitToPlayer({
 			player = player,
 			trait = CharacterTrait.NIGHT_VISION,
+			positiveTrait = true,
+		})
+	end
+end
+
+---Validates and records one client-sampled minute of running or sprinting for Olympian.
+---@param player IsoPlayer
+---@param args {progressIncrease:number}|nil
+function Commands.olympianRecordProgress(player, args)
+	if not args or (args.progressIncrease ~= 1 and args.progressIncrease ~= 2) then
+		ETW_CommonFunctions.log(
+			"ETW Logger | Commands.olympianRecordProgress(): invalid args from player "
+				.. tostring(player and player:getUsername() or "nil")
+		)
+		return
+	end
+	if SBvars.DisableAllDynamicTraits == true or not ETW_CommonLogicChecks.OlympianShouldExecute(player) then
+		return
+	end
+
+	local modData = ETW_CommonFunctions.getETWModData(player)
+	if not modData then
+		ETW_CommonFunctions.log("ETW Logger | Commands.olympianRecordProgress(): modData is nil, returning early")
+		return
+	end
+
+	modData.OlympianCounter = modData.OlympianCounter + args.progressIncrease
+	ETW_CommonFunctions.log(
+		"ETW Logger | Commands.olympianRecordProgress(): server received player="
+			.. tostring(player:getUsername())
+			.. " progressIncrease="
+			.. tostring(args.progressIncrease)
+			.. " OlympianCounter="
+			.. tostring(modData.OlympianCounter)
+	)
+
+	if modData.OlympianCounter < SBvars.OlympianCounter then
+		return
+	end
+
+	if
+		SBvars.DelayedTraitsSystem
+		and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.OLYMPIAN)
+	then
+		ETW_CommonFunctions.addTraitToDelayTable({
+			modData = modData,
+			trait = ETWTraitsRegistry.OLYMPIAN,
+			player = player,
+			positiveTrait = true,
+			gainingTrait = true,
+		})
+	elseif not SBvars.DelayedTraitsSystem or ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.OLYMPIAN) then
+		ETW_CommonFunctions.addTraitToPlayer({
+			player = player,
+			trait = ETWTraitsRegistry.OLYMPIAN,
 			positiveTrait = true,
 		})
 	end
