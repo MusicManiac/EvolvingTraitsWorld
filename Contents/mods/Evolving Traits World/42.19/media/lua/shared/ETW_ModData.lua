@@ -15,7 +15,7 @@ local ETW_Registry = require("ETW_Registry")
 local ETWTraitsRegistry = ETW_Registry.traits
 
 ---Increment when fields are added to or migrated in EvolvingTraitsWorld modData.
-local MOD_DATA_VERSION = 1.4
+local MOD_DATA_VERSION = 1.5
 
 ---Returns the midpoint between two numeric values.
 ---@param a number
@@ -154,6 +154,7 @@ function ETW_ModData.createETWModData(playerIndex, player)
 
 	modData.StartingTraits = modData.StartingTraits or {}
 	local startingTraits = modData.StartingTraits
+	ETW_ModData.checkStartingTrait(startingTraits, player, ETWTraitsRegistry.IDEAL_WEIGHT)
 	ETW_ModData.checkStartingTrait(startingTraits, player, ETWTraitsRegistry.BLISSFUL)
 	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.THIN_SKINNED)
 	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.THICK_SKINNED)
@@ -193,6 +194,14 @@ function ETW_ModData.createETWModData(playerIndex, player)
 			modData.healerCounter = -SBvars.HealerSystemCounter
 		else
 			modData.healerCounter = 0
+		end
+	end
+
+	if modData.IdealWeightCounter == nil then
+		if startingTraits[ETWTraitsRegistry.IDEAL_WEIGHT:toString()] == true then
+			modData.IdealWeightCounter = SBvars.IdealWeightCounter
+		else
+			modData.IdealWeightCounter = 0
 		end
 	end
 

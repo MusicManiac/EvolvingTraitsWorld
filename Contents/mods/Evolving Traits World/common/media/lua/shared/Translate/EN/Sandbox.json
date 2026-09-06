@@ -1,4 +1,12 @@
 {
+    "Sandbox_ETW_IdealWeightCounter": "Ideal Weight counter maximum",
+    "Sandbox_ETW_IdealWeightCounter_tooltip": "Maximum saved progress. Gain Ideal Weight at 66%% of this value and lose it at 33%%. Characters starting with the trait start at this maximum.",
+    "Sandbox_ETW_IdealWeight": "Ideal Weight",
+    "Sandbox_ETW_IdealWeight_tooltip": "Updates progress every in-game minute. Between 78 and 82 kg, gain more progress closer to 80 kg. At exactly 78 or 82 kg, progress stays unchanged. Outside that range, lose 1 point per minute for every 5 kg beyond the nearest boundary, scaled by the loss multiplier. At default rates: 80 kg adds 1, 79/81 kg adds 0.5, 73/87 kg loses 1, and 68/92 kg loses 2. Progress ranges from 0 to the configured counter maximum. Gain the trait at 66%% and lose it at 33%% of that maximum. Characters starting with Ideal Weight start at maximum progress.",
+    "Sandbox_ETW_IdealWeightProgressGainMultiplier": "Ideal Weight progress gain multiplier",
+    "Sandbox_ETW_IdealWeightProgressGainMultiplier_tooltip": "Multiplies progress earned per minute strictly between 78 and 82 kg. Base gain is 1 minus half the distance from 80 kg.",
+    "Sandbox_ETW_IdealWeightProgressLossMultiplier": "Ideal Weight progress loss multiplier",
+    "Sandbox_ETW_IdealWeightProgressLossMultiplier_tooltip": "Multiplies progress lost per minute below 78 kg or above 82 kg. Base loss is the distance beyond the nearest boundary divided by 5. Exactly 78 or 82 kg causes no loss.",
     "Sandbox_ETW_Blissful": "Blissful",
     "Sandbox_ETW_Blissful_tooltip": "Allows gaining and losing Blissful based on the long-term mental-state average.",
     "Sandbox_ETW_BlissfulGainThreshold": "Blissful gain threshold",

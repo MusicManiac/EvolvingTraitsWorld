@@ -907,11 +907,57 @@ local function asthmaticTraitETW()
 	end
 end
 
+---Calculates one minute of Ideal Weight progress from distance to 80 kg.
+---@param weight number
+---@return number
+local function getIdealWeightProgressChange(weight)
+	local distance = math.abs(weight - 80)
+	if distance < 2 then
+		return (1 - distance / 2) * SBvars.IdealWeightProgressGainMultiplier
+	end
+	return -((distance - 2) / 5) * SBvars.IdealWeightProgressLossMultiplier
+end
+
+---Updates the persisted weight-habit counter and applies reversible Ideal Weight changes.
+local function idealWeightETW()
+	local playersList = ETW_CommonFunctions.playersList()
+	for i = 0, playersList:size() - 1 do
+		local player = playersList:get(i)
+		if ETW_CommonLogicChecks.IdealWeightShouldExecute(player) then
+			local modData = ETW_CommonFunctions.getETWModData(player)
+			if modData then
+				local counter = modData.IdealWeightCounter
+				local change = getIdealWeightProgressChange(player:getNutrition():getWeight())
+				local maximum = SBvars.IdealWeightCounter
+				modData.IdealWeightCounter = math.max(0, math.min(maximum, counter + change))
+				if
+					player:hasTrait(ETWTraitsRegistry.IDEAL_WEIGHT)
+					and modData.IdealWeightCounter <= maximum * 0.33
+					and SBvars.TraitsLockSystemCanLosePositive
+				then
+					ETW_CommonFunctions.removeTraitFromPlayer({
+						player = player,
+						trait = ETWTraitsRegistry.IDEAL_WEIGHT,
+						positiveTrait = true,
+					})
+				elseif
+					not player:hasTrait(ETWTraitsRegistry.IDEAL_WEIGHT)
+					and modData.IdealWeightCounter >= maximum * 0.66
+					and SBvars.TraitsLockSystemCanGainPositive
+				then
+					ETW_CommonFunctions.addTraitToPlayer({
+						player = player,
+						trait = ETWTraitsRegistry.IDEAL_WEIGHT,
+						positiveTrait = true,
+					})
+				end
+			end
+		end
+	end
+end
+
 ---Applies Blissful gain and loss thresholds to the long-term mental-state average.
 local function blissfulETW()
-	if SBvars.DisableAllDynamicTraits == true then
-		return
-	end
 	local playersList = ETW_CommonFunctions.playersList()
 	for i = 0, playersList:size() - 1 do
 		local player = playersList:get(i)
@@ -1114,12 +1160,16 @@ local function initializeEventsETW(playerIndex, player)
 	if ETW_CommonLogicChecks.AsthmaticShouldExecute(player) then
 		Events.EveryOneMinute.Add(asthmaticTraitETW)
 	end
+	Events.EveryOneMinute.Remove(idealWeightETW)
 	Events.EveryTenMinutes.Remove(blissfulETW)
 	if ETW_CommonLogicChecks.BlissfulShouldExecute(player) then
 		Events.EveryTenMinutes.Add(blissfulETW)
 	end
 	Events.EveryOneMinute.Remove(recordMentalStateETW)
 	Events.EveryOneMinute.Add(recordMentalStateETW)
+	if ETW_CommonLogicChecks.IdealWeightShouldExecute(player) then
+		Events.EveryOneMinute.Add(idealWeightETW)
+	end
 	if gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
 		Events.OnTick.Remove(initializeEventsETW)
 	end
@@ -1138,6 +1188,7 @@ local function clearEventsETW(character)
 	Events.EveryOneMinute.Remove(healerSystemETW)
 	Events.EveryTenMinutes.Remove(painToleranceTraitETW)
 	Events.EveryOneMinute.Remove(asthmaticTraitETW)
+	Events.EveryOneMinute.Remove(idealWeightETW)
 	Events.EveryTenMinutes.Remove(blissfulETW)
 	Events.EveryOneMinute.Remove(recordMentalStateETW)
 	logETW("ETW Logger | System: clearEventsETW in " .. FILENAME)
