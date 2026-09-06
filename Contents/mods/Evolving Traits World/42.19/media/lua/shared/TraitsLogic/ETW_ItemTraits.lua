@@ -6,7 +6,7 @@ local FILENAME = "ETW_ItemTraits.lua"
 if
 	not ETW_CommonFunctions.gameModeSafeguard(
 		FILENAME,
-		{ ETW_CommonFunctions.GameMode.SP, ETW_CommonFunctions.GameMode.MP_SERVER }
+		{ ETW_CommonFunctions.GameMode.SP, ETW_CommonFunctions.GameMode.MP_CLIENT, ETW_CommonFunctions.GameMode.MP_SERVER }
 	)
 then
 	return
@@ -18,11 +18,22 @@ local ETWTraitsRegistry = ETW_Registry.traits
 local logETW = ETW_CommonFunctions.log
 local random_instance = newrandom()
 local ETW_ItemTraits = {}
+local gameMode = ETW_CommonFunctions.gameMode()
+
+---Limits local execution to the current player while allowing every player on the server.
+---@param player IsoPlayer|nil
+---@return boolean
+local function shouldProcessPlayer(player)
+	return player ~= nil
+		and (gameMode == ETW_CommonFunctions.GameMode.MP_SERVER or player == getPlayer())
+end
 
 ---@type table<IsoPlayer, Clothing>
 local leadFootShoes = {}
 ---@type table<IsoPlayer, HandWeapon>
 local combatTraitWeapons = {}
+---@type table<HandWeapon, table<string, number>>
+local combatTraitAppliedValues = {}
 local antiGunWeapons = {}
 local actionHeroThreatCache = {}
 local Commands = {}
@@ -77,6 +88,8 @@ local function wellFittedTrait(player)
 			local data = itemData.ETWWellFitted
 			local isWorn = wornItems:contains(item)
 			if hasTrait and isWorn then
+				-- ModData can arrive before the local item fields have been updated.
+				changed = true
 				if data.OriginalActualWeight == nil then
 					data.OriginalActualWeight = item:getActualWeight()
 					data.OriginalRunSpeedModifier = item:getRunSpeedModifier()
@@ -124,7 +137,8 @@ local function wellFittedTrait(player)
 	end
 
 	if changed then
-		player:setWornItems(wornItems)
+		player:OnClothingUpdated()
+		player:getInventory():setDrawDirty(true)
 	end
 end
 
@@ -157,19 +171,20 @@ local function leadFootTrait(player)
 	local data = itemData.ETWLeadFoot
 	if not data.Applied then
 		data.OriginalStompPower = shoes:getStompPower()
-		local multiplier = math.max(0, SBvars.LeadFootStompPowerMultiplier or 2)
-		local bonus = math.max(0, SBvars.LeadFootStompPowerBonus or 1)
-		shoes:setStompPower(data.OriginalStompPower * multiplier + bonus)
-		data.Applied = true
-		logETW(
-			"ETW Logger | leadFootTrait(): applied to "
-				.. shoes:getFullType()
-				.. "; stomp power: "
-				.. data.OriginalStompPower
-				.. "->"
-				.. shoes:getStompPower()
-		)
 	end
+	-- Apply from the snapshot even when another peer supplied the Applied flag.
+	local multiplier = math.max(0, SBvars.LeadFootStompPowerMultiplier or 2)
+	local bonus = math.max(0, SBvars.LeadFootStompPowerBonus or 1)
+	shoes:setStompPower(data.OriginalStompPower * multiplier + bonus)
+	data.Applied = true
+	logETW(
+		"ETW Logger | leadFootTrait(): applied to "
+			.. shoes:getFullType()
+			.. "; stomp power: "
+			.. data.OriginalStompPower
+			.. "->"
+			.. shoes:getStompPower()
+	)
 	leadFootShoes[player] = shoes
 end
 
@@ -215,6 +230,7 @@ end
 ---Restores a weapon's values saved before combat trait modifiers were applied.
 ---@param item HandWeapon
 local function restoreCombatTraitWeapon(item)
+	combatTraitAppliedValues[item] = nil
 	local data = item:getModData().ETWCombatTraits
 	if data and data.Applied then
 		if not data.SnapshotUsesRawValues then
@@ -438,6 +454,9 @@ end
 
 ---@param player IsoPlayer
 local function combatWeaponTraits(player)
+	if not shouldProcessPlayer(player) then
+		return
+	end
 	local primaryItem = player:getPrimaryHandItem()
 	---@type HandWeapon?
 	local weapon
@@ -535,8 +554,22 @@ local function combatWeaponTraits(player)
 		end
 		return
 	end
+	local appliedValues = combatTraitAppliedValues[weapon]
 	if
 		data.Applied
+		and appliedValues
+		and weapon:getMinDamage() == appliedValues.MinDamage
+		and weapon:getMaxDamage() == appliedValues.MaxDamage
+		and weapon:getConditionLowerChance() == appliedValues.ConditionLowerChance
+		and (not criticalChanceModified or weapon:getCriticalChance() == appliedValues.CriticalChance)
+		and (
+			not hasTerminator
+			or (
+				weapon:getAimingTime() == appliedValues.AimingTime
+				and weapon:getMaxRange() == appliedValues.MaxRange
+				and weapon:getJamGunChance() == appliedValues.JamGunChance
+			)
+		)
 		and data.Mundane == hasMundane
 		and data.ProwessName == prowessName
 		and data.RelevantSkillLevels == relevantSkillLevels
@@ -661,6 +694,16 @@ local function combatWeaponTraits(player)
 	end
 	data.Applied = true
 	combatTraitWeapons[player] = weapon
+	-- Keep this confirmation local: synchronized ModData alone cannot confirm item fields.
+	combatTraitAppliedValues[weapon] = {
+		MinDamage = weapon:getMinDamage(),
+		MaxDamage = weapon:getMaxDamage(),
+		CriticalChance = criticalChanceModified and weapon:getCriticalChance() or nil,
+		ConditionLowerChance = weapon:getConditionLowerChance(),
+		AimingTime = hasTerminator and weapon:getAimingTime() or nil,
+		MaxRange = hasTerminator and weapon:getMaxRange() or nil,
+		JamGunChance = hasTerminator and weapon:getJamGunChance() or nil,
+	}
 	local playerIdentifier = tostring(player:getUsername()) .. " (OnlineID=" .. player:getOnlineID() .. ")"
 	local terminatorDetails = ""
 	if hasTerminator then
@@ -772,25 +815,26 @@ local function antiGunWeaponTrait(player, hasTrait)
 	if not data.Applied then
 		data.OriginalAimingTime = weapon:getAimingTime()
 		data.OriginalMaxRange = weapon:getMaxRange()
-		local aimingTimeMultiplier = math.max(0, SBvars.AntiGunAimingTimeMultiplier or 0.8)
-		local rangePenalty = math.max(0, SBvars.AntiGunMaxRangePenalty or 5)
-		local aimingTime = math.floor(data.OriginalAimingTime * aimingTimeMultiplier + 0.5)
-		weapon:setAimingTime(aimingTime)
-		weapon:setMaxRange(math.max(5, data.OriginalMaxRange - rangePenalty))
-		data.Applied = true
-		logETW(
-			"ETW Logger | antiGunWeaponTrait(): applied to "
-				.. weapon:getFullType()
-				.. "; aiming time: "
-				.. data.OriginalAimingTime
-				.. "->"
-				.. weapon:getAimingTime()
-				.. ", max range: "
-				.. data.OriginalMaxRange
-				.. "->"
-				.. weapon:getMaxRange()
-		)
 	end
+	-- Reapply locally from the original values, never from an already modified value.
+	local aimingTimeMultiplier = math.max(0, SBvars.AntiGunAimingTimeMultiplier or 0.8)
+	local rangePenalty = math.max(0, SBvars.AntiGunMaxRangePenalty or 5)
+	local aimingTime = math.floor(data.OriginalAimingTime * aimingTimeMultiplier + 0.5)
+	weapon:setAimingTime(aimingTime)
+	weapon:setMaxRange(math.max(5, data.OriginalMaxRange - rangePenalty))
+	data.Applied = true
+	logETW(
+		"ETW Logger | antiGunWeaponTrait(): applied to "
+			.. weapon:getFullType()
+			.. "; aiming time: "
+			.. data.OriginalAimingTime
+			.. "->"
+			.. weapon:getAimingTime()
+			.. ", max range: "
+			.. data.OriginalMaxRange
+			.. "->"
+			.. weapon:getMaxRange()
+	)
 	antiGunWeapons[player] = weapon
 end
 
@@ -835,251 +879,9 @@ local function butterfingersTrait(player)
 	end
 end
 
----@param food Food
----@return boolean
-local function isPreparedFood(food)
-	local ingredients = food:getExtraItems()
-	local spices = food:getSpices()
-	return (ingredients and not ingredients:isEmpty()) or (spices and not spices:isEmpty())
-end
-
----@param food Food
----@param player IsoPlayer
-local function restoreGourmandFood(food, player)
-	local itemData = food:getModData()
-	local data = itemData.ETWGourmand
-	if not data or not data.Applied then
-		return
-	end
-	food:setMinutesToCook(data.OriginalMinutesToCook)
-	food:setMinutesToBurn(data.OriginalMinutesToBurn)
-	food:setHungChange(data.OriginalHungChange)
-	food:setUnhappyChange(data.OriginalUnhappyChange)
-	food:setBoredomChange(data.OriginalBoredomChange)
-	food:setThirstChange(data.OriginalThirstChange)
-	food:setGoodHot(data.OriginalGoodHot)
-	food:setBadInMicrowave(data.OriginalBadInMicrowave)
-	food:setBadCold(data.OriginalBadCold)
-	itemData.ETWGourmand = nil
-	food:syncItemFields()
-	logETW(
-		"ETW Logger | gourmandTrait(): restored "
-			.. food:getFullType()
-			.. " for "
-			.. tostring(player:getUsername())
-			.. " (OnlineID="
-			.. player:getOnlineID()
-			.. ")"
-	)
-end
-ETW_ItemTraits.restoreGourmandFood = restoreGourmandFood
-
----@param food Food
----@param data table
-local function snapshotGourmandFood(food, data)
-	data.OriginalMinutesToCook = food:getMinutesToCook()
-	data.OriginalMinutesToBurn = food:getMinutesToBurn()
-	data.OriginalHungChange = food:getHungChange()
-	data.OriginalUnhappyChange = food:getUnhappyChangeUnmodified()
-	data.OriginalBoredomChange = food:getBoredomChangeUnmodified()
-	data.OriginalThirstChange = food:getThirstChangeUnmodified()
-	data.OriginalGoodHot = food:isGoodHot()
-	data.OriginalBadInMicrowave = food:isBadInMicrowave()
-	data.OriginalBadCold = food:isBadCold()
-	data.Applied = true
-end
-
----@class GourmandSettings
----@field CookingTimeMultiplier number
----@field BurnTimeMultiplier number
----@field BenefitMultiplier number
----@field PlayerIdentifier string
-
----@param player IsoPlayer
----@return GourmandSettings
-local function getGourmandSettings(player)
-	return {
-		CookingTimeMultiplier = math.max(0.1, SBvars.GourmandCookingTimeMultiplier or 0.5),
-		BurnTimeMultiplier = math.max(0.1, SBvars.GourmandBurnTimeMultiplier or 2),
-		BenefitMultiplier = math.max(1, SBvars.GourmandCookedFoodBenefitMultiplier or 1.5),
-		PlayerIdentifier = tostring(player:getUsername()) .. " (OnlineID=" .. player:getOnlineID() .. ")",
-	}
-end
-
----@param food Food
----@param player IsoPlayer|nil
----@param settings GourmandSettings|nil
----@return boolean changed
-function ETW_ItemTraits.applyGourmandFood(food, player, settings)
-	local itemData = food:getModData()
-	local data = itemData.ETWGourmand
-	if
-		(not data and (not player or not player:hasTrait(ETWTraitsRegistry.GOURMAND)))
-		or (not food:isIsCookable() and not food:isCooked() and not isPreparedFood(food))
-	then
-		return false
-	end
-	if not settings then
-		if data then
-			settings = {
-				CookingTimeMultiplier = data.CookingTimeMultiplier,
-				BurnTimeMultiplier = data.BurnTimeMultiplier,
-				BenefitMultiplier = data.BenefitMultiplier,
-				PlayerIdentifier = data.AuthorIdentifier,
-			}
-		elseif player then
-			settings = getGourmandSettings(player)
-		else
-			return false
-		end
-	end
-	local settingsChanged = data
-		and player
-		and data.Applied
-		and (
-			data.CookingTimeMultiplier ~= settings.CookingTimeMultiplier
-			or data.BurnTimeMultiplier ~= settings.BurnTimeMultiplier
-			or data.BenefitMultiplier ~= settings.BenefitMultiplier
-		)
-	if settingsChanged and player then
-		restoreGourmandFood(food, player)
-		data = nil
-	end
-	if not data then
-		if not player then
-			return false
-		end
-		data = {}
-		itemData.ETWGourmand = data
-		snapshotGourmandFood(food, data)
-		data.CookingTimeMultiplier = settings.CookingTimeMultiplier
-		data.BurnTimeMultiplier = settings.BurnTimeMultiplier
-		data.BenefitMultiplier = settings.BenefitMultiplier
-		data.AuthorUsername = player:getUsername()
-		data.AuthorIdentifier = settings.PlayerIdentifier
-	end
-
-	local changed = false
-	if food:isIsCookable() and not food:isCooked() and not data.CookingApplied then
-		food:setMinutesToCook(data.OriginalMinutesToCook * settings.CookingTimeMultiplier)
-		food:setMinutesToBurn(data.OriginalMinutesToBurn * settings.BurnTimeMultiplier)
-		data.CookingApplied = true
-		changed = true
-		logETW(
-			"ETW Logger | gourmandTrait(): adjusted cooking for "
-				.. settings.PlayerIdentifier
-				.. "; food: "
-				.. food:getFullType()
-				.. "; minutes to cook: "
-				.. data.OriginalMinutesToCook
-				.. "->"
-				.. food:getMinutesToCook()
-				.. "; minutes to burn: "
-				.. data.OriginalMinutesToBurn
-				.. "->"
-				.. food:getMinutesToBurn()
-		)
-	end
-	if (food:isCooked() or isPreparedFood(food)) and not food:isRotten() and not data.CookedFoodApplied then
-		local thirstChange = data.OriginalThirstChange
-		if thirstChange < 0 then
-			thirstChange = thirstChange * settings.BenefitMultiplier
-		elseif thirstChange > 0 then
-			thirstChange = thirstChange * math.max(0, 2 - settings.BenefitMultiplier)
-		end
-		food:setHungChange(data.OriginalHungChange * settings.BenefitMultiplier)
-		food:setUnhappyChange(
-			data.OriginalUnhappyChange < 0 and data.OriginalUnhappyChange * settings.BenefitMultiplier or 0
-		)
-		food:setBoredomChange(
-			data.OriginalBoredomChange < 0 and data.OriginalBoredomChange * settings.BenefitMultiplier or 0
-		)
-		food:setThirstChange(thirstChange)
-		food:setGoodHot(false)
-		food:setBadInMicrowave(false)
-		food:setBadCold(false)
-		data.CookedFoodApplied = true
-		changed = true
-		logETW(
-			"ETW Logger | gourmandTrait(): improved cooked/prepared food for "
-				.. settings.PlayerIdentifier
-				.. "; food: "
-				.. food:getFullType()
-				.. "; hunger: "
-				.. data.OriginalHungChange
-				.. "->"
-				.. food:getHungChange()
-				.. "; unhappiness: "
-				.. data.OriginalUnhappyChange
-				.. "->"
-				.. food:getUnhappyChangeUnmodified()
-				.. "; boredom: "
-				.. data.OriginalBoredomChange
-				.. "->"
-				.. food:getBoredomChangeUnmodified()
-				.. "; thirst: "
-				.. data.OriginalThirstChange
-				.. "->"
-				.. food:getThirstChangeUnmodified()
-		)
-	end
-	if changed then
-		food:syncItemFields()
-	end
-	return changed
-end
-
----@param food Food
----@return boolean
-local function isFoodHeating(food)
-	local container = food:getContainer()
-	return container ~= nil and container:getTemprature() > 1
-end
-
----@param players ArrayList<IsoPlayer>
-local function updateGourmandFoods(players)
-	local gourmandsByChef = {}
-	for i = 0, players:size() - 1 do
-		local player = players:get(i)
-		if player:hasTrait(ETWTraitsRegistry.GOURMAND) then
-			gourmandsByChef[player:getUsername()] = player
-			gourmandsByChef[player:getFullName()] = player
-		end
-	end
-
-	local processItems = getCell():getProcessItems()
-	for i = 0, processItems:size() - 1 do
-		local item = processItems:get(i)
-		if instanceof(item, "Food") then
-			---@cast item Food
-			local food = item
-			local data = food:getModData().ETWGourmand
-			if data and data.Applied then
-				ETW_ItemTraits.applyGourmandFood(food, nil)
-			elseif food:isIsCookable() and not food:isCooked() and isFoodHeating(food) then
-				local chef = food:getChef()
-				local gourmand = chef and gourmandsByChef[chef]
-				if gourmand then
-					ETW_ItemTraits.applyGourmandFood(food, gourmand)
-					logETW(
-						"ETW Logger | updateGourmandFoods(): attributed cooking of "
-							.. food:getFullType()
-							.. " to "
-							.. tostring(gourmand:getUsername())
-							.. " (OnlineID="
-							.. gourmand:getOnlineID()
-							.. "); container temperature: "
-							.. food:getContainer():getTemprature()
-					)
-				end
-			end
-		end
-	end
-end
-
 ---@param player IsoPlayer
 local function refreshEquippedItemTraits(player)
-	if not player then
+	if not shouldProcessPlayer(player) then
 		return
 	end
 	wellFittedTrait(player)
@@ -1103,7 +905,9 @@ local function updateItemTraits(player)
 		return
 	end
 	refreshEquippedItemTraits(player)
-	butterfingersTrait(player)
+	if gameMode ~= ETW_CommonFunctions.GameMode.MP_CLIENT then
+		butterfingersTrait(player)
+	end
 end
 
 ---@param player IsoPlayer
@@ -1155,22 +959,23 @@ local function cleanupDisconnectedPlayers(activePlayers)
 	end
 end
 
+---Updates the current player's items locally, or all connected players' items on the server.
 local function everyOneMinute()
-	if ETW_CommonFunctions.gameMode() == ETW_CommonFunctions.GameMode.MP_SERVER then
-		local players = ETW_CommonFunctions.playersList()
-		local activePlayers = {}
-		for i = 0, players:size() - 1 do
-			local player = players:get(i)
-			activePlayers[player] = true
-			updateItemTraits(player)
+	local currentPlayer
+	if gameMode ~= ETW_CommonFunctions.GameMode.MP_SERVER then
+		currentPlayer = getPlayer()
+		if not currentPlayer then
+			return
 		end
-		updateGourmandFoods(players)
-		cleanupDisconnectedPlayers(activePlayers)
-	else
-		local players = ETW_CommonFunctions.playersList()
-		updateItemTraits(getPlayer())
-		updateGourmandFoods(players)
 	end
+	local players = ETW_CommonFunctions.playersList(currentPlayer)
+	local activePlayers = {}
+	for i = 0, players:size() - 1 do
+		local player = players:get(i)
+		activePlayers[player] = true
+		updateItemTraits(player)
+	end
+	cleanupDisconnectedPlayers(activePlayers)
 end
 
 ---@param player IsoPlayer
@@ -1199,6 +1004,11 @@ function Commands.refreshEquippedWeaponTraits(player, args)
 	combatWeaponTraits(player)
 end
 
+---Handles item refresh requests on the multiplayer server.
+---@param module string
+---@param command string
+---@param player IsoPlayer
+---@param args table|nil
 local function onClientCommand(module, command, player, args)
 	if module == "ETW" and Commands[command] then
 		Commands[command](player, args or {})
@@ -1209,11 +1019,14 @@ Events.EveryOneMinute.Remove(everyOneMinute)
 Events.EveryOneMinute.Add(everyOneMinute)
 Events.OnEquipPrimary.Remove(refreshEquippedItemTraits)
 Events.OnEquipPrimary.Add(refreshEquippedItemTraits)
-Events.OnClientCommand.Remove(onClientCommand)
-Events.OnClientCommand.Add(onClientCommand)
-if ETW_CommonFunctions.gameMode() == ETW_CommonFunctions.GameMode.SP then
+if gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
+	Events.OnClientCommand.Remove(onClientCommand)
+	Events.OnClientCommand.Add(onClientCommand)
+else
 	Events.OnWeaponSwing.Remove(combatWeaponTraits)
 	Events.OnWeaponSwing.Add(combatWeaponTraits)
+	Events.OnClothingUpdated.Remove(refreshEquippedItemTraits)
+	Events.OnClothingUpdated.Add(refreshEquippedItemTraits)
 end
 
 return ETW_ItemTraits
