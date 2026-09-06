@@ -2,10 +2,11 @@
 ###### 05 Sep 2026
 
 - General:
-  - Made Anti-Gun Activist, Quiet, Olympian, Thuggish dynamic.
+  - Made Anti-Gun Activist, Quiet, Olympian, Thuggish, Blissful dynamic.
   - Adjusted default sandbox Deprived values.
   - Updated Bloodlust moodle and trait icon.
   - Uncapped Hoarder dynamic gain (now carrying above your inventory limit appropriately adds more than 1 to counter)
+  - Recent mental no longer includes anger (it's not really used by the game), instead now included boredom.
 - Fix:
   - Fixed typo in Noodle Legs description.
 - Translations:

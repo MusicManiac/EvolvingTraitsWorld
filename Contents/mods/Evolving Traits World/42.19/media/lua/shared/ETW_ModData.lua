@@ -15,7 +15,7 @@ local ETW_Registry = require("ETW_Registry")
 local ETWTraitsRegistry = ETW_Registry.traits
 
 ---Increment when fields are added to or migrated in EvolvingTraitsWorld modData.
-local MOD_DATA_VERSION = 1.3
+local MOD_DATA_VERSION = 1.4
 
 ---Returns the midpoint between two numeric values.
 ---@param a number
@@ -86,6 +86,17 @@ local function getInitialThirstAverage(startingTraits)
 	return midpoint(SBvars.ThirstSystemGainNegativeThreshold, SBvars.ThirstSystemGainPositiveThreshold)
 end
 
+---Returns the initial mental average for the player's starting Blissful state.
+---@param startingTraits table<string, boolean>
+---@return number
+local function getInitialMentalAverage(startingTraits)
+	if startingTraits[ETWTraitsRegistry.BLISSFUL:toString()] == true then
+		return midpoint(1, SBvars.BlissfulGainThreshold)
+	else
+		return SBvars.BlissfulLoseThreshold * 0.75
+	end
+end
+
 ---Creates modData for player if it doesn't exist and fills it with default values if they don't exist. Should be ran on character creation and loading.
 ---@param playerIndex number -- The index of the player
 ---@param player IsoPlayer   -- The player object
@@ -109,10 +120,8 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	modData.EatingSpeedSystemCounter = modData.EatingSpeedSystemCounter or 0
 	modData.HoarderCounter = modData.HoarderCounter or 0
 	modData.OlympianCounter = modData.OlympianCounter or 0
-	modData.HardyReserve = modData.HardyReserve
-		or PZMath.clamp((SBvars.HardyExtraEndurancePercent or 25) / 100, 0, 1)
-	modData.QuickRestLastEndurance = modData.QuickRestLastEndurance
-		or player:getStats():get(CharacterStat.ENDURANCE)
+	modData.HardyReserve = modData.HardyReserve or PZMath.clamp((SBvars.HardyExtraEndurancePercent or 25) / 100, 0, 1)
+	modData.QuickRestLastEndurance = modData.QuickRestLastEndurance or player:getStats():get(CharacterStat.ENDURANCE)
 	modData.IdealWeightLastCalories = modData.IdealWeightLastCalories or player:getNutrition():getCalories()
 	modData.DepressiveEpisodeActive = modData.DepressiveEpisodeActive or false
 	modData.ParanoiaCooldownMinutes = modData.ParanoiaCooldownMinutes or 10
@@ -142,13 +151,10 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	madeOfGlass.LogIgnoredDamage = madeOfGlass.LogIgnoredDamage or 0
 	madeOfGlass.LogOriginalDamage = madeOfGlass.LogOriginalDamage or 0
 	madeOfGlass.LogExtraDamage = madeOfGlass.LogExtraDamage or 0
-	modData.MentalStateInLast60Min = modData.MentalStateInLast60Min or { 0.75 }
-	modData.MentalStateInLast24Hours = modData.MentalStateInLast24Hours or { 0.75 }
-	modData.MentalStateInLast31Days = modData.MentalStateInLast31Days or { 0.75 }
-	modData.RecentAverageMental = modData.RecentAverageMental or 0.75
 
 	modData.StartingTraits = modData.StartingTraits or {}
 	local startingTraits = modData.StartingTraits
+	ETW_ModData.checkStartingTrait(startingTraits, player, ETWTraitsRegistry.BLISSFUL)
 	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.THIN_SKINNED)
 	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.THICK_SKINNED)
 	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.SLOW_HEALER)
@@ -190,18 +196,22 @@ function ETW_ModData.createETWModData(playerIndex, player)
 		end
 	end
 
+	local initialMentalAverage = getInitialMentalAverage(startingTraits)
+	modData.MentalStateInLast60Min = initializeRollingSamples(modData.MentalStateInLast60Min, initialMentalAverage, 60)
+	modData.MentalStateInLast24Hours =
+		initializeRollingSamples(modData.MentalStateInLast24Hours, initialMentalAverage, 24)
+	modData.MentalStateInLast31Days =
+		initializeRollingSamples(modData.MentalStateInLast31Days, initialMentalAverage, 31)
+	modData.RecentAverageMental = modData.RecentAverageMental or initialMentalAverage
+
 	local initialFoodAverage = getInitialFoodAverage(startingTraits)
-	modData.FoodStateInLast60Min =
-		initializeRollingSamples(modData.FoodStateInLast60Min, initialFoodAverage, 60)
-	modData.FoodStateInLast24Hours =
-		initializeRollingSamples(modData.FoodStateInLast24Hours, initialFoodAverage, 24)
-	modData.FoodStateInLast31Days =
-		initializeRollingSamples(modData.FoodStateInLast31Days, initialFoodAverage, 31)
+	modData.FoodStateInLast60Min = initializeRollingSamples(modData.FoodStateInLast60Min, initialFoodAverage, 60)
+	modData.FoodStateInLast24Hours = initializeRollingSamples(modData.FoodStateInLast24Hours, initialFoodAverage, 24)
+	modData.FoodStateInLast31Days = initializeRollingSamples(modData.FoodStateInLast31Days, initialFoodAverage, 31)
 	modData.RecentAverageFood = modData.RecentAverageFood or initialFoodAverage
 
 	local initialThirstAverage = getInitialThirstAverage(startingTraits)
-	modData.ThirstStateInLast60Min =
-		initializeRollingSamples(modData.ThirstStateInLast60Min, initialThirstAverage, 60)
+	modData.ThirstStateInLast60Min = initializeRollingSamples(modData.ThirstStateInLast60Min, initialThirstAverage, 60)
 	modData.ThirstStateInLast24Hours =
 		initializeRollingSamples(modData.ThirstStateInLast24Hours, initialThirstAverage, 24)
 	modData.ThirstStateInLast31Days =

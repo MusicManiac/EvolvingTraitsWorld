@@ -221,6 +221,31 @@ option EvolvingTraitsWorld.FoodSicknessSystemNormalSicknessMultiplier
 	page = ETWSystems,
 	translation = ETW_FoodSicknessSystemNormalSicknessMultiplier,
 }
+option EvolvingTraitsWorld.Blissful
+{
+	type = boolean,
+	default = true,
+	page = ETWSystems,
+	translation = ETW_Blissful,
+}
+option EvolvingTraitsWorld.BlissfulGainThreshold
+{
+	type = double,
+	min = 0,
+	max = 1,
+	default = 0.9,
+	page = ETWSystems,
+	translation = ETW_BlissfulGainThreshold,
+}
+option EvolvingTraitsWorld.BlissfulLoseThreshold
+{
+	type = double,
+	min = 0,
+	max = 1,
+	default = 0.8,
+	page = ETWSystems,
+	translation = ETW_BlissfulLoseThreshold,
+}
 option EvolvingTraitsWorld.FoodSystem
 {
 	type = boolean,

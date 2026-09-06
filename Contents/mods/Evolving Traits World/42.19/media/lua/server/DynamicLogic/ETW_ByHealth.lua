@@ -907,6 +907,42 @@ local function asthmaticTraitETW()
 	end
 end
 
+---Applies Blissful gain and loss thresholds to the long-term mental-state average.
+local function blissfulETW()
+	if SBvars.DisableAllDynamicTraits == true then
+		return
+	end
+	local playersList = ETW_CommonFunctions.playersList()
+	for i = 0, playersList:size() - 1 do
+		local player = playersList:get(i)
+		local modData = ETW_CommonFunctions.getETWModData(player)
+		if modData and ETW_CommonLogicChecks.BlissfulShouldExecute(player) then
+			local averageMental = modData.RecentAverageMental
+			if
+				player:hasTrait(ETWTraitsRegistry.BLISSFUL)
+				and averageMental <= SBvars.BlissfulLoseThreshold
+				and SBvars.TraitsLockSystemCanLosePositive
+			then
+				ETW_CommonFunctions.removeTraitFromPlayer({
+					player = player,
+					trait = ETWTraitsRegistry.BLISSFUL,
+					positiveTrait = true,
+				})
+			elseif
+				not player:hasTrait(ETWTraitsRegistry.BLISSFUL)
+				and averageMental >= SBvars.BlissfulGainThreshold
+				and SBvars.TraitsLockSystemCanGainPositive
+			then
+				ETW_CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = ETWTraitsRegistry.BLISSFUL,
+					positiveTrait = true,
+				})
+			end
+		end
+	end
+end
+
 ---Function responsible for recording players mental state into mod data
 local function recordMentalStateETW()
 	local playersList = ETW_CommonFunctions.playersList()
@@ -917,11 +953,13 @@ local function recordMentalStateETW()
 		if modData then
 			logETW("ETW Logger | recordMentalStateETW(): running for player " .. player:getUsername())
 			local stats = player:getStats()
-			local anger = stats:get(CharacterStat.ANGER) -- 0-1
+			-- anger is not really used by the game so we skip for now
+			-- local anger = stats:get(CharacterStat.ANGER) -- 0-1
+			local boredom = stats:get(CharacterStat.BOREDOM) / 100 -- 0-100 -> 0-1
 			local stress = stats:get(CharacterStat.STRESS) -- 0-1
 			local unhappiness = stats:get(CharacterStat.UNHAPPINESS) / 100 -- 0-100 -> 0-1
 			local panic = stats:get(CharacterStat.PANIC) / 100 -- 0-100 -> 0-1
-			local mentalHealth = 1 - ((anger + stress + unhappiness + panic) / 4)
+			local mentalHealth = 1 - ((boredom + stress + unhappiness + panic) / 4)
 			modData.RecentAverageMental = updateRollingHabitAverage(
 				modData.MentalStateInLast60Min,
 				modData.MentalStateInLast24Hours,
@@ -1076,6 +1114,10 @@ local function initializeEventsETW(playerIndex, player)
 	if ETW_CommonLogicChecks.AsthmaticShouldExecute(player) then
 		Events.EveryOneMinute.Add(asthmaticTraitETW)
 	end
+	Events.EveryTenMinutes.Remove(blissfulETW)
+	if ETW_CommonLogicChecks.BlissfulShouldExecute(player) then
+		Events.EveryTenMinutes.Add(blissfulETW)
+	end
 	Events.EveryOneMinute.Remove(recordMentalStateETW)
 	Events.EveryOneMinute.Add(recordMentalStateETW)
 	if gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
@@ -1096,6 +1138,7 @@ local function clearEventsETW(character)
 	Events.EveryOneMinute.Remove(healerSystemETW)
 	Events.EveryTenMinutes.Remove(painToleranceTraitETW)
 	Events.EveryOneMinute.Remove(asthmaticTraitETW)
+	Events.EveryTenMinutes.Remove(blissfulETW)
 	Events.EveryOneMinute.Remove(recordMentalStateETW)
 	logETW("ETW Logger | System: clearEventsETW in " .. FILENAME)
 end
