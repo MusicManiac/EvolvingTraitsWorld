@@ -219,7 +219,7 @@ local function rainTraitsKill(zombie)
 		not player
 		or not instanceof(player, "IsoPlayer")
 		or instanceof(player, "IsoAnimal")
-		or not player:isLocalPlayer()
+		or (gameMode == ETW_CommonFunctions.GameMode.SP and not player:isLocalPlayer())
 	then
 		return
 	else
@@ -236,7 +236,7 @@ local function fogTraitsKill(zombie)
 		not player
 		or not instanceof(player, "IsoPlayer")
 		or instanceof(player, "IsoAnimal")
-		or not player:isLocalPlayer()
+		or (gameMode == ETW_CommonFunctions.GameMode.SP and not player:isLocalPlayer())
 	then
 		return
 	else
