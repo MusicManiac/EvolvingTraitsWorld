@@ -1,4 +1,5 @@
 local ETW_CommonFunctions = require("ETW_CommonFunctions")
+local ETW_CommonLogicChecks = require("ETW_CommonLogicChecks")
 
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld
@@ -24,7 +25,7 @@ function ISChopTreeAction:complete()
 	if modData then
 		modData.TreesChopped = modData.TreesChopped + 1
 		logETW("ETW Logger | ISChopTreeAction.complete(): modData.TreesChopped = " .. modData.TreesChopped)
-		if modData.TreesChopped >= SBvars.AxemanTrees then
+		if modData.TreesChopped >= SBvars.AxemanTrees and ETW_CommonLogicChecks.AxemanShouldExecute(self.character) then
 			if
 				SBvars.DelayedTraitsSystem
 				and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(self.character, CharacterTrait.AXEMAN)
