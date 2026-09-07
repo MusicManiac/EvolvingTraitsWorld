@@ -1160,13 +1160,13 @@ local function initializeEventsETW(playerIndex, player)
 	if ETW_CommonLogicChecks.AsthmaticShouldExecute(player) then
 		Events.EveryOneMinute.Add(asthmaticTraitETW)
 	end
-	Events.EveryOneMinute.Remove(idealWeightETW)
 	Events.EveryTenMinutes.Remove(blissfulETW)
 	if ETW_CommonLogicChecks.BlissfulShouldExecute(player) then
 		Events.EveryTenMinutes.Add(blissfulETW)
 	end
 	Events.EveryOneMinute.Remove(recordMentalStateETW)
 	Events.EveryOneMinute.Add(recordMentalStateETW)
+	Events.EveryOneMinute.Remove(idealWeightETW)
 	if ETW_CommonLogicChecks.IdealWeightShouldExecute(player) then
 		Events.EveryOneMinute.Add(idealWeightETW)
 	end
