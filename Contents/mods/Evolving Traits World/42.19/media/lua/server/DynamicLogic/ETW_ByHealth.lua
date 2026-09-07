@@ -104,7 +104,9 @@ local function immunitySystemTraits()
 							trait = CharacterTrait.RESILIENT,
 							positiveTrait = true,
 						})
-						Events.EveryOneMinute.Remove(immunitySystemTraits)
+						if gameMode == ETW_CommonFunctions.GameMode.SP then
+							Events.EveryOneMinute.Remove(immunitySystemTraits)
+						end
 					end
 				end
 			end
@@ -194,7 +196,9 @@ local function foodSicknessTraitsETW()
 						trait = CharacterTrait.IRON_GUT,
 						positiveTrait = true,
 					})
-					Events.EveryOneMinute.Remove(foodSicknessTraitsETW)
+					if gameMode == ETW_CommonFunctions.GameMode.SP then
+						Events.EveryOneMinute.Remove(foodSicknessTraitsETW)
+					end
 				end
 			end
 		end
@@ -248,12 +252,12 @@ local function updateRollingHabitAverage(samples60, samples24, samples31, latest
 				table.remove(samples24, i)
 			end
 
+			if #samples31 > 31 then
+				table.remove(samples31, 1)
+			end
 			local sum = 0.0
 			for i = 1, #samples31 do
 				sum = sum + samples31[i]
-			end
-			if #samples31 > 31 then
-				table.remove(samples31, 1)
 			end
 			return sum / #samples31
 		end
@@ -1103,7 +1107,9 @@ local function painToleranceTraitETW()
 						trait = ETWTraitsRegistry.PAIN_TOLERANCE,
 						positiveTrait = true,
 					})
-					Events.EveryTenMinutes.Remove(painToleranceTraitETW)
+					if gameMode == ETW_CommonFunctions.GameMode.SP then
+						Events.EveryTenMinutes.Remove(painToleranceTraitETW)
+					end
 				end
 			end
 		end
