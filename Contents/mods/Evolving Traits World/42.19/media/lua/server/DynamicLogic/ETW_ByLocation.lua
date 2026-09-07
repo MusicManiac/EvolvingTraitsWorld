@@ -90,7 +90,7 @@ local function outdoorsman(player, isKill)
 					positiveTrait = true,
 				})
 			end
-		elseif outdoorsmanModData.OutdoorsmanCounter > 0 and not isKill then
+		elseif outdoorsmanModData.OutdoorsmanCounter > -SBvars.OutdoorsmanCounter * 2 and not isKill then
 			local totalLose = totalGain
 				* 0.1
 				* (1 + outdoorsmanModData.MinutesSinceOutside / 100)
