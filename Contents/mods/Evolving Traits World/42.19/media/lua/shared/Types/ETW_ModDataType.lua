@@ -20,6 +20,7 @@
 --- @field EatingSpeedSystemCounter number
 --- @field HoarderCounter number
 --- @field OlympianCounter number
+--- @field NaturalEaterFoodsEaten integer
 --- @field HardyReserve number
 --- @field QuickRestLastEndurance number
 --- @field IdealWeightCounter number

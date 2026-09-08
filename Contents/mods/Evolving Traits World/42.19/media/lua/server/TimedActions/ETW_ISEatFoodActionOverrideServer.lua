@@ -25,16 +25,28 @@ end
 local logETW = ETW_CommonFunctions.log
 
 local naturalFoodTypes = {
-	BEAN = true,
 	BERRY = true,
 	CITRUS = true,
 	FRUITS = true,
 	GREENS = true,
+	HERB = true,
+	HOT_PEPPER = true,
 	MUSHROOM = true,
 	NUT = true,
 	VEGETABLE = true,
 	VEGETABLES = true,
 }
+
+---Returns whether a food qualifies as raw natural food for Natural Eater.
+---@param item Food
+---@return boolean
+local function isNaturalEaterFood(item)
+	if item:isCooked() or item:isPackaged() then
+		return false
+	end
+	local foodType = string.upper(item:getFoodType() or "")
+	return naturalFoodTypes[foodType] == true
+end
 
 ---Restores mental stats after a Natural Eater consumes a qualifying uncooked food portion.
 ---@param player IsoPlayer
@@ -42,13 +54,7 @@ local naturalFoodTypes = {
 ---@param portion number
 ---@param hungerValue number
 local function naturalEaterTrait(player, item, portion, hungerValue)
-	if not item:isUncooked() then
-		return
-	end
 	local foodType = string.upper(item:getFoodType() or "")
-	if not naturalFoodTypes[foodType] then
-		return
-	end
 	local multiplier = math.max(0, SBvars.NaturalEaterMentalRecoveryPercentOfHunger or 50) / 100
 	local maximum = math.max(0, SBvars.NaturalEaterMaximumMentalRecoveryPercent or 5) / 100
 	local recovery = math.min(maximum, hungerValue * multiplier)
@@ -76,6 +82,34 @@ local function naturalEaterTrait(player, item, portion, hungerValue)
 			.. recovery * 100
 			.. "%"
 	)
+end
+
+---Records one qualifying food eaten and awards Natural Eater at the threshold.
+---@param player IsoPlayer
+---@param item Food
+local function recordNaturalEaterFood(player, item)
+	local modData = ETW_CommonFunctions.getETWModData(player)
+	if not modData then
+		logETW("ETW Logger | recordNaturalEaterFood(): no modData for player " .. tostring(player:getUsername()))
+		return
+	end
+	modData.NaturalEaterFoodsEaten = (modData.NaturalEaterFoodsEaten or 0) + 1
+	local target = SBvars.NaturalEaterFoodsEaten or 3000
+	logETW("ETW Logger | Natural Eater: foods eaten = " .. modData.NaturalEaterFoodsEaten .. "/" .. target)
+	if modData.NaturalEaterFoodsEaten < target then
+		return
+	end
+	if SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.NATURAL_EATER) then
+		ETW_CommonFunctions.addTraitToDelayTable({
+			modData = modData,
+			trait = ETWTraitsRegistry.NATURAL_EATER,
+			player = player,
+			positiveTrait = true,
+			gainingTrait = true,
+		})
+	elseif not SBvars.DelayedTraitsSystem or ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.NATURAL_EATER) then
+		ETW_CommonFunctions.addTraitToPlayer({ player = player, trait = ETWTraitsRegistry.NATURAL_EATER, positiveTrait = true })
+	end
 end
 
 ---@class AsceticFoodAdjustment
@@ -412,10 +446,13 @@ function ISEatFoodAction:complete()
 		and not item:hasTag(ItemTag.SMOKABLE)
 	if
 		isFood
-		and instanceof(item, "Food")
-		and self.character:hasTrait(ETWTraitsRegistry.NATURAL_EATER)
+		and instanceof(item, "Food") and isNaturalEaterFood(item)
 	then
-		naturalEaterTrait(self.character, item, portion, naturalEaterHungerValue)
+		if self.character:hasTrait(ETWTraitsRegistry.NATURAL_EATER) then
+			naturalEaterTrait(self.character, item, portion, naturalEaterHungerValue)
+		elseif ETW_CommonLogicChecks.NaturalEaterShouldExecute(self.character) then
+			recordNaturalEaterFood(self.character, item)
+		end
 	end
 	if isFood and self.character:hasTrait(ETWTraitsRegistry.BAD_TEETH) then
 		local chance = PZMath.clamp(SBvars.BadTeethPainChance or 10, 0, 100)

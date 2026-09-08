@@ -730,6 +730,15 @@ function ETW_CommonLogicChecks.EatingSpeedSystemShouldExecute(player)
 	end
 end
 
+---Returns whether Natural Eater can be gained by eating qualifying raw food.
+---@param player IsoPlayer|nil
+---@return boolean
+function ETW_CommonLogicChecks.NaturalEaterShouldExecute(player)
+	return traitShouldExecute("NaturalEaterEnabled")
+		and SBvars.TraitsLockSystemCanGainPositive
+		and (player == nil or not player:hasTrait(ETWTraitsRegistry.NATURAL_EATER))
+end
+
 ---Returns true if the Furniture Assembler System should execute
 ---@param player IsoPlayer|nil the player to check for
 ---@return boolean boolean true if the Furniture Assembler System should execute, false otherwise

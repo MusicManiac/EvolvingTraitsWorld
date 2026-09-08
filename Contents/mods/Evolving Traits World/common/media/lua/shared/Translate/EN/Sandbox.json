@@ -157,6 +157,8 @@
     "Sandbox_ETW_NaturalEaterMentalRecoveryPercentOfHunger_tooltip": "Mental recovery provided by a qualifying uncooked natural food as a percentage of the hunger restored by the eaten portion.",
     "Sandbox_ETW_NaturalEaterMaximumMentalRecoveryPercent": "Natural Eater maximum mental recovery (%%)",
     "Sandbox_ETW_NaturalEaterMaximumMentalRecoveryPercent_tooltip": "Maximum percentage of each full mental-stat scale restored by one eating action.",
+    "Sandbox_ETW_NaturalEaterFoodsEaten": "Natural Eater raw foods eaten requirement",
+    "Sandbox_ETW_NaturalEaterFoodsEaten_tooltip": "Number of qualifying uncooked, unpackaged foods that must be eaten to gain Natural Eater.",
     "Sandbox_ETW_NoodleLegsTripChanceOneIn": "Noodle Legs base trip chance (one in)",
     "Sandbox_ETW_NoodleLegsTripChanceOneIn_tooltip": "Base per-tick chance to trip while running. Sprinting increases the risk; Nimble, Sprinting skill, Graceful, and Clumsy modify it.",
     "Sandbox_ETW_ActionHeroBaseDamagePercent": "Action Hero base weapon damage (%%)",

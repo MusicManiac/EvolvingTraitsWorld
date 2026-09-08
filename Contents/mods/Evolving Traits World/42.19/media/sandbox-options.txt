@@ -1278,6 +1278,15 @@ option EvolvingTraitsWorld.NaturalEaterMaximumMentalRecoveryPercent
 	page = ETWTraitsSettings,
 	translation = ETW_NaturalEaterMaximumMentalRecoveryPercent,
 }
+option EvolvingTraitsWorld.NaturalEaterFoodsEaten
+{
+	type = integer,
+	min = 1,
+	max = 100000,
+	default = 3000,
+	page = ETWTraitsSettings,
+	translation = ETW_NaturalEaterFoodsEaten,
+}
 option EvolvingTraitsWorld.GourmandCookingTimeMultiplier
 {
 	type = double,
