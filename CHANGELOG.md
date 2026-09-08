@@ -1,3 +1,15 @@
+## v.13.4.0
+###### 06 Sep 2026
+
+- General:
+  - Added some new sandbox settings for Bravery System and Asthmatic.
+- Fix:
+  - Fixed Resilient, Iron Gut and Pain Tolerance dynamic system removing itself in MP on some occasions.
+  - Fixed slightly inflated rolling averages in if Food, Water and Mental systems.
+  - Fixed Outdoorsman decay.
+  - Fixed kills not triggering fog and rain traits i MP.
+  - Fixed Axeman bypassing sandbox values.
+
 ## v.13.3.2
 ###### 06 Sep 2026
 

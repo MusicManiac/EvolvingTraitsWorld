@@ -436,7 +436,11 @@ local function braverySystemETW(zombie)
 			local firearmsKills = (killCountModData["Firearm"] or {}).count or 0
 			local vehiclesKills = (killCountModData["Vehicles"] or {}).count or 0
 			local explosivesKills = (killCountModData["Explosives"] or {}).count or 0
-			local meleeKills = totalKills - firearmsKills - fireKills - vehiclesKills - explosivesKills
+			local otherKills = fireKills + vehiclesKills + explosivesKills
+			local meleeKills = totalKills - firearmsKills - otherKills
+			local braveryKills = meleeKills * SBvars.BraverySystemMeleeKillValue
+				+ firearmsKills * SBvars.BraverySystemFirearmKillValue
+				+ otherKills * SBvars.BraverySystemOtherKillValue
 
 			for i = 1, #braverySystemTraitInfo do
 				local info = braverySystemTraitInfo[i]
@@ -458,10 +462,12 @@ local function braverySystemETW(zombie)
 						.. totalKills
 						.. ", meleeKills="
 						.. meleeKills
+						.. ", braveryKills="
+						.. braveryKills
 						.. ", threshold="
 						.. threshold
 				)
-				if (totalKills + meleeKills) >= threshold then -- melee kills counted double
+				if braveryKills >= threshold then
 					if
 						player:hasTrait(trait)
 						and negativeTrait

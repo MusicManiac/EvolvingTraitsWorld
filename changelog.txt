@@ -1,9 +1,11 @@
 [url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
 
-v.13.3.3
+v.13.4.0
 
+- General:
+  - Added some new sandbox settings for Bravery System and Asthmatic.
 - Fix:
-  - Fixed Resilient, Iron Gut and Pain Tolerance dynamic system removing iteself in MP on some occasions in MP.
+  - Fixed Resilient, Iron Gut and Pain Tolerance dynamic system removing itself in MP on some occasions.
   - Fixed slightly inflated rolling averages in if Food, Water and Mental systems.
   - Fixed Outdoorsman decay.
   - Fixed kills not triggering fog and rain traits i MP.
