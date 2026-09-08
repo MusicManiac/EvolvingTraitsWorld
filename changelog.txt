@@ -10,3 +10,5 @@ v.13.4.0
   - Fixed Outdoorsman decay.
   - Fixed kills not triggering fog and rain traits i MP.
   - Fixed Axeman bypassing sandbox values.
+- Translations:
+  - Updated IT to v.13.3.2
