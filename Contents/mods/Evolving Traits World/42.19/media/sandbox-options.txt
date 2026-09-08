@@ -1748,6 +1748,42 @@ option EvolvingTraitsWorld.AsthmaticCounter
 	page = ETWComplexPerks,
 	translation = ETW_AsthmaticCounter,
 }
+option EvolvingTraitsWorld.AsthmaticProgressGainMultiplier
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 1,
+	page = ETWComplexPerks,
+	translation = ETW_AsthmaticProgressGainMultiplier,
+}
+option EvolvingTraitsWorld.AsthmaticProgressLossMultiplier
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 1,
+	page = ETWComplexPerks,
+	translation = ETW_AsthmaticProgressLossMultiplier,
+}
+option EvolvingTraitsWorld.AsthmaticColdTemperatureThreshold
+{
+	type = double,
+	min = -100,
+	max = 100,
+	default = 10,
+	page = ETWComplexPerks,
+	translation = ETW_AsthmaticColdTemperatureThreshold,
+}
+option EvolvingTraitsWorld.AsthmaticRecoveryTemperatureThreshold
+{
+	type = double,
+	min = -100,
+	max = 100,
+	default = 0,
+	page = ETWComplexPerks,
+	translation = ETW_AsthmaticRecoveryTemperatureThreshold,
+}
 option EvolvingTraitsWorld.Bloodlust
 {
 	type = boolean,
