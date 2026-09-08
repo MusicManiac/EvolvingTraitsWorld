@@ -164,6 +164,7 @@
 --- @field LeadFootStompPowerBonus number
 --- @field NaturalEaterMentalRecoveryPercentOfHunger number
 --- @field NaturalEaterMaximumMentalRecoveryPercent number
+--- @field NaturalEaterFoodsEaten integer
 --- @field NoodleLegsTripChanceOneIn integer
 --- @field HomichlophileMultiplier number
 --- @field HomichlophobiaMultiplier number

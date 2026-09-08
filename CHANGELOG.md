@@ -3,6 +3,7 @@
 
 - General:
   - Added some new sandbox settings for Bravery System and Asthmatic.
+  - Made Natural Eater dynamic.
 - Fix:
   - Fixed Resilient, Iron Gut and Pain Tolerance dynamic system removing itself in MP on some occasions.
   - Fixed slightly inflated rolling averages in if Food, Water and Mental systems.
