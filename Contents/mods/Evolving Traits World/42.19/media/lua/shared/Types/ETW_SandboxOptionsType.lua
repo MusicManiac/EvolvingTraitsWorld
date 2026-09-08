@@ -211,6 +211,10 @@
 -- Complex Perks
 --- @field Asthmatic boolean
 --- @field AsthmaticCounter integer
+--- @field AsthmaticProgressGainMultiplier number
+--- @field AsthmaticProgressLossMultiplier number
+--- @field AsthmaticColdTemperatureThreshold number
+--- @field AsthmaticRecoveryTemperatureThreshold number
 --- @field Bloodlust boolean
 --- @field BloodlustFromAnimalsMultiplier number
 --- @field BloodlustMeterFillMultiplier number

@@ -847,12 +847,13 @@ local function asthmaticTraitETW()
 			local temperatureMultiplier = math.max(0, 1.01 ^ (-7.6 * temperature) + 0.53)
 			local lowerBoundary = -2 * SBvars.AsthmaticCounter
 			local upperBoundary = 2 * SBvars.AsthmaticCounter
-			if (running or sprinting) and (temperature <= 10 or smoker) then
+			if (running or sprinting) and (temperature <= SBvars.AsthmaticColdTemperatureThreshold or smoker) then
 				local counterDecrease = temperatureMultiplier
 					* (outside and 1.2 or 1)
 					* (smoker and 1.5 or 0.8)
 					* (asthmatic and 1.5 or 0.8)
 					* (sprinting and 1.5 or 1)
+					* SBvars.AsthmaticProgressLossMultiplier
 				local counterChange = ETW_CommonFunctions.applyAffinityToDirectionalChange(
 					modData,
 					-counterDecrease,
@@ -867,11 +868,12 @@ local function asthmaticTraitETW()
 						.. modData.AsthmaticCounter
 				)
 			end
-			if not running and not sprinting and temperature >= 0 then
+			if not running and not sprinting and temperature >= SBvars.AsthmaticRecoveryTemperatureThreshold then
 				local counterIncrease = (1 + player:getPerkLevel(Perks.Fitness) * 0.1)
 					* (smoker and 0.5 or 1)
 					* (asthmatic and 0.5 or 1)
 					* endurance
+					* SBvars.AsthmaticProgressGainMultiplier
 				counterIncrease = ETW_CommonFunctions.applyAffinityToDirectionalChange(
 					modData,
 					counterIncrease,
