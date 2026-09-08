@@ -98,6 +98,33 @@ option EvolvingTraitsWorld.BraverySystemKills
 	page = ETWSystems,
 	translation = ETW_BraverySystemKills,
 }
+option EvolvingTraitsWorld.BraverySystemMeleeKillValue
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 2,
+	page = ETWSystems,
+	translation = ETW_BraverySystemMeleeKillValue,
+}
+option EvolvingTraitsWorld.BraverySystemFirearmKillValue
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 1,
+	page = ETWSystems,
+	translation = ETW_BraverySystemFirearmKillValue,
+}
+option EvolvingTraitsWorld.BraverySystemOtherKillValue
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 1,
+	page = ETWSystems,
+	translation = ETW_BraverySystemOtherKillValue,
+}
 option EvolvingTraitsWorld.BraverySystemRemovesOtherFearPerks
 {
 	type = boolean,

@@ -4459,9 +4459,13 @@ function ISETWUI:render()
 		local firearmsKills = killCountModData and (killCountModData["Firearm"] or {}).count or 0
 		local vehiclesKills = killCountModData and (killCountModData["Vehicles"] or {}).count or 0
 		local explosivesKills = killCountModData and (killCountModData["Explosives"] or {}).count or 0
-		local meleeKills = totalKills - firearmsKills - fireKills - vehiclesKills - explosivesKills
-		self.barBravery:setValue(percentile(0, SBvars.BraverySystemKills, totalKills + meleeKills))
-		self.barBravery:setTooltip(totalKills + meleeKills)
+		local otherKills = fireKills + vehiclesKills + explosivesKills
+		local meleeKills = totalKills - firearmsKills - otherKills
+		local braveryKills = meleeKills * SBvars.BraverySystemMeleeKillValue
+			+ firearmsKills * SBvars.BraverySystemFirearmKillValue
+			+ otherKills * SBvars.BraverySystemOtherKillValue
+		self.barBravery:setValue(percentile(0, SBvars.BraverySystemKills, braveryKills))
+		self.barBravery:setTooltip(braveryKills)
 	end
 
 	updateLabel(
