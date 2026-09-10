@@ -337,6 +337,8 @@ function ETW_CommonFunctions.indefatigableTheme(player)
 	end
 end
 
+local modDataReferences = {}
+
 ---Returns ETW mod data
 ---@overload fun(player: IsoPlayer): EvolvingTraitsWorldModData
 ---@param player IsoPlayer|IsoGameCharacter the player for whom to get mod data
@@ -349,17 +351,64 @@ function ETW_CommonFunctions.getETWModData(player)
 		return nil
 	end
 	---@cast player IsoPlayer
-	local modData = player:getModData()
-	if not modData then
+	local playerModData = player:getModData()
+	if not playerModData then
 		return nil
 	end
+
+	local referencedModData = modDataReferences[player]
+
+	if referencedModData and playerModData.EvolvingTraitsWorld ~= referencedModData then
+		logETW(
+			"ETW Logger | getETWModData(): ETW modData for player "
+				.. player:getUsername()
+				.. " was replaced, restoring reference"
+		)
+
+		playerModData.EvolvingTraitsWorld = referencedModData
+	end
+
 	if not ETW_ModData then
 		ETW_ModData = require("ETW_ModData")
 	end
+
 	-- Existing saves can have an ETW table from an older version while still
 	-- missing fields added by newer code.
-	return ETW_ModData.ensureETWModData(IsoPlayer.getPlayerIndex(player), player)
+	local modData = ETW_ModData.ensureETWModData(
+		IsoPlayer.getPlayerIndex(player),
+		player
+	)
+
+	if not referencedModData then
+		logETW(
+			"ETW Logger | getETWModData(): creating new modData reference for player "
+				.. player:getUsername()
+		)
+
+		modDataReferences[player] = modData
+	end
+
+	return modData
 end
+
+---Function responsible for clearing modData reference when player disconnects
+---@param playerIndex number
+---@param player IsoPlayer
+local function clearModDataReference(playerIndex, player)
+	if modDataReferences[player] then
+		logETW(
+			"ETW Logger | clearModDataReference(): clearing modData reference for player "
+				.. player:getUsername()
+		)
+		modDataReferences[player] = nil
+	end
+end
+
+if gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
+	Events.
+end
+Events.OnPlayerDeath.Remove(clearModDataReference)
+Events.OnPlayerDeath.Add(clearModDataReference)
 
 ---Immediately refreshes ETW ModData on the owning multiplayer client.
 ---@param player IsoPlayer|IsoGameCharacter
