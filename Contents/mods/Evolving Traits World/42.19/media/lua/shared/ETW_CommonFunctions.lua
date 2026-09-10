@@ -194,6 +194,8 @@ function ETW_CommonFunctions.log(...)
 	end
 end
 
+local logETW = ETW_CommonFunctions.log
+
 ---Function responsible for finding index of delayed trait in Delayed Traits Table
 ---@param tbl table the table to search in
 ---@param value any the value to search for
@@ -356,16 +358,19 @@ function ETW_CommonFunctions.getETWModData(player)
 		return nil
 	end
 
-	local referencedModData = modDataReferences[player]
+	local referencedModData
+	if gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
+		referencedModData = modDataReferences[player]
 
-	if referencedModData and playerModData.EvolvingTraitsWorld ~= referencedModData then
-		logETW(
-			"ETW Logger | getETWModData(): ETW modData for player "
-				.. player:getUsername()
-				.. " was replaced, restoring reference"
-		)
+		if referencedModData and playerModData.EvolvingTraitsWorld ~= referencedModData then
+			logETW(
+				"ETW Logger | getETWModData(): ETW modData for player "
+					.. player:getUsername()
+					.. " was replaced, restoring server reference"
+			)
 
-		playerModData.EvolvingTraitsWorld = referencedModData
+			playerModData.EvolvingTraitsWorld = referencedModData
+		end
 	end
 
 	if not ETW_ModData then
@@ -379,9 +384,9 @@ function ETW_CommonFunctions.getETWModData(player)
 		player
 	)
 
-	if not referencedModData then
+	if gameMode == ETW_CommonFunctions.GameMode.MP_SERVER and not referencedModData then
 		logETW(
-			"ETW Logger | getETWModData(): creating new modData reference for player "
+			"ETW Logger | getETWModData(): creating server modData reference for player "
 				.. player:getUsername()
 		)
 
@@ -391,24 +396,39 @@ function ETW_CommonFunctions.getETWModData(player)
 	return modData
 end
 
----Function responsible for clearing modData reference when player disconnects
----@param playerIndex number
----@param player IsoPlayer
-local function clearModDataReference(playerIndex, player)
-	if modDataReferences[player] then
-		logETW(
-			"ETW Logger | clearModDataReference(): clearing modData reference for player "
-				.. player:getUsername()
-		)
-		modDataReferences[player] = nil
+---Clears a server-side player's modData reference, or references for players no longer online.
+---@param player IsoPlayer|nil
+function ETW_CommonFunctions.clearETWModDataReference(player)
+	if gameMode ~= ETW_CommonFunctions.GameMode.MP_SERVER then
+		return
+	end
+
+	if player then
+		if modDataReferences[player] then
+			logETW(
+				"ETW Logger | clearETWModDataReference(): clearing server modData reference for player "
+					.. player:getUsername()
+			)
+			modDataReferences[player] = nil
+		end
+	else
+		local playersList = ETW_CommonFunctions.playersList()
+		for referencedPlayer in pairs(modDataReferences) do
+			if not playersList:contains(referencedPlayer) then
+				logETW(
+					"ETW Logger | clearETWModDataReference(): clearing stale server modData reference for player "
+						.. referencedPlayer:getUsername()
+				)
+				modDataReferences[referencedPlayer] = nil
+			end
+		end
 	end
 end
 
 if gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
-	Events.
+	Events.EveryTenMinutes.Remove(ETW_CommonFunctions.clearETWModDataReference)
+	Events.EveryTenMinutes.Add(ETW_CommonFunctions.clearETWModDataReference)
 end
-Events.OnPlayerDeath.Remove(clearModDataReference)
-Events.OnPlayerDeath.Add(clearModDataReference)
 
 ---Immediately refreshes ETW ModData on the owning multiplayer client.
 ---@param player IsoPlayer|IsoGameCharacter

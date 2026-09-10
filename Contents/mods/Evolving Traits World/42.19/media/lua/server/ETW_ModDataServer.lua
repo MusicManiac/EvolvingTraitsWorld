@@ -79,6 +79,7 @@ function Commands.clearETWModData(player, args)
 	ETW_CommonFunctions.log(
 		"ETW Logger | System: character " .. player:getUsername() .. " died, received command to clear its ETW modData"
 	)
+	ETW_CommonFunctions.clearETWModDataReference(player)
 	ETW_ModData.clearETWModData(player)
 end
 
@@ -114,24 +115,6 @@ function Commands.eagleEyedRecordKill(player, args)
 		return
 	end
 	rememberEagleEyedZombieId(args.zombieId)
-	local player = getPlayerFromUsername(player:getUsername()) 
-	ETW_CommonFunctions.log(
-		"Eagle pre 1: player="
-			.. tostring(player)
-			.. " onlineID="
-			.. tostring(player:getOnlineID())
-			.. " playerModData="
-			.. tostring(player:getModData())
-	)
-	player = getSpecificPlayer(player:getID())
-	ETW_CommonFunctions.log(
-		"Eagle pre 2: player="
-			.. tostring(player)
-			.. " onlineID="
-			.. tostring(player:getOnlineID())
-			.. " playerModData="
-			.. tostring(player:getModData())
-	)
 	local modData = ETW_CommonFunctions.getETWModData(player)  
 	ETW_CommonFunctions.log(
 		"Eagle pre: playerObject="
