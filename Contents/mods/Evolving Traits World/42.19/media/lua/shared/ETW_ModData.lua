@@ -390,6 +390,7 @@ function ETW_ModData.ensureETWModData(playerIndex, player)
 		return ETW_ModData.createETWModData(playerIndex, player)
 	end
 	if not modData then
+		print("ETW Logger | System: creating missing modData for player " .. player:getUsername())
 		return ETW_ModData.createETWModData(playerIndex, player)
 	end
 	return modData

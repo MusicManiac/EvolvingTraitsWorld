@@ -1,5 +1,11 @@
+## v.13.4.1
+###### 09 Sep 2026
+
+- Fix:
+  - Simplified Eagle-Eyed progress detection.
+
 ## v.13.4.0
-###### 06 Sep 2026
+###### 08 Sep 2026
 
 - General:
   - Added some new sandbox settings for Bravery System and Asthmatic.

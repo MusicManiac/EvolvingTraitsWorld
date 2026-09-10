@@ -1,3 +1,6 @@
+[h1]Read description[/h1]
+Asking questions answered in description will be met with ridicule and disrespect.
+
 [h1]Running ETW+MT[/h1]
 You can run both mods at the same time, but some traits will be duplicated. You can try disabling ETW analogues of MT, but I heard it makes character creation a bit buggy. Your best bet is to just let the traits be and not duplicate them. Until you finish current playthrough. And in the next one - drop MT. I am still migrating MT traits, majority is migrated already, some will be added later and some won't be added at all.
 
@@ -11,12 +14,12 @@ You can run both mods at the same time, but some traits will be duplicated. You 
 [*][Dynamic-related] Mark dynamic traits in character creation with the help of [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3766701843]Mark Dynamic Traits Framework (MDTF)[/url]
 [*]For new traits, extensive sandbox customization is also present.
 [*]Optional [b]Trait Sandbox[/b] submod: enable/disable ETW-added traits and change their point values. Requires [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3378285185]Starlit Library[/url].
-[*]Client-sided configuration available (Exc -> Options -> Mod Options).
+[*]Client-sided configuration available (Esc -> Options -> Mod Options).
 [*]Legacy (b41) version can be found [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3773982162]here[/url].
 [/list]
 
 [h1]Compatibility and Installation[/h1]
-List of compatible/incompatible mods can be found in [url=https://steamcommunity.com/workshop/filedetails/discussion/2914075159/4290313152633468883/]this discussion[/url], including details on: Dynamic Traits, More Traits, zRe ARMOR PACK by kERHUS, Simple Overhaul: Traits and Occupations (SOTO), More Simple Traits (MST), Explorer Trait, SixthSense, Superb Survivors!
+List of compatible/incompatible mods can be found in [url=https://steamcommunity.com/workshop/filedetails/discussion/2914075159/4290313152633468883/]this discussion[/url], including details on: Dynamic Traits, More Traits, Simple Overhaul: Traits and Occupations (SOTO), Companion Dogs
 
 [h1]GitHub and Discord[/h1]
 If you want to submit translation files, make suggestions or report bugs, the easiest way to do it would be on Discord.
