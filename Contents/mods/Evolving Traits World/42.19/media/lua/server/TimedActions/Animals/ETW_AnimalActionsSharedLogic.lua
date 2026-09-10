@@ -32,26 +32,34 @@ function AnimalActionsSharedLogic.increaseBloodlustMeter(player, actionName)
 	if SBvars.BloodlustFromAnimalsMultiplier <= 0 or not ETW_CommonLogicChecks.BloodlustShouldExecute(player) then
 		return
 	end
+	local hardCap = bloodlustMeterCapacity * SBvars.BloodlustMeterMaxCapMultiplier
+	-- A point-blank zombie kill contributes 1 * BloodlustMeterFillMultiplier.
+	local increase = SBvars.BloodlustMeterFillMultiplier * SBvars.BloodlustFromAnimalsMultiplier
 
-	local modData = ETW_CommonFunctions.getETWModData(player)
-	if modData then
-		local bloodlust = modData.BloodlustSystem
-		local hardCap = bloodlustMeterCapacity * SBvars.BloodlustMeterMaxCapMultiplier
-		-- A point-blank zombie kill contributes 1 * BloodlustMeterFillMultiplier.
-		local increase = SBvars.BloodlustMeterFillMultiplier * SBvars.BloodlustFromAnimalsMultiplier
+	if gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
+		sendClientCommand(
+			player,
+			"ETW",
+			"updateClientETWModDataField",
+			{ path = { "BloodlustSystem", "BloodlustMeter" }, mode = "add", value = counterIncrease }
+		)
+	else
+		local modData = ETW_CommonFunctions.getETWModData(player)
+		if modData then
+			local bloodlust = modData.BloodlustSystem
+			if bloodlust.BloodlustMeter > bloodlustMeterCapacity then
+				increase = increase * 0.5
+			end
 
-		if bloodlust.BloodlustMeter > bloodlustMeterCapacity then
-			increase = increase * 0.5
-		end
+			bloodlust.BloodlustMeter = math.min(hardCap, bloodlust.BloodlustMeter + increase)
+			bloodlust.LastKillTimestamp = player:getHoursSurvived()
+			ETW_CommonFunctions.log("ETW Logger | " .. actionName .. ": BloodlustMeter=" .. bloodlust.BloodlustMeter)
 
-		bloodlust.BloodlustMeter = math.min(hardCap, bloodlust.BloodlustMeter + increase)
-		bloodlust.LastKillTimestamp = player:getHoursSurvived()
-		ETW_CommonFunctions.log("ETW Logger | " .. actionName .. ": BloodlustMeter=" .. bloodlust.BloodlustMeter)
-
-		if gameMode == ETW_CommonFunctions.GameMode.SP and ETW_Moodles then
-			ETW_Moodles.bloodlustMoodleUpdate(player, { hide = false })
-		elseif gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
-			sendServerCommand(player, "ETW", "bloodlustMoodleUpdate", { hide = false })
+			if gameMode == ETW_CommonFunctions.GameMode.SP and ETW_Moodles then
+				ETW_Moodles.bloodlustMoodleUpdate(player, { hide = false })
+			elseif gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
+				sendServerCommand(player, "ETW", "bloodlustMoodleUpdate", { hide = false })
+			end
 		end
 	end
 end

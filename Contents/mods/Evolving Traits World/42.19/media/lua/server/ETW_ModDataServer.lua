@@ -209,6 +209,27 @@ function Commands.olympianRecordProgress(player, args)
 	end
 end
 
+---Function responsible for refreshing modData from client
+---@param player IsoPlayer
+---@param args table
+function Commands.refreshETWModDataFromClient(player, args)
+	local receivedModData = args and args["ETWModData"]
+	if not player or not player.getModData or type(receivedModData) ~= "table" then
+		logETW(
+			"ETW Logger | Commands.refreshETWModDataFromClient(): player or ETWModData not ready, skipping update"
+		)
+		return
+	end
+	local ok, modData = pcall(function()
+		return player:getModData()
+	end)
+	if not ok or not modData then
+		logETW("ETW Logger | Commands.refreshETWModDataFromClient(): getModData unavailable, skipping update")
+		return
+	end
+	modData.EvolvingTraitsWorld = receivedModData
+end
+
 Commands.OnClientCommand = function(module, command, player, args)
 	if module == "ETW" and Commands[command] then
 		local argStr = ""

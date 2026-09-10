@@ -15,7 +15,7 @@ local SBvars = SandboxVars.EvolvingTraitsWorld
 
 local gameMode = ETW_CommonFunctions.gameMode()
 
-if gameMode == ETW_CommonFunctions.GameMode.SP then
+if gameMode == ETW_CommonFunctions.GameMode.SP or gameMode == ETW_CommonFunctions.GameMode.MP_CLIENT then
 	ETW_Moodles = require("ETW_Moodles")
 end
 
@@ -26,7 +26,7 @@ local FILENAME = "ETW_ByTime.lua"
 if
 	not ETW_CommonFunctions.gameModeSafeguard(
 		FILENAME,
-		{ ETW_CommonFunctions.GameMode.SP, ETW_CommonFunctions.GameMode.MP_SERVER }
+		{ ETW_CommonFunctions.GameMode.SP, ETW_CommonFunctions.GameMode.MP_CLIENT }
 	)
 then
 	return
@@ -52,7 +52,7 @@ end
 
 ---Function responsible for managing Sleep System traits
 local function sleepSystem()
-	local playersList = ETW_CommonFunctions.playersList()
+	local playersList = ETW_CommonFunctions.playersList(getPlayer())
 	for i = 0, playersList:size() - 1 do
 		local player = playersList:get(i)
 		local modData = ETW_CommonFunctions.getETWModData(player)
@@ -181,7 +181,7 @@ end
 
 ---Function responsible for managing hourly Smoker trait decay
 local function smoker()
-	local playersList = ETW_CommonFunctions.playersList()
+	local playersList = ETW_CommonFunctions.playersList(getPlayer())
 	for i = 0, playersList:size() - 1 do
 		local player = playersList:get(i)
 		local modData = ETW_CommonFunctions.getETWModData(player)
@@ -229,6 +229,7 @@ local function smoker()
 			and playerHasSmoker
 			and SBvars.TraitsLockSystemCanLoseNegative
 		then
+			-- TODO: check setting stats on client works in MP
 			stats:set(CharacterStat.NICOTINE_WITHDRAWAL, 0)
 			ETW_CommonFunctions.removeTraitFromPlayer({
 				player = player,
@@ -241,7 +242,7 @@ end
 
 ---Function responsible for managing Hoarder trait
 local function hoarder()
-	local playersList = ETW_CommonFunctions.playersList()
+	local playersList = ETW_CommonFunctions.playersList(getPlayer())
 	for i = 0, playersList:size() - 1 do
 		local player = playersList:get(i)
 		local modData = ETW_CommonFunctions.getETWModData(player)
@@ -263,7 +264,7 @@ local function hoarder()
 			if modData.HoarderCounter >= SBvars.HoarderCounter then
 				if
 					SBvars.DelayedTraitsSystem
-					and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.HOARDER)
+					and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.HOARDER, modData)
 				then
 					ETW_CommonFunctions.addTraitToDelayTable({
 						modData = modData,
@@ -274,13 +275,14 @@ local function hoarder()
 					})
 				elseif
 					not SBvars.DelayedTraitsSystem
-					or ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.HOARDER)
+					or ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.HOARDER, modData)
 				then
 					ETW_CommonFunctions.addTraitToPlayer({
 						player = player,
 						trait = ETWTraitsRegistry.HOARDER,
 						positiveTrait = true,
 					})
+					-- TODO: check if recomputeAll works in MP when called from client
 					UCWF.recomputeAll(player)
 				end
 			end
@@ -290,10 +292,7 @@ end
 
 ---Samples running or sprinting once per in-game minute and awards Olympian at the target.
 local function olympian()
-	if SBvars.DisableAllDynamicTraits == true then
-		return
-	end
-	local playersList = ETW_CommonFunctions.playersList()
+	local playersList = ETW_CommonFunctions.playersList(getPlayer())
 	for i = 0, playersList:size() - 1 do
 		local player = playersList:get(i)
 		if not player:hasTrait(ETWTraitsRegistry.OLYMPIAN) then
@@ -307,7 +306,7 @@ local function olympian()
 				if modData.OlympianCounter >= SBvars.OlympianCounter then
 					if
 						SBvars.DelayedTraitsSystem
-						and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.OLYMPIAN)
+						and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.OLYMPIAN, modData)
 					then
 						ETW_CommonFunctions.addTraitToDelayTable({
 							modData = modData,
@@ -318,7 +317,7 @@ local function olympian()
 						})
 					elseif
 						not SBvars.DelayedTraitsSystem
-						or ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.OLYMPIAN)
+						or ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.OLYMPIAN, modData)
 					then
 						ETW_CommonFunctions.addTraitToPlayer({
 							player = player,
@@ -373,7 +372,7 @@ local function clearEventsETW(character)
 	logETW("ETW Logger | System: clearEventsETW in " .. FILENAME)
 end
 
-if gameMode == ETW_CommonFunctions.GameMode.SP then
+if gameMode == ETW_CommonFunctions.GameMode.SP or gameMode == ETW_CommonFunctions.GameMode.MP_CLIENT then
 	Events.OnCreatePlayer.Remove(initializeEventsETW)
 	Events.OnCreatePlayer.Add(initializeEventsETW)
 	Events.OnPlayerDeath.Remove(clearEventsETW)

@@ -343,14 +343,17 @@ end
 ---@return EvolvingTraitsWorldModData|nil EvolvingTraitsWorldModData mod data for the player
 function ETW_CommonFunctions.getETWModData(player)
 	if not player or not player.getModData then
+		logETW("ETW Logger | ETW_CommonFunctions.getETWModData(): player is nil or doesn't have getModData() method")
 		return nil
 	end
 	if not instanceof(player, "IsoPlayer") then
+		logETW("ETW Logger | ETW_CommonFunctions.getETWModData(): player is not an IsoPlayer, returning nil")
 		return nil
 	end
 	---@cast player IsoPlayer
 	local modData = player:getModData()
 	if not modData then
+		logETW("ETW Logger | ETW_CommonFunctions.getETWModData(): player has no mod data, returning nil")
 		return nil
 	end
 	if not ETW_ModData then
@@ -625,15 +628,19 @@ end
 ---Function assumes that trait is in Delayed Traits table, so make sure to check that before calling this function, otherwise it will throw an error
 ---@param player IsoPlayer|IsoGameCharacter the player to check
 ---@param traitToCheck CharacterTrait the trait to check
+---@param modData EvolvingTraitsWorldModData|nil modData to check, if nil, will be fetched from player
 ---@return boolean boolean true if trait should be gained/lost, false otherwise
-function ETW_CommonFunctions.checkDelayedTraits(player, traitToCheck)
+function ETW_CommonFunctions.checkDelayedTraits(player, traitToCheck, modData)
 	if SBvars.DisableAllDynamicTraits == true then
+		logETW("ETW Logger | ETW_CommonFunctions.checkDelayedTraits(): dynamic traits are disabled, returning false")
 		return false
 	end
 	if not SBvars.DelayedTraitsSystem then
+		logETW("ETW Logger | ETW_CommonFunctions.checkDelayedTraits(): Delayed Traits System is disabled, returning true")
 		return true
 	end
 	if not instanceof(player, "IsoPlayer") then
+		logETW("ETW Logger | ETW_CommonFunctions.checkDelayedTraits(): player is not an IsoPlayer, returning false")
 		return false
 	end
 	---@cast player IsoPlayer
@@ -641,7 +648,7 @@ function ETW_CommonFunctions.checkDelayedTraits(player, traitToCheck)
 		"ETW Logger | ETW_CommonFunctions.checkDelayedTraits(): running for player " .. player:getUsername()
 	)
 	local traitRegistryId = traitToCheck:toString()
-	local modData = ETW_CommonFunctions.getETWModData(player)
+	modData = modData or ETW_CommonFunctions.getETWModData(player)
 	if modData then
 		local traitTable = modData.DelayedTraits
 		local traitIndex = indexOfDelayedTrait(modData.DelayedTraits, traitRegistryId)
@@ -685,16 +692,20 @@ end
 ---Function responsible for checking if specific trait is already in Delayed Traits System
 ---@param player IsoPlayer|IsoGameCharacter the player to check
 ---@param trait CharacterTrait the trait to check
+---@param modData EvolvingTraitsWorldModData|nil modData to check, if nil, will be fetched from player
 ---@return boolean boolean true if trait is in Delayed Traits table, false otherwise
-function ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, trait)
+function ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, trait, modData)
 	if not instanceof(player, "IsoPlayer") then
+		logETW(
+			"ETW Logger | ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(): player is not an IsoPlayer, returning false"
+		)
 		return false
 	end
 	---@cast player IsoPlayer
 	ETW_CommonFunctions.log(
 		"ETW Logger | checkIfTraitIsInDelayedTraitsTable(): running for player " .. player:getUsername()
 	)
-	local modData = ETW_CommonFunctions.getETWModData(player)
+	modData = modData or ETW_CommonFunctions.getETWModData(player)
 	if not modData then
 		return false
 	end

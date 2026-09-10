@@ -66,24 +66,41 @@ local original_forageSystem_addOrDropItems = forageSystem.addOrDropItems
 ---Decorates forageSystem.addOrDropItems() to catch players picking up herbs while foraging.
 function forageSystem.addOrDropItems(_character, _inventory, _items)
 	if ETW_CommonLogicChecks.HerbalistShouldExecute(_character) and SBvars.TraitsLockSystemCanGainPositive then
+		local counterIncrease = 0
 		for item in iterList(_items) do
 			logETW("ETW Logger | forageSystem.addOrDropItems(): picking up foraging item: " .. item:getFullType())
 			if filteredForageHashMap[item:getFullType()] then
-				local modData = ETW_CommonFunctions.getETWModData(_character)
-				if modData then
-					modData.HerbsPickedUp = modData.HerbsPickedUp + 1
-					logETW("ETW Logger | forageSystem.addOrDropItems(): modData.HerbsPickedUp: " .. modData.HerbsPickedUp)
-					if
-						not _character:hasTrait(CharacterTrait.HERBALIST)
-						and modData.HerbsPickedUp >= SBvars.HerbalistHerbsPicked
-						and SBvars.TraitsLockSystemCanGainPositive
-					then
-						ETW_CommonFunctions.addTraitToPlayer({
-							player = _character,
-							trait = CharacterTrait.HERBALIST,
-							positiveTrait = true,
-						})
-					end
+				counterIncrease = counterIncrease + 1
+			end
+		end
+		if gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
+			ETW_CommonFunctions.log(
+				"ETW Logger | forageSystem.addOrDropItems(): sending command to client to update modData.HerbsPickedUp by "
+					.. counterIncrease
+					.. " for player "
+					.. _character:getUsername()
+			)
+			sendClientCommand(
+				_character,
+				"ETW",
+				"updateClientETWModDataField",
+				{ path = { "HerbsPickedUp" }, mode = "add", value = counterIncrease }
+			)
+		else
+			local modData = ETW_CommonFunctions.getETWModData(_character)
+			if modData then
+				modData.HerbsPickedUp = modData.HerbsPickedUp + counterIncrease
+				logETW("ETW Logger | forageSystem.addOrDropItems(): modData.HerbsPickedUp: " .. modData.HerbsPickedUp)
+				if
+					not _character:hasTrait(CharacterTrait.HERBALIST)
+					and modData.HerbsPickedUp >= SBvars.HerbalistHerbsPicked
+					and SBvars.TraitsLockSystemCanGainPositive
+				then
+					ETW_CommonFunctions.addTraitToPlayer({
+						player = _character,
+						trait = CharacterTrait.HERBALIST,
+						positiveTrait = true,
+					})
 				end
 			end
 		end

@@ -18,7 +18,7 @@ local logETW = CommonFunctions.log
 local FILENAME = "ETW_BySkills.lua"
 
 if
-	not CommonFunctions.gameModeSafeguard(FILENAME, { CommonFunctions.GameMode.SP, CommonFunctions.GameMode.MP_SERVER })
+	not CommonFunctions.gameModeSafeguard(FILENAME, { CommonFunctions.GameMode.SP, CommonFunctions.GameMode.MP_CLIENT })
 then
 	return
 end
@@ -95,7 +95,7 @@ local function applyTraitChange(ctx, trait, positiveTrait, gainingTrait, onApply
 		)
 		return
 	end
-	if SBvars.DelayedTraitsSystem and not CommonFunctions.checkIfTraitIsInDelayedTraitsTable(ctx.player, trait) then
+	if SBvars.DelayedTraitsSystem and not CommonFunctions.checkIfTraitIsInDelayedTraitsTable(ctx.player, trait, ctx.modData) then
 		CommonFunctions.addTraitToDelayTable({
 			modData = ctx.modData,
 			trait = trait,
@@ -106,7 +106,7 @@ local function applyTraitChange(ctx, trait, positiveTrait, gainingTrait, onApply
 		return
 	end
 
-	if not SBvars.DelayedTraitsSystem or CommonFunctions.checkDelayedTraits(ctx.player, trait) then
+	if not SBvars.DelayedTraitsSystem or CommonFunctions.checkDelayedTraits(ctx.player, trait, ctx.modData) then
 		if gainingTrait then
 			CommonFunctions.addTraitToPlayer({
 				player = ctx.player,
@@ -1007,7 +1007,9 @@ local function progressDelayedTraits()
 			end
 		end
 		-- Refresh immediately so the client cannot later retransmit the pre-roll queue.
-		CommonFunctions.syncETWModDataToClient(player)
+		if gameMode == CommonFunctions.GameMode.MP_SERVER then
+			CommonFunctions.syncETWModDataToClient(player)
+		end
 	end
 	logETW("ETW Logger | Delayed Traits System: finished progressDelayedTraits() execution ----------")
 end
@@ -1040,10 +1042,10 @@ local function initializeEventsETW(playerIndex, player)
 		return
 	end
 	if SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLoseNegative then
-		if gameMode == CommonFunctions.GameMode.SP then
+		if gameMode == CommonFunctions.GameMode.SP or gameMode == CommonFunctions.GameMode.MP_CLIENT then
 			ETW_BySkills.traitsGainsBySkill(player, "characterInitialization")
 		end
-		if gameMode ~= CommonFunctions.GameMode.MP_CLIENT then
+		if gameMode == CommonFunctions.GameMode.SP or gameMode == CommonFunctions.GameMode.MP_CLIENT then
 			Events.LevelPerk.Remove(ETW_BySkills.traitsGainsBySkill)
 			Events.LevelPerk.Add(ETW_BySkills.traitsGainsBySkill)
 		end

@@ -17,7 +17,7 @@ local FILENAME = "ETW_ByWeather.lua"
 if
 	not ETW_CommonFunctions.gameModeSafeguard(
 		FILENAME,
-		{ ETW_CommonFunctions.GameMode.SP, ETW_CommonFunctions.GameMode.MP_SERVER }
+		{ ETW_CommonFunctions.GameMode.SP, ETW_CommonFunctions.GameMode.MP_CLIENT }
 	)
 then
 	return
@@ -35,6 +35,7 @@ end
 ---@param player IsoPlayer
 ---@param isKill boolean
 local function rainTraits(player, isKill)
+	player = player or getPlayer()
 	isKill = isKill or false
 	local rainIntensity = getClimateManager():getRainIntensity()
 	if rainIntensity == 0 then
@@ -127,6 +128,7 @@ end
 ---@param player IsoPlayer
 ---@param isKill boolean
 local function fogTraits(player, isKill)
+	player = player or getPlayer()
 	isKill = isKill or false
 	local fogIntensity = getClimateManager():getFogIntensity()
 	if fogIntensity == 0 then
@@ -279,7 +281,7 @@ local function clearEventsETW(character)
 	logETW("ETW Logger | System: clearEventsETW in " .. FILENAME)
 end
 
-if gameMode == ETW_CommonFunctions.GameMode.SP then
+if gameMode == ETW_CommonFunctions.GameMode.SP or gameMode == ETW_CommonFunctions.GameMode.MP_CLIENT then
 	Events.OnCreatePlayer.Remove(initializeEventsETW)
 	Events.OnCreatePlayer.Add(initializeEventsETW)
 	Events.OnPlayerDeath.Remove(clearEventsETW)

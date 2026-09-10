@@ -13,7 +13,7 @@ local FILENAME = "ETW_ByHealth.lua"
 if
 	not ETW_CommonFunctions.gameModeSafeguard(
 		FILENAME,
-		{ ETW_CommonFunctions.GameMode.SP, ETW_CommonFunctions.GameMode.MP_SERVER }
+		{ ETW_CommonFunctions.GameMode.SP, ETW_CommonFunctions.GameMode.MP_CLIENT }
 	)
 then
 	return
@@ -24,7 +24,7 @@ local logETW = ETW_CommonFunctions.log
 
 ---Function responsible for managing Immunity traits
 local function immunitySystemTraits()
-	local playersList = ETW_CommonFunctions.playersList()
+	local playersList = ETW_CommonFunctions.playersList(getPlayer())
 
 	for i = 0, playersList:size() - 1 do
 		local player = playersList:get(i)
@@ -52,7 +52,8 @@ local function immunitySystemTraits()
 						SBvars.DelayedTraitsSystem
 						and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(
 							player,
-							CharacterTrait.PRONE_TO_ILLNESS
+							CharacterTrait.PRONE_TO_ILLNESS,
+							modData
 						)
 					then
 						ETW_CommonFunctions.addTraitToDelayTable({
@@ -66,7 +67,7 @@ local function immunitySystemTraits()
 						not SBvars.DelayedTraitsSystem
 						or (
 							SBvars.DelayedTraitsSystem
-							and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.PRONE_TO_ILLNESS)
+							and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.PRONE_TO_ILLNESS, modData)
 						)
 					then
 						ETW_CommonFunctions.removeTraitFromPlayer({
@@ -83,7 +84,7 @@ local function immunitySystemTraits()
 				then
 					if
 						SBvars.DelayedTraitsSystem
-						and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.RESILIENT)
+						and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.RESILIENT, modData)
 					then
 						ETW_CommonFunctions.addTraitToDelayTable({
 							modData = modData,
@@ -96,7 +97,7 @@ local function immunitySystemTraits()
 						not SBvars.DelayedTraitsSystem
 						or (
 							SBvars.DelayedTraitsSystem
-							and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.RESILIENT)
+							and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.RESILIENT, modData)
 						)
 					then
 						ETW_CommonFunctions.addTraitToPlayer({
@@ -104,7 +105,7 @@ local function immunitySystemTraits()
 							trait = CharacterTrait.RESILIENT,
 							positiveTrait = true,
 						})
-						if gameMode == ETW_CommonFunctions.GameMode.SP then
+						if gameMode == ETW_CommonFunctions.GameMode.SP or gameMode == ETW_CommonFunctions.GameMode.MP_CLIENT then
 							Events.EveryOneMinute.Remove(immunitySystemTraits)
 						end
 					end
@@ -116,7 +117,7 @@ end
 
 ---Function responsible for managing Food Sickness System traits
 local function foodSicknessTraitsETW()
-	local playersList = ETW_CommonFunctions.playersList()
+	local playersList = ETW_CommonFunctions.playersList(getPlayer())
 
 	for i = 0, playersList:size() - 1 do
 		local player = playersList:get(i)
@@ -145,7 +146,7 @@ local function foodSicknessTraitsETW()
 			then
 				if
 					SBvars.DelayedTraitsSystem
-					and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.WEAK_STOMACH)
+					and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.WEAK_STOMACH, modData)
 				then
 					ETW_CommonFunctions.addTraitToDelayTable({
 						modData = modData,
@@ -158,7 +159,7 @@ local function foodSicknessTraitsETW()
 					not SBvars.DelayedTraitsSystem
 					or (
 						SBvars.DelayedTraitsSystem
-						and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.WEAK_STOMACH)
+						and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.WEAK_STOMACH, modData)
 					)
 				then
 					ETW_CommonFunctions.removeTraitFromPlayer({
@@ -175,7 +176,7 @@ local function foodSicknessTraitsETW()
 			then
 				if
 					SBvars.DelayedTraitsSystem
-					and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.IRON_GUT)
+					and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.IRON_GUT, modData)
 				then
 					ETW_CommonFunctions.addTraitToDelayTable({
 						modData = modData,
@@ -188,7 +189,7 @@ local function foodSicknessTraitsETW()
 					not SBvars.DelayedTraitsSystem
 					or (
 						SBvars.DelayedTraitsSystem
-						and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.IRON_GUT)
+						and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.IRON_GUT, modData)
 					)
 				then
 					ETW_CommonFunctions.addTraitToPlayer({
@@ -196,7 +197,7 @@ local function foodSicknessTraitsETW()
 						trait = CharacterTrait.IRON_GUT,
 						positiveTrait = true,
 					})
-					if gameMode == ETW_CommonFunctions.GameMode.SP then
+					if gameMode == ETW_CommonFunctions.GameMode.SP or gameMode == ETW_CommonFunctions.GameMode.MP_CLIENT then
 						Events.EveryOneMinute.Remove(foodSicknessTraitsETW)
 					end
 				end
@@ -281,7 +282,7 @@ end
 
 ---Records the player's current normalized food score into food-system rolling averages.
 local function recordFoodStateETW()
-	local playersList = ETW_CommonFunctions.playersList()
+	local playersList = ETW_CommonFunctions.playersList(getPlayer())
 
 	for i = 0, playersList:size() - 1 do
 		local player = playersList:get(i)
@@ -314,7 +315,7 @@ end
 
 ---Records the player's current normalized thirst score into thirst-system rolling averages.
 local function recordThirstStateETW()
-	local playersList = ETW_CommonFunctions.playersList()
+	local playersList = ETW_CommonFunctions.playersList(getPlayer())
 
 	for i = 0, playersList:size() - 1 do
 		local player = playersList:get(i)
@@ -347,7 +348,7 @@ end
 
 ---Applies Food System trait gain/loss rules from the player's long-term normalized food score.
 local function foodSystemETW()
-	local playersList = ETW_CommonFunctions.playersList()
+	local playersList = ETW_CommonFunctions.playersList(getPlayer())
 
 	for i = 0, playersList:size() - 1 do
 		local player = playersList:get(i)
@@ -412,7 +413,7 @@ end
 
 ---Applies Thirst System trait gain/loss rules from the player's long-term normalized thirst score.
 local function thirstSystemETW()
-	local playersList = ETW_CommonFunctions.playersList()
+	local playersList = ETW_CommonFunctions.playersList(getPlayer())
 
 	for i = 0, playersList:size() - 1 do
 		local player = playersList:get(i)
@@ -567,7 +568,7 @@ end
 
 ---Updates Thin Skinned and Thick Skinned from the player's injury history.
 local function injuriesSystemETW()
-	local playersList = ETW_CommonFunctions.playersList()
+	local playersList = ETW_CommonFunctions.playersList(getPlayer())
 	local maxCounter = SBvars.InjuriesSystemCounter
 	local gainNegativeThreshold = maxCounter * -2 / 3
 	local loseNegativeThreshold = maxCounter * -1 / 3
@@ -734,7 +735,7 @@ end
 
 ---Updates Slow Healer and Fast Healer from the quality of the player's wound care.
 local function healerSystemETW()
-	local playersList = ETW_CommonFunctions.playersList()
+	local playersList = ETW_CommonFunctions.playersList(getPlayer())
 	local maxCounter = SBvars.HealerSystemCounter
 	local gainNegativeThreshold = maxCounter * -2 / 3
 	local loseNegativeThreshold = maxCounter * -1 / 3
@@ -830,7 +831,7 @@ end
 
 ---Function responsible for managing Asthmatic trait
 local function asthmaticTraitETW()
-	local playersList = ETW_CommonFunctions.playersList()
+	local playersList = ETW_CommonFunctions.playersList(getPlayer())
 
 	for i = 0, playersList:size() - 1 do
 		local player = playersList:get(i)
@@ -926,7 +927,7 @@ end
 
 ---Updates the persisted weight-habit counter and applies reversible Ideal Weight changes.
 local function idealWeightETW()
-	local playersList = ETW_CommonFunctions.playersList()
+	local playersList = ETW_CommonFunctions.playersList(getPlayer())
 	for i = 0, playersList:size() - 1 do
 		local player = playersList:get(i)
 		if ETW_CommonLogicChecks.IdealWeightShouldExecute(player) then
@@ -964,7 +965,7 @@ end
 
 ---Applies Blissful gain and loss thresholds to the long-term mental-state average.
 local function blissfulETW()
-	local playersList = ETW_CommonFunctions.playersList()
+	local playersList = ETW_CommonFunctions.playersList(getPlayer())
 	for i = 0, playersList:size() - 1 do
 		local player = playersList:get(i)
 		local modData = ETW_CommonFunctions.getETWModData(player)
@@ -997,7 +998,7 @@ end
 
 ---Function responsible for recording players mental state into mod data
 local function recordMentalStateETW()
-	local playersList = ETW_CommonFunctions.playersList()
+	local playersList = ETW_CommonFunctions.playersList(getPlayer())
 
 	for i = 0, playersList:size() - 1 do
 		local player = playersList:get(i)
@@ -1060,7 +1061,7 @@ end
 
 ---Function responsible for managing Pain Tolerance trait
 local function painToleranceTraitETW()
-	local playersList = ETW_CommonFunctions.playersList()
+	local playersList = ETW_CommonFunctions.playersList(getPlayer())
 
 	for i = 0, playersList:size() - 1 do
 		local player = playersList:get(i)
@@ -1088,7 +1089,7 @@ local function painToleranceTraitETW()
 			if modData.PainToleranceCounter >= SBvars.PainToleranceCounter then
 				if
 					SBvars.DelayedTraitsSystem
-					and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.PAIN_TOLERANCE)
+					and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.PAIN_TOLERANCE, modData)
 				then
 					ETW_CommonFunctions.addTraitToDelayTable({
 						modData = modData,
@@ -1101,7 +1102,7 @@ local function painToleranceTraitETW()
 					not SBvars.DelayedTraitsSystem
 					or (
 						SBvars.DelayedTraitsSystem
-						and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.PAIN_TOLERANCE)
+						and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.PAIN_TOLERANCE, modData)
 					)
 				then
 					ETW_CommonFunctions.addTraitToPlayer({
@@ -1109,7 +1110,7 @@ local function painToleranceTraitETW()
 						trait = ETWTraitsRegistry.PAIN_TOLERANCE,
 						positiveTrait = true,
 					})
-					if gameMode == ETW_CommonFunctions.GameMode.SP then
+					if gameMode == ETW_CommonFunctions.GameMode.SP or gameMode == ETW_CommonFunctions.GameMode.MP_CLIENT then
 						Events.EveryTenMinutes.Remove(painToleranceTraitETW)
 					end
 				end
@@ -1172,8 +1173,6 @@ local function initializeEventsETW(playerIndex, player)
 	if ETW_CommonLogicChecks.BlissfulShouldExecute(player) then
 		Events.EveryTenMinutes.Add(blissfulETW)
 	end
-	Events.EveryOneMinute.Remove(recordMentalStateETW)
-	Events.EveryOneMinute.Add(recordMentalStateETW)
 	Events.EveryOneMinute.Remove(idealWeightETW)
 	if ETW_CommonLogicChecks.IdealWeightShouldExecute(player) then
 		Events.EveryOneMinute.Add(idealWeightETW)
@@ -1181,6 +1180,8 @@ local function initializeEventsETW(playerIndex, player)
 	if gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
 		Events.OnTick.Remove(initializeEventsETW)
 	end
+	Events.EveryOneMinute.Remove(recordMentalStateETW)
+	Events.EveryOneMinute.Add(recordMentalStateETW)
 end
 
 ---Function responsible for clearing events
@@ -1202,7 +1203,7 @@ local function clearEventsETW(character)
 	logETW("ETW Logger | System: clearEventsETW in " .. FILENAME)
 end
 
-if gameMode == ETW_CommonFunctions.GameMode.SP then
+if gameMode == ETW_CommonFunctions.GameMode.SP or gameMode == ETW_CommonFunctions.GameMode.MP_CLIENT then
 	Events.OnCreatePlayer.Remove(initializeEventsETW)
 	Events.OnCreatePlayer.Add(initializeEventsETW)
 	Events.OnPlayerDeath.Remove(clearEventsETW)

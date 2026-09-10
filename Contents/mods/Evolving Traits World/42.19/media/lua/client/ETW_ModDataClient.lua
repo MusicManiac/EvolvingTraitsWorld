@@ -40,6 +40,38 @@ function Commands.refreshETWModDataFromServer(player, args)
 	modData.EvolvingTraitsWorld = receivedModData
 end
 
+---Function responsible for updating a counter in client modData when the server sends a command.
+---@param player IsoPlayer
+---@param args table
+function Commands.updateClientETWModDataField(player, args)
+	local target = ETW_CommonFunctions.getETWModData(player)
+	logETW(
+		"ETW Logger | Commands.updateClientETWModDataField(): updating ETW modData field "
+			.. table.concat(args.path, ".")
+			.. " with mode "
+			.. tostring(args.mode)
+			.. " and value "
+			.. tostring(args.value)
+	)
+	for i = 1, #args.path - 1 do
+		target = target[args.path[i]]
+
+		if target == nil then
+			logETW(
+				"ETW Logger | Commands.updateClientETWModDataFieldByAdding(): target path "
+					.. table.concat(args.path, ".")
+					.. " is nil, skipping update"
+			)
+			return
+		end
+	end
+	if args.mode == "set" then
+		target[args.path[#args.path]] = args.value
+	elseif args.mode == "add" then
+		target[args.path[#args.path]] = target[args.path[#args.path]] + args.value
+	end
+end
+
 ---Function responsible for handling server commands
 ---@param module string
 ---@param command string
@@ -82,12 +114,13 @@ local function requestServerClearETWModData(player)
 	sendClientCommand(player, "ETW", "clearETWModData", {})
 end
 
-if gameMode == ETW_CommonFunctions.GameMode.SP then
+if gameMode == ETW_CommonFunctions.GameMode.SP or gameMode == ETW_CommonFunctions.GameMode.MP_CLIENT then
 	Events.OnCreatePlayer.Remove(ETW_ModData.createETWModData)
 	Events.OnCreatePlayer.Add(ETW_ModData.createETWModData)
 	Events.OnPlayerDeath.Remove(ETW_ModData.clearETWModData)
 	Events.OnPlayerDeath.Add(ETW_ModData.clearETWModData)
-elseif gameMode == ETW_CommonFunctions.GameMode.MP_CLIENT then
+-- skipping server-side logic for now, since modData is back at client now, keep for future maybe
+elseif false and gameMode == ETW_CommonFunctions.GameMode.MP_CLIENT then
 	Events.OnCreatePlayer.Remove(ETW_ModData.createETWModData)
 	Events.OnCreatePlayer.Add(ETW_ModData.createETWModData)
 	Events.OnTick.Remove(delayedETWCommandAfterPlayerSpawned)

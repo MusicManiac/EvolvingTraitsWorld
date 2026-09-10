@@ -128,7 +128,7 @@ function ISInventoryTransferAction:perform()
 		local item = self.item
 		---@cast item InventoryItem
 		local itemWeight = math.max(0, item:getWeight())
-		if gameMode == ETW_CommonFunctions.GameMode.SP then
+		if gameMode == ETW_CommonFunctions.GameMode.SP or gameMode == ETW_CommonFunctions.GameMode.MP_CLIENT then
 			local modData = ETW_CommonFunctions.getETWModData(self.character)
 			---@cast modData EvolvingTraitsWorldModData
 			local transferModData = modData.TransferSystem
@@ -152,7 +152,8 @@ function ISInventoryTransferAction:perform()
 					.. tostring(transferModData.WeightTransferred)
 			)
 			ETW_TimedActionsSharedLogic.checkInventoryTransferPerks(self.character, modData)
-		elseif gameMode == ETW_CommonFunctions.GameMode.MP_CLIENT then
+		-- disable separate MP branch since modData is back at client now, keep for future maybe
+		elseif false and gameMode == ETW_CommonFunctions.GameMode.MP_CLIENT then
 			---@type ISInventoryTransferActionPerformedArgs
 			local args = {
 				itemsMoved = 1,

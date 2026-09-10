@@ -17,7 +17,7 @@ local FILENAME = "ETW_ByLocation.lua"
 if
 	not ETW_CommonFunctions.gameModeSafeguard(
 		FILENAME,
-		{ ETW_CommonFunctions.GameMode.SP, ETW_CommonFunctions.GameMode.MP_SERVER }
+		{ ETW_CommonFunctions.GameMode.SP, ETW_CommonFunctions.GameMode.MP_CLIENT }
 	)
 then
 	return
