@@ -1,15 +1,6 @@
 [url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
 
-v.13.4.0
+v.13.4.1
 
-- General:
-  - Added some new sandbox settings for Bravery System and Asthmatic.
-  - Made Natural Eater dynamic.
 - Fix:
-  - Fixed Resilient, Iron Gut and Pain Tolerance dynamic system removing itself in MP on some occasions.
-  - Fixed slightly inflated rolling averages in if Food, Water and Mental systems.
-  - Fixed Outdoorsman decay.
-  - Fixed kills not triggering fog and rain traits i MP.
-  - Fixed Axeman bypassing sandbox values.
-- Translations:
-  - Updated IT to v.13.3.2
+  - Simplified Eagle-Eyed progress detection.

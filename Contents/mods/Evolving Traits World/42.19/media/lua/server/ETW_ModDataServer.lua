@@ -3,7 +3,6 @@ local ETW_CommonFunctions = require("ETW_CommonFunctions")
 
 ---@type ETW_ModData
 local ETW_ModData = require("ETW_ModData")
-local ETW_EagleEyedTracking = require("TraitSpecific/ETW_EagleEyedTracking")
 local ETW_CommonLogicChecks = require("ETW_CommonLogicChecks")
 local ETW_Registry = require("ETW_Registry")
 
@@ -21,6 +20,31 @@ local gameMode = ETW_CommonFunctions.gameMode()
 local FILENAME = "ETW_ModDataServer.lua"
 if not ETW_CommonFunctions.gameModeSafeguard(FILENAME, { ETW_CommonFunctions.GameMode.MP_SERVER }) then
 	return
+end
+
+local RECENT_EAGLE_EYED_ZOMBIE_IDS_MAX = 20
+---@type string[]
+local recentEagleEyedZombieIds = {}
+
+---Returns whether an Eagle Eyed zombie id was recently submitted.
+---@param zombieId string
+---@return boolean
+local function hasRecentEagleEyedZombieId(zombieId)
+	for _, recentZombieId in ipairs(recentEagleEyedZombieIds) do
+		if recentZombieId == zombieId then
+			return true
+		end
+	end
+	return false
+end
+
+---Remembers an Eagle Eyed zombie id in the bounded duplicate-check buffer.
+---@param zombieId string
+local function rememberEagleEyedZombieId(zombieId)
+	recentEagleEyedZombieIds[#recentEagleEyedZombieIds + 1] = zombieId
+	if #recentEagleEyedZombieIds > RECENT_EAGLE_EYED_ZOMBIE_IDS_MAX then
+		table.remove(recentEagleEyedZombieIds, 1)
+	end
 end
 
 local function refreshETWModDataForAllClients()
@@ -60,32 +84,105 @@ end
 
 ---@param player IsoPlayer
 ---@param args {zombieId:string, distance:number}|nil
-function Commands.eagleEyedRecordHit(player, args)
-	if not args or type(args.zombieId) ~= "string" or type(args.distance) ~= "number" then
+function Commands.eagleEyedRecordKill(player, args)
+	if
+		not args
+		or type(args.zombieId) ~= "string"
+		or args.zombieId == ""
+		or type(args.distance) ~= "number"
+	then
 		ETW_CommonFunctions.log(
-			"ETW Logger | Commands.eagleEyedRecordHit(): invalid args from player "
+			"ETW Logger | Commands.eagleEyedRecordKill(): invalid args from player "
 				.. tostring(player and player:getUsername() or "nil")
 		)
 		return
 	end
-	if ETW_EagleEyedTracking.isRecentCompletedZombieId(args.zombieId) then
+	if
+		SBvars.DisableAllDynamicTraits == true
+		or player:hasTrait(CharacterTrait.EAGLE_EYED)
+		or not ETW_CommonLogicChecks.EagleEyedShouldExecute(player)
+	then
+		return
+	end
+	if hasRecentEagleEyedZombieId(args.zombieId) then
 		ETW_CommonFunctions.log(
-			"ETW Logger | Commands.eagleEyedRecordHit(): ignoring late hit for completed zombieId="
+			"ETW Logger | Commands.eagleEyedRecordKill(): ignoring duplicate zombieId="
 				.. tostring(args.zombieId)
 				.. " player="
 				.. tostring(player:getUsername())
 		)
 		return
 	end
+	rememberEagleEyedZombieId(args.zombieId)
+	local player = getPlayerFromUsername(player:getUsername()) 
 	ETW_CommonFunctions.log(
-		"ETW Logger | Commands.eagleEyedRecordHit(): server received player="
+		"Eagle pre 1: player="
+			.. tostring(player)
+			.. " onlineID="
+			.. tostring(player:getOnlineID())
+			.. " playerModData="
+			.. tostring(player:getModData())
+	)
+	player = getSpecificPlayer(player:getID())
+	ETW_CommonFunctions.log(
+		"Eagle pre 2: player="
+			.. tostring(player)
+			.. " onlineID="
+			.. tostring(player:getOnlineID())
+			.. " playerModData="
+			.. tostring(player:getModData())
+	)
+	local modData = ETW_CommonFunctions.getETWModData(player)  
+	ETW_CommonFunctions.log(
+		"Eagle pre: playerObject="
+			.. tostring(player)
+			.. " onlineID="
+			.. tostring(player:getOnlineID())
+			.. " playerModData="
+			.. tostring(player:getModData())
+			.. " etwModData="
+			.. tostring(modData)
+			.. " kills="
+			.. tostring(modData.EagleEyedKills)
+	)
+	if not modData then
+		ETW_CommonFunctions.log("ETW Logger | Commands.eagleEyedRecordKill(): modData is nil, returning early")
+		return
+	end
+	modData.EagleEyedKills = modData.EagleEyedKills + 1
+	ETW_CommonFunctions.log(
+		"ETW Logger | Commands.eagleEyedRecordKill(): server accepted player="
 			.. tostring(player:getUsername())
 			.. " zombieId="
 			.. tostring(args.zombieId)
 			.. " distance="
 			.. tostring(args.distance)
+			.. " EagleEyedKills="
+			.. tostring(modData.EagleEyedKills)
 	)
-	ETW_EagleEyedTracking.recordHitById(player, args.zombieId, args.distance)
+
+	if modData.EagleEyedKills < SBvars.EagleEyedKills then
+		return
+	end
+
+	if
+		SBvars.DelayedTraitsSystem
+		and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.EAGLE_EYED)
+	then
+		ETW_CommonFunctions.addTraitToDelayTable({
+			modData = modData,
+			trait = CharacterTrait.EAGLE_EYED,
+			player = player,
+			positiveTrait = true,
+			gainingTrait = true,
+		})
+	elseif not SBvars.DelayedTraitsSystem or ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.EAGLE_EYED) then
+		ETW_CommonFunctions.addTraitToPlayer({
+			player = player,
+			trait = CharacterTrait.EAGLE_EYED,
+			positiveTrait = true,
+		})
+	end
 end
 
 ---@param player IsoPlayer
@@ -107,7 +204,18 @@ function Commands.catEyesRecordProgress(player, args)
 		ETW_CommonFunctions.log("ETW Logger | Commands.catEyesRecordProgress(): modData is nil, returning early")
 		return
 	end
-
+	ETW_CommonFunctions.log(
+		"Cat Eyes pre: playerObject="
+			.. tostring(player)
+			.. " onlineID="
+			.. tostring(player:getOnlineID())
+			.. " playerModData="
+			.. tostring(player:getModData())
+			.. " etwModData="
+			.. tostring(modData)
+			.. " kills="
+			.. tostring(modData.EagleEyedKills)
+	)
 	modData.CatEyesCounter = modData.CatEyesCounter + args.progressIncrease
 	if args.isKill then
 		ETW_CommonFunctions.log("ETW Logger | Commands.catEyesRecordProgress(): was triggered by a kill")
