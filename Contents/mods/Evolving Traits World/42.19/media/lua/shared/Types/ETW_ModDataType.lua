@@ -67,7 +67,6 @@
 --- @field TransferSystem TransferSystem
 --- @field BloodlustSystem BloodlustSystem
 --- @field AnimalsSystem AnimalsSystem
---- @field KillCount KillCount
 
 ---Serializable wound snapshot used to detect new wounds and timer increases without storing PZ objects.
 --- @class StartingInjuryState
@@ -133,8 +132,11 @@
 --- @field LastMinuteTimestampWhenPettedWithBoost integer
 
 --- @class KillCount
---- @field WeaponCategory table<string, WeaponCategory>
+--- @field WeaponCategory table<string, KillCountWeaponCategory>
 
---- @class WeaponCategory
+--- @class KillCountSharedAPI
+--- @field getLocalKills fun(player: IsoPlayer): KillCount|nil
+
+--- @class KillCountWeaponCategory
 --- @field count number
---- @field WeaponType table<string, boolean>
+--- @field WeaponType table<string, number>

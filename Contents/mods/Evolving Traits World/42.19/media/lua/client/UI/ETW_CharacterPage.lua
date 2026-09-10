@@ -753,24 +753,14 @@ function ISETWUI:createChildren()
 		local vitalsBarStartPosition = lineStartPosition + vitalsLabelWidth + (lineStartPosition * 2)
 		local vitalsBarLength = barEndPosition - vitalsBarStartPosition
 
-		local killCountModData
-		local axeKills = 0
-		local longBluntKills = 0
-		local shortBluntKills = 0
-		local longBladeKills = 0
-		local shortBladeKills = 0
-		local spearKills = 0
-		local firearmKills = 0
-		if modData and modData.KillCount and modData.KillCount.WeaponCategory then
-			killCountModData = modData.KillCount.WeaponCategory
-			axeKills = killCountModData["Axe"].count or 0
-			longBluntKills = killCountModData["Blunt"].count or 0
-			shortBluntKills = killCountModData["SmallBlunt"].count or 0
-			longBladeKills = killCountModData["LongBlade"].count or 0
-			shortBladeKills = killCountModData["SmallBlade"].count or 0
-			spearKills = killCountModData["Spear"].count or 0
-			firearmKills = killCountModData["Firearm"].count or 0
-		end
+		local killCountModData = ETW_CommonFunctions.getKillCountWeaponCategories(player)
+		local axeKills = (killCountModData["Axe"] or {}).count or 0
+		local longBluntKills = (killCountModData["Blunt"] or {}).count or 0
+		local shortBluntKills = (killCountModData["SmallBlunt"] or {}).count or 0
+		local longBladeKills = (killCountModData["LongBlade"] or {}).count or 0
+		local shortBladeKills = (killCountModData["SmallBlade"] or {}).count or 0
+		local spearKills = (killCountModData["Spear"] or {}).count or 0
+		local firearmKills = (killCountModData["Firearm"] or {}).count or 0
 
 		local function buildVitalsSection()
 			-- Vitals only needs room for its three short row labels. Keep the wider
@@ -4218,15 +4208,14 @@ function ISETWUI:render()
 	local blacksmith = player:getPerkLevel(Perks.Blacksmith)
 	local knapping = player:getPerkLevel(Perks.FlintKnapping)
 
-	local mdRoot = player:getModData()
-	local killCountModData = mdRoot.KillCount and mdRoot.KillCount.WeaponCategory
-	local axeKills = killCountModData and (killCountModData["Axe"] or {}).count or 0
-	local longBluntKills = killCountModData and (killCountModData["Blunt"] or {}).count or 0
-	local shortBluntKills = killCountModData and (killCountModData["SmallBlunt"] or {}).count or 0
-	local longBladeKills = killCountModData and (killCountModData["LongBlade"] or {}).count or 0
-	local shortBladeKills = killCountModData and (killCountModData["SmallBlade"] or {}).count or 0
-	local spearKills = killCountModData and (killCountModData["Spear"] or {}).count or 0
-	local firearmKills = killCountModData and (killCountModData["Firearm"] or {}).count or 0
+	local killCountModData = ETW_CommonFunctions.getKillCountWeaponCategories(player)
+	local axeKills = (killCountModData["Axe"] or {}).count or 0
+	local longBluntKills = (killCountModData["Blunt"] or {}).count or 0
+	local shortBluntKills = (killCountModData["SmallBlunt"] or {}).count or 0
+	local longBladeKills = (killCountModData["LongBlade"] or {}).count or 0
+	local shortBladeKills = (killCountModData["SmallBlade"] or {}).count or 0
+	local spearKills = (killCountModData["Spear"] or {}).count or 0
+	local firearmKills = (killCountModData["Firearm"] or {}).count or 0
 
 	updateBar(
 		self.barImmunitySystem,

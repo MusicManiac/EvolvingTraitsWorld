@@ -309,8 +309,7 @@ local function braverySystemETW(zombie)
 		local player = playersList:get(playerListIndex)
 		logETW("ETW Logger | braverySystemETW(): Processing player: " .. player:getUsername())
 		local totalKills = player:getZombieKills()
-		local modDataGlobal = player:getModData()
-		local killCountModData = (modDataGlobal.KillCount or {}).WeaponCategory or {}
+		local killCountModData = ETW_CommonFunctions.getKillCountWeaponCategories(player)
 		local ETWModData = ETW_CommonFunctions.getETWModData(player)
 		if ETWModData then
 			local fireKills = (killCountModData["Fire"] or {}).count or 0

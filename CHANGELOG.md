@@ -1,8 +1,10 @@
 ## v.13.4.1
-###### 09 Sep 2026
+###### 10 Sep 2026
 
 - Fix:
   - Simplified Eagle-Eyed progress detection.
+  - Added some safeguards to prevent player data on server being overwritten when client does transmitModData()
+  - Updated KillCount refs
 
 ## v.13.4.0
 ###### 08 Sep 2026

@@ -860,7 +860,7 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 	local tracking = player:getPerkLevel(Perks.Tracking)
 
 	-- locals for kills by category
-	local killCountModData = (player:getModData().KillCount or {}).WeaponCategory or {}
+	local killCountModData = ETW_CommonFunctions.getKillCountWeaponCategories(player)
 	local axeKills = (killCountModData["Axe"] or {}).count or 0
 	local longBluntKills = (killCountModData["Blunt"] or {}).count or 0
 	local shortBluntKills = (killCountModData["SmallBlunt"] or {}).count or 0
