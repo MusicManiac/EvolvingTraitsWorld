@@ -353,21 +353,6 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	AnimalsSystem.UniqueAnimalsPetted = AnimalsSystem.UniqueAnimalsPetted or {}
 	AnimalsSystem.LastMinuteTimestampWhenPettedWithBoost = AnimalsSystem.LastMinuteTimestampWhenPettedWithBoost or 0
 
-	playerModData.KillCount = playerModData.KillCount or {}
-	playerModData.KillCount.WeaponCategory = playerModData.KillCount.WeaponCategory or {}
-	local killCount = playerModData.KillCount.WeaponCategory
-	killCount["Axe"] = killCount["Axe"] or { count = 0, WeaponType = {} }
-	killCount["Blunt"] = killCount["Blunt"] or { count = 0, WeaponType = {} }
-	killCount["SmallBlunt"] = killCount["SmallBlunt"] or { count = 0, WeaponType = {} }
-	killCount["LongBlade"] = killCount["LongBlade"] or { count = 0, WeaponType = {} }
-	killCount["SmallBlade"] = killCount["SmallBlade"] or { count = 0, WeaponType = {} }
-	killCount["Spear"] = killCount["Spear"] or { count = 0, WeaponType = {} }
-	killCount["Firearm"] = killCount["Firearm"] or { count = 0, WeaponType = {} }
-	killCount["Fire"] = killCount["Fire"] or { count = 0, WeaponType = {} }
-	killCount["Vehicles"] = killCount["Vehicles"] or { count = 0, WeaponType = {} }
-	killCount["Unarmed"] = killCount["Unarmed"] or { count = 0, WeaponType = {} }
-	killCount["Explosives"] = killCount["Explosives"] or { count = 0, WeaponType = {} }
-
 	modData.ModDataVersion = MOD_DATA_VERSION
 	return modData
 end

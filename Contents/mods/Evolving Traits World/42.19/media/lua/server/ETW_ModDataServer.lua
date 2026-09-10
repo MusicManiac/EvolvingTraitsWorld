@@ -115,19 +115,7 @@ function Commands.eagleEyedRecordKill(player, args)
 		return
 	end
 	rememberEagleEyedZombieId(args.zombieId)
-	local modData = ETW_CommonFunctions.getETWModData(player)  
-	ETW_CommonFunctions.log(
-		"Eagle pre: playerObject="
-			.. tostring(player)
-			.. " onlineID="
-			.. tostring(player:getOnlineID())
-			.. " playerModData="
-			.. tostring(player:getModData())
-			.. " etwModData="
-			.. tostring(modData)
-			.. " kills="
-			.. tostring(modData.EagleEyedKills)
-	)
+	local modData = ETW_CommonFunctions.getETWModData(player)
 	if not modData then
 		ETW_CommonFunctions.log("ETW Logger | Commands.eagleEyedRecordKill(): modData is nil, returning early")
 		return

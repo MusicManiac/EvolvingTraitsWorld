@@ -1,6 +1,8 @@
 ---@class ETW_CommonFunctions
 local ETW_CommonFunctions = {}
 local ETW_ModData
+---@type KillCountSharedAPI|nil
+local killCountShared
 
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld
@@ -277,6 +279,32 @@ function ETW_CommonFunctions.playersList(player)
 	end
 
 	return playerList
+end
+
+---Returns the current KillCount weapon categories for a player.
+---The MP server reads KillCount's authoritative Global ModData row, while clients and SP use
+---KillCount's local API so the owning player's data remains available when sharing is disabled.
+---@param player IsoPlayer
+---@return table<string, KillCountWeaponCategory>
+function ETW_CommonFunctions.getKillCountWeaponCategories(player)
+	local killCountData
+	if gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
+		local globalKillCount = ModData.getOrCreate("KillCount")
+		killCountData = globalKillCount and globalKillCount[player:getUsername()]
+	else
+		if not killCountShared then
+			require("KillCountShared")
+			killCountShared = KCShared
+		end
+		if killCountShared and killCountShared.getLocalKills then
+			killCountData = killCountShared.getLocalKills(player)
+		end
+	end
+
+	if type(killCountData) == "table" and type(killCountData.WeaponCategory) == "table" then
+		return killCountData.WeaponCategory
+	end
+	return {}
 end
 
 ---Resolves either a trait object or registry id string into a CharacterTrait instance.
