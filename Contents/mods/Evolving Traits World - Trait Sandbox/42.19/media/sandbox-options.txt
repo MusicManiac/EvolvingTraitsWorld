@@ -1011,7 +1011,7 @@ option ETWTraitSandbox.ScrapperPointValue
 	type = integer,
 	min = -100,
 	max = 100,
-	default = -3,
+	default = -5,
 	page = ETWTraitSandbox,
 	translation = ETWTS_ScrapperPointValue,
 }
