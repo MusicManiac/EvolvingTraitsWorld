@@ -293,7 +293,9 @@ function ETW_CommonFunctions.getKillCountWeaponCategories(player)
 		killCountData = globalKillCount and globalKillCount[player:getUsername()]
 	else
 		if not killCountShared then
+			---@diagnostic disable-next-line: unresolved-require
 			require("KillCountShared")
+			---@diagnostic disable-next-line: undefined-global
 			killCountShared = KCShared
 		end
 		if killCountShared and killCountShared.getLocalKills then

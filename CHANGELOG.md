@@ -1,3 +1,12 @@
+## v.13.4.2
+###### 12 Sep 2026
+
+- Fix:
+  - Fixed Target Shooter not staying in delayed system and being removed on login.
+  - Fixed Scrapper trait cost being inconsistent with base game.
+- Translations:
+  - Updated JP to v.13.4.2
+
 ## v.13.4.1
 ###### 10 Sep 2026
 
