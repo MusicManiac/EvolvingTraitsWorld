@@ -34,7 +34,7 @@ Currently mod supports following languages (note that not all translations are 1
 [*]English
 [*]Italiano / Italian
 [*]Español / Spanish
-[*]簡体中文 / Chinese
+[*]簡体中文 / Simplified Chinese
 [*]繁體中文 / Traditional Chinese
 [*]Português Brasileiro / Brazilian Portuguese
 [*]한국어 / Korean
@@ -42,7 +42,7 @@ Currently mod supports following languages (note that not all translations are 1
 [*]Türkçe / Turkish
 [*]Deutsch / German
 [*]Українська / Ukrainian
-[*]Русский/Russian
+[*]Русский / Russian
 [/list]
 
 [h1]Afterword and Permission[/h1]
