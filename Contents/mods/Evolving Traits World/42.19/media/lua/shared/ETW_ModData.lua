@@ -235,7 +235,7 @@ function ETW_ModData.createETWModData(playerIndex, player)
 		if modData.DelayedTraits[i][1] == nil then
 			print("ETW Logger | System: trait in modData.DelayedTraits at index " .. i .. " is nil, deleting it.")
 			table.remove(modData.DelayedTraits, i)
-		elseif not modData.DelayedTraits[i][1]:match("^[A-Za-z]+:[A-Za-z]+$") then
+		elseif not modData.DelayedTraits[i][1]:match("^[A-Za-z0-9_.-]+:[A-Za-z0-9_./-]+$") then
 			print(
 				"ETW Logger | System: trait "
 					.. modData.DelayedTraits[i][1]
