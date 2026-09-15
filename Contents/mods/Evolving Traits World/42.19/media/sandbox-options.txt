@@ -2790,6 +2790,31 @@ option EvolvingTraitsWorld.OlympianCounter
 	page = ETWSimplePerks,
 	translation = ETW_OlympianCounter,
 }
+option EvolvingTraitsWorld.NoodleLegs
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_NoodleLegs,
+}
+option EvolvingTraitsWorld.NoodleLegsSkill
+{
+	type = integer,
+	min = 0,
+	max = 30,
+	default = 24,
+	page = ETWSimplePerks,
+	translation = ETW_NoodleLegsSkill,
+}
+option EvolvingTraitsWorld.NoodleLegsDistance
+{
+	type = integer,
+	min = 0,
+	max = 10000000,
+	default = 30000,
+	page = ETWSimplePerks,
+	translation = ETW_NoodleLegsDistance,
+}
 option EvolvingTraitsWorld.Sewer
 {
 	type = boolean,

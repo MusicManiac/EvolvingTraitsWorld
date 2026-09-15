@@ -21,6 +21,7 @@
 --- @field HoarderCounter number
 --- @field OlympianCounter number
 --- @field NaturalEaterFoodsEaten integer
+--- @field NoodleLegs NoodleLegs
 --- @field HardyReserve number
 --- @field QuickRestLastEndurance number
 --- @field IdealWeightCounter number
@@ -67,6 +68,12 @@
 --- @field TransferSystem TransferSystem
 --- @field BloodlustSystem BloodlustSystem
 --- @field AnimalsSystem AnimalsSystem
+
+--- @class NoodleLegs
+--- @field Distance number
+--- @field LastX number
+--- @field LastY number
+--- @field LastZ number
 
 ---Serializable wound snapshot used to detect new wounds and timer increases without storing PZ objects.
 --- @class StartingInjuryState

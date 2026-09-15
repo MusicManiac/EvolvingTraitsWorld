@@ -39,6 +39,7 @@ local function registerDynamicTraits()
 		ETW_Registry.traits.LIGHTSTEP,
 		ETW_Registry.traits.LOW_PROFILE,
 		ETW_Registry.traits.NATURAL_EATER,
+		ETW_Registry.traits.NOODLE_LEGS,
 		ETW_Registry.traits.OLYMPIAN,
 		ETW_Registry.traits.PAIN_TOLERANCE,
 		ETW_Registry.traits.PET_THERAPY,

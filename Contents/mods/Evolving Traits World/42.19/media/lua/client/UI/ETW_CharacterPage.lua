@@ -1920,6 +1920,31 @@ function ISETWUI:createChildren()
 			end
 
 			if
+				ETW_CommonLogicChecks.NoodleLegsShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.NOODLE_LEGS)
+			then
+				arrangeColumnsInTable()
+				self.labelNoodleLegsProgress = ISLabel:new(
+					x,
+					y,
+					FONT_HGT_SMALL,
+					"",
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelNoodleLegsProgress:setTooltip(
+					getText("Sandbox_ETW_NoodleLegsDistance_tooltip")
+						.. "<br>"
+						.. getText("Sandbox_ETW_NoodleLegsSkill_tooltip")
+				)
+				self:addChild(self.labelNoodleLegsProgress)
+			end
+
+			if
 				ETW_CommonLogicChecks.NaturalEaterShouldExecute(player)
 				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.NATURAL_EATER)
 			then
@@ -4501,6 +4526,18 @@ function ISETWUI:render()
 	updateLabel(
 		self.labelOlympianProgress,
 		getCachedTraitUIName(ETWTraitsRegistry.OLYMPIAN) .. ": " .. (modData.OlympianCounter or 0) .. "/" .. SBvars.OlympianCounter
+	)
+	updateLabel(
+		self.labelNoodleLegsProgress,
+		getCachedTraitUIName(ETWTraitsRegistry.NOODLE_LEGS)
+			.. ": "
+			.. formatDecimal(modData.NoodleLegs.Distance or 0)
+			.. "/"
+			.. SBvars.NoodleLegsDistance
+			.. " | "
+			.. sprinting + lightfooted + nimble
+			.. "/"
+			.. SBvars.NoodleLegsSkill
 	)
 	updateLabel(
 		self.labelNaturalEaterProgress,

@@ -15,7 +15,7 @@ local ETW_Registry = require("ETW_Registry")
 local ETWTraitsRegistry = ETW_Registry.traits
 
 ---Increment when fields are added to or migrated in EvolvingTraitsWorld modData.
-local MOD_DATA_VERSION = 1.6
+local MOD_DATA_VERSION = 1.7
 
 ---Returns the midpoint between two numeric values.
 ---@param a number
@@ -121,6 +121,14 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	modData.HoarderCounter = modData.HoarderCounter or 0
 	modData.OlympianCounter = modData.OlympianCounter or 0
 	modData.NaturalEaterFoodsEaten = modData.NaturalEaterFoodsEaten or 0
+	modData.NoodleLegs = modData.NoodleLegs or {}
+	local noodleLegs = modData.NoodleLegs
+	noodleLegs.Distance = noodleLegs.Distance or 0
+	if noodleLegs.LastX == nil or noodleLegs.LastY == nil or noodleLegs.LastZ == nil then
+		noodleLegs.LastX = player:getX()
+		noodleLegs.LastY = player:getY()
+		noodleLegs.LastZ = player:getZ()
+	end
 	modData.HardyReserve = modData.HardyReserve or PZMath.clamp((SBvars.HardyExtraEndurancePercent or 25) / 100, 0, 1)
 	modData.QuickRestLastEndurance = modData.QuickRestLastEndurance or player:getStats():get(CharacterStat.ENDURANCE)
 	modData.IdealWeightLastCalories = modData.IdealWeightLastCalories or player:getNutrition():getCalories()

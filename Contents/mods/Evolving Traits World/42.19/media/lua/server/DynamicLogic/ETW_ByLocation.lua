@@ -13,6 +13,7 @@ local SBvars = SandboxVars.EvolvingTraitsWorld
 ---@type fun(...: string)
 local logETW = ETW_CommonFunctions.log
 local FILENAME = "ETW_ByLocation.lua"
+local NOODLE_LEGS_MAX_DISTANCE_PER_MINUTE = 10
 
 if
 	not ETW_CommonFunctions.gameModeSafeguard(
@@ -323,6 +324,75 @@ local function fearOfLocationsKill(zombie)
 	end
 end
 
+---Tracks qualifying on-foot movement and removes Noodle Legs once both requirements are met.
+---The maximum-distance guard discards teleports and implausibly fast movement.
+local function noodleLegs()
+	local playersList = ETW_CommonFunctions.playersList()
+	for i = 0, playersList:size() - 1 do
+		local player = playersList:get(i)
+		local modData = ETW_CommonFunctions.getETWModData(player)
+		if modData then
+			local noodleLegs = modData.NoodleLegs
+			local currentX, currentY, currentZ = player:getX(), player:getY(), player:getZ()
+			local lastX, lastY, lastZ = noodleLegs.LastX, noodleLegs.LastY, noodleLegs.LastZ
+
+			-- Always advance the snapshot so vehicle travel or a teleport cannot leak into a later sample.
+			noodleLegs.LastX = currentX
+			noodleLegs.LastY = currentY
+			noodleLegs.LastZ = currentZ
+
+			if
+				lastX ~= nil
+				and lastY ~= nil
+				and lastZ ~= nil
+				and player:hasTrait(ETWTraitsRegistry.NOODLE_LEGS)
+				and ETW_CommonLogicChecks.NoodleLegsShouldExecute(player)
+				and player:getVehicle() == nil
+			then
+				local deltaX, deltaY, deltaZ = currentX - lastX, currentY - lastY, currentZ - lastZ
+				local distance = math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ)
+				local skillLevels = player:getPerkLevel(Perks.Nimble)
+					+ player:getPerkLevel(Perks.Sprinting)
+					+ player:getPerkLevel(Perks.Lightfoot)
+
+				if distance > 0 and distance <= NOODLE_LEGS_MAX_DISTANCE_PER_MINUTE then
+					noodleLegs.Distance = math.min(
+						SBvars.NoodleLegsDistance,
+						noodleLegs.Distance + distance
+					)
+				end
+
+				if
+					noodleLegs.Distance >= SBvars.NoodleLegsDistance
+					and skillLevels >= SBvars.NoodleLegsSkill
+				then
+					if
+						SBvars.DelayedTraitsSystem
+						and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.NOODLE_LEGS)
+					then
+						ETW_CommonFunctions.addTraitToDelayTable({
+							modData = modData,
+							trait = ETWTraitsRegistry.NOODLE_LEGS,
+							player = player,
+							positiveTrait = false,
+							gainingTrait = false,
+						})
+					elseif
+						not SBvars.DelayedTraitsSystem
+						or ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.NOODLE_LEGS)
+					then
+						ETW_CommonFunctions.removeTraitFromPlayer({
+							player = player,
+							trait = ETWTraitsRegistry.NOODLE_LEGS,
+							positiveTrait = false,
+						})
+					end
+				end
+			end
+		end
+	end
+end
+
 ---Function responsible for setting up events
 ---@param playerIndex number
 ---@param player IsoPlayer
@@ -345,6 +415,10 @@ local function initializeEventsETW(playerIndex, player)
 		Events.EveryOneMinute.Add(fearOfLocations)
 		Events.OnZombieDead.Add(fearOfLocationsKill)
 	end
+	Events.EveryOneMinute.Remove(noodleLegs)
+	if ETW_CommonLogicChecks.NoodleLegsShouldExecute(player) then
+		Events.EveryOneMinute.Add(noodleLegs)
+	end
 	if gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
 		Events.OnTick.Remove(initializeEventsETW)
 	end
@@ -357,6 +431,7 @@ local function clearEventsETW(character)
 	Events.OnZombieDead.Remove(outdoorsmanKill)
 	Events.EveryOneMinute.Remove(fearOfLocations)
 	Events.OnZombieDead.Remove(fearOfLocationsKill)
+	Events.EveryOneMinute.Remove(noodleLegs)
 	logETW("ETW Logger | System: clearEventsETW in " .. FILENAME)
 end
 
