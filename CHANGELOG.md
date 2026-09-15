@@ -5,6 +5,8 @@
   - Made Noodle Legs dynamic through on-foot distance and skill progression.
   - Made Depressive dynamic alongside Blissful through the shared long-term Mental State System.
   - Some internal code improvements
+- Fix:
+  - Fixed Angler not being awarded when needed. 
   
 ## v.13.4.2
 ###### 12 Sep 2026
