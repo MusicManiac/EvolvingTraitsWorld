@@ -621,6 +621,19 @@ function ETW_CommonLogicChecks.OlympianShouldExecute(player)
 	end
 end
 
+---Returns whether Noodle Legs can be removed through on-foot movement.
+---@param player IsoPlayer|nil
+---@return boolean
+function ETW_CommonLogicChecks.NoodleLegsShouldExecute(player)
+	return SBvars.NoodleLegs == true
+		and traitShouldExecute("NoodleLegsEnabled")
+		and SBvars.TraitsLockSystemCanLoseNegative == true
+		and (
+			gameMode == ETW_CommonFunctions.GameMode.MP_SERVER
+			or (player and player:hasTrait(ETWTraitsRegistry.NOODLE_LEGS))
+		)
+end
+
 ---Returns true if the Thuggish System should execute
 ---@param player IsoPlayer|nil the player to check for
 ---@return boolean boolean true if the Thuggish System should execute, false otherwise

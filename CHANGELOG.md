@@ -1,3 +1,9 @@
+## v.13.5.0
+###### xx Sep 2026
+
+- General:
+  - Made Noodle Legs dynamic through on-foot distance and skill progression.
+  
 ## v.13.4.2
 ###### 12 Sep 2026
 
@@ -1309,4 +1315,3 @@
 
 ## v.1.1.0 - Public Release
 ###### 04 Jan 2023
-
