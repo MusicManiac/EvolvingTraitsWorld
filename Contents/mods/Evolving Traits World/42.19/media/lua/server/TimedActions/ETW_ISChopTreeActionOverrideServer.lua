@@ -28,7 +28,11 @@ function ISChopTreeAction:complete()
 		if modData.TreesChopped >= SBvars.AxemanTrees and ETW_CommonLogicChecks.AxemanShouldExecute(self.character) then
 			if
 				SBvars.DelayedTraitsSystem
-				and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(self.character, CharacterTrait.AXEMAN)
+				and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(
+					self.character,
+					CharacterTrait.AXEMAN,
+					modData
+				)
 			then
 				ETW_CommonFunctions.addTraitToDelayTable({
 					modData = modData,
@@ -41,7 +45,7 @@ function ISChopTreeAction:complete()
 				not SBvars.DelayedTraitsSystem
 				or (
 					SBvars.DelayedTraitsSystem
-					and ETW_CommonFunctions.checkDelayedTraits(self.character, CharacterTrait.AXEMAN)
+					and ETW_CommonFunctions.checkDelayedTraits(self.character, CharacterTrait.AXEMAN, modData)
 				)
 			then
 				ETW_CommonFunctions.addTraitToPlayer({

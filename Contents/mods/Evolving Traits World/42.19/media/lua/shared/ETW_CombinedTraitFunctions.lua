@@ -408,7 +408,8 @@ function ETWCombinedTraitChecks.bodyworkEnthusiastCheck(player)
 				SBvars.DelayedTraitsSystem
 				and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(
 					player,
-					ETWTraitsRegistry.BODYWORK_ENTHUSIAST
+					ETWTraitsRegistry.BODYWORK_ENTHUSIAST,
+					modData
 				)
 			then
 				ETW_CommonFunctions.addTraitToDelayTable({
@@ -422,7 +423,11 @@ function ETWCombinedTraitChecks.bodyworkEnthusiastCheck(player)
 				not SBvars.DelayedTraitsSystem
 				or (
 					SBvars.DelayedTraitsSystem
-					and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.BODYWORK_ENTHUSIAST)
+					and ETW_CommonFunctions.checkDelayedTraits(
+						player,
+						ETWTraitsRegistry.BODYWORK_ENTHUSIAST,
+						modData
+					)
 				)
 			then
 				ETW_CommonFunctions.addTraitToPlayer({
@@ -446,7 +451,7 @@ function ETWCombinedTraitChecks.mechanicsCheck(player)
 	then
 		if
 			SBvars.DelayedTraitsSystem
-			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.MECHANICS)
+			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.MECHANICS, modData)
 		then
 			ETW_CommonFunctions.addTraitToDelayTable({
 				modData = modData,
@@ -457,7 +462,10 @@ function ETWCombinedTraitChecks.mechanicsCheck(player)
 			})
 		elseif
 			not SBvars.DelayedTraitsSystem
-			or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.MECHANICS))
+			or (
+				SBvars.DelayedTraitsSystem
+				and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.MECHANICS, modData)
+			)
 		then
 			ETW_CommonFunctions.addTraitToPlayer({
 				player = player,
@@ -479,7 +487,7 @@ function ETWCombinedTraitChecks.sewerCheck(player)
 	then
 		if
 			SBvars.DelayedTraitsSystem
-			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.TAILOR)
+			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.TAILOR, modData)
 		then
 			ETW_CommonFunctions.addTraitToDelayTable({
 				modData = modData,
@@ -490,7 +498,10 @@ function ETWCombinedTraitChecks.sewerCheck(player)
 			})
 		elseif
 			not SBvars.DelayedTraitsSystem
-			or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.TAILOR))
+			or (
+				SBvars.DelayedTraitsSystem
+				and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.TAILOR, modData)
+			)
 		then
 			ETW_CommonFunctions.addTraitToPlayer({
 				player = player,

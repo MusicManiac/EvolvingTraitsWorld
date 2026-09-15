@@ -52,7 +52,8 @@ local function immunitySystemTraits()
 						SBvars.DelayedTraitsSystem
 						and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(
 							player,
-							CharacterTrait.PRONE_TO_ILLNESS
+							CharacterTrait.PRONE_TO_ILLNESS,
+							modData
 						)
 					then
 						ETW_CommonFunctions.addTraitToDelayTable({
@@ -66,7 +67,11 @@ local function immunitySystemTraits()
 						not SBvars.DelayedTraitsSystem
 						or (
 							SBvars.DelayedTraitsSystem
-							and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.PRONE_TO_ILLNESS)
+							and ETW_CommonFunctions.checkDelayedTraits(
+								player,
+								CharacterTrait.PRONE_TO_ILLNESS,
+								modData
+							)
 						)
 					then
 						ETW_CommonFunctions.removeTraitFromPlayer({
@@ -83,7 +88,11 @@ local function immunitySystemTraits()
 				then
 					if
 						SBvars.DelayedTraitsSystem
-						and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.RESILIENT)
+						and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(
+							player,
+							CharacterTrait.RESILIENT,
+							modData
+						)
 					then
 						ETW_CommonFunctions.addTraitToDelayTable({
 							modData = modData,
@@ -96,7 +105,7 @@ local function immunitySystemTraits()
 						not SBvars.DelayedTraitsSystem
 						or (
 							SBvars.DelayedTraitsSystem
-							and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.RESILIENT)
+							and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.RESILIENT, modData)
 						)
 					then
 						ETW_CommonFunctions.addTraitToPlayer({
@@ -145,7 +154,11 @@ local function foodSicknessTraitsETW()
 			then
 				if
 					SBvars.DelayedTraitsSystem
-					and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.WEAK_STOMACH)
+					and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(
+						player,
+						CharacterTrait.WEAK_STOMACH,
+						modData
+					)
 				then
 					ETW_CommonFunctions.addTraitToDelayTable({
 						modData = modData,
@@ -158,7 +171,7 @@ local function foodSicknessTraitsETW()
 					not SBvars.DelayedTraitsSystem
 					or (
 						SBvars.DelayedTraitsSystem
-						and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.WEAK_STOMACH)
+						and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.WEAK_STOMACH, modData)
 					)
 				then
 					ETW_CommonFunctions.removeTraitFromPlayer({
@@ -175,7 +188,7 @@ local function foodSicknessTraitsETW()
 			then
 				if
 					SBvars.DelayedTraitsSystem
-					and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.IRON_GUT)
+					and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.IRON_GUT, modData)
 				then
 					ETW_CommonFunctions.addTraitToDelayTable({
 						modData = modData,
@@ -188,7 +201,7 @@ local function foodSicknessTraitsETW()
 					not SBvars.DelayedTraitsSystem
 					or (
 						SBvars.DelayedTraitsSystem
-						and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.IRON_GUT)
+						and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.IRON_GUT, modData)
 					)
 				then
 					ETW_CommonFunctions.addTraitToPlayer({
@@ -1088,7 +1101,11 @@ local function painToleranceTraitETW()
 			if modData.PainToleranceCounter >= SBvars.PainToleranceCounter then
 				if
 					SBvars.DelayedTraitsSystem
-					and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.PAIN_TOLERANCE)
+					and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(
+						player,
+						ETWTraitsRegistry.PAIN_TOLERANCE,
+						modData
+					)
 				then
 					ETW_CommonFunctions.addTraitToDelayTable({
 						modData = modData,
@@ -1101,7 +1118,7 @@ local function painToleranceTraitETW()
 					not SBvars.DelayedTraitsSystem
 					or (
 						SBvars.DelayedTraitsSystem
-						and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.PAIN_TOLERANCE)
+						and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.PAIN_TOLERANCE, modData)
 					)
 				then
 					ETW_CommonFunctions.addTraitToPlayer({

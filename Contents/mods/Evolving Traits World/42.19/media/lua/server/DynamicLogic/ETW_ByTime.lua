@@ -263,7 +263,7 @@ local function hoarder()
 			if modData.HoarderCounter >= SBvars.HoarderCounter then
 				if
 					SBvars.DelayedTraitsSystem
-					and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.HOARDER)
+					and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.HOARDER, modData)
 				then
 					ETW_CommonFunctions.addTraitToDelayTable({
 						modData = modData,
@@ -274,7 +274,7 @@ local function hoarder()
 					})
 				elseif
 					not SBvars.DelayedTraitsSystem
-					or ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.HOARDER)
+					or ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.HOARDER, modData)
 				then
 					ETW_CommonFunctions.addTraitToPlayer({
 						player = player,
@@ -307,7 +307,11 @@ local function olympian()
 				if modData.OlympianCounter >= SBvars.OlympianCounter then
 					if
 						SBvars.DelayedTraitsSystem
-						and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.OLYMPIAN)
+						and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(
+							player,
+							ETWTraitsRegistry.OLYMPIAN,
+							modData
+						)
 					then
 						ETW_CommonFunctions.addTraitToDelayTable({
 							modData = modData,
@@ -318,7 +322,7 @@ local function olympian()
 						})
 					elseif
 						not SBvars.DelayedTraitsSystem
-						or ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.OLYMPIAN)
+						or ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.OLYMPIAN, modData)
 					then
 						ETW_CommonFunctions.addTraitToPlayer({
 							player = player,

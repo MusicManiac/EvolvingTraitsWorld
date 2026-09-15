@@ -368,7 +368,11 @@ local function noodleLegs()
 				then
 					if
 						SBvars.DelayedTraitsSystem
-						and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.NOODLE_LEGS)
+						and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(
+							player,
+							ETWTraitsRegistry.NOODLE_LEGS,
+							modData
+						)
 					then
 						ETW_CommonFunctions.addTraitToDelayTable({
 							modData = modData,
@@ -379,7 +383,7 @@ local function noodleLegs()
 						})
 					elseif
 						not SBvars.DelayedTraitsSystem
-						or ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.NOODLE_LEGS)
+						or ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.NOODLE_LEGS, modData)
 					then
 						ETW_CommonFunctions.removeTraitFromPlayer({
 							player = player,
