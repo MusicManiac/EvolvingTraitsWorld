@@ -702,7 +702,7 @@ local skillTraitRules = {
 		gainingTrait = true,
 	},
 	{
-		triggers = makeTriggerSet("characterInitialization", Perks.Fishing, CharacterTrait.ANGLER),
+		triggers = makeTriggerSet("characterInitialization", Perks.Fishing, CharacterTrait.FISHING),
 		shouldExecute = ETW_CommonLogicChecks.AnglerShouldExecute,
 		condition = function(ctx)
 			return ctx.fishing >= SBvars.FishingSkill
