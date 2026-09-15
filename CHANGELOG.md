@@ -6,7 +6,8 @@
   - Made Depressive dynamic alongside Blissful through the shared long-term Mental State System.
   - Some internal code improvements
 - Fix:
-  - Fixed Angler not being awarded when needed. 
+  - Fixed Angler not being awarded when needed.
+  - Fixed default Terminator aiming time bonus being double instead of halved. Doesn't auto-apply, change sandbox settings.
   
 ## v.13.4.2
 ###### 12 Sep 2026
