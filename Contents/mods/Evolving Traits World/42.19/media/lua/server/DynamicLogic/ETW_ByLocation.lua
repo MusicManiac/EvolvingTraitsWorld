@@ -13,7 +13,8 @@ local SBvars = SandboxVars.EvolvingTraitsWorld
 ---@type fun(...: string)
 local logETW = ETW_CommonFunctions.log
 local FILENAME = "ETW_ByLocation.lua"
-local NOODLE_LEGS_MAX_DISTANCE_PER_MINUTE = 10
+local NOODLE_LEGS_MAX_DISTANCE_PER_MINUTE_AT_ONE_HOUR_DAY = 12
+local NOODLE_LEGS_BASE_DAY_LENGTH_MINUTES = 60
 
 if
 	not ETW_CommonFunctions.gameModeSafeguard(
@@ -173,10 +174,8 @@ local function fearOfLocations(player, isKill)
 				CharacterTrait.CLAUSTROPHOBIC,
 				nil
 			)
-			fearOfLocationsModData.FearOfInside = math.min(
-				upperCounterBoundary,
-				fearOfLocationsModData.FearOfInside + fearOfInsidePassiveDecay
-			)
+			fearOfLocationsModData.FearOfInside =
+				math.min(upperCounterBoundary, fearOfLocationsModData.FearOfInside + fearOfInsidePassiveDecay)
 		elseif not player:isOutside() or player:getVehicle() ~= nil then
 			counterDecrease = counterDecrease * (isKill and 0.25 or 1)
 			local counterChange = ETW_CommonFunctions.applyAffinityToDirectionalChange(
@@ -195,10 +194,8 @@ local function fearOfLocations(player, isKill)
 				CharacterTrait.AGORAPHOBIC,
 				nil
 			)
-			fearOfLocationsModData.FearOfOutside = math.min(
-				upperCounterBoundary,
-				fearOfLocationsModData.FearOfOutside + fearOfOutsidePassiveDecay
-			)
+			fearOfLocationsModData.FearOfOutside =
+				math.min(upperCounterBoundary, fearOfLocationsModData.FearOfOutside + fearOfOutsidePassiveDecay)
 		end
 		logETW(
 			"ETW Logger | fearOfLocations(): modData.FearOfOutside: " .. fearOfLocationsModData.FearOfOutside,
@@ -327,9 +324,15 @@ end
 ---Tracks qualifying on-foot movement and removes Noodle Legs once both requirements are met.
 ---The maximum-distance guard discards teleports and implausibly fast movement.
 local function noodleLegs()
+	local minutesPerDay = getGameTime():getMinutesPerDay()
 	local playersList = ETW_CommonFunctions.playersList()
 	for i = 0, playersList:size() - 1 do
 		local player = playersList:get(i)
+		local maxDistancePerMinute = (
+			NOODLE_LEGS_MAX_DISTANCE_PER_MINUTE_AT_ONE_HOUR_DAY + 0.9 * player:getPerkLevel(Perks.Sprinting)
+		)
+			* minutesPerDay
+			/ NOODLE_LEGS_BASE_DAY_LENGTH_MINUTES
 		local modData = ETW_CommonFunctions.getETWModData(player)
 		if modData then
 			local noodleLegs = modData.NoodleLegs
@@ -355,17 +358,11 @@ local function noodleLegs()
 					+ player:getPerkLevel(Perks.Sprinting)
 					+ player:getPerkLevel(Perks.Lightfoot)
 
-				if distance > 0 and distance <= NOODLE_LEGS_MAX_DISTANCE_PER_MINUTE then
-					noodleLegs.Distance = math.min(
-						SBvars.NoodleLegsDistance,
-						noodleLegs.Distance + distance
-					)
+				if distance > 0 and distance <= maxDistancePerMinute then
+					noodleLegs.Distance = math.min(SBvars.NoodleLegsDistance, noodleLegs.Distance + distance)
 				end
 
-				if
-					noodleLegs.Distance >= SBvars.NoodleLegsDistance
-					and skillLevels >= SBvars.NoodleLegsSkill
-				then
+				if noodleLegs.Distance >= SBvars.NoodleLegsDistance and skillLevels >= SBvars.NoodleLegsSkill then
 					if
 						SBvars.DelayedTraitsSystem
 						and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(
