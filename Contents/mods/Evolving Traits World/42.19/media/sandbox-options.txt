@@ -312,7 +312,7 @@ option EvolvingTraitsWorld.MentalStateSystemDepressiveLoseThreshold
 	type = double,
 	min = 0,
 	max = 1,
-	default = 0.2,
+	default = 0.35,
 	page = ETWSystems,
 	translation = ETW_MentalStateSystemDepressiveLoseThreshold,
 }
@@ -321,7 +321,7 @@ option EvolvingTraitsWorld.MentalStateSystemDepressiveGainThreshold
 	type = double,
 	min = 0,
 	max = 1,
-	default = 0.35,
+	default = 0.2,
 	page = ETWSystems,
 	translation = ETW_MentalStateSystemDepressiveGainThreshold,
 }
