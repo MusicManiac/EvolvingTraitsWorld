@@ -95,7 +95,7 @@ local function applyCatEyesProgress(player, progressIncrease, isKill)
 
 	if
 		SBvars.DelayedTraitsSystem
-		and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.NIGHT_VISION)
+		and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.NIGHT_VISION, modData)
 	then
 		ETW_CommonFunctions.addTraitToDelayTable({
 			modData = modData,
@@ -106,7 +106,10 @@ local function applyCatEyesProgress(player, progressIncrease, isKill)
 		})
 	elseif
 		not SBvars.DelayedTraitsSystem
-		or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.NIGHT_VISION))
+		or (
+			SBvars.DelayedTraitsSystem
+			and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.NIGHT_VISION, modData)
+		)
 	then
 		ETW_CommonFunctions.addTraitToPlayer({
 			player = player,

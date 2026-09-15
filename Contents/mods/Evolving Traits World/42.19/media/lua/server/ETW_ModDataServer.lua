@@ -138,7 +138,7 @@ function Commands.eagleEyedRecordKill(player, args)
 
 	if
 		SBvars.DelayedTraitsSystem
-		and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.EAGLE_EYED)
+		and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.EAGLE_EYED, modData)
 	then
 		ETW_CommonFunctions.addTraitToDelayTable({
 			modData = modData,
@@ -147,7 +147,10 @@ function Commands.eagleEyedRecordKill(player, args)
 			positiveTrait = true,
 			gainingTrait = true,
 		})
-	elseif not SBvars.DelayedTraitsSystem or ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.EAGLE_EYED) then
+	elseif
+		not SBvars.DelayedTraitsSystem
+		or ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.EAGLE_EYED, modData)
+	then
 		ETW_CommonFunctions.addTraitToPlayer({
 			player = player,
 			trait = CharacterTrait.EAGLE_EYED,
@@ -209,7 +212,7 @@ function Commands.catEyesRecordProgress(player, args)
 
 	if
 		SandboxVars.EvolvingTraitsWorld.DelayedTraitsSystem
-		and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.NIGHT_VISION)
+		and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.NIGHT_VISION, modData)
 	then
 		ETW_CommonFunctions.addTraitToDelayTable({
 			modData = modData,
@@ -222,7 +225,7 @@ function Commands.catEyesRecordProgress(player, args)
 		not SandboxVars.EvolvingTraitsWorld.DelayedTraitsSystem
 		or (
 			SandboxVars.EvolvingTraitsWorld.DelayedTraitsSystem
-			and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.NIGHT_VISION)
+			and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.NIGHT_VISION, modData)
 		)
 	then
 		ETW_CommonFunctions.addTraitToPlayer({
@@ -270,7 +273,7 @@ function Commands.olympianRecordProgress(player, args)
 
 	if
 		SBvars.DelayedTraitsSystem
-		and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.OLYMPIAN)
+		and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.OLYMPIAN, modData)
 	then
 		ETW_CommonFunctions.addTraitToDelayTable({
 			modData = modData,
@@ -279,7 +282,10 @@ function Commands.olympianRecordProgress(player, args)
 			positiveTrait = true,
 			gainingTrait = true,
 		})
-	elseif not SBvars.DelayedTraitsSystem or ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.OLYMPIAN) then
+	elseif
+		not SBvars.DelayedTraitsSystem
+		or ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.OLYMPIAN, modData)
+	then
 		ETW_CommonFunctions.addTraitToPlayer({
 			player = player,
 			trait = ETWTraitsRegistry.OLYMPIAN,

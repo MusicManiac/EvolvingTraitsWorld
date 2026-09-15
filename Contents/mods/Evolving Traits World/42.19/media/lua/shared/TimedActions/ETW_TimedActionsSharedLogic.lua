@@ -18,7 +18,7 @@ function ETW_TimedActionsSharedLogic.checkInventoryTransferPerks(player, modData
 	then
 		if
 			SBvars.DelayedTraitsSystem
-			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.DISORGANIZED)
+			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.DISORGANIZED, modData)
 		then
 			ETW_CommonFunctions.addTraitToDelayTable({
 				modData = modData,
@@ -31,7 +31,7 @@ function ETW_TimedActionsSharedLogic.checkInventoryTransferPerks(player, modData
 			not SBvars.DelayedTraitsSystem
 			or (
 				SBvars.DelayedTraitsSystem
-				and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.DISORGANIZED)
+				and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.DISORGANIZED, modData)
 			)
 		then
 			ETW_CommonFunctions.removeTraitFromPlayer({
@@ -50,7 +50,7 @@ function ETW_TimedActionsSharedLogic.checkInventoryTransferPerks(player, modData
 	then
 		if
 			SBvars.DelayedTraitsSystem
-			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.ORGANIZED)
+			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.ORGANIZED, modData)
 		then
 			ETW_CommonFunctions.addTraitToDelayTable({
 				modData = modData,
@@ -61,7 +61,10 @@ function ETW_TimedActionsSharedLogic.checkInventoryTransferPerks(player, modData
 			})
 		elseif
 			not SBvars.DelayedTraitsSystem
-			or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.ORGANIZED))
+			or (
+				SBvars.DelayedTraitsSystem
+				and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.ORGANIZED, modData)
+			)
 		then
 			ETW_CommonFunctions.addTraitToPlayer({
 				player = player,
@@ -78,7 +81,7 @@ function ETW_TimedActionsSharedLogic.checkInventoryTransferPerks(player, modData
 	then
 		if
 			SBvars.DelayedTraitsSystem
-			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.ALL_THUMBS)
+			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.ALL_THUMBS, modData)
 		then
 			ETW_CommonFunctions.addTraitToDelayTable({
 				modData = modData,
@@ -91,7 +94,7 @@ function ETW_TimedActionsSharedLogic.checkInventoryTransferPerks(player, modData
 			not SBvars.DelayedTraitsSystem
 			or (
 				SBvars.DelayedTraitsSystem
-				and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.ALL_THUMBS)
+				and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.ALL_THUMBS, modData)
 			)
 		then
 			ETW_CommonFunctions.removeTraitFromPlayer({
@@ -109,7 +112,7 @@ function ETW_TimedActionsSharedLogic.checkInventoryTransferPerks(player, modData
 	then
 		if
 			SBvars.DelayedTraitsSystem
-			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.DEXTROUS)
+			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.DEXTROUS, modData)
 		then
 			ETW_CommonFunctions.addTraitToDelayTable({
 				modData = modData,
@@ -120,7 +123,10 @@ function ETW_TimedActionsSharedLogic.checkInventoryTransferPerks(player, modData
 			})
 		elseif
 			not SBvars.DelayedTraitsSystem
-			or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.DEXTROUS))
+			or (
+				SBvars.DelayedTraitsSystem
+				and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.DEXTROUS, modData)
+			)
 		then
 			ETW_CommonFunctions.addTraitToPlayer({
 				player = player,

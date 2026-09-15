@@ -99,7 +99,14 @@ local function recordNaturalEaterFood(player, item)
 	if modData.NaturalEaterFoodsEaten < target then
 		return
 	end
-	if SBvars.DelayedTraitsSystem and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.NATURAL_EATER) then
+	if
+		SBvars.DelayedTraitsSystem
+		and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(
+			player,
+			ETWTraitsRegistry.NATURAL_EATER,
+			modData
+		)
+	then
 		ETW_CommonFunctions.addTraitToDelayTable({
 			modData = modData,
 			trait = ETWTraitsRegistry.NATURAL_EATER,
@@ -107,7 +114,10 @@ local function recordNaturalEaterFood(player, item)
 			positiveTrait = true,
 			gainingTrait = true,
 		})
-	elseif not SBvars.DelayedTraitsSystem or ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.NATURAL_EATER) then
+	elseif
+		not SBvars.DelayedTraitsSystem
+		or ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.NATURAL_EATER, modData)
+	then
 		ETW_CommonFunctions.addTraitToPlayer({ player = player, trait = ETWTraitsRegistry.NATURAL_EATER, positiveTrait = true })
 	end
 end
@@ -311,7 +321,11 @@ local function checkEatingSpeedTraits(player, modData)
 	then
 		if
 			SBvars.DelayedTraitsSystem
-			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.SLOW_EATER)
+			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(
+				player,
+				ETWTraitsRegistry.SLOW_EATER,
+				modData
+			)
 		then
 			ETW_CommonFunctions.addTraitToDelayTable({
 				modData = modData,
@@ -324,7 +338,7 @@ local function checkEatingSpeedTraits(player, modData)
 			not SBvars.DelayedTraitsSystem
 			or (
 				SBvars.DelayedTraitsSystem
-					and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.SLOW_EATER)
+					and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.SLOW_EATER, modData)
 			)
 		then
 			ETW_CommonFunctions.removeTraitFromPlayer({
@@ -341,7 +355,7 @@ local function checkEatingSpeedTraits(player, modData)
 	then
 		if
 			SBvars.DelayedTraitsSystem
-			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.FAST_EATER)
+			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.FAST_EATER, modData)
 		then
 			ETW_CommonFunctions.addTraitToDelayTable({
 				modData = modData,
@@ -354,7 +368,7 @@ local function checkEatingSpeedTraits(player, modData)
 			not SBvars.DelayedTraitsSystem
 			or (
 				SBvars.DelayedTraitsSystem
-					and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.FAST_EATER)
+					and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.FAST_EATER, modData)
 			)
 		then
 			ETW_CommonFunctions.addTraitToPlayer({

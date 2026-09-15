@@ -93,7 +93,8 @@ function ISPetAnimal:animEvent(event, parameter)
 								SBvars.DelayedTraitsSystem
 								and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(
 									player,
-									ETWTraitsRegistry.PET_THERAPY
+									ETWTraitsRegistry.PET_THERAPY,
+									modData
 								)
 							then
 								ETW_CommonFunctions.addTraitToDelayTable({
@@ -107,7 +108,11 @@ function ISPetAnimal:animEvent(event, parameter)
 								not SBvars.DelayedTraitsSystem
 								or (
 									SBvars.DelayedTraitsSystem
-									and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.PET_THERAPY)
+									and ETW_CommonFunctions.checkDelayedTraits(
+										player,
+										ETWTraitsRegistry.PET_THERAPY,
+										modData
+									)
 								)
 							then
 								ETW_CommonFunctions.addTraitToPlayer({

@@ -170,7 +170,11 @@ local function checkReaderTraits(player, modData)
 	then
 		if
 			SBvars.DelayedTraitsSystem
-			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.SLOW_READER)
+			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(
+				player,
+				CharacterTrait.SLOW_READER,
+				modData
+			)
 		then
 			ETW_CommonFunctions.addTraitToDelayTable({
 				modData = modData,
@@ -183,7 +187,7 @@ local function checkReaderTraits(player, modData)
 			not SBvars.DelayedTraitsSystem
 			or (
 				SBvars.DelayedTraitsSystem
-				and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.SLOW_READER)
+				and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.SLOW_READER, modData)
 			)
 		then
 			ETW_CommonFunctions.removeTraitFromPlayer({
@@ -200,7 +204,7 @@ local function checkReaderTraits(player, modData)
 	then
 		if
 			SBvars.DelayedTraitsSystem
-			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.FAST_READER)
+			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.FAST_READER, modData)
 		then
 			ETW_CommonFunctions.addTraitToDelayTable({
 				modData = modData,
@@ -213,7 +217,7 @@ local function checkReaderTraits(player, modData)
 			not SBvars.DelayedTraitsSystem
 			or (
 				SBvars.DelayedTraitsSystem
-				and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.FAST_READER)
+				and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.FAST_READER, modData)
 			)
 		then
 			ETW_CommonFunctions.addTraitToPlayer({

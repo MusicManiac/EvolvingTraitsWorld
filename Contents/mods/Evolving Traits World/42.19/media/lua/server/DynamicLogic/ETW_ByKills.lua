@@ -212,7 +212,7 @@ local function grantEagleEyedKill(player, distance)
 
 	if
 		SBvars.DelayedTraitsSystem
-		and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.EAGLE_EYED)
+		and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.EAGLE_EYED, modData)
 	then
 		ETW_CommonFunctions.addTraitToDelayTable({
 			modData = modData,
@@ -223,7 +223,10 @@ local function grantEagleEyedKill(player, distance)
 		})
 	elseif
 		not SBvars.DelayedTraitsSystem
-		or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.EAGLE_EYED))
+		or (
+			SBvars.DelayedTraitsSystem
+			and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.EAGLE_EYED, modData)
+		)
 	then
 		ETW_CommonFunctions.addTraitToPlayer({
 			player = player,
@@ -356,7 +359,7 @@ local function braverySystemETW(zombie)
 					then
 						if
 							SBvars.DelayedTraitsSystem
-							and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, trait)
+							and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, trait, ETWModData)
 						then
 							ETW_CommonFunctions.addTraitToDelayTable({
 								modData = ETWModData,
@@ -367,7 +370,10 @@ local function braverySystemETW(zombie)
 							})
 						elseif
 							not SBvars.DelayedTraitsSystem
-							or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, trait))
+							or (
+								SBvars.DelayedTraitsSystem
+								and ETW_CommonFunctions.checkDelayedTraits(player, trait, ETWModData)
+							)
 						then
 							ETW_CommonFunctions.removeTraitFromPlayer({
 								player = player,
@@ -385,7 +391,7 @@ local function braverySystemETW(zombie)
 					then
 						if
 							SBvars.DelayedTraitsSystem
-							and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, trait)
+							and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, trait, ETWModData)
 						then
 							ETW_CommonFunctions.addTraitToDelayTable({
 								modData = ETWModData,
@@ -396,7 +402,10 @@ local function braverySystemETW(zombie)
 							})
 						elseif
 							not SBvars.DelayedTraitsSystem
-							or (SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, trait))
+							or (
+								SBvars.DelayedTraitsSystem
+								and ETW_CommonFunctions.checkDelayedTraits(player, trait, ETWModData)
+							)
 						then
 							ETW_CommonFunctions.addTraitToPlayer({
 								player = player,
