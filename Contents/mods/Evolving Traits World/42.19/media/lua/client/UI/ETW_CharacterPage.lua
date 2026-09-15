@@ -1023,22 +1023,51 @@ function ISETWUI:createChildren()
 
 			y = y + FONT_HGT_SMALL + 6
 
-			if ETW_CommonLogicChecks.BlissfulShouldExecute(player) then
-				str = "- " .. getCachedTraitUIName(ETWTraitsRegistry.BLISSFUL)
-				self.labelVitalsMentalLose = ISLabel:new(
-					barStartPosition + (barLength * SBvars.BlissfulLoseThreshold) - strLen(textManager, str) / 2,
-					y,
-					FONT_HGT_SMALL,
-					str,
-					self.DimmedTextColor.r,
-					self.DimmedTextColor.g,
-					self.DimmedTextColor.b,
-					self.DimmedTextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelVitalsMentalLose:setTooltip(getText("Sandbox_ETW_BlissfulLoseThreshold_tooltip"))
-				self:addChild(self.labelVitalsMentalLose)
+			local mentalStateSystemDynamic = ETW_CommonLogicChecks.MentalStateSystemShouldExecute(player)
+			if mentalStateSystemDynamic then
+				if SBvars.TraitsLockSystemCanGainNegative or SBvars.TraitsLockSystemCanLoseNegative then
+					str = "+ " .. getCachedTraitUIName(ETWTraitsRegistry.DEPRESSIVE)
+					self.labelVitalsMentalGainDepressive = ISLabel:new(
+						barStartPosition
+							+ (barLength * SBvars.MentalStateSystemDepressiveGainThreshold)
+							- strLen(textManager, str) / 2,
+						y,
+						FONT_HGT_SMALL,
+						str,
+						self.DimmedTextColor.r,
+						self.DimmedTextColor.g,
+						self.DimmedTextColor.b,
+						self.DimmedTextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelVitalsMentalGainDepressive:setTooltip(
+						getText("Sandbox_ETW_MentalStateSystemDepressiveGainThreshold_tooltip")
+					)
+					self:addChild(self.labelVitalsMentalGainDepressive)
+				end
+
+				if SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLosePositive then
+					str = "- " .. getCachedTraitUIName(ETWTraitsRegistry.BLISSFUL)
+					self.labelVitalsMentalLose = ISLabel:new(
+						barStartPosition
+							+ (barLength * SBvars.MentalStateSystemBlissfulLoseThreshold)
+							- strLen(textManager, str) / 2,
+						y,
+						FONT_HGT_SMALL,
+						str,
+						self.DimmedTextColor.r,
+						self.DimmedTextColor.g,
+						self.DimmedTextColor.b,
+						self.DimmedTextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelVitalsMentalLose:setTooltip(
+						getText("Sandbox_ETW_MentalStateSystemBlissfulLoseThreshold_tooltip")
+					)
+					self:addChild(self.labelVitalsMentalLose)
+				end
 				y = y + FONT_HGT_SMALL
 			end
 
@@ -1065,22 +1094,50 @@ function ISETWUI:createChildren()
 
 			y = y + FONT_HGT_SMALL + 2
 
-			if ETW_CommonLogicChecks.BlissfulShouldExecute(player) then
-				str = "+ " .. getCachedTraitUIName(ETWTraitsRegistry.BLISSFUL)
-				self.labelVitalsMentalGain = ISLabel:new(
-					barStartPosition + (barLength * SBvars.BlissfulGainThreshold) - strLen(textManager, str) / 2,
-					y,
-					FONT_HGT_SMALL,
-					str,
-					self.DimmedTextColor.r,
-					self.DimmedTextColor.g,
-					self.DimmedTextColor.b,
-					self.DimmedTextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelVitalsMentalGain:setTooltip(getText("Sandbox_ETW_BlissfulGainThreshold_tooltip"))
-				self:addChild(self.labelVitalsMentalGain)
+			if mentalStateSystemDynamic then
+				if SBvars.TraitsLockSystemCanGainNegative or SBvars.TraitsLockSystemCanLoseNegative then
+					str = "- " .. getCachedTraitUIName(ETWTraitsRegistry.DEPRESSIVE)
+					self.labelVitalsMentalLoseDepressive = ISLabel:new(
+						barStartPosition
+							+ (barLength * SBvars.MentalStateSystemDepressiveLoseThreshold)
+							- strLen(textManager, str) / 2,
+						y,
+						FONT_HGT_SMALL,
+						str,
+						self.DimmedTextColor.r,
+						self.DimmedTextColor.g,
+						self.DimmedTextColor.b,
+						self.DimmedTextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelVitalsMentalLoseDepressive:setTooltip(
+						getText("Sandbox_ETW_MentalStateSystemDepressiveLoseThreshold_tooltip")
+					)
+					self:addChild(self.labelVitalsMentalLoseDepressive)
+				end
+
+				if SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLosePositive then
+					str = "+ " .. getCachedTraitUIName(ETWTraitsRegistry.BLISSFUL)
+					self.labelVitalsMentalGain = ISLabel:new(
+						barStartPosition
+							+ (barLength * SBvars.MentalStateSystemBlissfulGainThreshold)
+							- strLen(textManager, str) / 2,
+						y,
+						FONT_HGT_SMALL,
+						str,
+						self.DimmedTextColor.r,
+						self.DimmedTextColor.g,
+						self.DimmedTextColor.b,
+						self.DimmedTextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelVitalsMentalGain:setTooltip(
+						getText("Sandbox_ETW_MentalStateSystemBlissfulGainThreshold_tooltip")
+					)
+					self:addChild(self.labelVitalsMentalGain)
+				end
 				y = y + FONT_HGT_SMALL
 			end
 
@@ -4462,7 +4519,10 @@ function ISETWUI:render()
 		self.labelVitalsThirstGainNegative or self.labelVitalsThirstLosePositive or self.labelVitalsThirst,
 		self.labelVitalsThirst24Hours
 	)
-	drawVitalsGroupBorder(self.labelVitalsMentalLose or self.labelVitalsMental, self.labelVitalsMental24Hours)
+	drawVitalsGroupBorder(
+		self.labelVitalsMentalGainDepressive or self.labelVitalsMentalLose or self.labelVitalsMental,
+		self.labelVitalsMental24Hours
+	)
 
 	if isPermanentTraitsTabActive and self.barBravery ~= nil then
 		local topY = getWidgetTop(self.labelCowardlyLose)

@@ -975,17 +975,40 @@ local function idealWeightETW()
 	end
 end
 
----Applies Blissful gain and loss thresholds to the long-term mental-state average.
-local function blissfulETW()
+---Applies Depressive and Blissful gain/loss rules from the player's long-term mental-state average.
+local function mentalStateSystemETW()
 	local playersList = ETW_CommonFunctions.playersList()
 	for i = 0, playersList:size() - 1 do
 		local player = playersList:get(i)
 		local modData = ETW_CommonFunctions.getETWModData(player)
-		if modData and ETW_CommonLogicChecks.BlissfulShouldExecute(player) then
+		if modData then
 			local averageMental = modData.RecentAverageMental
 			if
+				player:hasTrait(ETWTraitsRegistry.DEPRESSIVE)
+				and averageMental >= SBvars.MentalStateSystemDepressiveLoseThreshold
+				and SBvars.TraitsLockSystemCanLoseNegative
+			then
+				ETW_CommonFunctions.removeTraitFromPlayer({
+					player = player,
+					trait = ETWTraitsRegistry.DEPRESSIVE,
+					positiveTrait = false,
+				})
+			elseif
+				not player:hasTrait(ETWTraitsRegistry.DEPRESSIVE)
+				and not player:hasTrait(ETWTraitsRegistry.BLISSFUL)
+				and averageMental <= SBvars.MentalStateSystemDepressiveGainThreshold
+				and SBvars.TraitsLockSystemCanGainNegative
+			then
+				ETW_CommonFunctions.addTraitToPlayer({
+					player = player,
+					trait = ETWTraitsRegistry.DEPRESSIVE,
+					positiveTrait = false,
+				})
+			end
+
+			if
 				player:hasTrait(ETWTraitsRegistry.BLISSFUL)
-				and averageMental <= SBvars.BlissfulLoseThreshold
+				and averageMental <= SBvars.MentalStateSystemBlissfulLoseThreshold
 				and SBvars.TraitsLockSystemCanLosePositive
 			then
 				ETW_CommonFunctions.removeTraitFromPlayer({
@@ -995,7 +1018,8 @@ local function blissfulETW()
 				})
 			elseif
 				not player:hasTrait(ETWTraitsRegistry.BLISSFUL)
-				and averageMental >= SBvars.BlissfulGainThreshold
+				and not player:hasTrait(ETWTraitsRegistry.DEPRESSIVE)
+				and averageMental >= SBvars.MentalStateSystemBlissfulGainThreshold
 				and SBvars.TraitsLockSystemCanGainPositive
 			then
 				ETW_CommonFunctions.addTraitToPlayer({
@@ -1185,9 +1209,9 @@ local function initializeEventsETW(playerIndex, player)
 	if ETW_CommonLogicChecks.AsthmaticShouldExecute(player) then
 		Events.EveryOneMinute.Add(asthmaticTraitETW)
 	end
-	Events.EveryTenMinutes.Remove(blissfulETW)
-	if ETW_CommonLogicChecks.BlissfulShouldExecute(player) then
-		Events.EveryTenMinutes.Add(blissfulETW)
+	Events.EveryTenMinutes.Remove(mentalStateSystemETW)
+	if ETW_CommonLogicChecks.MentalStateSystemShouldExecute(player) then
+		Events.EveryTenMinutes.Add(mentalStateSystemETW)
 	end
 	Events.EveryOneMinute.Remove(recordMentalStateETW)
 	Events.EveryOneMinute.Add(recordMentalStateETW)
@@ -1214,7 +1238,7 @@ local function clearEventsETW(character)
 	Events.EveryTenMinutes.Remove(painToleranceTraitETW)
 	Events.EveryOneMinute.Remove(asthmaticTraitETW)
 	Events.EveryOneMinute.Remove(idealWeightETW)
-	Events.EveryTenMinutes.Remove(blissfulETW)
+	Events.EveryTenMinutes.Remove(mentalStateSystemETW)
 	Events.EveryOneMinute.Remove(recordMentalStateETW)
 	logETW("ETW Logger | System: clearEventsETW in " .. FILENAME)
 end

@@ -86,15 +86,17 @@ local function getInitialThirstAverage(startingTraits)
 	return midpoint(SBvars.ThirstSystemGainNegativeThreshold, SBvars.ThirstSystemGainPositiveThreshold)
 end
 
----Returns the initial mental average for the player's starting Blissful state.
+---Returns the initial mental average for the player's starting mental trait state.
 ---@param startingTraits table<string, boolean>
 ---@return number
 local function getInitialMentalAverage(startingTraits)
 	if startingTraits[ETWTraitsRegistry.BLISSFUL:toString()] == true then
-		return midpoint(1, SBvars.BlissfulGainThreshold)
-	else
-		return SBvars.BlissfulLoseThreshold * 0.75
+		return midpoint(1, SBvars.MentalStateSystemBlissfulGainThreshold)
 	end
+	if startingTraits[ETWTraitsRegistry.DEPRESSIVE:toString()] == true then
+		return midpoint(0, SBvars.MentalStateSystemDepressiveGainThreshold)
+	end
+	return midpoint(SBvars.MentalStateSystemDepressiveLoseThreshold, SBvars.MentalStateSystemBlissfulLoseThreshold)
 end
 
 ---Creates modData for player if it doesn't exist and fills it with default values if they don't exist. Should be ran on character creation and loading.
@@ -165,6 +167,7 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	local startingTraits = modData.StartingTraits
 	ETW_ModData.checkStartingTrait(startingTraits, player, ETWTraitsRegistry.IDEAL_WEIGHT)
 	ETW_ModData.checkStartingTrait(startingTraits, player, ETWTraitsRegistry.BLISSFUL)
+	ETW_ModData.checkStartingTrait(startingTraits, player, ETWTraitsRegistry.DEPRESSIVE)
 	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.THIN_SKINNED)
 	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.THICK_SKINNED)
 	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.SLOW_HEALER)

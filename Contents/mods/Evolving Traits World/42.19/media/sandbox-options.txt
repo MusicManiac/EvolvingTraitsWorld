@@ -282,30 +282,48 @@ option EvolvingTraitsWorld.IdealWeightProgressLossMultiplier
 	page = ETWSystems,
 	translation = ETW_IdealWeightProgressLossMultiplier,
 }
-option EvolvingTraitsWorld.Blissful
+option EvolvingTraitsWorld.MentalStateSystem
 {
 	type = boolean,
 	default = true,
 	page = ETWSystems,
-	translation = ETW_Blissful,
+	translation = ETW_MentalStateSystem,
 }
-option EvolvingTraitsWorld.BlissfulGainThreshold
+option EvolvingTraitsWorld.MentalStateSystemBlissfulGainThreshold
 {
 	type = double,
 	min = 0,
 	max = 1,
 	default = 0.9,
 	page = ETWSystems,
-	translation = ETW_BlissfulGainThreshold,
+	translation = ETW_MentalStateSystemBlissfulGainThreshold,
 }
-option EvolvingTraitsWorld.BlissfulLoseThreshold
+option EvolvingTraitsWorld.MentalStateSystemBlissfulLoseThreshold
 {
 	type = double,
 	min = 0,
 	max = 1,
 	default = 0.8,
 	page = ETWSystems,
-	translation = ETW_BlissfulLoseThreshold,
+	translation = ETW_MentalStateSystemBlissfulLoseThreshold,
+}
+option EvolvingTraitsWorld.MentalStateSystemDepressiveLoseThreshold
+{
+	type = double,
+	min = 0,
+	max = 1,
+	default = 0.2,
+	page = ETWSystems,
+	translation = ETW_MentalStateSystemDepressiveLoseThreshold,
+}
+option EvolvingTraitsWorld.MentalStateSystemDepressiveGainThreshold
+{
+	type = double,
+	min = 0,
+	max = 1,
+	default = 0.35,
+	page = ETWSystems,
+	translation = ETW_MentalStateSystemDepressiveGainThreshold,
 }
 option EvolvingTraitsWorld.FoodSystem
 {

@@ -68,13 +68,23 @@ function ETW_CommonLogicChecks.IdealWeightShouldExecute(player)
 		and (SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLosePositive)
 end
 
----Returns whether mental-state progression can gain or remove Blissful.
----@param player IsoPlayer|nil
----@return boolean
-function ETW_CommonLogicChecks.BlissfulShouldExecute(player)
-	return SBvars.Blissful == true
-		and traitShouldExecute("BlissfulEnabled")
-		and (SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLosePositive)
+---Returns true if the Mental State System should execute
+---@param player IsoPlayer|nil the player to check for
+---@return boolean boolean true if the Mental State System should execute, false otherwise
+function ETW_CommonLogicChecks.MentalStateSystemShouldExecute(player)
+	if
+		SBvars.MentalStateSystem == true
+		and (
+			SBvars.TraitsLockSystemCanGainPositive
+			or SBvars.TraitsLockSystemCanLosePositive
+			or SBvars.TraitsLockSystemCanGainNegative
+			or SBvars.TraitsLockSystemCanLoseNegative
+		)
+	then
+		return true
+	else
+		return false
+	end
 end
 
 ---Returns true if the Food System should execute
