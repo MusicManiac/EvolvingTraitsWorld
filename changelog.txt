@@ -1,9 +1,11 @@
 [url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
 
-v.13.4.2
+v.13.5.0
 
+- General:
+  - Made Noodle Legs dynamic through on-foot distance and skill progression.
+  - Made Depressive dynamic alongside Blissful through the shared long-term Mental State System.
+  - Some internal code improvements.
 - Fix:
-  - Fixed Target Shooter not staying in delayed system and being removed on login.
-  - Fixed Scrapper trait cost being inconsistent with base game.
-- Translations:
-  - Updated JP to v.13.4.2
+  - Fixed Angler not being awarded when needed.
+  - Fixed default Terminator aiming time bonus being double instead of halved. Doesn't auto-apply, change sandbox settings.

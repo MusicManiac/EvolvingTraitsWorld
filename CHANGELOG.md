@@ -1,10 +1,10 @@
 ## v.13.5.0
-###### xx Sep 2026
+###### 15 Sep 2026
 
 - General:
   - Made Noodle Legs dynamic through on-foot distance and skill progression.
   - Made Depressive dynamic alongside Blissful through the shared long-term Mental State System.
-  - Some internal code improvements
+  - Some internal code improvements.
 - Fix:
   - Fixed Angler not being awarded when needed.
   - Fixed default Terminator aiming time bonus being double instead of halved. Doesn't auto-apply, change sandbox settings.
