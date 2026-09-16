@@ -1,11 +1,6 @@
 [url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
 
-v.13.5.0
+v.13.5.1
 
-- General:
-  - Made Noodle Legs dynamic through on-foot distance and skill progression.
-  - Made Depressive dynamic alongside Blissful through the shared long-term Mental State System.
-  - Some internal code improvements.
-- Fix:
-  - Fixed Angler not being awarded when needed.
-  - Fixed default Terminator aiming time bonus being double instead of halved. Doesn't auto-apply, change sandbox settings.
+- Translation:
+  - Updated UA to v.13.4.0
