@@ -524,7 +524,7 @@ local function combatWeaponTraits(player)
 		and 1 + math.max(0, SBvars.TerminatorDamageBonusPercent or 25) / 100
 		or 1
 	local terminatorAimingTimeMultiplier = hasTerminator
-		and math.max(0, SBvars.TerminatorAimingTimeMultiplier or 2)
+		and math.max(0, SBvars.TerminatorAimingTimeMultiplier or 0.5)
 		or 1
 	local terminatorMaxRangeBonus = hasTerminator
 		and math.max(0, SBvars.TerminatorMaxRangeBonus or 5)
