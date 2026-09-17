@@ -509,6 +509,7 @@ module ETW
         UIName = UI_trait_GunEnthusiast,
         UIDescription = UI_trait_GunEnthusiastDesc,
         XPBoosts = Aiming=1;Reloading=1,
+        MutuallyExclusiveTraits = ETW:AntiGunActivist,
     }
 
     character_trait_definition ETW:GymRat
