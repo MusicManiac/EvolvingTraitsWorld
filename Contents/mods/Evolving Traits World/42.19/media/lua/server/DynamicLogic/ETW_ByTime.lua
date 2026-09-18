@@ -53,6 +53,12 @@ end
 ---Function responsible for managing Sleep System traits
 local function sleepSystem()
 	local playersList = ETW_CommonFunctions.playersList()
+	local timeOfDay = getGameTime():getTimeOfDay()
+	local maxCounter = SBvars.SleepSystemCounter
+	local gainNegativeThreshold = maxCounter * -2 / 3
+	local loseNegativeThreshold = maxCounter * -1 / 3
+	local losePositiveThreshold = maxCounter * 1 / 3
+	local gainPositiveThreshold = maxCounter * 2 / 3
 	for i = 0, playersList:size() - 1 do
 		local player = playersList:get(i)
 		local modData = ETW_CommonFunctions.getETWModData(player)
@@ -61,7 +67,6 @@ local function sleepSystem()
 			return
 		end
 		local sleepModData = modData.SleepSystem
-		local timeOfDay = getGameTime():getTimeOfDay()
 		local currentPreferredTargetHour = sleepModData.LastMidpoint
 		if player:isAsleep() then
 			local hoursAwayFromPreferredHour = math.min(
@@ -81,7 +86,7 @@ local function sleepSystem()
 					CharacterTrait.NEEDS_LESS_SLEEP
 				)
 				sleepModData.SleepHealthinessBar =
-					math.min(200, sleepModData.SleepHealthinessBar + sleepHealthinessBarIncrease)
+					math.min(maxCounter, sleepModData.SleepHealthinessBar + sleepHealthinessBarIncrease)
 			else
 				local sleepHealthinessBarDecrease = ETW_CommonFunctions.applyAffinityToDirectionalChange(
 					modData,
@@ -90,7 +95,7 @@ local function sleepSystem()
 					CharacterTrait.NEEDS_LESS_SLEEP
 				)
 				sleepModData.SleepHealthinessBar =
-					math.max(-200, sleepModData.SleepHealthinessBar + sleepHealthinessBarDecrease)
+					math.max(-maxCounter, sleepModData.SleepHealthinessBar + sleepHealthinessBarDecrease)
 			end
 			if gameMode == ETW_CommonFunctions.GameMode.SP and ETW_Moodles then
 				ETW_Moodles.sleepHealthMoodleUpdate(
@@ -140,40 +145,53 @@ local function sleepSystem()
 					CharacterTrait.NEEDS_LESS_SLEEP
 				)
 				sleepModData.SleepHealthinessBar =
-					math.max(-200, sleepModData.SleepHealthinessBar + sleepHealthinessBarDecrease)
+					math.max(-maxCounter, sleepModData.SleepHealthinessBar + sleepHealthinessBarDecrease)
 			end
 		end
-		if sleepModData.SleepHealthinessBar > 100 then
-			if not player:hasTrait(CharacterTrait.NEEDS_LESS_SLEEP) and SBvars.TraitsLockSystemCanGainPositive then
-				ETW_CommonFunctions.addTraitToPlayer({
-					player = player,
-					trait = CharacterTrait.NEEDS_LESS_SLEEP,
-					positiveTrait = true,
-				})
-			end
-		elseif sleepModData.SleepHealthinessBar < -100 then
-			if not player:hasTrait(CharacterTrait.NEEDS_MORE_SLEEP) and SBvars.TraitsLockSystemCanGainNegative then
-				ETW_CommonFunctions.addTraitToPlayer({
-					player = player,
-					trait = CharacterTrait.NEEDS_MORE_SLEEP,
-					positiveTrait = false,
-				})
-			end
-		else
-			if player:hasTrait(CharacterTrait.NEEDS_LESS_SLEEP) and SBvars.TraitsLockSystemCanLosePositive then
-				ETW_CommonFunctions.removeTraitFromPlayer({
-					player = player,
-					trait = CharacterTrait.NEEDS_LESS_SLEEP,
-					positiveTrait = true,
-				})
-			end
-			if player:hasTrait(CharacterTrait.NEEDS_MORE_SLEEP) and SBvars.TraitsLockSystemCanLoseNegative then
-				ETW_CommonFunctions.removeTraitFromPlayer({
-					player = player,
-					trait = CharacterTrait.NEEDS_MORE_SLEEP,
-					positiveTrait = false,
-				})
-			end
+		if
+			player:hasTrait(CharacterTrait.NEEDS_MORE_SLEEP)
+			and sleepModData.SleepHealthinessBar >= loseNegativeThreshold
+			and SBvars.TraitsLockSystemCanLoseNegative
+		then
+			ETW_CommonFunctions.removeTraitFromPlayer({
+				player = player,
+				trait = CharacterTrait.NEEDS_MORE_SLEEP,
+				positiveTrait = false,
+			})
+		elseif
+			not player:hasTrait(CharacterTrait.NEEDS_MORE_SLEEP)
+			and not player:hasTrait(CharacterTrait.NEEDS_LESS_SLEEP)
+			and sleepModData.SleepHealthinessBar <= gainNegativeThreshold
+			and SBvars.TraitsLockSystemCanGainNegative
+		then
+			ETW_CommonFunctions.addTraitToPlayer({
+				player = player,
+				trait = CharacterTrait.NEEDS_MORE_SLEEP,
+				positiveTrait = false,
+			})
+		end
+
+		if
+			player:hasTrait(CharacterTrait.NEEDS_LESS_SLEEP)
+			and sleepModData.SleepHealthinessBar <= losePositiveThreshold
+			and SBvars.TraitsLockSystemCanLosePositive
+		then
+			ETW_CommonFunctions.removeTraitFromPlayer({
+				player = player,
+				trait = CharacterTrait.NEEDS_LESS_SLEEP,
+				positiveTrait = true,
+			})
+		elseif
+			not player:hasTrait(CharacterTrait.NEEDS_LESS_SLEEP)
+			and not player:hasTrait(CharacterTrait.NEEDS_MORE_SLEEP)
+			and sleepModData.SleepHealthinessBar >= gainPositiveThreshold
+			and SBvars.TraitsLockSystemCanGainPositive
+		then
+			ETW_CommonFunctions.addTraitToPlayer({
+				player = player,
+				trait = CharacterTrait.NEEDS_LESS_SLEEP,
+				positiveTrait = true,
+			})
 		end
 		logETW("ETW Logger | sleepSystem(): modData.SleepHealthinessBar: " .. sleepModData.SleepHealthinessBar)
 	end

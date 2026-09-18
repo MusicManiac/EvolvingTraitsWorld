@@ -658,6 +658,9 @@ function ISETWUI:createChildren()
 			if ETW_CommonLogicChecks.HealerSystemShouldExecute(player) then
 				appendLeftBarLabel(labelTexts, getText("Sandbox_ETW_HealerSystem"))
 			end
+			if ETW_CommonLogicChecks.SleepSystemShouldExecute(player) then
+				appendLeftBarLabel(labelTexts, getText("Sandbox_ETW_SleepSystem"))
+			end
 			if ETW_CommonLogicChecks.PainToleranceShouldExecute(player) then
 				appendLeftBarLabel(labelTexts, getCachedTraitUIName(ETWTraitsRegistry.PAIN_TOLERANCE))
 			end
@@ -706,9 +709,6 @@ function ISETWUI:createChildren()
 			if ETW_CommonLogicChecks.FearOfLocationsSystemShouldExecute(player) then
 				appendLeftBarLabel(labelTexts, getCachedTraitUIName(CharacterTrait.AGORAPHOBIC))
 				appendLeftBarLabel(labelTexts, getCachedTraitUIName(CharacterTrait.CLAUSTROPHOBIC))
-			end
-			if ETW_CommonLogicChecks.SleepSystemShouldExecute(player) then
-				appendLeftBarLabel(labelTexts, getText("Sandbox_ETW_SleepSystem"))
 			end
 			if ETW_CommonLogicChecks.IdealWeightShouldExecute(player) then
 				appendLeftBarLabel(labelTexts, getText("Sandbox_ETW_IdealWeight"))
@@ -3416,6 +3416,97 @@ function ISETWUI:createChildren()
 				y = y + FONT_HGT_SMALL * 2
 			end
 
+			if ETW_CommonLogicChecks.SleepSystemShouldExecute(player) then
+				str = "+ " .. getCachedTraitUIName(CharacterTrait.NEEDS_MORE_SLEEP)
+				self.labelMoreSleepGain = ISLabel:new(
+					barOneSixthPosition - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelMoreSleepGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self:addChild(self.labelMoreSleepGain)
+
+				str = "+ " .. getCachedTraitUIName(CharacterTrait.NEEDS_LESS_SLEEP)
+				self.labelLessSleepGain = ISLabel:new(
+					barFiveSixthPosition - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelLessSleepGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self:addChild(self.labelLessSleepGain)
+
+				y = y + FONT_HGT_SMALL
+
+				str = "- " .. getCachedTraitUIName(CharacterTrait.NEEDS_MORE_SLEEP)
+				self.labelMoreSleepLose = ISLabel:new(
+					barOneThirdPosition - strLen(textManager, str) / 2,
+					y + FONT_HGT_SMALL,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelMoreSleepLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self:addChild(self.labelMoreSleepLose)
+
+				str = "- " .. getCachedTraitUIName(CharacterTrait.NEEDS_LESS_SLEEP)
+				self.labelLessSleepLose = ISLabel:new(
+					barTwoThirdPosition - strLen(textManager, str) / 2,
+					y + FONT_HGT_SMALL,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelLessSleepLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self:addChild(self.labelLessSleepLose)
+
+				self.labelSleepSystemBarName = ISLabel:new(
+					barStartPosition - lineStartPosition,
+					y,
+					FONT_HGT_SMALL,
+					getText("Sandbox_ETW_SleepSystem"),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					false
+				)
+				self.labelSleepSystemBarName:setTooltip(getText("Sandbox_ETW_SleepSystem_tooltip"))
+				self:addChild(self.labelSleepSystemBarName)
+
+				self.barSleepSystem = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
+				self.barSleepSystem:setGradientTexture(redYellowGreenGradient)
+				self.barSleepSystem:setHighlightRadius(highlightRadius)
+				self.barSleepSystem:setDoKnob(false)
+				self:addChild(self.barSleepSystem)
+
+				y = y + FONT_HGT_SMALL * 2
+			end
+
 			if ETW_CommonLogicChecks.BloodlustShouldExecute(player) then
 				str = "- " .. getCachedTraitUIName(ETWTraitsRegistry.BLOODLUST)
 				self.labelBloodlustLose = ISLabel:new(
@@ -3705,65 +3796,6 @@ function ISETWUI:createChildren()
 				self.barClaustrophobic:setHighlightRadius(highlightRadius)
 				self.barClaustrophobic:setDoKnob(false)
 				self:addChild(self.barClaustrophobic)
-
-				y = y + FONT_HGT_SMALL
-			end
-
-			if ETW_CommonLogicChecks.SleepSystemShouldExecute(player) then
-				str = "+ " .. getCachedTraitUIName(CharacterTrait.NEEDS_MORE_SLEEP)
-				self.labelMoreSleepGain = ISLabel:new(
-					barOneFourthPosition - strLen(textManager, str) / 2,
-					y,
-					FONT_HGT_SMALL,
-					str,
-					self.DimmedTextColor.r,
-					self.DimmedTextColor.g,
-					self.DimmedTextColor.b,
-					self.DimmedTextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelMoreSleepGain:setTooltip(getText("UI_ETW_GainTooltip"))
-				self:addChild(self.labelMoreSleepGain)
-
-				str = "+ " .. getCachedTraitUIName(CharacterTrait.NEEDS_LESS_SLEEP)
-				self.labelLessSleepGain = ISLabel:new(
-					barThreeFourthPosition - strLen(textManager, str) / 2,
-					y,
-					FONT_HGT_SMALL,
-					str,
-					self.DimmedTextColor.r,
-					self.DimmedTextColor.g,
-					self.DimmedTextColor.b,
-					self.DimmedTextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelLessSleepGain:setTooltip(getText("UI_ETW_GainTooltip"))
-				self:addChild(self.labelLessSleepGain)
-
-				y = y + FONT_HGT_SMALL
-
-				self.labelSleepSystemBarName = ISLabel:new(
-					barStartPosition - lineStartPosition,
-					y,
-					FONT_HGT_SMALL,
-					getText("Sandbox_ETW_SleepSystem"),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					false
-				)
-				self.labelSleepSystemBarName:setTooltip(getText("Sandbox_ETW_SleepSystem_tooltip"))
-				self:addChild(self.labelSleepSystemBarName)
-
-				self.barSleepSystem = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
-				self.barSleepSystem:setGradientTexture(redYellowGreenGradient)
-				self.barSleepSystem:setHighlightRadius(highlightRadius)
-				self.barSleepSystem:setDoKnob(false)
-				self:addChild(self.barSleepSystem)
 
 				y = y + FONT_HGT_SMALL
 			end
@@ -4409,7 +4441,7 @@ function ISETWUI:render()
 	)
 	updateBar(
 		self.barSleepSystem,
-		percentile(-200, 200, modData.SleepSystem.SleepHealthinessBar),
+		percentile(-SBvars.SleepSystemCounter, SBvars.SleepSystemCounter, modData.SleepSystem.SleepHealthinessBar),
 		getText("UI_ETW_CurrentValue") .. formatDecimal(modData.SleepSystem.SleepHealthinessBar)
 	)
 	updateBar(

@@ -1,3 +1,13 @@
+## v.13.6.0
+###### xx Sep 2026
+
+- General:
+  - Sleep system got some love, made it more in-line with other systems.
+- Fix:
+  - Gun Enthusiast trait exclusivity
+- Translation:
+  - Updated UA to v.13.4.0
+
 ## v.13.5.0
 ###### 15 Sep 2026
 
