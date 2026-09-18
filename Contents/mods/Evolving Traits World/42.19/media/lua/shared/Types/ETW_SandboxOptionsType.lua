@@ -80,6 +80,7 @@
 --- @field RainSystemCounterIncreaseMultiplier number
 --- @field RainSystemCounterDecreaseMultiplier number
 --- @field SleepSystem boolean
+--- @field SleepSystemCounter integer
 --- @field SleepSystemMultiplier number
 --- @field TraitsLockSystemCanLosePositive boolean
 --- @field TraitsLockSystemCanGainPositive boolean

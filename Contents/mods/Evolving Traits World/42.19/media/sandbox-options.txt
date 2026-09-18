@@ -663,6 +663,15 @@ option EvolvingTraitsWorld.SleepSystem
 	page = ETWSystems,
 	translation = ETW_SleepSystem,
 }
+option EvolvingTraitsWorld.SleepSystemCounter
+{
+	type = integer,
+	min = 1,
+	max = 10000000,
+	default = 300,
+	page = ETWSystems,
+	translation = ETW_SleepSystemCounter,
+}
 option EvolvingTraitsWorld.SleepSystemMultiplier
 {
 	type = double,

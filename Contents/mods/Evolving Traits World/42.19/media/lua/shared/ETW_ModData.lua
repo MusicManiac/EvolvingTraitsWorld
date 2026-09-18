@@ -324,12 +324,12 @@ function ETW_ModData.createETWModData(playerIndex, player)
 		sleepSystem.SleepHealthinessBar == nil
 		and startingTraits[CharacterTrait.NEEDS_LESS_SLEEP:toString()] == true
 	then
-		sleepSystem.SleepHealthinessBar = 200
+		sleepSystem.SleepHealthinessBar = SBvars.SleepSystemCounter
 	elseif
 		sleepSystem.SleepHealthinessBar == nil
 		and startingTraits[CharacterTrait.NEEDS_MORE_SLEEP:toString()] == true
 	then
-		sleepSystem.SleepHealthinessBar = sleepSystem.SleepHealthinessBar or -200
+		sleepSystem.SleepHealthinessBar = -SBvars.SleepSystemCounter
 	else
 		sleepSystem.SleepHealthinessBar = sleepSystem.SleepHealthinessBar or 0
 	end
