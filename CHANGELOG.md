@@ -12,6 +12,7 @@
 - Fix:
   - Fixed Gun Enthusiast trait exclusivity
   - Fixed Gordonite not working with modded crowbars (now it does)
+  - Fixed Unwavering applying its bonuses multiple times
 - Translation:
   - Updated UA to v.13.4.0
 

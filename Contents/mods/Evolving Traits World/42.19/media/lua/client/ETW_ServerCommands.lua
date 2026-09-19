@@ -16,6 +16,9 @@ end
 
 local Commands = {}
 local indefatigableProtection
+-- Mirror the server's once-per-body-damage guard for duplicate commands.
+---@type table<string|integer, BodyDamage>
+local unwaveringAppliedBodyDamageByPlayer = {}
 
 ---Returns the local player when the passed player is invalid or not ready yet.
 ---@param player unknown
@@ -186,13 +189,19 @@ Commands.applyUnwaveringInjurySpeedModifiers = function(player, args)
 		logETW("ETW Logger | Commands.applyUnwaveringInjurySpeedModifiers(): player not ready, skipping")
 		return
 	end
+	local bodyDamage = player:getBodyDamage()
+	local playerKey = player:getUsername() or player:getOnlineID()
+	if unwaveringAppliedBodyDamageByPlayer[playerKey] == bodyDamage then
+		return
+	end
 	local affectedParts = ETW_CommonFunctions.applyUnwaveringInjurySpeedModifiers(
-		player:getBodyDamage(),
+		bodyDamage,
 		tonumber(args.scratchModifier) or 30,
 		tonumber(args.cutModifier) or 30,
 		tonumber(args.deepWoundModifier) or 60,
 		tonumber(args.burnModifier) or 60
 	)
+	unwaveringAppliedBodyDamageByPlayer[playerKey] = bodyDamage
 	logETW(
 		"ETW Logger | Commands.applyUnwaveringInjurySpeedModifiers(): applied locally; body parts: "
 			.. affectedParts
