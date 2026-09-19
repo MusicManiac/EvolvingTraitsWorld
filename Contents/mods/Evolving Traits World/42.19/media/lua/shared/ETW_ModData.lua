@@ -167,6 +167,7 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	modData.StartingInjurySystem = modData.StartingInjurySystem or {}
 	local startingInjurySystem = modData.StartingInjurySystem
 	startingInjurySystem.InjuredBodyParts = startingInjurySystem.InjuredBodyParts or {}
+	startingInjurySystem.BurnedBodyParts = startingInjurySystem.BurnedBodyParts or {}
 	startingInjurySystem.BrokenBodyParts = startingInjurySystem.BrokenBodyParts or {}
 	startingInjurySystem.LastStates = startingInjurySystem.LastStates or {}
 	modData.MadeOfGlass = modData.MadeOfGlass or {}

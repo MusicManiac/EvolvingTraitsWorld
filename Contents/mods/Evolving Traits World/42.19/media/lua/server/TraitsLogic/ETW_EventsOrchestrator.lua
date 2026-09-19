@@ -186,10 +186,15 @@ local function everyTickUpdate()
 		if modData then
 			local startingInjuries = modData.StartingInjurySystem
 			if
-				(player:hasTrait(ETWTraitsRegistry.INJURED) or player:hasTrait(ETWTraitsRegistry.BROKEN_LEG))
+				(
+					player:hasTrait(ETWTraitsRegistry.INJURED)
+					or player:hasTrait(ETWTraitsRegistry.BURN_WARD_PATIENT)
+					or player:hasTrait(ETWTraitsRegistry.BROKEN_LEG)
+				)
 				and startingInjuries
 				and (
 					hasEntries(startingInjuries.InjuredBodyParts or {})
+					or hasEntries(startingInjuries.BurnedBodyParts or {})
 					or hasEntries(startingInjuries.BrokenBodyParts or {})
 				)
 			then

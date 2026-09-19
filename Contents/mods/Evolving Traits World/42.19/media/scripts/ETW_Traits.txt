@@ -105,6 +105,16 @@ module ETW
         UIDescription = UI_trait_InjuredDesc,
     }
 
+    character_trait_definition ETW:BurnWardPatient
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:BurnWardPatient,
+        Cost = -6,
+        UIName = UI_trait_BurnWardPatient,
+        UIDescription = UI_trait_BurnWardPatientDesc,
+    }
+
     character_trait_definition ETW:BrokenLeg
     {
         IsProfessionTrait = false,

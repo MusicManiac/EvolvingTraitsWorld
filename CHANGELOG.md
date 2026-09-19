@@ -2,6 +2,7 @@
 ###### xx Sep 2026
 
 - General:
+  - Added Burn Ward Patient
   - New Recent Events sub-tab
   - Made Prowess traits dynamic
   - Added Butterfingers to Items Transfer System

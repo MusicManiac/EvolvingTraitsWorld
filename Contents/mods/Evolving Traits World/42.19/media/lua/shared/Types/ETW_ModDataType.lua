@@ -100,6 +100,7 @@
 ---Persistent starting-injury data keyed exclusively by serialized BodyPartType names.
 --- @class StartingInjurySystem
 --- @field InjuredBodyParts table<string, boolean> Parts randomly injured at character creation.
+--- @field BurnedBodyParts table<string, boolean> Parts burned by Burned Ward Patient at character creation.
 --- @field BrokenBodyParts table<string, boolean> Parts fractured by Broken Leg at character creation.
 --- @field LastStates table<string, StartingInjuryState> Previous wound snapshot for each remembered part.
 

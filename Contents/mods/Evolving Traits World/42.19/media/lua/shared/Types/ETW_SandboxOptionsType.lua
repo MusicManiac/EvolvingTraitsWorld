@@ -2,6 +2,11 @@
 
 --- @class SandboxVars
 --- @field EvolvingTraitsWorld EvolvingTraitsWorldSandboxVars
+--- @field ETWTraitSandbox ETWTraitSandboxVars
+
+--- @class ETWTraitSandboxVars
+--- @field BurnWardPatientEnabled boolean
+--- @field BurnWardPatientPointValue integer
 
 --- @class EvolvingTraitsWorldSandboxVars
 -- Settings
@@ -100,6 +105,7 @@
 -- Traits
 --- @field InjuredBurns boolean
 --- @field InjuredWoundTimeMultiplier number
+--- @field BurnWardPatientBurnTimeMultiplier number
 --- @field BrokenLegFractureTimeMultiplier number
 --- @field DeprivedCapacityThresholdPercent integer
 --- @field DeprivedUnhappinessPerMinute number
