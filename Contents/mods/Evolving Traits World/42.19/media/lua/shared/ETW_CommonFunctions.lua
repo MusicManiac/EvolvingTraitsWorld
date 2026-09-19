@@ -80,6 +80,17 @@ ETW_CommonFunctions.GameMode = {
 	MP_SERVER = "MP_Server",
 }
 
+---Stable serialized event names used by the recent trait-events history.
+---@type {QUALIFIED_FOR_GAINING: "qualified_for_gaining", QUALIFIED_FOR_LOSING: "qualified_for_losing", GAINED: "gained", LOST: "lost"}
+ETW_CommonFunctions.TraitEvent = {
+	QUALIFIED_FOR_GAINING = "qualified_for_gaining",
+	QUALIFIED_FOR_LOSING = "qualified_for_losing",
+	GAINED = "gained",
+	LOST = "lost",
+}
+
+local RECENT_TRAIT_EVENT_LIMIT = 10
+
 ---Function responsible for determining the current game mode, returns "SP" for single player, "MP_Client" for multiplayer client and "MP_Server" for multiplayer server
 ---@return "SP"|"MP_Client"|"MP_Server"
 function ETW_CommonFunctions.gameMode()
@@ -472,6 +483,32 @@ function ETW_CommonFunctions.syncETWModDataToClient(player)
 	end
 end
 
+---Adds a serialized trait event to the player's bounded recent-events history.
+---@param player IsoPlayer|IsoGameCharacter
+---@param trait CharacterTrait
+---@param event ETWTraitEventType
+---@param syncClient boolean|nil Whether to immediately synchronize the updated history to an MP client.
+function ETW_CommonFunctions.recordTraitEvent(player, trait, event, syncClient)
+	local modData = ETW_CommonFunctions.getETWModData(player)
+	if not modData then
+		return
+	end
+
+	local recentTraitEvents = modData.RecentTraitEvents
+	table.insert(recentTraitEvents, {
+		trait = trait:toString(),
+		event = event,
+		timestamp = getGameTime():getWorldAgeHours(),
+	})
+	while #recentTraitEvents > RECENT_TRAIT_EVENT_LIMIT do
+		table.remove(recentTraitEvents, 1)
+	end
+
+	if syncClient ~= false then
+		ETW_CommonFunctions.syncETWModDataToClient(player)
+	end
+end
+
 ---Function responsible printing whole Delayed Traits table into console
 ---@param player IsoPlayer|IsoGameCharacter the player to dump mod data for
 function ETW_CommonFunctions.delayedTraitsDataDump(player)
@@ -599,6 +636,7 @@ function ETW_CommonFunctions.addTraitToPlayer(context)
 	local gainingTrait = true
 	local color = context.positiveTrait == gainingTrait and "GREEN" or "RED"
 	ETW_CommonFunctions.displayTraitNotification(player, trait:toString(), gainingTrait, color)
+	ETW_CommonFunctions.recordTraitEvent(player, trait, ETW_CommonFunctions.TraitEvent.GAINED)
 end
 
 ---@class ETWRemoveTraitFromPlayerContext
@@ -624,11 +662,15 @@ function ETW_CommonFunctions.removeTraitFromPlayer(context)
 			.. " from player "
 			.. player:getUsername()
 	)
+	local playerHadTrait = player:hasTrait(trait)
 	player:getCharacterTraits():remove(trait)
 	ETW_CommonFunctions.traitSound(player)
 	local gainingTrait = false
 	local color = context.positiveTrait == gainingTrait and "GREEN" or "RED"
 	ETW_CommonFunctions.displayTraitNotification(player, trait:toString(), gainingTrait, color)
+	if playerHadTrait then
+		ETW_CommonFunctions.recordTraitEvent(player, trait, ETW_CommonFunctions.TraitEvent.LOST)
+	end
 end
 
 ---@class ETWAddTraitToDelayTableContext
@@ -650,6 +692,7 @@ function ETW_CommonFunctions.addTraitToDelayTable(context)
 	local positiveTrait = context.positiveTrait
 	local gainingTrait = context.gainingTrait
 	local traitRegistryId = trait:toString()
+	local qualified = false
 	local traitIsQueued = indexOfDelayedTrait(modData.DelayedTraits, traitRegistryId) ~= -1
 	local playerHasTrait = player:hasTrait(trait)
 	if traitIsQueued or (gainingTrait and playerHasTrait) or (not gainingTrait and not playerHasTrait) then
@@ -676,6 +719,7 @@ function ETW_CommonFunctions.addTraitToDelayTable(context)
 			false,
 			gainingTrait,
 		})
+		qualified = true
 		ETW_CommonFunctions.traitSound(player)
 	elseif positiveTrait then
 		ETW_CommonFunctions.log(
@@ -687,6 +731,7 @@ function ETW_CommonFunctions.addTraitToDelayTable(context)
 			modData.DelayedTraits,
 			{ traitRegistryId, SBvars.DelayedTraitsSystemDefaultDelay, false, gainingTrait }
 		)
+		qualified = true
 		ETW_CommonFunctions.displayDelayedTraitNotification(player, gainingTrait, traitRegistryId, true, "GREEN")
 		ETW_CommonFunctions.traitSound(player)
 	elseif not positiveTrait then
@@ -699,6 +744,7 @@ function ETW_CommonFunctions.addTraitToDelayTable(context)
 			modData.DelayedTraits,
 			{ traitRegistryId, SBvars.DelayedTraitsSystemDefaultDelay, false, gainingTrait }
 		)
+		qualified = true
 		ETW_CommonFunctions.displayDelayedTraitNotification(player, gainingTrait, traitRegistryId, false, "GREEN")
 		ETW_CommonFunctions.traitSound(player)
 	else
@@ -707,6 +753,11 @@ function ETW_CommonFunctions.addTraitToDelayTable(context)
 				.. traitRegistryId
 				.. ", but it's already in delayed traits table or player already has the trait"
 		)
+	end
+	if qualified then
+		local event = gainingTrait and ETW_CommonFunctions.TraitEvent.QUALIFIED_FOR_GAINING
+			or ETW_CommonFunctions.TraitEvent.QUALIFIED_FOR_LOSING
+		ETW_CommonFunctions.recordTraitEvent(player, trait, event, false)
 	end
 	if detailedDebug() then
 		print(
