@@ -661,9 +661,6 @@ function ISETWUI:createChildren()
 			if ETW_CommonLogicChecks.SleepSystemShouldExecute(player) then
 				appendLeftBarLabel(labelTexts, getText("Sandbox_ETW_SleepSystem"))
 			end
-			if ETW_CommonLogicChecks.PainToleranceShouldExecute(player) then
-				appendLeftBarLabel(labelTexts, getCachedTraitUIName(ETWTraitsRegistry.PAIN_TOLERANCE))
-			end
 			if ETW_CommonLogicChecks.HearingSystemShouldExecute(player) then
 				appendLeftBarLabel(labelTexts, getText("Sandbox_ETW_HearingSystem"))
 			end
@@ -1273,48 +1270,6 @@ function ISETWUI:createChildren()
 				self.barSicknessSystem:setHighlightRadius(highlightRadius)
 				self.barSicknessSystem:setDoKnob(false)
 				self:addChild(self.barSicknessSystem)
-
-				y = y + FONT_HGT_SMALL
-			end
-
-			if ETW_CommonLogicChecks.PainToleranceShouldExecute(player) then
-				self.labelPainTolerance = ISLabel:new(
-					barEndPosition,
-					y,
-					FONT_HGT_SMALL,
-					"+ " .. getCachedTraitUIName(ETWTraitsRegistry.PAIN_TOLERANCE),
-					self.DimmedTextColor.r,
-					self.DimmedTextColor.g,
-					self.DimmedTextColor.b,
-					self.DimmedTextColor.a,
-					UIFont.Small,
-					false
-				)
-				self.labelPainTolerance:setTooltip(getText("UI_ETW_GainTooltip"))
-				self:addChild(self.labelPainTolerance)
-
-				y = y + FONT_HGT_SMALL
-
-				self.labelPainToleranceBarName = ISLabel:new(
-					barStartPosition - lineStartPosition,
-					y,
-					FONT_HGT_SMALL,
-					getCachedTraitUIName(ETWTraitsRegistry.PAIN_TOLERANCE),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					false
-				)
-				self.labelPainToleranceBarName:setTooltip(getText("Sandbox_ETW_PainToleranceCounter_tooltip"))
-				self:addChild(self.labelPainToleranceBarName)
-
-				self.barPainTolerance = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
-				self.barPainTolerance:setGradientTexture(redYellowGreenGradient)
-				self.barPainTolerance:setHighlightRadius(highlightRadius)
-				self.barPainTolerance:setDoKnob(false)
-				self:addChild(self.barPainTolerance)
 
 				y = y + FONT_HGT_SMALL
 			end
@@ -2030,6 +1985,24 @@ function ISETWUI:createChildren()
 				)
 				self.labelOlympianProgress:setTooltip(getText("Sandbox_ETW_OlympianCounter_tooltip"))
 				self:addChild(self.labelOlympianProgress)
+			end
+
+			if ETW_CommonLogicChecks.PainToleranceShouldExecute(player) then
+				arrangeColumnsInTable()
+				self.labelPainToleranceProgress = ISLabel:new(
+					x,
+					y,
+					FONT_HGT_SMALL,
+					"",
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelPainToleranceProgress:setTooltip(getText("Sandbox_ETW_PainToleranceCounter_tooltip"))
+				self:addChild(self.labelPainToleranceProgress)
 			end
 
 			if
@@ -4398,11 +4371,6 @@ function ISETWUI:render()
 		getText("UI_ETW_CurrentValue") .. formatDecimal(modData.FoodSicknessWeathered)
 	)
 	updateBar(
-		self.barPainTolerance,
-		percentile(0, SBvars.PainToleranceCounter, modData.PainToleranceCounter),
-		getText("UI_ETW_CurrentValue") .. formatDecimal(modData.PainToleranceCounter)
-	)
-	updateBar(
 		self.barInjuriesSystem,
 		percentile(-SBvars.InjuriesSystemCounter, SBvars.InjuriesSystemCounter, modData.injuriesCounter),
 		getText("UI_ETW_CurrentValue") .. formatDecimal(modData.injuriesCounter)
@@ -4671,6 +4639,14 @@ function ISETWUI:render()
 	updateLabel(
 		self.labelOlympianProgress,
 		getCachedTraitUIName(ETWTraitsRegistry.OLYMPIAN) .. ": " .. (modData.OlympianCounter or 0) .. "/" .. SBvars.OlympianCounter
+	)
+	updateLabel(
+		self.labelPainToleranceProgress,
+		getCachedTraitUIName(ETWTraitsRegistry.PAIN_TOLERANCE)
+			.. ": "
+			.. formatDecimal(modData.PainToleranceCounter)
+			.. "/"
+			.. SBvars.PainToleranceCounter
 	)
 	updateLabel(
 		self.labelNoodleLegsProgress,
