@@ -223,6 +223,8 @@
     "Sandbox_ETW_UnwaveringMaximumDamageMultiplier_tooltip": "Total weapon-damage multiplier at the most severe endurance, fatigue, or pain tier. Intermediate tiers apply 25%% or 50%% of the configured bonus. Set to 1 to disable the damage benefit.",
     "Sandbox_ETW_PackMuleMaxCapacityPercent": "Pack Mule maximum-capacity increase (%%)",
     "Sandbox_ETW_PackMuleMaxCapacityPercent_tooltip": "Percentage multiplier added to the character's maximum carrying capacity through Unified Carry Weight Framework.",
+    "Sandbox_ETW_FireTraitsEffectMultiplier": "Fire traits effect multiplier",
+    "Sandbox_ETW_FireTraitsEffectMultiplier_tooltip": "Multiplies panic and unhappiness changes from Pyrophobia and Pyromania near fire. 1 keeps the default effects; 0 disables them.",
     "Sandbox_ETW_ParanoiaBaseChancePercent": "Paranoia base attack chance per minute (%%)",
     "Sandbox_ETW_ParanoiaBaseChancePercent_tooltip": "Base chance each minute for a moving character with Paranoia to suffer a false scare.",
     "Sandbox_ETW_ParanoiaCooldownMinutes": "Paranoia attack cooldown (minutes)",

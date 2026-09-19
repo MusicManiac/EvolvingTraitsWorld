@@ -643,6 +643,28 @@ module ETW
         MutuallyExclusiveTraits = ETW:Pluviophile,
     }
 
+    character_trait_definition ETW:Pyrophobia
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:Pyrophobia,
+        Cost = -2,
+        UIName = UI_trait_Pyrophobia,
+        UIDescription = UI_trait_PyrophobiaDesc,
+        MutuallyExclusiveTraits = ETW:Pyromania,
+    }
+
+    character_trait_definition ETW:Pyromania
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:Pyromania,
+        Cost = 2,
+        UIName = UI_trait_Pyromania,
+        UIDescription = UI_trait_PyromaniaDesc,
+        MutuallyExclusiveTraits = ETW:Pyrophobia,
+    }
+
     character_trait_definition ETW:PainTolerance
     {
         IsProfessionTrait = false,

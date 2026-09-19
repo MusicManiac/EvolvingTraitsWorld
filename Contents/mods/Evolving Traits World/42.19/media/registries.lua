@@ -55,6 +55,8 @@ ETW_Registry = ETW_Registry or {}
 ---@field PROWESS_BLUNT CharacterTrait
 ---@field PROWESS_GUNS CharacterTrait
 ---@field PROWESS_SPEAR CharacterTrait
+---@field PYROPHOBIA CharacterTrait
+---@field PYROMANIA CharacterTrait
 ---@field PRACTICED_SWORDSMAN CharacterTrait
 ---@field RESTORATION_EXPERT CharacterTrait
 ---@field QUICK_REST CharacterTrait
@@ -124,6 +126,8 @@ ETW_Registry.traits = {
 	PROWESS_BLUNT = CharacterTrait.register("ETW:ProwessBlunt"),
 	PROWESS_GUNS = CharacterTrait.register("ETW:ProwessGuns"),
 	PROWESS_SPEAR = CharacterTrait.register("ETW:ProwessSpear"),
+	PYROPHOBIA = CharacterTrait.register("ETW:Pyrophobia"),
+	PYROMANIA = CharacterTrait.register("ETW:Pyromania"),
 	PRACTICED_SWORDSMAN = CharacterTrait.register("ETW:PracticedSwordsman"),
 	RESTORATION_EXPERT = CharacterTrait.register("ETW:RestorationExpert"),
 	QUICK_REST = CharacterTrait.register("ETW:QuickRest"),

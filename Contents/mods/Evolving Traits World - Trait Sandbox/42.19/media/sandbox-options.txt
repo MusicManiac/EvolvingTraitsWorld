@@ -1080,6 +1080,38 @@ option ETWTraitSandbox.ParanoiaPointValue
 	page = ETWTraitSandbox,
 	translation = ETWTS_ParanoiaPointValue,
 }
+option ETWTraitSandbox.PyrophobiaEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_PyrophobiaEnabled,
+}
+option ETWTraitSandbox.PyrophobiaPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = 2,
+	page = ETWTraitSandbox,
+	translation = ETWTS_PyrophobiaPointValue,
+}
+option ETWTraitSandbox.PyromaniaEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_PyromaniaEnabled,
+}
+option ETWTraitSandbox.PyromaniaPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = -2,
+	page = ETWTraitSandbox,
+	translation = ETWTS_PyromaniaPointValue,
+}
 option ETWTraitSandbox.SelfDestructiveEnabled
 {
 	type = boolean,

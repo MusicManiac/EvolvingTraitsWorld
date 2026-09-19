@@ -1,8 +1,8 @@
 ## v.13.6.0
-###### xx Sep 2026
+###### 19 Sep 2026
 
 - General:
-  - Added Burn Ward Patient
+  - Added Burn Ward Patient, Pyrophobia, Pyromania
   - New Recent Events sub-tab
   - Made Prowess traits dynamic
   - Added Butterfingers to Items Transfer System

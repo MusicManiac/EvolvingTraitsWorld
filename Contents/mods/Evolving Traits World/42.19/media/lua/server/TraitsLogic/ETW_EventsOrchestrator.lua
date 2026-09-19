@@ -101,6 +101,10 @@ local function oneMinuteUpdate()
 				ETW_MentalTraits.paranoiaTrait(player, stats, modData)
 			end
 		end
+		if player:hasTrait(ETWTraitsRegistry.PYROPHOBIA) or player:hasTrait(ETWTraitsRegistry.PYROMANIA) then
+			stats = stats or player:getStats()
+			ETW_MentalTraits.fireTrait(player, stats)
+		end
 		if
 			-- server doesn't know when player is aiming, so in MP it's covered via command from MP Client, but in SP we can check it here
 			gameMode == ETW_CommonFunctions.GameMode.SP
