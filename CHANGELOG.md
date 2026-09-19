@@ -8,7 +8,8 @@
   - Unified Pack Mouse, Pack Mule and Hoarder into Carry Weight System, meaning Pack Mouse/Mule are also dynamic now
   - Moved Pain Tolerance from gradient bar to simple counter
 - Fix:
-  - Gun Enthusiast trait exclusivity
+  - Fixed Gun Enthusiast trait exclusivity
+  - Fixed Gordonite not working with modded crowbars (now it does)
 - Translation:
   - Updated UA to v.13.4.0
 
