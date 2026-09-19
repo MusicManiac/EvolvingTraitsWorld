@@ -4,10 +4,6 @@
 --- @field EvolvingTraitsWorld EvolvingTraitsWorldSandboxVars
 --- @field ETWTraitSandbox ETWTraitSandboxVars
 
---- @class ETWTraitSandboxVars
---- @field BurnWardPatientEnabled boolean
---- @field BurnWardPatientPointValue integer
-
 --- @class EvolvingTraitsWorldSandboxVars
 -- Settings
 --- @field DisableAllDynamicTraits boolean
@@ -180,6 +176,7 @@
 --- @field NoodleLegsDistance integer
 --- @field HomichlophileMultiplier number
 --- @field HomichlophobiaMultiplier number
+--- @field FireTraitsEffectMultiplier number
 --- @field PainToleranceThreshold number
 --- @field PackMouseWeight number
 --- @field PackMuleMaxCapacityPercent number

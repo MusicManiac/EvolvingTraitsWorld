@@ -23,8 +23,144 @@ local logETW = ETW_CommonFunctions.log
 local gameMode = ETW_CommonFunctions.gameMode()
 local PARANOIA_YELL_RADIUS = 50
 local PARANOIA_YELL_VOLUME = 50
+local FIRE_RADIUS = 12
+local FIRE_PANIC_PER_MINUTE = 10
+local FIRE_CLOSE_PANIC_RADIUS = 3
+local FIRE_CLOSE_PANIC_BONUS = 40
+local FIRE_UNHAPPINESS_PER_PANIC = 0.1
 
 local original_ISPetAnimal_animEvent = ISPetAnimal.animEvent
+
+---Returns the distance squared to an active fire on a loaded square, if any.
+---@param cell IsoCell
+---@param x number
+---@param y number
+---@param z number
+---@param playerX number
+---@param playerY number
+---@param maximumSquared number
+---@return number|nil distanceSquared
+local function fireDistanceSquaredAtSquare(cell, x, y, z, playerX, playerY, maximumSquared)
+	local deltaX, deltaY = x + 0.5 - playerX, y + 0.5 - playerY
+	local distanceSquared = deltaX * deltaX + deltaY * deltaY
+	if distanceSquared > FIRE_RADIUS * FIRE_RADIUS or distanceSquared > maximumSquared then
+		return nil
+	end
+	local square = cell:getGridSquare(x, y, z)
+	if not square then
+		return nil
+	end
+	if square:haveFire() then
+		return distanceSquared
+	end
+	local objects = square:getObjects()
+	for i = 0, objects:size() - 1 do
+		local object = objects:get(i)
+		if instanceof(object, "IsoFireplace") and object:isLit() then
+			return distanceSquared
+		end
+	end
+	local movingObjects = square:getMovingObjects()
+	for i = 0, movingObjects:size() - 1 do
+		local object = movingObjects:get(i)
+		if instanceof(object, "IsoGameCharacter") and object:isOnFire() then
+			return distanceSquared
+		end
+	end
+	return nil
+end
+
+---Finds the closest active fire by scanning outward from the player's square.
+---After each ring, stops only when later rings cannot contain a closer square center.
+---@param player IsoPlayer
+---@return number|nil distance
+local function nearestFireDistance(player)
+	if player:isOnFire() then
+		return 0
+	end
+	local cell = player:getCell()
+	if not cell then
+		return nil
+	end
+	local playerX, playerY = player:getX(), player:getY()
+	local tileX, tileY = math.floor(playerX), math.floor(playerY)
+	local playerZ = math.floor(player:getZ())
+	local radiusSquared = FIRE_RADIUS * FIRE_RADIUS
+	local nearestSquared = radiusSquared + 1.0
+	for ring = 0, FIRE_RADIUS do
+		if ring == 0 then
+			local found = fireDistanceSquaredAtSquare(cell, tileX, tileY, playerZ, playerX, playerY, nearestSquared)
+			if found then
+				nearestSquared = found
+			end
+		else
+			for offsetX = -ring, ring do
+				local x = tileX + offsetX
+				local north = fireDistanceSquaredAtSquare(cell, x, tileY - ring, playerZ, playerX, playerY, nearestSquared)
+				local south = fireDistanceSquaredAtSquare(cell, x, tileY + ring, playerZ, playerX, playerY, nearestSquared)
+				if north and north < nearestSquared then
+					nearestSquared = north
+				end
+				if south and south < nearestSquared then
+					nearestSquared = south
+				end
+			end
+			for offsetY = -ring + 1, ring - 1 do
+				local y = tileY + offsetY
+				local west = fireDistanceSquaredAtSquare(cell, tileX - ring, y, playerZ, playerX, playerY, nearestSquared)
+				local east = fireDistanceSquaredAtSquare(cell, tileX + ring, y, playerZ, playerX, playerY, nearestSquared)
+				if west and west < nearestSquared then
+					nearestSquared = west
+				end
+				if east and east < nearestSquared then
+					nearestSquared = east
+				end
+			end
+		end
+		local nextRingMinimum = ring + 0.5
+		if nearestSquared <= radiusSquared and nearestSquared <= nextRingMinimum * nextRingMinimum then
+			return math.sqrt(nearestSquared)
+		end
+	end
+	if nearestSquared <= radiusSquared then
+		return math.sqrt(nearestSquared)
+	end
+	return nil
+end
+
+---Adjusts panic and unhappiness once per minute according to the nearest active fire.
+---@param player IsoPlayer
+---@param stats Stats
+function ETW_MentalTraits.fireTrait(player, stats)
+	local effectMultiplier = math.max(0, SBvars.FireTraitsEffectMultiplier or 1)
+	if effectMultiplier == 0 then
+		return
+	end
+	local distance = nearestFireDistance(player)
+	if not distance then
+		return
+	end
+	local panicChange = FIRE_PANIC_PER_MINUTE * (FIRE_RADIUS + 1 - distance) / (FIRE_RADIUS + 1)
+	local panic = stats:get(CharacterStat.PANIC)
+	if player:hasTrait(ETWTraitsRegistry.PYROPHOBIA) then
+		if distance < FIRE_CLOSE_PANIC_RADIUS then
+			panicChange = panicChange + FIRE_CLOSE_PANIC_BONUS * (1 - distance / FIRE_CLOSE_PANIC_RADIUS)
+		end
+		panicChange = panicChange * effectMultiplier
+		stats:set(CharacterStat.PANIC, math.min(100, panic + panicChange))
+		stats:set(
+			CharacterStat.UNHAPPINESS,
+			math.min(100, stats:get(CharacterStat.UNHAPPINESS) + panicChange * FIRE_UNHAPPINESS_PER_PANIC)
+		)
+	elseif player:hasTrait(ETWTraitsRegistry.PYROMANIA) then
+		panicChange = panicChange * effectMultiplier
+		stats:set(CharacterStat.PANIC, math.max(0, panic - panicChange))
+		stats:set(
+			CharacterStat.UNHAPPINESS,
+			math.max(0, stats:get(CharacterStat.UNHAPPINESS) - panicChange * FIRE_UNHAPPINESS_PER_PANIC)
+		)
+	end
+end
 
 ---Decorates animal petting to provide Pet Therapy mood effects and progression.
 function ISPetAnimal:animEvent(event, parameter)
