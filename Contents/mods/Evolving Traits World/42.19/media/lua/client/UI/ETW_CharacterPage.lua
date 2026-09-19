@@ -3218,6 +3218,47 @@ function ISETWUI:createChildren()
 			end
 
 			if
+				ETW_CommonLogicChecks.TerminatorShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.TERMINATOR)
+			then
+				if aiming + reloading + nimble < SBvars.TerminatorSkill then
+					arrangeColumnsInTable()
+					self.labelTerminatorSkillProgress = ISLabel:new(
+						x,
+						y,
+						FONT_HGT_SMALL,
+						"",
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelTerminatorSkillProgress:setTooltip(getText("Sandbox_ETW_TerminatorSkill_tooltip"))
+					self:addChild(self.labelTerminatorSkillProgress)
+				end
+
+				if firearmKills < SBvars.TerminatorKills then
+					arrangeColumnsInTable()
+					self.labelTerminatorKillsProgress = ISLabel:new(
+						x,
+						y,
+						FONT_HGT_SMALL,
+						"",
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelTerminatorKillsProgress:setTooltip(getText("Sandbox_ETW_TerminatorKills_tooltip"))
+					self:addChild(self.labelTerminatorKillsProgress)
+				end
+			end
+
+			if
 				ETW_CommonLogicChecks.AnglerShouldExecute(player)
 				and not playerHasDelayedTraitNoCache(player, CharacterTrait.FISHING)
 			then
@@ -5302,6 +5343,22 @@ function ISETWUI:render()
 			.. firearmKills
 			.. "/"
 			.. SBvars.GunEnthusiastKills
+	)
+	updateLabel(
+		self.labelTerminatorSkillProgress,
+		getCachedTraitUIName(ETWTraitsRegistry.TERMINATOR)
+			.. ": "
+			.. aiming + reloading + nimble
+			.. "/"
+			.. SBvars.TerminatorSkill
+	)
+	updateLabel(
+		self.labelTerminatorKillsProgress,
+		getCachedTraitUIName(ETWTraitsRegistry.TERMINATOR)
+			.. ": "
+			.. firearmKills
+			.. "/"
+			.. SBvars.TerminatorKills
 	)
 	updateLabel(
 		self.labelAnglerProgress,

@@ -31,6 +31,7 @@ local function registerDynamicTraits()
 		ETW_Registry.traits.FURNITURE_ASSEMBLER,
 		ETW_Registry.traits.ANTI_GUN_ACTIVIST,
 		ETW_Registry.traits.GUN_ENTHUSIAST,
+		ETW_Registry.traits.TERMINATOR,
 		ETW_Registry.traits.GYM_RAT,
 		ETW_Registry.traits.HOARDER,
 		ETW_Registry.traits.HOME_COOK,

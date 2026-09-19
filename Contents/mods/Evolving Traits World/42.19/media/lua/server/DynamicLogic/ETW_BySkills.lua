@@ -769,6 +769,24 @@ local skillTraitRules = {
 		gainingTrait = true,
 	},
 	{
+		triggers = makeTriggerSet(
+			"characterInitialization",
+			"kill",
+			Perks.Aiming,
+			Perks.Reloading,
+			Perks.Nimble,
+			ETWTraitsRegistry.TERMINATOR
+		),
+		shouldExecute = ETW_CommonLogicChecks.TerminatorShouldExecute,
+		condition = function(ctx)
+			return sumContextValues(ctx, { "aiming", "reloading", "nimble" }) >= SBvars.TerminatorSkill
+				and ctx.firearmKills >= SBvars.TerminatorKills
+		end,
+		trait = ETWTraitsRegistry.TERMINATOR,
+		positiveTrait = true,
+		gainingTrait = true,
+	},
+	{
 		triggers = makeTriggerSet("characterInitialization", Perks.Fishing, CharacterTrait.FISHING),
 		shouldExecute = ETW_CommonLogicChecks.AnglerShouldExecute,
 		condition = function(ctx)

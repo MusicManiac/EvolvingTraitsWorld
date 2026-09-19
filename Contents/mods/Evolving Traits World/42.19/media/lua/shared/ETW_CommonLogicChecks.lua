@@ -524,8 +524,10 @@ end
 function ETW_CommonLogicChecks.AntiGunActivistShouldExecute(player)
 	return SBvars.AntiGunActivist == true
 		and SBvars.TraitsLockSystemCanLoseNegative == true
-		and ((player ~= nil and player:hasTrait(ETWTraitsRegistry.ANTI_GUN_ACTIVIST))
-			or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER)
+		and (
+			(player ~= nil and player:hasTrait(ETWTraitsRegistry.ANTI_GUN_ACTIVIST))
+			or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER
+		)
 end
 
 ---Returns true if the Baseball Player System should execute
@@ -983,6 +985,17 @@ function ETW_CommonLogicChecks.GunEnthusiastShouldExecute(player)
 	else
 		return false
 	end
+end
+
+---Returns whether Terminator can be gained through firearm and movement experience.
+---@param player IsoPlayer|nil the player to check
+---@return boolean
+function ETW_CommonLogicChecks.TerminatorShouldExecute(player)
+	return SBvars.Terminator == true
+		and traitShouldExecute("TerminatorEnabled")
+		and ((player and not player:hasTrait(ETWTraitsRegistry.TERMINATOR)) or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER)
+		and (not player or not player:hasTrait(ETWTraitsRegistry.ANTI_GUN_ACTIVIST))
+		and SBvars.TraitsLockSystemCanGainPositive
 end
 
 ---Returns true if the Angler System should execute
