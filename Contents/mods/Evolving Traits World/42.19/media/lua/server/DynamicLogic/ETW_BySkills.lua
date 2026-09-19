@@ -446,6 +446,73 @@ local skillTraitRules = {
 	{
 		triggers = makeTriggerSet(
 			"characterInitialization",
+			"kill",
+			Perks.SmallBlade,
+			Perks.LongBlade,
+			Perks.Axe,
+			ETWTraitsRegistry.PROWESS_BLADE
+		),
+		shouldExecute = ETW_CommonLogicChecks.ProwessBladeShouldExecute,
+		condition = function(ctx)
+			return sumContextValues(ctx, { "shortBlade", "longBlade", "axe" }) >= SBvars.ProwessBladeSkill
+				and (ctx.shortBladeKills + ctx.longBladeKills + ctx.axeKills)
+					>= ETW_CommonLogicChecks.getProwessKillRequirement(ctx.player, ETWTraitsRegistry.PROWESS_BLADE, SBvars.ProwessBladeKills, ctx.modData)
+		end,
+		trait = ETWTraitsRegistry.PROWESS_BLADE,
+		positiveTrait = true,
+		gainingTrait = true,
+	},
+	{
+		triggers = makeTriggerSet(
+			"characterInitialization",
+			"kill",
+			Perks.SmallBlunt,
+			Perks.Blunt,
+			ETWTraitsRegistry.PROWESS_BLUNT
+		),
+		shouldExecute = ETW_CommonLogicChecks.ProwessBluntShouldExecute,
+		condition = function(ctx)
+			return sumContextValues(ctx, { "shortBlunt", "longBlunt" }) >= SBvars.ProwessBluntSkill
+				and (ctx.shortBluntKills + ctx.longBluntKills)
+					>= ETW_CommonLogicChecks.getProwessKillRequirement(ctx.player, ETWTraitsRegistry.PROWESS_BLUNT, SBvars.ProwessBluntKills, ctx.modData)
+		end,
+		trait = ETWTraitsRegistry.PROWESS_BLUNT,
+		positiveTrait = true,
+		gainingTrait = true,
+	},
+	{
+		triggers = makeTriggerSet(
+			"characterInitialization",
+			"kill",
+			Perks.Aiming,
+			Perks.Reloading,
+			ETWTraitsRegistry.PROWESS_GUNS
+		),
+		shouldExecute = ETW_CommonLogicChecks.ProwessGunsShouldExecute,
+		condition = function(ctx)
+			return sumContextValues(ctx, { "aiming", "reloading" }) >= SBvars.ProwessGunsSkill
+				and ctx.firearmKills
+					>= ETW_CommonLogicChecks.getProwessKillRequirement(ctx.player, ETWTraitsRegistry.PROWESS_GUNS, SBvars.ProwessGunsKills, ctx.modData)
+		end,
+		trait = ETWTraitsRegistry.PROWESS_GUNS,
+		positiveTrait = true,
+		gainingTrait = true,
+	},
+	{
+		triggers = makeTriggerSet("characterInitialization", "kill", Perks.Spear, ETWTraitsRegistry.PROWESS_SPEAR),
+		shouldExecute = ETW_CommonLogicChecks.ProwessSpearShouldExecute,
+		condition = function(ctx)
+			return ctx.spear >= SBvars.ProwessSpearSkill
+				and ctx.spearKills
+					>= ETW_CommonLogicChecks.getProwessKillRequirement(ctx.player, ETWTraitsRegistry.PROWESS_SPEAR, SBvars.ProwessSpearKills, ctx.modData)
+		end,
+		trait = ETWTraitsRegistry.PROWESS_SPEAR,
+		positiveTrait = true,
+		gainingTrait = true,
+	},
+	{
+		triggers = makeTriggerSet(
+			"characterInitialization",
 			Perks.MetalWelding,
 			Perks.Maintenance,
 			Perks.Blacksmith,
