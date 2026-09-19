@@ -243,8 +243,8 @@ local function parseETWVersion(version)
 	return tonumber(major), tonumber(minor), tonumber(patch)
 end
 
--- Staleness gradient: 2+ major versions behind, 1 major, 8+ to 1 minor,
--- 3+ bug-fix versions, and finally 0-2 bug-fix versions behind.
+-- Staleness gradient: 2+ major versions behind, 1 major, 10+ to 1 minor,
+-- 5+ bug-fix versions, and finally 0-4 bug-fix versions behind.
 local TRANSLATION_VERSION_COLORS = {
 	{ r = 1, g = 0.15, b = 0.15, a = 1 },
 	{ r = 1, g = 0.28, b = 0.12, a = 1 },
@@ -281,16 +281,16 @@ local function getTranslationVersionColor(currentVersion, translationVersion)
 	end
 
 	local minorDifference = currentMinor - translationMinor
-	if minorDifference >= 8 then
+	if minorDifference >= 10 then
 		return TRANSLATION_VERSION_COLORS[3]
 	elseif minorDifference > 0 then
-		return TRANSLATION_VERSION_COLORS[11 - minorDifference]
+		return TRANSLATION_VERSION_COLORS[11 - math.ceil(minorDifference * 8 / 10)]
 	elseif minorDifference < 0 then
 		return TRANSLATION_VERSION_COLORS[12]
 	end
 
 	local patchDifference = currentPatch - translationPatch
-	if patchDifference > 2 then
+	if patchDifference > 4 then
 		return TRANSLATION_VERSION_COLORS[11]
 	end
 	return TRANSLATION_VERSION_COLORS[12]

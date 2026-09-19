@@ -2,7 +2,7 @@
 ###### xx Sep 2026
 
 - General:
-  - Recent Events sub-tab
+  - New Recent Events sub-tab
   - Made Prowess traits dynamic
   - Added Butterfingers to Items Transfer System
   - Sleep system got some love, made it more in-line with other systems
