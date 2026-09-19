@@ -6,6 +6,13 @@
 --- @field [3] boolean Whether the roll succeeded and the entry is waiting for its trait trigger.
 --- @field [4] boolean Whether the requested change is gaining rather than removing the trait.
 
+--- @alias ETWTraitEventType "qualified_for_gaining"|"qualified_for_losing"|"gained"|"lost"
+
+--- @class ETWRecentTraitEvent
+--- @field trait string Serialized trait registry id.
+--- @field event ETWTraitEventType Serialized event type.
+--- @field timestamp number In-game world-age hours when the event occurred.
+
 --- @class EvolvingTraitsWorldModData
 --- @field ModDataVersion number
 --- @field VehiclePartRepairs number
@@ -57,6 +64,7 @@
 --- @field StartingTraits table<string, boolean>
 --- @field DelayedStartingTraitsFilled boolean
 --- @field DelayedTraits ETWDelayedTraitEntry[]
+--- @field RecentTraitEvents ETWRecentTraitEvent[]
 --- @field AsthmaticCounter number
 --- @field HerbsPickedUp number
 --- @field RainCounter number

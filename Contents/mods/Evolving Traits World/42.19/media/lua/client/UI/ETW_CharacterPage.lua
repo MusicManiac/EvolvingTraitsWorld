@@ -164,6 +164,7 @@ local WINDOW_HEIGHT = 200
 local WINDOW_HEIGHT_AFTER_CHILDREN = 700
 local HELP_WINDOW_MIN_HEIGHT = 120
 local HELP_WINDOW_MAX_HEIGHT = 500
+local RECENT_TRAIT_EVENT_LIMIT = 10
 local TRANSLATION_STATUS_FILE_PREFIX = "media/lua/shared/Translate/"
 local TRANSLATION_STATUS_FILE_SUFFIX = "/UI.json"
 local SUPPORTED_TRANSLATIONS = {
@@ -545,6 +546,30 @@ function ISETWUI:createChildren()
 	self.subViewNonPermanentTraits = ISPanel:new(0, 0, self.width, self.height - TAB_H)
 	self.subViewNonPermanentTraits:initialise()
 	self.subViewNonPermanentTraits:noBackground()
+
+	-- Sub-view: Recent Events
+	self.subViewRecentEvents = ISPanel:new(0, 0, self.width, self.height - TAB_H)
+	self.subViewRecentEvents:initialise()
+	self.subViewRecentEvents:noBackground()
+	self.recentTraitEventLabels = {}
+	local recentEventRowHeight = FONT_HGT_SMALL + 6
+	for index = 1, RECENT_TRAIT_EVENT_LIMIT do
+		local label = ISLabel:new(
+			15,
+			12 + (index - 1) * recentEventRowHeight,
+			FONT_HGT_SMALL,
+			"",
+			1,
+			1,
+			1,
+			1,
+			UIFont.Small,
+			true
+		)
+		self.subViewRecentEvents:addChild(label)
+		self.recentTraitEventLabels[index] = label
+	end
+	self.recentEventsWindowHeight = 24 + RECENT_TRAIT_EVENT_LIMIT * recentEventRowHeight
 
 	-- Sub-view: Help
 	self.subViewHelp = ISPanel:new(0, 0, self.width, self.height - TAB_H)
@@ -4099,6 +4124,7 @@ function ISETWUI:createChildren()
 		self.subPanel:addView(getText("UI_ETW_SubTab_Progress"), self.subViewPermanentTraits)
 		self.subPanel:addView(getText("UI_ETW_SubTab_NonPermanent"), self.subViewNonPermanentTraits)
 	end
+	self.subPanel:addView(getText("UI_ETW_SubTab_RecentEvents"), self.subViewRecentEvents)
 	self.subPanel:addView(getText("UI_ETW_SubTab_Help"), self.subViewHelp)
 	if self.subViewTranslationStatus then
 		self.subPanel:addView(getText("UI_ETW_SubTab_TranslationsStatus"), self.subViewTranslationStatus)
@@ -4129,6 +4155,11 @@ function ISETWUI:rebuildChildren()
 			hideChildTooltip(child)
 		end
 	end
+	if self.subViewRecentEvents and self.subViewRecentEvents.children then
+		for _, child in pairs(self.subViewRecentEvents.children) do
+			hideChildTooltip(child)
+		end
+	end
 	if self.subViewHelp and self.subViewHelp.children then
 		for _, child in pairs(self.subViewHelp.children) do
 			hideChildTooltip(child)
@@ -4151,9 +4182,11 @@ function ISETWUI:rebuildChildren()
 	self.subViewPermanentTraits = nil
 	self.subViewNonPermanentTraits = nil
 	self.subViewVitals = nil
+	self.subViewRecentEvents = nil
 	self.subViewHelp = nil
 	self.subViewTranslationStatus = nil
 	self.helpText = nil
+	self.recentTraitEventLabels = nil
 	self:clearChildren()
 
 	local widgetFields = {}
@@ -4209,11 +4242,69 @@ local function updateLabel(label, value)
 	end
 end
 
+---Formats an in-game world-age timestamp as a localized day plus 24-hour time.
+---@param timestamp number
+---@return string
+local function formatRecentTraitEventTimestamp(timestamp)
+	local totalMinutes = math.max(0, math.floor(timestamp * 60))
+	local day = math.floor(totalMinutes / (24 * 60)) + 1
+	local hour = math.floor(totalMinutes / 60) % 24
+	local minute = totalMinutes % 60
+	return "["
+		.. getText("IGUI_ClimatePlotter_Day")
+		.. " "
+		.. day
+		.. ", "
+		.. string.format("%02d:%02d", hour, minute)
+		.. "] "
+end
+
+---Returns the localized action prefix for a serialized recent trait event.
+---@param event ETWTraitEventType
+---@return string
+local function getRecentTraitEventPrefix(event)
+	if event == ETW_CommonFunctions.TraitEvent.QUALIFIED_FOR_GAINING then
+		return getText("UI_ETW_DelayedNotificationsStringAdd")
+	elseif event == ETW_CommonFunctions.TraitEvent.QUALIFIED_FOR_LOSING then
+		return getText("UI_ETW_DelayedNotificationsStringRemove")
+	elseif event == ETW_CommonFunctions.TraitEvent.GAINED then
+		return getText("UI_ETW_RecentEvents_Gained")
+	elseif event == ETW_CommonFunctions.TraitEvent.LOST then
+		return getText("UI_ETW_RecentEvents_Lost")
+	end
+	return ""
+end
+
+---Refreshes the Recent Events rows from newest to oldest.
+---@param ui ISETWUI
+---@param modData EvolvingTraitsWorldModData
+local function updateRecentTraitEventLabels(ui, modData)
+	local labels = ui.recentTraitEventLabels
+	if not labels then
+		return
+	end
+
+	local events = modData.RecentTraitEvents or {}
+	for labelIndex = 1, RECENT_TRAIT_EVENT_LIMIT do
+		local event = events[#events - labelIndex + 1]
+		local text = ""
+		if event then
+			text = formatRecentTraitEventTimestamp(event.timestamp)
+				.. getRecentTraitEventPrefix(event.event)
+				.. getCachedTraitUIName(event.trait)
+		elseif labelIndex == 1 and #events == 0 then
+			text = getText("UI_ETW_RecentEvents_None")
+		end
+		updateLabel(labels[labelIndex], text)
+	end
+end
+
 function ISETWUI:render()
 	self:refreshLayoutIfNeeded()
 
 	local player = getPlayer()
 	local modData = ETW_CommonFunctions.getETWModData(player)
+	updateRecentTraitEventLabels(self, modData)
 	local isPermanentTraitsTabActive = not self.subPanel or self.subPanel:getActiveView() == self.subViewPermanentTraits
 	local isVitalsTabActive = self.subPanel and self.subPanel:getActiveView() == self.subViewVitals
 	local permanentTraitsSubviewOffsetY = (self.subPanel and self.subPanel.tabHeight) or 0
@@ -4250,17 +4341,22 @@ function ISETWUI:render()
 
 	local subTabHeight = (self.subPanel and self.subPanel.tabHeight) or 0
 	local activeWindowHeight = self.permanentTraitsWindowHeight or WINDOW_HEIGHT
-	if self.subPanel and self.subPanel:getActiveView() == self.subViewNonPermanentTraits then
-		activeWindowHeight = self.nonPermanentTraitsWindowHeight or activeWindowHeight
-	elseif self.subPanel and self.subPanel:getActiveView() == self.subViewVitals then
-		activeWindowHeight = self.vitalsWindowHeight or activeWindowHeight
-	elseif self.subPanel and self.subPanel:getActiveView() == self.subViewHelp then
-		activeWindowHeight = self.helpWindowHeight or activeWindowHeight
-	elseif self.subPanel and self.subPanel:getActiveView() == self.subViewTranslationStatus then
-		activeWindowHeight = self.translationStatusWindowHeight or activeWindowHeight
-	end
 	if delayedTraitLines and #delayedTraitLines > 1 then
 		activeWindowHeight = activeWindowHeight + ((#delayedTraitLines - 1) * FONT_HGT_SMALL)
+	end
+	if self.subPanel then
+		local activeView = self.subPanel:getActiveView()
+		if activeView == self.subViewNonPermanentTraits then
+			activeWindowHeight = self.nonPermanentTraitsWindowHeight or activeWindowHeight
+		elseif activeView == self.subViewVitals then
+			activeWindowHeight = self.vitalsWindowHeight or activeWindowHeight
+		elseif activeView == self.subViewRecentEvents then
+			activeWindowHeight = self.recentEventsWindowHeight or activeWindowHeight
+		elseif activeView == self.subViewHelp then
+			activeWindowHeight = self.helpWindowHeight or activeWindowHeight
+		elseif activeView == self.subViewTranslationStatus then
+			activeWindowHeight = self.translationStatusWindowHeight or activeWindowHeight
+		end
 	end
 	WINDOW_HEIGHT = activeWindowHeight + subTabHeight
 
@@ -4283,6 +4379,10 @@ function ISETWUI:render()
 		if self.subViewVitals then
 			self.subViewVitals:setWidth(WINDOW_WIDTH)
 			self.subViewVitals:setHeight(WINDOW_HEIGHT - TAB_H)
+		end
+		if self.subViewRecentEvents then
+			self.subViewRecentEvents:setWidth(WINDOW_WIDTH)
+			self.subViewRecentEvents:setHeight(WINDOW_HEIGHT - TAB_H)
 		end
 		if self.subViewHelp then
 			self.subViewHelp:setWidth(WINDOW_WIDTH)

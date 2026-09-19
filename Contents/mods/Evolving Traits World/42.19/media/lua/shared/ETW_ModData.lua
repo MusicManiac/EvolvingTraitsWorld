@@ -15,7 +15,15 @@ local ETW_Registry = require("ETW_Registry")
 local ETWTraitsRegistry = ETW_Registry.traits
 
 ---Increment when fields are added to or migrated in EvolvingTraitsWorld modData.
-local MOD_DATA_VERSION = 1.8
+local MOD_DATA_VERSION = 1.9
+
+local RECENT_TRAIT_EVENT_LIMIT = 10
+local VALID_TRAIT_EVENTS = {
+	qualified_for_gaining = true,
+	qualified_for_losing = true,
+	gained = true,
+	lost = true,
+}
 
 ---Returns the midpoint between two numeric values.
 ---@param a number
@@ -283,6 +291,11 @@ function ETW_ModData.createETWModData(playerIndex, player)
 				entry[4] = traitDefinition:getCost() >= 0
 			end
 		end
+	end
+
+	modData.RecentTraitEvents = modData.RecentTraitEvents or {}
+	while #modData.RecentTraitEvents > RECENT_TRAIT_EVENT_LIMIT do
+		table.remove(modData.RecentTraitEvents, 1)
 	end
 
 	if modData.AsthmaticCounter == nil and startingTraits[CharacterTrait.ASTHMATIC:toString()] == true then -- start at full counter if they start with the trait
