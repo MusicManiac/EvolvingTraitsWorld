@@ -3,6 +3,7 @@
 
 - General:
   - Sleep system got some love, made it more in-line with other systems.
+  - Unified Pack Mouse, Pack Mule and Hoarder into Carry Weight System, meaning Pack Mouse/Mule are also dynamic now. 
 - Fix:
   - Gun Enthusiast trait exclusivity
 - Translation:

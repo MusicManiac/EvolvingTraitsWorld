@@ -1,4 +1,5 @@
 {
+    "UI_ETW_CarryWeightSystem": "Carry Weight System",
     "UI_ETW_aaa_TranslationVersion": "This is a note for translators, please do not translate. Set translation version to the latest ETW release you are translating for. This is used to track which translation is up-to-date and which is not.",
     "UI_ETW": "ETW",
     "UI_ETW_AffinitySystemEnabled": "Affinity System is enabled",
@@ -172,7 +173,7 @@
     "UI_trait_PackMouse": "Pack Mouse",
     "UI_trait_PackMouseDesc": "You always travel light. Your maximum carrying capacity is reduced.",
     "UI_trait_PackMule": "Pack Mule",
-    "UI_trait_PackMuleDesc": "You know how to pack everything you need.<br>Your maximum carrying capacity is increased by 20%%.",
+    "UI_trait_PackMuleDesc": "You know how to pack everything you need.<br>Your maximum carrying capacity is increased by 50%%.",
     "UI_trait_Paranoia": "Paranoia",
     "UI_trait_ParanoiaDesc": "While moving, you may suffer a false zombie scare that sharply increases panic and stress and may cause you to scream, attracting nearby zombies.<br>Higher stress makes attacks more likely. After an attack, there is a cooldown before another can occur.",
     "UI_trait_PetTherapy": "Pet Therapy",

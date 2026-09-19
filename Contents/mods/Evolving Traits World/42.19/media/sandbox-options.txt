@@ -1479,7 +1479,7 @@ option EvolvingTraitsWorld.PackMuleMaxCapacityPercent
 	type = double,
 	min = 0,
 	max = 1000,
-	default = 20,
+	default = 50,
 	page = ETWTraitsSettings,
 	translation = ETW_PackMuleMaxCapacityPercent,
 }
@@ -2532,21 +2532,21 @@ option EvolvingTraitsWorld.HikerSkill
 	page = ETWSimplePerks,
 	translation = ETW_HikerSkill,
 }
-option EvolvingTraitsWorld.Hoarder
+option EvolvingTraitsWorld.CarryWeightSystem
 {
 	type = boolean,
 	default = true,
 	page = ETWSimplePerks,
-	translation = ETW_Hoarder,
+	translation = ETW_CarryWeightSystem,
 }
-option EvolvingTraitsWorld.HoarderCounter
+option EvolvingTraitsWorld.CarryWeightCounter
 {
 	type = integer,
 	min = 0,
 	max = 10000000,
 	default = 30000,
 	page = ETWSimplePerks,
-	translation = ETW_HoarderCounter,
+	translation = ETW_CarryWeightCounter,
 }
 option EvolvingTraitsWorld.HomeCook
 {

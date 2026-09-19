@@ -257,31 +257,72 @@ local function smoker()
 	end
 end
 
----Function responsible for managing Hoarder trait
-local function hoarder()
+---Advances carry-weight progression and applies Pack Mouse, Hoarder, and Pack Mule thresholds.
+local function carryWeightSystem()
 	local playersList = ETW_CommonFunctions.playersList()
 	for i = 0, playersList:size() - 1 do
 		local player = playersList:get(i)
 		local modData = ETW_CommonFunctions.getETWModData(player)
 		if not modData then
-			logETW("ETW Logger | hoarder(): modData is nil, returning early")
+			logETW("ETW Logger | carryWeightSystem(): modData is nil, returning early")
 			return
 		end
 
-		if ETW_CommonLogicChecks.HoarderShouldExecute(player) and not player:hasTrait(ETWTraitsRegistry.HOARDER) then
+		if ETW_CommonLogicChecks.CarryWeightSystemShouldExecute(player) then
+			local maximumProgress = SBvars.CarryWeightCounter
 			local maxWeight = player:getMaxWeight()
 			local inventoryFullness = 0.0
 			if maxWeight > 0 then
 				inventoryFullness = math.max(0, player:getInventoryWeight() / maxWeight)
 			end
 
-			modData.HoarderCounter = modData.HoarderCounter + inventoryFullness
-			logETW("ETW Logger | hoarder(): Hoarder counter: " .. modData.HoarderCounter)
+			modData.CarryWeightCounter = math.min(maximumProgress, modData.CarryWeightCounter + inventoryFullness)
+			logETW("ETW Logger | carryWeightSystem(): Carry weight progress: " .. modData.CarryWeightCounter)
 
-			if modData.HoarderCounter >= SBvars.HoarderCounter then
+			if
+				modData.CarryWeightCounter >= maximumProgress / 3
+				and ETW_CommonLogicChecks.CarryWeightSystemShouldExecute(player, ETWTraitsRegistry.PACK_MOUSE)
+			then
 				if
 					SBvars.DelayedTraitsSystem
-					and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.HOARDER, modData)
+					and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(
+						player,
+						ETWTraitsRegistry.PACK_MOUSE,
+						modData
+					)
+				then
+					ETW_CommonFunctions.addTraitToDelayTable({
+						modData = modData,
+						trait = ETWTraitsRegistry.PACK_MOUSE,
+						player = player,
+						positiveTrait = false,
+						gainingTrait = false,
+					})
+				elseif
+					not SBvars.DelayedTraitsSystem
+					or ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.PACK_MOUSE, modData)
+				then
+					ETW_CommonFunctions.removeTraitFromPlayer({
+						player = player,
+						trait = ETWTraitsRegistry.PACK_MOUSE,
+						positiveTrait = false,
+					})
+					UCWF.recomputeAll(player)
+				end
+			end
+
+			if
+				modData.CarryWeightCounter >= maximumProgress * 2 / 3
+				and not player:hasTrait(ETWTraitsRegistry.PACK_MOUSE)
+				and ETW_CommonLogicChecks.CarryWeightSystemShouldExecute(player, ETWTraitsRegistry.HOARDER)
+			then
+				if
+					SBvars.DelayedTraitsSystem
+					and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(
+						player,
+						ETWTraitsRegistry.HOARDER,
+						modData
+					)
 				then
 					ETW_CommonFunctions.addTraitToDelayTable({
 						modData = modData,
@@ -297,6 +338,42 @@ local function hoarder()
 					ETW_CommonFunctions.addTraitToPlayer({
 						player = player,
 						trait = ETWTraitsRegistry.HOARDER,
+						positiveTrait = true,
+					})
+					UCWF.recomputeAll(player)
+				end
+			end
+
+			local hoarderRequired =
+				ETW_CommonLogicChecks.CarryWeightSystemShouldExecute(player, ETWTraitsRegistry.HOARDER)
+			if
+				modData.CarryWeightCounter >= maximumProgress
+				and not player:hasTrait(ETWTraitsRegistry.PACK_MOUSE)
+				and (not hoarderRequired or player:hasTrait(ETWTraitsRegistry.HOARDER))
+				and ETW_CommonLogicChecks.CarryWeightSystemShouldExecute(player, ETWTraitsRegistry.PACK_MULE)
+			then
+				if
+					SBvars.DelayedTraitsSystem
+					and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(
+						player,
+						ETWTraitsRegistry.PACK_MULE,
+						modData
+					)
+				then
+					ETW_CommonFunctions.addTraitToDelayTable({
+						modData = modData,
+						trait = ETWTraitsRegistry.PACK_MULE,
+						player = player,
+						positiveTrait = true,
+						gainingTrait = true,
+					})
+				elseif
+					not SBvars.DelayedTraitsSystem
+					or ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.PACK_MULE, modData)
+				then
+					ETW_CommonFunctions.addTraitToPlayer({
+						player = player,
+						trait = ETWTraitsRegistry.PACK_MULE,
 						positiveTrait = true,
 					})
 					UCWF.recomputeAll(player)
@@ -376,9 +453,9 @@ local function initializeEventsETW(playerIndex, player)
 	if gameMode == ETW_CommonFunctions.GameMode.SP and ETW_CommonLogicChecks.OlympianShouldExecute(player) then
 		Events.EveryOneMinute.Add(olympian)
 	end
-	Events.EveryOneMinute.Remove(hoarder)
-	if ETW_CommonLogicChecks.HoarderShouldExecute(player) then
-		Events.EveryOneMinute.Add(hoarder)
+	Events.EveryOneMinute.Remove(carryWeightSystem)
+	if ETW_CommonLogicChecks.CarryWeightSystemShouldExecute(player) then
+		Events.EveryOneMinute.Add(carryWeightSystem)
 	end
 	if gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
 		Events.OnTick.Remove(initializeEventsETW)
@@ -390,7 +467,7 @@ end
 local function clearEventsETW(character)
 	Events.EveryTenMinutes.Remove(sleepSystem)
 	Events.EveryOneMinute.Remove(smoker)
-	Events.EveryOneMinute.Remove(hoarder)
+	Events.EveryOneMinute.Remove(carryWeightSystem)
 	Events.EveryOneMinute.Remove(olympian)
 	logETW("ETW Logger | System: clearEventsETW in " .. FILENAME)
 end

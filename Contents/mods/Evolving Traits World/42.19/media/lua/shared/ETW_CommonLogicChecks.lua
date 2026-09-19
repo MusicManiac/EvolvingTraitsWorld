@@ -265,20 +265,36 @@ function ETW_CommonLogicChecks.FearOfLocationsSystemShouldExecute(player)
 	end
 end
 
----Returns true if the Hoarder System should execute
+---Returns whether the Carry Weight System or one of its trait stages should execute.
 ---@param player IsoPlayer|nil the player to check for
----@return boolean boolean true if the Hoarder System should execute, false otherwise
-function ETW_CommonLogicChecks.HoarderShouldExecute(player)
-	if
-		SBvars.Hoarder == true
-		and traitShouldExecute("HoarderEnabled")
-		and ((player and not player:hasTrait(ETWTraitsRegistry.HOARDER)) or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER)
-		and SBvars.TraitsLockSystemCanGainPositive
-	then
-		return true
-	else
+---@param trait CharacterTrait|nil optional Pack Mouse, Hoarder, or Pack Mule stage
+---@return boolean
+function ETW_CommonLogicChecks.CarryWeightSystemShouldExecute(player, trait)
+	if SBvars.CarryWeightSystem ~= true then
 		return false
 	end
+
+	local canLosePackMouse = traitShouldExecute("PackMouseEnabled") and SBvars.TraitsLockSystemCanLoseNegative
+	local canGainHoarder = traitShouldExecute("HoarderEnabled") and SBvars.TraitsLockSystemCanGainPositive
+	local canGainPackMule = traitShouldExecute("PackMuleEnabled") and SBvars.TraitsLockSystemCanGainPositive
+
+	if trait == ETWTraitsRegistry.PACK_MOUSE then
+		return canLosePackMouse and (not player or player:hasTrait(ETWTraitsRegistry.PACK_MOUSE))
+	elseif trait == ETWTraitsRegistry.HOARDER then
+		return canGainHoarder and (not player or not player:hasTrait(ETWTraitsRegistry.HOARDER))
+	elseif trait == ETWTraitsRegistry.PACK_MULE then
+		return canGainPackMule and (not player or not player:hasTrait(ETWTraitsRegistry.PACK_MULE))
+	elseif trait ~= nil then
+		return false
+	end
+
+	if gameMode == ETW_CommonFunctions.GameMode.MP_SERVER or not player then
+		return canLosePackMouse or canGainHoarder or canGainPackMule
+	end
+
+	return (canLosePackMouse and player:hasTrait(ETWTraitsRegistry.PACK_MOUSE))
+		or (canGainHoarder and not player:hasTrait(ETWTraitsRegistry.HOARDER))
+		or (canGainPackMule and not player:hasTrait(ETWTraitsRegistry.PACK_MULE))
 end
 
 ---Returns true if the Gym Rat System should execute
