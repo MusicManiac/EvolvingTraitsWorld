@@ -4,6 +4,7 @@
 - General:
   - Recent Events sub-tab
   - Made Prowess traits dynamic
+  - Added Butterfingers to Items Transfer System
   - Sleep system got some love, made it more in-line with other systems
   - Unified Pack Mouse, Pack Mule and Hoarder into Carry Weight System, meaning Pack Mouse/Mule are also dynamic now
   - Moved Pain Tolerance from gradient bar to simple counter

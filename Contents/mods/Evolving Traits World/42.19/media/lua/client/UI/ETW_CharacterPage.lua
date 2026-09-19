@@ -712,10 +712,12 @@ function ISETWUI:createChildren()
 					and modData.TransferSystem
 					and modData.TransferSystem.ItemsTransferred
 				) or 0
-				if weightTransferred < SBvars.InventoryTransferSystemWeight then
+				local transferTargetMultiplier = player:hasTrait(ETWTraitsRegistry.BUTTERFINGERS)
+					and SBvars.TraitsLockSystemCanLoseNegative and 1.5 or 1
+				if weightTransferred < SBvars.InventoryTransferSystemWeight * transferTargetMultiplier then
 					appendLeftBarLabel(labelTexts, getText("Sandbox_ETW_InventoryTransferSystemWeight"))
 				end
-				if itemsTransferred < SBvars.InventoryTransferSystemItems then
+				if itemsTransferred < SBvars.InventoryTransferSystemItems * transferTargetMultiplier then
 					appendLeftBarLabel(labelTexts, getText("Sandbox_ETW_InventoryTransferSystemItems"))
 				end
 			end
@@ -1611,16 +1613,22 @@ function ISETWUI:createChildren()
 
 			if ETW_CommonLogicChecks.InventoryTransferSystemShouldExecute(player) then
 				y = y + FONT_HGT_SMALL / 2
+				local butterfingersTransferProgress = player:hasTrait(ETWTraitsRegistry.BUTTERFINGERS)
+					and SBvars.TraitsLockSystemCanLoseNegative
+				local transferBarScale = butterfingersTransferProgress and 1.5 or 1
+				local transferOneThirdPosition = barStartPosition + barLength / (3 * transferBarScale)
+				local transferTwoThirdPosition = barStartPosition + barLength * 2 / (3 * transferBarScale)
+				local transferBaseEndPosition = barStartPosition + barLength / transferBarScale
 
 				local weightTransferred = (
 					modData
 					and modData.TransferSystem
 					and modData.TransferSystem.WeightTransferred
 				) or 0
-				local targetWeight = SBvars.InventoryTransferSystemWeight
+				local targetWeight = SBvars.InventoryTransferSystemWeight * transferBarScale
 				if weightTransferred < targetWeight then
 					str = "- " .. getCachedTraitUIName(CharacterTrait.ALL_THUMBS)
-					local labelX = barOneThirdPosition - strLen(textManager, str) / 2
+					local labelX = transferOneThirdPosition - strLen(textManager, str) / 2
 					self.labelAllThumbsWeightLose = ISLabel:new(
 						labelX,
 						y,
@@ -1637,7 +1645,7 @@ function ISETWUI:createChildren()
 					self:addChild(self.labelAllThumbsWeightLose)
 
 					str = "- " .. getCachedTraitUIName(CharacterTrait.DISORGANIZED)
-					labelX = barTwoThirdPosition - strLen(textManager, str) / 2
+					labelX = transferTwoThirdPosition - strLen(textManager, str) / 2
 					self.labelDisorganizedWeightLose = ISLabel:new(
 						labelX,
 						y,
@@ -1652,6 +1660,23 @@ function ISETWUI:createChildren()
 					)
 					self.labelDisorganizedWeightLose:setTooltip(getText("UI_ETW_LooseTooltip"))
 					self:addChild(self.labelDisorganizedWeightLose)
+					if butterfingersTransferProgress then
+						str = "- " .. getCachedTraitUIName(ETWTraitsRegistry.BUTTERFINGERS)
+						self.labelButterfingersWeightLose = ISLabel:new(
+							barEndPosition,
+							y,
+							FONT_HGT_SMALL,
+							str,
+							self.DimmedTextColor.r,
+							self.DimmedTextColor.g,
+							self.DimmedTextColor.b,
+							self.DimmedTextColor.a,
+							UIFont.Small,
+							false
+						)
+						self.labelButterfingersWeightLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+						self:addChild(self.labelButterfingersWeightLose)
+					end
 
 					y = y + FONT_HGT_SMALL
 
@@ -1682,7 +1707,7 @@ function ISETWUI:createChildren()
 					y = y + FONT_HGT_SMALL
 
 					str = "+ " .. getCachedTraitUIName(CharacterTrait.DEXTROUS)
-					labelX = barTwoThirdPosition - strLen(textManager, str) / 2
+					labelX = transferTwoThirdPosition - strLen(textManager, str) / 2
 					self.labelDextrousWeightGain = ISLabel:new(
 						labelX,
 						y,
@@ -1699,7 +1724,7 @@ function ISETWUI:createChildren()
 					self:addChild(self.labelDextrousWeightGain)
 
 					str = "+ " .. getCachedTraitUIName(CharacterTrait.ORGANIZED)
-					labelX = barEndPosition
+					labelX = transferBaseEndPosition
 
 					self.labelOrganizedWeightGain = ISLabel:new(
 						labelX,
@@ -1723,10 +1748,10 @@ function ISETWUI:createChildren()
 					and modData.TransferSystem
 					and modData.TransferSystem.ItemsTransferred
 				) or 0
-				local targetItems = SBvars.InventoryTransferSystemItems
+				local targetItems = SBvars.InventoryTransferSystemItems * transferBarScale
 				if itemsTransferred < targetItems then
 					str = "- " .. getCachedTraitUIName(CharacterTrait.DISORGANIZED)
-					local labelX = barOneThirdPosition - strLen(textManager, str) / 2
+					local labelX = transferOneThirdPosition - strLen(textManager, str) / 2
 					self.labelDisorganizedItemsLose = ISLabel:new(
 						labelX,
 						y,
@@ -1743,7 +1768,7 @@ function ISETWUI:createChildren()
 					self:addChild(self.labelDisorganizedItemsLose)
 
 					str = "- " .. getCachedTraitUIName(CharacterTrait.ALL_THUMBS)
-					labelX = barTwoThirdPosition - strLen(textManager, str) / 2
+					labelX = transferTwoThirdPosition - strLen(textManager, str) / 2
 					self.labelAllThumbsItemsLose = ISLabel:new(
 						labelX,
 						y,
@@ -1758,6 +1783,23 @@ function ISETWUI:createChildren()
 					)
 					self.labelAllThumbsItemsLose:setTooltip(getText("UI_ETW_LooseTooltip"))
 					self:addChild(self.labelAllThumbsItemsLose)
+					if butterfingersTransferProgress then
+						str = "- " .. getCachedTraitUIName(ETWTraitsRegistry.BUTTERFINGERS)
+						self.labelButterfingersItemsLose = ISLabel:new(
+							barEndPosition,
+							y,
+							FONT_HGT_SMALL,
+							str,
+							self.DimmedTextColor.r,
+							self.DimmedTextColor.g,
+							self.DimmedTextColor.b,
+							self.DimmedTextColor.a,
+							UIFont.Small,
+							false
+						)
+						self.labelButterfingersItemsLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+						self:addChild(self.labelButterfingersItemsLose)
+					end
 
 					y = y + FONT_HGT_SMALL
 
@@ -1788,7 +1830,7 @@ function ISETWUI:createChildren()
 					y = y + FONT_HGT_SMALL
 
 					str = "+ " .. getCachedTraitUIName(CharacterTrait.ORGANIZED)
-					labelX = barTwoThirdPosition - strLen(textManager, str) / 2
+					labelX = transferTwoThirdPosition - strLen(textManager, str) / 2
 					self.labelOrganizedItemsGain = ISLabel:new(
 						labelX,
 						y,
@@ -1805,7 +1847,7 @@ function ISETWUI:createChildren()
 					self:addChild(self.labelOrganizedItemsGain)
 
 					str = "+ " .. getCachedTraitUIName(CharacterTrait.DEXTROUS)
-					labelX = barEndPosition
+					labelX = transferBaseEndPosition
 					self.labelDextrousItemsGain = ISLabel:new(
 						labelX,
 						y,
@@ -4833,14 +4875,16 @@ function ISETWUI:render()
 			)
 		end
 	end
+	local transferBarScale = player:hasTrait(ETWTraitsRegistry.BUTTERFINGERS)
+		and SBvars.TraitsLockSystemCanLoseNegative and 1.5 or 1
 	updateBar(
 		self.barInventoryTransferSystemWeight,
-		percentile(0, SBvars.InventoryTransferSystemWeight, modData.TransferSystem.WeightTransferred),
+		percentile(0, SBvars.InventoryTransferSystemWeight * transferBarScale, modData.TransferSystem.WeightTransferred),
 		getText("UI_ETW_CurrentValue") .. modData.TransferSystem.WeightTransferred
 	)
 	updateBar(
 		self.barInventoryTransferSystemItems,
-		percentile(0, SBvars.InventoryTransferSystemItems, modData.TransferSystem.ItemsTransferred),
+		percentile(0, SBvars.InventoryTransferSystemItems * transferBarScale, modData.TransferSystem.ItemsTransferred),
 		getText("UI_ETW_CurrentValue") .. modData.TransferSystem.ItemsTransferred
 	)
 	updateBar(

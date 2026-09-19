@@ -710,7 +710,7 @@ function ETW_CommonLogicChecks.NoodleLegsShouldExecute(player)
 		and SBvars.TraitsLockSystemCanLoseNegative == true
 		and (
 			gameMode == ETW_CommonFunctions.GameMode.MP_SERVER
-			or (player and player:hasTrait(ETWTraitsRegistry.NOODLE_LEGS))
+			or (player ~= nil and player:hasTrait(ETWTraitsRegistry.NOODLE_LEGS))
 		)
 end
 
@@ -1197,7 +1197,8 @@ function ETW_CommonLogicChecks.InventoryTransferSystemShouldExecute(player)
 		SBvars.InventoryTransferSystem == true
 		and ((player and not player:hasTrait(CharacterTrait.DEXTROUS)) or (player and not player:hasTrait(
 			CharacterTrait.ORGANIZED
-		)) or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER)
+		)) or (player and player:hasTrait(ETWTraitsRegistry.BUTTERFINGERS) and SBvars.TraitsLockSystemCanLoseNegative)
+			or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER)
 		and (
 			SBvars.TraitsLockSystemCanGainNegative
 			or SBvars.TraitsLockSystemCanLoseNegative

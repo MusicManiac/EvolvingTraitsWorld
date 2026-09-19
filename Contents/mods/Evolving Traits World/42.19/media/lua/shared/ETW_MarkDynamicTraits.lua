@@ -26,6 +26,7 @@ local function registerDynamicTraits()
 		ETW_Registry.traits.AXE_THROWER,
 		ETW_Registry.traits.BLADE_ENTHUSIAST,
 		ETW_Registry.traits.BLOODLUST,
+		ETW_Registry.traits.BUTTERFINGERS,
 		ETW_Registry.traits.BODYWORK_ENTHUSIAST,
 		ETW_Registry.traits.FAST_EATER,
 		ETW_Registry.traits.FURNITURE_ASSEMBLER,
