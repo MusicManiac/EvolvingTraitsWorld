@@ -24,6 +24,9 @@ local INDEFATIGABLE_PROTECTION_DURATION_MS = 120000
 local INDEFATIGABLE_TRIGGER_RADIUS = 1.5
 local INDEFATIGABLE_KNOCKDOWN_RADIUS = 2.5
 local MADE_OF_GLASS_LOG_INTERVAL_MS = 1000
+-- Body-part speed modifiers reset on load, so the persisted ModData flag is not a session guard.
+---@type table<string|integer, BodyDamage>
+local unwaveringAppliedBodyDamageByPlayer = {}
 
 ---@param player IsoPlayer
 ---@param madeOfGlass MadeOfGlassSystem
@@ -461,6 +464,10 @@ end
 ---@param bodyDamage BodyDamage
 ---@param modData EvolvingTraitsWorldModData
 function ETW_HealthTraits.unwaveringTrait(player, bodyDamage, modData)
+	local playerKey = player:getUsername() or player:getOnlineID()
+	if unwaveringAppliedBodyDamageByPlayer[playerKey] == bodyDamage then
+		return
+	end
 	local scratchModifier = 30
 	local cutModifier = 30
 	local deepWoundModifier = 60
@@ -472,6 +479,7 @@ function ETW_HealthTraits.unwaveringTrait(player, bodyDamage, modData)
 		deepWoundModifier,
 		burnModifier
 	)
+	unwaveringAppliedBodyDamageByPlayer[playerKey] = bodyDamage
 	modData.UnwaveringInjurySpeedApplied = true
 	if isServer() then
 		sendServerCommand(player, "ETW", "applyUnwaveringInjurySpeedModifiers", {
