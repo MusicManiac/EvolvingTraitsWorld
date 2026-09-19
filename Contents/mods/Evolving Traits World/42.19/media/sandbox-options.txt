@@ -2737,6 +2737,115 @@ option EvolvingTraitsWorld.PolearmFighterKills
 	page = ETWSimplePerks,
 	translation = ETW_PolearmFighterKills,
 }
+option EvolvingTraitsWorld.ProwessStackingKillScaling
+{
+	type = double,
+	min = 1,
+	max = 10,
+	default = 1.2,
+	page = ETWSimplePerks,
+	translation = ETW_ProwessStackingKillScaling,
+}
+option EvolvingTraitsWorld.ProwessBlade
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_ProwessBlade,
+}
+option EvolvingTraitsWorld.ProwessBladeSkill
+{
+	type = integer,
+	min = 0,
+	max = 30,
+	default = 27,
+	page = ETWSimplePerks,
+	translation = ETW_ProwessBladeSkill,
+}
+option EvolvingTraitsWorld.ProwessBladeKills
+{
+	type = integer,
+	min = 0,
+	max = 10000000,
+	default = 2400,
+	page = ETWSimplePerks,
+	translation = ETW_ProwessBladeKills,
+}
+option EvolvingTraitsWorld.ProwessBlunt
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_ProwessBlunt,
+}
+option EvolvingTraitsWorld.ProwessBluntSkill
+{
+	type = integer,
+	min = 0,
+	max = 20,
+	default = 18,
+	page = ETWSimplePerks,
+	translation = ETW_ProwessBluntSkill,
+}
+option EvolvingTraitsWorld.ProwessBluntKills
+{
+	type = integer,
+	min = 0,
+	max = 10000000,
+	default = 1600,
+	page = ETWSimplePerks,
+	translation = ETW_ProwessBluntKills,
+}
+option EvolvingTraitsWorld.ProwessGuns
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_ProwessGuns,
+}
+option EvolvingTraitsWorld.ProwessGunsSkill
+{
+	type = integer,
+	min = 0,
+	max = 20,
+	default = 18,
+	page = ETWSimplePerks,
+	translation = ETW_ProwessGunsSkill,
+}
+option EvolvingTraitsWorld.ProwessGunsKills
+{
+	type = integer,
+	min = 0,
+	max = 10000000,
+	default = 1600,
+	page = ETWSimplePerks,
+	translation = ETW_ProwessGunsKills,
+}
+option EvolvingTraitsWorld.ProwessSpear
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_ProwessSpear,
+}
+option EvolvingTraitsWorld.ProwessSpearSkill
+{
+	type = integer,
+	min = 0,
+	max = 10,
+	default = 9,
+	page = ETWSimplePerks,
+	translation = ETW_ProwessSpearSkill,
+}
+option EvolvingTraitsWorld.ProwessSpearKills
+{
+	type = integer,
+	min = 0,
+	max = 10000000,
+	default = 800,
+	page = ETWSimplePerks,
+	translation = ETW_ProwessSpearKills,
+}
 option EvolvingTraitsWorld.Quiet
 {
 	type = boolean,

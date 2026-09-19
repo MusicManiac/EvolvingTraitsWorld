@@ -13,6 +13,13 @@ local ETWTraitsRegistry = ETW_Registry.traits
 
 local gameMode = ETW_CommonFunctions.gameMode()
 
+local PROWESS_TRAITS = {
+	ETWTraitsRegistry.PROWESS_BLADE,
+	ETWTraitsRegistry.PROWESS_BLUNT,
+	ETWTraitsRegistry.PROWESS_GUNS,
+	ETWTraitsRegistry.PROWESS_SPEAR,
+}
+
 local FILENAME = "ETW_CommonLogicChecks.lua"
 ETW_CommonFunctions.gameModeSafeguard(
 	FILENAME,
@@ -613,6 +620,51 @@ function ETW_CommonLogicChecks.PolearmFighterShouldExecute(player)
 	else
 		return false
 	end
+end
+
+---Returns whether Prowess: Blade can be gained through matching weapon experience.
+---@param player IsoPlayer|nil the player to check
+---@return boolean
+function ETW_CommonLogicChecks.ProwessBladeShouldExecute(player)
+	return SBvars.ProwessBlade == true
+		and traitShouldExecute("ProwessBladeEnabled")
+		and SBvars.TraitsLockSystemCanGainPositive == true
+		and player ~= nil
+		and not player:hasTrait(ETWTraitsRegistry.PROWESS_BLADE)
+end
+
+---Returns whether Prowess: Blunt can be gained through matching weapon experience.
+---@param player IsoPlayer|nil the player to check
+---@return boolean
+function ETW_CommonLogicChecks.ProwessBluntShouldExecute(player)
+	return SBvars.ProwessBlunt == true
+		and traitShouldExecute("ProwessBluntEnabled")
+		and SBvars.TraitsLockSystemCanGainPositive == true
+		and player ~= nil
+		and not player:hasTrait(ETWTraitsRegistry.PROWESS_BLUNT)
+end
+
+---Returns whether Prowess: Guns can be gained through firearm experience.
+---@param player IsoPlayer|nil the player to check
+---@return boolean
+function ETW_CommonLogicChecks.ProwessGunsShouldExecute(player)
+	return SBvars.ProwessGuns == true
+		and traitShouldExecute("ProwessGunsEnabled")
+		and SBvars.TraitsLockSystemCanGainPositive == true
+		and player ~= nil
+		and not player:hasTrait(ETWTraitsRegistry.PROWESS_GUNS)
+		and not player:hasTrait(ETWTraitsRegistry.ANTI_GUN_ACTIVIST)
+end
+
+---Returns whether Prowess: Spear can be gained through spear experience.
+---@param player IsoPlayer|nil the player to check
+---@return boolean
+function ETW_CommonLogicChecks.ProwessSpearShouldExecute(player)
+	return SBvars.ProwessSpear == true
+		and traitShouldExecute("ProwessSpearEnabled")
+		and SBvars.TraitsLockSystemCanGainPositive == true
+		and player ~= nil
+		and not player:hasTrait(ETWTraitsRegistry.PROWESS_SPEAR)
 end
 
 ---Returns true if the Quiet System should execute
@@ -1228,6 +1280,45 @@ for checkName, systemShouldExecute in pairs(ETW_CommonLogicChecks) do
 	ETW_CommonLogicChecks[checkName] = function(...)
 		return SBvars.DisableAllDynamicTraits ~= true and originalSystemCheck(...)
 	end
+end
+
+---Returns the kill target for a Prowess trait, scaling once for each other held or queued Prowess trait.
+---@param player IsoPlayer
+---@param requestedTrait CharacterTrait
+---@param baseKills integer
+---@param modData? EvolvingTraitsWorldModData
+---@return integer
+function ETW_CommonLogicChecks.getProwessKillRequirement(player, requestedTrait, baseKills, modData)
+	local multiplier = SBvars.ProwessStackingKillScaling
+	if type(multiplier) ~= "number" then
+		-- Preserve the intent of saves that stored the previous boolean setting.
+		multiplier = multiplier == false and 1 or 1.2
+	end
+
+	modData = modData or ETW_CommonFunctions.getETWModData(player)
+	local delayedTraits = modData and modData.DelayedTraits
+	local otherProwessCount = 0
+	for i = 1, #PROWESS_TRAITS do
+		local prowessTrait = PROWESS_TRAITS[i]
+		if prowessTrait ~= requestedTrait then
+			local hasProwess = player:hasTrait(prowessTrait)
+			if not hasProwess and delayedTraits then
+				local traitId = prowessTrait:toString()
+				for delayedIndex = 1, #delayedTraits do
+					local delayedEntry = delayedTraits[delayedIndex]
+					if delayedEntry and delayedEntry[1] == traitId and delayedEntry[4] == true then
+						hasProwess = true
+						break
+					end
+				end
+			end
+			if hasProwess then
+				otherProwessCount = otherProwessCount + 1
+			end
+		end
+	end
+
+	return math.ceil(baseKills * multiplier ^ otherProwessCount)
 end
 
 return ETW_CommonLogicChecks

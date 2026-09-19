@@ -786,6 +786,10 @@ function ISETWUI:createChildren()
 		local shortBladeKills = (killCountModData["SmallBlade"] or {}).count or 0
 		local spearKills = (killCountModData["Spear"] or {}).count or 0
 		local firearmKills = (killCountModData["Firearm"] or {}).count or 0
+		local prowessBladeKillsRequired = ETW_CommonLogicChecks.getProwessKillRequirement(player, ETWTraitsRegistry.PROWESS_BLADE, SBvars.ProwessBladeKills, modData)
+		local prowessBluntKillsRequired = ETW_CommonLogicChecks.getProwessKillRequirement(player, ETWTraitsRegistry.PROWESS_BLUNT, SBvars.ProwessBluntKills, modData)
+		local prowessGunsKillsRequired = ETW_CommonLogicChecks.getProwessKillRequirement(player, ETWTraitsRegistry.PROWESS_GUNS, SBvars.ProwessGunsKills, modData)
+		local prowessSpearKillsRequired = ETW_CommonLogicChecks.getProwessKillRequirement(player, ETWTraitsRegistry.PROWESS_SPEAR, SBvars.ProwessSpearKills, modData)
 
 		local function buildVitalsSection()
 			-- Vitals only needs room for its three short row labels. Keep the wider
@@ -2597,6 +2601,166 @@ function ISETWUI:createChildren()
 					)
 					self.labelPolearmFighterKillsProgress:setTooltip(getText("Sandbox_ETW_PolearmFighterKills"))
 					self:addChild(self.labelPolearmFighterKillsProgress)
+				end
+			end
+
+			if
+				ETW_CommonLogicChecks.ProwessBladeShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.PROWESS_BLADE)
+			then
+				if shortBlade + longBlade + axe < SBvars.ProwessBladeSkill then
+					arrangeColumnsInTable()
+					self.labelProwessBladeSkillProgress = ISLabel:new(
+						x,
+						y,
+						FONT_HGT_SMALL,
+						"",
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelProwessBladeSkillProgress:setTooltip(getText("Sandbox_ETW_ProwessBladeSkill_tooltip"))
+					self:addChild(self.labelProwessBladeSkillProgress)
+				end
+				if shortBladeKills + longBladeKills + axeKills < prowessBladeKillsRequired then
+					arrangeColumnsInTable()
+					self.labelProwessBladeKillsProgress = ISLabel:new(
+						x,
+						y,
+						FONT_HGT_SMALL,
+						"",
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelProwessBladeKillsProgress:setTooltip(getText("Sandbox_ETW_ProwessBladeKills_tooltip"))
+					self:addChild(self.labelProwessBladeKillsProgress)
+				end
+			end
+
+			if
+				ETW_CommonLogicChecks.ProwessBluntShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.PROWESS_BLUNT)
+			then
+				if shortBlunt + longBlunt < SBvars.ProwessBluntSkill then
+					arrangeColumnsInTable()
+					self.labelProwessBluntSkillProgress = ISLabel:new(
+						x,
+						y,
+						FONT_HGT_SMALL,
+						"",
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelProwessBluntSkillProgress:setTooltip(getText("Sandbox_ETW_ProwessBluntSkill_tooltip"))
+					self:addChild(self.labelProwessBluntSkillProgress)
+				end
+				if shortBluntKills + longBluntKills < prowessBluntKillsRequired then
+					arrangeColumnsInTable()
+					self.labelProwessBluntKillsProgress = ISLabel:new(
+						x,
+						y,
+						FONT_HGT_SMALL,
+						"",
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelProwessBluntKillsProgress:setTooltip(getText("Sandbox_ETW_ProwessBluntKills_tooltip"))
+					self:addChild(self.labelProwessBluntKillsProgress)
+				end
+			end
+
+			if
+				ETW_CommonLogicChecks.ProwessGunsShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.PROWESS_GUNS)
+			then
+				if aiming + reloading < SBvars.ProwessGunsSkill then
+					arrangeColumnsInTable()
+					self.labelProwessGunsSkillProgress = ISLabel:new(
+						x,
+						y,
+						FONT_HGT_SMALL,
+						"",
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelProwessGunsSkillProgress:setTooltip(getText("Sandbox_ETW_ProwessGunsSkill_tooltip"))
+					self:addChild(self.labelProwessGunsSkillProgress)
+				end
+				if firearmKills < prowessGunsKillsRequired then
+					arrangeColumnsInTable()
+					self.labelProwessGunsKillsProgress = ISLabel:new(
+						x,
+						y,
+						FONT_HGT_SMALL,
+						"",
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelProwessGunsKillsProgress:setTooltip(getText("Sandbox_ETW_ProwessGunsKills_tooltip"))
+					self:addChild(self.labelProwessGunsKillsProgress)
+				end
+			end
+
+			if
+				ETW_CommonLogicChecks.ProwessSpearShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.PROWESS_SPEAR)
+			then
+				if spear < SBvars.ProwessSpearSkill then
+					arrangeColumnsInTable()
+					self.labelProwessSpearSkillProgress = ISLabel:new(
+						x,
+						y,
+						FONT_HGT_SMALL,
+						"",
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelProwessSpearSkillProgress:setTooltip(getText("Sandbox_ETW_ProwessSpearSkill_tooltip"))
+					self:addChild(self.labelProwessSpearSkillProgress)
+				end
+				if spearKills < prowessSpearKillsRequired then
+					arrangeColumnsInTable()
+					self.labelProwessSpearKillsProgress = ISLabel:new(
+						x,
+						y,
+						FONT_HGT_SMALL,
+						"",
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						true
+					)
+					self.labelProwessSpearKillsProgress:setTooltip(getText("Sandbox_ETW_ProwessSpearKills_tooltip"))
+					self:addChild(self.labelProwessSpearKillsProgress)
 				end
 			end
 
@@ -4459,6 +4623,10 @@ function ISETWUI:render()
 	local shortBladeKills = (killCountModData["SmallBlade"] or {}).count or 0
 	local spearKills = (killCountModData["Spear"] or {}).count or 0
 	local firearmKills = (killCountModData["Firearm"] or {}).count or 0
+	local prowessBladeKillsRequired = ETW_CommonLogicChecks.getProwessKillRequirement(player, ETWTraitsRegistry.PROWESS_BLADE, SBvars.ProwessBladeKills, modData)
+	local prowessBluntKillsRequired = ETW_CommonLogicChecks.getProwessKillRequirement(player, ETWTraitsRegistry.PROWESS_BLUNT, SBvars.ProwessBluntKills, modData)
+	local prowessGunsKillsRequired = ETW_CommonLogicChecks.getProwessKillRequirement(player, ETWTraitsRegistry.PROWESS_GUNS, SBvars.ProwessGunsKills, modData)
+	local prowessSpearKillsRequired = ETW_CommonLogicChecks.getProwessKillRequirement(player, ETWTraitsRegistry.PROWESS_SPEAR, SBvars.ProwessSpearKills, modData)
 
 	updateBar(
 		self.barImmunitySystem,
@@ -4934,6 +5102,70 @@ function ISETWUI:render()
 			.. spearKills
 			.. "/"
 			.. SBvars.PolearmFighterKills
+	)
+	updateLabel(
+		self.labelProwessBladeSkillProgress,
+		getCachedTraitUIName(ETWTraitsRegistry.PROWESS_BLADE)
+			.. ": "
+			.. shortBlade + longBlade + axe
+			.. "/"
+			.. SBvars.ProwessBladeSkill
+	)
+	updateLabel(
+		self.labelProwessBladeKillsProgress,
+		getCachedTraitUIName(ETWTraitsRegistry.PROWESS_BLADE)
+			.. ": "
+			.. shortBladeKills + longBladeKills + axeKills
+			.. "/"
+			.. prowessBladeKillsRequired
+	)
+	updateLabel(
+		self.labelProwessBluntSkillProgress,
+		getCachedTraitUIName(ETWTraitsRegistry.PROWESS_BLUNT)
+			.. ": "
+			.. shortBlunt + longBlunt
+			.. "/"
+			.. SBvars.ProwessBluntSkill
+	)
+	updateLabel(
+		self.labelProwessBluntKillsProgress,
+		getCachedTraitUIName(ETWTraitsRegistry.PROWESS_BLUNT)
+			.. ": "
+			.. shortBluntKills + longBluntKills
+			.. "/"
+			.. prowessBluntKillsRequired
+	)
+	updateLabel(
+		self.labelProwessGunsSkillProgress,
+		getCachedTraitUIName(ETWTraitsRegistry.PROWESS_GUNS)
+			.. ": "
+			.. aiming + reloading
+			.. "/"
+			.. SBvars.ProwessGunsSkill
+	)
+	updateLabel(
+		self.labelProwessGunsKillsProgress,
+		getCachedTraitUIName(ETWTraitsRegistry.PROWESS_GUNS)
+			.. ": "
+			.. firearmKills
+			.. "/"
+			.. prowessGunsKillsRequired
+	)
+	updateLabel(
+		self.labelProwessSpearSkillProgress,
+		getCachedTraitUIName(ETWTraitsRegistry.PROWESS_SPEAR)
+			.. ": "
+			.. spear
+			.. "/"
+			.. SBvars.ProwessSpearSkill
+	)
+	updateLabel(
+		self.labelProwessSpearKillsProgress,
+		getCachedTraitUIName(ETWTraitsRegistry.PROWESS_SPEAR)
+			.. ": "
+			.. spearKills
+			.. "/"
+			.. prowessSpearKillsRequired
 	)
 	updateLabel(
 		self.labelQuietSkillProgress,
