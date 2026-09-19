@@ -4,12 +4,42 @@ local ETW_TimedActionsSharedLogic = {}
 local SBvars = SandboxVars.EvolvingTraitsWorld
 
 local ETW_CommonFunctions = require("ETW_CommonFunctions")
+local ETW_Registry = require("ETW_Registry")
+local ETWTraitsRegistry = ETW_Registry.traits
 
 ---Checks if player qualifies for gaining or losing inventory transfer system perks
 ---@param player IsoPlayer player
 ---@param modData EvolvingTraitsWorldModData ETW modData table
 function ETW_TimedActionsSharedLogic.checkInventoryTransferPerks(player, modData)
 	local transferModData = modData.TransferSystem
+	if
+		player:hasTrait(ETWTraitsRegistry.BUTTERFINGERS)
+		and transferModData.WeightTransferred >= SBvars.InventoryTransferSystemWeight * 1.5
+		and transferModData.ItemsTransferred >= SBvars.InventoryTransferSystemItems * 1.5
+		and SBvars.TraitsLockSystemCanLoseNegative
+	then
+		if
+			SBvars.DelayedTraitsSystem
+			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.BUTTERFINGERS, modData)
+		then
+			ETW_CommonFunctions.addTraitToDelayTable({
+				modData = modData,
+				trait = ETWTraitsRegistry.BUTTERFINGERS,
+				player = player,
+				positiveTrait = false,
+				gainingTrait = false,
+			})
+		elseif
+			not SBvars.DelayedTraitsSystem
+			or ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.BUTTERFINGERS, modData)
+		then
+			ETW_CommonFunctions.removeTraitFromPlayer({
+				player = player,
+				trait = ETWTraitsRegistry.BUTTERFINGERS,
+				positiveTrait = false,
+			})
+		end
+	end
 	if
 		player:hasTrait(CharacterTrait.DISORGANIZED)
 		and transferModData.WeightTransferred >= SBvars.InventoryTransferSystemWeight * 0.66
