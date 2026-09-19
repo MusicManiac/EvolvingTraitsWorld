@@ -320,8 +320,7 @@ end
 ---@param weapon HandWeapon
 ---@return boolean
 local function isGordoniteCrowbar(weapon)
-	local itemType = weapon:getType()
-	return itemType == "Crowbar" or itemType == "CrowbarForged"
+	return weapon:hasTag(ItemTag.CROWBAR)
 end
 
 ---@param weapon HandWeapon
