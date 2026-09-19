@@ -2468,6 +2468,31 @@ option EvolvingTraitsWorld.GunEnthusiastKills
 	page = ETWSimplePerks,
 	translation = ETW_GunEnthusiastKills,
 }
+option EvolvingTraitsWorld.Terminator
+{
+	type = boolean,
+	default = true,
+	page = ETWSimplePerks,
+	translation = ETW_Terminator,
+}
+option EvolvingTraitsWorld.TerminatorSkill
+{
+	type = integer,
+	min = 0,
+	max = 30,
+	default = 27,
+	page = ETWSimplePerks,
+	translation = ETW_TerminatorSkill,
+}
+option EvolvingTraitsWorld.TerminatorKills
+{
+	type = integer,
+	min = 0,
+	max = 10000000,
+	default = 1600,
+	page = ETWSimplePerks,
+	translation = ETW_TerminatorKills,
+}
 option EvolvingTraitsWorld.Gymnast
 {
 	type = boolean,
