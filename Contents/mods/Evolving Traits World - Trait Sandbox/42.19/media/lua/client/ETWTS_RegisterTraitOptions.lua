@@ -15,6 +15,7 @@ local traits = {
 	{ id = "Bouncer", pointValue = -5 },
 	{ id = "Indefatigable", pointValue = -10 },
 	{ id = "Injured", pointValue = 1 },
+	{ id = "BurnWardPatient", pointValue = 6 },
 	{ id = "Butterfingers", pointValue = 12 },
 	{ id = "BrokenLeg", pointValue = 3 },
 	{ id = "Deprived", pointValue = 1 },

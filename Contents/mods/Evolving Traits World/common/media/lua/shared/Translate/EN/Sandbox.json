@@ -1,4 +1,8 @@
 {
+    "Sandbox_ETWTS_BurnWardPatientEnabled": "Enable Burn Ward Patient",
+    "Sandbox_ETWTS_BurnWardPatientEnabled_tooltip": "Controls character-creation availability.",
+    "Sandbox_ETWTS_BurnWardPatientPointValue": "Burn Ward Patient point value",
+    "Sandbox_ETWTS_BurnWardPatientPointValue_tooltip": "Character-creation point adjustment: negative values cost points; positive values grant points.",
     "Sandbox_ETW_IdealWeightCounter": "Ideal Weight counter maximum",
     "Sandbox_ETW_IdealWeightCounter_tooltip": "Maximum saved progress. Gain Ideal Weight at 66%% of this value and lose it at 33%%. Characters starting with the trait start at this maximum.",
     "Sandbox_ETW_IdealWeight": "Ideal Weight",
@@ -370,6 +374,8 @@
     "Sandbox_ETW_InjuredBurns_tooltip": "Allow characters with the Injured trait to receive burns among their random starting injuries.<br>Burns can be extremely debilitating, especially on the legs.",
     "Sandbox_ETW_InjuredWoundTimeMultiplier": "Injured wound duration multiplier",
     "Sandbox_ETW_InjuredWoundTimeMultiplier_tooltip": "Multiplies the duration of every future wound on body parts originally affected by Injured. For scratches and lacerations, the duration is applied to their more severe replacement wound.",
+    "Sandbox_ETW_BurnWardPatientBurnTimeMultiplier": "Burn Ward Patient burn duration multiplier",
+    "Sandbox_ETW_BurnWardPatientBurnTimeMultiplier_tooltip": "Multiplies the duration of future burns on body parts originally burned by Burn Ward Patient. Set to 1 to disable the extra duration. If the character also has Injured, both burn multipliers apply.",
     "Sandbox_ETW_DelayedTraitsSystem_tooltip": "This system allows you to gain/lose traits in a more random and less predictable way. When you qualify to add/remove a trait, it doesn't happen instantly. Instead, it's added to a table with a delay in hours (based on sandbox settings below). Every hour, the game rolls to determine if you gain/lose each trait in this table (each trait is rolled separately). You have a 1 in X chance to gain/lose the trait every hour. If the roll fails, X is reduced by 1. So the longer you go, the higher the chances that the trait you earned will manifest.<br>Technical note: Traits that rely on skill levels will be unlocked as described above. However, traits that rely on internal counters added by this mod (e.g., Prone To Illness, Weak Stomach, Outdoorsman, Cat Eyes, etc.) will unlock the next time their internal counters increase. This is because coding a separate unlock mechanism for these specific traits would be complex and unnecessary. For example, if you qualify for Cat Eyes and it's added to the Delayed Traits Table, you won't get it immediately. Instead, you'll get it as soon as the Cat Eyes counter increases next time (e.g., the closest evening/night).",
     "Sandbox_ETW_DisableAllDynamicTraits": "Disable All Dynamic Traits",
     "Sandbox_ETW_DisableAllDynamicTraits_tooltip": "Master switch that disables ETW trait evolution. When enabled, ETW will not dynamically gain, lose, or queue traits, delayed-trait rolls are paused, and the ETW character page is hidden. Traits a character already has and their effects remain active.",

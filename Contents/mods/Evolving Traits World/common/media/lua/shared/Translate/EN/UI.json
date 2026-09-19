@@ -116,6 +116,8 @@
     "UI_trait_DeprivedDesc": "You didn't have much in the way of possessions before the apocalypse. You begin only with underwear, a T-shirt, sneakers, a garbage bag, and a key ring.<br>Exceeding the configured share (default: 50 %%) of your maximum carry capacity gradually increases unhappiness.",
     "UI_trait_Injured": "Injured",
     "UI_trait_InjuredDesc": "You were recently injured. You begin the game with moderate injuries and your wounds are bandaged.<br>Future scratches on those same body parts become lacerations, lacerations become deep wounds, and all wounds last longer.",
+    "UI_trait_BurnWardPatient": "Burn Ward Patient",
+    "UI_trait_BurnWardPatientDesc": "You escaped the burn ward when the outbreak began. Every body part starts burned and covered with a clean bandage.<br>Future burns on those body parts last longer (default: 2x).",
     "UI_trait_BrokenLeg": "Broken Leg",
     "UI_trait_BrokenLegDesc": "You were recovering from a recent accident when everything started. You begin with a broken leg, a severely debilitating injury.<br>Your leg will be splinted and bandaged. If the same bone breaks again, the fracture will be more severe.",
     "UI_trait_SelfDestructive": "Self-Destructive",

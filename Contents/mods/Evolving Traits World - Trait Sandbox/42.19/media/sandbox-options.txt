@@ -67,6 +67,23 @@ option ETWTraitSandbox.InjuredPointValue
 	translation = ETWTS_InjuredPointValue,
 }
 
+option ETWTraitSandbox.BurnWardPatientEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_BurnWardPatientEnabled,
+}
+option ETWTraitSandbox.BurnWardPatientPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = 6,
+	page = ETWTraitSandbox,
+	translation = ETWTS_BurnWardPatientPointValue,
+}
+
 option ETWTraitSandbox.AVClubEnabled
 {
 	type = boolean,
