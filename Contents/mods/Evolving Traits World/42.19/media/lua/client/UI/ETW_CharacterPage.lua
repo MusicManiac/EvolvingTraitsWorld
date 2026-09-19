@@ -670,11 +670,14 @@ function ISETWUI:createChildren()
 			if ETW_CommonLogicChecks.LearnerSystemShouldExecute(player) then
 				appendLeftBarLabel(labelTexts, getText("Sandbox_ETW_LearnerSystem"))
 			end
+			if ETW_CommonLogicChecks.ReaderSystemShouldExecute(player) then
+				appendLeftBarLabel(labelTexts, getText("Sandbox_ETW_ReaderSystem"))
+			end
 			if ETW_CommonLogicChecks.EatingSpeedSystemShouldExecute(player) then
 				appendLeftBarLabel(labelTexts, getText("Sandbox_ETW_EatingSpeedSystem"))
 			end
-			if ETW_CommonLogicChecks.ReaderSystemShouldExecute(player) then
-				appendLeftBarLabel(labelTexts, getText("Sandbox_ETW_ReaderSystem"))
+			if ETW_CommonLogicChecks.CarryWeightSystemShouldExecute(player) then
+				appendLeftBarLabel(labelTexts, getText("UI_ETW_CarryWeightSystem"))
 			end
 			if ETW_CommonLogicChecks.InventoryTransferSystemShouldExecute(player) then
 				local weightTransferred = (
@@ -1548,6 +1551,80 @@ function ISETWUI:createChildren()
 				y = y + FONT_HGT_SMALL
 			end
 
+			if ETW_CommonLogicChecks.CarryWeightSystemShouldExecute(player) then
+				str = "- " .. getCachedTraitUIName(ETWTraitsRegistry.PACK_MOUSE)
+				self.labelPackMouseLose = ISLabel:new(
+					barOneThirdPosition - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelPackMouseLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self:addChild(self.labelPackMouseLose)
+
+				str = "+ " .. getCachedTraitUIName(ETWTraitsRegistry.HOARDER)
+				self.labelHoarderGain = ISLabel:new(
+					barTwoThirdPosition - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelHoarderGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self:addChild(self.labelHoarderGain)
+
+				self.labelPackMuleGain = ISLabel:new(
+					barEndPosition,
+					y,
+					FONT_HGT_SMALL,
+					"+ " .. getCachedTraitUIName(ETWTraitsRegistry.PACK_MULE),
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					false
+				)
+				self.labelPackMuleGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self:addChild(self.labelPackMuleGain)
+
+				y = y + FONT_HGT_SMALL
+
+				self.labelCarryWeightSystemBarName = ISLabel:new(
+					barStartPosition - lineStartPosition,
+					y,
+					FONT_HGT_SMALL,
+					getText("UI_ETW_CarryWeightSystem"),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					false
+				)
+				self.labelCarryWeightSystemBarName:setTooltip(getText("Sandbox_ETW_CarryWeightCounter_tooltip"))
+				self:addChild(self.labelCarryWeightSystemBarName)
+
+				self.barCarryWeightSystem = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
+				self.barCarryWeightSystem:setGradientTexture(redYellowGreenGradient)
+				self.barCarryWeightSystem:setHighlightRadius(highlightRadius)
+				self.barCarryWeightSystem:setDoKnob(false)
+				self:addChild(self.barCarryWeightSystem)
+
+				y = y + FONT_HGT_SMALL
+			end
+
 			if ETW_CommonLogicChecks.InventoryTransferSystemShouldExecute(player) then
 				y = y + FONT_HGT_SMALL / 2
 
@@ -1911,27 +1988,6 @@ function ISETWUI:createChildren()
 				)
 				self.labelEagleEyedProgress:setTooltip(getText("Sandbox_ETW_EagleEyedKills"))
 				self:addChild(self.labelEagleEyedProgress)
-			end
-
-			if
-				ETW_CommonLogicChecks.HoarderShouldExecute(player)
-				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.HOARDER)
-			then
-				arrangeColumnsInTable()
-				self.labelHoarderProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					"",
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelHoarderProgress:setTooltip(getText("Sandbox_ETW_HoarderCounter_tooltip"))
-				self:addChild(self.labelHoarderProgress)
 			end
 
 			if
@@ -4357,6 +4413,11 @@ function ISETWUI:render()
 		getText("UI_ETW_CurrentValue") .. formatDecimal(modData.healerCounter)
 	)
 	updateBar(
+		self.barCarryWeightSystem,
+		percentile(0, SBvars.CarryWeightCounter, modData.CarryWeightCounter),
+		getText("UI_ETW_CurrentValue") .. formatDecimal(modData.CarryWeightCounter)
+	)
+	updateBar(
 		self.barAsthmatic,
 		percentile(SBvars.AsthmaticCounter * -2, SBvars.AsthmaticCounter * 2, modData.AsthmaticCounter),
 		getText("UI_ETW_CurrentValue") .. formatDecimal(modData.AsthmaticCounter)
@@ -4602,14 +4663,6 @@ function ISETWUI:render()
 			.. modData.EagleEyedKills
 			.. "/"
 			.. SBvars.EagleEyedKills
-	)
-	updateLabel(
-		self.labelHoarderProgress,
-		getCachedTraitUIName(ETWTraitsRegistry.HOARDER)
-			.. ": "
-			.. formatDecimal(modData.HoarderCounter)
-			.. "/"
-			.. SBvars.HoarderCounter
 	)
 	updateLabel(
 		self.labelGymRatProgress,

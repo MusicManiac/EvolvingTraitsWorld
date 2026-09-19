@@ -15,7 +15,7 @@ local ETW_Registry = require("ETW_Registry")
 local ETWTraitsRegistry = ETW_Registry.traits
 
 ---Increment when fields are added to or migrated in EvolvingTraitsWorld modData.
-local MOD_DATA_VERSION = 1.7
+local MOD_DATA_VERSION = 1.8
 
 ---Returns the midpoint between two numeric values.
 ---@param a number
@@ -47,6 +47,16 @@ local function initializeRollingSamples(existingSamples, initialValue, sampleCou
 		return existingSamples
 	end
 	return buildFilledSamples(initialValue, sampleCount)
+end
+
+---Migrates the legacy Hoarder progress field to the Carry Weight System field.
+---@param modData EvolvingTraitsWorldModData
+local function migrate(modData)
+	---@diagnostic disable-next-line: undefined-field
+	local legacyHoarderCounter = modData.HoarderCounter
+	if modData.CarryWeightCounter == nil and legacyHoarderCounter ~= nil then
+		modData.CarryWeightCounter = legacyHoarderCounter
+	end
 end
 
 ---Checks if player has trait and adds it to modData.StartingTraits if it's not there
@@ -109,6 +119,7 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	playerModData.EvolvingTraitsWorld = playerModData.EvolvingTraitsWorld or {}
 	---@type EvolvingTraitsWorldModData
 	local modData = playerModData.EvolvingTraitsWorld
+	migrate(modData)
 
 	modData.VehiclePartRepairs = modData.VehiclePartRepairs or 0
 	modData.EagleEyedKills = modData.EagleEyedKills or 0
@@ -120,7 +131,6 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	modData.ImmunitySystemCounter = modData.ImmunitySystemCounter or 0
 	modData.PagesReadCounter = modData.PagesReadCounter or 0
 	modData.EatingSpeedSystemCounter = modData.EatingSpeedSystemCounter or 0
-	modData.HoarderCounter = modData.HoarderCounter or 0
 	modData.OlympianCounter = modData.OlympianCounter or 0
 	modData.NaturalEaterFoodsEaten = modData.NaturalEaterFoodsEaten or 0
 	modData.NoodleLegs = modData.NoodleLegs or {}
@@ -188,6 +198,15 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.LIGHT_EATER)
 	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.HIGH_THIRST)
 	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.LOW_THIRST)
+
+	if modData.CarryWeightCounter == nil then
+		if player:hasTrait(ETWTraitsRegistry.PACK_MULE) then
+			modData.CarryWeightCounter = SBvars.CarryWeightCounter
+		elseif player:hasTrait(ETWTraitsRegistry.HOARDER) then
+			modData.CarryWeightCounter = SBvars.CarryWeightCounter * 2 / 3
+		end
+	end
+	modData.CarryWeightCounter = modData.CarryWeightCounter or 0
 
 	if modData.injuriesCounter == nil then
 		if startingTraits[CharacterTrait.THICK_SKINNED:toString()] == true then
