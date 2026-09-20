@@ -644,9 +644,9 @@ end
 function ETW_HealthTraits.hardyTrait(player, stats, modData)
 	-- TODO: moodle support as a display of available endurance reserve
 	local endurance = stats:get(CharacterStat.ENDURANCE)
-	local maximumReserve = PZMath.clamp((SBvars.HardyExtraEndurancePercent or 25) / 100, 0, 1)
-	local transfer = PZMath.clamp(SBvars.HardyTransferPerMinute or 0.05, 0, 1)
-	modData.HardyReserve = PZMath.clamp(modData.HardyReserve, 0, maximumReserve)
+	local maximumReserve = math.max(0, math.min(1, (SBvars.HardyExtraEndurancePercent or 25) / 100))
+	local transfer = math.max(0, math.min(1, SBvars.HardyTransferPerMinute or 0.05))
+	modData.HardyReserve = math.max(0, math.min(maximumReserve, modData.HardyReserve))
 	if endurance < 0.85 and modData.HardyReserve > 0 then
 		local amount = math.min(transfer, modData.HardyReserve, 1 - endurance)
 		stats:set(CharacterStat.ENDURANCE, endurance + amount)

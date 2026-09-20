@@ -164,7 +164,7 @@ local function captureAsceticFoodAdjustment(player, item, portion)
 		reason = "simple food"
 	end
 
-	portion = PZMath.clamp(portion, 0, 1)
+	portion = math.max(0, math.min(1, portion))
 	local stats = player:getStats()
 	local nutrition = player:getNutrition()
 	return {
@@ -430,7 +430,7 @@ local original_ISEatFoodAction_eat = ISEatFoodAction.eat
 ---@param percentage number
 function ISEatFoodAction:eat(food, percentage)
 	local actionPercentage = percentage > 0.95 and 1 or percentage
-	local portion = PZMath.clamp(self.percentage * actionPercentage, 0, 1)
+	local portion = math.max(0, math.min(1, self.percentage * actionPercentage))
 	local adjustment = captureAsceticFoodAdjustment(self.character, food, portion)
 	local originalReturn = original_ISEatFoodAction_eat(self, food, percentage)
 	applyAsceticFoodAdjustment(self.character, food, adjustment)
@@ -440,7 +440,7 @@ end
 ---Records the full duration when an eating action completes in single-player or on the server.
 function ISEatFoodAction:complete()
 	local item = self.item
-	local portion = PZMath.clamp(tonumber(self.percentage) or 1, 0, 1)
+	local portion = math.max(0, math.min(1, tonumber(self.percentage) or 1))
 	local asceticAdjustment = item
 		and instanceof(item, "Food")
 		and captureAsceticFoodAdjustment(self.character, item, portion)

@@ -272,8 +272,8 @@ end
 function ETW_MentalTraits.blissfulTrait(player, stats)
 	local unhappiness = stats:get(CharacterStat.UNHAPPINESS)
 	local boredom = stats:get(CharacterStat.BOREDOM)
-	local unhappinessReduction = PZMath.clamp(SBvars.BlissfulUnhappinessReductionPerMinute or 1, 0, 100)
-	local boredomReduction = PZMath.clamp(SBvars.BlissfulBoredomReductionPerMinute or 0.5, 0, 100)
+	local unhappinessReduction = math.max(0, math.min(100, SBvars.BlissfulUnhappinessReductionPerMinute or 1))
+	local boredomReduction = math.max(0, math.min(100, SBvars.BlissfulBoredomReductionPerMinute or 0.5))
 	local resultingUnhappiness = math.max(0.0, unhappiness - unhappinessReduction)
 	local resultingBoredom = math.max(0.0, boredom - boredomReduction)
 	stats:set(CharacterStat.UNHAPPINESS, resultingUnhappiness)
@@ -300,7 +300,7 @@ end
 function ETW_MentalTraits.depressiveTrait(player, modData, stats, attemptEpisode)
 	stats = stats or player:getStats()
 	local unhappiness = stats:get(CharacterStat.UNHAPPINESS)
-	local episodeIncrease = PZMath.clamp(SBvars.DepressiveUnhappinessIncrease or 25, 0, 100)
+	local episodeIncrease = math.max(0, math.min(100, SBvars.DepressiveUnhappinessIncrease or 25))
 	if episodeIncrease == 0 then
 		modData.DepressiveEpisodeActive = false
 		return
@@ -318,7 +318,7 @@ function ETW_MentalTraits.depressiveTrait(player, modData, stats, attemptEpisode
 			)
 			return
 		end
-		local recovery = PZMath.clamp(SBvars.DepressiveRecoveryPerMinute or 0.01, 0, 100)
+		local recovery = math.max(0, math.min(100, SBvars.DepressiveRecoveryPerMinute or 0.01))
 		stats:set(CharacterStat.UNHAPPINESS, math.max(0, unhappiness - recovery))
 		return
 	end
@@ -380,8 +380,8 @@ function ETW_MentalTraits.selfDestructiveTrait(player, stats, bodyDamage)
 	if hasDepressive then
 		maximumHealthLoss = SBvars.SelfDestructiveMaxHealthLossWithDepressive or 50
 	end
-	maximumHealthLoss = PZMath.clamp(maximumHealthLoss, 0, 100)
-	local healthFloor = PZMath.clamp(100 - unhappiness / 100 * maximumHealthLoss, 0, 100)
+	maximumHealthLoss = math.max(0, math.min(100, maximumHealthLoss))
+	local healthFloor = math.max(0, math.min(100, 100 - unhappiness / 100 * maximumHealthLoss))
 	local currentHealth = bodyDamage:getOverallBodyHealth()
 	if currentHealth <= healthFloor then
 		return
@@ -430,17 +430,17 @@ function ETW_MentalTraits.paranoiaTrait(player, stats, modData)
 	end
 
 	local stress = stats:get(CharacterStat.STRESS)
-	local baseChance = PZMath.clamp(SBvars.ParanoiaBaseChancePercent or 1, 0, 100)
-	local stressBonus = PZMath.clamp(SBvars.ParanoiaStressChanceBonusPercent or 2, 0, 100)
-	local chance = PZMath.clamp(baseChance + stress * stressBonus, 0, 100)
+	local baseChance = math.max(0, math.min(100, SBvars.ParanoiaBaseChancePercent or 1))
+	local stressBonus = math.max(0, math.min(100, SBvars.ParanoiaStressChanceBonusPercent or 2))
+	local chance = math.max(0, math.min(100, baseChance + stress * stressBonus))
 	local roll = random_instance:random(1, 100)
 	if roll > chance then
 		return
 	end
 
 	local panic = stats:get(CharacterStat.PANIC)
-	local panicIncrease = PZMath.clamp(SBvars.ParanoiaPanicIncrease or 25, 0, 100)
-	local stressIncrease = PZMath.clamp(SBvars.ParanoiaStressIncreasePercent or 10, 0, 100) / 100
+	local panicIncrease = math.max(0, math.min(100, SBvars.ParanoiaPanicIncrease or 25))
+	local stressIncrease = math.max(0, math.min(100, SBvars.ParanoiaStressIncreasePercent or 10)) / 100
 	local resultingPanic = math.min(100, panic + panicIncrease)
 	local resultingStress = math.min(1, stress + stressIncrease)
 	stats:set(CharacterStat.PANIC, resultingPanic)
@@ -498,8 +498,8 @@ end
 function ETW_MentalTraits.asceticTrait(player, stats)
 	local unhappiness = stats:get(CharacterStat.UNHAPPINESS)
 	local boredom = stats:get(CharacterStat.BOREDOM)
-	local unhappinessReduction = PZMath.clamp(SBvars.AsceticUnhappinessReductionPerMinute or 0.25, 0, 100)
-	local boredomReduction = PZMath.clamp(SBvars.AsceticBoredomReductionPerMinute or 0.25, 0, 100)
+	local unhappinessReduction = math.max(0, math.min(100, SBvars.AsceticUnhappinessReductionPerMinute or 0.25))
+	local boredomReduction = math.max(0, math.min(100, SBvars.AsceticBoredomReductionPerMinute or 0.25))
 	local resultingUnhappiness = unhappiness - unhappinessReduction
 	local resultingBoredom = boredom - boredomReduction
 	if resultingUnhappiness < 0 then
