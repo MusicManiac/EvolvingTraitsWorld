@@ -1,3 +1,9 @@
+## v.13.6.1
+###### xx Sep 2026
+
+- Fix:
+  - Replaced some occurrences of `PZMath.clamp` with `math.max` + `math.min`, which fixes Hardy and probably a bunch of other minor issues.
+
 ## v.13.6.0
 ###### 19 Sep 2026
 

@@ -329,10 +329,9 @@ end
 ---@return number conditionLossReductionPercent
 local function getTavernBrawlerBonuses(weapon, conditionLowerChance)
 	local baseDamageBonusPercent = math.max(0, SBvars.TavernBrawlerDamageBonusPercent or 10)
-	local baseConditionLossReductionPercent = PZMath.clamp(
-		SBvars.TavernBrawlerConditionLossReductionPercent or 50,
+	local baseConditionLossReductionPercent = math.max(
 		0,
-		95
+		math.min(95, SBvars.TavernBrawlerConditionLossReductionPercent or 50)
 	)
 	local damageBonusPercent = baseDamageBonusPercent
 	local conditionLossReductionPercent = baseConditionLossReductionPercent
@@ -348,7 +347,7 @@ local function getTavernBrawlerBonuses(weapon, conditionLowerChance)
 	if weapon:isOfWeaponCategory(WeaponCategory.SPEAR) then
 		return damageBonusPercent * 0.25, 0
 	end
-	return damageBonusPercent, PZMath.clamp(conditionLossReductionPercent, 0, 95)
+	return damageBonusPercent, math.max(0, math.min(95, conditionLossReductionPercent))
 end
 
 ---@param player IsoPlayer
@@ -450,7 +449,7 @@ local function getActionHeroBonuses(player)
 	damageMultiplier = damageMultiplier + closeDamageBonus * weightedDamageThreat
 	criticalChanceBonus = criticalChanceBonus
 		+ closeCriticalChanceBonus * weightedCriticalThreat
-	criticalChanceBonus = PZMath.clamp(criticalChanceBonus, 0, 100)
+	criticalChanceBonus = math.max(0, math.min(100, criticalChanceBonus))
 	actionHeroThreatCache[player] = {
 		timestamp = now,
 		damageMultiplier = damageMultiplier,
@@ -529,7 +528,7 @@ local function combatWeaponTraits(player)
 		and math.max(0, SBvars.TerminatorMaxRangeBonus or 5)
 		or 0
 	local terminatorJamChanceMultiplier = hasTerminator
-		and PZMath.clamp(SBvars.TerminatorJamChanceMultiplier or 0.5, 0, 1)
+		and math.max(0, math.min(1, SBvars.TerminatorJamChanceMultiplier or 0.5))
 		or 1
 	local tavernBrawlerDamageBonusPercent, tavernBrawlerConditionLossReductionPercent = 0.0, 0.0
 	if hasTavernBrawler then
@@ -681,7 +680,7 @@ local function combatWeaponTraits(player)
 			end
 			local originalCriticalChance = data.OriginalCriticalChance
 			if originalCriticalChance ~= nil then
-				weapon:setCriticalChance(PZMath.clamp(originalCriticalChance + criticalBonus, 0, 100))
+				weapon:setCriticalChance(math.max(0, math.min(100, originalCriticalChance + criticalBonus)))
 			end
 		end
 	end

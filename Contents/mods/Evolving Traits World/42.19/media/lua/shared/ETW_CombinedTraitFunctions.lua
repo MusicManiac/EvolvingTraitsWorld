@@ -350,7 +350,7 @@ function ETWCombinedTraitChecks.calculateAntiGunXPPenalty(player, perk, earnedAm
 	end
 
 	local currentXP = player:getXp():getXP(perk)
-	local progress = PZMath.clamp((currentXP - lowerXP) / levelSpan, 0, 1)
+	local progress = math.max(0, math.min(1, (currentXP - lowerXP) / levelSpan))
 	local lowerBoundary = 0.05
 	local upperBoundary = 0.95
 	if progress < lowerBoundary or progress > upperBoundary then

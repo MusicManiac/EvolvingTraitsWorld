@@ -149,7 +149,7 @@ function ETW_ModData.createETWModData(playerIndex, player)
 		noodleLegs.LastY = player:getY()
 		noodleLegs.LastZ = player:getZ()
 	end
-	modData.HardyReserve = modData.HardyReserve or PZMath.clamp((SBvars.HardyExtraEndurancePercent or 25) / 100, 0, 1)
+	modData.HardyReserve = modData.HardyReserve or math.max(0, math.min(1, (SBvars.HardyExtraEndurancePercent or 25) / 100))
 	modData.QuickRestLastEndurance = modData.QuickRestLastEndurance or player:getStats():get(CharacterStat.ENDURANCE)
 	modData.IdealWeightLastCalories = modData.IdealWeightLastCalories or player:getNutrition():getCalories()
 	modData.DepressiveEpisodeActive = modData.DepressiveEpisodeActive or false
