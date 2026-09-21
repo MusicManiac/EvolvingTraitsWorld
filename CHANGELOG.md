@@ -1,5 +1,5 @@
 ## v.13.7.0
-###### xx Sep 2026
+###### 21 Sep 2026
 
 - General:
   - Added some additional indicators to UI.
