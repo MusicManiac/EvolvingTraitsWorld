@@ -832,7 +832,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelVitalsFoodGainNegative:setTooltip(getText("UI_ETW_GainTooltip"))
+				self.labelVitalsFoodGainNegative:setTooltip(getText("UI_ETW_GainTooltip"), "below")
 				self:addChild(self.labelVitalsFoodGainNegative)
 
 				str = "- " .. getCachedTraitUIName(CharacterTrait.LIGHT_EATER)
@@ -850,7 +850,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelVitalsFoodLosePositive:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self.labelVitalsFoodLosePositive:setTooltip(getText("UI_ETW_LooseTooltip"), "below")
 				self:addChild(self.labelVitalsFoodLosePositive)
 
 				y = y + FONT_HGT_SMALL
@@ -895,7 +895,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelVitalsFoodLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self.labelVitalsFoodLose:setTooltip(getText("UI_ETW_LooseTooltip"), "above")
 				self:addChild(self.labelVitalsFoodLose)
 
 				str = "+ " .. getCachedTraitUIName(CharacterTrait.LIGHT_EATER)
@@ -913,7 +913,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelVitalsFoodGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self.labelVitalsFoodGain:setTooltip(getText("UI_ETW_GainTooltip"), "above")
 				self:addChild(self.labelVitalsFoodGain)
 
 				y = y + FONT_HGT_SMALL
@@ -951,7 +951,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelVitalsThirstGainNegative:setTooltip(getText("UI_ETW_GainTooltip"))
+				self.labelVitalsThirstGainNegative:setTooltip(getText("UI_ETW_GainTooltip"), "below")
 				self:addChild(self.labelVitalsThirstGainNegative)
 
 				str = "- " .. getCachedTraitUIName(CharacterTrait.LOW_THIRST)
@@ -969,7 +969,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelVitalsThirstLosePositive:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self.labelVitalsThirstLosePositive:setTooltip(getText("UI_ETW_LooseTooltip"), "below")
 				self:addChild(self.labelVitalsThirstLosePositive)
 
 				y = y + FONT_HGT_SMALL
@@ -1014,7 +1014,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelVitalsThirstLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self.labelVitalsThirstLose:setTooltip(getText("UI_ETW_LooseTooltip"), "above")
 				self:addChild(self.labelVitalsThirstLose)
 
 				str = "+ " .. getCachedTraitUIName(CharacterTrait.LOW_THIRST)
@@ -1032,7 +1032,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelVitalsThirstGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self.labelVitalsThirstGain:setTooltip(getText("UI_ETW_GainTooltip"), "above")
 				self:addChild(self.labelVitalsThirstGain)
 
 				y = y + FONT_HGT_SMALL
@@ -1073,7 +1073,8 @@ function ISETWUI:createChildren()
 						true
 					)
 					self.labelVitalsMentalGainDepressive:setTooltip(
-						getText("Sandbox_ETW_MentalStateSystemDepressiveGainThreshold_tooltip")
+						getText("Sandbox_ETW_MentalStateSystemDepressiveGainThreshold_tooltip"),
+						"below"
 					)
 					self:addChild(self.labelVitalsMentalGainDepressive)
 				end
@@ -1095,7 +1096,8 @@ function ISETWUI:createChildren()
 						true
 					)
 					self.labelVitalsMentalLose:setTooltip(
-						getText("Sandbox_ETW_MentalStateSystemBlissfulLoseThreshold_tooltip")
+						getText("Sandbox_ETW_MentalStateSystemBlissfulLoseThreshold_tooltip"),
+						"below"
 					)
 					self:addChild(self.labelVitalsMentalLose)
 				end
@@ -1143,7 +1145,8 @@ function ISETWUI:createChildren()
 						true
 					)
 					self.labelVitalsMentalLoseDepressive:setTooltip(
-						getText("Sandbox_ETW_MentalStateSystemDepressiveLoseThreshold_tooltip")
+						getText("Sandbox_ETW_MentalStateSystemDepressiveLoseThreshold_tooltip"),
+						"above"
 					)
 					self:addChild(self.labelVitalsMentalLoseDepressive)
 				end
@@ -1165,7 +1168,8 @@ function ISETWUI:createChildren()
 						true
 					)
 					self.labelVitalsMentalGain:setTooltip(
-						getText("Sandbox_ETW_MentalStateSystemBlissfulGainThreshold_tooltip")
+						getText("Sandbox_ETW_MentalStateSystemBlissfulGainThreshold_tooltip"),
+						"above"
 					)
 					self:addChild(self.labelVitalsMentalGain)
 				end
@@ -1191,11 +1195,12 @@ function ISETWUI:createChildren()
 
 		local function buildPermanentTraitsSection()
 			if ETW_CommonLogicChecks.ImmunitySystemShouldExecute(player) then
+				str = "- " .. getCachedTraitUIName(CharacterTrait.PRONE_TO_ILLNESS)
 				self.labelProneToIllness = ISLabel:new(
 					barMidPosition - strLen(textManager, str) / 2,
 					y,
 					FONT_HGT_SMALL,
-					"- " .. getCachedTraitUIName(CharacterTrait.PRONE_TO_ILLNESS),
+					str,
 					self.DimmedTextColor.r,
 					self.DimmedTextColor.g,
 					self.DimmedTextColor.b,
@@ -1203,7 +1208,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelProneToIllness:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self.labelProneToIllness:setTooltip(getText("UI_ETW_LooseTooltip"), "below")
 				self:addChild(self.labelProneToIllness)
 
 				self.labelResilient = ISLabel:new(
@@ -1218,7 +1223,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					false
 				)
-				self.labelResilient:setTooltip(getText("UI_ETW_GainTooltip"))
+				self.labelResilient:setTooltip(getText("UI_ETW_GainTooltip"), "below")
 				self:addChild(self.labelResilient)
 
 				y = y + FONT_HGT_SMALL
@@ -1248,11 +1253,12 @@ function ISETWUI:createChildren()
 			end
 
 			if ETW_CommonLogicChecks.FoodSicknessSystemShouldExecute(player) then
+				str = "- " .. getCachedTraitUIName(CharacterTrait.WEAK_STOMACH)
 				self.labelWeakStomach = ISLabel:new(
-					barMidPosition,
+					barMidPosition - strLen(textManager, str) / 2,
 					y,
 					FONT_HGT_SMALL,
-					"- " .. getCachedTraitUIName(CharacterTrait.WEAK_STOMACH),
+					str,
 					self.DimmedTextColor.r,
 					self.DimmedTextColor.g,
 					self.DimmedTextColor.b,
@@ -1260,8 +1266,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelWeakStomach.center = true
-				self.labelWeakStomach:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self.labelWeakStomach:setTooltip(getText("UI_ETW_LooseTooltip"), "below")
 				self:addChild(self.labelWeakStomach)
 
 				self.labelIronGut = ISLabel:new(
@@ -1276,7 +1281,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					false
 				)
-				self.labelIronGut:setTooltip(getText("UI_ETW_GainTooltip"))
+				self.labelIronGut:setTooltip(getText("UI_ETW_GainTooltip"), "below")
 				self:addChild(self.labelIronGut)
 
 				y = y + FONT_HGT_SMALL
@@ -1319,7 +1324,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelHardOfHearingLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self.labelHardOfHearingLose:setTooltip(getText("UI_ETW_LooseTooltip"), "below")
 				self:addChild(self.labelHardOfHearingLose)
 
 				self.labelKeenHearingGain = ISLabel:new(
@@ -1334,7 +1339,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					false
 				)
-				self.labelKeenHearingGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self.labelKeenHearingGain:setTooltip(getText("UI_ETW_GainTooltip"), "below")
 				self:addChild(self.labelKeenHearingGain)
 
 				y = y + FONT_HGT_SMALL
@@ -1377,7 +1382,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelSlowLearnerLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self.labelSlowLearnerLose:setTooltip(getText("UI_ETW_LooseTooltip"), "below")
 				self:addChild(self.labelSlowLearnerLose)
 
 				self.labelFastLearnerGain = ISLabel:new(
@@ -1392,7 +1397,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					false
 				)
-				self.labelFastLearnerGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self.labelFastLearnerGain:setTooltip(getText("UI_ETW_GainTooltip"), "below")
 				self:addChild(self.labelFastLearnerGain)
 
 				y = y + FONT_HGT_SMALL
@@ -1435,7 +1440,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelSlowReaderLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self.labelSlowReaderLose:setTooltip(getText("UI_ETW_LooseTooltip"), "below")
 				self:addChild(self.labelSlowReaderLose)
 
 				self.labelFastReaderGain = ISLabel:new(
@@ -1450,7 +1455,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					false
 				)
-				self.labelFastReaderGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self.labelFastReaderGain:setTooltip(getText("UI_ETW_GainTooltip"), "below")
 				self:addChild(self.labelFastReaderGain)
 
 				y = y + FONT_HGT_SMALL
@@ -1493,7 +1498,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelSlowEaterLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self.labelSlowEaterLose:setTooltip(getText("UI_ETW_LooseTooltip"), "below")
 				self:addChild(self.labelSlowEaterLose)
 
 				self.labelFastEaterGain = ISLabel:new(
@@ -1508,7 +1513,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					false
 				)
-				self.labelFastEaterGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self.labelFastEaterGain:setTooltip(getText("UI_ETW_GainTooltip"), "below")
 				self:addChild(self.labelFastEaterGain)
 
 				y = y + FONT_HGT_SMALL
@@ -1551,7 +1556,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelPackMouseLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self.labelPackMouseLose:setTooltip(getText("UI_ETW_LooseTooltip"), "below")
 				self:addChild(self.labelPackMouseLose)
 
 				str = "+ " .. getCachedTraitUIName(ETWTraitsRegistry.HOARDER)
@@ -1567,7 +1572,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelHoarderGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self.labelHoarderGain:setTooltip(getText("UI_ETW_GainTooltip"), "below")
 				self:addChild(self.labelHoarderGain)
 
 				self.labelPackMuleGain = ISLabel:new(
@@ -1582,7 +1587,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					false
 				)
-				self.labelPackMuleGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self.labelPackMuleGain:setTooltip(getText("UI_ETW_GainTooltip"), "below")
 				self:addChild(self.labelPackMuleGain)
 
 				y = y + FONT_HGT_SMALL
@@ -1641,7 +1646,7 @@ function ISETWUI:createChildren()
 						UIFont.Small,
 						true
 					)
-					self.labelAllThumbsWeightLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+					self.labelAllThumbsWeightLose:setTooltip(getText("UI_ETW_LooseTooltip"), "below")
 					self:addChild(self.labelAllThumbsWeightLose)
 
 					str = "- " .. getCachedTraitUIName(CharacterTrait.DISORGANIZED)
@@ -1658,7 +1663,7 @@ function ISETWUI:createChildren()
 						UIFont.Small,
 						true
 					)
-					self.labelDisorganizedWeightLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+					self.labelDisorganizedWeightLose:setTooltip(getText("UI_ETW_LooseTooltip"), "below")
 					self:addChild(self.labelDisorganizedWeightLose)
 					if butterfingersTransferProgress then
 						str = "- " .. getCachedTraitUIName(ETWTraitsRegistry.BUTTERFINGERS)
@@ -1674,7 +1679,7 @@ function ISETWUI:createChildren()
 							UIFont.Small,
 							false
 						)
-						self.labelButterfingersWeightLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+						self.labelButterfingersWeightLose:setTooltip(getText("UI_ETW_LooseTooltip"), "below")
 						self:addChild(self.labelButterfingersWeightLose)
 					end
 
@@ -1720,7 +1725,7 @@ function ISETWUI:createChildren()
 						UIFont.Small,
 						true
 					)
-					self.labelDextrousWeightGain:setTooltip(getText("UI_ETW_GainTooltip"))
+					self.labelDextrousWeightGain:setTooltip(getText("UI_ETW_GainTooltip"), "above")
 					self:addChild(self.labelDextrousWeightGain)
 
 					str = "+ " .. getCachedTraitUIName(CharacterTrait.ORGANIZED)
@@ -1738,7 +1743,7 @@ function ISETWUI:createChildren()
 						UIFont.Small,
 						false
 					)
-					self.labelOrganizedWeightGain:setTooltip(getText("UI_ETW_GainTooltip"))
+					self.labelOrganizedWeightGain:setTooltip(getText("UI_ETW_GainTooltip"), "above")
 					self:addChild(self.labelOrganizedWeightGain)
 					y = y + FONT_HGT_SMALL
 				end
@@ -1764,7 +1769,7 @@ function ISETWUI:createChildren()
 						UIFont.Small,
 						true
 					)
-					self.labelDisorganizedItemsLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+					self.labelDisorganizedItemsLose:setTooltip(getText("UI_ETW_LooseTooltip"), "below")
 					self:addChild(self.labelDisorganizedItemsLose)
 
 					str = "- " .. getCachedTraitUIName(CharacterTrait.ALL_THUMBS)
@@ -1781,7 +1786,7 @@ function ISETWUI:createChildren()
 						UIFont.Small,
 						true
 					)
-					self.labelAllThumbsItemsLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+					self.labelAllThumbsItemsLose:setTooltip(getText("UI_ETW_LooseTooltip"), "below")
 					self:addChild(self.labelAllThumbsItemsLose)
 					if butterfingersTransferProgress then
 						str = "- " .. getCachedTraitUIName(ETWTraitsRegistry.BUTTERFINGERS)
@@ -1797,7 +1802,7 @@ function ISETWUI:createChildren()
 							UIFont.Small,
 							false
 						)
-						self.labelButterfingersItemsLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+						self.labelButterfingersItemsLose:setTooltip(getText("UI_ETW_LooseTooltip"), "below")
 						self:addChild(self.labelButterfingersItemsLose)
 					end
 
@@ -1843,7 +1848,7 @@ function ISETWUI:createChildren()
 						UIFont.Small,
 						true
 					)
-					self.labelOrganizedItemsGain:setTooltip(getText("UI_ETW_GainTooltip"))
+					self.labelOrganizedItemsGain:setTooltip(getText("UI_ETW_GainTooltip"), "above")
 					self:addChild(self.labelOrganizedItemsGain)
 
 					str = "+ " .. getCachedTraitUIName(CharacterTrait.DEXTROUS)
@@ -1860,7 +1865,7 @@ function ISETWUI:createChildren()
 						UIFont.Small,
 						false
 					)
-					self.labelDextrousItemsGain:setTooltip(getText("UI_ETW_GainTooltip"))
+					self.labelDextrousItemsGain:setTooltip(getText("UI_ETW_GainTooltip"), "above")
 					self:addChild(self.labelDextrousItemsGain)
 					y = y + FONT_HGT_SMALL
 				end
@@ -1882,7 +1887,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelCowardlyLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self.labelCowardlyLose:setTooltip(getText("UI_ETW_LooseTooltip"), "below")
 				self:addChild(self.labelCowardlyLose)
 
 				str = "- " .. getCachedTraitUIName(CharacterTrait.PACIFIST)
@@ -1898,7 +1903,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelPacifistLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self.labelPacifistLose:setTooltip(getText("UI_ETW_LooseTooltip"), "below")
 				self:addChild(self.labelPacifistLose)
 
 				str = "+ " .. getCachedTraitUIName(CharacterTrait.BRAVE)
@@ -1914,7 +1919,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelBraveryGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self.labelBraveryGain:setTooltip(getText("UI_ETW_GainTooltip"), "below")
 				self:addChild(self.labelBraveryGain)
 
 				y = y + FONT_HGT_SMALL
@@ -1956,7 +1961,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelHemophobicLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self.labelHemophobicLose:setTooltip(getText("UI_ETW_LooseTooltip"), "above")
 				self:addChild(self.labelHemophobicLose)
 
 				str = "+ " .. getCachedTraitUIName(CharacterTrait.ADRENALINE_JUNKIE)
@@ -1972,7 +1977,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelAdrenalineJunkieGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self.labelAdrenalineJunkieGain:setTooltip(getText("UI_ETW_GainTooltip"), "above")
 				self:addChild(self.labelAdrenalineJunkieGain)
 
 				self.labelDesensitizedGain = ISLabel:new(
@@ -1987,7 +1992,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					false
 				)
-				self.labelDesensitizedGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self.labelDesensitizedGain:setTooltip(getText("UI_ETW_GainTooltip"), "above")
 				self:addChild(self.labelDesensitizedGain)
 
 				y = y + FONT_HGT_SMALL
@@ -3549,7 +3554,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelThinSkinnedGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self.labelThinSkinnedGain:setTooltip(getText("UI_ETW_GainTooltip"), "below")
 				self:addChild(self.labelThinSkinnedGain)
 
 				str = "+ " .. getCachedTraitUIName(CharacterTrait.THICK_SKINNED)
@@ -3565,7 +3570,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelThickSkinnedGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self.labelThickSkinnedGain:setTooltip(getText("UI_ETW_GainTooltip"), "below")
 				self:addChild(self.labelThickSkinnedGain)
 
 				y = y + FONT_HGT_SMALL
@@ -3583,7 +3588,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelThinSkinnedLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self.labelThinSkinnedLose:setTooltip(getText("UI_ETW_LooseTooltip"), "above")
 				self:addChild(self.labelThinSkinnedLose)
 
 				str = "- " .. getCachedTraitUIName(CharacterTrait.THICK_SKINNED)
@@ -3599,7 +3604,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelThickSkinnedLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self.labelThickSkinnedLose:setTooltip(getText("UI_ETW_LooseTooltip"), "above")
 				self:addChild(self.labelThickSkinnedLose)
 
 				self.labelInjuriesSystemBarName = ISLabel:new(
@@ -3640,7 +3645,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelSlowHealerGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self.labelSlowHealerGain:setTooltip(getText("UI_ETW_GainTooltip"), "below")
 				self:addChild(self.labelSlowHealerGain)
 
 				str = "+ " .. getCachedTraitUIName(CharacterTrait.FAST_HEALER)
@@ -3656,7 +3661,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelFastHealerGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self.labelFastHealerGain:setTooltip(getText("UI_ETW_GainTooltip"), "below")
 				self:addChild(self.labelFastHealerGain)
 
 				y = y + FONT_HGT_SMALL
@@ -3674,7 +3679,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelSlowHealerLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self.labelSlowHealerLose:setTooltip(getText("UI_ETW_LooseTooltip"), "above")
 				self:addChild(self.labelSlowHealerLose)
 
 				str = "- " .. getCachedTraitUIName(CharacterTrait.FAST_HEALER)
@@ -3690,7 +3695,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelFastHealerLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self.labelFastHealerLose:setTooltip(getText("UI_ETW_LooseTooltip"), "above")
 				self:addChild(self.labelFastHealerLose)
 
 				self.labelHealerSystemBarName = ISLabel:new(
@@ -3731,7 +3736,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelMoreSleepGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self.labelMoreSleepGain:setTooltip(getText("UI_ETW_GainTooltip"), "below")
 				self:addChild(self.labelMoreSleepGain)
 
 				str = "+ " .. getCachedTraitUIName(CharacterTrait.NEEDS_LESS_SLEEP)
@@ -3747,7 +3752,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelLessSleepGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self.labelLessSleepGain:setTooltip(getText("UI_ETW_GainTooltip"), "below")
 				self:addChild(self.labelLessSleepGain)
 
 				y = y + FONT_HGT_SMALL
@@ -3765,7 +3770,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelMoreSleepLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self.labelMoreSleepLose:setTooltip(getText("UI_ETW_LooseTooltip"), "above")
 				self:addChild(self.labelMoreSleepLose)
 
 				str = "- " .. getCachedTraitUIName(CharacterTrait.NEEDS_LESS_SLEEP)
@@ -3781,7 +3786,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelLessSleepLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self.labelLessSleepLose:setTooltip(getText("UI_ETW_LooseTooltip"), "above")
 				self:addChild(self.labelLessSleepLose)
 
 				self.labelSleepSystemBarName = ISLabel:new(
@@ -3822,7 +3827,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelBloodlustLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self.labelBloodlustLose:setTooltip(getText("UI_ETW_LooseTooltip"), "below")
 				self:addChild(self.labelBloodlustLose)
 
 				str = "+ " .. getCachedTraitUIName(ETWTraitsRegistry.BLOODLUST)
@@ -3838,7 +3843,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelBloodlustGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self.labelBloodlustGain:setTooltip(getText("UI_ETW_GainTooltip"), "below")
 				self:addChild(self.labelBloodlustGain)
 
 				y = y + FONT_HGT_SMALL
@@ -3881,7 +3886,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelAsthmaticGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self.labelAsthmaticGain:setTooltip(getText("UI_ETW_GainTooltip"), "below")
 				self:addChild(self.labelAsthmaticGain)
 
 				str = "- " .. getCachedTraitUIName(CharacterTrait.ASTHMATIC)
@@ -3897,7 +3902,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelAsthmaticLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self.labelAsthmaticLose:setTooltip(getText("UI_ETW_LooseTooltip"), "below")
 				self:addChild(self.labelAsthmaticLose)
 
 				y = y + FONT_HGT_SMALL
@@ -3940,7 +3945,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelOutdoorsmanLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self.labelOutdoorsmanLose:setTooltip(getText("UI_ETW_LooseTooltip"), "below")
 				self:addChild(self.labelOutdoorsmanLose)
 
 				str = "+ " .. getCachedTraitUIName(CharacterTrait.OUTDOORSMAN)
@@ -3956,7 +3961,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelOutdoorsmanGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self.labelOutdoorsmanGain:setTooltip(getText("UI_ETW_GainTooltip"), "below")
 				self:addChild(self.labelOutdoorsmanGain)
 
 				y = y + FONT_HGT_SMALL
@@ -3999,7 +4004,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelAgoraphobicGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self.labelAgoraphobicGain:setTooltip(getText("UI_ETW_GainTooltip"), "below")
 				self:addChild(self.labelAgoraphobicGain)
 
 				str = "- " .. getCachedTraitUIName(CharacterTrait.AGORAPHOBIC)
@@ -4015,7 +4020,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelAgoraphobicLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self.labelAgoraphobicLose:setTooltip(getText("UI_ETW_LooseTooltip"), "below")
 				self:addChild(self.labelAgoraphobicLose)
 
 				y = y + FONT_HGT_SMALL
@@ -4056,7 +4061,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelClaustrophobicGain:setTooltip(getText("UI_ETW_GainTooltip"))
+				self.labelClaustrophobicGain:setTooltip(getText("UI_ETW_GainTooltip"), "below")
 				self:addChild(self.labelClaustrophobicGain)
 
 				str = "- " .. getCachedTraitUIName(CharacterTrait.CLAUSTROPHOBIC)
@@ -4072,7 +4077,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelClaustrophobicLose:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self.labelClaustrophobicLose:setTooltip(getText("UI_ETW_LooseTooltip"), "below")
 				self:addChild(self.labelClaustrophobicLose)
 
 				y = y + FONT_HGT_SMALL
@@ -4115,7 +4120,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelIdealWeightLose:setTooltip(getText("Sandbox_ETW_IdealWeightCounter_tooltip"))
+				self.labelIdealWeightLose:setTooltip(getText("Sandbox_ETW_IdealWeightCounter_tooltip"), "below")
 				self:addChild(self.labelIdealWeightLose)
 				str = "+ " .. getCachedTraitUIName(ETWTraitsRegistry.IDEAL_WEIGHT)
 				self.labelIdealWeightGain = ISLabel:new(
@@ -4130,7 +4135,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelIdealWeightGain:setTooltip(getText("Sandbox_ETW_IdealWeightCounter_tooltip"))
+				self.labelIdealWeightGain:setTooltip(getText("Sandbox_ETW_IdealWeightCounter_tooltip"), "below")
 				self:addChild(self.labelIdealWeightGain)
 				y = y + FONT_HGT_SMALL
 				self.labelIdealWeightBarName = ISLabel:new(
@@ -4169,7 +4174,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelPluviophobia:setTooltip(getText("UI_ETW_GainLoseTooltip"))
+				self.labelPluviophobia:setTooltip(getText("UI_ETW_GainLoseTooltip"), "below")
 				self:addChild(self.labelPluviophobia)
 
 				str = "+/- " .. getCachedTraitUIName(ETWTraitsRegistry.PLUVIOPHILE)
@@ -4185,7 +4190,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelPluviophile:setTooltip(getText("UI_ETW_GainLoseTooltip"))
+				self.labelPluviophile:setTooltip(getText("UI_ETW_GainLoseTooltip"), "below")
 				self:addChild(self.labelPluviophile)
 
 				y = y + FONT_HGT_SMALL
@@ -4228,7 +4233,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelHomichlophobia:setTooltip(getText("UI_ETW_GainLoseTooltip"))
+				self.labelHomichlophobia:setTooltip(getText("UI_ETW_GainLoseTooltip"), "below")
 				self:addChild(self.labelHomichlophobia)
 
 				str = "+/- " .. getCachedTraitUIName(ETWTraitsRegistry.HOMICHLOPHILE)
@@ -4244,7 +4249,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelHomichlophile:setTooltip(getText("UI_ETW_GainLoseTooltip"))
+				self.labelHomichlophile:setTooltip(getText("UI_ETW_GainLoseTooltip"), "below")
 				self:addChild(self.labelHomichlophile)
 
 				y = y + FONT_HGT_SMALL
@@ -4292,7 +4297,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelSmokerLose:setTooltip(getText("UI_ETW_GainTooltip"))
+				self.labelSmokerLose:setTooltip(getText("UI_ETW_GainTooltip"), "below")
 				self:addChild(self.labelSmokerLose)
 
 				str = "+ " .. getCachedTraitUIName(CharacterTrait.SMOKER)
@@ -4308,7 +4313,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelSmokerGain:setTooltip(getText("UI_ETW_LooseTooltip"))
+				self.labelSmokerGain:setTooltip(getText("UI_ETW_LooseTooltip"), "below")
 				self:addChild(self.labelSmokerGain)
 
 				y = y + FONT_HGT_SMALL
