@@ -1,10 +1,12 @@
-## v.13.6.1
+## v.13.7.0
 ###### xx Sep 2026
 
 - General:
   - Added some additional indicators to UI.
 - Fix:
   - Replaced some occurrences of `PZMath.clamp` with `math.max` + `math.min`, which fixes Hardy and probably a bunch of other minor issues.
+- Translation:
+  - Updated CN to v.13.7.0
 
 ## v.13.6.0
 ###### 19 Sep 2026
