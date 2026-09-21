@@ -76,6 +76,7 @@ local THRESHOLD_TRIANGLE_HALF_WIDTHS = { 4, 3, 2, 2, 1, 1, 0 }
 ---@param fromTop boolean
 ---@param color umbrella.RGBA
 local function drawThresholdIndicator(bar, markerX, fromTop, color)
+	---@cast bar.width integer
 	markerX = math.max(0, math.min(bar.width - 1, markerX))
 	for index, halfWidth in ipairs(THRESHOLD_TRIANGLE_HALF_WIDTHS) do
 		local depth = index - 1

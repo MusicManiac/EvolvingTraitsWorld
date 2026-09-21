@@ -284,6 +284,7 @@ local function getTranslationVersionColor(currentVersion, translationVersion)
 	if minorDifference >= 10 then
 		return TRANSLATION_VERSION_COLORS[3]
 	elseif minorDifference > 0 then
+		---@diagnostic disable-next-line: return-type-mismatch
 		return TRANSLATION_VERSION_COLORS[11 - math.ceil(minorDifference * 8 / 10)]
 	elseif minorDifference < 0 then
 		return TRANSLATION_VERSION_COLORS[12]
