@@ -182,6 +182,7 @@ local function everyTickUpdate()
 		local modData = ETW_CommonFunctions.getETWModData(player)
 		local bodyDamage
 		local stats
+		local startingInjuryParts
 		if player:hasTrait(ETWTraitsRegistry.PAIN_TOLERANCE) then
 			stats = stats or player:getStats()
 			ETW_HealthTraits.painToleranceTrait(player, stats)
@@ -190,22 +191,29 @@ local function everyTickUpdate()
 			ETW_HealthTraits.noodleLegsTrait(player)
 		end
 		if modData then
-			local startingInjuries = modData.StartingInjurySystem
+			local injurySnapshots = modData.InjurySnapshotSystem
 			if
 				(
 					player:hasTrait(ETWTraitsRegistry.INJURED)
 					or player:hasTrait(ETWTraitsRegistry.BURN_WARD_PATIENT)
 					or player:hasTrait(ETWTraitsRegistry.BROKEN_LEG)
 				)
-				and startingInjuries
+				and injurySnapshots
 				and (
-					hasEntries(startingInjuries.InjuredBodyParts or {})
-					or hasEntries(startingInjuries.BurnedBodyParts or {})
-					or hasEntries(startingInjuries.BrokenBodyParts or {})
+					hasEntries(injurySnapshots.InjuredBodyParts or {})
+					or hasEntries(injurySnapshots.BurnedBodyParts or {})
+					or hasEntries(injurySnapshots.BrokenBodyParts or {})
 				)
 			then
 				bodyDamage = bodyDamage or player:getBodyDamage()
-				ETW_StartingTraits.updateStartingInjuries(player, bodyDamage, modData)
+				startingInjuryParts = ETW_StartingTraits.updateStartingInjuries(player, bodyDamage, modData)
+			end
+			if
+				player:hasTrait(ETWTraitsRegistry.BRITTLE_BONES)
+				or player:hasTrait(ETWTraitsRegistry.STRONG_BONES)
+			then
+				bodyDamage = bodyDamage or player:getBodyDamage()
+				ETW_HealthTraits.boneTraits(player, bodyDamage, modData, startingInjuryParts)
 			end
 			if player:hasTrait(ETWTraitsRegistry.MADE_OF_GLASS) then
 				bodyDamage = player:getBodyDamage()

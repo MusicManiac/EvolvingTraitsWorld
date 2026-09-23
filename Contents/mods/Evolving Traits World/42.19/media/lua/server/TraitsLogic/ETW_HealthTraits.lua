@@ -28,6 +28,69 @@ local MADE_OF_GLASS_LOG_INTERVAL_MS = 1000
 ---@type table<string|integer, BodyDamage>
 local unwaveringAppliedBodyDamageByPlayer = {}
 
+---Applies Brittle Bones or Strong Bones to newly detected fracture duration increases.
+---Body parts already handled by the starting-injury monitor are only snapshotted here so
+---stacked trait multipliers are applied once by that monitor instead of feeding back next tick.
+---@param player IsoPlayer Character whose fractures should be monitored.
+---@param bodyDamage BodyDamage Character body-damage container.
+---@param modData EvolvingTraitsWorldModData Persistent ETW data containing fracture snapshots.
+---@param startingInjuryParts table<string, boolean>|nil Body parts already processed this tick.
+function ETW_HealthTraits.boneTraits(player, bodyDamage, modData, startingInjuryParts)
+	local multiplier = 1.0
+	local traitName = nil
+	if player:hasTrait(ETWTraitsRegistry.BRITTLE_BONES) then
+		multiplier = math.max(1, SBvars.BrittleBonesFractureTimeMultiplier or 2)
+		traitName = "Brittle Bones"
+	elseif player:hasTrait(ETWTraitsRegistry.STRONG_BONES) then
+		multiplier = math.max(0, math.min(1, SBvars.StrongBonesFractureTimeMultiplier or 0.5))
+		traitName = "Strong Bones"
+	else
+		return
+	end
+
+	local injurySnapshotSystem = modData.InjurySnapshotSystem
+	if not injurySnapshotSystem then
+		return
+	end
+	local snapshots = injurySnapshotSystem.FractureTimeSnapshots or {}
+	injurySnapshotSystem.FractureTimeSnapshots = snapshots
+	local bodyParts = bodyDamage:getBodyParts()
+	for i = 0, bodyParts:size() - 1 do
+		local bodyPart = bodyParts:get(i)
+		local bodyPartName = BodyPartType.ToString(bodyPart:getType())
+		local currentFractureTime = bodyPart:getFractureTime()
+		local previousFractureTime = snapshots[bodyPartName]
+		if
+			not (startingInjuryParts and startingInjuryParts[bodyPartName])
+			and previousFractureTime ~= nil
+			and currentFractureTime > 0
+			and (
+				previousFractureTime <= 0
+				or currentFractureTime > previousFractureTime + 0.001
+			)
+		then
+			local observedFractureTime = currentFractureTime
+			currentFractureTime = currentFractureTime * multiplier
+			bodyPart:setFractureTime(currentFractureTime)
+			logETW(
+				"ETW Logger | "
+					.. traitName
+					.. ": adjusted a new fracture on "
+					.. bodyPartName
+					.. ", observed="
+					.. observedFractureTime
+					.. ", multiplier="
+					.. multiplier
+					.. ", result="
+					.. currentFractureTime
+					.. " for "
+					.. tostring(player:getUsername())
+			)
+		end
+		snapshots[bodyPartName] = currentFractureTime
+	end
+end
+
 ---@param player IsoPlayer
 ---@param madeOfGlass MadeOfGlassSystem
 local function flushMadeOfGlassDamageLog(player, madeOfGlass)

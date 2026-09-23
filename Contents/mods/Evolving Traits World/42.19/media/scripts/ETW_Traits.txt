@@ -125,6 +125,28 @@ module ETW
         UIDescription = UI_trait_BrokenLegDesc,
     }
 
+    character_trait_definition ETW:BrittleBones
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:BrittleBones,
+        Cost = -4,
+        UIName = UI_trait_BrittleBones,
+        UIDescription = UI_trait_BrittleBonesDesc,
+        MutuallyExclusiveTraits = ETW:StrongBones,
+    }
+
+    character_trait_definition ETW:StrongBones
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:StrongBones,
+        Cost = 4,
+        UIName = UI_trait_StrongBones,
+        UIDescription = UI_trait_StrongBonesDesc,
+        MutuallyExclusiveTraits = ETW:BrittleBones,
+    }
+
     character_trait_definition ETW:Hardy
     {
         IsProfessionTrait = false,

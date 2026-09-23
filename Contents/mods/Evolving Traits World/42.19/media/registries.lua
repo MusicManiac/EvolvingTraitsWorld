@@ -16,6 +16,7 @@ ETW_Registry = ETW_Registry or {}
 ---@field BAD_TEETH CharacterTrait
 ---@field BUTTERFINGERS CharacterTrait
 ---@field BROKEN_LEG CharacterTrait
+---@field BRITTLE_BONES CharacterTrait
 ---@field BURN_WARD_PATIENT CharacterTrait
 ---@field DEPRIVED CharacterTrait
 ---@field DEPRESSIVE CharacterTrait
@@ -65,6 +66,7 @@ ETW_Registry = ETW_Registry or {}
 ---@field SELF_DESTRUCTIVE CharacterTrait
 ---@field SLOW_EATER CharacterTrait
 ---@field SUN_SENSITIVITY CharacterTrait
+---@field STRONG_BONES CharacterTrait
 ---@field SUPER_IMMUNE CharacterTrait
 ---@field TAVERN_BRAWLER CharacterTrait
 ---@field TERMINATOR CharacterTrait
@@ -87,6 +89,7 @@ ETW_Registry.traits = {
 	BAD_TEETH = CharacterTrait.register("ETW:BadTeeth"),
 	BUTTERFINGERS = CharacterTrait.register("ETW:Butterfingers"),
 	BROKEN_LEG = CharacterTrait.register("ETW:BrokenLeg"),
+	BRITTLE_BONES = CharacterTrait.register("ETW:BrittleBones"),
 	BURN_WARD_PATIENT = CharacterTrait.register("ETW:BurnWardPatient"),
 	DEPRIVED = CharacterTrait.register("ETW:Deprived"),
 	DEPRESSIVE = CharacterTrait.register("ETW:Depressive"),
@@ -136,6 +139,7 @@ ETW_Registry.traits = {
 	SELF_DESTRUCTIVE = CharacterTrait.register("ETW:SelfDestructive"),
 	SLOW_EATER = CharacterTrait.register("ETW:SlowEater"),
 	SUN_SENSITIVITY = CharacterTrait.register("ETW:SunSensitivity"),
+	STRONG_BONES = CharacterTrait.register("ETW:StrongBones"),
 	SUPER_IMMUNE = CharacterTrait.register("ETW:SuperImmune"),
 	TAVERN_BRAWLER = CharacterTrait.register("ETW:TavernBrawler"),
 	TERMINATOR = CharacterTrait.register("ETW:Terminator"),

@@ -2,6 +2,7 @@
 ###### xx Sep 2026
 
 - General:
+  - New traits: Brittle Bones, Strong Bones
   - Minor optimization of `OnTick` in `ETW_EventOrchestrator`
 - Fix:
   - Fixed Handy not counting masonry and carving.

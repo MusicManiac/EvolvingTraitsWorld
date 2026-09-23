@@ -30,15 +30,15 @@ local SPLINT_STRENGTH = 0.9
 ---Returns the serializable state used to remember body parts affected at character creation.
 ---Body parts are stored by name because player mod data must not contain Java/PZ objects.
 ---@param player IsoPlayer Character whose persistent ETW data should be initialized.
----@return StartingInjurySystem|nil system Persistent starting-injury state, or nil when player ModData is unavailable.
-local function getStartingInjurySystem(player)
+---@return InjurySnapshotSystem|nil system Persistent injury snapshot state, or nil when player ModData is unavailable.
+local function getInjurySnapshotSystem(player)
     local modData = ETW_CommonFunctions.getETWModData(player)
     if not modData then
         logETW("ETW Logger | Starting injuries: no ModData for " .. tostring(player:getUsername()))
         return nil
     end
-    modData.StartingInjurySystem = modData.StartingInjurySystem or {}
-    local system = modData.StartingInjurySystem
+	modData.InjurySnapshotSystem = modData.InjurySnapshotSystem or {}
+	local system = modData.InjurySnapshotSystem
 	system.InjuredBodyParts = system.InjuredBodyParts or {}
 	system.BurnedBodyParts = system.BurnedBodyParts or {}
 	system.BrokenBodyParts = system.BrokenBodyParts or {}
@@ -49,7 +49,7 @@ end
 --- TODO: Made of Glass also snapshots stuff, maybe can be combined.
 ---Snapshots every relevant timed wound on a remembered body part.
 ---Later comparisons use both the active flag and timer increases to detect new or refreshed wounds.
----@param system StartingInjurySystem Persistent state that owns the snapshot.
+---@param system InjurySnapshotSystem Persistent state that owns the snapshot.
 ---@param bodyPart BodyPart Body part whose primitive wound values should be recorded.
 local function rememberCurrentState(system, bodyPart)
 	local bodyPartName = BodyPartType.ToString(bodyPart:getType())
@@ -139,7 +139,7 @@ end
 ---Recording after wound creation prevents starting wounds from being mistaken for future wounds.
 ---@param player IsoPlayer Newly created character with the Injured trait.
 local function applyInjured(player)
-    local injurySystem = getStartingInjurySystem(player)
+	local injurySystem = getInjurySnapshotSystem(player)
     if not injurySystem then
         return
     end
@@ -172,7 +172,7 @@ end
 ---Burns every body part and covers each burn with a clean starting bandage.
 ---@param player IsoPlayer Newly created character with Burn Ward Patient.
 local function applyBurnWardPatient(player)
-	local injurySystem = getStartingInjurySystem(player)
+	local injurySystem = getInjurySnapshotSystem(player)
 	if not injurySystem then
 		return
 	end
@@ -194,19 +194,32 @@ local function applyBurnWardPatient(player)
 	logETW("ETW Logger | Burn Ward Patient: applied burns and bandages to " .. bodyParts:size() .. " parts for " .. tostring(player:getUsername()))
 end
 
+---Returns the configured fracture-duration multiplier for the character's bone trait.
+---@param player IsoPlayer Character whose bone traits should be checked.
+---@return number multiplier Fracture-duration multiplier, or 1 when neither trait is present.
+local function getBoneFractureMultiplier(player)
+	if player:hasTrait(ETWTraitsRegistry.BRITTLE_BONES) then
+		return math.max(1, SBvars.BrittleBonesFractureTimeMultiplier or 2)
+	end
+	if player:hasTrait(ETWTraitsRegistry.STRONG_BONES) then
+		return math.max(0, math.min(1, SBvars.StrongBonesFractureTimeMultiplier or 0.5))
+	end
+	return 1.0
+end
+
 ---Applies Broken Leg to the right lower leg and records the initial fracture state.
 ---The initial snapshot prevents the starting fracture from receiving the repeat-fracture multiplier.
 ---@param player IsoPlayer Newly created character with the Broken Leg trait.
 local function applyBrokenLeg(player)
-    local injurySystem = getStartingInjurySystem(player)
+	local injurySystem = getInjurySnapshotSystem(player)
     if not injurySystem then
         return
     end
     local bodyDamage = player:getBodyDamage()
-    local lowerRightLeg = bodyDamage:getBodyPart(BodyPartType.LowerLeg_R)
-    injurySystem.BrokenBodyParts = {}
+	local lowerRightLeg = bodyDamage:getBodyPart(BodyPartType.LowerLeg_R)
+	injurySystem.BrokenBodyParts = {}
 	lowerRightLeg:AddDamage(STARTING_DAMAGE)
-	lowerRightLeg:setFractureTime(FRACTURE_TIME)
+	lowerRightLeg:setFractureTime(FRACTURE_TIME * getBoneFractureMultiplier(player))
 	lowerRightLeg:setSplint(true, SPLINT_STRENGTH)
 	lowerRightLeg:setSplintItem("Base.Splint")
 	bandageStartingInjury(lowerRightLeg)
@@ -223,7 +236,7 @@ end
 ---multiplied, preventing scratch -> laceration -> deep-wound chaining on later ticks.
 ---@param player IsoPlayer Character being monitored; used for diagnostic logging.
 ---@param bodyDamage BodyDamage Character body-damage container used to resolve the stored part name.
----@param system StartingInjurySystem Persistent remembered-part and previous-state data.
+---@param system InjurySnapshotSystem Persistent remembered-part and previous-state data.
 ---@param bodyPartName string Serialized BodyPartType name recorded at character creation.
 ---@param worsensInjuries boolean Whether Injured wound escalation and duration rules apply.
 ---@param worsensBurns boolean Whether Burn Ward Patient's future-burn rule applies.
@@ -231,6 +244,7 @@ end
 ---@param fractureMultiplier number Broken Leg fracture-duration multiplier.
 ---@param injuryDurationMultiplier number Injured duration multiplier for all timed wounds.
 ---@param burnDurationMultiplier number Burn Ward Patient duration multiplier for new burns.
+---@param boneFractureMultiplier number Brittle Bones or Strong Bones multiplier for new fractures.
 local function updateRememberedBodyPart(
 	player,
 	bodyDamage,
@@ -241,7 +255,8 @@ local function updateRememberedBodyPart(
 	worsensFractures,
 	fractureMultiplier,
 	injuryDurationMultiplier,
-	burnDurationMultiplier
+	burnDurationMultiplier,
+	boneFractureMultiplier
 )
 	local bodyPart = bodyDamage:getBodyPart(BodyPartType.FromString(bodyPartName))
 	if not bodyPart then
@@ -362,7 +377,7 @@ local function updateRememberedBodyPart(
 				(previous.FractureTime or 0) <= 0
 				or currentFractureTime > (previous.FractureTime or 0) + 0.001
 			)
-		if (worsensInjuries or worsensFractures) and isNewFracture then
+		if (worsensInjuries or worsensFractures or boneFractureMultiplier ~= 1) and isNewFracture then
 			local appliedFractureMultiplier = 1.0
 			if worsensInjuries then
 				appliedFractureMultiplier = appliedFractureMultiplier * injuryDurationMultiplier
@@ -370,6 +385,7 @@ local function updateRememberedBodyPart(
 			if worsensFractures then
 				appliedFractureMultiplier = appliedFractureMultiplier * fractureMultiplier
 			end
+			appliedFractureMultiplier = appliedFractureMultiplier * boneFractureMultiplier
 			currentFractureTime = currentFractureTime * appliedFractureMultiplier
 			bodyPart:setFractureTime(currentFractureTime)
 			ETW_CommonFunctions.log(
@@ -402,10 +418,11 @@ end
 ---@param player IsoPlayer Character whose remembered parts should be checked.
 ---@param bodyDamage BodyDamage Character body-damage container.
 ---@param modData EvolvingTraitsWorldModData Persistent ETW data containing starting-injury state.
+---@return table<string, boolean>|nil processedParts Body parts whose fracture snapshots were processed.
 function ETW_StartingTraits.updateStartingInjuries(player, bodyDamage, modData)
-	local system = modData.StartingInjurySystem
+	local system = modData.InjurySnapshotSystem
 	if not system then
-		return
+		return nil
 	end
 	local injuredBodyParts = system.InjuredBodyParts or {}
 	local burnedBodyParts = system.BurnedBodyParts or {}
@@ -414,7 +431,10 @@ function ETW_StartingTraits.updateStartingInjuries(player, bodyDamage, modData)
 	local fractureMultiplier = math.max(1, SBvars.BrokenLegFractureTimeMultiplier or 2)
 	local injuryDurationMultiplier = math.max(1, SBvars.InjuredWoundTimeMultiplier or 2)
 	local burnDurationMultiplier = math.max(1, SBvars.BurnWardPatientBurnTimeMultiplier or 2)
+	local boneFractureMultiplier = getBoneFractureMultiplier(player)
+	local processedParts = {}
 	for bodyPartName in pairs(injuredBodyParts) do
+		processedParts[bodyPartName] = true
 		updateRememberedBodyPart(
 			player,
 			bodyDamage,
@@ -425,11 +445,13 @@ function ETW_StartingTraits.updateStartingInjuries(player, bodyDamage, modData)
 			brokenBodyParts[bodyPartName] == true,
 			fractureMultiplier,
 			injuryDurationMultiplier,
-			burnDurationMultiplier
+			burnDurationMultiplier,
+			boneFractureMultiplier
 		)
 	end
 	for bodyPartName in pairs(burnedBodyParts) do
 		if not injuredBodyParts[bodyPartName] then
+			processedParts[bodyPartName] = true
 			updateRememberedBodyPart(
 				player,
 				bodyDamage,
@@ -440,12 +462,14 @@ function ETW_StartingTraits.updateStartingInjuries(player, bodyDamage, modData)
 				brokenBodyParts[bodyPartName] == true,
 				fractureMultiplier,
 				injuryDurationMultiplier,
-				burnDurationMultiplier
+				burnDurationMultiplier,
+				boneFractureMultiplier
 			)
 		end
 	end
 	for bodyPartName in pairs(brokenBodyParts) do
 		if not injuredBodyParts[bodyPartName] and not burnedBodyParts[bodyPartName] then
+			processedParts[bodyPartName] = true
 			updateRememberedBodyPart(
 				player,
 				bodyDamage,
@@ -456,10 +480,12 @@ function ETW_StartingTraits.updateStartingInjuries(player, bodyDamage, modData)
 				true,
 				fractureMultiplier,
 				injuryDurationMultiplier,
-				burnDurationMultiplier
+				burnDurationMultiplier,
+				boneFractureMultiplier
 			)
 		end
 	end
+	return processedParts
 end
 
 ---Adds the configured per-minute unhappiness when Deprived exceeds its carry-capacity threshold.

@@ -33,6 +33,40 @@ option ETWTraitSandbox.BrokenLegPointValue
 	translation = ETWTS_BrokenLegPointValue,
 }
 
+option ETWTraitSandbox.BrittleBonesEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_BrittleBonesEnabled,
+}
+option ETWTraitSandbox.BrittleBonesPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = 4,
+	page = ETWTraitSandbox,
+	translation = ETWTS_BrittleBonesPointValue,
+}
+
+option ETWTraitSandbox.StrongBonesEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_StrongBonesEnabled,
+}
+option ETWTraitSandbox.StrongBonesPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = -4,
+	page = ETWTraitSandbox,
+	translation = ETWTS_StrongBonesPointValue,
+}
+
 option ETWTraitSandbox.DeprivedEnabled
 {
 	type = boolean,

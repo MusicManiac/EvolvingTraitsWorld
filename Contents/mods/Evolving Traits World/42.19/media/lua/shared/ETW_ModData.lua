@@ -15,7 +15,7 @@ local ETW_Registry = require("ETW_Registry")
 local ETWTraitsRegistry = ETW_Registry.traits
 
 ---Increment when fields are added to or migrated in EvolvingTraitsWorld modData.
-local MOD_DATA_VERSION = 1.9
+local MOD_DATA_VERSION = 1.10
 
 local RECENT_TRAIT_EVENT_LIMIT = 10
 local VALID_TRAIT_EVENTS = {
@@ -57,13 +57,21 @@ local function initializeRollingSamples(existingSamples, initialValue, sampleCou
 	return buildFilledSamples(initialValue, sampleCount)
 end
 
----Migrates the legacy Hoarder progress field to the Carry Weight System field.
+---Migrates legacy fields to their current schema locations.
 ---@param modData EvolvingTraitsWorldModData
 local function migrate(modData)
-	---@diagnostic disable-next-line: undefined-field
+	--- v.1.8
 	local legacyHoarderCounter = modData.HoarderCounter
 	if modData.CarryWeightCounter == nil and legacyHoarderCounter ~= nil then
 		modData.CarryWeightCounter = legacyHoarderCounter
+		modData.HoarderCounter = nil
+	end
+
+	--- v. 1.10
+	local legacyStartingInjurySystem = modData.StartingInjurySystem
+	if modData.InjurySnapshotSystem == nil and legacyStartingInjurySystem ~= nil then
+		modData.InjurySnapshotSystem = legacyStartingInjurySystem
+		modData.StartingInjurySystem = nil
 	end
 end
 
@@ -149,7 +157,8 @@ function ETW_ModData.createETWModData(playerIndex, player)
 		noodleLegs.LastY = player:getY()
 		noodleLegs.LastZ = player:getZ()
 	end
-	modData.HardyReserve = modData.HardyReserve or math.max(0, math.min(1, (SBvars.HardyExtraEndurancePercent or 25) / 100))
+	modData.HardyReserve = modData.HardyReserve
+		or math.max(0, math.min(1, (SBvars.HardyExtraEndurancePercent or 25) / 100))
 	modData.QuickRestLastEndurance = modData.QuickRestLastEndurance or player:getStats():get(CharacterStat.ENDURANCE)
 	modData.IdealWeightLastCalories = modData.IdealWeightLastCalories or player:getNutrition():getCalories()
 	modData.DepressiveEpisodeActive = modData.DepressiveEpisodeActive or false
@@ -164,12 +173,21 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	modData.UnwaveringInjurySpeedApplied = modData.UnwaveringInjurySpeedApplied or false
 	modData.SunSensitivityExposure = modData.SunSensitivityExposure or 0
 	modData.SunSensitivityAppliedPain = modData.SunSensitivityAppliedPain or 0
-	modData.StartingInjurySystem = modData.StartingInjurySystem or {}
-	local startingInjurySystem = modData.StartingInjurySystem
-	startingInjurySystem.InjuredBodyParts = startingInjurySystem.InjuredBodyParts or {}
-	startingInjurySystem.BurnedBodyParts = startingInjurySystem.BurnedBodyParts or {}
-	startingInjurySystem.BrokenBodyParts = startingInjurySystem.BrokenBodyParts or {}
-	startingInjurySystem.LastStates = startingInjurySystem.LastStates or {}
+	modData.InjurySnapshotSystem = modData.InjurySnapshotSystem or {}
+	local injurySnapshotSystem = modData.InjurySnapshotSystem
+	injurySnapshotSystem.InjuredBodyParts = injurySnapshotSystem.InjuredBodyParts or {}
+	injurySnapshotSystem.BurnedBodyParts = injurySnapshotSystem.BurnedBodyParts or {}
+	injurySnapshotSystem.BrokenBodyParts = injurySnapshotSystem.BrokenBodyParts or {}
+	injurySnapshotSystem.LastStates = injurySnapshotSystem.LastStates or {}
+	if not injurySnapshotSystem.FractureTimeSnapshots then
+		injurySnapshotSystem.FractureTimeSnapshots = {}
+		local bodyParts = player:getBodyDamage():getBodyParts()
+		for i = 0, bodyParts:size() - 1 do
+			local bodyPart = bodyParts:get(i)
+			injurySnapshotSystem.FractureTimeSnapshots[BodyPartType.ToString(bodyPart:getType())] =
+				bodyPart:getFractureTime()
+		end
+	end
 	modData.MadeOfGlass = modData.MadeOfGlass or {}
 	local madeOfGlass = modData.MadeOfGlass
 	madeOfGlass.LastHealth = player:getBodyDamage():getHealth()

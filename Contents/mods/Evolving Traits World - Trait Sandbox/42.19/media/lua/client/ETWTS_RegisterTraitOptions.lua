@@ -18,6 +18,8 @@ local traits = {
 	{ id = "BurnWardPatient", pointValue = 6 },
 	{ id = "Butterfingers", pointValue = 12 },
 	{ id = "BrokenLeg", pointValue = 3 },
+	{ id = "BrittleBones", pointValue = 4 },
+	{ id = "StrongBones", pointValue = -4 },
 	{ id = "Deprived", pointValue = 1 },
 	{ id = "Depressive", pointValue = 4 },
 	{ id = "Gourmand", pointValue = -4 },
