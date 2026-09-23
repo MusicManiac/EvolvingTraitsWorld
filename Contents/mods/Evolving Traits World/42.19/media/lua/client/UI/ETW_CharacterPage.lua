@@ -179,6 +179,7 @@ local SUPPORTED_TRANSLATIONS = {
 	{ code = "RU", nameKey = "UI_ETW_TranslationsStatus_Language_RU" },
 	{ code = "TR", nameKey = "UI_ETW_TranslationsStatus_Language_TR" },
 	{ code = "UA", nameKey = "UI_ETW_TranslationsStatus_Language_UA" },
+	{ code = "FR", nameKey = "UI_ETW_TranslationsStatus_Language_FR" },
 }
 
 local lineStartPosition = 5

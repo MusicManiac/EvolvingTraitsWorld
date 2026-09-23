@@ -6,6 +6,8 @@
   - Minor optimization of `OnTick` in `ETW_EventOrchestrator`
 - Fix:
   - Fixed Handy not counting masonry and carving.
+- Translation:
+  - New translation: FR (v.13.7.0)
 
 ## v.13.7.0
 ###### 21 Sep 2026

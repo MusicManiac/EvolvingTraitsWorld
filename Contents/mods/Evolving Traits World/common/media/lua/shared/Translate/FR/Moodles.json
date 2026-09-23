@@ -1,0 +1,21 @@
+{
+    "Moodles_BloodlustMoodle_Bad_lvl1": "Ce n'est pas très réjouissant",
+    "Moodles_BloodlustMoodle_Bad_lvl2": "C'est une corvée, mais il faut bien que quelqu'un s'en charge",
+    "Moodles_BloodlustMoodle_Bad_lvl3": "Tuer quelques zombies n'est pas la pire des choses",
+    "Moodles_BloodlustMoodle_Bad_lvl4": "Je n'ai vraiment aucune envie de tuer des zombies",
+    "Moodles_BloodlustMoodle_Custom": "Jauge de Soif de sang remplie à %1 pour cent.<br>Rester au-dessus de 50%% permettra d'obtenir le trait Soif de sang avec le temps,<br>être en dessous de 50%% fera régresser la progression<br>(Ceci est un indicateur pour savoir si vous gagnez ou perdez le trait Soif de sang)",
+    "Moodles_BloodlustMoodle_Good_lvl1": "C'est légèrement amusant",
+    "Moodles_BloodlustMoodle_Good_lvl2": "Pas la pire des façons de passer le temps.",
+    "Moodles_BloodlustMoodle_Good_lvl3": "C'est assurément du temps bien rentabilisé",
+    "Moodles_BloodlustMoodle_Good_lvl4": "Bon sang, j'adore massacrer des morts-vivants",
+    "Moodles_SleepHealthMoodle_Bad_lvl1": "Un peu décalé par rapport à mes horaires habituels",
+    "Moodles_SleepHealthMoodle_Bad_lvl2": "Pas vraiment le moment idéal pour dormir",
+    "Moodles_SleepHealthMoodle_Bad_lvl3": "Bien loin de mes horaires de sommeil habituels",
+    "Moodles_SleepHealthMoodle_Bad_lvl4": "Mon rythme de sommeil est complètement déréglé",
+    "Moodles_SleepHealthMoodle_Custom": "Sommeil décalé de %1 h par rapport à l'heure optimale",
+    "Moodles_SleepHealthMoodle_Good_lvl1": "Un moment légèrement plus propice que d'habitude pour dormir.",
+    "Moodles_SleepHealthMoodle_Good_lvl2": "Moment convenable pour dormir",
+    "Moodles_SleepHealthMoodle_Good_lvl3": "Excellent moment pour dormir",
+    "Moodles_SleepHealthMoodle_Good_lvl4": "Pile au moment idéal",
+    "___note_to_translators": "(Don't translate this, this is just info for you guys) Make sure file is saved in <ENCODING> encoding, so game display correct characters"
+}
