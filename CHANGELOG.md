@@ -6,6 +6,7 @@
   - Minor optimization of `OnTick` in `ETW_EventOrchestrator`
 - Fix:
   - Fixed Handy not counting masonry and carving.
+  - Removed rogue debug print in Cat Eyes.
 - Translation:
   - New translation: FR (v.13.7.0)
 

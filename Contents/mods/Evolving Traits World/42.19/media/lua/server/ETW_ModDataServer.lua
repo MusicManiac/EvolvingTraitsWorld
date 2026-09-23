@@ -178,18 +178,6 @@ function Commands.catEyesRecordProgress(player, args)
 		ETW_CommonFunctions.log("ETW Logger | Commands.catEyesRecordProgress(): modData is nil, returning early")
 		return
 	end
-	ETW_CommonFunctions.log(
-		"Cat Eyes pre: playerObject="
-			.. tostring(player)
-			.. " onlineID="
-			.. tostring(player:getOnlineID())
-			.. " playerModData="
-			.. tostring(player:getModData())
-			.. " etwModData="
-			.. tostring(modData)
-			.. " kills="
-			.. tostring(modData.EagleEyedKills)
-	)
 	modData.CatEyesCounter = modData.CatEyesCounter + args.progressIncrease
 	if args.isKill then
 		ETW_CommonFunctions.log("ETW Logger | Commands.catEyesRecordProgress(): was triggered by a kill")
