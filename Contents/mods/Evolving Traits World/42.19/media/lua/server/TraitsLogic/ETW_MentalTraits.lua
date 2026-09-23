@@ -594,4 +594,39 @@ function ETW_MentalTraits.asceticTrait(player, stats)
 	end
 end
 
+---Tracks an online minute and applies TV Junkie's mood penalties once the viewing grace period expires.
+---@param player IsoPlayer
+---@param stats Stats
+---@param modData EvolvingTraitsWorldModData
+function ETW_MentalTraits.tvJunkieTrait(player, stats, modData)
+	local tvJunkieSystem = modData.TVJunkieSystem
+	tvJunkieSystem.ActiveMinutes = tvJunkieSystem.ActiveMinutes + 1
+	tvJunkieSystem.MinutesSinceLastWatch = tvJunkieSystem.MinutesSinceLastWatch + 1
+	local graceMinutes = math.max(1, math.floor(SBvars.TVJunkieHoursWithoutTelevision or 24)) * 60
+	if tvJunkieSystem.MinutesSinceLastWatch < graceMinutes then
+		return
+	end
+
+	local unhappiness = stats:get(CharacterStat.UNHAPPINESS)
+	local boredom = stats:get(CharacterStat.BOREDOM)
+	local unhappinessIncrease = math.max(0, math.min(100, SBvars.TVJunkieUnhappinessPerMinute or 0.1))
+	local boredomIncrease = math.max(0, math.min(100, SBvars.TVJunkieBoredomPerMinute or 0.1))
+	local resultingUnhappiness = math.min(100, unhappiness + unhappinessIncrease)
+	local resultingBoredom = math.min(100, boredom + boredomIncrease)
+	stats:set(CharacterStat.UNHAPPINESS, resultingUnhappiness)
+	stats:set(CharacterStat.BOREDOM, resultingBoredom)
+	if resultingUnhappiness ~= unhappiness or resultingBoredom ~= boredom then
+		logETW(
+			"ETW Logger | tvJunkieTrait(): unhappiness: "
+				.. unhappiness
+				.. "->"
+				.. resultingUnhappiness
+				.. ", boredom: "
+				.. boredom
+				.. "->"
+				.. resultingBoredom
+		)
+	end
+end
+
 return ETW_MentalTraits

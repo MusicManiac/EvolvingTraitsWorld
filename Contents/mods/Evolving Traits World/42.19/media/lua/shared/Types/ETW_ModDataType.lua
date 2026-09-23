@@ -34,6 +34,7 @@
 --- @field IdealWeightCounter number
 --- @field IdealWeightLastCalories number
 --- @field DepressiveEpisodeActive boolean
+--- @field TVJunkieSystem TVJunkieSystem
 --- @field ParanoiaCooldownMinutes integer
 --- @field AntiGunLastRecordedAimingXP number
 --- @field AntiGunAimingXPCheckPending boolean
@@ -76,6 +77,11 @@
 --- @field TransferSystem TransferSystem
 --- @field BloodlustSystem BloodlustSystem
 --- @field AnimalsSystem AnimalsSystem
+
+--- @class TVJunkieSystem
+--- @field ActiveMinutes integer
+--- @field MinutesSinceLastWatch integer
+--- @field CommandMinutes integer[]
 
 --- @class NoodleLegs
 --- @field Distance number

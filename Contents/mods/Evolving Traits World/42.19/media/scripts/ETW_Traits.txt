@@ -39,7 +39,18 @@ module ETW
         Cost = -6,
         UIName = UI_trait_Ascetic,
         UIDescription = UI_trait_AsceticDesc,
-        MutuallyExclusiveTraits = ETW:Gourmand,
+        MutuallyExclusiveTraits = ETW:Gourmand;ETW:TVJunkie,
+    }
+
+    character_trait_definition ETW:TVJunkie
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:TVJunkie,
+        Cost = -4,
+        UIName = UI_trait_TVJunkie,
+        UIDescription = UI_trait_TVJunkieDesc,
+        MutuallyExclusiveTraits = ETW:Ascetic,
     }
 
     character_trait_definition ETW:BadTeeth

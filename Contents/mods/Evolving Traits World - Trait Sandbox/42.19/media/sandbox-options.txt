@@ -746,6 +746,22 @@ option ETWTraitSandbox.AsceticPointValue
 	page = ETWTraitSandbox,
 	translation = ETWTS_AsceticPointValue,
 }
+option ETWTraitSandbox.TVJunkieEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_TVJunkieEnabled,
+}
+option ETWTraitSandbox.TVJunkiePointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = 4,
+	page = ETWTraitSandbox,
+	translation = ETWTS_TVJunkiePointValue,
+}
 option ETWTraitSandbox.ActionHeroEnabled
 {
 	type = boolean,

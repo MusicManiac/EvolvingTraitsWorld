@@ -8,6 +8,7 @@ local traits = {
 	{ id = "ActionHero", pointValue = -8 },
 	{ id = "AntiGunActivist", pointValue = 6 },
 	{ id = "Ascetic", pointValue = 4 },
+	{ id = "TVJunkie", pointValue = 4 },
 	{ id = "AVClub", pointValue = -4 },
 	{ id = "Anemic", pointValue = 4 },
 	{ id = "BadTeeth", pointValue = 3 },

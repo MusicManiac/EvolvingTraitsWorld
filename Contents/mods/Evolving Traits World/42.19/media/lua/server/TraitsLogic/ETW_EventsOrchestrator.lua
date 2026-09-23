@@ -96,6 +96,13 @@ local function oneMinuteUpdate()
 			stats = stats or player:getStats()
 			ETW_MentalTraits.asceticTrait(player, stats)
 		end
+		if player:hasTrait(ETWTraitsRegistry.TV_JUNKIE) then
+			stats = stats or player:getStats()
+			modData = modData or ETW_CommonFunctions.getETWModData(player)
+			if modData then
+				ETW_MentalTraits.tvJunkieTrait(player, stats, modData)
+			end
+		end
 		if player:hasTrait(ETWTraitsRegistry.PARANOIA) then
 			stats = stats or player:getStats()
 			modData = modData or ETW_CommonFunctions.getETWModData(player)

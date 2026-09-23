@@ -1026,6 +1026,42 @@ option EvolvingTraitsWorld.AsceticReadingEffect
 	page = ETWTraitsSettings,
 	translation = ETW_AsceticReadingEffect,
 }
+option EvolvingTraitsWorld.TVJunkieHoursWithoutTelevision
+{
+	type = integer,
+	min = 1,
+	max = 168,
+	default = 24,
+	page = ETWTraitsSettings,
+	translation = ETW_TVJunkieHoursWithoutTelevision,
+}
+option EvolvingTraitsWorld.TVJunkieRequiredCommands
+{
+	type = integer,
+	min = 1,
+	max = 100,
+	default = 3,
+	page = ETWTraitsSettings,
+	translation = ETW_TVJunkieRequiredCommands,
+}
+option EvolvingTraitsWorld.TVJunkieUnhappinessPerMinute
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 0.1,
+	page = ETWTraitsSettings,
+	translation = ETW_TVJunkieUnhappinessPerMinute,
+}
+option EvolvingTraitsWorld.TVJunkieBoredomPerMinute
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 0.1,
+	page = ETWTraitsSettings,
+	translation = ETW_TVJunkieBoredomPerMinute,
+}
 option EvolvingTraitsWorld.BadTeethPainChance
 {
 	type = integer,

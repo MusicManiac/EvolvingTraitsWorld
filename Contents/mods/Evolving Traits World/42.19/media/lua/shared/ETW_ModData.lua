@@ -149,14 +149,6 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	modData.EatingSpeedSystemCounter = modData.EatingSpeedSystemCounter or 0
 	modData.OlympianCounter = modData.OlympianCounter or 0
 	modData.NaturalEaterFoodsEaten = modData.NaturalEaterFoodsEaten or 0
-	modData.NoodleLegs = modData.NoodleLegs or {}
-	local noodleLegs = modData.NoodleLegs
-	noodleLegs.Distance = noodleLegs.Distance or 0
-	if noodleLegs.LastX == nil or noodleLegs.LastY == nil or noodleLegs.LastZ == nil then
-		noodleLegs.LastX = player:getX()
-		noodleLegs.LastY = player:getY()
-		noodleLegs.LastZ = player:getZ()
-	end
 	modData.HardyReserve = modData.HardyReserve
 		or math.max(0, math.min(1, (SBvars.HardyExtraEndurancePercent or 25) / 100))
 	modData.QuickRestLastEndurance = modData.QuickRestLastEndurance or player:getStats():get(CharacterStat.ENDURANCE)
@@ -173,6 +165,22 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	modData.UnwaveringInjurySpeedApplied = modData.UnwaveringInjurySpeedApplied or false
 	modData.SunSensitivityExposure = modData.SunSensitivityExposure or 0
 	modData.SunSensitivityAppliedPain = modData.SunSensitivityAppliedPain or 0
+	
+	modData.NoodleLegs = modData.NoodleLegs or {}
+	local noodleLegs = modData.NoodleLegs
+	noodleLegs.Distance = noodleLegs.Distance or 0
+	if noodleLegs.LastX == nil or noodleLegs.LastY == nil or noodleLegs.LastZ == nil then
+		noodleLegs.LastX = player:getX()
+		noodleLegs.LastY = player:getY()
+		noodleLegs.LastZ = player:getZ()
+	end
+
+	modData.TVJunkieSystem = modData.TVJunkieSystem or {}
+	local tvJunkieSystem = modData.TVJunkieSystem
+	tvJunkieSystem.ActiveMinutes = tvJunkieSystem.ActiveMinutes or 0
+	tvJunkieSystem.MinutesSinceLastWatch = tvJunkieSystem.MinutesSinceLastWatch or 0
+	tvJunkieSystem.CommandMinutes = tvJunkieSystem.CommandMinutes or {}
+
 	modData.InjurySnapshotSystem = modData.InjurySnapshotSystem or {}
 	local injurySnapshotSystem = modData.InjurySnapshotSystem
 	injurySnapshotSystem.InjuredBodyParts = injurySnapshotSystem.InjuredBodyParts or {}
@@ -188,6 +196,7 @@ function ETW_ModData.createETWModData(playerIndex, player)
 				bodyPart:getFractureTime()
 		end
 	end
+
 	modData.MadeOfGlass = modData.MadeOfGlass or {}
 	local madeOfGlass = modData.MadeOfGlass
 	madeOfGlass.LastHealth = player:getBodyDamage():getHealth()
