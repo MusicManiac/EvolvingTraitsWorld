@@ -4703,6 +4703,7 @@ function ISETWUI:render()
 	local carving = player:getPerkLevel(Perks.Carving)
 	local blacksmith = player:getPerkLevel(Perks.Blacksmith)
 	local knapping = player:getPerkLevel(Perks.FlintKnapping)
+	local masonry = player:getPerkLevel(Perks.Masonry)
 
 	local killCountModData = ETW_CommonFunctions.getKillCountWeaponCategories(player)
 	local axeKills = (killCountModData["Axe"] or {}).count or 0
@@ -5284,7 +5285,7 @@ function ISETWUI:render()
 	)
 	updateLabel(
 		self.labelHandySkillProgress,
-		getCachedTraitUIName(CharacterTrait.HANDY) .. ": " .. maintenance + carpentry .. "/" .. SBvars.HandySkill
+		getCachedTraitUIName(CharacterTrait.HANDY) .. ": " .. maintenance + carpentry + carving + masonry .. "/" .. SBvars.HandySkill
 	)
 	updateLabel(
 		self.labelFurnitureAssemblerProgress,

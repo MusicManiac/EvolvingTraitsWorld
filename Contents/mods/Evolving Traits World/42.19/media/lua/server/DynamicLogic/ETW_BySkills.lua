@@ -537,7 +537,7 @@ local skillTraitRules = {
 		gainingTrait = true,
 	},
 	{
-		triggers = makeTriggerSet("characterInitialization", Perks.Maintenance, Perks.Woodwork, CharacterTrait.HANDY),
+		triggers = makeTriggerSet("characterInitialization", Perks.Maintenance, Perks.Woodwork, Perks.Carving, Perks.Masonry, CharacterTrait.HANDY),
 		shouldExecute = ETW_CommonLogicChecks.HandyShouldExecute,
 		condition = function(ctx)
 			return sumContextValues(ctx, { "maintenance", "carpentry", "carving", "masonry" }) >= SBvars.HandySkill
