@@ -28,8 +28,10 @@ local FIRE_PANIC_PER_MINUTE = 10
 local FIRE_CLOSE_PANIC_RADIUS = 3
 local FIRE_CLOSE_PANIC_BONUS = 40
 local FIRE_UNHAPPINESS_PER_PANIC = 0.1
-
-local original_ISPetAnimal_animEvent = ISPetAnimal.animEvent
+local COLD_CORE_TEMPERATURE_THRESHOLD = 36.5
+local HOT_CORE_TEMPERATURE_THRESHOLD = 37.5
+local TEMPERATURE_STRESS_PER_DEGREE = 0.005
+local TEMPERATURE_DISCOMFORT_PER_DEGREE = 0.5
 
 ---Returns the distance squared to an active fire on a loaded square, if any.
 ---@param cell IsoCell
@@ -161,6 +163,74 @@ function ETW_MentalTraits.fireTrait(player, stats)
 		)
 	end
 end
+
+---Adjusts stress and discomfort once per minute according to core body temperature and temperature preference.
+---@param player IsoPlayer
+---@param stats Stats
+---@param bodyDamage BodyDamage
+function ETW_MentalTraits.temperatureTrait(player, stats, bodyDamage)
+	local effectMultiplier = math.max(0, SBvars.TemperatureTraitsEffectMultiplier or 1)
+	if effectMultiplier == 0 then
+		return
+	end
+	local coldThreshold = SBvars.ColdTraitsTemperatureThreshold or COLD_CORE_TEMPERATURE_THRESHOLD
+	local heatThreshold = SBvars.HeatTraitsTemperatureThreshold or HOT_CORE_TEMPERATURE_THRESHOLD
+	local coreTemperature = bodyDamage:getThermoregulator():getCoreTemperature()
+	local effectDirection
+	local temperatureDeviation
+	local heatAverse = player:hasTrait(ETWTraitsRegistry.HEAT_AVERSE)
+	local heatLoving = player:hasTrait(ETWTraitsRegistry.HEAT_LOVING)
+	local coldAverse = player:hasTrait(ETWTraitsRegistry.COLD_AVERSE)
+	local coldLoving = player:hasTrait(ETWTraitsRegistry.COLD_LOVING)
+	if (heatAverse or heatLoving) and coreTemperature > heatThreshold then
+		if heatAverse then
+			effectDirection = 1
+		else
+			effectDirection = -1
+		end
+		temperatureDeviation = coreTemperature - heatThreshold
+	elseif (coldAverse or coldLoving) and coreTemperature < coldThreshold then
+		if coldAverse then
+			effectDirection = 1
+		else
+			effectDirection = -1
+		end
+		temperatureDeviation = coldThreshold - coreTemperature
+	else
+		return
+	end
+
+	local stress = stats:get(CharacterStat.STRESS)
+	local discomfort = stats:get(CharacterStat.DISCOMFORT)
+	local stressChange = temperatureDeviation * TEMPERATURE_STRESS_PER_DEGREE * effectMultiplier * effectDirection
+	local discomfortChange = temperatureDeviation * TEMPERATURE_DISCOMFORT_PER_DEGREE * effectMultiplier * effectDirection
+	local newStress = math.max(0, math.min(1, stress + stressChange))
+	local newDiscomfort = math.max(0, math.min(100, discomfort + discomfortChange))
+	stats:set(CharacterStat.STRESS, newStress)
+	stats:set(CharacterStat.DISCOMFORT, newDiscomfort)
+	logETW(
+		"ETW Logger | temperatureTrait(): coreTemperature="
+			.. coreTemperature
+			.. ", effectDirection="
+			.. effectDirection
+			.. ", temperatureDeviation="
+			.. temperatureDeviation
+			.. ", stressChange="
+			.. stressChange
+			.. ", discomfortChange="
+			.. discomfortChange
+			.. ", stress="
+			.. stats:get(CharacterStat.STRESS)
+			.. "->"
+			.. newStress
+			.. ", discomfort="
+			.. stats:get(CharacterStat.DISCOMFORT)
+			.. "->"
+			.. newDiscomfort
+	)
+end
+
+local original_ISPetAnimal_animEvent = ISPetAnimal.animEvent
 
 ---Decorates animal petting to provide Pet Therapy mood effects and progression.
 function ISPetAnimal:animEvent(event, parameter)

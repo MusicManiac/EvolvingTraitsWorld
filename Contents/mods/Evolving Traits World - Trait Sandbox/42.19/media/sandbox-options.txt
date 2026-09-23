@@ -1146,6 +1146,70 @@ option ETWTraitSandbox.PyromaniaPointValue
 	page = ETWTraitSandbox,
 	translation = ETWTS_PyromaniaPointValue,
 }
+option ETWTraitSandbox.ColdAverseEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_ColdAverseEnabled,
+}
+option ETWTraitSandbox.ColdAversePointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = 2,
+	page = ETWTraitSandbox,
+	translation = ETWTS_ColdAversePointValue,
+}
+option ETWTraitSandbox.ColdLovingEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_ColdLovingEnabled,
+}
+option ETWTraitSandbox.ColdLovingPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = -2,
+	page = ETWTraitSandbox,
+	translation = ETWTS_ColdLovingPointValue,
+}
+option ETWTraitSandbox.HeatAverseEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_HeatAverseEnabled,
+}
+option ETWTraitSandbox.HeatAversePointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = 2,
+	page = ETWTraitSandbox,
+	translation = ETWTS_HeatAversePointValue,
+}
+option ETWTraitSandbox.HeatLovingEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_HeatLovingEnabled,
+}
+option ETWTraitSandbox.HeatLovingPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = -2,
+	page = ETWTraitSandbox,
+	translation = ETWTS_HeatLovingPointValue,
+}
 option ETWTraitSandbox.SelfDestructiveEnabled
 {
 	type = boolean,

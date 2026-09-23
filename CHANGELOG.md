@@ -2,7 +2,7 @@
 ###### xx Sep 2026
 
 - General:
-  - New traits: Brittle Bones, Strong Bones
+  - New traits: Brittle Bones, Strong Bones, Heat-Loving, Heat-Averse, Cold-Loving, Cold-Averse
   - Minor optimization of `OnTick` in `ETW_EventOrchestrator`
 - Fix:
   - Fixed Handy not counting masonry and carving.

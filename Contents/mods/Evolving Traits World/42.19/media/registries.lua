@@ -18,6 +18,8 @@ ETW_Registry = ETW_Registry or {}
 ---@field BROKEN_LEG CharacterTrait
 ---@field BRITTLE_BONES CharacterTrait
 ---@field BURN_WARD_PATIENT CharacterTrait
+---@field COLD_AVERSE CharacterTrait
+---@field COLD_LOVING CharacterTrait
 ---@field DEPRIVED CharacterTrait
 ---@field DEPRESSIVE CharacterTrait
 ---@field FURNITURE_ASSEMBLER CharacterTrait
@@ -26,6 +28,8 @@ ETW_Registry = ETW_Registry or {}
 ---@field GORDONITE CharacterTrait
 ---@field GYM_RAT CharacterTrait
 ---@field HARDY CharacterTrait
+---@field HEAT_AVERSE CharacterTrait
+---@field HEAT_LOVING CharacterTrait
 ---@field HOARDER CharacterTrait
 ---@field HOME_COOK CharacterTrait
 ---@field IDEAL_WEIGHT CharacterTrait
@@ -91,6 +95,8 @@ ETW_Registry.traits = {
 	BROKEN_LEG = CharacterTrait.register("ETW:BrokenLeg"),
 	BRITTLE_BONES = CharacterTrait.register("ETW:BrittleBones"),
 	BURN_WARD_PATIENT = CharacterTrait.register("ETW:BurnWardPatient"),
+	COLD_AVERSE = CharacterTrait.register("ETW:ColdAverse"),
+	COLD_LOVING = CharacterTrait.register("ETW:ColdLoving"),
 	DEPRIVED = CharacterTrait.register("ETW:Deprived"),
 	DEPRESSIVE = CharacterTrait.register("ETW:Depressive"),
 	FURNITURE_ASSEMBLER = CharacterTrait.register("ETW:FurnitureAssembler"),
@@ -99,6 +105,8 @@ ETW_Registry.traits = {
 	GORDONITE = CharacterTrait.register("ETW:Gordonite"),
 	GYM_RAT = CharacterTrait.register("ETW:GymRat"),
 	HARDY = CharacterTrait.register("ETW:Hardy"),
+	HEAT_AVERSE = CharacterTrait.register("ETW:HeatAverse"),
+	HEAT_LOVING = CharacterTrait.register("ETW:HeatLoving"),
 	HOARDER = CharacterTrait.register("ETW:Hoarder"),
 	HOME_COOK = CharacterTrait.register("ETW:HomeCook"),
 	IDEAL_WEIGHT = CharacterTrait.register("ETW:IdealWeight"),

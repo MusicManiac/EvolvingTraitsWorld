@@ -1519,6 +1519,33 @@ option EvolvingTraitsWorld.FireTraitsEffectMultiplier
 	page = ETWTraitsSettings,
 	translation = ETW_FireTraitsEffectMultiplier,
 }
+option EvolvingTraitsWorld.ColdTraitsTemperatureThreshold
+{
+	type = double,
+	min = -100,
+	max = 100,
+	default = 36.5,
+	page = ETWTraitsSettings,
+	translation = ETW_ColdTraitsTemperatureThreshold,
+}
+option EvolvingTraitsWorld.HeatTraitsTemperatureThreshold
+{
+	type = double,
+	min = -100,
+	max = 100,
+	default = 37.5,
+	page = ETWTraitsSettings,
+	translation = ETW_HeatTraitsTemperatureThreshold,
+}
+option EvolvingTraitsWorld.TemperatureTraitsEffectMultiplier
+{
+	type = double,
+	min = 0,
+	max = 10,
+	default = 1,
+	page = ETWTraitsSettings,
+	translation = ETW_TemperatureTraitsEffectMultiplier,
+}
 option EvolvingTraitsWorld.ParanoiaBaseChancePercent
 {
 	type = double,

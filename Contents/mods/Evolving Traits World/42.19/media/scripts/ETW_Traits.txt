@@ -125,6 +125,50 @@ module ETW
         UIDescription = UI_trait_BrokenLegDesc,
     }
 
+    character_trait_definition ETW:ColdAverse
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:ColdAverse,
+        Cost = -2,
+        UIName = UI_trait_ColdAverse,
+        UIDescription = UI_trait_ColdAverseDesc,
+        MutuallyExclusiveTraits = ETW:ColdLoving,
+    }
+
+    character_trait_definition ETW:ColdLoving
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:ColdLoving,
+        Cost = 2,
+        UIName = UI_trait_ColdLoving,
+        UIDescription = UI_trait_ColdLovingDesc,
+        MutuallyExclusiveTraits = ETW:ColdAverse;ETW:HeatLoving,
+    }
+
+    character_trait_definition ETW:HeatAverse
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:HeatAverse,
+        Cost = -2,
+        UIName = UI_trait_HeatAverse,
+        UIDescription = UI_trait_HeatAverseDesc,
+        MutuallyExclusiveTraits = ETW:HeatLoving,
+    }
+
+    character_trait_definition ETW:HeatLoving
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:HeatLoving,
+        Cost = 2,
+        UIName = UI_trait_HeatLoving,
+        UIDescription = UI_trait_HeatLovingDesc,
+        MutuallyExclusiveTraits = ETW:HeatAverse;ETW:ColdLoving,
+    }
+
     character_trait_definition ETW:BrittleBones
     {
         IsProfessionTrait = false,

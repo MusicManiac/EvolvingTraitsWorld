@@ -108,6 +108,16 @@ local function oneMinuteUpdate()
 			ETW_MentalTraits.fireTrait(player, stats)
 		end
 		if
+			player:hasTrait(ETWTraitsRegistry.HEAT_AVERSE)
+			or player:hasTrait(ETWTraitsRegistry.HEAT_LOVING)
+			or player:hasTrait(ETWTraitsRegistry.COLD_AVERSE)
+			or player:hasTrait(ETWTraitsRegistry.COLD_LOVING)
+		then
+			stats = stats or player:getStats()
+			bodyDamage = bodyDamage or player:getBodyDamage()
+			ETW_MentalTraits.temperatureTrait(player, stats, bodyDamage)
+		end
+		if
 			-- server doesn't know when player is aiming, so in MP it's covered via command from MP Client, but in SP we can check it here
 			gameMode == ETW_CommonFunctions.GameMode.SP
 			and (player:hasTrait(ETWTraitsRegistry.ANTI_GUN_ACTIVIST) or player:hasTrait(ETWTraitsRegistry.TERMINATOR))
