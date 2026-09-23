@@ -33,14 +33,16 @@ then
 	return
 end
 
+local cachedPlayersList
+
 ---Processes every-minute trait effects while sharing one player traversal.
 local function oneMinuteUpdate()
 	local climateManager = getClimateManager()
 	local rainIntensity = climateManager:getRainIntensity()
 	local fogIntensity = climateManager:getFogIntensity()
-	local playersList = ETW_CommonFunctions.playersList()
-	for i = 0, playersList:size() - 1 do
-		local player = playersList:get(i)
+	cachedPlayersList = ETW_CommonFunctions.playersList()
+	for i = 0, cachedPlayersList:size() - 1 do
+		local player = cachedPlayersList:get(i)
 		local bodyDamage
 		local stats
 		local modData
@@ -160,9 +162,9 @@ end
 
 ---Rolls hourly trait effects.
 local function oneHourUpdate()
-	local playersList = ETW_CommonFunctions.playersList()
-	for i = 0, playersList:size() - 1 do
-		local player = playersList:get(i)
+	cachedPlayersList = cachedPlayersList or ETW_CommonFunctions.playersList()
+	for i = 0, cachedPlayersList:size() - 1 do
+		local player = cachedPlayersList:get(i)
 		if player:hasTrait(ETWTraitsRegistry.DEPRESSIVE) then
 			local modData = ETW_CommonFunctions.getETWModData(player)
 			if modData then
@@ -174,9 +176,9 @@ end
 
 ---Processes tick-level trait effects while sharing one player traversal.
 local function everyTickUpdate()
-	local playersList = ETW_CommonFunctions.playersList()
-	for i = 0, playersList:size() - 1 do
-		local player = playersList:get(i)
+	cachedPlayersList = cachedPlayersList or ETW_CommonFunctions.playersList()
+	for i = 0, cachedPlayersList:size() - 1 do
+		local player = cachedPlayersList:get(i)
 		local modData = ETW_CommonFunctions.getETWModData(player)
 		local bodyDamage
 		local stats
