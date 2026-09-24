@@ -8,6 +8,7 @@
 - Fix:
   - Fixed Handy not counting masonry and carving.
   - Removed rogue debug print in Cat Eyes.
+  - Fixed incorrect butterfingers sandbox description.
 - Translation:
   - New translation: FR (v.13.7.0)
 
