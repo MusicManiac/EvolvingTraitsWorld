@@ -1,10 +1,11 @@
-## v.13.x.x
-###### xx Sep 2026
+## v.14.0.0 - The Great Sandbox Unification
+###### 24 Sep 2026
 
 - General:
+  - Merged Simple and Complex Perks sandbox pages, since it was just arbitrary division anyway, some settings might be reset to defaults.
+  - Split Permanent Traits tab into 2 subtabs
   - New traits: Brittle Bones, Strong Bones, Heat-Loving, Heat-Averse, Cold-Loving, Cold-Averse, TV Junkie
   - Minor optimization of `OnTick` in `ETW_EventOrchestrator`
-  - Merged Simple and Complex Perks sandbox pages, since it was just arbitrary division anyway, some settings might be reset to defaults.
   - Changed Indefatigable default uses to unlimited (was 1) and cooldown to 14 days
 - Fix:
   - Fixed Handy not counting masonry and carving

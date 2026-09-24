@@ -56,6 +56,8 @@
     "UI_ETW_Options_UIWidth": "[UI] Character page width",
     "UI_ETW_Options_UIWidth_tooltip": "Width of character page in pixels. If you play in English language default should work fine for you, but in other languages it can be weird so if you need more space, increase it here.",
     "UI_ETW_SubTab_Help": "Help",
+    "UI_ETW_SubTab_CombatTraits": "Combat Traits",
+    "UI_ETW_SubTab_NonCombatTraits": "Non-Combat Traits",
     "UI_ETW_SubTab_NonPermanent": "Non-permanent Traits",
     "UI_ETW_SubTab_Progress": "Permanent Traits",
     "UI_ETW_SubTab_RecentEvents": "Recent Events",

@@ -1,13 +1,10 @@
 [h1]Read description[/h1]
 Asking questions answered in description will be met with ridicule and disrespect.
 
-[h1]Running ETW+MT[/h1]
-You can run both mods at the same time, but some traits will be duplicated. You can try disabling ETW analogues of MT, but I heard it makes character creation a bit buggy. Your best bet is to just let the traits be and not duplicate them. Until you finish current playthrough. And in the next one - drop MT. I am still migrating MT traits, majority is migrated already, some will be added later and some won't be added at all.
-
 [h1]Features[/h1]
 [list]
-[*]68 new traits. If you don't like them - you can disable ones you don't like.
-[*]Dynamic trait loss/gain based on relevant actions. Optional, if you want - all traits will be static permanently. By default all dynamic options are on.
+[*]78 new traits. If you don't like them - you can disable ones you don't like.
+[*]Dynamic trait loss/gain based on relevant actions. [b]Optional[/b]. If you want - all traits will be static permanently. By default all dynamic options are on.
 [*][Dynamic-related] Extensive UI with all needed mod information in-game! No more needing 3 screens to play PZ and keep track of your progress. Just hover over UI elements in new UI for all needed info.
 [*][h3][b]FULL sandbox customization[/b]. Choose which perks you want to be dynamic, choose how fast you get them, choose how fast you lose them, customize anything with sandbox options. Nothing is forced upon player, if you like 1% of the mod, you can literally set it up so you get to use that 1% and nothing else.[/h3]
 [*][Dynamic-related] Advanced systems that affect a lot of traits. Affinity system, that allows you to stick to your starting traits better. Delayed traits system, that allows you to get/remove traits with random delay.
@@ -33,6 +30,7 @@ Currently mod supports following languages (note that not all translations are 1
 [list]
 [*]English
 [*]Italiano / Italian
+[*]French / Français
 [*]Español / Spanish
 [*]簡体中文 / Simplified Chinese
 [*]繁體中文 / Traditional Chinese
