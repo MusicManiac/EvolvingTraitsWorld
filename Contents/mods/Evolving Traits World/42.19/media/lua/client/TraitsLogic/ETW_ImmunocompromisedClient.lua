@@ -190,6 +190,13 @@ local function inspectNearbyZombie(player, zombie)
 	detectZombieAttack(player, zombie)
 end
 
+---Returns whether the nearby-zombie attack detector should run for this player.
+---@param player IsoPlayer
+---@return boolean
+local function immunocompromisedScanEnabled(player)
+	return player:hasTrait(ETWTraitsRegistry.IMMUNOCOMPROMISED)
+end
+
 ---Refreshes the injury baseline so healed wounds and their decreasing timers are forgotten.
 local function refreshKnownInjuries()
 	local player = getPlayer()
@@ -211,7 +218,7 @@ local function onCreatePlayer(playerIndex, player)
 	initializeKnownInjuries(player)
 	ETW_NearbyZombieScanner.register(ZOMBIE_SCANNER_CONSUMER_ID, {
 		radius = ZOMBIE_ATTACK_SCAN_RADIUS,
-		isEnabled = player:hasTrait(ETWTraitsRegistry.IMMUNOCOMPROMISED),
+		isEnabled = immunocompromisedScanEnabled,
 		onZombie = inspectNearbyZombie,
 	})
 	Events.EveryOneMinute.Add(refreshKnownInjuries)

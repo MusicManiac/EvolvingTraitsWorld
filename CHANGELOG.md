@@ -1,3 +1,9 @@
+## v.14.0.1
+###### 24 Sep 2026
+
+- Fix:
+  - Fixed Immunocompromised throwing errors in scanner
+
 ## v.14.0.0 - The Great Sandbox Unification
 ###### 24 Sep 2026
 
