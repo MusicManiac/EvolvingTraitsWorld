@@ -753,22 +753,6 @@ option EvolvingTraitsWorld.MOODLES
 {
 	translation = -----------------------------------------------MOODLES-----------------------------------------------------------------,
 }
-option EvolvingTraitsWorld.BloodlustMoodle
-{
-	type = boolean,
-	default = true,
-	page = ETWMoodles,
-	translation = ETW_BloodlustMoodle,
-}
-option EvolvingTraitsWorld.BloodlustMoodleVisibilityHours
-{
-	type = integer,
-	min = 1,
-	max = 480,
-	default = 6,
-	page = ETWMoodles,
-	translation = ETW_BloodlustMoodleVisibilityHours,
-}
 option EvolvingTraitsWorld.SleepMoodle
 {
 	type = boolean,
@@ -2084,23 +2068,23 @@ option EvolvingTraitsWorld.BloodlustFromAnimalsMultiplier
 	page = ETWSingularPerks,
 	translation = ETW_BloodlustFromAnimalsMultiplier,
 }
-option EvolvingTraitsWorld.BloodlustMeterFillMultiplier
+option EvolvingTraitsWorld.BloodlustGainMultiplier
 {
 	type = double,
 	min = 0,
 	max = 100,
 	default = 0.5,
 	page = ETWSingularPerks,
-	translation = ETW_BloodlustMeterFillMultiplier,
+	translation = ETW_BloodlustGainMultiplier,
 }
-option EvolvingTraitsWorld.BloodlustMeterMaxCapMultiplier
+option EvolvingTraitsWorld.BloodlustDecayMultiplier
 {
-	type = integer,
-	min = 1,
+	type = double,
+	min = 0,
 	max = 100,
-	default = 2,
+	default = 1.0,
 	page = ETWSingularPerks,
-	translation = ETW_BloodlustMeterMaxCapMultiplier,
+	translation = ETW_BloodlustDecayMultiplier,
 }
 option EvolvingTraitsWorld.BloodlustProgress
 {

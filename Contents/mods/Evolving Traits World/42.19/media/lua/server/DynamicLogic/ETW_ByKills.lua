@@ -1,13 +1,9 @@
 local ETW_ModDataServer = require("ETW_ModDataServer")
 local ETW_CommonFunctions = require("ETW_CommonFunctions")
 local ETW_CommonLogicChecks = require("ETW_CommonLogicChecks")
-local ETW_Moodles
+local ETW_CommonServerFunctions = require("ETW_CommonServerFunctions")
 
 local gameMode = ETW_CommonFunctions.gameMode()
-
-if gameMode == ETW_CommonFunctions.GameMode.SP then
-	ETW_Moodles = require("ETW_Moodles")
-end
 
 local ETW_Registry = require("ETW_Registry")
 local ETWTraitsRegistry = ETW_Registry.traits
@@ -28,46 +24,9 @@ then
 	return
 end
 
-local bloodlustMeterCapacity = 72
+local BLOODLUST_HOURLY_PROGRESS_DECAY = 7.2
 
----Function responsible for checking % of bloodied clothes
----@param player IsoPlayer
----@return number -- percentage of bloodied clothes (0-1)
-local function bloodiedClothesLevel(player)
-	local wornItems = player:getWornItems()
-	local totalBloodLevelPercentage = 0.0
-	local amountOfWornItems = 0
-	if wornItems ~= nil and wornItems:size() > 1 then
-		for i = 0, wornItems:size() - 1, 1 do
-			local item = wornItems:getItemByIndex(i)
-			if instanceof(item, "Clothing") then
-				---@cast item Clothing
-				if item:getBloodClothingType() ~= nil then
-					local bloodLevel = item:getBloodLevel() or 0
-					amountOfWornItems = amountOfWornItems + 1
-					totalBloodLevelPercentage = totalBloodLevelPercentage + bloodLevel
-					logETW(
-						"ETW Logger | bloodiedClothesLevel(): Clothing = "
-							.. item:getClothingItemName()
-							.. " | blood clothing type = "
-							.. tostring(item:getBloodClothingType())
-							.. " | blood level = "
-							.. bloodLevel
-					)
-				end
-			end
-		end
-		if amountOfWornItems == 0 then
-			return 0
-		end
-		local avg = totalBloodLevelPercentage / 100 / amountOfWornItems
-		logETW("ETW Logger | bloodiedClothesLevel(): avg = " .. avg)
-		return avg
-	end
-	return 0
-end
-
----Function responsible for managing Bloodlust meter
+---Adds Bloodlust progress when a nearby zombie dies.
 ---@param zombie IsoZombie
 local function bloodlustKillETW(zombie)
 	if gameMode == ETW_CommonFunctions.GameMode.SP and getPlayer():isLocalPlayer() == false then -- checks if it's NPC doing stuff
@@ -86,36 +45,14 @@ local function bloodlustKillETW(zombie)
 					.. distance
 			)
 			if distance <= 10 then
-				local modData = ETW_CommonFunctions.getETWModData(player)
-				if modData then
-					local bloodlust = modData.BloodlustSystem
-					bloodlust.LastKillTimestamp = player:getHoursSurvived()
-					if bloodlust.BloodlustMeter <= bloodlustMeterCapacity then
-						bloodlust.BloodlustMeter = bloodlust.BloodlustMeter
-							+ math.min(1.4 / distance, 1)
-								* SBvars.BloodlustMeterFillMultiplier
-								* (1 + bloodiedClothesLevel(player))
-						logETW("ETW Logger | bloodlustKillETW(): BloodlustMeter=" .. bloodlust.BloodlustMeter)
-					elseif bloodlust.BloodlustMeter < bloodlustMeterCapacity * SBvars.BloodlustMeterMaxCapMultiplier then
-						bloodlust.BloodlustMeter = bloodlust.BloodlustMeter
-							+ math.min(1.4 / distance, 1)
-								* SBvars.BloodlustMeterFillMultiplier
-								* (1 + bloodiedClothesLevel(player))
-								* 0.5
-						logETW("ETW Logger | bloodlustKillETW(): BloodlustMeter (soft-capped)=" .. bloodlust.BloodlustMeter)
-					end
-					if gameMode == ETW_CommonFunctions.GameMode.SP and ETW_Moodles then
-						ETW_Moodles.bloodlustMoodleUpdate(player, { hide = false })
-					elseif gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
-						sendServerCommand(player, "ETW", "bloodlustMoodleUpdate", { hide = false })
-					end
-				end
+				local distanceContribution = distance > 0 and math.min(1.4 / distance, 1) or 1
+				ETW_CommonServerFunctions.addBloodlustProgress(player, distanceContribution, "bloodlustKillETW()")
 			end
 		end
 	end
 end
 
----Function responsible for managing Bloodlust meter with flow of time
+---Applies passive Bloodlust progress decay with the flow of time.
 local function bloodlustTimeETW()
 	local playersList = ETW_CommonFunctions.playersList()
 	for i = 0, playersList:size() - 1 do
@@ -124,49 +61,20 @@ local function bloodlustTimeETW()
 		local modData = ETW_CommonFunctions.getETWModData(player)
 		if modData then
 			local bloodlustModData = modData.BloodlustSystem
-			bloodlustModData.BloodlustMeter =
-				math.min(bloodlustModData.BloodlustMeter, bloodlustMeterCapacity * SBvars.BloodlustMeterMaxCapMultiplier)
-			bloodlustModData.BloodlustMeter = math.max(bloodlustModData.BloodlustMeter - 1, 0) -- hourly decay
-			if gameMode == ETW_CommonFunctions.GameMode.SP and ETW_Moodles then
-				ETW_Moodles.bloodlustMoodleUpdate(player, { hide = false })
-			elseif gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
-				sendServerCommand(player, "ETW", "bloodlustMoodleUpdate", { hide = false })
-			end
-			logETW("ETW Logger | bloodlustTimeETW(): Bloodlust Meter: " .. bloodlustModData.BloodlustMeter)
-			if bloodlustModData.BloodlustMeter >= bloodlustMeterCapacity / 2 then -- gain if above 50%
-				local bloodLustProgressIncrease = bloodlustModData.BloodlustMeter * 0.1 * (1 + bloodiedClothesLevel(player))
-				bloodLustProgressIncrease = ETW_CommonFunctions.applyAffinityToDirectionalChange(
-					modData,
-					bloodLustProgressIncrease,
-					nil,
-					ETWTraitsRegistry.BLOODLUST
-				)
-				bloodlustModData.BloodlustProgress =
-					math.min(SBvars.BloodlustProgress * 2, bloodlustModData.BloodlustProgress + bloodLustProgressIncrease)
-				logETW(
-					"ETW Logger | bloodlustTimeETW(): BloodlustMeter is above 50%, BloodlustProgress ="
-						.. bloodlustModData.BloodlustProgress
-				)
-			else -- lose if below 50%
-				local bloodLustProgressMitigation = bloodlustModData.BloodlustMeter
-					* 0.1
-					* (1 - bloodiedClothesLevel(player))
-				local bloodLustProgressChange = ETW_CommonFunctions.applyAffinityToDirectionalChange(
-					modData,
-					-(bloodlustMeterCapacity / 10 - bloodLustProgressMitigation),
-					nil,
-					ETWTraitsRegistry.BLOODLUST
-				)
-				bloodlustModData.BloodlustProgress =
-					math.max(0, bloodlustModData.BloodlustProgress + bloodLustProgressChange)
-				logETW(
-					"ETW Logger | bloodlustTimeETW(): BloodlustMeter is below 50%, BloodlustProgress ="
-						.. bloodlustModData.BloodlustProgress
-				)
-			end
+			local progressChange = ETW_CommonFunctions.applyAffinityToDirectionalChange(
+				modData,
+				-BLOODLUST_HOURLY_PROGRESS_DECAY * SBvars.BloodlustDecayMultiplier,
+				nil,
+				ETWTraitsRegistry.BLOODLUST
+			)
+			bloodlustModData.BloodlustProgress = bloodlustModData.BloodlustProgress + progressChange
+			logETW(
+				"ETW Logger | bloodlustTimeETW(): hourly decay applied, BloodlustProgress="
+					.. bloodlustModData.BloodlustProgress
+			)
 			if
 				player:hasTrait(ETWTraitsRegistry.BLOODLUST)
-				and bloodlustModData.BloodlustProgress <= SBvars.BloodlustProgress / 2
+				and bloodlustModData.BloodlustProgress <= -SBvars.BloodlustProgress / 2
 				and SBvars.TraitsLockSystemCanLosePositive
 			then
 				ETW_CommonFunctions.removeTraitFromPlayer({
@@ -176,7 +84,7 @@ local function bloodlustTimeETW()
 				})
 			elseif
 				not player:hasTrait(ETWTraitsRegistry.BLOODLUST)
-				and bloodlustModData.BloodlustProgress >= SBvars.BloodlustProgress
+				and bloodlustModData.BloodlustProgress >= SBvars.BloodlustProgress / 2
 				and SBvars.TraitsLockSystemCanGainPositive
 			then
 				ETW_CommonFunctions.addTraitToPlayer({

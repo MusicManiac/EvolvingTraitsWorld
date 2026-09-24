@@ -12,11 +12,11 @@ then
 end
 
 local original_ISKillAnimal_complete = ISKillAnimal.complete
----Decorates successful world-animal slaughter to fill the Bloodlust meter.
+---Decorates successful world-animal slaughter to add Bloodlust progress.
 function ISKillAnimal:complete()
 	local originalReturn = original_ISKillAnimal_complete(self)
 	if originalReturn == true then
-		ETW_AnimalActionsSharedLogic.increaseBloodlustMeter(self.character, "ISKillAnimal:complete()")
+		ETW_AnimalActionsSharedLogic.addBloodlustProgress(self.character, "ISKillAnimal:complete()")
 	end
 	return originalReturn
 end

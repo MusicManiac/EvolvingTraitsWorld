@@ -98,12 +98,6 @@ etwOptions:addTickBox(
 	getText("UI_ETW_Options_EnableButterfingersPopup_tooltip")
 )
 etwOptions:addTickBox(
-	"EnableBloodLustMoodle",
-	getText("UI_ETW_Options_EnableBloodLustMoodle"),
-	true,
-	getText("UI_ETW_Options_EnableBloodLustMoodle_tooltip")
-)
-etwOptions:addTickBox(
 	"EnableSleepHealthMoodle",
 	getText("UI_ETW_Options_EnableSleepHealthMoodle"),
 	true,

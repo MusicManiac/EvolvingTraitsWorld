@@ -15,15 +15,9 @@ local ETW_Registry = require("ETW_Registry")
 local ETWTraitsRegistry = ETW_Registry.traits
 
 ---Increment when fields are added to or migrated in EvolvingTraitsWorld modData.
-local MOD_DATA_VERSION = 1.10
+local MOD_DATA_VERSION = 1.11
 
 local RECENT_TRAIT_EVENT_LIMIT = 10
-local VALID_TRAIT_EVENTS = {
-	qualified_for_gaining = true,
-	qualified_for_losing = true,
-	gained = true,
-	lost = true,
-}
 
 ---Returns the midpoint between two numeric values.
 ---@param a number
@@ -59,7 +53,8 @@ end
 
 ---Migrates legacy fields to their current schema locations.
 ---@param modData EvolvingTraitsWorldModData
-local function migrate(modData)
+---@param playerModData table
+local function migrate(modData, playerModData)
 	--- v.1.8
 	local legacyHoarderCounter = modData.HoarderCounter
 	if modData.CarryWeightCounter == nil and legacyHoarderCounter ~= nil then
@@ -72,6 +67,25 @@ local function migrate(modData)
 	if modData.InjurySnapshotSystem == nil and legacyStartingInjurySystem ~= nil then
 		modData.InjurySnapshotSystem = legacyStartingInjurySystem
 		modData.StartingInjurySystem = nil
+	end
+
+	--- v. 1.11
+	local bloodlustSystem = modData.BloodlustSystem
+	if bloodlustSystem ~= nil then
+		if type(bloodlustSystem.KillsLastHour) ~= "table" then
+			bloodlustSystem.KillsLastHour = {}
+		end
+		if bloodlustSystem.BloodlustProgress ~= nil then
+			bloodlustSystem.BloodlustProgress = math.max(
+				-SBvars.BloodlustProgress,
+				math.min(bloodlustSystem.BloodlustProgress, SBvars.BloodlustProgress)
+			)
+		end
+		bloodlustSystem.BloodlustMeter = nil
+		bloodlustSystem.LastKillTimestamp = nil
+	end
+	if type(playerModData.Moodles) == "table" then
+		playerModData.Moodles.BloodlustMoodle = nil
 	end
 end
 
@@ -135,7 +149,7 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	playerModData.EvolvingTraitsWorld = playerModData.EvolvingTraitsWorld or {}
 	---@type EvolvingTraitsWorldModData
 	local modData = playerModData.EvolvingTraitsWorld
-	migrate(modData)
+	migrate(modData, playerModData)
 
 	modData.VehiclePartRepairs = modData.VehiclePartRepairs or 0
 	modData.EagleEyedKills = modData.EagleEyedKills or 0
@@ -410,13 +424,11 @@ function ETW_ModData.createETWModData(playerIndex, player)
 
 	modData.BloodlustSystem = modData.BloodlustSystem or {}
 	local bloodlustSystem = modData.BloodlustSystem
-	bloodlustSystem.LastKillTimestamp = bloodlustSystem.LastKillTimestamp or 0
+	bloodlustSystem.KillsLastHour = bloodlustSystem.KillsLastHour or {}
 	if bloodlustSystem.BloodlustProgress == nil and startingTraits[ETWTraitsRegistry.BLOODLUST:toString()] == true then
 		bloodlustSystem.BloodlustProgress = SBvars.BloodlustProgress
-		bloodlustSystem.BloodlustMeter = bloodlustSystem.BloodlustMeter or 18
 	else
-		bloodlustSystem.BloodlustProgress = bloodlustSystem.BloodlustProgress or SBvars.BloodlustProgress * 0.75
-		bloodlustSystem.BloodlustMeter = bloodlustSystem.BloodlustMeter or 0
+		bloodlustSystem.BloodlustProgress = -SBvars.BloodlustProgress
 	end
 
 	modData.AnimalsSystem = modData.AnimalsSystem or {}

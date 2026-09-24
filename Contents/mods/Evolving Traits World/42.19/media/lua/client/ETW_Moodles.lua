@@ -50,10 +50,7 @@ local SBvars = SandboxVars.EvolvingTraitsWorld
 ---@type fun(...: string)
 local logETW = ETW_CommonFunctions.log
 
-MF.createMoodle("BloodlustMoodle")
 MF.createMoodle("SleepHealthMoodle")
-
-local bloodlustMeterCapacity = 72
 
 ---Ensures MoodleFramework's backing modData entry exists for an initialized moodle.
 ---@param player IsoPlayer
@@ -102,9 +99,6 @@ local function repairInitializedMoodleModData(player)
 	if player ~= getPlayer() then
 		return
 	end
-	if MF.getMoodle("BloodlustMoodle") then
-		ensureMoodleModData(player, "BloodlustMoodle")
-	end
 	if MF.getMoodle("SleepHealthMoodle") then
 		ensureMoodleModData(player, "SleepHealthMoodle")
 	end
@@ -112,52 +106,6 @@ end
 
 Events.OnPlayerUpdate.Remove(repairInitializedMoodleModData)
 Events.OnPlayerUpdate.Add(repairInitializedMoodleModData)
-
----@class bloodlustMoodleArgs
----@field hide boolean
-
----Function responsible for updating bloodlust moodle
----@param player IsoPlayer
----@param args bloodlustMoodleArgs
-function ETW_Moodles.bloodlustMoodleUpdate(player, args)
-	player = player or getPlayer()
-	if SBvars.BloodlustMoodle == true then
-		local moodle = MF.getMoodle("BloodlustMoodle")
-		if not moodle or not ensureMoodleModData(player, "BloodlustMoodle") then
-			return
-		end
-		local modData = ETW_CommonFunctions.getETWModData(player)
-		if not modData then
-			logETW("ETW Logger | bloodlustMoodleUpdate(): modData is nil, returning early")
-			return
-		end
-		local BloodLustModData = modData.BloodlustSystem
-		local timeSinceLastKill = player:getHoursSurvived() - BloodLustModData.LastKillTimestamp
-		moodle:setThresholds(0.1, 0.2, 0.35, 0.4999, 0.5001, 0.65, 0.8, 0.9)
-		if
-			player == getPlayer()
-			and isMoodleEnabled("EnableBloodLustMoodle")
-			and not args.hide
-			and timeSinceLastKill <= SBvars.BloodlustMoodleVisibilityHours
-		then
-			local percentage = BloodLustModData.BloodlustMeter / bloodlustMeterCapacity
-			local displayedPercentage = string.format("%.2f", percentage * 100)
-			moodle:setValue(percentage)
-			moodle:setDescription(
-				moodle:getGoodBadNeutral(),
-				moodle:getLevel(),
-				getText("Moodles_BloodlustMoodle_Custom", displayedPercentage)
-			)
-			moodle:setPicture(
-				moodle:getGoodBadNeutral(),
-				moodle:getLevel(),
-				getTexture("media/ui/Moodles/BloodlustMoodle.png")
-			)
-		else
-			moodle:setValue(0.5)
-		end
-	end
-end
 
 ---@class sleepHealthMoodleArgs
 ---@field hoursAwayFromPreferredHour number

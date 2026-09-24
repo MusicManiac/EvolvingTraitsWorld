@@ -95,8 +95,6 @@
 --- @field ReaderSystem boolean
 --- @field ReaderSystemCounter integer
 -- Moodles
---- @field BloodlustMoodle boolean
---- @field BloodlustMoodleVisibilityHours integer
 --- @field SleepMoodle boolean
 -- Traits
 --- @field InjuredBurns boolean
@@ -237,8 +235,8 @@
 --- @field AsthmaticRecoveryTemperatureThreshold number
 --- @field Bloodlust boolean
 --- @field BloodlustFromAnimalsMultiplier number
---- @field BloodlustMeterFillMultiplier number
---- @field BloodlustMeterMaxCapMultiplier number
+--- @field BloodlustGainMultiplier number
+--- @field BloodlustDecayMultiplier number
 --- @field BloodlustProgress integer
 --- @field CatEyes boolean
 --- @field CatEyesCounter integer

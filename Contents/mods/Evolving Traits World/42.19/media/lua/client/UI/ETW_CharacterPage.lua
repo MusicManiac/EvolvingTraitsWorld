@@ -3834,7 +3834,7 @@ function ISETWUI:createChildren()
 
 				str = "+ " .. getCachedTraitUIName(ETWTraitsRegistry.BLOODLUST)
 				self.labelBloodlustGain = ISLabel:new(
-					barMidPosition,
+					barThreeFourthPosition - strLen(textManager, str) / 2,
 					y,
 					FONT_HGT_SMALL,
 					str,
@@ -4751,7 +4751,7 @@ function ISETWUI:render()
 	)
 	updateBar(
 		self.barBloodlust,
-		percentile(0, SBvars.BloodlustProgress * 2, modData.BloodlustSystem.BloodlustProgress),
+		percentile(-SBvars.BloodlustProgress, SBvars.BloodlustProgress, modData.BloodlustSystem.BloodlustProgress),
 		getText("UI_ETW_CurrentValue") .. formatDecimal(modData.BloodlustSystem.BloodlustProgress)
 	)
 	updateBar(

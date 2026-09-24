@@ -146,9 +146,8 @@
 --- @field WeightTransferred number
 
 --- @class BloodlustSystem
---- @field LastKillTimestamp number
 --- @field BloodlustProgress number
---- @field BloodlustMeter number
+--- @field KillsLastHour integer[]
 
 --- @class AnimalsSystem
 --- @field UniqueAnimalsPetted integer[]

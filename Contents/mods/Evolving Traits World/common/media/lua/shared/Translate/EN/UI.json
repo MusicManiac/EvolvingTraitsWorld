@@ -19,8 +19,6 @@
     "UI_ETW_RecentEvents_Lost": "Lost ",
     "UI_ETW_RecentEvents_None": "No recent trait events.",
     "UI_ETW_LooseTooltip": "You will lose the trait when bar is around here (or qualify for losing it, if Delayed Traits System is on and this trait in that system)",
-    "UI_ETW_Options_EnableBloodLustMoodle": "Enable Bloodlust Moodle",
-    "UI_ETW_Options_EnableBloodLustMoodle_tooltip": "Will take up to 1 in-game hour to update since moodle is updated on hourly basis.",
     "UI_ETW_Options_EnableButterfingersPopup": "Enable Butterfingers Popup",
     "UI_ETW_Options_EnableButterfingersPopup_tooltip": "Show a red popup above your character whenever Butterfingers makes you drop held items.",
     "UI_ETW_Options_EnableDelayedNotifications": "Enable Delayed Trait Notifications",

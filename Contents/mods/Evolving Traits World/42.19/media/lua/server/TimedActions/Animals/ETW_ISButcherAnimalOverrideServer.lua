@@ -12,11 +12,11 @@ then
 end
 
 local original_ISButcherAnimal_complete = ISButcherAnimal.complete
----Decorates successful ground/inventory animal butchering to fill the Bloodlust meter.
+---Decorates successful ground/inventory animal butchering to add Bloodlust progress.
 function ISButcherAnimal:complete()
 	local originalReturn = original_ISButcherAnimal_complete(self)
 	if originalReturn == true then
-		ETW_AnimalActionsSharedLogic.increaseBloodlustMeter(self.character, "ISButcherAnimal:complete()")
+		ETW_AnimalActionsSharedLogic.addBloodlustProgress(self.character, "ISButcherAnimal:complete()")
 	end
 	return originalReturn
 end
