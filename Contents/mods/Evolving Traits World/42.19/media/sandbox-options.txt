@@ -1716,8 +1716,8 @@ option EvolvingTraitsWorld.ColdTraitsTemperatureThreshold
 option EvolvingTraitsWorld.HeatTraitsTemperatureThreshold
 {
 	type = double,
-	min = 40,
-	max = 37.5,
+	min = 37.5,
+	max = 40,
 	default = 37.5,
 	page = ETWTraitsSettings,
 	translation = ETW_HeatTraitsTemperatureThreshold,
