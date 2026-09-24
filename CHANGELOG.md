@@ -4,6 +4,7 @@
 - General:
   - New traits: Brittle Bones, Strong Bones, Heat-Loving, Heat-Averse, Cold-Loving, Cold-Averse, TV Junkie
   - Minor optimization of `OnTick` in `ETW_EventOrchestrator`
+  - Merged Simple and Complex Perks sandbox pages, since it was just arbitrary division anyway
 - Fix:
   - Fixed Handy not counting masonry and carving.
   - Removed rogue debug print in Cat Eyes.

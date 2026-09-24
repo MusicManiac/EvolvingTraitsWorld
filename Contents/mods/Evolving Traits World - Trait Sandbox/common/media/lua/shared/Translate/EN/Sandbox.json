@@ -1,4 +1,8 @@
 {
+    "Sandbox_ETWTS_BurnWardPatientEnabled": "Enable Burn Ward Patient",
+    "Sandbox_ETWTS_BurnWardPatientEnabled_tooltip": "Controls character-creation availability.",
+    "Sandbox_ETWTS_BurnWardPatientPointValue": "Burn Ward Patient point value",
+    "Sandbox_ETWTS_BurnWardPatientPointValue_tooltip": "Character-creation point adjustment: negative values cost points; positive values grant points.",
     "Sandbox_ETWTS_BrokenLegEnabled": "Enable Broken Leg",
     "Sandbox_ETWTS_BrokenLegEnabled_tooltip": "Controls character-creation availability.",
     "Sandbox_ETWTS_BrokenLegPointValue": "Broken Leg point value",
