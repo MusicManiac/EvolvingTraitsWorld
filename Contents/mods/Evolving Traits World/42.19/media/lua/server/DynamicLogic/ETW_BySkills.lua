@@ -209,10 +209,10 @@ local skillTraitRules = {
 		end,
 	},
 	{
-		triggers = makeTriggerSet("characterInitialization", Perks.Strength, Perks.Fitness, ETWTraitsRegistry.GYM_RAT),
+		triggers = makeTriggerSet("characterInitialization", "exerciseRegularity", ETWTraitsRegistry.GYM_RAT),
 		shouldExecute = ETW_CommonLogicChecks.GymRatShouldExecute,
 		condition = function(ctx)
-			return sumContextValues(ctx, { "strength", "fitness" }) >= SBvars.GymRatSkill
+			return ETW_CommonFunctions.getAverageExerciseRegularity(ctx.player) >= SBvars.GymRatRegularity
 		end,
 		trait = ETWTraitsRegistry.GYM_RAT,
 		positiveTrait = true,

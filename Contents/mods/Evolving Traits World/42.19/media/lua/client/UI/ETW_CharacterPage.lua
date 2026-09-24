@@ -1964,7 +1964,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelGymRatProgress:setTooltip(getText("Sandbox_ETW_GymRatSkill_tooltip"))
+				self.labelGymRatProgress:setTooltip(getText("Sandbox_ETW_GymRatRegularity_tooltip"))
 				self:addChild(self.labelGymRatProgress)
 			end
 
@@ -5102,7 +5102,12 @@ function ISETWUI:render()
 	)
 	updateLabel(
 		self.labelGymRatProgress,
-		getCachedTraitUIName(ETWTraitsRegistry.GYM_RAT) .. ": " .. strength + fitness .. "/" .. SBvars.GymRatSkill
+		getCachedTraitUIName(ETWTraitsRegistry.GYM_RAT)
+			.. ": "
+			.. formatDecimal(ETW_CommonFunctions.getAverageExerciseRegularity(player))
+			.. "%/"
+			.. SBvars.GymRatRegularity
+			.. "%"
 	)
 	updateLabel(
 		self.labelOlympianProgress,

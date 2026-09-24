@@ -2,6 +2,7 @@ require("TimedActions/ISFitnessAction")
 
 local ETW_CommonFunctions = require("ETW_CommonFunctions")
 local ETW_Registry = require("ETW_Registry")
+local ETW_BySkills = require("DynamicLogic/ETW_BySkills")
 
 local FILENAME = "ETW_ISFitnessActionOverrideServer.lua"
 if
@@ -25,17 +26,22 @@ local original_ISFitnessAction_exeLooped = ISFitnessAction.exeLooped
 function ISFitnessAction:exeLooped()
 	local player = self.character
 	local xpMultiplier = math.max(1, SBvars.GymRatExerciseXPMultiplier or 2)
-	local shouldProcess = instanceof(player, "IsoPlayer")
+	local isPlayer = instanceof(player, "IsoPlayer")
+	local shouldProcess = isPlayer
 		and player:hasTrait(ETWTraitsRegistry.GYM_RAT)
 		and xpMultiplier > 1
-	if not shouldProcess then
-		return original_ISFitnessAction_exeLooped(self)
-	end
-	---@cast player IsoPlayer
-	local fitnessXPBefore = player:getXp():getXP(Perks.Fitness)
-	local strengthXPBefore = player:getXp():getXP(Perks.Strength)
+	local fitnessXPBefore = shouldProcess and player:getXp():getXP(Perks.Fitness) or 0
+	local strengthXPBefore = shouldProcess and player:getXp():getXP(Perks.Strength) or 0
 
 	local originalReturn = original_ISFitnessAction_exeLooped(self)
+	if isPlayer then
+		---@cast player IsoPlayer
+		ETW_BySkills.traitsGainsBySkill(player, "exerciseRegularity")
+	end
+	if not shouldProcess then
+		return originalReturn
+	end
+	---@cast player IsoPlayer
 	local fitnessXPAfter = player:getXp():getXP(Perks.Fitness)
 	local strengthXPAfter = player:getXp():getXP(Perks.Strength)
 	local fitnessGain = math.max(0, fitnessXPAfter - fitnessXPBefore)

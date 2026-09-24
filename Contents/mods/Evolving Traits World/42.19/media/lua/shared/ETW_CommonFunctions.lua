@@ -91,6 +91,22 @@ ETW_CommonFunctions.TraitEvent = {
 
 local RECENT_TRAIT_EVENT_LIMIT = 10
 
+---Returns the average of the character's recorded exercise regularities.
+---@param player IsoGameCharacter
+---@return number
+function ETW_CommonFunctions.getAverageExerciseRegularity(player)
+	local regularityMap = player:getFitness():getRegularityMap()
+	local exerciseTypes = regularityMap:keySet():iterator()
+	local total = 0
+	local count = 0
+	while exerciseTypes:hasNext() do
+		local exerciseType = exerciseTypes:next()
+		total = total + regularityMap:get(exerciseType)
+		count = count + 1
+	end
+	return count > 0 and total / count or 0
+end
+
 ---Function responsible for determining the current game mode, returns "SP" for single player, "MP_Client" for multiplayer client and "MP_Server" for multiplayer server
 ---@return "SP"|"MP_Client"|"MP_Server"
 function ETW_CommonFunctions.gameMode()
