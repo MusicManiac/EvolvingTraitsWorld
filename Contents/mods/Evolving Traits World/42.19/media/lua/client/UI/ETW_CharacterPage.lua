@@ -1606,7 +1606,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					false
 				)
-				self.labelCarryWeightSystemBarName:setTooltip(getText("Sandbox_ETW_CarryWeightCounter_tooltip"))
+				self.labelCarryWeightSystemBarName:setTooltip(getText("Sandbox_ETW_CarryWeightSystemCounter_tooltip"))
 				self:addChild(self.labelCarryWeightSystemBarName)
 
 				self.barCarryWeightSystem = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
@@ -4741,7 +4741,7 @@ function ISETWUI:render()
 	)
 	updateBar(
 		self.barCarryWeightSystem,
-		percentile(0, SBvars.CarryWeightCounter, modData.CarryWeightCounter),
+		percentile(0, SBvars.CarryWeightSystemCounter, modData.CarryWeightCounter),
 		getText("UI_ETW_CurrentValue") .. formatDecimal(modData.CarryWeightCounter)
 	)
 	updateBar(
@@ -4781,21 +4781,6 @@ function ISETWUI:render()
 		),
 		getText("UI_ETW_CurrentValue") .. formatDecimal(modData.LocationFearSystem.FearOfInside)
 	)
-	if self.barLuckSystem ~= nil then
-		local totalPerkLevel = 0
-		local totalMaxPerkLevel = 0
-		for i = 1, Perks.getMaxIndex() - 1 do
-			local selectedPerk = Perks.fromIndex(i)
-			if selectedPerk:getParent():getName() ~= "None" then
-				local perkLevel = player:getPerkLevel(selectedPerk)
-				totalPerkLevel = totalPerkLevel + perkLevel
-				totalMaxPerkLevel = totalMaxPerkLevel + 10
-			end
-		end
-		local percentageOfSkillLevels = totalPerkLevel / totalMaxPerkLevel * 100
-		self.barLuckSystem:setValue(percentageOfSkillLevels / 100)
-		self.barLuckSystem:setTooltip(totalPerkLevel)
-	end
 	local levels = sprinting
 		+ lightfooted
 		+ nimble

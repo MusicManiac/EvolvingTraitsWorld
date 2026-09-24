@@ -827,7 +827,9 @@ end
 ---@param player IsoPlayer|nil
 ---@return boolean
 function ETW_CommonLogicChecks.NaturalEaterShouldExecute(player)
-	return traitShouldExecute("NaturalEaterEnabled")
+	return 
+		SBvars.NaturalEater == true
+		and traitShouldExecute("NaturalEaterEnabled")
 		and SBvars.TraitsLockSystemCanGainPositive
 		and (player == nil or not player:hasTrait(ETWTraitsRegistry.NATURAL_EATER))
 end

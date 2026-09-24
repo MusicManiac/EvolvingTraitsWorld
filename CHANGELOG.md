@@ -4,11 +4,13 @@
 - General:
   - New traits: Brittle Bones, Strong Bones, Heat-Loving, Heat-Averse, Cold-Loving, Cold-Averse, TV Junkie
   - Minor optimization of `OnTick` in `ETW_EventOrchestrator`
-  - Merged Simple and Complex Perks sandbox pages, since it was just arbitrary division anyway
+  - Merged Simple and Complex Perks sandbox pages, since it was just arbitrary division anyway, some settings might be reset to defaults.
+  - Changed Indefatigable default uses to unlimited (was 1) and cooldown to 14 days
 - Fix:
-  - Fixed Handy not counting masonry and carving.
-  - Removed rogue debug print in Cat Eyes.
-  - Fixed incorrect butterfingers sandbox description.
+  - Fixed Handy not counting masonry and carving
+  - Removed rogue debug print in Cat Eyes
+  - Fixed incorrect butterfingers sandbox description
+  - Added missing toggle that enables/disables Natural Eater being dynamic
 - Translation:
   - New translation: FR (v.13.7.0)
 

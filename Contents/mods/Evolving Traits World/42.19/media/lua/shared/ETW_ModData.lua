@@ -237,9 +237,9 @@ function ETW_ModData.createETWModData(playerIndex, player)
 
 	if modData.CarryWeightCounter == nil then
 		if player:hasTrait(ETWTraitsRegistry.PACK_MULE) then
-			modData.CarryWeightCounter = SBvars.CarryWeightCounter
+			modData.CarryWeightCounter = SBvars.CarryWeightSystemCounter
 		elseif player:hasTrait(ETWTraitsRegistry.HOARDER) then
-			modData.CarryWeightCounter = SBvars.CarryWeightCounter * 2 / 3
+			modData.CarryWeightCounter = SBvars.CarryWeightSystemCounter * 2 / 3
 		end
 	end
 	modData.CarryWeightCounter = modData.CarryWeightCounter or 0

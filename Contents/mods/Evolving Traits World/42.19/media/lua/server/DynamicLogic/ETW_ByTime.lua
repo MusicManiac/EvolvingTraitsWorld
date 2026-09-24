@@ -269,7 +269,7 @@ local function carryWeightSystem()
 		end
 
 		if ETW_CommonLogicChecks.CarryWeightSystemShouldExecute(player) then
-			local maximumProgress = SBvars.CarryWeightCounter
+			local maximumProgress = SBvars.CarryWeightSystemCounter
 			local maxWeight = player:getMaxWeight()
 			local inventoryFullness = 0.0
 			if maxWeight > 0 then

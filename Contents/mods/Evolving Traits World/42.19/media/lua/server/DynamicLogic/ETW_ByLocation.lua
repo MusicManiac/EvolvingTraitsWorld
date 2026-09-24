@@ -201,7 +201,7 @@ local function fearOfLocations(player, isKill)
 			"ETW Logger | fearOfLocations(): modData.FearOfOutside: " .. fearOfLocationsModData.FearOfOutside,
 			"ETW Logger | fearOfLocations(): modData.FearOfInside: " .. fearOfLocationsModData.FearOfInside
 		)
-		if not SBvars.FearOfLocationsExclusiveFears then
+		if not SBvars.FearOfLocationsSystemExclusiveFears then
 			if
 				not playerHasAgoraphobia
 				and fearOfLocationsModData.FearOfOutside <= -SBCounter
