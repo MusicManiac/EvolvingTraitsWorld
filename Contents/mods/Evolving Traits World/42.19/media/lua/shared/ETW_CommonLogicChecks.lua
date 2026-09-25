@@ -304,21 +304,29 @@ function ETW_CommonLogicChecks.CarryWeightSystemShouldExecute(player, trait)
 		or (canGainPackMule and not player:hasTrait(ETWTraitsRegistry.PACK_MULE))
 end
 
----Returns true if the Gym Rat System should execute
+---Returns true if the Gym Traits System should execute.
 ---@param player IsoPlayer|nil the player to check for
----@return boolean boolean true if the Gym Rat System should execute, false otherwise
-function ETW_CommonLogicChecks.GymRatShouldExecute(player)
-	if
-		SBvars.GymRat == true
-		and traitShouldExecute("GymRatEnabled")
-		and (not player or not player:hasTrait(ETWTraitsRegistry.COUCH_POTATO))
-		and ((player and not player:hasTrait(ETWTraitsRegistry.GYM_RAT)) or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER)
-		and SBvars.TraitsLockSystemCanGainPositive
-	then
-		return true
-	else
-		return false
-	end
+---@return boolean
+function ETW_CommonLogicChecks.GymTraitsSystemShouldExecute(player)
+	return SBvars.GymTraitsSystem == true
+		and (
+			SBvars.TraitsLockSystemCanGainPositive
+			or SBvars.TraitsLockSystemCanLosePositive
+			or SBvars.TraitsLockSystemCanGainNegative
+			or SBvars.TraitsLockSystemCanLoseNegative
+		)
+end
+
+---Returns whether Trait Sandbox permits Gym Rat gameplay acquisition.
+---@return boolean
+function ETW_CommonLogicChecks.GymRatGameplayEnabled()
+	return traitShouldExecute("GymRatEnabled")
+end
+
+---Returns whether Trait Sandbox permits Couch Potato gameplay acquisition.
+---@return boolean
+function ETW_CommonLogicChecks.CouchPotatoGameplayEnabled()
+	return traitShouldExecute("CouchPotatoEnabled")
 end
 
 ---Returns true if the Runner System should execute

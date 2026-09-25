@@ -727,6 +727,9 @@ function ISETWUI:createChildren()
 			if ETW_CommonLogicChecks.CarryWeightSystemShouldExecute(player) then
 				appendLeftBarLabel(labelTexts, getText("UI_ETW_CarryWeightSystem"))
 			end
+			if ETW_CommonLogicChecks.GymTraitsSystemShouldExecute(player) then
+				appendLeftBarLabel(labelTexts, getText("Sandbox_ETW_GymTraitsSystem"))
+			end
 			if ETW_CommonLogicChecks.InventoryTransferSystemShouldExecute(player) then
 				local weightTransferred = (
 					modData
@@ -795,6 +798,10 @@ function ISETWUI:createChildren()
 		local barLength = barEndPosition - barStartPosition
 		local barOneFourthPosition = barMidPosition - barLength / 4
 		local barThreeFourthPosition = barMidPosition + barLength / 4
+		local barOneEighthPosition = barStartPosition + barLength / 8
+		local barThreeEighthPosition = barStartPosition + barLength * 3 / 8
+		local barFiveEighthPosition = barStartPosition + barLength * 5 / 8
+		local barSevenEighthPosition = barStartPosition + barLength * 7 / 8
 		local barOneThirdPosition = barStartPosition + barLength / 3
 		local barTwoThirdPosition = barOneThirdPosition + barLength / 3
 		local barOneSixthPosition = barStartPosition + barLength / 6
@@ -1962,27 +1969,6 @@ function ISETWUI:createChildren()
 				end
 
 				y = y + FONT_HGT_SMALL / 2
-			end
-
-			if
-				ETW_CommonLogicChecks.GymRatShouldExecute(player)
-				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.GYM_RAT)
-			then
-				arrangeColumnsInTable()
-				self.labelGymRatProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					"",
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelGymRatProgress:setTooltip(getText("Sandbox_ETW_GymRatRegularity_tooltip"))
-				self:addChild(self.labelGymRatProgress)
 			end
 
 			if
@@ -3605,6 +3591,97 @@ function ISETWUI:createChildren()
 				self:addChild(self.labelAffinitySystemEnabled)
 			end
 
+			if ETW_CommonLogicChecks.GymTraitsSystemShouldExecute(player) then
+				str = "+ " .. getCachedTraitUIName(ETWTraitsRegistry.COUCH_POTATO)
+				self.labelCouchPotatoGain = ISLabel:new(
+					barOneEighthPosition - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelCouchPotatoGain:setTooltip(getText("UI_ETW_GainTooltip"), "below")
+				self:addChild(self.labelCouchPotatoGain)
+
+				str = "+ " .. getCachedTraitUIName(ETWTraitsRegistry.GYM_RAT)
+				self.labelGymRatGain = ISLabel:new(
+					barSevenEighthPosition - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelGymRatGain:setTooltip(getText("UI_ETW_GainTooltip"), "below")
+				self:addChild(self.labelGymRatGain)
+
+				y = y + FONT_HGT_SMALL
+
+				str = "- " .. getCachedTraitUIName(ETWTraitsRegistry.COUCH_POTATO)
+				self.labelCouchPotatoLose = ISLabel:new(
+					barThreeEighthPosition - strLen(textManager, str) / 2,
+					y + FONT_HGT_SMALL,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelCouchPotatoLose:setTooltip(getText("UI_ETW_LooseTooltip"), "above")
+				self:addChild(self.labelCouchPotatoLose)
+
+				str = "- " .. getCachedTraitUIName(ETWTraitsRegistry.GYM_RAT)
+				self.labelGymRatLose = ISLabel:new(
+					barFiveEighthPosition - strLen(textManager, str) / 2,
+					y + FONT_HGT_SMALL,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelGymRatLose:setTooltip(getText("UI_ETW_LooseTooltip"), "above")
+				self:addChild(self.labelGymRatLose)
+
+				self.labelGymTraitsSystemBarName = ISLabel:new(
+					barStartPosition - lineStartPosition,
+					y,
+					FONT_HGT_SMALL,
+					getText("Sandbox_ETW_GymTraitsSystem"),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					false
+				)
+				self.labelGymTraitsSystemBarName:setTooltip(getText("Sandbox_ETW_GymTraitsSystem_tooltip"))
+				self:addChild(self.labelGymTraitsSystemBarName)
+
+				self.barGymTraitsSystem = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
+				self.barGymTraitsSystem:setGradientTexture(redYellowGreenGradient)
+				self.barGymTraitsSystem:setHighlightRadius(highlightRadius)
+				self.barGymTraitsSystem:setDoKnob(false)
+				self:addChild(self.barGymTraitsSystem)
+
+				y = y + FONT_HGT_SMALL * 2
+			end
+
 			if ETW_CommonLogicChecks.InjuriesSystemShouldExecute(player) then
 				str = "+ " .. getCachedTraitUIName(CharacterTrait.THIN_SKINNED)
 				self.labelThinSkinnedGain = ISLabel:new(
@@ -5183,13 +5260,18 @@ function ISETWUI:render()
 			.. "/"
 			.. SBvars.EagleEyedKills
 	)
-	updateLabel(
-		self.labelGymRatProgress,
-		getCachedTraitUIName(ETWTraitsRegistry.GYM_RAT)
+	local gymTraitsCounter = modData.GymTraitsSystemCounter or 0
+	updateBar(
+		self.barGymTraitsSystem,
+		percentile(-SBvars.GymTraitsSystemCounter, SBvars.GymTraitsSystemCounter, gymTraitsCounter),
+		getText("UI_ETW_CurrentValue")
+			.. formatDecimal(gymTraitsCounter)
+			.. "\n"
+			.. getText("Sandbox_ETW_GymTraitsSystemRegularityMidpoint")
 			.. ": "
 			.. formatDecimal(ETW_CommonFunctions.getAverageExerciseRegularity(player))
 			.. "%/"
-			.. SBvars.GymRatRegularity
+			.. SBvars.GymTraitsSystemRegularityMidpoint
 			.. "%"
 	)
 	updateLabel(

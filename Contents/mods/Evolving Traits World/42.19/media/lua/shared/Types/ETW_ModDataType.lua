@@ -76,6 +76,7 @@
 --- @field SmokeSystem SmokeSystem
 --- @field TransferSystem TransferSystem
 --- @field BloodlustSystem BloodlustSystem
+--- @field GymTraitsSystemCounter number
 --- @field AnimalsSystem AnimalsSystem
 
 --- @class TVJunkieSystem

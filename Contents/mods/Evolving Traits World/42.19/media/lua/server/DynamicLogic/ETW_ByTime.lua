@@ -431,6 +431,101 @@ local function olympian()
 	end
 end
 
+---Advances Gym Rat and Couch Potato progression from average exercise regularity once per in-game hour.
+local function gymTraitsSystem()
+	local playersList = ETW_CommonFunctions.playersList()
+	local maximumProgress = SBvars.GymTraitsSystemCounter
+	local midpoint = math.max(0, math.min(100, SBvars.GymTraitsSystemRegularityMidpoint or 50))
+	local couchPotatoGainThreshold = maximumProgress * -0.75
+	local couchPotatoLossThreshold = maximumProgress * -0.25
+	local gymRatLossThreshold = maximumProgress * 0.25
+	local gymRatGainThreshold = maximumProgress * 0.75
+
+	for i = 0, playersList:size() - 1 do
+		local player = playersList:get(i)
+		if ETW_CommonLogicChecks.GymTraitsSystemShouldExecute(player) then
+			local modData = ETW_CommonFunctions.getETWModData(player)
+			if modData then
+				local counter = modData.GymTraitsSystemCounter
+				local averageRegularity = ETW_CommonFunctions.getAverageExerciseRegularity(player)
+				local distanceFromMidpoint = averageRegularity - midpoint
+				local hasCouchPotato = player:hasTrait(ETWTraitsRegistry.COUCH_POTATO)
+				local hasGymRat = player:hasTrait(ETWTraitsRegistry.GYM_RAT)
+				local multiplier = distanceFromMidpoint >= 0
+						and math.max(0, SBvars.GymTraitsSystemProgressGainMultiplier or 1)
+					or math.max(0, SBvars.GymTraitsSystemProgressLossMultiplier or 1)
+				local counterChange = ETW_CommonFunctions.applyAffinityToDirectionalChange(
+					modData,
+					distanceFromMidpoint * multiplier,
+					ETWTraitsRegistry.COUCH_POTATO,
+					ETWTraitsRegistry.GYM_RAT
+				)
+				counter = math.max(-maximumProgress, math.min(maximumProgress, counter + counterChange))
+				modData.GymTraitsSystemCounter = counter
+
+				if
+					hasCouchPotato
+					and counter >= couchPotatoLossThreshold
+					and SBvars.TraitsLockSystemCanLoseNegative
+				then
+					ETW_CommonFunctions.removeTraitFromPlayer({
+						player = player,
+						trait = ETWTraitsRegistry.COUCH_POTATO,
+						positiveTrait = false,
+					})
+				elseif
+					not hasCouchPotato
+					and not hasGymRat
+					and counter <= couchPotatoGainThreshold
+					and SBvars.TraitsLockSystemCanGainNegative
+					and ETW_CommonLogicChecks.CouchPotatoGameplayEnabled()
+				then
+					ETW_CommonFunctions.addTraitToPlayer({
+						player = player,
+						trait = ETWTraitsRegistry.COUCH_POTATO,
+						positiveTrait = false,
+					})
+				end
+
+				if
+					hasGymRat
+					and counter <= gymRatLossThreshold
+					and SBvars.TraitsLockSystemCanLosePositive
+				then
+					ETW_CommonFunctions.removeTraitFromPlayer({
+						player = player,
+						trait = ETWTraitsRegistry.GYM_RAT,
+						positiveTrait = true,
+					})
+				elseif
+					not hasGymRat
+					and not hasCouchPotato
+					and counter >= gymRatGainThreshold
+					and SBvars.TraitsLockSystemCanGainPositive
+					and ETW_CommonLogicChecks.GymRatGameplayEnabled()
+				then
+					ETW_CommonFunctions.addTraitToPlayer({
+						player = player,
+						trait = ETWTraitsRegistry.GYM_RAT,
+						positiveTrait = true,
+					})
+				end
+
+				logETW(
+					"ETW Logger | gymTraitsSystem(): player "
+						.. player:getUsername()
+						.. ", average regularity: "
+						.. averageRegularity
+						.. ", counter change: "
+						.. counterChange
+						.. ", counter: "
+						.. counter
+				)
+			end
+		end
+	end
+end
+
 ---Function responsible for setting up events
 ---@param playerIndex number
 ---@param player IsoPlayer
@@ -457,6 +552,10 @@ local function initializeEventsETW(playerIndex, player)
 	if ETW_CommonLogicChecks.CarryWeightSystemShouldExecute(player) then
 		Events.EveryOneMinute.Add(carryWeightSystem)
 	end
+	Events.EveryHours.Remove(gymTraitsSystem)
+	if ETW_CommonLogicChecks.GymTraitsSystemShouldExecute(player) then
+		Events.EveryHours.Add(gymTraitsSystem)
+	end
 	if gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
 		Events.OnTick.Remove(initializeEventsETW)
 	end
@@ -469,6 +568,7 @@ local function clearEventsETW(character)
 	Events.EveryOneMinute.Remove(smoker)
 	Events.EveryOneMinute.Remove(carryWeightSystem)
 	Events.EveryOneMinute.Remove(olympian)
+	Events.EveryHours.Remove(gymTraitsSystem)
 	logETW("ETW Logger | System: clearEventsETW in " .. FILENAME)
 end
 

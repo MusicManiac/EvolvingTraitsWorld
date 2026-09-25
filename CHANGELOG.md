@@ -2,9 +2,8 @@
 ###### xx Sep 2026
 
 - General:
-  - Added Light Dresser and Heavy Dresser
-  - Added the static Couch Potato trait, the opposite of Gym Rat
-  - Changed how Gym Rat is earned, now requires average exercise regularity
+  - Added Light Dresser, Heavy Dresser, Couch Potato
+  - Added the non-permanent Gym Traits System: hourly progress follows average exercise regularity and can gain or lose Couch Potato and Gym Rat
   - Split Non-Permanent Tab into Mental and Physical Traits
 - Fix:
   - Fixed Bloodlust progress resetting every time character spawned in

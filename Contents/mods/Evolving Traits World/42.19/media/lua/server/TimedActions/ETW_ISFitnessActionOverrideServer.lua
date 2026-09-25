@@ -3,7 +3,6 @@ require("TimedActions/ISFitnessAction")
 local ETW_CommonFunctions = require("ETW_CommonFunctions")
 local ETW_CombinedTraitFunctions = require("ETW_CombinedTraitFunctions")
 local ETW_Registry = require("ETW_Registry")
-local ETW_BySkills = require("DynamicLogic/ETW_BySkills")
 
 local FILENAME = "ETW_ISFitnessActionOverrideServer.lua"
 if
@@ -37,10 +36,6 @@ function ISFitnessAction:exeLooped()
 	local strengthXPBefore = shouldProcess and player:getXp():getXP(Perks.Strength) or 0
 
 	local originalReturn = original_ISFitnessAction_exeLooped(self)
-	if isPlayer then
-		---@cast player IsoPlayer
-		ETW_BySkills.traitsGainsBySkill(player, "exerciseRegularity")
-	end
 	if isCouchPotato then
 		local fatigueMultiplier = math.max(1, math.floor(SBvars.CouchPotatoExerciseFatigueMultiplier or 2))
 		for _ = 2, fatigueMultiplier do

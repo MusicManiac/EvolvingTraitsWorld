@@ -15,7 +15,7 @@ local ETW_Registry = require("ETW_Registry")
 local ETWTraitsRegistry = ETW_Registry.traits
 
 ---Increment when fields are added to or migrated in EvolvingTraitsWorld modData.
-local MOD_DATA_VERSION = 1.11
+local MOD_DATA_VERSION = 1.12
 
 local RECENT_TRAIT_EVENT_LIMIT = 10
 
@@ -238,6 +238,8 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.NEEDS_LESS_SLEEP)
 	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.NEEDS_MORE_SLEEP)
 	ETW_ModData.checkStartingTrait(startingTraits, player, ETWTraitsRegistry.BLOODLUST)
+	ETW_ModData.checkStartingTrait(startingTraits, player, ETWTraitsRegistry.GYM_RAT)
+	ETW_ModData.checkStartingTrait(startingTraits, player, ETWTraitsRegistry.COUCH_POTATO)
 	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.SMOKER)
 	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.OUTDOORSMAN)
 	ETW_ModData.checkStartingTrait(startingTraits, player, ETWTraitsRegistry.PLUVIOPHILE)
@@ -430,6 +432,16 @@ function ETW_ModData.createETWModData(playerIndex, player)
 			bloodlustSystem.BloodlustProgress = SBvars.BloodlustProgress
 		else
 			bloodlustSystem.BloodlustProgress = -SBvars.BloodlustProgress
+		end
+	end
+
+	if modData.GymTraitsSystemCounter == nil then
+		if startingTraits[ETWTraitsRegistry.GYM_RAT:toString()] == true then
+			modData.GymTraitsSystemCounter = SBvars.GymTraitsSystemCounter
+		elseif startingTraits[ETWTraitsRegistry.COUCH_POTATO:toString()] == true then
+			modData.GymTraitsSystemCounter = -SBvars.GymTraitsSystemCounter
+		else
+			modData.GymTraitsSystemCounter = 0
 		end
 	end
 

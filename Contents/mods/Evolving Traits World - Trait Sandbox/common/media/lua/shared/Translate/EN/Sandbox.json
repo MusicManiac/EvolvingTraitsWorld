@@ -118,7 +118,7 @@
     "Sandbox_ETWTS_GymRatPointValue": "Gym Rat point value",
     "Sandbox_ETWTS_GymRatPointValue_tooltip": "Character-creation point adjustment: negative values cost points; positive values grant points.",
     "Sandbox_ETWTS_CouchPotatoEnabled": "Enable Couch Potato",
-    "Sandbox_ETWTS_CouchPotatoEnabled_tooltip": "Controls character-creation availability.",
+    "Sandbox_ETWTS_CouchPotatoEnabled_tooltip": "Controls character-creation availability and, unless the global override is enabled, ETW gameplay acquisition.",
     "Sandbox_ETWTS_CouchPotatoPointValue": "Couch Potato point value",
     "Sandbox_ETWTS_CouchPotatoPointValue_tooltip": "Character-creation point adjustment: negative values cost points; positive values grant points.",
     "Sandbox_ETWTS_HoarderEnabled": "Enable Hoarder",

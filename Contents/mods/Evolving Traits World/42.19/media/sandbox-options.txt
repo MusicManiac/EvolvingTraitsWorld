@@ -145,6 +145,49 @@ option EvolvingTraitsWorld.CarryWeightSystemCounter
 	page = ETWSystems,
 	translation = ETW_CarryWeightSystemCounter,
 }
+option EvolvingTraitsWorld.GymTraitsSystem
+{
+	type = boolean,
+	default = true,
+	page = ETWSystems,
+	translation = ETW_GymTraitsSystem,
+}
+option EvolvingTraitsWorld.GymTraitsSystemCounter
+{
+	type = integer,
+	min = 1,
+	max = 10000000,
+	default = 10000,
+	page = ETWSystems,
+	translation = ETW_GymTraitsSystemCounter,
+}
+option EvolvingTraitsWorld.GymTraitsSystemRegularityMidpoint
+{
+	type = integer,
+	min = 0,
+	max = 100,
+	default = 50,
+	page = ETWSystems,
+	translation = ETW_GymTraitsSystemRegularityMidpoint,
+}
+option EvolvingTraitsWorld.GymTraitsSystemProgressGainMultiplier
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 1,
+	page = ETWSystems,
+	translation = ETW_GymTraitsSystemProgressGainMultiplier,
+}
+option EvolvingTraitsWorld.GymTraitsSystemProgressLossMultiplier
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 1,
+	page = ETWSystems,
+	translation = ETW_GymTraitsSystemProgressLossMultiplier,
+}
 option EvolvingTraitsWorld.EatingSpeedSystem
 {
 	type = boolean,
@@ -2431,22 +2474,6 @@ option EvolvingTraitsWorld.GymnastSkill
 	default = 15,
 	page = ETWSingularPerks,
 	translation = ETW_GymnastSkill,
-}
-option EvolvingTraitsWorld.GymRat
-{
-	type = boolean,
-	default = true,
-	page = ETWSingularPerks,
-	translation = ETW_GymRat,
-}
-option EvolvingTraitsWorld.GymRatRegularity
-{
-	type = integer,
-	min = 0,
-	max = 100,
-	default = 80,
-	page = ETWSingularPerks,
-	translation = ETW_GymRatRegularity,
 }
 option EvolvingTraitsWorld.Handy
 {
