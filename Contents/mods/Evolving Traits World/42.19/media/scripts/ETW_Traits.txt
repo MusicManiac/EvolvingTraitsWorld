@@ -630,7 +630,19 @@ module ETW
         UIName = UI_trait_GymRat,
         UIDescription = UI_trait_GymRatDesc,
         XPBoosts = Fitness=1;Strength=1,
-        MutuallyExclusiveTraits = base:unfit;base:emaciated;base:very underweight;base:underweight;base:out of shape;base:weak;base:feeble;base:obese,
+        MutuallyExclusiveTraits = base:unfit;base:emaciated;base:very underweight;base:underweight;base:out of shape;base:weak;base:feeble;base:obese;ETW:CouchPotato,
+    }
+
+    character_trait_definition ETW:CouchPotato
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:CouchPotato,
+        Cost = -8,
+        UIName = UI_trait_CouchPotato,
+        UIDescription = UI_trait_CouchPotatoDesc,
+        XPBoosts = Fitness=-1;Strength=-1,
+        MutuallyExclusiveTraits = base:athletic;base:fit;base:stout;base:strong;ETW:GymRat,
     }
 
     character_trait_definition ETW:Hoarder

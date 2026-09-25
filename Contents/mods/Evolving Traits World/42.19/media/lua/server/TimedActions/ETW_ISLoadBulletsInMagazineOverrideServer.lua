@@ -60,7 +60,14 @@ function ISLoadBulletsInMagazine:animEvent(event, parameter)
 		return originalReturn
 	end
 
-	local xpToRemove, progress, reason = ETWCombinedTraitChecks.calculateAntiGunReloadingXPPenalty(player, gainedXP)
+	local penaltyFraction = math.max(0, math.min(100, SBvars.AntiGunReloadingXPPenaltyPercent or 25)) / 100
+	local xpAdjustment, progress, reason = ETWCombinedTraitChecks.calculateProtectedXPAdjustment(
+		player,
+		Perks.Reloading,
+		gainedXP,
+		1 - penaltyFraction
+	)
+	local xpToRemove = -xpAdjustment
 	if xpToRemove <= 0 then
 		logETW(
 			"ETW Logger | Anti-gun | ISLoadBulletsInMagazine:animEvent(): Reloading XP penalty skipped for "

@@ -320,21 +320,18 @@ function ETWCombinedTraitChecks.processGymRatExerciseFatigue(player, stiffnessSt
 	return suppressionActive
 end
 
----Calculates Anti-Gun Activist's protected XP penalty for a firearm skill.
+---Calculates an XP multiplier adjustment without crossing 5% or 95% progress in the current level.
 ---@param player IsoPlayer
 ---@param perk PerkFactory.Perk
 ---@param earnedAmount number
----@param penaltyPercent number
----@return number xpToRemove
+---@param xpMultiplier number
+---@return number adjustment
 ---@return number|nil progress
 ---@return string|nil reason
-function ETWCombinedTraitChecks.calculateAntiGunXPPenalty(player, perk, earnedAmount, penaltyPercent)
+function ETWCombinedTraitChecks.calculateProtectedXPAdjustment(player, perk, earnedAmount, xpMultiplier)
 	local numericEarnedAmount = tonumber(earnedAmount)
 	if not numericEarnedAmount or numericEarnedAmount <= 0 then
 		return 0, nil, "invalid earned amount"
-	end
-	if not player:hasTrait(ETWTraitsRegistry.ANTI_GUN_ACTIVIST) then
-		return 0, nil, "trait missing"
 	end
 
 	local level = player:getPerkLevel(perk)
@@ -351,49 +348,23 @@ function ETWCombinedTraitChecks.calculateAntiGunXPPenalty(player, perk, earnedAm
 
 	local currentXP = player:getXp():getXP(perk)
 	local progress = math.max(0, math.min(1, (currentXP - lowerXP) / levelSpan))
-	local lowerBoundary = 0.05
-	local upperBoundary = 0.95
-	if progress < lowerBoundary or progress > upperBoundary then
+	local lowerBoundaryXP = lowerXP + levelSpan * 0.05
+	local upperBoundaryXP = lowerXP + levelSpan * 0.95
+	if currentXP < lowerBoundaryXP or currentXP > upperBoundaryXP then
 		return 0, progress, "outside 5%-95% range"
 	end
 
-	local penaltyMultiplier = PZMath.clamp(penaltyPercent or 25, 0, 100) / 100
-	local protectedXP = lowerXP + levelSpan * lowerBoundary
-	local xpToRemove = math.min(numericEarnedAmount * penaltyMultiplier, math.max(0, currentXP - protectedXP))
-	if xpToRemove <= 0 then
-		return 0, progress, "protected lower boundary"
+	local requestedAdjustment = numericEarnedAmount * (xpMultiplier - 1)
+	local adjustment
+	if requestedAdjustment > 0 then
+		adjustment = math.min(requestedAdjustment, math.max(0, upperBoundaryXP - currentXP))
+	else
+		adjustment = math.max(requestedAdjustment, math.min(0, lowerBoundaryXP - currentXP))
 	end
-	return xpToRemove, progress, nil
-end
-
----Calculates Anti-Gun Activist's protected Aiming XP penalty.
----@param player IsoPlayer
----@param earnedAmount number
----@return number xpToRemove
----@return number|nil progress
----@return string|nil reason
-function ETWCombinedTraitChecks.calculateAntiGunAimingXPPenalty(player, earnedAmount)
-	return ETWCombinedTraitChecks.calculateAntiGunXPPenalty(
-		player,
-		Perks.Aiming,
-		earnedAmount,
-		SBvars.AntiGunAimingXPPenaltyPercent or 25
-	)
-end
-
----Calculates Anti-Gun Activist's protected Reloading XP penalty.
----@param player IsoPlayer
----@param earnedAmount number
----@return number xpToRemove
----@return number|nil progress
----@return string|nil reason
-function ETWCombinedTraitChecks.calculateAntiGunReloadingXPPenalty(player, earnedAmount)
-	return ETWCombinedTraitChecks.calculateAntiGunXPPenalty(
-		player,
-		Perks.Reloading,
-		earnedAmount,
-		SBvars.AntiGunReloadingXPPenaltyPercent or 25
-	)
+	if adjustment == 0 then
+		return 0, progress, "protected level boundary"
+	end
+	return adjustment, progress, nil
 end
 
 ---Function responsible for checking if player qualifies for Bodywork Enthusiast trait

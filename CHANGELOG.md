@@ -3,6 +3,7 @@
 
 - General:
   - Added Light Dresser and Heavy Dresser
+  - Added the static Couch Potato trait, the opposite of Gym Rat
   - Changed how Gym Rat is earned, now requires average exercise regularity
   - Split Non-Permanent Tab into Mental and Physical Traits
 

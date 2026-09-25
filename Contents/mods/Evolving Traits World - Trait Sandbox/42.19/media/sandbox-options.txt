@@ -254,6 +254,23 @@ option ETWTraitSandbox.GymRatPointValue
 	translation = ETWTS_GymRatPointValue,
 }
 
+option ETWTraitSandbox.CouchPotatoEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_CouchPotatoEnabled,
+}
+option ETWTraitSandbox.CouchPotatoPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = 8,
+	page = ETWTraitSandbox,
+	translation = ETWTS_CouchPotatoPointValue,
+}
+
 option ETWTraitSandbox.HoarderEnabled
 {
 	type = boolean,

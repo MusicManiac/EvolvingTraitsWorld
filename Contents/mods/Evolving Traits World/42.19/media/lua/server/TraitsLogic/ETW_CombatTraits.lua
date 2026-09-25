@@ -274,7 +274,14 @@ function ETW_CombatTraits.antiGunAimingXPPenalty(player, modData)
 		return
 	end
 
-	local xpToRemove, progress, reason = ETWCombinedTraitChecks.calculateAntiGunAimingXPPenalty(player, gainedXP)
+	local penaltyMultiplier = math.max(0, math.min(100, SBvars.AntiGunAimingXPPenaltyPercent or 25)) / 100
+	local xpAdjustment, progress, reason = ETWCombinedTraitChecks.calculateProtectedXPAdjustment(
+		player,
+		Perks.Aiming,
+		gainedXP,
+		1 - penaltyMultiplier
+	)
+	local xpToRemove = -xpAdjustment
 	if xpToRemove <= 0 then
 		modData.AntiGunLastRecordedAimingXP = currentXP
 		logETW(

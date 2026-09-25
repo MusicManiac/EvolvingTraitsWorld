@@ -311,6 +311,7 @@ function ETW_CommonLogicChecks.GymRatShouldExecute(player)
 	if
 		SBvars.GymRat == true
 		and traitShouldExecute("GymRatEnabled")
+		and (not player or not player:hasTrait(ETWTraitsRegistry.COUCH_POTATO))
 		and ((player and not player:hasTrait(ETWTraitsRegistry.GYM_RAT)) or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER)
 		and SBvars.TraitsLockSystemCanGainPositive
 	then
