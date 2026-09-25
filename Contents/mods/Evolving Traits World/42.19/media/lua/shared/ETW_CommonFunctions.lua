@@ -91,17 +91,15 @@ ETW_CommonFunctions.TraitEvent = {
 
 local RECENT_TRAIT_EVENT_LIMIT = 10
 
----Returns the average of the character's recorded exercise regularities.
+---Returns the character's average regularity across all available exercise types.
 ---@param player IsoGameCharacter
 ---@return number
 function ETW_CommonFunctions.getAverageExerciseRegularity(player)
-	local regularityMap = player:getFitness():getRegularityMap()
-	local exerciseTypes = regularityMap:keySet():iterator()
+	local fitness = player:getFitness()
 	local total = 0
 	local count = 0
-	while exerciseTypes:hasNext() do
-		local exerciseType = exerciseTypes:next()
-		total = total + regularityMap:get(exerciseType)
+	for exerciseType, _ in pairs(FitnessExercises.exercisesType) do
+		total = total + fitness:getRegularity(exerciseType)
 		count = count + 1
 	end
 	return count > 0 and total / count or 0
