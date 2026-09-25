@@ -425,10 +425,12 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	modData.BloodlustSystem = modData.BloodlustSystem or {}
 	local bloodlustSystem = modData.BloodlustSystem
 	bloodlustSystem.KillsLastHour = bloodlustSystem.KillsLastHour or {}
-	if bloodlustSystem.BloodlustProgress == nil and startingTraits[ETWTraitsRegistry.BLOODLUST:toString()] == true then
-		bloodlustSystem.BloodlustProgress = SBvars.BloodlustProgress
-	else
-		bloodlustSystem.BloodlustProgress = -SBvars.BloodlustProgress
+	if bloodlustSystem.BloodlustProgress == nil then
+		if startingTraits[ETWTraitsRegistry.BLOODLUST:toString()] == true then
+			bloodlustSystem.BloodlustProgress = SBvars.BloodlustProgress
+		else
+			bloodlustSystem.BloodlustProgress = -SBvars.BloodlustProgress
+		end
 	end
 
 	modData.AnimalsSystem = modData.AnimalsSystem or {}

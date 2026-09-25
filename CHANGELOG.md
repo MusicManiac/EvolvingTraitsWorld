@@ -6,6 +6,8 @@
   - Added the static Couch Potato trait, the opposite of Gym Rat
   - Changed how Gym Rat is earned, now requires average exercise regularity
   - Split Non-Permanent Tab into Mental and Physical Traits
+- Fix:
+  - Fixed Bloodlust progress resetting every time character spawned in
 
 ## v.14.0.1
 ###### 24 Sep 2026
