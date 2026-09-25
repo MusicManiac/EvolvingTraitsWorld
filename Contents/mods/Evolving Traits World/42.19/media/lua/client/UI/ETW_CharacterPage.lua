@@ -565,6 +565,22 @@ function ISETWUI:createChildren()
 	self.subViewNonPermanentTraits:initialise()
 	self.subViewNonPermanentTraits:noBackground()
 
+	-- Nested Non-permanent Traits subtabs
+	self.nonPermanentTraitsSubPanel = ISTabPanel:new(0, 0, self.width, self.height - TAB_H)
+	self.nonPermanentTraitsSubPanel:initialise()
+	self.nonPermanentTraitsSubPanel.equalTabWidth = false
+	self.nonPermanentTraitsSubPanel.tabPadX = 14
+	self.nonPermanentTraitsSubPanel.allowDraggingTabs = false
+	self.nonPermanentTraitsSubPanel.allowTornOffTabs = false
+
+	self.subViewPhysicalTraits = ISPanel:new(0, 0, self.width, self.height - TAB_H * 2)
+	self.subViewPhysicalTraits:initialise()
+	self.subViewPhysicalTraits:noBackground()
+
+	self.subViewMentalTraits = ISPanel:new(0, 0, self.width, self.height - TAB_H * 2)
+	self.subViewMentalTraits:initialise()
+	self.subViewMentalTraits:noBackground()
+
 	-- Sub-view: Recent Events
 	self.subViewRecentEvents = ISPanel:new(0, 0, self.width, self.height - TAB_H)
 	self.subViewRecentEvents:initialise()
@@ -606,7 +622,8 @@ function ISETWUI:createChildren()
 	local vitalsLayoutCursor = newLayoutCursor()
 	local combatTraitsLayoutCursor = newLayoutCursor()
 	local nonCombatTraitsLayoutCursor = newLayoutCursor()
-	local nonPermanentTraitsLayoutCursor = newLayoutCursor()
+	local physicalTraitsLayoutCursor = newLayoutCursor()
+	local mentalTraitsLayoutCursor = newLayoutCursor()
 
 	-- routeTo(subView): switches the addChild redirect to the given subview.
 	-- Call this before each section to control which tab receives its widgets.
@@ -3568,6 +3585,9 @@ function ISETWUI:createChildren()
 		end
 
 		local function buildNonPermanentTraitsSection()
+			-- Dummy router for the Physical Traits section.
+			routeTo(self.subViewPhysicalTraits, physicalTraitsLayoutCursor)
+
 			if SBvars.AffinitySystem then
 				self.labelAffinitySystemEnabled = ISLabel:new(
 					lineStartPosition,
@@ -3858,65 +3878,6 @@ function ISETWUI:createChildren()
 				y = y + FONT_HGT_SMALL * 2
 			end
 
-			if ETW_CommonLogicChecks.BloodlustShouldExecute(player) then
-				str = "- " .. getCachedTraitUIName(ETWTraitsRegistry.BLOODLUST)
-				self.labelBloodlustLose = ISLabel:new(
-					barOneFourthPosition - strLen(textManager, str) / 2,
-					y,
-					FONT_HGT_SMALL,
-					str,
-					self.DimmedTextColor.r,
-					self.DimmedTextColor.g,
-					self.DimmedTextColor.b,
-					self.DimmedTextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelBloodlustLose:setTooltip(getText("UI_ETW_LooseTooltip"), "below")
-				self:addChild(self.labelBloodlustLose)
-
-				str = "+ " .. getCachedTraitUIName(ETWTraitsRegistry.BLOODLUST)
-				self.labelBloodlustGain = ISLabel:new(
-					barThreeFourthPosition - strLen(textManager, str) / 2,
-					y,
-					FONT_HGT_SMALL,
-					str,
-					self.DimmedTextColor.r,
-					self.DimmedTextColor.g,
-					self.DimmedTextColor.b,
-					self.DimmedTextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelBloodlustGain:setTooltip(getText("UI_ETW_GainTooltip"), "below")
-				self:addChild(self.labelBloodlustGain)
-
-				y = y + FONT_HGT_SMALL
-
-				self.labelBloodlustBarName = ISLabel:new(
-					barStartPosition - lineStartPosition,
-					y,
-					FONT_HGT_SMALL,
-					getCachedTraitUIName(ETWTraitsRegistry.BLOODLUST),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					false
-				)
-				self.labelBloodlustBarName:setTooltip(getText("Sandbox_ETW_BloodlustProgress_tooltip"))
-				self:addChild(self.labelBloodlustBarName)
-
-				self.barBloodlust = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
-				self.barBloodlust:setGradientTexture(redYellowGreenGradient)
-				self.barBloodlust:setHighlightRadius(highlightRadius)
-				self.barBloodlust:setDoKnob(false)
-				self:addChild(self.barBloodlust)
-
-				y = y + FONT_HGT_SMALL
-			end
-
 			if ETW_CommonLogicChecks.AsthmaticShouldExecute(player) then
 				str = "+ " .. getCachedTraitUIName(CharacterTrait.ASTHMATIC)
 				self.labelAsthmaticGain = ISLabel:new(
@@ -3972,6 +3933,138 @@ function ISETWUI:createChildren()
 				self.barAsthmatic:setHighlightRadius(highlightRadius)
 				self.barAsthmatic:setDoKnob(false)
 				self:addChild(self.barAsthmatic)
+
+				y = y + FONT_HGT_SMALL
+			end
+
+			if ETW_CommonLogicChecks.IdealWeightShouldExecute(player) then
+				str = "- " .. getCachedTraitUIName(ETWTraitsRegistry.IDEAL_WEIGHT)
+				self.labelIdealWeightLose = ISLabel:new(
+					barStartPosition + barLength * 0.33 - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelIdealWeightLose:setTooltip(getText("Sandbox_ETW_IdealWeightCounter_tooltip"), "below")
+				self:addChild(self.labelIdealWeightLose)
+				str = "+ " .. getCachedTraitUIName(ETWTraitsRegistry.IDEAL_WEIGHT)
+				self.labelIdealWeightGain = ISLabel:new(
+					barStartPosition + barLength * 0.66 - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelIdealWeightGain:setTooltip(getText("Sandbox_ETW_IdealWeightCounter_tooltip"), "below")
+				self:addChild(self.labelIdealWeightGain)
+				y = y + FONT_HGT_SMALL
+				self.labelIdealWeightBarName = ISLabel:new(
+					barStartPosition - lineStartPosition,
+					y,
+					FONT_HGT_SMALL,
+					getText("Sandbox_ETW_IdealWeight"),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					false
+				)
+				self.labelIdealWeightBarName:setTooltip(getText("Sandbox_ETW_IdealWeight_tooltip"))
+				self:addChild(self.labelIdealWeightBarName)
+				self.barIdealWeight = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
+				self.barIdealWeight:setGradientTexture(redYellowGreenGradient)
+				self.barIdealWeight:setHighlightRadius(highlightRadius)
+				self.barIdealWeight:setDoKnob(false)
+				self:addChild(self.barIdealWeight)
+				y = y + FONT_HGT_SMALL
+			end
+
+			routeTo(self.subViewMentalTraits, mentalTraitsLayoutCursor)
+
+			if SBvars.AffinitySystem then
+				self.labelAffinitySystemEnabled = ISLabel:new(
+					lineStartPosition,
+					y - 4,
+					FONT_HGT_SMALL,
+					getText("UI_ETW_AffinitySystemEnabled"),
+					0.2,
+					1,
+					0.2,
+					1,
+					UIFont.Small,
+					true
+				)
+				self.labelAffinitySystemEnabled:setTooltip(getText("Sandbox_ETW_AffinitySystem_tooltip"))
+				self:addChild(self.labelAffinitySystemEnabled)
+			end
+
+			if ETW_CommonLogicChecks.BloodlustShouldExecute(player) then
+				str = "- " .. getCachedTraitUIName(ETWTraitsRegistry.BLOODLUST)
+				self.labelBloodlustLose = ISLabel:new(
+					barOneFourthPosition - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelBloodlustLose:setTooltip(getText("UI_ETW_LooseTooltip"), "below")
+				self:addChild(self.labelBloodlustLose)
+
+				str = "+ " .. getCachedTraitUIName(ETWTraitsRegistry.BLOODLUST)
+				self.labelBloodlustGain = ISLabel:new(
+					barThreeFourthPosition - strLen(textManager, str) / 2,
+					y,
+					FONT_HGT_SMALL,
+					str,
+					self.DimmedTextColor.r,
+					self.DimmedTextColor.g,
+					self.DimmedTextColor.b,
+					self.DimmedTextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelBloodlustGain:setTooltip(getText("UI_ETW_GainTooltip"), "below")
+				self:addChild(self.labelBloodlustGain)
+
+				y = y + FONT_HGT_SMALL
+
+				self.labelBloodlustBarName = ISLabel:new(
+					barStartPosition - lineStartPosition,
+					y,
+					FONT_HGT_SMALL,
+					getCachedTraitUIName(ETWTraitsRegistry.BLOODLUST),
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					false
+				)
+				self.labelBloodlustBarName:setTooltip(getText("Sandbox_ETW_BloodlustProgress_tooltip"))
+				self:addChild(self.labelBloodlustBarName)
+
+				self.barBloodlust = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
+				self.barBloodlust:setGradientTexture(redYellowGreenGradient)
+				self.barBloodlust:setHighlightRadius(highlightRadius)
+				self.barBloodlust:setDoKnob(false)
+				self:addChild(self.barBloodlust)
 
 				y = y + FONT_HGT_SMALL
 			end
@@ -4148,60 +4241,6 @@ function ISETWUI:createChildren()
 				self.barClaustrophobic:setDoKnob(false)
 				self:addChild(self.barClaustrophobic)
 
-				y = y + FONT_HGT_SMALL
-			end
-
-			if ETW_CommonLogicChecks.IdealWeightShouldExecute(player) then
-				str = "- " .. getCachedTraitUIName(ETWTraitsRegistry.IDEAL_WEIGHT)
-				self.labelIdealWeightLose = ISLabel:new(
-					barStartPosition + barLength * 0.33 - strLen(textManager, str) / 2,
-					y,
-					FONT_HGT_SMALL,
-					str,
-					self.DimmedTextColor.r,
-					self.DimmedTextColor.g,
-					self.DimmedTextColor.b,
-					self.DimmedTextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelIdealWeightLose:setTooltip(getText("Sandbox_ETW_IdealWeightCounter_tooltip"), "below")
-				self:addChild(self.labelIdealWeightLose)
-				str = "+ " .. getCachedTraitUIName(ETWTraitsRegistry.IDEAL_WEIGHT)
-				self.labelIdealWeightGain = ISLabel:new(
-					barStartPosition + barLength * 0.66 - strLen(textManager, str) / 2,
-					y,
-					FONT_HGT_SMALL,
-					str,
-					self.DimmedTextColor.r,
-					self.DimmedTextColor.g,
-					self.DimmedTextColor.b,
-					self.DimmedTextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelIdealWeightGain:setTooltip(getText("Sandbox_ETW_IdealWeightCounter_tooltip"), "below")
-				self:addChild(self.labelIdealWeightGain)
-				y = y + FONT_HGT_SMALL
-				self.labelIdealWeightBarName = ISLabel:new(
-					barStartPosition - lineStartPosition,
-					y,
-					FONT_HGT_SMALL,
-					getText("Sandbox_ETW_IdealWeight"),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					false
-				)
-				self.labelIdealWeightBarName:setTooltip(getText("Sandbox_ETW_IdealWeight_tooltip"))
-				self:addChild(self.labelIdealWeightBarName)
-				self.barIdealWeight = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)
-				self.barIdealWeight:setGradientTexture(redYellowGreenGradient)
-				self.barIdealWeight:setHighlightRadius(highlightRadius)
-				self.barIdealWeight:setDoKnob(false)
-				self:addChild(self.barIdealWeight)
 				y = y + FONT_HGT_SMALL
 			end
 
@@ -4397,13 +4436,13 @@ function ISETWUI:createChildren()
 		routeTo(self.subViewNonCombatTraits, nonCombatTraitsLayoutCursor)
 		buildDelayedTraitsSection("labelDelayedTraitsSystemNonCombat", "buttonDelayedTraitsTooltipNonCombat")
 
-		routeTo(self.subViewNonPermanentTraits, nonPermanentTraitsLayoutCursor)
 		buildNonPermanentTraitsSection()
 
 		storeActiveLayoutCursor()
 		self.combatTraitsWindowHeight = combatTraitsLayoutCursor.y + FONT_HGT_SMALL * 2
 		self.nonCombatTraitsWindowHeight = nonCombatTraitsLayoutCursor.y + FONT_HGT_SMALL * 2
-		self.nonPermanentTraitsWindowHeight = nonPermanentTraitsLayoutCursor.y + FONT_HGT_SMALL * 0.5
+		self.physicalTraitsWindowHeight = physicalTraitsLayoutCursor.y + FONT_HGT_SMALL * 0.5
+		self.mentalTraitsWindowHeight = mentalTraitsLayoutCursor.y + FONT_HGT_SMALL * 0.5
 		self.vitalsWindowHeight = vitalsLayoutCursor.y + FONT_HGT_SMALL * 0.5
 		WINDOW_HEIGHT = self.combatTraitsWindowHeight
 		WINDOW_HEIGHT_AFTER_CHILDREN = self.combatTraitsWindowHeight
@@ -4424,6 +4463,9 @@ function ISETWUI:createChildren()
 		self.permanentTraitsSubPanel:addView(getText("UI_ETW_SubTab_CombatTraits"), self.subViewCombatTraits)
 		self.permanentTraitsSubPanel:addView(getText("UI_ETW_SubTab_NonCombatTraits"), self.subViewNonCombatTraits)
 		self.subViewPermanentTraits:addChild(self.permanentTraitsSubPanel)
+		self.nonPermanentTraitsSubPanel:addView(getText("UI_ETW_SubTab_PhysicalTraits"), self.subViewPhysicalTraits)
+		self.nonPermanentTraitsSubPanel:addView(getText("UI_ETW_SubTab_MentalTraits"), self.subViewMentalTraits)
+		self.subViewNonPermanentTraits:addChild(self.nonPermanentTraitsSubPanel)
 		self.subPanel:addView(getText("UI_ETW_SubTab_Vitals"), self.subViewVitals)
 		self.subPanel:addView(getText("UI_ETW_SubTab_Progress"), self.subViewPermanentTraits)
 		self.subPanel:addView(getText("UI_ETW_SubTab_NonPermanent"), self.subViewNonPermanentTraits)
@@ -4443,6 +4485,8 @@ end
 function ISETWUI:rebuildChildren()
 	local activeSubViewId = self.subPanel and self.subPanel:getActiveViewIndex()
 	local activePermanentSubViewId = self.permanentTraitsSubPanel and self.permanentTraitsSubPanel:getActiveViewIndex()
+	local activeNonPermanentSubViewId = self.nonPermanentTraitsSubPanel
+		and self.nonPermanentTraitsSubPanel:getActiveViewIndex()
 
 	-- Hide tooltips on Permanent Traits leaf-view children before clearing.
 	if self.subViewCombatTraits and self.subViewCombatTraits.children then
@@ -4455,8 +4499,13 @@ function ISETWUI:rebuildChildren()
 			hideChildTooltip(child)
 		end
 	end
-	if self.subViewNonPermanentTraits and self.subViewNonPermanentTraits.children then
-		for _, child in pairs(self.subViewNonPermanentTraits.children) do
+	if self.subViewPhysicalTraits and self.subViewPhysicalTraits.children then
+		for _, child in pairs(self.subViewPhysicalTraits.children) do
+			hideChildTooltip(child)
+		end
+	end
+	if self.subViewMentalTraits and self.subViewMentalTraits.children then
+		for _, child in pairs(self.subViewMentalTraits.children) do
 			hideChildTooltip(child)
 		end
 	end
@@ -4494,6 +4543,9 @@ function ISETWUI:rebuildChildren()
 	self.subViewCombatTraits = nil
 	self.subViewNonCombatTraits = nil
 	self.subViewNonPermanentTraits = nil
+	self.nonPermanentTraitsSubPanel = nil
+	self.subViewPhysicalTraits = nil
+	self.subViewMentalTraits = nil
 	self.subViewVitals = nil
 	self.subViewRecentEvents = nil
 	self.subViewHelp = nil
@@ -4520,6 +4572,9 @@ function ISETWUI:rebuildChildren()
 	end
 	if activePermanentSubViewId and self.permanentTraitsSubPanel then
 		self.permanentTraitsSubPanel:activateViewById(activePermanentSubViewId)
+	end
+	if activeNonPermanentSubViewId and self.nonPermanentTraitsSubPanel then
+		self.nonPermanentTraitsSubPanel:activateViewById(activeNonPermanentSubViewId)
 	end
 end
 
@@ -4629,6 +4684,14 @@ function ISETWUI:render()
 		and (not activePermanentTraitsView or activePermanentTraitsView == self.subViewCombatTraits)
 	local isNonCombatTraitsTabActive = isPermanentTraitsTabActive
 		and activePermanentTraitsView == self.subViewNonCombatTraits
+	local isNonPermanentTraitsTabActive = self.subPanel
+		and self.subPanel:getActiveView() == self.subViewNonPermanentTraits
+	local activeNonPermanentTraitsView = self.nonPermanentTraitsSubPanel
+		and self.nonPermanentTraitsSubPanel:getActiveView()
+	local isPhysicalTraitsTabActive = isNonPermanentTraitsTabActive
+		and (not activeNonPermanentTraitsView or activeNonPermanentTraitsView == self.subViewPhysicalTraits)
+	local isMentalTraitsTabActive = isNonPermanentTraitsTabActive
+		and activeNonPermanentTraitsView == self.subViewMentalTraits
 	local isVitalsTabActive = self.subPanel and self.subPanel:getActiveView() == self.subViewVitals
 	local subPanelOffsetY = (self.subPanel and self.subPanel.tabHeight) or 0
 	local permanentTraitsSubviewOffsetY = subPanelOffsetY
@@ -4679,7 +4742,11 @@ function ISETWUI:render()
 	if self.subPanel then
 		local activeView = self.subPanel:getActiveView()
 		if activeView == self.subViewNonPermanentTraits then
-			activeWindowHeight = self.nonPermanentTraitsWindowHeight or activeWindowHeight
+			if isMentalTraitsTabActive then
+				activeWindowHeight = self.mentalTraitsWindowHeight or activeWindowHeight
+			elseif isPhysicalTraitsTabActive then
+				activeWindowHeight = self.physicalTraitsWindowHeight or activeWindowHeight
+			end
 		elseif activeView == self.subViewVitals then
 			activeWindowHeight = self.vitalsWindowHeight or activeWindowHeight
 		elseif activeView == self.subViewRecentEvents then
@@ -4690,10 +4757,13 @@ function ISETWUI:render()
 			activeWindowHeight = self.translationStatusWindowHeight or activeWindowHeight
 		end
 	end
-	local permanentSubTabHeight = isPermanentTraitsTabActive
-			and ((self.permanentTraitsSubPanel and self.permanentTraitsSubPanel.tabHeight) or 0)
-		or 0
-	WINDOW_HEIGHT = activeWindowHeight + subTabHeight + permanentSubTabHeight
+	local nestedSubTabHeight = 0
+	if isPermanentTraitsTabActive then
+		nestedSubTabHeight = (self.permanentTraitsSubPanel and self.permanentTraitsSubPanel.tabHeight) or 0
+	elseif isNonPermanentTraitsTabActive then
+		nestedSubTabHeight = (self.nonPermanentTraitsSubPanel and self.nonPermanentTraitsSubPanel.tabHeight) or 0
+	end
+	WINDOW_HEIGHT = activeWindowHeight + subTabHeight + nestedSubTabHeight
 
 	self:setWidthAndParentWidth(WINDOW_WIDTH)
 	self:setHeightAndParentHeight(WINDOW_HEIGHT)
@@ -4723,6 +4793,19 @@ function ISETWUI:render()
 		if self.subViewNonPermanentTraits then
 			self.subViewNonPermanentTraits:setWidth(WINDOW_WIDTH)
 			self.subViewNonPermanentTraits:setHeight(WINDOW_HEIGHT - TAB_H)
+		end
+		if self.nonPermanentTraitsSubPanel then
+			local nonPermanentViewHeight = WINDOW_HEIGHT - TAB_H
+			self.nonPermanentTraitsSubPanel:setWidth(WINDOW_WIDTH)
+			self.nonPermanentTraitsSubPanel:setHeight(nonPermanentViewHeight)
+			if self.subViewPhysicalTraits then
+				self.subViewPhysicalTraits:setWidth(WINDOW_WIDTH)
+				self.subViewPhysicalTraits:setHeight(nonPermanentViewHeight - TAB_H)
+			end
+			if self.subViewMentalTraits then
+				self.subViewMentalTraits:setWidth(WINDOW_WIDTH)
+				self.subViewMentalTraits:setHeight(nonPermanentViewHeight - TAB_H)
+			end
 		end
 		if self.subViewVitals then
 			self.subViewVitals:setWidth(WINDOW_WIDTH)

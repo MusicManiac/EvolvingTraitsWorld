@@ -4,6 +4,7 @@
 - General:
   - Added Light Dresser and Heavy Dresser
   - Changed how Gym Rat is earned, now requires average exercise regularity
+  - Split Non-Permanent Tab into Mental and Physical Traits
 
 ## v.14.0.1
 ###### 24 Sep 2026
