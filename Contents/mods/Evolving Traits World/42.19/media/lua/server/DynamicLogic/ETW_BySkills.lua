@@ -369,6 +369,16 @@ local skillTraitRules = {
 		gainingTrait = true,
 	},
 	{
+		triggers = makeTriggerSet("characterInitialization", "kill", ETWTraitsRegistry.GORDONITE),
+		shouldExecute = ETW_CommonLogicChecks.GordoniteShouldExecute,
+		condition = function(ctx)
+			return ctx.gordoniteCrowbarKills >= SBvars.GordoniteKills
+		end,
+		trait = ETWTraitsRegistry.GORDONITE,
+		positiveTrait = true,
+		gainingTrait = true,
+	},
+	{
 		triggers = makeTriggerSet("characterInitialization", "kill", Perks.Axe, ETWTraitsRegistry.AXE_THROWER),
 		shouldExecute = ETW_CommonLogicChecks.AxeThrowerShouldExecute,
 		condition = function(ctx)
@@ -946,6 +956,7 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 	local shortBladeKills = (killCountModData["SmallBlade"] or {}).count or 0
 	local spearKills = (killCountModData["Spear"] or {}).count or 0
 	local firearmKills = (killCountModData["Firearm"] or {}).count or 0
+	local gordoniteCrowbarKills = ETW_CommonFunctions.getGordoniteCrowbarKills(killCountModData)
 
 	local ctx = {
 		player = player,
@@ -992,6 +1003,7 @@ function ETW_BySkills.traitsGainsBySkill(player, trigger)
 		shortBladeKills = shortBladeKills,
 		spearKills = spearKills,
 		firearmKills = firearmKills,
+		gordoniteCrowbarKills = gordoniteCrowbarKills,
 	}
 
 	for i = 1, #skillTraitRules do

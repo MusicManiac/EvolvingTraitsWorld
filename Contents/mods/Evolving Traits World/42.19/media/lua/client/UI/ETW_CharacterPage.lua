@@ -823,6 +823,7 @@ function ISETWUI:createChildren()
 		local shortBladeKills = (killCountModData["SmallBlade"] or {}).count or 0
 		local spearKills = (killCountModData["Spear"] or {}).count or 0
 		local firearmKills = (killCountModData["Firearm"] or {}).count or 0
+		local gordoniteCrowbarKills = ETW_CommonFunctions.getGordoniteCrowbarKills(killCountModData)
 		local prowessBladeKillsRequired = ETW_CommonLogicChecks.getProwessKillRequirement(
 			player,
 			ETWTraitsRegistry.PROWESS_BLADE,
@@ -3122,6 +3123,28 @@ function ISETWUI:createChildren()
 			end
 
 			if
+				ETW_CommonLogicChecks.GordoniteShouldExecute(player)
+				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.GORDONITE)
+				and gordoniteCrowbarKills < SBvars.GordoniteKills
+			then
+				arrangeColumnsInTable()
+				self.labelGordoniteKillsProgress = ISLabel:new(
+					x,
+					y,
+					FONT_HGT_SMALL,
+					"",
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelGordoniteKillsProgress:setTooltip(getText("Sandbox_ETW_GordoniteKills_tooltip"))
+				self:addChild(self.labelGordoniteKillsProgress)
+			end
+
+			if
 				ETW_CommonLogicChecks.AxeThrowerShouldExecute(player)
 				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.AXE_THROWER)
 			then
@@ -4974,6 +4997,7 @@ function ISETWUI:render()
 	local shortBladeKills = (killCountModData["SmallBlade"] or {}).count or 0
 	local spearKills = (killCountModData["Spear"] or {}).count or 0
 	local firearmKills = (killCountModData["Firearm"] or {}).count or 0
+	local gordoniteCrowbarKills = ETW_CommonFunctions.getGordoniteCrowbarKills(killCountModData)
 	local prowessBladeKillsRequired = ETW_CommonLogicChecks.getProwessKillRequirement(
 		player,
 		ETWTraitsRegistry.PROWESS_BLADE,
@@ -5424,6 +5448,14 @@ function ISETWUI:render()
 	updateLabel(
 		self.labelBrawlerKillsProgress,
 		getCachedTraitUIName(CharacterTrait.BRAWLER) .. ": " .. axeKills + longBluntKills .. "/" .. SBvars.BrawlerKills
+	)
+	updateLabel(
+		self.labelGordoniteKillsProgress,
+		getCachedTraitUIName(ETWTraitsRegistry.GORDONITE)
+			.. ": "
+			.. gordoniteCrowbarKills
+			.. "/"
+			.. SBvars.GordoniteKills
 	)
 	updateLabel(
 		self.labelAxeThrowerSkillProgress,

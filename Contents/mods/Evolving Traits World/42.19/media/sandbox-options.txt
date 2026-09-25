@@ -2434,6 +2434,22 @@ option EvolvingTraitsWorld.GracefulSkill
 	page = ETWSingularPerks,
 	translation = ETW_GracefulSkill,
 }
+option EvolvingTraitsWorld.Gordonite
+{
+	type = boolean,
+	default = true,
+	page = ETWSingularPerks,
+	translation = ETW_Gordonite,
+}
+option EvolvingTraitsWorld.GordoniteKills
+{
+	type = integer,
+	min = 0,
+	max = 10000000,
+	default = 800,
+	page = ETWSingularPerks,
+	translation = ETW_GordoniteKills,
+}
 option EvolvingTraitsWorld.GunEnthusiast
 {
 	type = boolean,

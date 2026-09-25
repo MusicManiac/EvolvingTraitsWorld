@@ -5,7 +5,7 @@
   - Added Light Dresser, Heavy Dresser, Couch Potato
   - Added the non-permanent Gym Traits System: hourly progress follows average exercise regularity and can gain or lose Couch Potato and Gym Rat
   - Split Non-Permanent Tab into Mental and Physical Traits
-  - Made Gordonite affect swing speed
+  - Made Gordonite dynamic and also affect swing speed
 - Fix:
   - Fixed Bloodlust progress resetting every time character spawned in
 

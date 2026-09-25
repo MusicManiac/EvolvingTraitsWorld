@@ -633,6 +633,17 @@ function ETW_CommonLogicChecks.PolearmFighterShouldExecute(player)
 	end
 end
 
+---Returns whether Gordonite can be gained through tagged-crowbar kills.
+---@param player IsoPlayer|nil the player to check
+---@return boolean
+function ETW_CommonLogicChecks.GordoniteShouldExecute(player)
+	return SBvars.Gordonite == true
+		and traitShouldExecute("GordoniteEnabled")
+		and SBvars.TraitsLockSystemCanGainPositive == true
+		and player ~= nil
+		and not player:hasTrait(ETWTraitsRegistry.GORDONITE)
+end
+
 ---Returns whether Prowess: Blade can be gained through matching weapon experience.
 ---@param player IsoPlayer|nil the player to check
 ---@return boolean

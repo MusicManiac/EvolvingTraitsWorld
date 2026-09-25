@@ -334,6 +334,36 @@ function ETW_CommonFunctions.getKillCountWeaponCategories(player)
 	return {}
 end
 
+---Returns kills made with weapons carrying the standard crowbar item tag.
+---KillCount stores weapon type strings rather than item objects, so resolve each type through
+---ScriptManager before checking its script-item tags. Crowbars Expanded assigns some tagged
+---crowbars to non-blunt categories; only inspect those extra categories when that mod is active.
+---@param weaponCategories table<string, KillCountWeaponCategory>
+---@return number
+function ETW_CommonFunctions.getGordoniteCrowbarKills(weaponCategories)
+	local categoryNames = { "Blunt" }
+	if getActivatedMods():contains("NepCrowbars") then
+		categoryNames[#categoryNames + 1] = "Axe"
+		categoryNames[#categoryNames + 1] = "LongBlade"
+		categoryNames[#categoryNames + 1] = "SmallBlunt"
+	end
+
+	local crowbarKills = 0
+	for i = 1, #categoryNames do
+		local category = weaponCategories[categoryNames[i]]
+		local weaponTypes = category and category.WeaponType
+		if type(weaponTypes) == "table" then
+			for weaponType, kills in pairs(weaponTypes) do
+				local scriptItem = type(weaponType) == "string" and ScriptManager.instance:getItem(weaponType)
+				if scriptItem and scriptItem:hasTag(ItemTag.CROWBAR) and type(kills) == "number" then
+					crowbarKills = crowbarKills + kills
+				end
+			end
+		end
+	end
+	return crowbarKills
+end
+
 ---Resolves either a trait object or registry id string into a CharacterTrait instance.
 ---@param traitOrRegistryId CharacterTrait|string
 ---@return CharacterTrait|nil
