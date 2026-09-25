@@ -266,6 +266,11 @@ local function restoreCombatTraitWeapon(item)
 		if data.OriginalConditionLowerChance ~= nil then
 			item:setConditionLowerChance(data.OriginalConditionLowerChance)
 		end
+		if data.OriginalSwingTime ~= nil then
+			item:setSwingTime(data.OriginalSwingTime)
+			item:setBaseSpeed(data.OriginalBaseSpeed)
+			item:setMinimumSwingTime(data.OriginalMinimumSwingTime)
+		end
 		if data.OriginalAimingTime ~= nil then
 			item:setAimingTime(data.OriginalAimingTime)
 			item:setMaxRange(data.OriginalMaxRange)
@@ -276,6 +281,9 @@ local function restoreCombatTraitWeapon(item)
 		data.OriginalMaxDamage = nil
 		data.OriginalCriticalChance = nil
 		data.OriginalConditionLowerChance = nil
+		data.OriginalSwingTime = nil
+		data.OriginalBaseSpeed = nil
+		data.OriginalMinimumSwingTime = nil
 		data.SnapshotUsesRawValues = nil
 		data.CriticalChanceModified = nil
 		data.ProwessName = nil
@@ -291,6 +299,8 @@ local function restoreCombatTraitWeapon(item)
 		data.GordoniteEffectiveness = nil
 		data.GordoniteDamageBonus = nil
 		data.GordoniteCriticalChanceBonus = nil
+		data.GordoniteSwingTimeReduction = nil
+		data.GordoniteBaseSpeedBonus = nil
 		data.ActionHero = nil
 		data.ActionHeroDamageMultiplier = nil
 		data.ActionHeroCriticalChanceBonus = nil
@@ -501,6 +511,12 @@ local function combatWeaponTraits(player)
 	local gordoniteCriticalChanceBonus = hasGordonite
 		and gordoniteRelevantSkillLevels / 2 * gordoniteEffectiveness
 		or 0
+	local gordoniteSwingTimeReduction = hasGordonite
+		and (gordoniteRelevantSkillLevels * 0.025) * gordoniteEffectiveness
+		or 0
+	local gordoniteBaseSpeedBonus = hasGordonite
+		and (gordoniteRelevantSkillLevels * 0.025) * gordoniteEffectiveness
+		or 0
 	local hasActionHero = player:hasTrait(ETWTraitsRegistry.ACTION_HERO)
 	if not hasActionHero then
 		actionHeroThreatCache[player] = nil
@@ -570,6 +586,14 @@ local function combatWeaponTraits(player)
 		and weapon:getConditionLowerChance() == appliedValues.ConditionLowerChance
 		and (not criticalChanceModified or weapon:getCriticalChance() == appliedValues.CriticalChance)
 		and (
+			not hasGordonite
+			or (
+				weapon:getSwingTime() == appliedValues.SwingTime
+				and weapon:getBaseSpeed() == appliedValues.BaseSpeed
+				and weapon:getMinimumSwingTime() == appliedValues.MinimumSwingTime
+			)
+		)
+		and (
 			not hasTerminator
 			or (
 				weapon:getAimingTime() == appliedValues.AimingTime
@@ -591,6 +615,8 @@ local function combatWeaponTraits(player)
 		and data.GordoniteEffectiveness == gordoniteEffectiveness
 		and data.GordoniteDamageBonus == gordoniteDamageBonus
 		and data.GordoniteCriticalChanceBonus == gordoniteCriticalChanceBonus
+		and data.GordoniteSwingTimeReduction == gordoniteSwingTimeReduction
+		and data.GordoniteBaseSpeedBonus == gordoniteBaseSpeedBonus
 		and data.ActionHero == hasActionHero
 		and data.ActionHeroDamageMultiplier == actionHeroDamageMultiplier
 		and data.ActionHeroCriticalChanceBonus == actionHeroCriticalChanceBonus
@@ -623,6 +649,11 @@ local function combatWeaponTraits(player)
 		and getRawCriticalChance(weapon, originalDisplayedCriticalChance)
 		or nil
 	data.OriginalConditionLowerChance = weapon:getConditionLowerChance()
+	if hasGordonite then
+		data.OriginalSwingTime = weapon:getSwingTime()
+		data.OriginalBaseSpeed = weapon:getBaseSpeed()
+		data.OriginalMinimumSwingTime = weapon:getMinimumSwingTime()
+	end
 	data.SnapshotUsesRawValues = true
 	data.CriticalChanceModified = criticalChanceModified
 	data.ProwessName = prowessName
@@ -638,6 +669,8 @@ local function combatWeaponTraits(player)
 	data.GordoniteEffectiveness = gordoniteEffectiveness
 	data.GordoniteDamageBonus = gordoniteDamageBonus
 	data.GordoniteCriticalChanceBonus = gordoniteCriticalChanceBonus
+	data.GordoniteSwingTimeReduction = gordoniteSwingTimeReduction
+	data.GordoniteBaseSpeedBonus = gordoniteBaseSpeedBonus
 	data.ActionHero = hasActionHero
 	data.ActionHeroDamageMultiplier = actionHeroDamageMultiplier
 	data.ActionHeroCriticalChanceBonus = actionHeroCriticalChanceBonus
@@ -693,6 +726,11 @@ local function combatWeaponTraits(player)
 	if hasMundane then
 		weapon:setCriticalChance(0)
 	end
+	if hasGordonite then
+		weapon:setSwingTime(data.OriginalSwingTime - gordoniteSwingTimeReduction)
+		weapon:setBaseSpeed(data.OriginalBaseSpeed + gordoniteBaseSpeedBonus)
+		weapon:setMinimumSwingTime(data.OriginalMinimumSwingTime - gordoniteSwingTimeReduction)
+	end
 	if hasTerminator then
 		local aimingTime = math.floor(data.OriginalAimingTime * terminatorAimingTimeMultiplier + 0.5)
 		weapon:setAimingTime(aimingTime)
@@ -707,6 +745,9 @@ local function combatWeaponTraits(player)
 		MaxDamage = weapon:getMaxDamage(),
 		CriticalChance = criticalChanceModified and weapon:getCriticalChance() or nil,
 		ConditionLowerChance = weapon:getConditionLowerChance(),
+		SwingTime = hasGordonite and weapon:getSwingTime() or nil,
+		BaseSpeed = hasGordonite and weapon:getBaseSpeed() or nil,
+		MinimumSwingTime = hasGordonite and weapon:getMinimumSwingTime() or nil,
 		AimingTime = hasTerminator and weapon:getAimingTime() or nil,
 		MaxRange = hasTerminator and weapon:getMaxRange() or nil,
 		JamGunChance = hasTerminator and weapon:getJamGunChance() or nil,
@@ -729,6 +770,21 @@ local function combatWeaponTraits(player)
 			.. "->"
 			.. weapon:getJamGunChance()
 	end
+	local gordoniteSpeedDetails = ""
+	if hasGordonite then
+		gordoniteSpeedDetails = "; swing time: "
+			.. data.OriginalSwingTime
+			.. "->"
+			.. weapon:getSwingTime()
+			.. "; base speed: "
+			.. data.OriginalBaseSpeed
+			.. "->"
+			.. weapon:getBaseSpeed()
+			.. "; minimum swing time: "
+			.. data.OriginalMinimumSwingTime
+			.. "->"
+			.. weapon:getMinimumSwingTime()
+	end
 	logETW(
 		"ETW Logger | combatWeaponTraits(): applied to "
 			.. playerIdentifier
@@ -747,6 +803,7 @@ local function combatWeaponTraits(player)
 			.. "; gordonite effectiveness: "
 			.. gordoniteEffectiveness * 100
 			.. "%"
+			.. gordoniteSpeedDetails
 			.. "; action hero: "
 			.. tostring(hasActionHero)
 			.. "; nearby zombies: "

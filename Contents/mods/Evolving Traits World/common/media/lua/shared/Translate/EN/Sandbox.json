@@ -233,7 +233,7 @@
     "Sandbox_ETW_IndefatigableRequiresNearbyZombie": "Indefatigable requires a nearby zombie",
     "Sandbox_ETW_IndefatigableRequiresNearbyZombie_tooltip": "When enabled, low-health activation requires a living zombie within 5 tiles, preventing unrelated damage such as bleeding from consuming a use. Four zombies crowding within 1.5 tiles always activates the trait.",
     "Sandbox_ETW_GordoniteEffectiveness": "Gordonite effectiveness (%%)",
-    "Sandbox_ETW_GordoniteEffectiveness_tooltip": "Scales Gordonite's skill-based crowbar damage and critical-chance bonuses. At 100%%, each Long Blunt or Strength level adds 0.025 damage and 0.5 critical chance, in addition to 0.1 base damage.",
+    "Sandbox_ETW_GordoniteEffectiveness_tooltip": "Scales Gordonite's crowbar damage, swing-speed, and critical-chance bonuses. At 100%%, each Long Blunt or Strength level adds 0.025 damage and 0.5 critical chance, reduces swing times by 0.025, and adds 0.025 base speed",
     "Sandbox_ETW_UnwaveringMaximumDamageMultiplier": "Unwavering maximum damage multiplier",
     "Sandbox_ETW_UnwaveringMaximumDamageMultiplier_tooltip": "Total weapon-damage multiplier at the most severe endurance, fatigue, or pain tier. Intermediate tiers apply 25%% or 50%% of the configured bonus. Set to 1 to disable the damage benefit.",
     "Sandbox_ETW_PackMuleMaxCapacityPercent": "Pack Mule maximum-capacity increase (%%)",
