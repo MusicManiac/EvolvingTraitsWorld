@@ -30,6 +30,8 @@ local traits = {
 	{ id = "Hardy", pointValue = -6 },
 	{ id = "HeatAverse", pointValue = 2 },
 	{ id = "HeatLoving", pointValue = -2 },
+	{ id = "HeavyDresser", pointValue = 1 },
+	{ id = "LightDresser", pointValue = -1 },
 	{ id = "IdealWeight", pointValue = -4 },
 	{ id = "Immunocompromised", pointValue = 10 },
 	{ id = "LeadFoot", pointValue = -2 },

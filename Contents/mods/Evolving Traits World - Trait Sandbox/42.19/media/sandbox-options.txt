@@ -1226,6 +1226,38 @@ option ETWTraitSandbox.HeatLovingPointValue
 	page = ETWTraitSandbox,
 	translation = ETWTS_HeatLovingPointValue,
 }
+option ETWTraitSandbox.HeavyDresserEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_HeavyDresserEnabled,
+}
+option ETWTraitSandbox.HeavyDresserPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = 1,
+	page = ETWTraitSandbox,
+	translation = ETWTS_HeavyDresserPointValue,
+}
+option ETWTraitSandbox.LightDresserEnabled
+{
+	type = boolean,
+	default = true,
+	page = ETWTraitSandbox,
+	translation = ETWTS_LightDresserEnabled,
+}
+option ETWTraitSandbox.LightDresserPointValue
+{
+	type = integer,
+	min = -100,
+	max = 100,
+	default = -1,
+	page = ETWTraitSandbox,
+	translation = ETWTS_LightDresserPointValue,
+}
 option ETWTraitSandbox.SelfDestructiveEnabled
 {
 	type = boolean,

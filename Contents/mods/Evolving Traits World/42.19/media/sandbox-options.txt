@@ -1688,6 +1688,33 @@ option EvolvingTraitsWorld.TemperatureTraitsEffectMultiplier
 	page = ETWTraitsSettings,
 	translation = ETW_TemperatureTraitsEffectMultiplier,
 }
+option EvolvingTraitsWorld.DresserTraitsEffectMultiplier
+{
+	type = double,
+	min = 0,
+	max = 10,
+	default = 1,
+	page = ETWTraitsSettings,
+	translation = ETW_DresserTraitsEffectMultiplier,
+}
+option EvolvingTraitsWorld.DresserTraitsNeutralClothingCountLowerBound
+{
+	type = integer,
+	min = 0,
+	max = 50,
+	default = 4,
+	page = ETWTraitsSettings,
+	translation = ETW_DresserTraitsNeutralClothingCountLowerBound,
+}
+option EvolvingTraitsWorld.DresserTraitsNeutralClothingCountUpperBound
+{
+	type = integer,
+	min = 0,
+	max = 50,
+	default = 6,
+	page = ETWTraitsSettings,
+	translation = ETW_DresserTraitsNeutralClothingCountUpperBound,
+}
 option EvolvingTraitsWorld.ColdTraitsTemperatureThreshold
 {
 	type = double,

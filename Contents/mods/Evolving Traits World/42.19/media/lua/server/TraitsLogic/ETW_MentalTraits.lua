@@ -1,4 +1,5 @@
 local ETW_CommonFunctions = require("ETW_CommonFunctions")
+local ETW_CommonServerFunctions = require("ETW_CommonServerFunctions")
 local ETW_Registry = require("ETW_Registry")
 local ETW_CommonLogicChecks = require("ETW_CommonLogicChecks")
 
@@ -32,6 +33,8 @@ local COLD_CORE_TEMPERATURE_THRESHOLD = 36.5
 local HOT_CORE_TEMPERATURE_THRESHOLD = 37.5
 local TEMPERATURE_STRESS_PER_DEGREE = 0.005
 local TEMPERATURE_DISCOMFORT_PER_DEGREE = 0.5
+local DRESSER_STRESS_CHANGE_PER_ITEM = 0.001
+local DRESSER_DISCOMFORT_CHANGE_PER_ITEM = 0.1
 
 ---Returns the distance squared to an active fire on a loaded square, if any.
 ---@param cell IsoCell
@@ -225,6 +228,58 @@ function ETW_MentalTraits.temperatureTrait(player, stats, bodyDamage)
 			.. newStress
 			.. ", discomfort="
 			.. stats:get(CharacterStat.DISCOMFORT)
+			.. "->"
+			.. newDiscomfort
+	)
+end
+
+---Adjusts stress and discomfort once per minute according to the number of worn clothing items.
+---@param player IsoPlayer
+---@param stats Stats
+function ETW_MentalTraits.dresserTrait(player, stats)
+	local effectMultiplier = math.max(0, SBvars.DresserTraitsEffectMultiplier or 1)
+	if effectMultiplier == 0 then
+		return
+	end
+
+	local clothingCount = ETW_CommonServerFunctions.loopOverClothing(player, false)
+	local configuredLowerBound = math.max(0, SBvars.DresserTraitsNeutralClothingCountLowerBound or 4)
+	local configuredUpperBound = math.max(0, SBvars.DresserTraitsNeutralClothingCountUpperBound or 6)
+	local lowerBound = math.min(configuredLowerBound, configuredUpperBound)
+	local upperBound = math.max(configuredLowerBound, configuredUpperBound)
+	local difference
+	if clothingCount < lowerBound then
+		difference = clothingCount - lowerBound
+	elseif clothingCount > upperBound then
+		difference = clothingCount - upperBound
+	else
+		return
+	end
+
+	-- Heavy Dresser prefers more clothing; Light Dresser prefers less.
+	local effectDirection = player:hasTrait(ETWTraitsRegistry.HEAVY_DRESSER) and -1 or 1
+	local signedDifference = difference * effectDirection
+	local stress = stats:get(CharacterStat.STRESS)
+	local discomfort = stats:get(CharacterStat.DISCOMFORT)
+	local stressChange = signedDifference * DRESSER_STRESS_CHANGE_PER_ITEM * effectMultiplier
+	local discomfortChange = signedDifference * DRESSER_DISCOMFORT_CHANGE_PER_ITEM * effectMultiplier
+	local newStress = math.max(0, math.min(1, stress + stressChange))
+	local newDiscomfort = math.max(0, math.min(100, discomfort + discomfortChange))
+	stats:set(CharacterStat.STRESS, newStress)
+	stats:set(CharacterStat.DISCOMFORT, newDiscomfort)
+	logETW(
+		"ETW Logger | dresserTrait(): clothingCount="
+			.. clothingCount
+			.. ", lowerBound="
+			.. lowerBound
+			.. ", upperBound="
+			.. upperBound
+			.. ", stress="
+			.. stress
+			.. "->"
+			.. newStress
+			.. ", discomfort="
+			.. discomfort
 			.. "->"
 			.. newDiscomfort
 	)

@@ -1,3 +1,10 @@
+## v.14.x.x
+###### xx Sep 2026
+
+- General:
+  - Added Light Dresser and Heavy Dresser
+  - Changed how Gym Rat is earned, now requires average exercise regularity
+
 ## v.14.0.1
 ###### 24 Sep 2026
 

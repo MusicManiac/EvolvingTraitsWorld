@@ -180,6 +180,28 @@ module ETW
         MutuallyExclusiveTraits = ETW:HeatAverse;ETW:ColdLoving,
     }
 
+    character_trait_definition ETW:HeavyDresser
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:HeavyDresser,
+        Cost = 1,
+        UIName = UI_trait_HeavyDresser,
+        UIDescription = UI_trait_HeavyDresserDesc,
+        MutuallyExclusiveTraits = ETW:LightDresser,
+    }
+
+    character_trait_definition ETW:LightDresser
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = ETW:LightDresser,
+        Cost = -1,
+        UIName = UI_trait_LightDresser,
+        UIDescription = UI_trait_LightDresserDesc,
+        MutuallyExclusiveTraits = ETW:HeavyDresser,
+    }
+
     character_trait_definition ETW:BrittleBones
     {
         IsProfessionTrait = false,

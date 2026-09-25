@@ -30,6 +30,7 @@ ETW_Registry = ETW_Registry or {}
 ---@field HARDY CharacterTrait
 ---@field HEAT_AVERSE CharacterTrait
 ---@field HEAT_LOVING CharacterTrait
+---@field HEAVY_DRESSER CharacterTrait
 ---@field HOARDER CharacterTrait
 ---@field HOME_COOK CharacterTrait
 ---@field IDEAL_WEIGHT CharacterTrait
@@ -42,6 +43,7 @@ ETW_Registry = ETW_Registry or {}
 ---@field BLADE_ENTHUSIAST CharacterTrait
 ---@field KNIFE_FIGHTER CharacterTrait
 ---@field LIGHTSTEP CharacterTrait
+---@field LIGHT_DRESSER CharacterTrait
 ---@field LOW_PROFILE CharacterTrait
 ---@field MADE_OF_GLASS CharacterTrait
 ---@field MUNDANE CharacterTrait
@@ -108,6 +110,7 @@ ETW_Registry.traits = {
 	HARDY = CharacterTrait.register("ETW:Hardy"),
 	HEAT_AVERSE = CharacterTrait.register("ETW:HeatAverse"),
 	HEAT_LOVING = CharacterTrait.register("ETW:HeatLoving"),
+	HEAVY_DRESSER = CharacterTrait.register("ETW:HeavyDresser"),
 	HOARDER = CharacterTrait.register("ETW:Hoarder"),
 	HOME_COOK = CharacterTrait.register("ETW:HomeCook"),
 	IDEAL_WEIGHT = CharacterTrait.register("ETW:IdealWeight"),
@@ -120,6 +123,7 @@ ETW_Registry.traits = {
 	BLADE_ENTHUSIAST = CharacterTrait.register("ETW:BladeEnthusiast"),
 	KNIFE_FIGHTER = CharacterTrait.register("ETW:KnifeFighter"),
 	LIGHTSTEP = CharacterTrait.register("ETW:LightStep"),
+	LIGHT_DRESSER = CharacterTrait.register("ETW:LightDresser"),
 	LOW_PROFILE = CharacterTrait.register("ETW:LowProfile"),
 	MADE_OF_GLASS = CharacterTrait.register("ETW:MadeOfGlass"),
 	MUNDANE = CharacterTrait.register("ETW:Mundane"),

@@ -11,24 +11,28 @@ local ETW_CommonServerFunctions = {}
 local BLOODLUST_KILLS_FOR_BASE_MULTIPLIER = 10
 local BLOODLUST_KILLS_PER_ADDITIONAL_MULTIPLIER = 20
 
----Returns the average blood level of blood-compatible worn clothing.
+---Loops over worn clothing and optionally calculates its average blood level.
 ---@param player IsoPlayer
----@return number -- value between 0 and 1
-local function bloodiedClothesLevel(player)
+---@param recordAverageBlood boolean
+---@return integer clothingCount
+---@return number averageBloodLevel -- value between 0 and 1
+function ETW_CommonServerFunctions.loopOverClothing(player, recordAverageBlood)
 	local wornItems = player:getWornItems()
+	local clothingCount = 0
+	local bloodCompatibleClothingCount = 0
 	local totalBloodLevelPercentage = 0.0
-	local amountOfWornItems = 0
-	if wornItems ~= nil and wornItems:size() > 1 then
+	if wornItems then
 		for i = 0, wornItems:size() - 1 do
 			local item = wornItems:getItemByIndex(i)
 			if instanceof(item, "Clothing") then
 				---@cast item Clothing
-				if item:getBloodClothingType() ~= nil then
+				clothingCount = clothingCount + 1
+				if recordAverageBlood and item:getBloodClothingType() ~= nil then
 					local bloodLevel = item:getBloodLevel() or 0
-					amountOfWornItems = amountOfWornItems + 1
+					bloodCompatibleClothingCount = bloodCompatibleClothingCount + 1
 					totalBloodLevelPercentage = totalBloodLevelPercentage + bloodLevel
 					ETW_CommonFunctions.log(
-						"ETW Logger | bloodiedClothesLevel(): Clothing = "
+						"ETW Logger | loopOverClothing(): Clothing = "
 							.. item:getClothingItemName()
 							.. " | blood clothing type = "
 							.. tostring(item:getBloodClothingType())
@@ -39,12 +43,23 @@ local function bloodiedClothesLevel(player)
 			end
 		end
 	end
-	if amountOfWornItems == 0 then
-		return 0
+
+	local averageBloodLevel = 0
+	if bloodCompatibleClothingCount > 0 then
+		averageBloodLevel = totalBloodLevelPercentage / 100 / bloodCompatibleClothingCount
 	end
-	local avg = totalBloodLevelPercentage / 100 / amountOfWornItems
-	ETW_CommonFunctions.log("ETW Logger | bloodiedClothesLevel(): avg = " .. avg)
-	return avg
+	if recordAverageBlood then
+		ETW_CommonFunctions.log("ETW Logger | loopOverClothing(): avg = " .. averageBloodLevel)
+	end
+	return clothingCount, averageBloodLevel
+end
+
+---Returns the average blood level of blood-compatible worn clothing.
+---@param player IsoPlayer
+---@return number -- value between 0 and 1
+local function bloodiedClothesLevel(player)
+	local _, averageBloodLevel = ETW_CommonServerFunctions.loopOverClothing(player, true)
+	return averageBloodLevel
 end
 
 ---Returns the Bloodlust activity multiplier for the given rolling-hour kill count.
