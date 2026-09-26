@@ -9,6 +9,7 @@
   - Made Injured, Broken Leg and Burn Ward Patient dynamic
 - Fix:
   - Fixed Bloodlust progress resetting every time character spawned in
+  - Fixed Ax-pert tooltip in UI
 
 ## v.14.0.1
 ###### 24 Sep 2026

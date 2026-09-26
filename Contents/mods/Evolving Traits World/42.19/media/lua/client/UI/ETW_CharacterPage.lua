@@ -2773,7 +2773,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelAxemanProgress:setTooltip(getText("Sandbox_ETW_AxpertTrees_tooltip"))
+				self.labelAxemanProgress:setTooltip(getText("Sandbox_ETW_AxemanTrees_tooltip"))
 				self:addChild(self.labelAxemanProgress)
 			end
 
