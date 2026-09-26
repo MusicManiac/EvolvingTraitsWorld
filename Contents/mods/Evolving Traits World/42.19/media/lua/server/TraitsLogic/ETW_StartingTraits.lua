@@ -1,4 +1,5 @@
 local ETW_CommonFunctions = require("ETW_CommonFunctions")
+local ETW_CommonLogicChecks = require("ETW_CommonLogicChecks")
 local ETW_Registry = require("ETW_Registry")
 
 local FILENAME = "ETW_StartingTraits.lua"
@@ -27,6 +28,13 @@ local BANDAGE_STRENGTH = 5
 local FRACTURE_TIME = 50
 local SPLINT_STRENGTH = 0.9
 
+---Records a starting injury with its initial count of one.
+---@param bodyParts InjuryBodyPartEntry[]
+---@param bodyPartName string
+local function addStartingBodyPart(bodyParts, bodyPartName)
+	bodyParts[#bodyParts + 1] = { bodyPartName, 1 }
+end
+
 ---Returns the serializable state used to remember body parts affected at character creation.
 ---Body parts are stored by name because player mod data must not contain Java/PZ objects.
 ---@param player IsoPlayer Character whose persistent ETW data should be initialized.
@@ -54,6 +62,7 @@ end
 local function rememberCurrentState(system, bodyPart)
 	local bodyPartName = BodyPartType.ToString(bodyPart:getType())
 	system.LastStates[bodyPartName] = {
+		HadInjury = bodyPart:HasInjury(),
 		Scratched = bodyPart:scratched() or bodyPart:getScratchTime() > 0,
 		ScratchTime = bodyPart:getScratchTime(),
 		Cut = bodyPart:isCut() or bodyPart:getCutTime() > 0,
@@ -65,6 +74,8 @@ local function rememberCurrentState(system, bodyPart)
 		Bitten = bodyPart:bitten() or bodyPart:getBiteTime() > 0,
 		BiteTime = bodyPart:getBiteTime(),
 		FractureTime = bodyPart:getFractureTime(),
+		Bullet = bodyPart:haveBullet(),
+		Glass = bodyPart:haveGlass(),
 	}
 end
 
@@ -162,7 +173,7 @@ local function applyInjured(player)
 		end
 		applyRandomInjury(bodyPart, injuryType)
 		local bodyPartName = BodyPartType.ToString(bodyPart:getType())
-		injurySystem.InjuredBodyParts[bodyPartName] = true
+		addStartingBodyPart(injurySystem.InjuredBodyParts, bodyPartName)
 		rememberCurrentState(injurySystem, bodyPart)
 	end
 	bodyDamage:setInfected(false)
@@ -187,7 +198,7 @@ local function applyBurnWardPatient(player)
 		bodyPart:setNeedBurnWash(false)
 		bandageStartingInjury(bodyPart)
 		local bodyPartName = BodyPartType.ToString(bodyPart:getType())
-		injurySystem.BurnedBodyParts[bodyPartName] = true
+		addStartingBodyPart(injurySystem.BurnedBodyParts, bodyPartName)
 		rememberCurrentState(injurySystem, bodyPart)
 	end
 	bodyDamage:setInfected(false)
@@ -224,10 +235,69 @@ local function applyBrokenLeg(player)
 	lowerRightLeg:setSplintItem("Base.Splint")
 	bandageStartingInjury(lowerRightLeg)
 	local bodyPartName = BodyPartType.ToString(lowerRightLeg:getType())
-	injurySystem.BrokenBodyParts[bodyPartName] = true
+	addStartingBodyPart(injurySystem.BrokenBodyParts, bodyPartName)
 	rememberCurrentState(injurySystem, lowerRightLeg)
 	bodyDamage:setInfected(false)
 	logETW("ETW Logger | Broken Leg: starting fracture time " .. tostring(lowerRightLeg:getFractureTime()) .. " for " .. tostring(player:getUsername()))
+end
+
+---Runs the normal delayed-or-immediate removal flow for a negative injury trait.
+---@param player IsoPlayer Character who suffered the qualifying injury.
+---@param modData EvolvingTraitsWorldModData Persistent ETW data.
+---@param trait CharacterTrait Trait to qualify for removing.
+---@param chanceOneIn integer Configured one-in-X roll size.
+local function rollForRemovingInjuryTrait(player, modData, trait, chanceOneIn)
+	if
+		(trait == ETWTraitsRegistry.INJURED and ETW_CommonLogicChecks.InjuredShouldExecute(player))
+		or (
+			trait == ETWTraitsRegistry.BURN_WARD_PATIENT
+			and ETW_CommonLogicChecks.BurnWardPatientShouldExecute(player)
+		)
+		or (trait == ETWTraitsRegistry.BROKEN_LEG and ETW_CommonLogicChecks.BrokenLegShouldExecute(player))
+	then
+		if ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, trait, modData) then
+			if SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, trait, modData) then
+				ETW_CommonFunctions.removeTraitFromPlayer({
+					player = player,
+					trait = trait,
+					positiveTrait = false,
+				})
+			end
+			return
+		end
+
+		local rollSize = math.max(1, chanceOneIn)
+		local roll = random_instance:random(1, rollSize)
+		logETW(
+			"ETW Logger | Starting injury dynamic trait: rolled "
+				.. roll
+				.. " from 1-"
+				.. rollSize
+				.. " for "
+				.. trait:toString()
+				.. " on "
+				.. tostring(player:getUsername())
+		)
+		if roll ~= 1 then
+			return
+		end
+
+		if SBvars.DelayedTraitsSystem then
+			ETW_CommonFunctions.addTraitToDelayTable({
+				modData = modData,
+				trait = trait,
+				player = player,
+				positiveTrait = false,
+				gainingTrait = false,
+			})
+		else
+			ETW_CommonFunctions.removeTraitFromPlayer({
+				player = player,
+				trait = trait,
+				positiveTrait = false,
+			})
+	end
+	end
 end
 
 ---Compares one remembered body part with its previous snapshot and strengthens newly detected wounds.
@@ -245,6 +315,9 @@ end
 ---@param injuryDurationMultiplier number Injured duration multiplier for all timed wounds.
 ---@param burnDurationMultiplier number Burn Ward Patient duration multiplier for new burns.
 ---@param boneFractureMultiplier number Brittle Bones or Strong Bones multiplier for new fractures.
+---@return boolean newInjury Whether any new injury was detected.
+---@return boolean newBurn Whether a new burn was detected.
+---@return boolean newFracture Whether a new fracture was detected.
 local function updateRememberedBodyPart(
 	player,
 	bodyDamage,
@@ -260,8 +333,9 @@ local function updateRememberedBodyPart(
 )
 	local bodyPart = bodyDamage:getBodyPart(BodyPartType.FromString(bodyPartName))
 	if not bodyPart then
-		return
+		return false, false, false
 	end
+	local currentHadInjury = bodyPart:HasInjury()
 	local currentScratch = bodyPart:scratched() or bodyPart:getScratchTime() > 0
 	local currentScratchTime = bodyPart:getScratchTime()
 	local currentCut = bodyPart:isCut() or bodyPart:getCutTime() > 0
@@ -273,6 +347,11 @@ local function updateRememberedBodyPart(
 	local currentBite = bodyPart:bitten() or bodyPart:getBiteTime() > 0
 	local currentBiteTime = bodyPart:getBiteTime()
 	local currentFractureTime = bodyPart:getFractureTime()
+	local currentBullet = bodyPart:haveBullet()
+	local currentGlass = bodyPart:haveGlass()
+	local isNewInjury = false
+	local isNewBurn = false
+	local isNewFracture = false
 	local previous = system.LastStates[bodyPartName]
 	if previous then
 		local isNewScratch = currentScratch
@@ -332,7 +411,7 @@ local function updateRememberedBodyPart(
 					.. tostring(player:getUsername())
 			)
 		end
-		local isNewBurn = currentBurn
+		isNewBurn = currentBurn
 			and (not previous.Burned or currentBurnTime > (previous.BurnTime or 0) + 0.001)
 		if (worsensInjuries or worsensBurns) and isNewBurn then
 			local previousBurnTime = previous.BurnTime or 0
@@ -372,11 +451,20 @@ local function updateRememberedBodyPart(
 					.. tostring(player:getUsername())
 			)
 		end
-		local isNewFracture = currentFractureTime > 0
+		isNewFracture = currentFractureTime > 0
 			and (
 				(previous.FractureTime or 0) <= 0
 				or currentFractureTime > (previous.FractureTime or 0) + 0.001
 			)
+		isNewInjury = isNewScratch
+			or isNewLaceration
+			or isNewDeepWound
+			or isNewBurn
+			or isNewBite
+			or isNewFracture
+			or (previous.Bullet ~= nil and currentBullet and not previous.Bullet)
+			or (previous.Glass ~= nil and currentGlass and not previous.Glass)
+			or (previous.HadInjury ~= nil and currentHadInjury and not previous.HadInjury)
 		if (worsensInjuries or worsensFractures or boneFractureMultiplier ~= 1) and isNewFracture then
 			local appliedFractureMultiplier = 1.0
 			if worsensInjuries then
@@ -399,6 +487,7 @@ local function updateRememberedBodyPart(
 		end
 	end
 	system.LastStates[bodyPartName] = {
+		HadInjury = currentHadInjury,
 		Scratched = currentScratch,
 		ScratchTime = currentScratchTime,
 		Cut = currentCut,
@@ -410,7 +499,10 @@ local function updateRememberedBodyPart(
 		Bitten = currentBite,
 		BiteTime = currentBiteTime,
 		FractureTime = currentFractureTime,
+		Bullet = currentBullet,
+		Glass = currentGlass,
 	}
+	return isNewInjury, isNewBurn, isNewFracture
 end
 
 ---Updates only body parts recorded by starting injury traits at character creation.
@@ -433,57 +525,79 @@ function ETW_StartingTraits.updateStartingInjuries(player, bodyDamage, modData)
 	local burnDurationMultiplier = math.max(1, SBvars.BurnWardPatientBurnTimeMultiplier or 2)
 	local boneFractureMultiplier = getBoneFractureMultiplier(player)
 	local processedParts = {}
-	for bodyPartName in pairs(injuredBodyParts) do
-		processedParts[bodyPartName] = true
-		updateRememberedBodyPart(
+	local orderedPartNames = {}
+	local injuredEntries = {}
+	local burnedEntries = {}
+	local brokenEntries = {}
+
+	---Indexes one remembered-part collection and adds its names to the shared processing order.
+	---@param entries InjuryBodyPartEntry[]
+	---@param entriesByName table<string, InjuryBodyPartEntry>
+	local function indexEntries(entries, entriesByName)
+		for index = 1, #entries do
+			local entry = entries[index]
+			local bodyPartName = entry[1]
+			if type(bodyPartName) == "string" then
+				entriesByName[bodyPartName] = entry
+				if not processedParts[bodyPartName] then
+					processedParts[bodyPartName] = true
+					orderedPartNames[#orderedPartNames + 1] = bodyPartName
+				end
+			end
+		end
+	end
+
+	indexEntries(injuredBodyParts, injuredEntries)
+	indexEntries(burnedBodyParts, burnedEntries)
+	indexEntries(brokenBodyParts, brokenEntries)
+
+	local countersChanged = false
+	for index = 1, #orderedPartNames do
+		local bodyPartName = orderedPartNames[index]
+		local injuredEntry = injuredEntries[bodyPartName]
+		local burnedEntry = burnedEntries[bodyPartName]
+		local brokenEntry = brokenEntries[bodyPartName]
+		local newInjury, newBurn, newFracture = updateRememberedBodyPart(
 			player,
 			bodyDamage,
 			system,
 			bodyPartName,
-			true,
-			burnedBodyParts[bodyPartName] == true,
-			brokenBodyParts[bodyPartName] == true,
+			injuredEntry ~= nil and player:hasTrait(ETWTraitsRegistry.INJURED),
+			burnedEntry ~= nil and player:hasTrait(ETWTraitsRegistry.BURN_WARD_PATIENT),
+			brokenEntry ~= nil and player:hasTrait(ETWTraitsRegistry.BROKEN_LEG),
 			fractureMultiplier,
 			injuryDurationMultiplier,
 			burnDurationMultiplier,
 			boneFractureMultiplier
 		)
-	end
-	for bodyPartName in pairs(burnedBodyParts) do
-		if not injuredBodyParts[bodyPartName] then
-			processedParts[bodyPartName] = true
-			updateRememberedBodyPart(
+		if injuredEntry and newInjury then
+			injuredEntry[2] = math.max(1, math.floor(tonumber(injuredEntry[2]) or 1)) + 1
+			countersChanged = true
+			rollForRemovingInjuryTrait(player, modData, ETWTraitsRegistry.INJURED, SBvars.InjuredChanceOneIn or 10)
+		end
+		if burnedEntry and newBurn then
+			burnedEntry[2] = math.max(1, math.floor(tonumber(burnedEntry[2]) or 1)) + 1
+			countersChanged = true
+			rollForRemovingInjuryTrait(
 				player,
-				bodyDamage,
-				system,
-				bodyPartName,
-				false,
-				true,
-				brokenBodyParts[bodyPartName] == true,
-				fractureMultiplier,
-				injuryDurationMultiplier,
-				burnDurationMultiplier,
-				boneFractureMultiplier
+				modData,
+				ETWTraitsRegistry.BURN_WARD_PATIENT,
+				SBvars.BurnWardPatientChanceOneIn or 10
+			)
+		end
+		if brokenEntry and newFracture then
+			brokenEntry[2] = math.max(1, math.floor(tonumber(brokenEntry[2]) or 1)) + 1
+			countersChanged = true
+			rollForRemovingInjuryTrait(
+				player,
+				modData,
+				ETWTraitsRegistry.BROKEN_LEG,
+				SBvars.BrokenLegChanceOneIn or 10
 			)
 		end
 	end
-	for bodyPartName in pairs(brokenBodyParts) do
-		if not injuredBodyParts[bodyPartName] and not burnedBodyParts[bodyPartName] then
-			processedParts[bodyPartName] = true
-			updateRememberedBodyPart(
-				player,
-				bodyDamage,
-				system,
-				bodyPartName,
-				false,
-				false,
-				true,
-				fractureMultiplier,
-				injuryDurationMultiplier,
-				burnDurationMultiplier,
-				boneFractureMultiplier
-			)
-		end
+	if countersChanged then
+		ETW_CommonFunctions.syncETWModDataToClient(player)
 	end
 	return processedParts
 end

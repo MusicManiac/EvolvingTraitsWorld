@@ -13,13 +13,6 @@ local ETWTraitsRegistry = ETW_Registry.traits
 
 local gameMode = ETW_CommonFunctions.gameMode()
 
-local PROWESS_TRAITS = {
-	ETWTraitsRegistry.PROWESS_BLADE,
-	ETWTraitsRegistry.PROWESS_BLUNT,
-	ETWTraitsRegistry.PROWESS_GUNS,
-	ETWTraitsRegistry.PROWESS_SPEAR,
-}
-
 local FILENAME = "ETW_CommonLogicChecks.lua"
 ETW_CommonFunctions.gameModeSafeguard(
 	FILENAME,
@@ -327,6 +320,39 @@ end
 ---@return boolean
 function ETW_CommonLogicChecks.CouchPotatoGameplayEnabled()
 	return traitShouldExecute("CouchPotatoEnabled")
+end
+
+---Returns whether Injured may be lost dynamically.
+---@param player IsoPlayer|nil Character checked for current trait ownership.
+---@return boolean
+function ETW_CommonLogicChecks.InjuredShouldExecute(player)
+	return player ~= nil
+		and player:hasTrait(ETWTraitsRegistry.INJURED)
+		and SBvars.Injured == true
+		and traitShouldExecute("InjuredEnabled")
+		and SBvars.TraitsLockSystemCanLoseNegative == true
+end
+
+---Returns whether Burn Ward Patient may be lost dynamically.
+---@param player IsoPlayer|nil Character checked for current trait ownership.
+---@return boolean
+function ETW_CommonLogicChecks.BurnWardPatientShouldExecute(player)
+	return player ~= nil
+		and player:hasTrait(ETWTraitsRegistry.BURN_WARD_PATIENT)
+		and SBvars.BurnWardPatient == true
+		and traitShouldExecute("BurnWardPatientEnabled")
+		and SBvars.TraitsLockSystemCanLoseNegative == true
+end
+
+---Returns whether Broken Leg may be lost dynamically.
+---@param player IsoPlayer|nil Character checked for current trait ownership.
+---@return boolean
+function ETW_CommonLogicChecks.BrokenLegShouldExecute(player)
+	return player ~= nil
+		and player:hasTrait(ETWTraitsRegistry.BROKEN_LEG)
+		and SBvars.BrokenLeg == true
+		and traitShouldExecute("BrokenLegEnabled")
+		and SBvars.TraitsLockSystemCanLoseNegative == true
 end
 
 ---Returns true if the Runner System should execute
@@ -847,8 +873,7 @@ end
 ---@param player IsoPlayer|nil
 ---@return boolean
 function ETW_CommonLogicChecks.NaturalEaterShouldExecute(player)
-	return 
-		SBvars.NaturalEater == true
+	return SBvars.NaturalEater == true
 		and traitShouldExecute("NaturalEaterEnabled")
 		and SBvars.TraitsLockSystemCanGainPositive
 		and (player == nil or not player:hasTrait(ETWTraitsRegistry.NATURAL_EATER))
@@ -1219,8 +1244,7 @@ function ETW_CommonLogicChecks.InventoryTransferSystemShouldExecute(player)
 		SBvars.InventoryTransferSystem == true
 		and ((player and not player:hasTrait(CharacterTrait.DEXTROUS)) or (player and not player:hasTrait(
 			CharacterTrait.ORGANIZED
-		)) or (player and player:hasTrait(ETWTraitsRegistry.BUTTERFINGERS) and SBvars.TraitsLockSystemCanLoseNegative)
-			or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER)
+		)) or (player and player:hasTrait(ETWTraitsRegistry.BUTTERFINGERS) and SBvars.TraitsLockSystemCanLoseNegative) or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER)
 		and (
 			SBvars.TraitsLockSystemCanGainNegative
 			or SBvars.TraitsLockSystemCanLoseNegative
@@ -1316,45 +1340,6 @@ for checkName, systemShouldExecute in pairs(ETW_CommonLogicChecks) do
 	ETW_CommonLogicChecks[checkName] = function(...)
 		return SBvars.DisableAllDynamicTraits ~= true and originalSystemCheck(...)
 	end
-end
-
----Returns the kill target for a Prowess trait, scaling once for each other held or queued Prowess trait.
----@param player IsoPlayer
----@param requestedTrait CharacterTrait
----@param baseKills integer
----@param modData? EvolvingTraitsWorldModData
----@return integer
-function ETW_CommonLogicChecks.getProwessKillRequirement(player, requestedTrait, baseKills, modData)
-	local multiplier = SBvars.ProwessStackingKillScaling
-	if type(multiplier) ~= "number" then
-		-- Preserve the intent of saves that stored the previous boolean setting.
-		multiplier = multiplier == false and 1 or 1.2
-	end
-
-	modData = modData or ETW_CommonFunctions.getETWModData(player)
-	local delayedTraits = modData and modData.DelayedTraits
-	local otherProwessCount = 0
-	for i = 1, #PROWESS_TRAITS do
-		local prowessTrait = PROWESS_TRAITS[i]
-		if prowessTrait ~= requestedTrait then
-			local hasProwess = player:hasTrait(prowessTrait)
-			if not hasProwess and delayedTraits then
-				local traitId = prowessTrait:toString()
-				for delayedIndex = 1, #delayedTraits do
-					local delayedEntry = delayedTraits[delayedIndex]
-					if delayedEntry and delayedEntry[1] == traitId and delayedEntry[4] == true then
-						hasProwess = true
-						break
-					end
-				end
-			end
-			if hasProwess then
-				otherProwessCount = otherProwessCount + 1
-			end
-		end
-	end
-
-	return math.ceil(baseKills * multiplier ^ otherProwessCount)
 end
 
 return ETW_CommonLogicChecks

@@ -15,7 +15,7 @@ local ETW_Registry = require("ETW_Registry")
 local ETWTraitsRegistry = ETW_Registry.traits
 
 ---Increment when fields are added to or migrated in EvolvingTraitsWorld modData.
-local MOD_DATA_VERSION = 1.12
+local MOD_DATA_VERSION = 1.13
 
 local RECENT_TRAIT_EVENT_LIMIT = 10
 
@@ -49,6 +49,48 @@ local function initializeRollingSamples(existingSamples, initialValue, sampleCou
 		return existingSamples
 	end
 	return buildFilledSamples(initialValue, sampleCount)
+end
+
+---Converts a legacy remembered-body-part collection into { bodyPartName, injuryCount } entries.
+---Supports both the persisted name-keyed maps and older string-array layouts.
+---@param bodyParts table|nil
+---@return InjuryBodyPartEntry[]
+local function migrateInjuryBodyParts(bodyParts)
+	local migrated = {}
+	if type(bodyParts) ~= "table" then
+		return migrated
+	end
+
+	local entriesByName = {}
+	for key, value in pairs(bodyParts) do
+		local bodyPartName
+		local injuryCount = 1
+		if type(value) == "table" and type(value[1]) == "string" then
+			bodyPartName = value[1]
+			injuryCount = math.max(1, math.floor(tonumber(value[2]) or 1))
+		elseif type(value) == "string" then
+			bodyPartName = value
+		elseif type(key) == "string" and value then
+			bodyPartName = key
+			if type(value) == "number" then
+				injuryCount = math.max(1, math.floor(value))
+			end
+		end
+		if bodyPartName then
+			entriesByName[bodyPartName] = math.max(entriesByName[bodyPartName] or 0, injuryCount)
+		end
+	end
+
+	local bodyPartNames = {}
+	for bodyPartName in pairs(entriesByName) do
+		bodyPartNames[#bodyPartNames + 1] = bodyPartName
+	end
+	table.sort(bodyPartNames)
+	for index = 1, #bodyPartNames do
+		local bodyPartName = bodyPartNames[index]
+		migrated[index] = { bodyPartName, entriesByName[bodyPartName] }
+	end
+	return migrated
 end
 
 ---Migrates legacy fields to their current schema locations.
@@ -86,6 +128,14 @@ local function migrate(modData, playerModData)
 	end
 	if type(playerModData.Moodles) == "table" then
 		playerModData.Moodles.BloodlustMoodle = nil
+	end
+
+	--- v. 1.13
+	local injurySnapshotSystem = modData.InjurySnapshotSystem
+	if injurySnapshotSystem ~= nil then
+		injurySnapshotSystem.InjuredBodyParts = migrateInjuryBodyParts(injurySnapshotSystem.InjuredBodyParts)
+		injurySnapshotSystem.BurnedBodyParts = migrateInjuryBodyParts(injurySnapshotSystem.BurnedBodyParts)
+		injurySnapshotSystem.BrokenBodyParts = migrateInjuryBodyParts(injurySnapshotSystem.BrokenBodyParts)
 	end
 end
 

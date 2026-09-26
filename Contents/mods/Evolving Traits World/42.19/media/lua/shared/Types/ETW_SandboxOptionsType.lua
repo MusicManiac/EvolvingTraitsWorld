@@ -102,10 +102,16 @@
 -- Moodles
 --- @field SleepMoodle boolean
 -- Traits
+--- @field Injured boolean
 --- @field InjuredBurns boolean
 --- @field InjuredWoundTimeMultiplier number
+--- @field InjuredChanceOneIn integer
+--- @field BurnWardPatient boolean
 --- @field BurnWardPatientBurnTimeMultiplier number
+--- @field BurnWardPatientChanceOneIn integer
+--- @field BrokenLeg boolean
 --- @field BrokenLegFractureTimeMultiplier number
+--- @field BrokenLegChanceOneIn integer
 --- @field BrittleBonesFractureTimeMultiplier number
 --- @field StrongBonesFractureTimeMultiplier number
 --- @field DeprivedCapacityThresholdPercent integer

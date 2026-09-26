@@ -103,12 +103,17 @@
 --- @field Bitten boolean Whether a bite was active in the previous update.
 --- @field BiteTime number Previous bite duration.
 --- @field FractureTime number Previous fracture duration.
+--- @field HadInjury boolean Whether any injury was active in the previous update.
+--- @field Bullet boolean Whether a lodged bullet was present in the previous update.
+--- @field Glass boolean Whether lodged glass was present in the previous update.
 
----Persistent injury snapshots and starting-trait body-part sets keyed by serialized BodyPartType names.
+--- @alias InjuryBodyPartEntry [string, integer] Serialized BodyPartType name and number of injuries seen on it.
+
+---Persistent injury snapshots and starting-trait body-part counters.
 --- @class InjurySnapshotSystem
---- @field InjuredBodyParts table<string, boolean> Parts randomly injured at character creation.
---- @field BurnedBodyParts table<string, boolean> Parts burned by Burned Ward Patient at character creation.
---- @field BrokenBodyParts table<string, boolean> Parts fractured by Broken Leg at character creation.
+--- @field InjuredBodyParts InjuryBodyPartEntry[] Parts randomly injured at character creation and their injury counts.
+--- @field BurnedBodyParts InjuryBodyPartEntry[] Parts burned by Burn Ward Patient at character creation and their burn counts.
+--- @field BrokenBodyParts InjuryBodyPartEntry[] Parts fractured by Broken Leg at character creation and their fracture counts.
 --- @field LastStates table<string, InjuryStateSnapshot> Previous wound snapshot for each remembered part.
 --- @field FractureTimeSnapshots table<string, number> Previous fracture duration for every body part.
 

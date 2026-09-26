@@ -824,25 +824,25 @@ function ISETWUI:createChildren()
 		local spearKills = (killCountModData["Spear"] or {}).count or 0
 		local firearmKills = (killCountModData["Firearm"] or {}).count or 0
 		local gordoniteCrowbarKills = ETW_CommonFunctions.getGordoniteCrowbarKills(killCountModData)
-		local prowessBladeKillsRequired = ETW_CommonLogicChecks.getProwessKillRequirement(
+		local prowessBladeKillsRequired = ETW_CommonFunctions.getProwessKillRequirement(
 			player,
 			ETWTraitsRegistry.PROWESS_BLADE,
 			SBvars.ProwessBladeKills,
 			modData
 		)
-		local prowessBluntKillsRequired = ETW_CommonLogicChecks.getProwessKillRequirement(
+		local prowessBluntKillsRequired = ETW_CommonFunctions.getProwessKillRequirement(
 			player,
 			ETWTraitsRegistry.PROWESS_BLUNT,
 			SBvars.ProwessBluntKills,
 			modData
 		)
-		local prowessGunsKillsRequired = ETW_CommonLogicChecks.getProwessKillRequirement(
+		local prowessGunsKillsRequired = ETW_CommonFunctions.getProwessKillRequirement(
 			player,
 			ETWTraitsRegistry.PROWESS_GUNS,
 			SBvars.ProwessGunsKills,
 			modData
 		)
-		local prowessSpearKillsRequired = ETW_CommonLogicChecks.getProwessKillRequirement(
+		local prowessSpearKillsRequired = ETW_CommonFunctions.getProwessKillRequirement(
 			player,
 			ETWTraitsRegistry.PROWESS_SPEAR,
 			SBvars.ProwessSpearKills,
@@ -1970,6 +1970,60 @@ function ISETWUI:createChildren()
 				end
 
 				y = y + FONT_HGT_SMALL / 2
+			end
+
+			if ETW_CommonLogicChecks.InjuredShouldExecute(player) then
+				arrangeColumnsInTable()
+				self.labelInjuredProgress = ISLabel:new(
+					x,
+					y,
+					FONT_HGT_SMALL,
+					"",
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelInjuredProgress:setTooltip(getText("Sandbox_ETW_InjuredChanceOneIn_tooltip"))
+				self:addChild(self.labelInjuredProgress)
+			end
+
+			if ETW_CommonLogicChecks.BurnWardPatientShouldExecute(player) then
+				arrangeColumnsInTable()
+				self.labelBurnWardPatientProgress = ISLabel:new(
+					x,
+					y,
+					FONT_HGT_SMALL,
+					"",
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelBurnWardPatientProgress:setTooltip(getText("Sandbox_ETW_BurnWardPatientChanceOneIn_tooltip"))
+				self:addChild(self.labelBurnWardPatientProgress)
+			end
+
+			if ETW_CommonLogicChecks.BrokenLegShouldExecute(player) then
+				arrangeColumnsInTable()
+				self.labelBrokenLegProgress = ISLabel:new(
+					x,
+					y,
+					FONT_HGT_SMALL,
+					"",
+					self.TextColor.r,
+					self.TextColor.g,
+					self.TextColor.b,
+					self.TextColor.a,
+					UIFont.Small,
+					true
+				)
+				self.labelBrokenLegProgress:setTooltip(getText("Sandbox_ETW_BrokenLegChanceOneIn_tooltip"))
+				self:addChild(self.labelBrokenLegProgress)
 			end
 
 			if
@@ -4998,25 +5052,25 @@ function ISETWUI:render()
 	local spearKills = (killCountModData["Spear"] or {}).count or 0
 	local firearmKills = (killCountModData["Firearm"] or {}).count or 0
 	local gordoniteCrowbarKills = ETW_CommonFunctions.getGordoniteCrowbarKills(killCountModData)
-	local prowessBladeKillsRequired = ETW_CommonLogicChecks.getProwessKillRequirement(
+	local prowessBladeKillsRequired = ETW_CommonFunctions.getProwessKillRequirement(
 		player,
 		ETWTraitsRegistry.PROWESS_BLADE,
 		SBvars.ProwessBladeKills,
 		modData
 	)
-	local prowessBluntKillsRequired = ETW_CommonLogicChecks.getProwessKillRequirement(
+	local prowessBluntKillsRequired = ETW_CommonFunctions.getProwessKillRequirement(
 		player,
 		ETWTraitsRegistry.PROWESS_BLUNT,
 		SBvars.ProwessBluntKills,
 		modData
 	)
-	local prowessGunsKillsRequired = ETW_CommonLogicChecks.getProwessKillRequirement(
+	local prowessGunsKillsRequired = ETW_CommonFunctions.getProwessKillRequirement(
 		player,
 		ETWTraitsRegistry.PROWESS_GUNS,
 		SBvars.ProwessGunsKills,
 		modData
 	)
-	local prowessSpearKillsRequired = ETW_CommonLogicChecks.getProwessKillRequirement(
+	local prowessSpearKillsRequired = ETW_CommonFunctions.getProwessKillRequirement(
 		player,
 		ETWTraitsRegistry.PROWESS_SPEAR,
 		SBvars.ProwessSpearKills,
@@ -5297,6 +5351,31 @@ function ISETWUI:render()
 			.. "%/"
 			.. SBvars.GymTraitsSystemRegularityMidpoint
 			.. "%"
+	)
+	local injurySnapshotSystem = (modData and modData.InjurySnapshotSystem) or {}
+	updateLabel(
+		self.labelInjuredProgress,
+		getCachedTraitUIName(ETWTraitsRegistry.INJURED)
+			.. ": 1 "
+			.. getText("UI_ETW_Chance")
+			.. " "
+			.. SBvars.InjuredChanceOneIn
+	)
+	updateLabel(
+		self.labelBurnWardPatientProgress,
+		getCachedTraitUIName(ETWTraitsRegistry.BURN_WARD_PATIENT)
+			.. ": 1 "
+			.. getText("UI_ETW_Chance")
+			.. " "
+			.. SBvars.BurnWardPatientChanceOneIn
+	)
+	updateLabel(
+		self.labelBrokenLegProgress,
+		getCachedTraitUIName(ETWTraitsRegistry.BROKEN_LEG)
+			.. ": 1 "
+			.. getText("UI_ETW_Chance")
+			.. " "
+			.. SBvars.BrokenLegChanceOneIn
 	)
 	updateLabel(
 		self.labelOlympianProgress,

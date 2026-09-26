@@ -4,6 +4,10 @@ local ETW_ModData
 ---@type KillCountSharedAPI|nil
 local killCountShared
 
+local ETW_Registry = require("ETW_Registry")
+---@type EvolvingTraitsWorldTraitsRegistries
+local ETWTraitsRegistry = ETW_Registry.traits
+
 ---@type EvolvingTraitsWorldSandboxVars
 local SBvars = SandboxVars.EvolvingTraitsWorld
 
@@ -11,7 +15,7 @@ local modOptions
 
 local random_instance = newrandom()
 
-local paranoiaManScreams = {
+local PARANOIA_MAN_SCREAMS = {
 	"ETW_ParanoiaManScream1",
 	"ETW_ParanoiaManScream2",
 	"ETW_ParanoiaManScream3",
@@ -19,14 +23,19 @@ local paranoiaManScreams = {
 	"ETW_ParanoiaManScream5",
 	"ETW_ParanoiaManScream6",
 }
-
-local paranoiaWomanScreams = {
+local PARANOIA_WOMAN_SCREAMS = {
 	"ETW_ParanoiaWomanScream1",
 	"ETW_ParanoiaWomanScream2",
 	"ETW_ParanoiaWomanScream3",
 	"ETW_ParanoiaWomanScream4",
 	"ETW_ParanoiaWomanScream5",
 	"ETW_ParanoiaWomanScream6",
+}
+local PROWESS_TRAITS = {
+	ETWTraitsRegistry.PROWESS_BLADE,
+	ETWTraitsRegistry.PROWESS_BLUNT,
+	ETWTraitsRegistry.PROWESS_GUNS,
+	ETWTraitsRegistry.PROWESS_SPEAR,
 }
 
 ---Returns the client-configured Paranoia scream volume as a 0-1 multiplier.
@@ -50,7 +59,7 @@ function ETW_CommonFunctions.playParanoiaScare(player, yell)
 	local yellSoundID
 	local screamVolume = paranoiaScreamVolume()
 	if yell then
-		local screams = player:isFemale() and paranoiaWomanScreams or paranoiaManScreams
+		local screams = player:isFemale() and PARANOIA_WOMAN_SCREAMS or PARANOIA_MAN_SCREAMS
 		yellSound = screams[random_instance:random(1, #screams)]
 		if yellSound and screamVolume > 0 then
 			yellSoundID = player:playSoundLocal(yellSound)
@@ -1084,6 +1093,45 @@ function ETW_CommonFunctions.applyUnwaveringInjurySpeedModifiers(
 		part:setBurnSpeedModifier(part:getBurnSpeedModifier() + burnModifier)
 	end
 	return parts:size()
+end
+
+---Returns the kill target for a Prowess trait, scaling once for each other held or queued Prowess trait.
+---@param player IsoPlayer
+---@param requestedTrait CharacterTrait
+---@param baseKills integer
+---@param modData? EvolvingTraitsWorldModData
+---@return integer
+function ETW_CommonFunctions.getProwessKillRequirement(player, requestedTrait, baseKills, modData)
+	local multiplier = SBvars.ProwessStackingKillScaling
+	if type(multiplier) ~= "number" then
+		-- Preserve the intent of saves that stored the previous boolean setting.
+		multiplier = multiplier == false and 1 or 1.2
+	end
+
+	modData = modData or ETW_CommonFunctions.getETWModData(player)
+	local delayedTraits = modData and modData.DelayedTraits
+	local otherProwessCount = 0
+	for i = 1, #PROWESS_TRAITS do
+		local prowessTrait = PROWESS_TRAITS[i]
+		if prowessTrait ~= requestedTrait then
+			local hasProwess = player:hasTrait(prowessTrait)
+			if not hasProwess and delayedTraits then
+				local traitId = prowessTrait:toString()
+				for delayedIndex = 1, #delayedTraits do
+					local delayedEntry = delayedTraits[delayedIndex]
+					if delayedEntry and delayedEntry[1] == traitId and delayedEntry[4] == true then
+						hasProwess = true
+						break
+					end
+				end
+			end
+			if hasProwess then
+				otherProwessCount = otherProwessCount + 1
+			end
+		end
+	end
+
+	return math.ceil(baseKills * multiplier ^ otherProwessCount)
 end
 
 ---Shows notification for trait gain/loss. If it's SP client, it's displayed trait gain/loss notification to client. If it's called on a server, it sends a command to the client to display the notification. Then the client checks if notification should be displayed based on per-client mod settings.

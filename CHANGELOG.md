@@ -1,11 +1,12 @@
-## v.14.x.x
-###### xx Sep 2026
+## v.14.1.0
+###### 26 Sep 2026
 
 - General:
   - Added Light Dresser, Heavy Dresser, Couch Potato
   - Added the non-permanent Gym Traits System: hourly progress follows average exercise regularity and can gain or lose Couch Potato and Gym Rat
   - Split Non-Permanent Tab into Mental and Physical Traits
   - Made Gordonite dynamic and also affect swing speed
+  - Made Injured, Broken Leg and Burn Ward Patient dynamic
 - Fix:
   - Fixed Bloodlust progress resetting every time character spawned in
 

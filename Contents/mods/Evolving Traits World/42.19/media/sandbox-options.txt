@@ -68,6 +68,34 @@ option EvolvingTraitsWorld.ServerLogs
 	page = ETWSettings,
 	translation = ETW_ServerLogs,
 }
+option EvolvingTraitsWorld.TraitsLockSystemCanGainNegative
+{
+	type = boolean,
+	default = true,
+	page = ETWSettings,
+	translation = ETW_TraitsLockSystemCanGainNegative,
+}
+option EvolvingTraitsWorld.TraitsLockSystemCanGainPositive
+{
+	type = boolean,
+	default = true,
+	page = ETWSettings,
+	translation = ETW_TraitsLockSystemCanGainPositive,
+}
+option EvolvingTraitsWorld.TraitsLockSystemCanLoseNegative
+{
+	type = boolean,
+	default = true,
+	page = ETWSettings,
+	translation = ETW_TraitsLockSystemCanLoseNegative,
+}
+option EvolvingTraitsWorld.TraitsLockSystemCanLosePositive
+{
+	type = boolean,
+	default = true,
+	page = ETWSettings,
+	translation = ETW_TraitsLockSystemCanLosePositive,
+}
 option EvolvingTraitsWorld.UIPage
 {
 	type = boolean,
@@ -144,49 +172,6 @@ option EvolvingTraitsWorld.CarryWeightSystemCounter
 	default = 100000,
 	page = ETWSystems,
 	translation = ETW_CarryWeightSystemCounter,
-}
-option EvolvingTraitsWorld.GymTraitsSystem
-{
-	type = boolean,
-	default = true,
-	page = ETWSystems,
-	translation = ETW_GymTraitsSystem,
-}
-option EvolvingTraitsWorld.GymTraitsSystemCounter
-{
-	type = integer,
-	min = 1,
-	max = 10000000,
-	default = 10000,
-	page = ETWSystems,
-	translation = ETW_GymTraitsSystemCounter,
-}
-option EvolvingTraitsWorld.GymTraitsSystemRegularityMidpoint
-{
-	type = integer,
-	min = 0,
-	max = 100,
-	default = 50,
-	page = ETWSystems,
-	translation = ETW_GymTraitsSystemRegularityMidpoint,
-}
-option EvolvingTraitsWorld.GymTraitsSystemProgressGainMultiplier
-{
-	type = double,
-	min = 0,
-	max = 100,
-	default = 1,
-	page = ETWSystems,
-	translation = ETW_GymTraitsSystemProgressGainMultiplier,
-}
-option EvolvingTraitsWorld.GymTraitsSystemProgressLossMultiplier
-{
-	type = double,
-	min = 0,
-	max = 100,
-	default = 1,
-	page = ETWSystems,
-	translation = ETW_GymTraitsSystemProgressLossMultiplier,
 }
 option EvolvingTraitsWorld.EatingSpeedSystem
 {
@@ -346,6 +331,49 @@ option EvolvingTraitsWorld.FoodSystemLosePositiveThreshold
 	default = 0.72,
 	page = ETWSystems,
 	translation = ETW_FoodSystemLosePositiveThreshold,
+}
+option EvolvingTraitsWorld.GymTraitsSystem
+{
+	type = boolean,
+	default = true,
+	page = ETWSystems,
+	translation = ETW_GymTraitsSystem,
+}
+option EvolvingTraitsWorld.GymTraitsSystemCounter
+{
+	type = integer,
+	min = 1,
+	max = 10000000,
+	default = 10000,
+	page = ETWSystems,
+	translation = ETW_GymTraitsSystemCounter,
+}
+option EvolvingTraitsWorld.GymTraitsSystemProgressGainMultiplier
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 1,
+	page = ETWSystems,
+	translation = ETW_GymTraitsSystemProgressGainMultiplier,
+}
+option EvolvingTraitsWorld.GymTraitsSystemProgressLossMultiplier
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 1,
+	page = ETWSystems,
+	translation = ETW_GymTraitsSystemProgressLossMultiplier,
+}
+option EvolvingTraitsWorld.GymTraitsSystemRegularityMidpoint
+{
+	type = integer,
+	min = 0,
+	max = 100,
+	default = 50,
+	page = ETWSystems,
+	translation = ETW_GymTraitsSystemRegularityMidpoint,
 }
 option EvolvingTraitsWorld.HealerSystem
 {
@@ -764,34 +792,6 @@ option EvolvingTraitsWorld.ThirstSystemLosePositiveThreshold
 	page = ETWSystems,
 	translation = ETW_ThirstSystemLosePositiveThreshold,
 }
-option EvolvingTraitsWorld.TraitsLockSystemCanGainNegative
-{
-	type = boolean,
-	default = true,
-	page = ETWSystems,
-	translation = ETW_TraitsLockSystemCanGainNegative,
-}
-option EvolvingTraitsWorld.TraitsLockSystemCanGainPositive
-{
-	type = boolean,
-	default = true,
-	page = ETWSystems,
-	translation = ETW_TraitsLockSystemCanGainPositive,
-}
-option EvolvingTraitsWorld.TraitsLockSystemCanLoseNegative
-{
-	type = boolean,
-	default = true,
-	page = ETWSystems,
-	translation = ETW_TraitsLockSystemCanLoseNegative,
-}
-option EvolvingTraitsWorld.TraitsLockSystemCanLosePositive
-{
-	type = boolean,
-	default = true,
-	page = ETWSystems,
-	translation = ETW_TraitsLockSystemCanLosePositive,
-}
 option EvolvingTraitsWorld.MOODLES
 {
 	translation = -----------------------------------------------MOODLES-----------------------------------------------------------------,
@@ -1078,6 +1078,24 @@ option EvolvingTraitsWorld.ButterfingersTransferDropChance
 	page = ETWTraitsSettings,
 	translation = ETW_ButterfingersTransferDropChance,
 }
+option EvolvingTraitsWorld.CouchPotatoExerciseFatigueMultiplier
+{
+	type = integer,
+	min = 1,
+	max = 10,
+	default = 2,
+	page = ETWTraitsSettings,
+	translation = ETW_CouchPotatoExerciseFatigueMultiplier,
+}
+option EvolvingTraitsWorld.CouchPotatoExerciseXPMultiplier
+{
+	type = double,
+	min = 0.1,
+	max = 1,
+	default = 0.5,
+	page = ETWTraitsSettings,
+	translation = ETW_CouchPotatoExerciseXPMultiplier,
+}
 option EvolvingTraitsWorld.DepressiveEpisodeChance
 {
 	type = integer,
@@ -1122,6 +1140,33 @@ option EvolvingTraitsWorld.DeprivedUnhappinessPerMinute
 	default = 0.1,
 	page = ETWTraitsSettings,
 	translation = ETW_DeprivedUnhappinessPerMinute,
+}
+option EvolvingTraitsWorld.DresserTraitsEffectMultiplier
+{
+	type = double,
+	min = 0,
+	max = 10,
+	default = 1,
+	page = ETWTraitsSettings,
+	translation = ETW_DresserTraitsEffectMultiplier,
+}
+option EvolvingTraitsWorld.DresserTraitsNeutralClothingCountLowerBound
+{
+	type = integer,
+	min = 0,
+	max = 50,
+	default = 4,
+	page = ETWTraitsSettings,
+	translation = ETW_DresserTraitsNeutralClothingCountLowerBound,
+}
+option EvolvingTraitsWorld.DresserTraitsNeutralClothingCountUpperBound
+{
+	type = integer,
+	min = 0,
+	max = 50,
+	default = 6,
+	page = ETWTraitsSettings,
+	translation = ETW_DresserTraitsNeutralClothingCountUpperBound,
 }
 option EvolvingTraitsWorld.FastEaterSpeed
 {
@@ -1194,24 +1239,6 @@ option EvolvingTraitsWorld.GymRatExerciseXPMultiplier
 	default = 2,
 	page = ETWTraitsSettings,
 	translation = ETW_GymRatExerciseXPMultiplier,
-}
-option EvolvingTraitsWorld.CouchPotatoExerciseFatigueMultiplier
-{
-	type = integer,
-	min = 1,
-	max = 10,
-	default = 2,
-	page = ETWTraitsSettings,
-	translation = ETW_CouchPotatoExerciseFatigueMultiplier,
-}
-option EvolvingTraitsWorld.CouchPotatoExerciseXPMultiplier
-{
-	type = double,
-	min = 0.1,
-	max = 1,
-	default = 0.5,
-	page = ETWTraitsSettings,
-	translation = ETW_CouchPotatoExerciseXPMultiplier,
 }
 option EvolvingTraitsWorld.HardyExtraEndurancePercent
 {
@@ -1749,33 +1776,6 @@ option EvolvingTraitsWorld.TemperatureTraitsEffectMultiplier
 	page = ETWTraitsSettings,
 	translation = ETW_TemperatureTraitsEffectMultiplier,
 }
-option EvolvingTraitsWorld.DresserTraitsEffectMultiplier
-{
-	type = double,
-	min = 0,
-	max = 10,
-	default = 1,
-	page = ETWTraitsSettings,
-	translation = ETW_DresserTraitsEffectMultiplier,
-}
-option EvolvingTraitsWorld.DresserTraitsNeutralClothingCountLowerBound
-{
-	type = integer,
-	min = 0,
-	max = 50,
-	default = 4,
-	page = ETWTraitsSettings,
-	translation = ETW_DresserTraitsNeutralClothingCountLowerBound,
-}
-option EvolvingTraitsWorld.DresserTraitsNeutralClothingCountUpperBound
-{
-	type = integer,
-	min = 0,
-	max = 50,
-	default = 6,
-	page = ETWTraitsSettings,
-	translation = ETW_DresserTraitsNeutralClothingCountUpperBound,
-}
 option EvolvingTraitsWorld.ColdTraitsTemperatureThreshold
 {
 	type = double,
@@ -2147,6 +2147,15 @@ option EvolvingTraitsWorld.Bloodlust
 	page = ETWSingularPerks,
 	translation = ETW_Bloodlust,
 }
+option EvolvingTraitsWorld.BloodlustDecayMultiplier
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 1.0,
+	page = ETWSingularPerks,
+	translation = ETW_BloodlustDecayMultiplier,
+}
 option EvolvingTraitsWorld.BloodlustFromAnimalsMultiplier
 {
 	type = double,
@@ -2164,15 +2173,6 @@ option EvolvingTraitsWorld.BloodlustGainMultiplier
 	default = 0.5,
 	page = ETWSingularPerks,
 	translation = ETW_BloodlustGainMultiplier,
-}
-option EvolvingTraitsWorld.BloodlustDecayMultiplier
-{
-	type = double,
-	min = 0,
-	max = 100,
-	default = 1.0,
-	page = ETWSingularPerks,
-	translation = ETW_BloodlustDecayMultiplier,
 }
 option EvolvingTraitsWorld.BloodlustProgress
 {
@@ -2233,6 +2233,22 @@ option EvolvingTraitsWorld.BrawlerSkill
 	page = ETWSingularPerks,
 	translation = ETW_BrawlerSkill,
 }
+option EvolvingTraitsWorld.BrokenLeg
+{
+	type = boolean,
+	default = true,
+	page = ETWSingularPerks,
+	translation = ETW_BrokenLeg,
+}
+option EvolvingTraitsWorld.BrokenLegChanceOneIn
+{
+	type = integer,
+	min = 1,
+	max = 100000,
+	default = 20,
+	page = ETWSingularPerks,
+	translation = ETW_BrokenLegChanceOneIn,
+}
 option EvolvingTraitsWorld.Burglar
 {
 	type = boolean,
@@ -2248,6 +2264,38 @@ option EvolvingTraitsWorld.BurglarSkill
 	default = 7,
 	page = ETWSingularPerks,
 	translation = ETW_BurglarSkill,
+}
+option EvolvingTraitsWorld.BurnWardPatient
+{
+	type = boolean,
+	default = true,
+	page = ETWSingularPerks,
+	translation = ETW_BurnWardPatient,
+}
+option EvolvingTraitsWorld.BurnWardPatientChanceOneIn
+{
+	type = integer,
+	min = 1,
+	max = 100000,
+	default = 30,
+	page = ETWSingularPerks,
+	translation = ETW_BurnWardPatientChanceOneIn,
+}
+option EvolvingTraitsWorld.WildernessKnowledge
+{
+	type = boolean,
+	default = true,
+	page = ETWSingularPerks,
+	translation = ETW_WildernessKnowledge,
+}
+option EvolvingTraitsWorld.WildernessKnowledgeSkill
+{
+	type = integer,
+	min = 8,
+	max = 40,
+	default = 24,
+	page = ETWSingularPerks,
+	translation = ETW_WildernessKnowledgeSkill,
 }
 option EvolvingTraitsWorld.CatEyes
 {
@@ -2418,22 +2466,6 @@ option EvolvingTraitsWorld.GardenerSkill
 	page = ETWSingularPerks,
 	translation = ETW_GardenerSkill,
 }
-option EvolvingTraitsWorld.Graceful
-{
-	type = boolean,
-	default = true,
-	page = ETWSingularPerks,
-	translation = ETW_Graceful,
-}
-option EvolvingTraitsWorld.GracefulSkill
-{
-	type = integer,
-	min = 0,
-	max = 30,
-	default = 9,
-	page = ETWSingularPerks,
-	translation = ETW_GracefulSkill,
-}
 option EvolvingTraitsWorld.Gordonite
 {
 	type = boolean,
@@ -2449,6 +2481,22 @@ option EvolvingTraitsWorld.GordoniteKills
 	default = 800,
 	page = ETWSingularPerks,
 	translation = ETW_GordoniteKills,
+}
+option EvolvingTraitsWorld.Graceful
+{
+	type = boolean,
+	default = true,
+	page = ETWSingularPerks,
+	translation = ETW_Graceful,
+}
+option EvolvingTraitsWorld.GracefulSkill
+{
+	type = integer,
+	min = 0,
+	max = 30,
+	default = 9,
+	page = ETWSingularPerks,
+	translation = ETW_GracefulSkill,
 }
 option EvolvingTraitsWorld.GunEnthusiast
 {
@@ -2604,6 +2652,22 @@ option EvolvingTraitsWorld.InconspicuousSkill
 	default = 7,
 	page = ETWSingularPerks,
 	translation = ETW_InconspicuousSkill,
+}
+option EvolvingTraitsWorld.Injured
+{
+	type = boolean,
+	default = true,
+	page = ETWSingularPerks,
+	translation = ETW_Injured,
+}
+option EvolvingTraitsWorld.InjuredChanceOneIn
+{
+	type = integer,
+	min = 1,
+	max = 100000,
+	default = 40,
+	page = ETWSingularPerks,
+	translation = ETW_InjuredChanceOneIn,
 }
 option EvolvingTraitsWorld.KnifeFighter
 {
@@ -3223,20 +3287,4 @@ option EvolvingTraitsWorld.WhittlerSkill
 	default = 4,
 	page = ETWSingularPerks,
 	translation = ETW_WhittlerSkill,
-}
-option EvolvingTraitsWorld.WildernessKnowledge
-{
-	type = boolean,
-	default = true,
-	page = ETWSingularPerks,
-	translation = ETW_WildernessKnowledge,
-}
-option EvolvingTraitsWorld.WildernessKnowledgeSkill
-{
-	type = integer,
-	min = 8,
-	max = 40,
-	default = 24,
-	page = ETWSingularPerks,
-	translation = ETW_WildernessKnowledgeSkill,
 }

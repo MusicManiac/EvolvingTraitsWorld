@@ -217,12 +217,7 @@ local function everyTickUpdate()
 		if modData then
 			local injurySnapshots = modData.InjurySnapshotSystem
 			if
-				(
-					player:hasTrait(ETWTraitsRegistry.INJURED)
-					or player:hasTrait(ETWTraitsRegistry.BURN_WARD_PATIENT)
-					or player:hasTrait(ETWTraitsRegistry.BROKEN_LEG)
-				)
-				and injurySnapshots
+				injurySnapshots
 				and (
 					hasEntries(injurySnapshots.InjuredBodyParts or {})
 					or hasEntries(injurySnapshots.BurnedBodyParts or {})

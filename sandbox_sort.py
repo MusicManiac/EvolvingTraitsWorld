@@ -21,6 +21,10 @@ GLUED_AFTER = {
 	"TemperatureTraitsEffectMultiplier": [
 		"ColdTraitsTemperatureThreshold",
 		"HeatTraitsTemperatureThreshold",
+	],
+	"BurnWardPatientChanceOneIn": [
+		"WildernessKnowledge",
+		"WildernessKnowledgeSkill",
 	]
 }
 

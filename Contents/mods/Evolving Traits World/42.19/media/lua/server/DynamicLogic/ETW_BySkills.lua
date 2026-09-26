@@ -347,7 +347,13 @@ local skillTraitRules = {
 		gainingTrait = true,
 	},
 	{
-		triggers = makeTriggerSet("characterInitialization", "kill", Perks.SmallBlunt, Perks.Blunt, ETWTraitsRegistry.THUGGISH),
+		triggers = makeTriggerSet(
+			"characterInitialization",
+			"kill",
+			Perks.SmallBlunt,
+			Perks.Blunt,
+			ETWTraitsRegistry.THUGGISH
+		),
 		shouldExecute = ETW_CommonLogicChecks.ThuggishShouldExecute,
 		condition = function(ctx)
 			return sumContextValues(ctx, { "shortBlunt", "longBlunt" }) >= SBvars.ThuggishSkill
@@ -456,7 +462,12 @@ local skillTraitRules = {
 		condition = function(ctx)
 			return sumContextValues(ctx, { "shortBlade", "longBlade", "axe" }) >= SBvars.ProwessBladeSkill
 				and (ctx.shortBladeKills + ctx.longBladeKills + ctx.axeKills)
-					>= ETW_CommonLogicChecks.getProwessKillRequirement(ctx.player, ETWTraitsRegistry.PROWESS_BLADE, SBvars.ProwessBladeKills, ctx.modData)
+					>= ETW_CommonFunctions.getProwessKillRequirement(
+						ctx.player,
+						ETWTraitsRegistry.PROWESS_BLADE,
+						SBvars.ProwessBladeKills,
+						ctx.modData
+					)
 		end,
 		trait = ETWTraitsRegistry.PROWESS_BLADE,
 		positiveTrait = true,
@@ -474,7 +485,12 @@ local skillTraitRules = {
 		condition = function(ctx)
 			return sumContextValues(ctx, { "shortBlunt", "longBlunt" }) >= SBvars.ProwessBluntSkill
 				and (ctx.shortBluntKills + ctx.longBluntKills)
-					>= ETW_CommonLogicChecks.getProwessKillRequirement(ctx.player, ETWTraitsRegistry.PROWESS_BLUNT, SBvars.ProwessBluntKills, ctx.modData)
+					>= ETW_CommonFunctions.getProwessKillRequirement(
+						ctx.player,
+						ETWTraitsRegistry.PROWESS_BLUNT,
+						SBvars.ProwessBluntKills,
+						ctx.modData
+					)
 		end,
 		trait = ETWTraitsRegistry.PROWESS_BLUNT,
 		positiveTrait = true,
@@ -492,7 +508,12 @@ local skillTraitRules = {
 		condition = function(ctx)
 			return sumContextValues(ctx, { "aiming", "reloading" }) >= SBvars.ProwessGunsSkill
 				and ctx.firearmKills
-					>= ETW_CommonLogicChecks.getProwessKillRequirement(ctx.player, ETWTraitsRegistry.PROWESS_GUNS, SBvars.ProwessGunsKills, ctx.modData)
+					>= ETW_CommonFunctions.getProwessKillRequirement(
+						ctx.player,
+						ETWTraitsRegistry.PROWESS_GUNS,
+						SBvars.ProwessGunsKills,
+						ctx.modData
+					)
 		end,
 		trait = ETWTraitsRegistry.PROWESS_GUNS,
 		positiveTrait = true,
@@ -504,7 +525,12 @@ local skillTraitRules = {
 		condition = function(ctx)
 			return ctx.spear >= SBvars.ProwessSpearSkill
 				and ctx.spearKills
-					>= ETW_CommonLogicChecks.getProwessKillRequirement(ctx.player, ETWTraitsRegistry.PROWESS_SPEAR, SBvars.ProwessSpearKills, ctx.modData)
+					>= ETW_CommonFunctions.getProwessKillRequirement(
+						ctx.player,
+						ETWTraitsRegistry.PROWESS_SPEAR,
+						SBvars.ProwessSpearKills,
+						ctx.modData
+					)
 		end,
 		trait = ETWTraitsRegistry.PROWESS_SPEAR,
 		positiveTrait = true,
@@ -537,7 +563,14 @@ local skillTraitRules = {
 		gainingTrait = true,
 	},
 	{
-		triggers = makeTriggerSet("characterInitialization", Perks.Maintenance, Perks.Woodwork, Perks.Carving, Perks.Masonry, CharacterTrait.HANDY),
+		triggers = makeTriggerSet(
+			"characterInitialization",
+			Perks.Maintenance,
+			Perks.Woodwork,
+			Perks.Carving,
+			Perks.Masonry,
+			CharacterTrait.HANDY
+		),
 		shouldExecute = ETW_CommonLogicChecks.HandyShouldExecute,
 		condition = function(ctx)
 			return sumContextValues(ctx, { "maintenance", "carpentry", "carving", "masonry" }) >= SBvars.HandySkill
