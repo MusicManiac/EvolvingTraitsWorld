@@ -1,3 +1,9 @@
+## v.14.1.1
+###### 26 Sep 2026
+
+- Fix:
+  - Fixed duplicate translation in JP json
+
 ## v.14.1.0
 ###### 26 Sep 2026
 
