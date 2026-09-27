@@ -38,6 +38,7 @@
   - New traits: Brittle Bones, Strong Bones, Heat-Loving, Heat-Averse, Cold-Loving, Cold-Averse, TV Junkie
   - Minor optimization of `OnTick` in `ETW_EventOrchestrator`
   - Changed Indefatigable default uses to unlimited (was 1) and cooldown to 14 days
+  - Massively simplified Bloodlust
 - Fix:
   - Fixed Handy not counting masonry and carving
   - Removed rogue debug print in Cat Eyes
