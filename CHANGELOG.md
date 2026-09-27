@@ -1,3 +1,9 @@
+## v.14.x.x
+###### xx Sep 2026
+
+- General:
+  - Updated Hardy description so it's clearer how it works.
+
 ## v.14.1.1
 ###### 26 Sep 2026
 
