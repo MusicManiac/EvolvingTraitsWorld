@@ -1388,6 +1388,28 @@ function ISETWUI:createChildren()
 				self:addChild(self.barImmunitySystem)
 
 				y = y + FONT_HGT_SMALL * (hasBottomLabels and 2 or 1)
+				if
+					(SBvars.ImmunitySystemSuperImmuneInfectionsSurvived or 0) > 0
+					and ETW_CommonLogicChecks.ImmunitySystemShouldExecute(nil, ETWTraitsRegistry.SUPER_IMMUNE)
+				then
+					self.labelImmunitySystemInfectionsSurvived = ISLabel:new(
+						barStartPosition,
+						y,
+						FONT_HGT_SMALL,
+						"",
+						self.TextColor.r,
+						self.TextColor.g,
+						self.TextColor.b,
+						self.TextColor.a,
+						UIFont.Small,
+						false
+					)
+					self.labelImmunitySystemInfectionsSurvived:setTooltip(
+						getText("Sandbox_ETW_ImmunitySystemSuperImmuneInfectionsSurvived_tooltip")
+					)
+					self:addChild(self.labelImmunitySystemInfectionsSurvived)
+					y = y + FONT_HGT_SMALL
+				end
 			end
 
 			if ETW_CommonLogicChecks.FoodSicknessSystemShouldExecute(player) then
@@ -5124,6 +5146,14 @@ function ISETWUI:render()
 			modData.ImmunitySystemCounter
 		),
 		getText("UI_ETW_CurrentValue") .. formatDecimal(modData.ImmunitySystemCounter)
+	)
+	updateLabel(
+		self.labelImmunitySystemInfectionsSurvived,
+		getText("UI_ETW_KnoxInfectionsSurvived")
+			.. ": "
+			.. ((modData.InjurySnapshotSystem and modData.InjurySnapshotSystem.KnoxInfectionsSurvived) or 0)
+			.. "/"
+			.. (SBvars.ImmunitySystemSuperImmuneInfectionsSurvived or 0)
 	)
 	updateBar(
 		self.barSicknessSystem,

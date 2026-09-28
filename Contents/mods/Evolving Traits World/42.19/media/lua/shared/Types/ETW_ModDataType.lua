@@ -121,6 +121,8 @@
 --- @field BrokenBodyParts InjuryBodyPartEntry[] Parts fractured by Broken Leg at character creation and their fracture counts.
 --- @field LastStates table<string, InjuryStateSnapshot> Previous wound snapshot for each remembered part.
 --- @field FractureTimeSnapshots table<string, number> Previous fracture duration for every body part.
+--- @field HadKnoxInfection boolean Whether Knox infection was active during the previous Immunity System update.
+--- @field KnoxInfectionsSurvived integer Number of active Knox infections observed clearing.
 
 --- @class MadeOfGlassSystem
 --- @field LastHealth number

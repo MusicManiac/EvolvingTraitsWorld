@@ -62,6 +62,38 @@ local function processImmunityTraitChange(player, modData, trait, positiveTrait,
 	return false
 end
 
+---Records an active Knox infection or a transition indicating that the player survived one.
+---@param bodyDamage BodyDamage
+---@param modData EvolvingTraitsWorldModData
+---@return boolean survivedInfection
+local function recordKnoxInfectionState(bodyDamage, modData)
+	modData.InjurySnapshotSystem = modData.InjurySnapshotSystem or {}
+	local injurySnapshotSystem = modData.InjurySnapshotSystem
+	if bodyDamage:isInfected() then
+		injurySnapshotSystem.HadKnoxInfection = true
+		return false
+	end
+	if injurySnapshotSystem.HadKnoxInfection ~= true then
+		return false
+	end
+	injurySnapshotSystem.HadKnoxInfection = false
+	injurySnapshotSystem.KnoxInfectionsSurvived = (injurySnapshotSystem.KnoxInfectionsSurvived or 0) + 1
+	return true
+end
+
+---Returns whether the player has survived enough Knox infections to unlock Super-Immune.
+---@param modData EvolvingTraitsWorldModData
+---@return boolean
+local function superImmuneInfectionRequirementMet(modData)
+	local requiredInfections = SBvars.ImmunitySystemSuperImmuneInfectionsSurvived or 0
+	if requiredInfections <= 0 then
+		return true
+	end
+	local injurySnapshotSystem = modData.InjurySnapshotSystem
+	return injurySnapshotSystem ~= nil
+		and (injurySnapshotSystem.KnoxInfectionsSurvived or 0) >= requiredInfections
+end
+
 ---Function responsible for managing Immunity traits.
 local function immunitySystemTraits()
 	local playersList = ETW_CommonFunctions.playersList()
@@ -90,9 +122,18 @@ local function immunitySystemTraits()
 		local bodyDamage = player:getBodyDamage()
 		local coldStrength = bodyDamage:getColdStrength() / 100 -- 0-100 -> 0-1
 		local infectionLevel = bodyDamage:getApparentInfectionLevel() / 100 -- 0-100 -> 0-1
-		if coldStrength > 0 or infectionLevel > 0 then
-			local modData = ETW_CommonFunctions.getETWModData(player)
-			if modData then
+		local modData = ETW_CommonFunctions.getETWModData(player)
+		if modData then
+			local survivedInfection = recordKnoxInfectionState(bodyDamage, modData)
+			if survivedInfection then
+				logETW(
+					"ETW Logger | immunitySystemTraits(): player "
+						.. player:getUsername()
+						.. " survived Knox infection #"
+						.. modData.InjurySnapshotSystem.KnoxInfectionsSurvived
+				)
+			end
+			if coldStrength > 0 or infectionLevel > 0 then
 				modData.ImmunitySystemCounter = (
 					modData.ImmunitySystemCounter
 					+ coldStrength
@@ -101,6 +142,8 @@ local function immunitySystemTraits()
 				logETW(
 					"ETW Logger | immunitySystemTraits(): modData.ImmunitySystemCounter = " .. modData.ImmunitySystemCounter
 				)
+			end
+			if coldStrength > 0 or infectionLevel > 0 or survivedInfection then
 				if
 					modData.ImmunitySystemCounter >= proneToIllnessThreshold
 					and ETW_CommonLogicChecks.ImmunitySystemShouldExecute(player, CharacterTrait.PRONE_TO_ILLNESS)
@@ -142,6 +185,7 @@ local function immunitySystemTraits()
 					)
 					and (not resilientStageEnabled or player:hasTrait(CharacterTrait.RESILIENT))
 					and ETW_CommonLogicChecks.ImmunitySystemShouldExecute(player, ETWTraitsRegistry.SUPER_IMMUNE)
+					and superImmuneInfectionRequirementMet(modData)
 				then
 					local superImmuneAdded = processImmunityTraitChange(
 						player,

@@ -599,6 +599,13 @@ option EvolvingTraitsWorld.ImmunitySystemCounter
 	page = ETWSystems,
 	translation = ETW_ImmunitySystemCounter,
 }
+option EvolvingTraitsWorld.ImmunitySystemExcludeSuperImmune
+{
+	type = boolean,
+	default = false,
+	page = ETWSystems,
+	translation = ETW_ImmunitySystemExcludeSuperImmune,
+}
 option EvolvingTraitsWorld.ImmunitySystemInfectionMultiplier
 {
 	type = double,
@@ -607,6 +614,15 @@ option EvolvingTraitsWorld.ImmunitySystemInfectionMultiplier
 	default = 10,
 	page = ETWSystems,
 	translation = ETW_ImmunitySystemInfectionMultiplier,
+}
+option EvolvingTraitsWorld.ImmunitySystemSuperImmuneInfectionsSurvived
+{
+	type = integer,
+	min = 0,
+	max = 10000000,
+	default = 0,
+	page = ETWSystems,
+	translation = ETW_ImmunitySystemSuperImmuneInfectionsSurvived,
 }
 option EvolvingTraitsWorld.InventoryTransferSystem
 {

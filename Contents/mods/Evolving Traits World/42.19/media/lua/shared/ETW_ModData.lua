@@ -15,7 +15,7 @@ local ETW_Registry = require("ETW_Registry")
 local ETWTraitsRegistry = ETW_Registry.traits
 
 ---Increment when fields are added to or migrated in EvolvingTraitsWorld modData.
-local MOD_DATA_VERSION = 1.14
+local MOD_DATA_VERSION = 1.15
 
 local RECENT_TRAIT_EVENT_LIMIT = 10
 
@@ -261,6 +261,10 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	injurySnapshotSystem.BurnedBodyParts = injurySnapshotSystem.BurnedBodyParts or {}
 	injurySnapshotSystem.BrokenBodyParts = injurySnapshotSystem.BrokenBodyParts or {}
 	injurySnapshotSystem.LastStates = injurySnapshotSystem.LastStates or {}
+	if injurySnapshotSystem.HadKnoxInfection == nil then
+		injurySnapshotSystem.HadKnoxInfection = player:getBodyDamage():isInfected()
+	end
+	injurySnapshotSystem.KnoxInfectionsSurvived = injurySnapshotSystem.KnoxInfectionsSurvived or 0
 	if not injurySnapshotSystem.FractureTimeSnapshots then
 		injurySnapshotSystem.FractureTimeSnapshots = {}
 		local bodyParts = player:getBodyDamage():getBodyParts()

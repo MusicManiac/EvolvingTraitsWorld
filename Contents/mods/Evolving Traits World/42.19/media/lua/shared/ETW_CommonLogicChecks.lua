@@ -42,7 +42,8 @@ function ETW_CommonLogicChecks.ImmunitySystemShouldExecute(player, trait)
 	local canLoseImmunocompromised = traitShouldExecute("ImmunocompromisedEnabled")
 		and SBvars.TraitsLockSystemCanLoseNegative
 	local canGainResilient = SBvars.TraitsLockSystemCanGainPositive
-	local canGainSuperImmune = traitShouldExecute("SuperImmuneEnabled")
+	local canGainSuperImmune = SBvars.ImmunitySystemExcludeSuperImmune ~= true
+		and traitShouldExecute("SuperImmuneEnabled")
 		and SBvars.TraitsLockSystemCanGainPositive
 
 	if trait == CharacterTrait.PRONE_TO_ILLNESS then
