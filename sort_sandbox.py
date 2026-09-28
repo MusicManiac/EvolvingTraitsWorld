@@ -1,8 +1,14 @@
+import argparse
 import re
 from pathlib import Path
 
 
-MOD_ROOT = Path("Contents/mods/Evolving Traits World")
+MOD_ROOT = (
+	Path(__file__).resolve().parent
+	/ "Contents"
+	/ "mods"
+	/ "Evolving Traits World"
+)
 
 GLUED_AFTER = {
 	"HealerSystemSleepingMultiplier": [
@@ -122,15 +128,11 @@ def sort_section(blocks):
 	return result
 
 
-def sort_sandbox_options(file_path):
-	text = file_path.read_text(encoding="utf-8")
-
+def sorted_sandbox_options(text):
 	first_option = text.find("option EvolvingTraitsWorld.")
 
 	if first_option == -1:
-		raise ValueError(
-			f"No EvolvingTraitsWorld options found in {file_path}"
-		)
+		raise ValueError("No EvolvingTraitsWorld options found")
 
 	prefix = text[:first_option]
 
@@ -162,18 +164,48 @@ def sort_sandbox_options(file_path):
 
 	flush_section()
 
-	output = prefix + "\n".join(result) + "\n"
+	return prefix + "\n".join(result) + "\n"
 
-	file_path.write_text(
-		output,
+
+def parse_args():
+	parser = argparse.ArgumentParser(
+		description="Sort sandbox options alphabetically within each section.",
+	)
+	parser.add_argument(
+		"--check",
+		action="store_true",
+		help="report an unsorted file without changing it",
+	)
+	return parser.parse_args()
+
+
+def main():
+	args = parse_args()
+	sandbox_options = find_sandbox_options()
+	original = sandbox_options.read_text(encoding="utf-8")
+
+	try:
+		formatted = sorted_sandbox_options(original)
+	except ValueError as error:
+		raise ValueError(
+			f"Could not process {sandbox_options}: {error}"
+		) from error
+
+	if formatted == original:
+		print(f"Already sorted: {sandbox_options}")
+		return 0
+
+	if args.check:
+		print(f"Not sorted: {sandbox_options}")
+		return 1
+
+	sandbox_options.write_text(
+		formatted,
 		encoding="utf-8",
 	)
+	print(f"Sorted: {sandbox_options}")
+	return 0
 
 
-sandbox_options = find_sandbox_options()
-
-print(f"Sorting: {sandbox_options}")
-
-sort_sandbox_options(sandbox_options)
-
-print("Done.")
+if __name__ == "__main__":
+	raise SystemExit(main())
