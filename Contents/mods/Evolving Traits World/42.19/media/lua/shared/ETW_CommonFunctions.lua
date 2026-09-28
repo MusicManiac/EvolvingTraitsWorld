@@ -343,9 +343,31 @@ function ETW_CommonFunctions.getKillCountWeaponCategories(player)
 	return {}
 end
 
+---@type table<string, boolean>
+local gordoniteCrowbarByWeaponType = {}
+
+---Returns whether a weapon type resolves to a script item carrying the standard crowbar tag.
+---Both positive and negative results are cached because script-item definitions do not change at runtime.
+---@param weaponType string
+---@return boolean
+local function isGordoniteCrowbarWeaponType(weaponType)
+	if type(weaponType) ~= "string" then
+		return false
+	end
+	local cachedResult = gordoniteCrowbarByWeaponType[weaponType]
+	if cachedResult ~= nil then
+		return cachedResult
+	end
+
+	local scriptItem = ScriptManager.instance:getItem(weaponType)
+	local isCrowbar = scriptItem ~= nil and scriptItem:hasTag(ItemTag.CROWBAR)
+	gordoniteCrowbarByWeaponType[weaponType] = isCrowbar
+	return isCrowbar
+end
+
 ---Returns kills made with weapons carrying the standard crowbar item tag.
 ---KillCount stores weapon type strings rather than item objects, so resolve each type through
----ScriptManager before checking its script-item tags. Crowbars Expanded assigns some tagged
+---ScriptManager once before caching its crowbar-tag status. Crowbars Expanded assigns some tagged
 ---crowbars to non-blunt categories; only inspect those extra categories when that mod is active.
 ---@param weaponCategories table<string, KillCountWeaponCategory>
 ---@return number
@@ -363,8 +385,7 @@ function ETW_CommonFunctions.getGordoniteCrowbarKills(weaponCategories)
 		local weaponTypes = category and category.WeaponType
 		if type(weaponTypes) == "table" then
 			for weaponType, kills in pairs(weaponTypes) do
-				local scriptItem = type(weaponType) == "string" and ScriptManager.instance:getItem(weaponType)
-				if scriptItem and scriptItem:hasTag(ItemTag.CROWBAR) and type(kills) == "number" then
+				if isGordoniteCrowbarWeaponType(weaponType) and type(kills) == "number" then
 					crowbarKills = crowbarKills + kills
 				end
 			end
