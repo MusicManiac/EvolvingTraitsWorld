@@ -4211,7 +4211,7 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					false
 				)
-				self.labelBloodlustBarName:setTooltip(getText("Sandbox_ETW_BloodlustProgress_tooltip"))
+				self.labelBloodlustBarName:setTooltip(getText("Sandbox_ETW_Bloodlust_tooltip"))
 				self:addChild(self.labelBloodlustBarName)
 
 				self.barBloodlust = ISGradientBar:new(barStartPosition, y, barLength, FONT_HGT_SMALL)

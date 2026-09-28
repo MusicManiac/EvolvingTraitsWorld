@@ -3,6 +3,8 @@
 
 - General:
   - Updated Hardy description so it's clearer how it works.
+- Fix:
+  - Fixed Bloodlust tooltip in UI showing wrong info.
 
 ## v.14.1.1
 ###### 26 Sep 2026
