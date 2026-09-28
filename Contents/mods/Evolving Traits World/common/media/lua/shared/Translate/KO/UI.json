@@ -24,7 +24,7 @@
     "UI_ETW_Options_TraitColumns_tooltip": "캐릭터 페이지의 UI에서 특성이 표시되는 열의 수를 설정합니다. 기본 설정은 영어로 플레이할 때 잘 작동하지만, 다른 언어에서 텍스트가 겹치는 경우 이 값을 줄이는 것이 좋습니다.",
     "UI_ETW_Options_UIWidth": "[UI] 캐릭터 페이지 너비",
     "UI_ETW_Options_UIWidth_tooltip": "캐릭터 페이지의 너비를 픽셀 단위로 설정합니다. 영어로 플레이하는 경우 기본 설정이 적합하지만, 다른 언어에서는 이상하게 보일 수 있으므로 공간이 더 필요하다면 여기에서 너비를 늘리세요.",
-    "UI_ETW_aaa_TranslationVersion": "8.4.1",
+    "UI_ETW_AAA_TranslationVersion": "8.4.1",
     "UI_optionscreen_binding_ETW_UI_Toggle": "ETW UI 토글",
     "UI_trait_AVClub": "시청각 동아리 회원",
     "UI_trait_AVClubDesc": "시청각 동아리 회원으로 활동한 적이 있습니다.",

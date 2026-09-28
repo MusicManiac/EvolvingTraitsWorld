@@ -84,7 +84,7 @@
     "UI_ETW_Vitals_Mental": "Santé mentale",
     "UI_ETW_Vitals_Mental_tooltip": "Enregistre votre ennui, stress, malheur et panique chaque minute en jeu. Ces statistiques sont normalisées et moyennées, puis inversées afin que 1 représente le meilleur état mental et 0 le pire. Les relevés à la minute sont compilés en moyennes horaires, les horaires en journalières, et les journalières dans la moyenne sur 31 jours affichée ici.",
     "UI_ETW_Vitals_Thirst": "Hydratation",
-    "UI_ETW_aaa_TranslationVersion": "13.7.0",
+    "UI_ETW_AAA_TranslationVersion": "13.7.0",
     "UI_optionscreen_binding_ETW_UI_Toggle": "Afficher/Masquer l'interface d'Evolving Traits World",
     "UI_trait_AVClub": "Club audiovisuel",
     "UI_trait_AVClubDesc": "Vous faites partie du club audiovisuel",

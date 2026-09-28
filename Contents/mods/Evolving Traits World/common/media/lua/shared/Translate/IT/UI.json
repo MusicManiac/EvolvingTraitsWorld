@@ -79,7 +79,7 @@
     "UI_ETW_Vitals_Mental": "Mentale",
     "UI_ETW_Vitals_Mental_tooltip": "Registra la tua noia, stress, infelicità e panico ogni minuto di gioco. Queste statistiche vengono normalizzate e mediate, poi invertite in modo che 1 rappresenti il miglior stato mentale e 0 il peggiore. I campioni al minuto vengono aggregati in medie orarie, quelli orari in medie giornaliere, e quelli giornalieri nella media di 31 giorni mostrata qui.",
     "UI_ETW_Vitals_Thirst": "Sete",
-    "UI_ETW_aaa_TranslationVersion": "13.3.2",
+    "UI_ETW_AAA_TranslationVersion": "13.3.2",
     "UI_optionscreen_binding_ETW_UI_Toggle": "Attiva/disattiva interfaccia Evolving Traits World",
     "UI_trait_AVClub": "Membro Club Audiovisivi",
     "UI_trait_AVClubDesc": "Fai parte del Club Audiovisivi",

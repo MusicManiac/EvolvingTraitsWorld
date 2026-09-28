@@ -88,7 +88,7 @@
     "UI_ETW_Vitals_Mental": "Mental",
     "UI_ETW_Vitals_Mental_tooltip": "Records your boredom, stress, unhappiness, and panic every in-game minute. These stats are normalized and averaged, then inverted so 1 represents the best mental state and 0 the worst. Minute samples are rolled into hourly averages, hourly samples into daily averages, and daily samples into the 31-day average shown here.",
     "UI_ETW_Vitals_Thirst": "Thirst",
-    "UI_ETW_aaa_TranslationVersion": "This is a note for translators, please do not translate. Set translation version to the latest ETW release you are translating for. This is used to track which translation is up-to-date and which is not.",
+    "UI_ETW_AAA_TranslationVersion": "This is a note for translators, please do not translate. Set translation version to the latest ETW release you are translating for. This is used to track which translation is up-to-date and which is not.",
     "UI_optionscreen_binding_ETW_UI_Toggle": "Toggle Evolving Traits World UI",
     "UI_trait_AVClub": "AV Club Member",
     "UI_trait_AVClubDesc": "You are a part of the AV Club",

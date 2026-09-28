@@ -226,7 +226,7 @@ local function getTranslationVersion(languageCode)
 		if not line then
 			break
 		end
-		local marker = string.match(line, '"UI_ETW_aaa_TranslationVersion"%s*:%s*"([^"]+)"')
+		local marker = string.match(line, '"UI_ETW_AAA_TranslationVersion"%s*:%s*"([^"]+)"')
 		if marker then
 			version = marker
 			break
