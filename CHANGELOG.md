@@ -7,6 +7,7 @@
   - Minor optimizations (Gordonite caching)
   - Made Super-Immune and Immunocompromised dynamic and tied into Immunity system
   - Improved Gym Traits UI tooltips
+  - Added a one-hour grace period for interrupted sleep before the Sleep System updates the preferred sleep midpoint
 - Fix:
   - Fixed Bloodlust tooltip in UI showing wrong info
 

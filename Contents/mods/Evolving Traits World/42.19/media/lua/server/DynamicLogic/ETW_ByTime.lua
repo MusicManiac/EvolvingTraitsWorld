@@ -22,6 +22,7 @@ end
 ---@type fun(...: any)
 local logETW = ETW_CommonFunctions.log
 local FILENAME = "ETW_ByTime.lua"
+local SLEEP_INTERRUPTION_GRACE_HOURS = 1
 
 if
 	not ETW_CommonFunctions.gameModeSafeguard(
@@ -69,6 +70,8 @@ local function sleepSystem()
 		local sleepModData = modData.SleepSystem
 		local currentPreferredTargetHour = sleepModData.LastMidpoint
 		if player:isAsleep() then
+			sleepModData.AwakeHoursDuringSleepGrace = 0
+			sleepModData.WokeUpAt = nil
 			local hoursAwayFromPreferredHour = math.min(
 				math.abs(currentPreferredTargetHour - timeOfDay),
 				24 - math.abs(timeOfDay - currentPreferredTargetHour)
@@ -112,28 +115,36 @@ local function sleepSystem()
 			end
 		end
 		if not player:isAsleep() and sleepModData.CurrentlySleeping == true then
-			if gameMode == ETW_CommonFunctions.GameMode.SP and ETW_Moodles then
-				ETW_Moodles.sleepHealthMoodleUpdate(player, { hoursAwayFromPreferredHour = 0, hide = true })
-			elseif gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
-				sendServerCommand(
-					player,
-					"ETW",
-					"sleepHealthMoodleUpdate",
-					{ hoursAwayFromPreferredHour = 0, hide = true }
-				)
+			if sleepModData.WokeUpAt == nil then
+				sleepModData.WokeUpAt = timeOfDay
+				sleepModData.HoursSinceLastSleep = 0
+				if gameMode == ETW_CommonFunctions.GameMode.SP and ETW_Moodles then
+					ETW_Moodles.sleepHealthMoodleUpdate(player, { hoursAwayFromPreferredHour = 0, hide = true })
+				elseif gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
+					sendServerCommand(
+						player,
+						"ETW",
+						"sleepHealthMoodleUpdate",
+						{ hoursAwayFromPreferredHour = 0, hide = true }
+					)
+				end
 			end
-			sleepModData.LastMidpoint = findMidpoint(sleepModData.WentToSleepAt, timeOfDay)
-			sleepModData.CurrentlySleeping = false
-			sleepModData.HoursSinceLastSleep = 0
-			logETW(
-				"ETW Logger | sleepSystem(): SleepHealthinessBar: " .. sleepModData.SleepHealthinessBar,
-				"ETW Logger | sleepSystem(): new sleepModData.LastMidpoint: "
-					.. sleepModData.LastMidpoint
-					.. ", calculated from "
-					.. sleepModData.WentToSleepAt
-					.. " and "
-					.. timeOfDay
-			)
+			sleepModData.AwakeHoursDuringSleepGrace = sleepModData.AwakeHoursDuringSleepGrace + 1 / 6
+			if sleepModData.AwakeHoursDuringSleepGrace >= SLEEP_INTERRUPTION_GRACE_HOURS then
+				sleepModData.LastMidpoint = findMidpoint(sleepModData.WentToSleepAt, sleepModData.WokeUpAt)
+				sleepModData.CurrentlySleeping = false
+				logETW(
+					"ETW Logger | sleepSystem(): SleepHealthinessBar: " .. sleepModData.SleepHealthinessBar,
+					"ETW Logger | sleepSystem(): new sleepModData.LastMidpoint: "
+						.. sleepModData.LastMidpoint
+						.. ", calculated from "
+						.. sleepModData.WentToSleepAt
+						.. " and "
+						.. sleepModData.WokeUpAt
+				)
+				sleepModData.AwakeHoursDuringSleepGrace = 0
+				sleepModData.WokeUpAt = nil
+			end
 		end
 		if not player:isAsleep() then
 			sleepModData.HoursSinceLastSleep = sleepModData.HoursSinceLastSleep + 1 / 6

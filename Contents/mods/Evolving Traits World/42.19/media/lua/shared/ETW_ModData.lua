@@ -453,6 +453,8 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	if sleepSystem.CurrentlySleeping == nil then
 		sleepSystem.CurrentlySleeping = false
 	end
+	sleepSystem.AwakeHoursDuringSleepGrace = sleepSystem.AwakeHoursDuringSleepGrace or 0
+	sleepSystem.WokeUpAt = sleepSystem.WokeUpAt or nil
 	sleepSystem.HoursSinceLastSleep = sleepSystem.HoursSinceLastSleep or 0
 	sleepSystem.LastMidpoint = sleepSystem.LastMidpoint or 4
 	sleepSystem.WentToSleepAt = sleepSystem.WentToSleepAt or 21

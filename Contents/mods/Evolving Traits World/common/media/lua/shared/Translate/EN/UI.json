@@ -26,7 +26,7 @@
     "UI_ETW_Options_EnableNotifications": "Enable Trait Notifications",
     "UI_ETW_Options_EnableNotifications_tooltip": "Show Colored Arrow above your character whenever you gain or lose trait.",
     "UI_ETW_Options_EnableSleepHealthMoodle": "Enable Sleep Health Moodle",
-    "UI_ETW_Options_EnableSleepHealthMoodle_tooltip": "Shows if you're sleeping within your optimal hours or not. Only active while character is sleeping.",
+    "UI_ETW_Options_EnableSleepHealthMoodle_tooltip": "Shows if you're sleeping within your optimal hours or not. Only active while character is sleeping. The optimal hour is not updated until you have been awake for one in-game hour, so brief interruptions remain part of the same sleep session.",
     "UI_ETW_Options_EnableSoundNotifications": "Enable Sound Notifications",
     "UI_ETW_Options_EnableSoundNotifications_tooltip": "Play a sound whenever you gain/lose a trait or have a trait added to Delayed Traits System",
     "UI_ETW_Options_GatherDetailedDebug": "Gather Detailed Debug Data",

@@ -143,9 +143,11 @@
 
 --- @class SleepSystem
 --- @field CurrentlySleeping boolean
+--- @field AwakeHoursDuringSleepGrace number
 --- @field HoursSinceLastSleep number
 --- @field LastMidpoint number
 --- @field WentToSleepAt number
+--- @field WokeUpAt number|nil
 --- @field SleepHealthinessBar number
 
 --- @class SmokeSystem
