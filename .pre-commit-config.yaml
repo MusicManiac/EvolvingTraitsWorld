@@ -3,7 +3,7 @@ repos:
     hooks:
       - id: sorted-sandbox-options
         name: Check sandbox option ordering
-        entry: python3 sort_sandbox.py --check
+        entry: python sort_sandbox.py --check
         language: system
         pass_filenames: false
         always_run: true
@@ -11,7 +11,7 @@ repos:
 
       - id: sorted-translation-json
         name: Check translation JSON ordering
-        entry: python3 sort_translation_json.py --check
+        entry: python sort_translation_json.py --check
         language: system
         pass_filenames: false
         always_run: true
