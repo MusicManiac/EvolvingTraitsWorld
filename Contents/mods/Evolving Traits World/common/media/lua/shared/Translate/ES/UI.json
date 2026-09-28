@@ -1,5 +1,6 @@
 {
     "UI_ETW": "ETW",
+    "UI_ETW_AAA_TranslationVersion": "12.11.1",
     "UI_ETW_AffinitySystemEnabled": "El sistema de Afinidad esta habilitado",
     "UI_ETW_Chance": "en",
     "UI_ETW_Chance___note_to_translators": "(Don't translate this, this is just info for you guys) UI_ETW_Chance is used in displaying chances, so for example '1 in 300' or '1 in 50300', etc.",
@@ -73,7 +74,6 @@
     "UI_ETW_Vitals_Mental": "Mental",
     "UI_ETW_Vitals_Mental_tooltip": "Registra tu enojo, estres, infelicidad y panico cada minuto dentro del juego. Estas estadisticas estan normalizadas y promediadas, entonces son invertidas, asi que 1 representa el mejor estado mental y 0 el peor. Las muestras de minutos son promediadas cada hora, Muestras de horas son promediadas en dias, y muestras de dias son promediadas en promedios de 31 dias mostrados aqui.",
     "UI_ETW_Vitals_Thirst": "Sed",
-    "UI_ETW_AAA_TranslationVersion": "12.11.1",
     "UI_optionscreen_binding_ETW_UI_Toggle": "Habilita la IU de Evolving Traits World",
     "UI_trait_AVClub": "Miembro del club AV",
     "UI_trait_AVClubDesc": "Eres parte del club AV",

@@ -1,4 +1,5 @@
 {
+    "UI_ETW_AAA_TranslationVersion": "8.5.2",
     "UI_ETW_Chance": "比",
     "UI_ETW_DelayedNotificationsStringAdd": "達成特質獲得條件: ",
     "UI_ETW_DelayedNotificationsStringRemove": "達成特質失去條件: ",
@@ -24,7 +25,6 @@
     "UI_ETW_Options_TraitColumns_tooltip": "決定了在角色頁面能夠顯示幾行特質. 預設數值只適用於英文介面, 其使用其他語言(包含中文)時發生文字重疊狀況,可能需要在此減少數值來符合使用",
     "UI_ETW_Options_UIWidth": "[UI] 角色頁面長度",
     "UI_ETW_Options_UIWidth_tooltip": "角色頁面的設定長度. 預設數值只適用於英文介面, 其使用其他語言(包含中文)時可能需要在此增加或減少數值來符合使用.",
-    "UI_ETW_AAA_TranslationVersion": "8.5.2",
     "UI_optionscreen_binding_ETW_UI_Toggle": "開關ETW使用者介面",
     "UI_trait_AVClub": "AV俱樂部會員",
     "UI_trait_AVClubDesc": "你是AV俱樂部的一員.",

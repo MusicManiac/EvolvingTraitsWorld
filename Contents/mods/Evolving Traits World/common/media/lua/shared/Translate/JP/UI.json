@@ -1,5 +1,6 @@
 {
     "UI_ETW": "ETW",
+    "UI_ETW_AAA_TranslationVersion": "13.4.2",
     "UI_ETW_AffinitySystemEnabled": "適性システムが有効",
     "UI_ETW_Chance": "/",
     "UI_ETW_Chance___note_to_translators": "(Don't translate this, this is just info for you guys) UI_ETW_Chance is used in displaying chances, so for example '1 in 300' or '1 in 50300', etc.",
@@ -79,7 +80,6 @@
     "UI_ETW_Vitals_Mental": "精神状態",
     "UI_ETW_Vitals_Mental_tooltip": "ゲーム内1分ごとに退屈、ストレス、不幸、パニックを記録します。<br>これらの値は標準化・平均化され、1が最良、0が最悪となるよう反転処理されます。<br>毎分のサンプルは毎時の平均に、毎時のサンプルは毎日の平均に、<br>そして毎日のサンプルはここに表示される31日間の平均値へと統合されます。",
     "UI_ETW_Vitals_Thirst": "喉の渇き",
-    "UI_ETW_AAA_TranslationVersion": "13.4.2",
     "UI_optionscreen_binding_ETW_UI_Toggle": "Evolving Traits World UIの表示切り替え",
     "UI_trait_AVClub": "AV部員",
     "UI_trait_AVClubDesc": "あなたはAV（視聴覚）部に所属していました",

@@ -1,5 +1,6 @@
 {
     "UI_ETW": "ETW",
+    "UI_ETW_AAA_TranslationVersion": "13.4.0",
     "UI_ETW_AffinitySystemEnabled": "Систему спорідненості увімкнено",
     "UI_ETW_Chance": "з",
     "UI_ETW_Chance___note_to_translators": "(Don't translate this, this is just info for you guys) UI_ETW_Chance is used in displaying chances, so for example '1 in 300' or '1 in 50300', etc.",
@@ -79,7 +80,6 @@
     "UI_ETW_Vitals_Mental": "Психічний стан",
     "UI_ETW_Vitals_Mental_tooltip": "Записує ваші нудьгу, стрес, нещастя та паніку щохвилини гри. Ці показники нормалізуються та усереднюються, а потім інвертуються, так що 1 відповідає найкращому психічному стану, а 0 – найгіршому. З вибірок за хвилину складається середнє за годину, з годинної – денна, а з денної – 31-денне середнє, показане тут.",
     "UI_ETW_Vitals_Thirst": "Спрага",
-    "UI_ETW_AAA_TranslationVersion": "13.4.0",
     "UI_optionscreen_binding_ETW_UI_Toggle": "Перемкнути інтерфейс Evolving Traits World",
     "UI_trait_AVClub": "Учасник AV-клубу",
     "UI_trait_AVClubDesc": "Ви є частиною клубу аудіо- та відеотехніки",
