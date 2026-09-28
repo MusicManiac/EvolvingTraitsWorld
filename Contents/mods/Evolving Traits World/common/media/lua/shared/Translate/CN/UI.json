@@ -1,4 +1,5 @@
 {
+    "UI_ETW_AAA_TranslationVersion": "14.1.1",
     "UI_ETW": "ETW",
     "UI_ETW_AffinitySystemEnabled": "亲和系统已启用",
     "UI_ETW_CarryWeightSystem": "负重系统",
@@ -87,7 +88,6 @@
     "UI_ETW_Vitals_Mental": "精神",
     "UI_ETW_Vitals_Mental_tooltip": "每游戏分钟记录你的无聊、压力、不快乐和恐慌。这些统计数据被归一化和平均化，然后反转，使得1代表最佳心理状态，0代表最差。分钟样本汇总为小时平均值，小时样本汇总为日平均值，日样本汇总为此处显示的31天平均值。",
     "UI_ETW_Vitals_Thirst": "口渴",
-    "UI_ETW_aaa_TranslationVersion": "14.1.1",
     "UI_optionscreen_binding_ETW_UI_Toggle": "切换ETW用户界面",
     "UI_trait_AVClub": "视听俱乐部成员",
     "UI_trait_AVClubDesc": "你是视听俱乐部的一员",

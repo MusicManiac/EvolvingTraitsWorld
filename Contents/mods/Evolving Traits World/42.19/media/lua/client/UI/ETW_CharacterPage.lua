@@ -1295,6 +1295,14 @@ function ISETWUI:createChildren()
 			routeTo(self.subViewNonCombatTraits, nonCombatTraitsLayoutCursor)
 			if ETW_CommonLogicChecks.ImmunitySystemShouldExecute(player) then
 				local maximumThreshold = ETW_CommonLogicChecks.getImmunitySystemMaximumThreshold()
+				local superImmuneObtainable = ETW_CommonLogicChecks.ImmunitySystemShouldExecute(
+					nil,
+					ETWTraitsRegistry.SUPER_IMMUNE
+				)
+				local immunocompromisedRemovable = ETW_CommonLogicChecks.ImmunitySystemShouldExecute(
+					nil,
+					ETWTraitsRegistry.IMMUNOCOMPROMISED
+				)
 				local function addImmunityThresholdLabel(field, text, trait, labelY, tooltip, tooltipPlacement)
 					local threshold = ETW_CommonFunctions.getImmunitySystemThreshold(trait)
 					local markerPosition = barStartPosition + barLength * threshold / maximumThreshold
@@ -1339,7 +1347,7 @@ function ISETWUI:createChildren()
 					)
 					hasTopLabels = true
 				end
-				if ETW_CommonLogicChecks.ImmunitySystemShouldExecute(nil, ETWTraitsRegistry.SUPER_IMMUNE) then
+				if superImmuneObtainable then
 					addImmunityThresholdLabel(
 						"labelSuperImmune",
 						"+ " .. getCachedTraitUIName(ETWTraitsRegistry.SUPER_IMMUNE),
@@ -1350,12 +1358,23 @@ function ISETWUI:createChildren()
 					)
 					hasTopLabels = true
 				end
+				if immunocompromisedRemovable and not superImmuneObtainable then
+					addImmunityThresholdLabel(
+						"labelImmunocompromised",
+						"- " .. getCachedTraitUIName(ETWTraitsRegistry.IMMUNOCOMPROMISED),
+						ETWTraitsRegistry.IMMUNOCOMPROMISED,
+						y,
+						getText("UI_ETW_LooseTooltip"),
+						"below"
+					)
+					hasTopLabels = true
+				end
 				if hasTopLabels then
 					y = y + FONT_HGT_SMALL
 				end
 
 				local hasBottomLabels = false
-				if ETW_CommonLogicChecks.ImmunitySystemShouldExecute(nil, ETWTraitsRegistry.IMMUNOCOMPROMISED) then
+				if immunocompromisedRemovable and superImmuneObtainable then
 					addImmunityThresholdLabel(
 						"labelImmunocompromised",
 						"- " .. getCachedTraitUIName(ETWTraitsRegistry.IMMUNOCOMPROMISED),
