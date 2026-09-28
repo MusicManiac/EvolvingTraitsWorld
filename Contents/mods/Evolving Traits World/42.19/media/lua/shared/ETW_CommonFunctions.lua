@@ -100,6 +100,22 @@ ETW_CommonFunctions.TraitEvent = {
 
 local RECENT_TRAIT_EVENT_LIMIT = 10
 
+---Returns the progress threshold for an Immunity System trait stage.
+---@param trait CharacterTrait
+---@return number|nil
+function ETW_CommonFunctions.getImmunitySystemThreshold(trait)
+	if trait == CharacterTrait.PRONE_TO_ILLNESS then
+		return 0.125
+	elseif trait == ETWTraitsRegistry.IMMUNOCOMPROMISED then
+		return 0.25
+	elseif trait == CharacterTrait.RESILIENT then
+		return 0.375
+	elseif trait == ETWTraitsRegistry.SUPER_IMMUNE then
+		return 1
+	end
+	return nil
+end
+
 ---Returns the character's average regularity across all available exercise types.
 ---@param player IsoGameCharacter
 ---@return number

@@ -595,7 +595,7 @@ option EvolvingTraitsWorld.ImmunitySystemCounter
 	type = integer,
 	min = 0,
 	max = 10000000,
-	default = 9000,
+	default = 27000,
 	page = ETWSystems,
 	translation = ETW_ImmunitySystemCounter,
 }

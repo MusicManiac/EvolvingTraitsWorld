@@ -1294,38 +1294,78 @@ function ISETWUI:createChildren()
 		local function buildPermanentTraitsSection()
 			routeTo(self.subViewNonCombatTraits, nonCombatTraitsLayoutCursor)
 			if ETW_CommonLogicChecks.ImmunitySystemShouldExecute(player) then
-				str = "- " .. getCachedTraitUIName(CharacterTrait.PRONE_TO_ILLNESS)
-				self.labelProneToIllness = ISLabel:new(
-					barMidPosition - strLen(textManager, str) / 2,
-					y,
-					FONT_HGT_SMALL,
-					str,
-					self.DimmedTextColor.r,
-					self.DimmedTextColor.g,
-					self.DimmedTextColor.b,
-					self.DimmedTextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelProneToIllness:setTooltip(getText("UI_ETW_LooseTooltip"), "below")
-				self:addChild(self.labelProneToIllness)
+				local maximumThreshold = ETW_CommonLogicChecks.getImmunitySystemMaximumThreshold()
+				local function addImmunityThresholdLabel(field, text, trait, labelY, tooltip, tooltipPlacement)
+					local threshold = ETW_CommonFunctions.getImmunitySystemThreshold(trait)
+					local markerPosition = barStartPosition + barLength * threshold / maximumThreshold
+					local centered = threshold < maximumThreshold
+					local labelX = centered and markerPosition - strLen(textManager, text) / 2 or barEndPosition
+					self[field] = ISLabel:new(
+						labelX,
+						labelY,
+						FONT_HGT_SMALL,
+						text,
+						self.DimmedTextColor.r,
+						self.DimmedTextColor.g,
+						self.DimmedTextColor.b,
+						self.DimmedTextColor.a,
+						UIFont.Small,
+						centered
+					)
+					self[field]:setTooltip(tooltip, tooltipPlacement)
+					self:addChild(self[field])
+				end
 
-				self.labelResilient = ISLabel:new(
-					barEndPosition,
-					y,
-					FONT_HGT_SMALL,
-					"+ " .. getCachedTraitUIName(CharacterTrait.RESILIENT),
-					self.DimmedTextColor.r,
-					self.DimmedTextColor.g,
-					self.DimmedTextColor.b,
-					self.DimmedTextColor.a,
-					UIFont.Small,
-					false
-				)
-				self.labelResilient:setTooltip(getText("UI_ETW_GainTooltip"), "below")
-				self:addChild(self.labelResilient)
+				local hasTopLabels = false
+				if ETW_CommonLogicChecks.ImmunitySystemShouldExecute(nil, CharacterTrait.PRONE_TO_ILLNESS) then
+					addImmunityThresholdLabel(
+						"labelProneToIllness",
+						"- " .. getCachedTraitUIName(CharacterTrait.PRONE_TO_ILLNESS),
+						CharacterTrait.PRONE_TO_ILLNESS,
+						y,
+						getText("UI_ETW_LooseTooltip"),
+						"below"
+					)
+					hasTopLabels = true
+				end
+				if ETW_CommonLogicChecks.ImmunitySystemShouldExecute(nil, CharacterTrait.RESILIENT) then
+					addImmunityThresholdLabel(
+						"labelResilient",
+						"+ " .. getCachedTraitUIName(CharacterTrait.RESILIENT),
+						CharacterTrait.RESILIENT,
+						y,
+						getText("UI_ETW_GainTooltip"),
+						"below"
+					)
+					hasTopLabels = true
+				end
+				if hasTopLabels then
+					y = y + FONT_HGT_SMALL
+				end
 
-				y = y + FONT_HGT_SMALL
+				local hasBottomLabels = false
+				if ETW_CommonLogicChecks.ImmunitySystemShouldExecute(nil, ETWTraitsRegistry.IMMUNOCOMPROMISED) then
+					addImmunityThresholdLabel(
+						"labelImmunocompromised",
+						"- " .. getCachedTraitUIName(ETWTraitsRegistry.IMMUNOCOMPROMISED),
+						ETWTraitsRegistry.IMMUNOCOMPROMISED,
+						y + FONT_HGT_SMALL,
+						getText("UI_ETW_LooseTooltip"),
+						"above"
+					)
+					hasBottomLabels = true
+				end
+				if ETW_CommonLogicChecks.ImmunitySystemShouldExecute(nil, ETWTraitsRegistry.SUPER_IMMUNE) then
+					addImmunityThresholdLabel(
+						"labelSuperImmune",
+						"+ " .. getCachedTraitUIName(ETWTraitsRegistry.SUPER_IMMUNE),
+						ETWTraitsRegistry.SUPER_IMMUNE,
+						y + FONT_HGT_SMALL,
+						getText("UI_ETW_GainTooltip"),
+						"above"
+					)
+					hasBottomLabels = true
+				end
 
 				self.labelImmunitySystem = ISLabel:new(
 					barStartPosition - lineStartPosition,
@@ -1348,7 +1388,7 @@ function ISETWUI:createChildren()
 				self.barImmunitySystem:setDoKnob(false)
 				self:addChild(self.barImmunitySystem)
 
-				y = y + FONT_HGT_SMALL
+				y = y + FONT_HGT_SMALL * (hasBottomLabels and 2 or 1)
 			end
 
 			if ETW_CommonLogicChecks.FoodSicknessSystemShouldExecute(player) then
@@ -5079,7 +5119,11 @@ function ISETWUI:render()
 
 	updateBar(
 		self.barImmunitySystem,
-		percentile(0, SBvars.ImmunitySystemCounter, modData.ImmunitySystemCounter),
+		percentile(
+			0,
+			SBvars.ImmunitySystemCounter * ETW_CommonLogicChecks.getImmunitySystemMaximumThreshold(),
+			modData.ImmunitySystemCounter
+		),
 		getText("UI_ETW_CurrentValue") .. formatDecimal(modData.ImmunitySystemCounter)
 	)
 	updateBar(

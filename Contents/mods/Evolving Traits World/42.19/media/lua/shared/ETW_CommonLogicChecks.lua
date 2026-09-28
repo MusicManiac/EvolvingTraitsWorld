@@ -29,19 +29,68 @@ local function traitShouldExecute(enabledOption)
 		or (traitSandboxVars.DisableAllCustomTraits == false and traitSandboxVars[enabledOption] == true)
 end
 
----Returns true if the Immunity System should execute
+---Returns whether the Immunity System or one of its trait stages should execute.
 ---@param player IsoPlayer|nil the player to check for
----@return boolean boolean true if the Immunity System should execute, false otherwise
-function ETW_CommonLogicChecks.ImmunitySystemShouldExecute(player)
-	if
-		SBvars.ImmunitySystem == true
-		and ((player and not player:hasTrait(CharacterTrait.RESILIENT)) or gameMode == ETW_CommonFunctions.GameMode.MP_SERVER)
-		and (SBvars.TraitsLockSystemCanGainPositive or SBvars.TraitsLockSystemCanLoseNegative)
-	then
-		return true
-	else
+---@param trait CharacterTrait|nil optional immunity trait stage
+---@return boolean
+function ETW_CommonLogicChecks.ImmunitySystemShouldExecute(player, trait)
+	if SBvars.ImmunitySystem ~= true then
 		return false
 	end
+
+	local canLoseProneToIllness = SBvars.TraitsLockSystemCanLoseNegative
+	local canLoseImmunocompromised = traitShouldExecute("ImmunocompromisedEnabled")
+		and SBvars.TraitsLockSystemCanLoseNegative
+	local canGainResilient = SBvars.TraitsLockSystemCanGainPositive
+	local canGainSuperImmune = traitShouldExecute("SuperImmuneEnabled")
+		and SBvars.TraitsLockSystemCanGainPositive
+
+	if trait == CharacterTrait.PRONE_TO_ILLNESS then
+		return canLoseProneToIllness and (not player or player:hasTrait(CharacterTrait.PRONE_TO_ILLNESS))
+	elseif trait == ETWTraitsRegistry.IMMUNOCOMPROMISED then
+		return canLoseImmunocompromised and (not player or player:hasTrait(ETWTraitsRegistry.IMMUNOCOMPROMISED))
+	elseif trait == CharacterTrait.RESILIENT then
+		return canGainResilient
+			and (
+				not player
+				or (
+					not player:hasTrait(CharacterTrait.RESILIENT)
+					and not player:hasTrait(ETWTraitsRegistry.SUPER_IMMUNE)
+				)
+			)
+	elseif trait == ETWTraitsRegistry.SUPER_IMMUNE then
+		return canGainSuperImmune and (not player or not player:hasTrait(ETWTraitsRegistry.SUPER_IMMUNE))
+	elseif trait ~= nil then
+		return false
+	end
+
+	if gameMode == ETW_CommonFunctions.GameMode.MP_SERVER or not player then
+		return canLoseProneToIllness or canLoseImmunocompromised or canGainResilient or canGainSuperImmune
+	end
+
+	return (canLoseProneToIllness and player:hasTrait(CharacterTrait.PRONE_TO_ILLNESS))
+		or (canLoseImmunocompromised and player:hasTrait(ETWTraitsRegistry.IMMUNOCOMPROMISED))
+		or (
+			canGainResilient
+			and not player:hasTrait(CharacterTrait.RESILIENT)
+			and not player:hasTrait(ETWTraitsRegistry.SUPER_IMMUNE)
+		)
+		or (canGainSuperImmune and not player:hasTrait(ETWTraitsRegistry.SUPER_IMMUNE))
+end
+
+---Returns the highest enabled Immunity System threshold for UI normalization.
+---@return number
+function ETW_CommonLogicChecks.getImmunitySystemMaximumThreshold()
+	if ETW_CommonLogicChecks.ImmunitySystemShouldExecute(nil, ETWTraitsRegistry.SUPER_IMMUNE) then
+		return ETW_CommonFunctions.getImmunitySystemThreshold(ETWTraitsRegistry.SUPER_IMMUNE)
+	elseif ETW_CommonLogicChecks.ImmunitySystemShouldExecute(nil, CharacterTrait.RESILIENT) then
+		return ETW_CommonFunctions.getImmunitySystemThreshold(CharacterTrait.RESILIENT)
+	elseif ETW_CommonLogicChecks.ImmunitySystemShouldExecute(nil, ETWTraitsRegistry.IMMUNOCOMPROMISED) then
+		return ETW_CommonFunctions.getImmunitySystemThreshold(ETWTraitsRegistry.IMMUNOCOMPROMISED)
+	elseif ETW_CommonLogicChecks.ImmunitySystemShouldExecute(nil, CharacterTrait.PRONE_TO_ILLNESS) then
+		return ETW_CommonFunctions.getImmunitySystemThreshold(CharacterTrait.PRONE_TO_ILLNESS)
+	end
+	return 1
 end
 
 ---Returns true if the Food Sickness System should execute
