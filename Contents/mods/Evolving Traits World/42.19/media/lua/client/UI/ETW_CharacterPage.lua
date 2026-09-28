@@ -5389,7 +5389,7 @@ function ISETWUI:render()
 	local workoutProtectionText = ""
 	if workoutProtectionHours > 0 then
 		workoutProtectionText = "\n"
-			.. getText("UI_ETW_GymTraitsSystemWorkoutProtection", formatDecimal(workoutProtectionHours))
+			.. getText("UI_ETW_GymTraitsSystemWorkoutProtection",  workoutProtectionHours)
 	end
 	updateBar(
 		self.barGymTraitsSystem,
@@ -5402,10 +5402,10 @@ function ISETWUI:render()
 			.. formatDecimal(ETW_CommonFunctions.getAverageExerciseRegularity(player))
 			.. "%/"
 			.. SBvars.GymTraitsSystemRegularityMidpoint
-			.. "%"
+			.. "% \n"
+			.. getText("Sandbox_ETW_GymTraitsSystemRegularityMidpoint_tooltip")
 			.. workoutProtectionText
 	)
-	local injurySnapshotSystem = (modData and modData.InjurySnapshotSystem) or {}
 	updateLabel(
 		self.labelInjuredProgress,
 		getCachedTraitUIName(ETWTraitsRegistry.INJURED)

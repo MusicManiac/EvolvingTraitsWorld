@@ -81,7 +81,7 @@
 
 --- @class GymTraitsSystem
 --- @field GymTraitsSystemCounter number
---- @field HoursSinceLastWorkout number
+--- @field HoursSinceLastWorkout integer
 --- @field ExerciseLoopTimestamps number[]
 
 --- @class TVJunkieSystem

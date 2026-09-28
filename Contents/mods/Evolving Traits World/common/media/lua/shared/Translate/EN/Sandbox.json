@@ -294,7 +294,7 @@
     "Sandbox_ETW_GymTraitsSystemProgressLossMultiplier": "Gym Traits System negative progress multiplier",
     "Sandbox_ETW_GymTraitsSystemProgressLossMultiplier_tooltip": "Multiplies hourly progress toward Couch Potato when average exercise regularity is below the midpoint.",
     "Sandbox_ETW_GymTraitsSystemRegularityMidpoint": "Gym Traits System regularity midpoint (%%)",
-    "Sandbox_ETW_GymTraitsSystemRegularityMidpoint_tooltip": "Average exercise regularity that leaves progress unchanged. Regularity above this value moves progress toward Gym Rat; regularity below it moves progress toward Couch Potato. Exercises not yet performed count as 0%% regularity.",
+    "Sandbox_ETW_GymTraitsSystemRegularityMidpoint_tooltip": "Average exercise regularity that leaves progress unchanged. Regularity above this value moves progress toward Gym Rat; regularity below it moves progress toward Couch Potato. Exercises not yet performed count as 0%% regularity. Which means, that, for example, if you max Burpees to 100% but don't do any other exercises (there are 7 in vanilla game), your average regularity will be 14.3% (100% / 7).",
     "Sandbox_ETW_GymTraitsSystemWorkoutGracePeriodHours": "Workout grace period (hours)",
     "Sandbox_ETW_GymTraitsSystemWorkoutGracePeriodHours_tooltip": "Stops hourly progress toward Couch Potato for this many in-game hours after a qualifying workout. Set to 0 to disable the grace period.",
     "Sandbox_ETW_GymTraitsSystemWorkoutLoopThreshold": "Exercise repeats required for a workout",
