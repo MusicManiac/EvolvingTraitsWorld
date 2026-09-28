@@ -1,5 +1,4 @@
 {
-    "UI_ETW_aaa_TranslationVersion": "12.11.1",
     "UI_ETW": "ETW",
     "UI_ETW_AffinitySystemEnabled": "El sistema de Afinidad esta habilitado",
     "UI_ETW_Chance": "en",
@@ -74,6 +73,7 @@
     "UI_ETW_Vitals_Mental": "Mental",
     "UI_ETW_Vitals_Mental_tooltip": "Registra tu enojo, estres, infelicidad y panico cada minuto dentro del juego. Estas estadisticas estan normalizadas y promediadas, entonces son invertidas, asi que 1 representa el mejor estado mental y 0 el peor. Las muestras de minutos son promediadas cada hora, Muestras de horas son promediadas en dias, y muestras de dias son promediadas en promedios de 31 dias mostrados aqui.",
     "UI_ETW_Vitals_Thirst": "Sed",
+    "UI_ETW_aaa_TranslationVersion": "12.11.1",
     "UI_optionscreen_binding_ETW_UI_Toggle": "Habilita la IU de Evolving Traits World",
     "UI_trait_AVClub": "Miembro del club AV",
     "UI_trait_AVClubDesc": "Eres parte del club AV",
@@ -98,7 +98,7 @@
     "UI_trait_HomeCook": "Cocinero casero",
     "UI_trait_HomeCookDesc": "Cocinas hacer tus propias comidas y ocacionalmente hornear un pastel",
     "UI_trait_Homichlophile": "Homichlofilo",
-    "UI_trait_HomichlophileDesc": "Te gusta la niebla, algo de ella te hace sentir acogido. Te sientes calmado si estas en un clima con niebla. Tu estres y panico bajan lentamente dependiendo de la intensidad de la niebla.", 
+    "UI_trait_HomichlophileDesc": "Te gusta la niebla, algo de ella te hace sentir acogido. Te sientes calmado si estas en un clima con niebla. Tu estres y panico bajan lentamente dependiendo de la intensidad de la niebla.",
     "UI_trait_Homichlophobia": "Homichlofobia",
     "UI_trait_HomichlophobiaDesc": "Odias la niebla, algo de ella te hace sentir alarmado y estresado. te sientes inquieto mientras estes en un clima con niebla. Tu estres y panico suben lentamente dependiendo de la intensidad de la niebla.",
     "UI_trait_KnifeFighter": "Luchador de cuchillo",
@@ -123,6 +123,6 @@
     "UI_trait_SlowEaterDesc": "te tomas tu tiempo para comer. La comida toma mas tiempo en ser consumida.",
     "UI_trait_StickFighter": "Luchador con palos",
     "UI_trait_StickFighterDesc": "haz practicado el arte marcial de la lucha con palos",
-    "note_to_LANGUAGE_translators": "Make sure file is saved in <ENCODING> encoding, so game display correct characters",
-    "note_to_ES_translators": "Make sure file is saved in UTF-8 encoding, so game display correct characters"
+    "note_to_ES_translators": "Make sure file is saved in UTF-8 encoding, so game display correct characters",
+    "note_to_LANGUAGE_translators": "Make sure file is saved in <ENCODING> encoding, so game display correct characters"
 }

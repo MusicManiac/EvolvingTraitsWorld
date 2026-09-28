@@ -13,9 +13,9 @@
     "Moodles_SleepHealthMoodle_Bad_lvl3": "睡眠スケジュールが大きく狂っている",
     "Moodles_SleepHealthMoodle_Bad_lvl4": "睡眠スケジュールが完全に崩壊している",
     "Moodles_SleepHealthMoodle_Custom": "最適な就寝時間から %1 時間離れています",
-    "Moodles_SleepHealthMoodle_Good_lvl4": "完璧なタイミングでの睡眠だ",
-    "Moodles_SleepHealthMoodle_Good_lvl3": "睡眠をとるには最高の時間帯だ",
-    "Moodles_SleepHealthMoodle_Good_lvl2": "睡眠をとるには良い時間帯だ",
     "Moodles_SleepHealthMoodle_Good_lvl1": "平均より少し良い時間帯の睡眠だ",
+    "Moodles_SleepHealthMoodle_Good_lvl2": "睡眠をとるには良い時間帯だ",
+    "Moodles_SleepHealthMoodle_Good_lvl3": "睡眠をとるには最高の時間帯だ",
+    "Moodles_SleepHealthMoodle_Good_lvl4": "完璧なタイミングでの睡眠だ",
     "___note_to_translators": "(Don't translate this, this is just info for you guys) Make sure file is saved in <ENCODING> encoding, so game display correct characters"
 }

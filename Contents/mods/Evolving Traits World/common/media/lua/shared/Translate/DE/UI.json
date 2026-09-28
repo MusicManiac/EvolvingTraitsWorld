@@ -1,5 +1,4 @@
 {
-    "UI_ETW_aaa_TranslationVersion": "9.4.4",
     "UI_ETW_Chance": "unter",
     "UI_ETW_DelayedNotificationsStringAdd": "Qualifiziert für den Erhalt von Merkmalen",
     "UI_ETW_DelayedNotificationsStringRemove": "Qualifiziert für den Verlust von Merkmalen",
@@ -25,6 +24,7 @@
     "UI_ETW_Options_TraitColumns_tooltip": "Wie viele Spalten die Benutzeroberfläche auf der Charakterseite hat. Die Standardeinstellung sollte in Ordnung sein, wenn du auf Englisch spielst, aber wenn sich der Text in anderen Sprachen überschneidet, solltest du diesen Wert verringern.",
     "UI_ETW_Options_UIWidth": "[UI] Breite der Zeichenseite",
     "UI_ETW_Options_UIWidth_tooltip": "Breite der Zeichenseite in Pixeln. Wenn du auf Englisch spielst, sollte die Standardeinstellung in Ordnung sein, aber in anderen Sprachen könnte es seltsam sein, also wenn du mehr Platz brauchst, erhöhst du ihn hier.",
+    "UI_ETW_aaa_TranslationVersion": "9.4.4",
     "UI_optionscreen_binding_ETW_UI_Toggle": "Evolving Traits World UI umschalten",
     "UI_trait_AVClub": "Mitglied im AV-Club",
     "UI_trait_AVClubDesc": "Du bist Mitglied des AV-Clubs.",
