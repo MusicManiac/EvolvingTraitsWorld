@@ -1339,6 +1339,17 @@ function ISETWUI:createChildren()
 					)
 					hasTopLabels = true
 				end
+				if ETW_CommonLogicChecks.ImmunitySystemShouldExecute(nil, ETWTraitsRegistry.SUPER_IMMUNE) then
+					addImmunityThresholdLabel(
+						"labelSuperImmune",
+						"+ " .. getCachedTraitUIName(ETWTraitsRegistry.SUPER_IMMUNE),
+						ETWTraitsRegistry.SUPER_IMMUNE,
+						y,
+						getText("UI_ETW_GainTooltip"),
+						"below"
+					)
+					hasTopLabels = true
+				end
 				if hasTopLabels then
 					y = y + FONT_HGT_SMALL
 				end
@@ -1355,18 +1366,6 @@ function ISETWUI:createChildren()
 					)
 					hasBottomLabels = true
 				end
-				if ETW_CommonLogicChecks.ImmunitySystemShouldExecute(nil, ETWTraitsRegistry.SUPER_IMMUNE) then
-					addImmunityThresholdLabel(
-						"labelSuperImmune",
-						"+ " .. getCachedTraitUIName(ETWTraitsRegistry.SUPER_IMMUNE),
-						ETWTraitsRegistry.SUPER_IMMUNE,
-						y + FONT_HGT_SMALL,
-						getText("UI_ETW_GainTooltip"),
-						"above"
-					)
-					hasBottomLabels = true
-				end
-
 				self.labelImmunitySystem = ISLabel:new(
 					barStartPosition - lineStartPosition,
 					y,
