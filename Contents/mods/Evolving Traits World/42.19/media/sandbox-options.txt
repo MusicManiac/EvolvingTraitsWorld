@@ -366,14 +366,14 @@ option EvolvingTraitsWorld.GymTraitsSystemProgressLossMultiplier
 	page = ETWSystems,
 	translation = ETW_GymTraitsSystemProgressLossMultiplier,
 }
-option EvolvingTraitsWorld.GymTraitsSystemWorkoutLoopThreshold
+option EvolvingTraitsWorld.GymTraitsSystemRegularityMidpoint
 {
 	type = integer,
-	min = 1,
-	max = 1000,
-	default = 10,
+	min = 0,
+	max = 100,
+	default = 50,
 	page = ETWSystems,
-	translation = ETW_GymTraitsSystemWorkoutLoopThreshold,
+	translation = ETW_GymTraitsSystemRegularityMidpoint,
 }
 option EvolvingTraitsWorld.GymTraitsSystemWorkoutGracePeriodHours
 {
@@ -384,14 +384,14 @@ option EvolvingTraitsWorld.GymTraitsSystemWorkoutGracePeriodHours
 	page = ETWSystems,
 	translation = ETW_GymTraitsSystemWorkoutGracePeriodHours,
 }
-option EvolvingTraitsWorld.GymTraitsSystemRegularityMidpoint
+option EvolvingTraitsWorld.GymTraitsSystemWorkoutLoopThreshold
 {
 	type = integer,
-	min = 0,
-	max = 100,
-	default = 50,
+	min = 1,
+	max = 1000,
+	default = 10,
 	page = ETWSystems,
-	translation = ETW_GymTraitsSystemRegularityMidpoint,
+	translation = ETW_GymTraitsSystemWorkoutLoopThreshold,
 }
 option EvolvingTraitsWorld.HealerSystem
 {
