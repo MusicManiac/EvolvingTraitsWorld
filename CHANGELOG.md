@@ -1,5 +1,5 @@
-## v.14.x.x
-###### xx Sep 2026
+## v.14.2.0
+###### 28 Sep 2026
 
 - General:
   - Made Gym Traits System more logical: after recent workout, you can't lose progress for next 16 hours (by default), even if your average regularity % is below threshold
@@ -10,6 +10,8 @@
   - Added a one-hour grace period for interrupted sleep before the Sleep System updates the preferred sleep midpoint
 - Fix:
   - Fixed Bloodlust tooltip in UI showing wrong info
+- Translations:
+  - Updated CN to v.14.1.1
 
 ## v.14.1.1
 ###### 26 Sep 2026
