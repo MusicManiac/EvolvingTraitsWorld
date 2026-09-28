@@ -5338,7 +5338,15 @@ function ISETWUI:render()
 			.. "/"
 			.. SBvars.EagleEyedKills
 	)
-	local gymTraitsCounter = modData.GymTraitsSystemCounter or 0
+	local gymTraitsSystem = modData.GymTraitsSystem
+	local gymTraitsCounter = gymTraitsSystem.GymTraitsSystemCounter or 0
+	local workoutGracePeriodHours = math.max(0, SBvars.GymTraitsSystemWorkoutGracePeriodHours or 16)
+	local workoutProtectionHours = math.max(0, workoutGracePeriodHours - gymTraitsSystem.HoursSinceLastWorkout)
+	local workoutProtectionText = ""
+	if workoutProtectionHours > 0 then
+		workoutProtectionText = "\n"
+			.. getText("UI_ETW_GymTraitsSystemWorkoutProtection", formatDecimal(workoutProtectionHours))
+	end
 	updateBar(
 		self.barGymTraitsSystem,
 		percentile(-SBvars.GymTraitsSystemCounter, SBvars.GymTraitsSystemCounter, gymTraitsCounter),
@@ -5351,6 +5359,7 @@ function ISETWUI:render()
 			.. "%/"
 			.. SBvars.GymTraitsSystemRegularityMidpoint
 			.. "%"
+			.. workoutProtectionText
 	)
 	local injurySnapshotSystem = (modData and modData.InjurySnapshotSystem) or {}
 	updateLabel(

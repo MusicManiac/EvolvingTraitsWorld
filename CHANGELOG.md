@@ -2,9 +2,10 @@
 ###### xx Sep 2026
 
 - General:
-  - Updated Hardy description so it's clearer how it works.
+  - Made Gym Traits System more logical: after recent workout, you can't lose progress for next 16 hours (by default), even if your average regularity % is below threshold
+  - Updated Hardy description so it's clearer how it works
 - Fix:
-  - Fixed Bloodlust tooltip in UI showing wrong info.
+  - Fixed Bloodlust tooltip in UI showing wrong info
 
 ## v.14.1.1
 ###### 26 Sep 2026

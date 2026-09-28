@@ -7,6 +7,7 @@
     "UI_ETW_Chance___note_to_translators": "(Don't translate this, this is just info for you guys) UI_ETW_Chance is used in displaying chances, so for example '1 in 300' or '1 in 50300', etc.",
     "UI_ETW_CurrentValue": "Current value: ",
     "UI_ETW_CurrentValue___note_to_translators": "(Don't translate this, this is just info for you guys) UI_ETW_CurrentValue is shown in tooltip when hovering over gradient bars in UI page",
+    "UI_ETW_GymTraitsSystemWorkoutProtection": "Due to a recent workout, progress will not deteriorate toward Couch Potato for another %1 hours.",
     "UI_ETW_DelayedNotificationsStringAdd": "Qualified for gaining ",
     "UI_ETW_DelayedNotificationsStringRemove": "Qualified for losing ",
     "UI_ETW_DelayedNotificationsStringRemove___note_to_translators": "(Don't translate this, this is just info for you guys) UI_ETW_DelayedNotificationsStringAdd and UI_ETW_DelayedNotificationsStringRemove is used in combination with trait names, for example 'Qualified for gaining Hoarder' or 'Qualified for losing Conspicuous'. You get the idea.",

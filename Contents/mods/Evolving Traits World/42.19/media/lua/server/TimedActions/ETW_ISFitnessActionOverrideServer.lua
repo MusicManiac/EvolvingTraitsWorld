@@ -1,6 +1,7 @@
 require("TimedActions/ISFitnessAction")
 
 local ETW_CommonFunctions = require("ETW_CommonFunctions")
+local ETW_CommonLogicChecks = require("ETW_CommonLogicChecks")
 local ETW_CombinedTraitFunctions = require("ETW_CombinedTraitFunctions")
 local ETW_Registry = require("ETW_Registry")
 
@@ -22,12 +23,42 @@ local logETW = ETW_CommonFunctions.log
 
 local original_ISFitnessAction_exeLooped = ISFitnessAction.exeLooped
 
+---Records a completed exercise repeat and resets the workout grace period once enough repeats occurred in one hour.
+---@param player IsoPlayer
+local function recordGymTraitsWorkoutLoop(player)
+	if not ETW_CommonLogicChecks.GymTraitsSystemShouldExecute(player) then
+		return
+	end
+	local modData = ETW_CommonFunctions.getETWModData(player)
+	if not modData then
+		return
+	end
+
+	local gymTraitsSystem = modData.GymTraitsSystem
+	local timestamps = gymTraitsSystem.ExerciseLoopTimestamps
+	local currentHour = getGameTime():getWorldAgeHours()
+	local cutoffHour = currentHour - 1
+	for i = #timestamps, 1, -1 do
+		if timestamps[i] <= cutoffHour then
+			table.remove(timestamps, i)
+		end
+	end
+	table.insert(timestamps, currentHour)
+
+	local workoutLoopThreshold = math.max(1, SBvars.GymTraitsSystemWorkoutLoopThreshold or 10)
+	if #timestamps >= workoutLoopThreshold then
+		gymTraitsSystem.HoursSinceLastWorkout = 0
+	end
+end
+
 ---Applies the exercise-only effects of Gym Rat and Couch Potato to a vanilla exercise repeat.
 function ISFitnessAction:exeLooped()
 	local player = self.character
-	local isPlayer = instanceof(player, "IsoPlayer")
-	local isGymRat = isPlayer and player:hasTrait(ETWTraitsRegistry.GYM_RAT)
-	local isCouchPotato = isPlayer and player:hasTrait(ETWTraitsRegistry.COUCH_POTATO)
+	if not instanceof(player, "IsoPlayer") then
+		return original_ISFitnessAction_exeLooped(self)
+	end
+	local isGymRat = player:hasTrait(ETWTraitsRegistry.GYM_RAT)
+	local isCouchPotato = player:hasTrait(ETWTraitsRegistry.COUCH_POTATO)
 	local gymRatXPMultiplier = math.max(1, SBvars.GymRatExerciseXPMultiplier or 2)
 	local couchPotatoXPMultiplier = math.max(0.1, math.min(1, SBvars.CouchPotatoExerciseXPMultiplier or 0.5))
 	local shouldProcess = (isGymRat and gymRatXPMultiplier > 1)
@@ -36,6 +67,7 @@ function ISFitnessAction:exeLooped()
 	local strengthXPBefore = shouldProcess and player:getXp():getXP(Perks.Strength) or 0
 
 	local originalReturn = original_ISFitnessAction_exeLooped(self)
+	recordGymTraitsWorkoutLoop(player)
 	if isCouchPotato then
 		local fatigueMultiplier = math.max(1, math.floor(SBvars.CouchPotatoExerciseFatigueMultiplier or 2))
 		for _ = 2, fatigueMultiplier do

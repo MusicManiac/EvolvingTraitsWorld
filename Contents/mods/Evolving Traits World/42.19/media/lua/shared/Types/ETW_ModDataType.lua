@@ -76,8 +76,13 @@
 --- @field SmokeSystem SmokeSystem
 --- @field TransferSystem TransferSystem
 --- @field BloodlustSystem BloodlustSystem
---- @field GymTraitsSystemCounter number
+--- @field GymTraitsSystem GymTraitsSystem
 --- @field AnimalsSystem AnimalsSystem
+
+--- @class GymTraitsSystem
+--- @field GymTraitsSystemCounter number
+--- @field HoursSinceLastWorkout number
+--- @field ExerciseLoopTimestamps number[]
 
 --- @class TVJunkieSystem
 --- @field ActiveMinutes integer

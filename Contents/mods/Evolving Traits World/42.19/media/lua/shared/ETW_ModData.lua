@@ -15,7 +15,7 @@ local ETW_Registry = require("ETW_Registry")
 local ETWTraitsRegistry = ETW_Registry.traits
 
 ---Increment when fields are added to or migrated in EvolvingTraitsWorld modData.
-local MOD_DATA_VERSION = 1.13
+local MOD_DATA_VERSION = 1.14
 
 local RECENT_TRAIT_EVENT_LIMIT = 10
 
@@ -136,6 +136,16 @@ local function migrate(modData, playerModData)
 		injurySnapshotSystem.InjuredBodyParts = migrateInjuryBodyParts(injurySnapshotSystem.InjuredBodyParts)
 		injurySnapshotSystem.BurnedBodyParts = migrateInjuryBodyParts(injurySnapshotSystem.BurnedBodyParts)
 		injurySnapshotSystem.BrokenBodyParts = migrateInjuryBodyParts(injurySnapshotSystem.BrokenBodyParts)
+	end
+
+	---v 1.14
+	if modData.GymTraitsSystem == nil then
+		modData.GymTraitsSystem = {}
+		local gymTraitsSystem = modData.GymTraitsSystem
+		if modData.GymTraitsSystemCounter ~= nil then
+			gymTraitsSystem.GymTraitsSystemCounter = modData.GymTraitsSystemCounter
+			modData.GymTraitsSystemCounter = nil
+		end
 	end
 end
 
@@ -421,7 +431,7 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	if
 		outdoorsmanSystem.OutdoorsmanCounter == nil
 		and startingTraits[CharacterTrait.OUTDOORSMAN:toString()] == true
-	then -- start at full counter if they start with the trait
+	then
 		outdoorsmanSystem.OutdoorsmanCounter = SBvars.OutdoorsmanCounter * 2
 	end
 	outdoorsmanSystem.OutdoorsmanCounter = outdoorsmanSystem.OutdoorsmanCounter or 0
@@ -485,15 +495,20 @@ function ETW_ModData.createETWModData(playerIndex, player)
 		end
 	end
 
-	if modData.GymTraitsSystemCounter == nil then
+	modData.GymTraitsSystem = modData.GymTraitsSystem or {}
+	local gymTraitsSystem = modData.GymTraitsSystem
+	if gymTraitsSystem.GymTraitsSystemCounter == nil then
 		if startingTraits[ETWTraitsRegistry.GYM_RAT:toString()] == true then
-			modData.GymTraitsSystemCounter = SBvars.GymTraitsSystemCounter
+			gymTraitsSystem.GymTraitsSystemCounter = SBvars.GymTraitsSystemCounter
 		elseif startingTraits[ETWTraitsRegistry.COUCH_POTATO:toString()] == true then
-			modData.GymTraitsSystemCounter = -SBvars.GymTraitsSystemCounter
+			gymTraitsSystem.GymTraitsSystemCounter = -SBvars.GymTraitsSystemCounter
 		else
-			modData.GymTraitsSystemCounter = 0
+			gymTraitsSystem.GymTraitsSystemCounter = 0
 		end
 	end
+	gymTraitsSystem.HoursSinceLastWorkout = gymTraitsSystem.HoursSinceLastWorkout
+		or math.max(0, SBvars.GymTraitsSystemWorkoutGracePeriodHours or 16)
+	gymTraitsSystem.ExerciseLoopTimestamps = gymTraitsSystem.ExerciseLoopTimestamps or {}
 
 	modData.AnimalsSystem = modData.AnimalsSystem or {}
 	local AnimalsSystem = modData.AnimalsSystem

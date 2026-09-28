@@ -446,7 +446,9 @@ local function gymTraitsSystem()
 		if ETW_CommonLogicChecks.GymTraitsSystemShouldExecute(player) then
 			local modData = ETW_CommonFunctions.getETWModData(player)
 			if modData then
-				local counter = modData.GymTraitsSystemCounter
+				local gymTraitsSystem = modData.GymTraitsSystem
+				local counter = gymTraitsSystem.GymTraitsSystemCounter
+				gymTraitsSystem.HoursSinceLastWorkout = gymTraitsSystem.HoursSinceLastWorkout + 1
 				local averageRegularity = ETW_CommonFunctions.getAverageExerciseRegularity(player)
 				local distanceFromMidpoint = averageRegularity - midpoint
 				local hasCouchPotato = player:hasTrait(ETWTraitsRegistry.COUCH_POTATO)
@@ -454,14 +456,18 @@ local function gymTraitsSystem()
 				local multiplier = distanceFromMidpoint >= 0
 						and math.max(0, SBvars.GymTraitsSystemProgressGainMultiplier or 1)
 					or math.max(0, SBvars.GymTraitsSystemProgressLossMultiplier or 1)
-				local counterChange = ETW_CommonFunctions.applyAffinityToDirectionalChange(
-					modData,
-					distanceFromMidpoint * multiplier,
-					ETWTraitsRegistry.COUCH_POTATO,
-					ETWTraitsRegistry.GYM_RAT
-				)
+				local gracePeriodHours = math.max(0, SBvars.GymTraitsSystemWorkoutGracePeriodHours or 16)
+				local counterChange = 0
+				if distanceFromMidpoint >= 0 or gymTraitsSystem.HoursSinceLastWorkout >= gracePeriodHours then
+					counterChange = ETW_CommonFunctions.applyAffinityToDirectionalChange(
+						modData,
+						distanceFromMidpoint * multiplier,
+						ETWTraitsRegistry.COUCH_POTATO,
+						ETWTraitsRegistry.GYM_RAT
+					)
+				end
 				counter = math.max(-maximumProgress, math.min(maximumProgress, counter + counterChange))
-				modData.GymTraitsSystemCounter = counter
+				gymTraitsSystem.GymTraitsSystemCounter = counter
 
 				if
 					hasCouchPotato
