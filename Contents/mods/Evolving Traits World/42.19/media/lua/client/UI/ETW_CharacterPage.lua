@@ -517,6 +517,30 @@ local function arrangeColumnsInTable(newLine)
 	storeActiveLayoutCursor()
 end
 
+---Adds an empty progress label to the next available position in the compact label table.
+---@param panel ISETWUI
+---@param tooltip string
+---@param newLine boolean|nil
+---@return ISLabel
+local function addProgressLabel(panel, tooltip, newLine)
+	arrangeColumnsInTable(newLine)
+	local label = ISLabel:new(
+		x,
+		y,
+		FONT_HGT_SMALL,
+		"",
+		panel.TextColor.r,
+		panel.TextColor.g,
+		panel.TextColor.b,
+		panel.TextColor.a,
+		UIFont.Small,
+		true
+	)
+	label:setTooltip(tooltip)
+	panel:addChild(label)
+	return label
+end
+
 function ISETWUI:initialise()
 	--ISPanelJoypad.initialise(self)
 end
@@ -2053,520 +2077,174 @@ function ISETWUI:createChildren()
 			end
 
 			if ETW_CommonLogicChecks.InjuredShouldExecute(player) then
-				arrangeColumnsInTable()
-				self.labelInjuredProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					"",
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelInjuredProgress:setTooltip(getText("Sandbox_ETW_InjuredChanceOneIn_tooltip"))
-				self:addChild(self.labelInjuredProgress)
+				self.labelInjuredProgress = addProgressLabel(self, getText("Sandbox_ETW_InjuredChanceOneIn_tooltip"))
 			end
 
 			if ETW_CommonLogicChecks.BurnWardPatientShouldExecute(player) then
-				arrangeColumnsInTable()
-				self.labelBurnWardPatientProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					"",
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
+				self.labelBurnWardPatientProgress = addProgressLabel(
+					self,
+					getText("Sandbox_ETW_BurnWardPatientChanceOneIn_tooltip")
 				)
-				self.labelBurnWardPatientProgress:setTooltip(getText("Sandbox_ETW_BurnWardPatientChanceOneIn_tooltip"))
-				self:addChild(self.labelBurnWardPatientProgress)
 			end
 
 			if ETW_CommonLogicChecks.BrokenLegShouldExecute(player) then
-				arrangeColumnsInTable()
-				self.labelBrokenLegProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					"",
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelBrokenLegProgress:setTooltip(getText("Sandbox_ETW_BrokenLegChanceOneIn_tooltip"))
-				self:addChild(self.labelBrokenLegProgress)
+				self.labelBrokenLegProgress = addProgressLabel(self, getText("Sandbox_ETW_BrokenLegChanceOneIn_tooltip"))
 			end
 
 			if
 				ETW_CommonLogicChecks.OlympianShouldExecute(player)
 				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.OLYMPIAN)
 			then
-				arrangeColumnsInTable()
-				self.labelOlympianProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					"",
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelOlympianProgress:setTooltip(getText("Sandbox_ETW_OlympianCounter_tooltip"))
-				self:addChild(self.labelOlympianProgress)
+				self.labelOlympianProgress = addProgressLabel(self, getText("Sandbox_ETW_OlympianCounter_tooltip"))
 			end
 
 			if ETW_CommonLogicChecks.PainToleranceShouldExecute(player) then
-				arrangeColumnsInTable()
-				self.labelPainToleranceProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					"",
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelPainToleranceProgress:setTooltip(getText("Sandbox_ETW_PainToleranceCounter_tooltip"))
-				self:addChild(self.labelPainToleranceProgress)
+				self.labelPainToleranceProgress = addProgressLabel(self, getText("Sandbox_ETW_PainToleranceCounter_tooltip"))
 			end
 
 			if
 				ETW_CommonLogicChecks.NoodleLegsShouldExecute(player)
 				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.NOODLE_LEGS)
 			then
-				arrangeColumnsInTable()
-				self.labelNoodleLegsProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					"",
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelNoodleLegsProgress:setTooltip(
+				self.labelNoodleLegsProgress = addProgressLabel(
+					self,
 					getText("Sandbox_ETW_NoodleLegsDistance_tooltip")
 						.. "<br>"
 						.. getText("Sandbox_ETW_NoodleLegsSkill_tooltip")
 				)
-				self:addChild(self.labelNoodleLegsProgress)
 			end
 
 			if
 				ETW_CommonLogicChecks.NaturalEaterShouldExecute(player)
 				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.NATURAL_EATER)
 			then
-				arrangeColumnsInTable()
-				self.labelNaturalEaterProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					"",
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelNaturalEaterProgress:setTooltip(getText("Sandbox_ETW_NaturalEaterFoodsEaten_tooltip"))
-				self:addChild(self.labelNaturalEaterProgress)
+				self.labelNaturalEaterProgress = addProgressLabel(self, getText("Sandbox_ETW_NaturalEaterFoodsEaten_tooltip"))
 			end
 
 			if
 				ETW_CommonLogicChecks.RunnerShouldExecute(player)
 				and not playerHasDelayedTraitNoCache(player, CharacterTrait.JOGGER)
 			then
-				arrangeColumnsInTable()
-				self.labelRunnerProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					"",
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelRunnerProgress:setTooltip(getText("Sandbox_ETW_RunnerSkill"))
-				self:addChild(self.labelRunnerProgress)
+				self.labelRunnerProgress = addProgressLabel(self, getText("Sandbox_ETW_RunnerSkill"))
 			end
 
 			if
 				ETW_CommonLogicChecks.LightStepShouldExecute(player)
 				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.LIGHTSTEP)
 			then
-				arrangeColumnsInTable()
-				self.labelLightStepProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					"",
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelLightStepProgress:setTooltip(getText("Sandbox_ETW_LightStepSkill"))
-				self:addChild(self.labelLightStepProgress)
+				self.labelLightStepProgress = addProgressLabel(self, getText("Sandbox_ETW_LightStepSkill"))
 			end
 
 			if
 				ETW_CommonLogicChecks.GymnastShouldExecute(player)
 				and not playerHasDelayedTraitNoCache(player, CharacterTrait.GYMNAST)
 			then
-				arrangeColumnsInTable()
-				self.labelGymnastProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelGymnastProgress:setTooltip(getText("Sandbox_ETW_GymnastSkill_tooltip"))
-				self:addChild(self.labelGymnastProgress)
+				self.labelGymnastProgress = addProgressLabel(self, getText("Sandbox_ETW_GymnastSkill_tooltip"))
 			end
 
 			if
 				ETW_CommonLogicChecks.ClumsyShouldExecute(player)
 				and not playerHasDelayedTraitNoCache(player, CharacterTrait.CLUMSY)
 			then
-				arrangeColumnsInTable()
-				self.labelClumsyProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelClumsyProgress:setTooltip(getText("Sandbox_ETW_ClumsySkill_tooltip"))
-				self:addChild(self.labelClumsyProgress)
+				self.labelClumsyProgress = addProgressLabel(self, getText("Sandbox_ETW_ClumsySkill_tooltip"))
 			end
 
 			if
 				ETW_CommonLogicChecks.GracefulShouldExecute(player)
 				and not playerHasDelayedTraitNoCache(player, CharacterTrait.GRACEFUL)
 			then
-				arrangeColumnsInTable()
-				self.labelGracefulProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelGracefulProgress:setTooltip(getText("Sandbox_ETW_GracefulSkill_tooltip"))
-				self:addChild(self.labelGracefulProgress)
+				self.labelGracefulProgress = addProgressLabel(self, getText("Sandbox_ETW_GracefulSkill_tooltip"))
 			end
 
 			if
 				ETW_CommonLogicChecks.BurglarShouldExecute(player)
 				and not playerHasDelayedTraitNoCache(player, CharacterTrait.BURGLAR)
 			then
-				arrangeColumnsInTable()
-				self.labelBurglarProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelBurglarProgress:setTooltip(getText("Sandbox_ETW_BurglarSkill_tooltip"))
-				self:addChild(self.labelBurglarProgress)
+				self.labelBurglarProgress = addProgressLabel(self, getText("Sandbox_ETW_BurglarSkill_tooltip"))
 			end
 
 			if
 				ETW_CommonLogicChecks.LowProfileShouldExecute(player)
 				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.LOW_PROFILE)
 			then
-				arrangeColumnsInTable()
-				self.labelLowProfileProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelLowProfileProgress:setTooltip(getText("Sandbox_ETW_LowProfileSkill"))
-				self:addChild(self.labelLowProfileProgress)
+				self.labelLowProfileProgress = addProgressLabel(self, getText("Sandbox_ETW_LowProfileSkill"))
 			end
 
 			if
 				ETW_CommonLogicChecks.ConspicuousShouldExecute(player)
 				and not playerHasDelayedTraitNoCache(player, CharacterTrait.CONSPICUOUS)
 			then
-				arrangeColumnsInTable()
-				self.labelConspicuousProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelConspicuousProgress:setTooltip(getText("Sandbox_ETW_ConspicuousSkill"))
-				self:addChild(self.labelConspicuousProgress)
+				self.labelConspicuousProgress = addProgressLabel(self, getText("Sandbox_ETW_ConspicuousSkill"))
 			end
 
 			if
 				ETW_CommonLogicChecks.InconspicuousShouldExecute(player)
 				and not playerHasDelayedTraitNoCache(player, CharacterTrait.INCONSPICUOUS)
 			then
-				arrangeColumnsInTable()
-				self.labelInconspicuousProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelInconspicuousProgress:setTooltip(getText("Sandbox_ETW_InconspicuousSkill"))
-				self:addChild(self.labelInconspicuousProgress)
+				self.labelInconspicuousProgress = addProgressLabel(self, getText("Sandbox_ETW_InconspicuousSkill"))
 			end
 
 			if
 				ETW_CommonLogicChecks.QuietShouldExecute(player)
 				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.QUIET)
 			then
-				arrangeColumnsInTable()
-				self.labelQuietSkillProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelQuietSkillProgress:setTooltip(getText("Sandbox_ETW_QuietSkill_tooltip"))
-				self:addChild(self.labelQuietSkillProgress)
+				self.labelQuietSkillProgress = addProgressLabel(self, getText("Sandbox_ETW_QuietSkill_tooltip"))
 			end
 
 			if
 				ETW_CommonLogicChecks.ScrapperShouldExecute(player)
 				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.SCRAPPER)
 			then
-				arrangeColumnsInTable()
-				self.labelScrapperSkillProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelScrapperSkillProgress:setTooltip(getText("Sandbox_ETW_ScrapperSkill_tooltip"))
-				self:addChild(self.labelScrapperSkillProgress)
+				self.labelScrapperSkillProgress = addProgressLabel(self, getText("Sandbox_ETW_ScrapperSkill_tooltip"))
 			end
 
 			if
 				ETW_CommonLogicChecks.RestorationExpertShouldExecute(player)
 				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.RESTORATION_EXPERT)
 			then
-				arrangeColumnsInTable()
-				self.labelRestorationExpertSkillProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelRestorationExpertSkillProgress:setTooltip(getText("Sandbox_ETW_RestorationExpertSkill"))
-				self:addChild(self.labelRestorationExpertSkillProgress)
+				self.labelRestorationExpertSkillProgress = addProgressLabel(self, getText("Sandbox_ETW_RestorationExpertSkill"))
 			end
 
 			if
 				ETW_CommonLogicChecks.HandyShouldExecute(player)
 				and not playerHasDelayedTraitNoCache(player, CharacterTrait.HANDY)
 			then
-				arrangeColumnsInTable()
-				self.labelHandySkillProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelHandySkillProgress:setTooltip(getText("Sandbox_ETW_HandySkill_tooltip"))
-				self:addChild(self.labelHandySkillProgress)
+				self.labelHandySkillProgress = addProgressLabel(self, getText("Sandbox_ETW_HandySkill_tooltip"))
 			end
 
 			if
 				ETW_CommonLogicChecks.FurnitureAssemblerShouldExecute(player)
 				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.FURNITURE_ASSEMBLER)
 			then
-				arrangeColumnsInTable()
-				self.labelFurnitureAssemblerProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelFurnitureAssemblerProgress:setTooltip(getText("Sandbox_ETW_FurnitureAssemblerSkill"))
-				self:addChild(self.labelFurnitureAssemblerProgress)
+				self.labelFurnitureAssemblerProgress = addProgressLabel(self, getText("Sandbox_ETW_FurnitureAssemblerSkill"))
 			end
 
 			if
 				ETW_CommonLogicChecks.HomeCookShouldExecute(player)
 				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.HOME_COOK)
 			then
-				arrangeColumnsInTable()
-				self.labelHomeCookProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelHomeCookProgress:setTooltip(getText("Sandbox_ETW_HomeCookSkill"))
-				self:addChild(self.labelHomeCookProgress)
+				self.labelHomeCookProgress = addProgressLabel(self, getText("Sandbox_ETW_HomeCookSkill"))
 			end
 
 			if
 				ETW_CommonLogicChecks.CookShouldExecute(player)
 				and not playerHasDelayedTraitNoCache(player, CharacterTrait.COOK)
 			then
-				arrangeColumnsInTable()
-				self.labelCookProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelCookProgress:setTooltip(getText("Sandbox_ETW_CookSkill"))
-				self:addChild(self.labelCookProgress)
+				self.labelCookProgress = addProgressLabel(self, getText("Sandbox_ETW_CookSkill"))
 			end
 
 			if
 				ETW_CommonLogicChecks.FirstAidShouldExecute(player)
 				and not playerHasDelayedTraitNoCache(player, CharacterTrait.FIRST_AID)
 			then
-				arrangeColumnsInTable()
-				self.labelFirstAidProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelFirstAidProgress:setTooltip(getText("Sandbox_ETW_FirstAidSkill"))
-				self:addChild(self.labelFirstAidProgress)
+				self.labelFirstAidProgress = addProgressLabel(self, getText("Sandbox_ETW_FirstAidSkill"))
 			end
 
 			if
 				ETW_CommonLogicChecks.AVClubShouldExecute(player)
 				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.AV_CLUB)
 			then
-				arrangeColumnsInTable()
-				self.labelAVClubProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelAVClubProgress:setTooltip(getText("Sandbox_ETW_AVClubSkill"))
-				self:addChild(self.labelAVClubProgress)
+				self.labelAVClubProgress = addProgressLabel(self, getText("Sandbox_ETW_AVClubSkill"))
 			end
 
 			if
@@ -2574,43 +2252,17 @@ function ISETWUI:createChildren()
 				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.BODYWORK_ENTHUSIAST)
 			then
 				if metalworking + mechanics < SBvars.BodyworkEnthusiastSkill then
-					arrangeColumnsInTable()
-					self.labelBodyWorkEnthusiastSkillProgress = ISLabel:new(
-						x,
-						y,
-						FONT_HGT_SMALL,
-						getText(""),
-						self.TextColor.r,
-						self.TextColor.g,
-						self.TextColor.b,
-						self.TextColor.a,
-						UIFont.Small,
-						true
-					)
-					self.labelBodyWorkEnthusiastSkillProgress:setTooltip(
+					self.labelBodyWorkEnthusiastSkillProgress = addProgressLabel(
+						self,
 						getText("Sandbox_ETW_BodyworkEnthusiastSkill_tooltip")
 					)
-					self:addChild(self.labelBodyWorkEnthusiastSkillProgress)
 				end
 				local vehiclePartRepairs = (modData and modData.VehiclePartRepairs) or 0
 				if vehiclePartRepairs < SBvars.BodyworkEnthusiastRepairs then
-					arrangeColumnsInTable()
-					self.labelBodyWorkEnthusiastRepairsProgress = ISLabel:new(
-						x,
-						y,
-						FONT_HGT_SMALL,
-						getText(""),
-						self.TextColor.r,
-						self.TextColor.g,
-						self.TextColor.b,
-						self.TextColor.a,
-						UIFont.Small,
-						true
-					)
-					self.labelBodyWorkEnthusiastRepairsProgress:setTooltip(
+					self.labelBodyWorkEnthusiastRepairsProgress = addProgressLabel(
+						self,
 						getText("Sandbox_ETW_BodyworkEnthusiastRepairs_tooltip")
 					)
-					self:addChild(self.labelBodyWorkEnthusiastRepairsProgress)
 				end
 			end
 
@@ -2619,39 +2271,11 @@ function ISETWUI:createChildren()
 				and not playerHasDelayedTraitNoCache(player, CharacterTrait.MECHANICS)
 			then
 				if mechanics < SBvars.MechanicsSkill then
-					arrangeColumnsInTable()
-					self.labelMechanicsSkillProgress = ISLabel:new(
-						x,
-						y,
-						FONT_HGT_SMALL,
-						getText(""),
-						self.TextColor.r,
-						self.TextColor.g,
-						self.TextColor.b,
-						self.TextColor.a,
-						UIFont.Small,
-						true
-					)
-					self.labelMechanicsSkillProgress:setTooltip(getText("Sandbox_ETW_MechanicsSkill"))
-					self:addChild(self.labelMechanicsSkillProgress)
+					self.labelMechanicsSkillProgress = addProgressLabel(self, getText("Sandbox_ETW_MechanicsSkill"))
 				end
 				local vehiclePartRepairs = (modData and modData.VehiclePartRepairs) or 0
 				if vehiclePartRepairs < SBvars.MechanicsRepairs then
-					arrangeColumnsInTable()
-					self.labelMechanicsRepairsProgress = ISLabel:new(
-						x,
-						y,
-						FONT_HGT_SMALL,
-						getText(""),
-						self.TextColor.r,
-						self.TextColor.g,
-						self.TextColor.b,
-						self.TextColor.a,
-						UIFont.Small,
-						true
-					)
-					self.labelMechanicsRepairsProgress:setTooltip(getText("Sandbox_ETW_MechanicsRepairs_tooltip"))
-					self:addChild(self.labelMechanicsRepairsProgress)
+					self.labelMechanicsRepairsProgress = addProgressLabel(self, getText("Sandbox_ETW_MechanicsRepairs_tooltip"))
 				end
 			end
 
@@ -2660,21 +2284,7 @@ function ISETWUI:createChildren()
 				and not playerHasDelayedTraitNoCache(player, CharacterTrait.TAILOR)
 			then
 				if tailoring < SBvars.SewerSkill then
-					arrangeColumnsInTable()
-					self.labelTailorSkillProgress = ISLabel:new(
-						x,
-						y,
-						FONT_HGT_SMALL,
-						getText(""),
-						self.TextColor.r,
-						self.TextColor.g,
-						self.TextColor.b,
-						self.TextColor.a,
-						UIFont.Small,
-						true
-					)
-					self.labelTailorSkillProgress:setTooltip(getText("Sandbox_ETW_SewerSkill"))
-					self:addChild(self.labelTailorSkillProgress)
+					self.labelTailorSkillProgress = addProgressLabel(self, getText("Sandbox_ETW_SewerSkill"))
 				end
 
 				local uniqueClothingRipped = (
@@ -2683,23 +2293,10 @@ function ISETWUI:createChildren()
 					and #modData.UniqueClothingRipped
 				) or 0
 				if uniqueClothingRipped < SBvars.SewerUniqueClothesRipped then
-					arrangeColumnsInTable()
-					self.labelTailorRippedClothesProgress = ISLabel:new(
-						x,
-						y,
-						FONT_HGT_SMALL,
-						getText(""),
-						self.TextColor.r,
-						self.TextColor.g,
-						self.TextColor.b,
-						self.TextColor.a,
-						UIFont.Small,
-						true
-					)
-					self.labelTailorRippedClothesProgress:setTooltip(
+					self.labelTailorRippedClothesProgress = addProgressLabel(
+						self,
 						getText("Sandbox_ETW_SewerUniqueClothesRipped_tooltip")
 					)
-					self:addChild(self.labelTailorRippedClothesProgress)
 				end
 			end
 
@@ -2708,21 +2305,7 @@ function ISETWUI:createChildren()
 				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.PET_THERAPY)
 			then
 				if husbandry < SBvars.PetTherapySkill then
-					arrangeColumnsInTable()
-					self.labelPetTherapySkillProgress = ISLabel:new(
-						x,
-						y,
-						FONT_HGT_SMALL,
-						getText(""),
-						self.TextColor.r,
-						self.TextColor.g,
-						self.TextColor.b,
-						self.TextColor.a,
-						UIFont.Small,
-						true
-					)
-					self.labelPetTherapySkillProgress:setTooltip(getText("Sandbox_ETW_PetTherapySkill"))
-					self:addChild(self.labelPetTherapySkillProgress)
+					self.labelPetTherapySkillProgress = addProgressLabel(self, getText("Sandbox_ETW_PetTherapySkill"))
 				end
 
 				local uniqueAnimalsPetted = (
@@ -2732,23 +2315,10 @@ function ISETWUI:createChildren()
 					and #modData.AnimalsSystem.UniqueAnimalsPetted
 				) or 0
 				if uniqueAnimalsPetted < SBvars.PetTherapyUniqueAnimalsPetted then
-					arrangeColumnsInTable()
-					self.labelPetTherapyPettingProgress = ISLabel:new(
-						x,
-						y,
-						FONT_HGT_SMALL,
-						getText(""),
-						self.TextColor.r,
-						self.TextColor.g,
-						self.TextColor.b,
-						self.TextColor.a,
-						UIFont.Small,
-						true
-					)
-					self.labelPetTherapyPettingProgress:setTooltip(
+					self.labelPetTherapyPettingProgress = addProgressLabel(
+						self,
 						getText("Sandbox_ETW_PetTherapyUniqueAnimalsPetted_tooltip")
 					)
-					self:addChild(self.labelPetTherapyPettingProgress)
 				end
 			end
 
@@ -2756,147 +2326,49 @@ function ISETWUI:createChildren()
 				ETW_CommonLogicChecks.AnglerShouldExecute(player)
 				and not playerHasDelayedTraitNoCache(player, CharacterTrait.FISHING)
 			then
-				arrangeColumnsInTable()
-				self.labelAnglerProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelAnglerProgress:setTooltip(getText("Sandbox_ETW_FishingSkill"))
-				self:addChild(self.labelAnglerProgress)
+				self.labelAnglerProgress = addProgressLabel(self, getText("Sandbox_ETW_FishingSkill"))
 			end
 
 			if
 				ETW_CommonLogicChecks.HikerShouldExecute(player)
 				and not playerHasDelayedTraitNoCache(player, CharacterTrait.HIKER)
 			then
-				arrangeColumnsInTable()
-				self.labelHikerProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelHikerProgress:setTooltip(getText("Sandbox_ETW_HikerSkill_tooltip"))
-				self:addChild(self.labelHikerProgress)
+				self.labelHikerProgress = addProgressLabel(self, getText("Sandbox_ETW_HikerSkill_tooltip"))
 			end
 
 			if
 				ETW_CommonLogicChecks.CatEyesShouldExecute(player)
 				and not playerHasDelayedTraitNoCache(player, CharacterTrait.NIGHT_VISION)
 			then
-				arrangeColumnsInTable()
-				self.labelCatEyesProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelCatEyesProgress:setTooltip(getText("Sandbox_ETW_CatEyesCounter_tooltip"))
-				self:addChild(self.labelCatEyesProgress)
+				self.labelCatEyesProgress = addProgressLabel(self, getText("Sandbox_ETW_CatEyesCounter_tooltip"))
 			end
 
 			if
 				ETW_CommonLogicChecks.HerbalistShouldExecute(player)
 				and not playerHasDelayedTraitNoCache(player, CharacterTrait.HERBALIST)
 			then
-				arrangeColumnsInTable()
-				self.labelHerbalistProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelHerbalistProgress:setTooltip(getText("Sandbox_ETW_HerbalistHerbsPicked_tooltip"))
-				self:addChild(self.labelHerbalistProgress)
+				self.labelHerbalistProgress = addProgressLabel(self, getText("Sandbox_ETW_HerbalistHerbsPicked_tooltip"))
 			end
 
 			if
 				ETW_CommonLogicChecks.AxemanShouldExecute(player)
 				and not playerHasDelayedTraitNoCache(player, CharacterTrait.AXEMAN)
 			then
-				arrangeColumnsInTable()
-				self.labelAxemanProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelAxemanProgress:setTooltip(getText("Sandbox_ETW_AxemanTrees_tooltip"))
-				self:addChild(self.labelAxemanProgress)
+				self.labelAxemanProgress = addProgressLabel(self, getText("Sandbox_ETW_AxemanTrees_tooltip"))
 			end
 
 			if
 				ETW_CommonLogicChecks.WhittlerShouldExecute(player)
 				and not playerHasDelayedTraitNoCache(player, CharacterTrait.WHITTLER)
 			then
-				arrangeColumnsInTable()
-				self.labelWhittlerProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelWhittlerProgress:setTooltip(getText("Sandbox_ETW_WhittlerSkill"))
-				self:addChild(self.labelWhittlerProgress)
+				self.labelWhittlerProgress = addProgressLabel(self, getText("Sandbox_ETW_WhittlerSkill"))
 			end
 
 			if
 				ETW_CommonLogicChecks.BlacksmithShouldExecute(player)
 				and not playerHasDelayedTraitNoCache(player, CharacterTrait.BLACKSMITH)
 			then
-				arrangeColumnsInTable()
-				self.labelBlacksmithProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					getText(""),
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelBlacksmithProgress:setTooltip(getText("Sandbox_ETW_BlacksmithSkill_tooltip"))
-				self:addChild(self.labelBlacksmithProgress)
+				self.labelBlacksmithProgress = addProgressLabel(self, getText("Sandbox_ETW_BlacksmithSkill_tooltip"))
 			end
 
 			if
@@ -2911,23 +2383,11 @@ function ISETWUI:createChildren()
 					or carving < 2
 					or levels < SBvars.WildernessKnowledgeSkill
 				then
-					arrangeColumnsInTable(true)
-					self.labelWildernessKnowledgeSkillProgress = ISLabel:new(
-						x,
-						y,
-						FONT_HGT_SMALL,
-						getText(""),
-						self.TextColor.r,
-						self.TextColor.g,
-						self.TextColor.b,
-						self.TextColor.a,
-						UIFont.Small,
+					self.labelWildernessKnowledgeSkillProgress = addProgressLabel(
+						self,
+						getText("Sandbox_ETW_WildernessKnowledgeSkill_tooltip"),
 						true
 					)
-					self.labelWildernessKnowledgeSkillProgress:setTooltip(
-						getText("Sandbox_ETW_WildernessKnowledgeSkill_tooltip")
-					)
-					self:addChild(self.labelWildernessKnowledgeSkillProgress)
 				end
 			end
 
@@ -3064,21 +2524,7 @@ function ISETWUI:createChildren()
 				ETW_CommonLogicChecks.EagleEyedShouldExecute(player)
 				and not playerHasDelayedTraitNoCache(player, CharacterTrait.EAGLE_EYED)
 			then
-				arrangeColumnsInTable()
-				self.labelEagleEyedProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					"",
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelEagleEyedProgress:setTooltip(getText("Sandbox_ETW_EagleEyedKills"))
-				self:addChild(self.labelEagleEyedProgress)
+				self.labelEagleEyedProgress = addProgressLabel(self, getText("Sandbox_ETW_EagleEyedKills"))
 			end
 
 			if
@@ -3087,40 +2533,16 @@ function ISETWUI:createChildren()
 			then
 				local levels = sneaking + aiming + trapping + shortBlade
 				if sneaking < 2 or aiming < 2 or trapping < 2 or shortBlade < 2 or levels < SBvars.HunterSkill then
-					arrangeColumnsInTable()
-					self.labelHunterSkillProgress = ISLabel:new(
-						x,
-						y,
-						FONT_HGT_SMALL,
-						getText(""),
-						self.TextColor.r,
-						self.TextColor.g,
-						self.TextColor.b,
-						self.TextColor.a,
-						UIFont.Small,
-						true
-					)
-					self.labelHunterSkillProgress:setTooltip(getText("Sandbox_ETW_HunterSkill_tooltip"))
-					self:addChild(self.labelHunterSkillProgress)
+					self.labelHunterSkillProgress = addProgressLabel(self, getText("Sandbox_ETW_HunterSkill_tooltip"))
 				end
 				if (shortBladeKills + firearmKills) < SBvars.HunterKills then
-					arrangeColumnsInTable()
-					self.labelHunterKillsProgress = ISLabel:new(
-						x,
-						y,
-						FONT_HGT_SMALL,
-						getText(""),
-						self.TextColor.r,
-						self.TextColor.g,
-						self.TextColor.b,
-						self.TextColor.a,
-						UIFont.Small,
-						true
+					self.labelHunterKillsProgress = addProgressLabel(
+						self,
+						getText("Sandbox_ETW_HunterKills")
+							.. " ("
+							.. getText("Sandbox_ETW_HunterKills_tooltip")
+							.. ")"
 					)
-					self.labelHunterKillsProgress:setTooltip(
-						getText("Sandbox_ETW_HunterKills") .. " (" .. getText("Sandbox_ETW_HunterKills_tooltip") .. ")"
-					)
-					self:addChild(self.labelHunterKillsProgress)
 				end
 			end
 
@@ -3129,38 +2551,10 @@ function ISETWUI:createChildren()
 				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.BLADE_ENTHUSIAST)
 			then
 				if longBlade < SBvars.BladeEnthusiastSkill then
-					arrangeColumnsInTable()
-					self.labelBladeEnthusiastSkillProgress = ISLabel:new(
-						x,
-						y,
-						FONT_HGT_SMALL,
-						getText(""),
-						self.TextColor.r,
-						self.TextColor.g,
-						self.TextColor.b,
-						self.TextColor.a,
-						UIFont.Small,
-						true
-					)
-					self.labelBladeEnthusiastSkillProgress:setTooltip(getText("Sandbox_ETW_BladeEnthusiastSkill"))
-					self:addChild(self.labelBladeEnthusiastSkillProgress)
+					self.labelBladeEnthusiastSkillProgress = addProgressLabel(self, getText("Sandbox_ETW_BladeEnthusiastSkill"))
 				end
 				if longBladeKills < SBvars.BladeEnthusiastKills then
-					arrangeColumnsInTable()
-					self.labelBladeEnthusiastKillsProgress = ISLabel:new(
-						x,
-						y,
-						FONT_HGT_SMALL,
-						getText(""),
-						self.TextColor.r,
-						self.TextColor.g,
-						self.TextColor.b,
-						self.TextColor.a,
-						UIFont.Small,
-						true
-					)
-					self.labelBladeEnthusiastKillsProgress:setTooltip(getText("Sandbox_ETW_BladeEnthusiastKills"))
-					self:addChild(self.labelBladeEnthusiastKillsProgress)
+					self.labelBladeEnthusiastKillsProgress = addProgressLabel(self, getText("Sandbox_ETW_BladeEnthusiastKills"))
 				end
 			end
 
@@ -3169,44 +2563,17 @@ function ISETWUI:createChildren()
 				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.THUGGISH)
 			then
 				if (shortBlunt + longBlunt) < SBvars.ThuggishSkill then
-					arrangeColumnsInTable()
-					self.labelThuggishSkillProgress = ISLabel:new(
-						x,
-						y,
-						FONT_HGT_SMALL,
-						getText(""),
-						self.TextColor.r,
-						self.TextColor.g,
-						self.TextColor.b,
-						self.TextColor.a,
-						UIFont.Small,
-						true
-					)
-					self.labelThuggishSkillProgress:setTooltip(getText("Sandbox_ETW_ThuggishSkill_tooltip"))
-					self:addChild(self.labelThuggishSkillProgress)
+					self.labelThuggishSkillProgress = addProgressLabel(self, getText("Sandbox_ETW_ThuggishSkill_tooltip"))
 				end
 
 				if (shortBluntKills + longBluntKills) < SBvars.ThuggishKills then
-					arrangeColumnsInTable()
-					self.labelThuggishKillsProgress = ISLabel:new(
-						x,
-						y,
-						FONT_HGT_SMALL,
-						getText(""),
-						self.TextColor.r,
-						self.TextColor.g,
-						self.TextColor.b,
-						self.TextColor.a,
-						UIFont.Small,
-						true
-					)
-					self.labelThuggishKillsProgress:setTooltip(
+					self.labelThuggishKillsProgress = addProgressLabel(
+						self,
 						getText("Sandbox_ETW_ThuggishKills")
 							.. " ("
 							.. getText("Sandbox_ETW_ThuggishKills_tooltip")
 							.. ")"
 					)
-					self:addChild(self.labelThuggishKillsProgress)
 				end
 			end
 
@@ -3215,44 +2582,17 @@ function ISETWUI:createChildren()
 				and not playerHasDelayedTraitNoCache(player, CharacterTrait.BRAWLER)
 			then
 				if (axe + longBlunt) < SBvars.BrawlerSkill then
-					arrangeColumnsInTable()
-					self.labelBrawlerSkillProgress = ISLabel:new(
-						x,
-						y,
-						FONT_HGT_SMALL,
-						getText(""),
-						self.TextColor.r,
-						self.TextColor.g,
-						self.TextColor.b,
-						self.TextColor.a,
-						UIFont.Small,
-						true
-					)
-					self.labelBrawlerSkillProgress:setTooltip(getText("Sandbox_ETW_BrawlerSkill_tooltip"))
-					self:addChild(self.labelBrawlerSkillProgress)
+					self.labelBrawlerSkillProgress = addProgressLabel(self, getText("Sandbox_ETW_BrawlerSkill_tooltip"))
 				end
 
 				if (axeKills + longBluntKills) < SBvars.BrawlerKills then
-					arrangeColumnsInTable()
-					self.labelBrawlerKillsProgress = ISLabel:new(
-						x,
-						y,
-						FONT_HGT_SMALL,
-						getText(""),
-						self.TextColor.r,
-						self.TextColor.g,
-						self.TextColor.b,
-						self.TextColor.a,
-						UIFont.Small,
-						true
-					)
-					self.labelBrawlerKillsProgress:setTooltip(
+					self.labelBrawlerKillsProgress = addProgressLabel(
+						self,
 						getText("Sandbox_ETW_BrawlerKills")
 							.. " ("
 							.. getText("Sandbox_ETW_BrawlerKills_tooltip")
 							.. ")"
 					)
-					self:addChild(self.labelBrawlerKillsProgress)
 				end
 			end
 
@@ -3261,21 +2601,7 @@ function ISETWUI:createChildren()
 				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.GORDONITE)
 				and gordoniteCrowbarKills < SBvars.GordoniteKills
 			then
-				arrangeColumnsInTable()
-				self.labelGordoniteKillsProgress = ISLabel:new(
-					x,
-					y,
-					FONT_HGT_SMALL,
-					"",
-					self.TextColor.r,
-					self.TextColor.g,
-					self.TextColor.b,
-					self.TextColor.a,
-					UIFont.Small,
-					true
-				)
-				self.labelGordoniteKillsProgress:setTooltip(getText("Sandbox_ETW_GordoniteKills_tooltip"))
-				self:addChild(self.labelGordoniteKillsProgress)
+				self.labelGordoniteKillsProgress = addProgressLabel(self, getText("Sandbox_ETW_GordoniteKills_tooltip"))
 			end
 
 			if
@@ -3283,38 +2609,10 @@ function ISETWUI:createChildren()
 				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.AXE_THROWER)
 			then
 				if axe < SBvars.AxeThrowerSkill then
-					arrangeColumnsInTable()
-					self.labelAxeThrowerSkillProgress = ISLabel:new(
-						x,
-						y,
-						FONT_HGT_SMALL,
-						getText(""),
-						self.TextColor.r,
-						self.TextColor.g,
-						self.TextColor.b,
-						self.TextColor.a,
-						UIFont.Small,
-						true
-					)
-					self.labelAxeThrowerSkillProgress:setTooltip(getText("Sandbox_ETW_AxeThrowerSkill"))
-					self:addChild(self.labelAxeThrowerSkillProgress)
+					self.labelAxeThrowerSkillProgress = addProgressLabel(self, getText("Sandbox_ETW_AxeThrowerSkill"))
 				end
 				if axeKills < SBvars.AxeThrowerKills then
-					arrangeColumnsInTable()
-					self.labelAxeThrowerKillsProgress = ISLabel:new(
-						x,
-						y,
-						FONT_HGT_SMALL,
-						getText(""),
-						self.TextColor.r,
-						self.TextColor.g,
-						self.TextColor.b,
-						self.TextColor.a,
-						UIFont.Small,
-						true
-					)
-					self.labelAxeThrowerKillsProgress:setTooltip(getText("Sandbox_ETW_AxeThrowerKills"))
-					self:addChild(self.labelAxeThrowerKillsProgress)
+					self.labelAxeThrowerKillsProgress = addProgressLabel(self, getText("Sandbox_ETW_AxeThrowerKills"))
 				end
 			end
 
@@ -3323,38 +2621,10 @@ function ISETWUI:createChildren()
 				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.STICK_FIGHTER)
 			then
 				if shortBlunt < SBvars.StickFighterSkill then
-					arrangeColumnsInTable()
-					self.labelStickFighterSkillProgress = ISLabel:new(
-						x,
-						y,
-						FONT_HGT_SMALL,
-						getText(""),
-						self.TextColor.r,
-						self.TextColor.g,
-						self.TextColor.b,
-						self.TextColor.a,
-						UIFont.Small,
-						true
-					)
-					self.labelStickFighterSkillProgress:setTooltip(getText("Sandbox_ETW_StickFighterSkill"))
-					self:addChild(self.labelStickFighterSkillProgress)
+					self.labelStickFighterSkillProgress = addProgressLabel(self, getText("Sandbox_ETW_StickFighterSkill"))
 				end
 				if shortBluntKills < SBvars.StickFighterKills then
-					arrangeColumnsInTable()
-					self.labelStickFighterKillsProgress = ISLabel:new(
-						x,
-						y,
-						FONT_HGT_SMALL,
-						getText(""),
-						self.TextColor.r,
-						self.TextColor.g,
-						self.TextColor.b,
-						self.TextColor.a,
-						UIFont.Small,
-						true
-					)
-					self.labelStickFighterKillsProgress:setTooltip(getText("Sandbox_ETW_StickFighterKills"))
-					self:addChild(self.labelStickFighterKillsProgress)
+					self.labelStickFighterKillsProgress = addProgressLabel(self, getText("Sandbox_ETW_StickFighterKills"))
 				end
 			end
 
@@ -3363,38 +2633,10 @@ function ISETWUI:createChildren()
 				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.KNIFE_FIGHTER)
 			then
 				if shortBlade < SBvars.KnifeFighterSkill then
-					arrangeColumnsInTable()
-					self.labelKnifeFighterSkillProgress = ISLabel:new(
-						x,
-						y,
-						FONT_HGT_SMALL,
-						getText(""),
-						self.TextColor.r,
-						self.TextColor.g,
-						self.TextColor.b,
-						self.TextColor.a,
-						UIFont.Small,
-						true
-					)
-					self.labelKnifeFighterSkillProgress:setTooltip(getText("Sandbox_ETW_KnifeFighterSkill"))
-					self:addChild(self.labelKnifeFighterSkillProgress)
+					self.labelKnifeFighterSkillProgress = addProgressLabel(self, getText("Sandbox_ETW_KnifeFighterSkill"))
 				end
 				if shortBladeKills < SBvars.KnifeFighterKills then
-					arrangeColumnsInTable()
-					self.labelKnifeFighterKillsProgress = ISLabel:new(
-						x,
-						y,
-						FONT_HGT_SMALL,
-						getText(""),
-						self.TextColor.r,
-						self.TextColor.g,
-						self.TextColor.b,
-						self.TextColor.a,
-						UIFont.Small,
-						true
-					)
-					self.labelKnifeFighterKillsProgress:setTooltip(getText("Sandbox_ETW_KnifeFighterKills"))
-					self:addChild(self.labelKnifeFighterKillsProgress)
+					self.labelKnifeFighterKillsProgress = addProgressLabel(self, getText("Sandbox_ETW_KnifeFighterKills"))
 				end
 			end
 
@@ -3403,38 +2645,10 @@ function ISETWUI:createChildren()
 				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.POLEARM_FIGHTER)
 			then
 				if spear < SBvars.PolearmFighterSkill then
-					arrangeColumnsInTable()
-					self.labelPolearmFighterSkillProgress = ISLabel:new(
-						x,
-						y,
-						FONT_HGT_SMALL,
-						getText(""),
-						self.TextColor.r,
-						self.TextColor.g,
-						self.TextColor.b,
-						self.TextColor.a,
-						UIFont.Small,
-						true
-					)
-					self.labelPolearmFighterSkillProgress:setTooltip(getText("Sandbox_ETW_PolearmFighterSkill"))
-					self:addChild(self.labelPolearmFighterSkillProgress)
+					self.labelPolearmFighterSkillProgress = addProgressLabel(self, getText("Sandbox_ETW_PolearmFighterSkill"))
 				end
 				if spearKills < SBvars.PolearmFighterKills then
-					arrangeColumnsInTable()
-					self.labelPolearmFighterKillsProgress = ISLabel:new(
-						x,
-						y,
-						FONT_HGT_SMALL,
-						getText(""),
-						self.TextColor.r,
-						self.TextColor.g,
-						self.TextColor.b,
-						self.TextColor.a,
-						UIFont.Small,
-						true
-					)
-					self.labelPolearmFighterKillsProgress:setTooltip(getText("Sandbox_ETW_PolearmFighterKills"))
-					self:addChild(self.labelPolearmFighterKillsProgress)
+					self.labelPolearmFighterKillsProgress = addProgressLabel(self, getText("Sandbox_ETW_PolearmFighterKills"))
 				end
 			end
 
@@ -3443,38 +2657,10 @@ function ISETWUI:createChildren()
 				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.PROWESS_BLADE)
 			then
 				if shortBlade + longBlade + axe < SBvars.ProwessBladeSkill then
-					arrangeColumnsInTable()
-					self.labelProwessBladeSkillProgress = ISLabel:new(
-						x,
-						y,
-						FONT_HGT_SMALL,
-						"",
-						self.TextColor.r,
-						self.TextColor.g,
-						self.TextColor.b,
-						self.TextColor.a,
-						UIFont.Small,
-						true
-					)
-					self.labelProwessBladeSkillProgress:setTooltip(getText("Sandbox_ETW_ProwessBladeSkill_tooltip"))
-					self:addChild(self.labelProwessBladeSkillProgress)
+					self.labelProwessBladeSkillProgress = addProgressLabel(self, getText("Sandbox_ETW_ProwessBladeSkill_tooltip"))
 				end
 				if shortBladeKills + longBladeKills + axeKills < prowessBladeKillsRequired then
-					arrangeColumnsInTable()
-					self.labelProwessBladeKillsProgress = ISLabel:new(
-						x,
-						y,
-						FONT_HGT_SMALL,
-						"",
-						self.TextColor.r,
-						self.TextColor.g,
-						self.TextColor.b,
-						self.TextColor.a,
-						UIFont.Small,
-						true
-					)
-					self.labelProwessBladeKillsProgress:setTooltip(getText("Sandbox_ETW_ProwessBladeKills_tooltip"))
-					self:addChild(self.labelProwessBladeKillsProgress)
+					self.labelProwessBladeKillsProgress = addProgressLabel(self, getText("Sandbox_ETW_ProwessBladeKills_tooltip"))
 				end
 			end
 
@@ -3483,38 +2669,10 @@ function ISETWUI:createChildren()
 				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.PROWESS_BLUNT)
 			then
 				if shortBlunt + longBlunt < SBvars.ProwessBluntSkill then
-					arrangeColumnsInTable()
-					self.labelProwessBluntSkillProgress = ISLabel:new(
-						x,
-						y,
-						FONT_HGT_SMALL,
-						"",
-						self.TextColor.r,
-						self.TextColor.g,
-						self.TextColor.b,
-						self.TextColor.a,
-						UIFont.Small,
-						true
-					)
-					self.labelProwessBluntSkillProgress:setTooltip(getText("Sandbox_ETW_ProwessBluntSkill_tooltip"))
-					self:addChild(self.labelProwessBluntSkillProgress)
+					self.labelProwessBluntSkillProgress = addProgressLabel(self, getText("Sandbox_ETW_ProwessBluntSkill_tooltip"))
 				end
 				if shortBluntKills + longBluntKills < prowessBluntKillsRequired then
-					arrangeColumnsInTable()
-					self.labelProwessBluntKillsProgress = ISLabel:new(
-						x,
-						y,
-						FONT_HGT_SMALL,
-						"",
-						self.TextColor.r,
-						self.TextColor.g,
-						self.TextColor.b,
-						self.TextColor.a,
-						UIFont.Small,
-						true
-					)
-					self.labelProwessBluntKillsProgress:setTooltip(getText("Sandbox_ETW_ProwessBluntKills_tooltip"))
-					self:addChild(self.labelProwessBluntKillsProgress)
+					self.labelProwessBluntKillsProgress = addProgressLabel(self, getText("Sandbox_ETW_ProwessBluntKills_tooltip"))
 				end
 			end
 
@@ -3523,38 +2681,10 @@ function ISETWUI:createChildren()
 				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.PROWESS_GUNS)
 			then
 				if aiming + reloading < SBvars.ProwessGunsSkill then
-					arrangeColumnsInTable()
-					self.labelProwessGunsSkillProgress = ISLabel:new(
-						x,
-						y,
-						FONT_HGT_SMALL,
-						"",
-						self.TextColor.r,
-						self.TextColor.g,
-						self.TextColor.b,
-						self.TextColor.a,
-						UIFont.Small,
-						true
-					)
-					self.labelProwessGunsSkillProgress:setTooltip(getText("Sandbox_ETW_ProwessGunsSkill_tooltip"))
-					self:addChild(self.labelProwessGunsSkillProgress)
+					self.labelProwessGunsSkillProgress = addProgressLabel(self, getText("Sandbox_ETW_ProwessGunsSkill_tooltip"))
 				end
 				if firearmKills < prowessGunsKillsRequired then
-					arrangeColumnsInTable()
-					self.labelProwessGunsKillsProgress = ISLabel:new(
-						x,
-						y,
-						FONT_HGT_SMALL,
-						"",
-						self.TextColor.r,
-						self.TextColor.g,
-						self.TextColor.b,
-						self.TextColor.a,
-						UIFont.Small,
-						true
-					)
-					self.labelProwessGunsKillsProgress:setTooltip(getText("Sandbox_ETW_ProwessGunsKills_tooltip"))
-					self:addChild(self.labelProwessGunsKillsProgress)
+					self.labelProwessGunsKillsProgress = addProgressLabel(self, getText("Sandbox_ETW_ProwessGunsKills_tooltip"))
 				end
 			end
 
@@ -3563,38 +2693,10 @@ function ISETWUI:createChildren()
 				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.PROWESS_SPEAR)
 			then
 				if spear < SBvars.ProwessSpearSkill then
-					arrangeColumnsInTable()
-					self.labelProwessSpearSkillProgress = ISLabel:new(
-						x,
-						y,
-						FONT_HGT_SMALL,
-						"",
-						self.TextColor.r,
-						self.TextColor.g,
-						self.TextColor.b,
-						self.TextColor.a,
-						UIFont.Small,
-						true
-					)
-					self.labelProwessSpearSkillProgress:setTooltip(getText("Sandbox_ETW_ProwessSpearSkill_tooltip"))
-					self:addChild(self.labelProwessSpearSkillProgress)
+					self.labelProwessSpearSkillProgress = addProgressLabel(self, getText("Sandbox_ETW_ProwessSpearSkill_tooltip"))
 				end
 				if spearKills < prowessSpearKillsRequired then
-					arrangeColumnsInTable()
-					self.labelProwessSpearKillsProgress = ISLabel:new(
-						x,
-						y,
-						FONT_HGT_SMALL,
-						"",
-						self.TextColor.r,
-						self.TextColor.g,
-						self.TextColor.b,
-						self.TextColor.a,
-						UIFont.Small,
-						true
-					)
-					self.labelProwessSpearKillsProgress:setTooltip(getText("Sandbox_ETW_ProwessSpearKills_tooltip"))
-					self:addChild(self.labelProwessSpearKillsProgress)
+					self.labelProwessSpearKillsProgress = addProgressLabel(self, getText("Sandbox_ETW_ProwessSpearKills_tooltip"))
 				end
 			end
 
@@ -3603,42 +2705,16 @@ function ISETWUI:createChildren()
 				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.ANTI_GUN_ACTIVIST)
 			then
 				if aiming + reloading < SBvars.AntiGunActivistSkill then
-					arrangeColumnsInTable()
-					self.labelAntiGunActivistSkillProgress = ISLabel:new(
-						x,
-						y,
-						FONT_HGT_SMALL,
-						getText(""),
-						self.TextColor.r,
-						self.TextColor.g,
-						self.TextColor.b,
-						self.TextColor.a,
-						UIFont.Small,
-						true
-					)
-					self.labelAntiGunActivistSkillProgress:setTooltip(
+					self.labelAntiGunActivistSkillProgress = addProgressLabel(
+						self,
 						getText("Sandbox_ETW_AntiGunActivistSkill_tooltip")
 					)
-					self:addChild(self.labelAntiGunActivistSkillProgress)
 				end
 				if firearmKills < SBvars.AntiGunActivistKills then
-					arrangeColumnsInTable()
-					self.labelAntiGunActivistKillsProgress = ISLabel:new(
-						x,
-						y,
-						FONT_HGT_SMALL,
-						getText(""),
-						self.TextColor.r,
-						self.TextColor.g,
-						self.TextColor.b,
-						self.TextColor.a,
-						UIFont.Small,
-						true
-					)
-					self.labelAntiGunActivistKillsProgress:setTooltip(
+					self.labelAntiGunActivistKillsProgress = addProgressLabel(
+						self,
 						getText("Sandbox_ETW_AntiGunActivistKills_tooltip")
 					)
-					self:addChild(self.labelAntiGunActivistKillsProgress)
 				end
 			end
 
@@ -3647,39 +2723,11 @@ function ISETWUI:createChildren()
 				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.GUN_ENTHUSIAST)
 			then
 				if aiming + reloading < SBvars.GunEnthusiastSkill then
-					arrangeColumnsInTable()
-					self.labelGunEnthusiastSkillProgress = ISLabel:new(
-						x,
-						y,
-						FONT_HGT_SMALL,
-						getText(""),
-						self.TextColor.r,
-						self.TextColor.g,
-						self.TextColor.b,
-						self.TextColor.a,
-						UIFont.Small,
-						true
-					)
-					self.labelGunEnthusiastSkillProgress:setTooltip(getText("Sandbox_ETW_GunEnthusiastSkill_tooltip"))
-					self:addChild(self.labelGunEnthusiastSkillProgress)
+					self.labelGunEnthusiastSkillProgress = addProgressLabel(self, getText("Sandbox_ETW_GunEnthusiastSkill_tooltip"))
 				end
 
 				if firearmKills < SBvars.GunEnthusiastKills then
-					arrangeColumnsInTable()
-					self.labelGunEnthusiastKillsProgress = ISLabel:new(
-						x,
-						y,
-						FONT_HGT_SMALL,
-						getText(""),
-						self.TextColor.r,
-						self.TextColor.g,
-						self.TextColor.b,
-						self.TextColor.a,
-						UIFont.Small,
-						true
-					)
-					self.labelGunEnthusiastKillsProgress:setTooltip(getText("Sandbox_ETW_GunEnthusiastKills"))
-					self:addChild(self.labelGunEnthusiastKillsProgress)
+					self.labelGunEnthusiastKillsProgress = addProgressLabel(self, getText("Sandbox_ETW_GunEnthusiastKills"))
 				end
 			end
 
@@ -3688,39 +2736,11 @@ function ISETWUI:createChildren()
 				and not playerHasDelayedTraitNoCache(player, ETWTraitsRegistry.TERMINATOR)
 			then
 				if aiming + reloading + nimble < SBvars.TerminatorSkill then
-					arrangeColumnsInTable()
-					self.labelTerminatorSkillProgress = ISLabel:new(
-						x,
-						y,
-						FONT_HGT_SMALL,
-						"",
-						self.TextColor.r,
-						self.TextColor.g,
-						self.TextColor.b,
-						self.TextColor.a,
-						UIFont.Small,
-						true
-					)
-					self.labelTerminatorSkillProgress:setTooltip(getText("Sandbox_ETW_TerminatorSkill_tooltip"))
-					self:addChild(self.labelTerminatorSkillProgress)
+					self.labelTerminatorSkillProgress = addProgressLabel(self, getText("Sandbox_ETW_TerminatorSkill_tooltip"))
 				end
 
 				if firearmKills < SBvars.TerminatorKills then
-					arrangeColumnsInTable()
-					self.labelTerminatorKillsProgress = ISLabel:new(
-						x,
-						y,
-						FONT_HGT_SMALL,
-						"",
-						self.TextColor.r,
-						self.TextColor.g,
-						self.TextColor.b,
-						self.TextColor.a,
-						UIFont.Small,
-						true
-					)
-					self.labelTerminatorKillsProgress:setTooltip(getText("Sandbox_ETW_TerminatorKills_tooltip"))
-					self:addChild(self.labelTerminatorKillsProgress)
+					self.labelTerminatorKillsProgress = addProgressLabel(self, getText("Sandbox_ETW_TerminatorKills_tooltip"))
 				end
 			end
 
