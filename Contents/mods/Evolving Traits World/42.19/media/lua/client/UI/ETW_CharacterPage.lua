@@ -165,6 +165,7 @@ local WINDOW_HEIGHT_AFTER_CHILDREN = 700
 local HELP_WINDOW_MIN_HEIGHT = 120
 local HELP_WINDOW_MAX_HEIGHT = 500
 local RECENT_TRAIT_EVENT_LIMIT = 10
+local RENDER_STATS_CACHE_REFRESH_INTERVAL = 10
 local TRANSLATION_STATUS_FILE_PREFIX = "media/lua/shared/Translate/"
 local TRANSLATION_STATUS_FILE_SUFFIX = "/UI.json"
 local SUPPORTED_TRANSLATIONS = {
@@ -3926,6 +3927,79 @@ local function updateRecentTraitEventLabels(ui, modData)
 	end
 end
 
+---Collects the perk, weapon-kill, and Prowess requirement values displayed during rendering.
+---@param player IsoPlayer
+---@param modData EvolvingTraitsWorldModData
+---@return table<string, number>
+local function buildRenderStatsCache(player, modData)
+	local killCountModData = ETW_CommonFunctions.getKillCountWeaponCategories(player)
+	return {
+		strength = player:getPerkLevel(Perks.Strength),
+		fitness = player:getPerkLevel(Perks.Fitness),
+		sprinting = player:getPerkLevel(Perks.Sprinting),
+		lightfooted = player:getPerkLevel(Perks.Lightfoot),
+		nimble = player:getPerkLevel(Perks.Nimble),
+		sneaking = player:getPerkLevel(Perks.Sneak),
+		axe = player:getPerkLevel(Perks.Axe),
+		longBlunt = player:getPerkLevel(Perks.Blunt),
+		shortBlunt = player:getPerkLevel(Perks.SmallBlunt),
+		longBlade = player:getPerkLevel(Perks.LongBlade),
+		shortBlade = player:getPerkLevel(Perks.SmallBlade),
+		spear = player:getPerkLevel(Perks.Spear),
+		maintenance = player:getPerkLevel(Perks.Maintenance),
+		carpentry = player:getPerkLevel(Perks.Woodwork),
+		cooking = player:getPerkLevel(Perks.Cooking),
+		farming = player:getPerkLevel(Perks.Farming),
+		firstAid = player:getPerkLevel(Perks.Doctor),
+		electrical = player:getPerkLevel(Perks.Electricity),
+		metalworking = player:getPerkLevel(Perks.MetalWelding),
+		mechanics = player:getPerkLevel(Perks.Mechanics),
+		tailoring = player:getPerkLevel(Perks.Tailoring),
+		aiming = player:getPerkLevel(Perks.Aiming),
+		reloading = player:getPerkLevel(Perks.Reloading),
+		fishing = player:getPerkLevel(Perks.Fishing),
+		trapping = player:getPerkLevel(Perks.Trapping),
+		foraging = player:getPerkLevel(Perks.PlantScavenging),
+		husbandry = player:getPerkLevel(Perks.Husbandry),
+		carving = player:getPerkLevel(Perks.Carving),
+		blacksmith = player:getPerkLevel(Perks.Blacksmith),
+		knapping = player:getPerkLevel(Perks.FlintKnapping),
+		masonry = player:getPerkLevel(Perks.Masonry),
+		axeKills = (killCountModData["Axe"] or {}).count or 0,
+		longBluntKills = (killCountModData["Blunt"] or {}).count or 0,
+		shortBluntKills = (killCountModData["SmallBlunt"] or {}).count or 0,
+		longBladeKills = (killCountModData["LongBlade"] or {}).count or 0,
+		shortBladeKills = (killCountModData["SmallBlade"] or {}).count or 0,
+		spearKills = (killCountModData["Spear"] or {}).count or 0,
+		firearmKills = (killCountModData["Firearm"] or {}).count or 0,
+		gordoniteCrowbarKills = ETW_CommonFunctions.getGordoniteCrowbarKills(killCountModData),
+		prowessBladeKillsRequired = ETW_CommonFunctions.getProwessKillRequirement(
+			player,
+			ETWTraitsRegistry.PROWESS_BLADE,
+			SBvars.ProwessBladeKills,
+			modData
+		),
+		prowessBluntKillsRequired = ETW_CommonFunctions.getProwessKillRequirement(
+			player,
+			ETWTraitsRegistry.PROWESS_BLUNT,
+			SBvars.ProwessBluntKills,
+			modData
+		),
+		prowessGunsKillsRequired = ETW_CommonFunctions.getProwessKillRequirement(
+			player,
+			ETWTraitsRegistry.PROWESS_GUNS,
+			SBvars.ProwessGunsKills,
+			modData
+		),
+		prowessSpearKillsRequired = ETW_CommonFunctions.getProwessKillRequirement(
+			player,
+			ETWTraitsRegistry.PROWESS_SPEAR,
+			SBvars.ProwessSpearKills,
+			modData
+		),
+	}
+end
+
 function ISETWUI:render()
 	self:refreshLayoutIfNeeded()
 
@@ -4111,71 +4185,62 @@ function ISETWUI:render()
 		return widget:getY() + height + subviewOffsetY
 	end
 
-	local strength = player:getPerkLevel(Perks.Strength)
-	local fitness = player:getPerkLevel(Perks.Fitness)
-	local sprinting = player:getPerkLevel(Perks.Sprinting)
-	local lightfooted = player:getPerkLevel(Perks.Lightfoot)
-	local nimble = player:getPerkLevel(Perks.Nimble)
-	local sneaking = player:getPerkLevel(Perks.Sneak)
-	local axe = player:getPerkLevel(Perks.Axe)
-	local longBlunt = player:getPerkLevel(Perks.Blunt)
-	local shortBlunt = player:getPerkLevel(Perks.SmallBlunt)
-	local longBlade = player:getPerkLevel(Perks.LongBlade)
-	local shortBlade = player:getPerkLevel(Perks.SmallBlade)
-	local spear = player:getPerkLevel(Perks.Spear)
-	local maintenance = player:getPerkLevel(Perks.Maintenance)
-	local carpentry = player:getPerkLevel(Perks.Woodwork)
-	local cooking = player:getPerkLevel(Perks.Cooking)
-	local farming = player:getPerkLevel(Perks.Farming)
-	local firstAid = player:getPerkLevel(Perks.Doctor)
-	local electrical = player:getPerkLevel(Perks.Electricity)
-	local metalworking = player:getPerkLevel(Perks.MetalWelding)
-	local mechanics = player:getPerkLevel(Perks.Mechanics)
-	local tailoring = player:getPerkLevel(Perks.Tailoring)
-	local aiming = player:getPerkLevel(Perks.Aiming)
-	local reloading = player:getPerkLevel(Perks.Reloading)
-	local fishing = player:getPerkLevel(Perks.Fishing)
-	local trapping = player:getPerkLevel(Perks.Trapping)
-	local foraging = player:getPerkLevel(Perks.PlantScavenging)
-	local husbandry = player:getPerkLevel(Perks.Husbandry)
-	local carving = player:getPerkLevel(Perks.Carving)
-	local blacksmith = player:getPerkLevel(Perks.Blacksmith)
-	local knapping = player:getPerkLevel(Perks.FlintKnapping)
-	local masonry = player:getPerkLevel(Perks.Masonry)
+	self.renderStatsCacheRenderCount = (self.renderStatsCacheRenderCount or 0) + 1
+	local renderStats = self.renderStatsCache
+	if
+		not renderStats
+		or self.renderStatsCachePlayer ~= player
+		or self.renderStatsCacheRenderCount >= RENDER_STATS_CACHE_REFRESH_INTERVAL
+	then
+		renderStats = buildRenderStatsCache(player, modData)
+		self.renderStatsCache = renderStats
+		self.renderStatsCachePlayer = player
+		self.renderStatsCacheRenderCount = 0
+	end
 
-	local killCountModData = ETW_CommonFunctions.getKillCountWeaponCategories(player)
-	local axeKills = (killCountModData["Axe"] or {}).count or 0
-	local longBluntKills = (killCountModData["Blunt"] or {}).count or 0
-	local shortBluntKills = (killCountModData["SmallBlunt"] or {}).count or 0
-	local longBladeKills = (killCountModData["LongBlade"] or {}).count or 0
-	local shortBladeKills = (killCountModData["SmallBlade"] or {}).count or 0
-	local spearKills = (killCountModData["Spear"] or {}).count or 0
-	local firearmKills = (killCountModData["Firearm"] or {}).count or 0
-	local gordoniteCrowbarKills = ETW_CommonFunctions.getGordoniteCrowbarKills(killCountModData)
-	local prowessBladeKillsRequired = ETW_CommonFunctions.getProwessKillRequirement(
-		player,
-		ETWTraitsRegistry.PROWESS_BLADE,
-		SBvars.ProwessBladeKills,
-		modData
-	)
-	local prowessBluntKillsRequired = ETW_CommonFunctions.getProwessKillRequirement(
-		player,
-		ETWTraitsRegistry.PROWESS_BLUNT,
-		SBvars.ProwessBluntKills,
-		modData
-	)
-	local prowessGunsKillsRequired = ETW_CommonFunctions.getProwessKillRequirement(
-		player,
-		ETWTraitsRegistry.PROWESS_GUNS,
-		SBvars.ProwessGunsKills,
-		modData
-	)
-	local prowessSpearKillsRequired = ETW_CommonFunctions.getProwessKillRequirement(
-		player,
-		ETWTraitsRegistry.PROWESS_SPEAR,
-		SBvars.ProwessSpearKills,
-		modData
-	)
+	local strength = renderStats.strength
+	local fitness = renderStats.fitness
+	local sprinting = renderStats.sprinting
+	local lightfooted = renderStats.lightfooted
+	local nimble = renderStats.nimble
+	local sneaking = renderStats.sneaking
+	local axe = renderStats.axe
+	local longBlunt = renderStats.longBlunt
+	local shortBlunt = renderStats.shortBlunt
+	local longBlade = renderStats.longBlade
+	local shortBlade = renderStats.shortBlade
+	local spear = renderStats.spear
+	local maintenance = renderStats.maintenance
+	local carpentry = renderStats.carpentry
+	local cooking = renderStats.cooking
+	local farming = renderStats.farming
+	local firstAid = renderStats.firstAid
+	local electrical = renderStats.electrical
+	local metalworking = renderStats.metalworking
+	local mechanics = renderStats.mechanics
+	local tailoring = renderStats.tailoring
+	local aiming = renderStats.aiming
+	local reloading = renderStats.reloading
+	local fishing = renderStats.fishing
+	local trapping = renderStats.trapping
+	local foraging = renderStats.foraging
+	local husbandry = renderStats.husbandry
+	local carving = renderStats.carving
+	local blacksmith = renderStats.blacksmith
+	local knapping = renderStats.knapping
+	local masonry = renderStats.masonry
+	local axeKills = renderStats.axeKills
+	local longBluntKills = renderStats.longBluntKills
+	local shortBluntKills = renderStats.shortBluntKills
+	local longBladeKills = renderStats.longBladeKills
+	local shortBladeKills = renderStats.shortBladeKills
+	local spearKills = renderStats.spearKills
+	local firearmKills = renderStats.firearmKills
+	local gordoniteCrowbarKills = renderStats.gordoniteCrowbarKills
+	local prowessBladeKillsRequired = renderStats.prowessBladeKillsRequired
+	local prowessBluntKillsRequired = renderStats.prowessBluntKillsRequired
+	local prowessGunsKillsRequired = renderStats.prowessGunsKillsRequired
+	local prowessSpearKillsRequired = renderStats.prowessSpearKillsRequired
 
 	updateBar(
 		self.barImmunitySystem,

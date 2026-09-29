@@ -3,6 +3,7 @@
 
 - General:
   - Some internal code changes
+  - Minor optimizations (UI caching)
 
 ## v.14.2.0
 ###### 28 Sep 2026
