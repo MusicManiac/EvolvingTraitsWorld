@@ -4,6 +4,7 @@
 - General:
   - Some internal code changes
   - Minor optimizations (UI caching)
+  - Adjusted default Bloodlust gain multiplier (0.5 -> 1.25)
 
 ## v.14.2.0
 ###### 28 Sep 2026

@@ -2204,7 +2204,7 @@ option EvolvingTraitsWorld.BloodlustGainMultiplier
 	type = double,
 	min = 0,
 	max = 100,
-	default = 0.5,
+	default = 1.25,
 	page = ETWSingularPerks,
 	translation = ETW_BloodlustGainMultiplier,
 }
