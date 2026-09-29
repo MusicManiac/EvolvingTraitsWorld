@@ -363,31 +363,13 @@ local function noodleLegs()
 				end
 
 				if noodleLegs.Distance >= SBvars.NoodleLegsDistance and skillLevels >= SBvars.NoodleLegsSkill then
-					if
-						SBvars.DelayedTraitsSystem
-						and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(
-							player,
-							ETWTraitsRegistry.NOODLE_LEGS,
-							modData
-						)
-					then
-						ETW_CommonFunctions.addTraitToDelayTable({
-							modData = modData,
-							trait = ETWTraitsRegistry.NOODLE_LEGS,
-							player = player,
-							positiveTrait = false,
-							gainingTrait = false,
-						})
-					elseif
-						not SBvars.DelayedTraitsSystem
-						or ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.NOODLE_LEGS, modData)
-					then
-						ETW_CommonFunctions.removeTraitFromPlayer({
-							player = player,
-							trait = ETWTraitsRegistry.NOODLE_LEGS,
-							positiveTrait = false,
-						})
-					end
+					ETW_CommonFunctions.processTraitChange({
+						modData = modData,
+						trait = ETWTraitsRegistry.NOODLE_LEGS,
+						player = player,
+						positiveTrait = false,
+						gainingTrait = false,
+					})
 				end
 			end
 		end

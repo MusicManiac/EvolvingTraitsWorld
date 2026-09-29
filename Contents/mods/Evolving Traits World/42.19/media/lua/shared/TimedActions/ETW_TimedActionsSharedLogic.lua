@@ -18,27 +18,13 @@ function ETW_TimedActionsSharedLogic.checkInventoryTransferPerks(player, modData
 		and transferModData.ItemsTransferred >= SBvars.InventoryTransferSystemItems * 1.5
 		and SBvars.TraitsLockSystemCanLoseNegative
 	then
-		if
-			SBvars.DelayedTraitsSystem
-			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.BUTTERFINGERS, modData)
-		then
-			ETW_CommonFunctions.addTraitToDelayTable({
-				modData = modData,
-				trait = ETWTraitsRegistry.BUTTERFINGERS,
-				player = player,
-				positiveTrait = false,
-				gainingTrait = false,
-			})
-		elseif
-			not SBvars.DelayedTraitsSystem
-			or ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.BUTTERFINGERS, modData)
-		then
-			ETW_CommonFunctions.removeTraitFromPlayer({
-				player = player,
-				trait = ETWTraitsRegistry.BUTTERFINGERS,
-				positiveTrait = false,
-			})
-		end
+		ETW_CommonFunctions.processTraitChange({
+			modData = modData,
+			trait = ETWTraitsRegistry.BUTTERFINGERS,
+			player = player,
+			positiveTrait = false,
+			gainingTrait = false,
+		})
 	end
 	if
 		player:hasTrait(CharacterTrait.DISORGANIZED)
@@ -46,30 +32,13 @@ function ETW_TimedActionsSharedLogic.checkInventoryTransferPerks(player, modData
 		and transferModData.ItemsTransferred >= SBvars.InventoryTransferSystemItems * 0.33
 		and SBvars.TraitsLockSystemCanLoseNegative
 	then
-		if
-			SBvars.DelayedTraitsSystem
-			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.DISORGANIZED, modData)
-		then
-			ETW_CommonFunctions.addTraitToDelayTable({
-				modData = modData,
-				trait = CharacterTrait.DISORGANIZED,
-				player = player,
-				positiveTrait = false,
-				gainingTrait = false,
-			})
-		elseif
-			not SBvars.DelayedTraitsSystem
-			or (
-				SBvars.DelayedTraitsSystem
-				and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.DISORGANIZED, modData)
-			)
-		then
-			ETW_CommonFunctions.removeTraitFromPlayer({
-				player = player,
-				trait = CharacterTrait.DISORGANIZED,
-				positiveTrait = false,
-			})
-		end
+		ETW_CommonFunctions.processTraitChange({
+			modData = modData,
+			trait = CharacterTrait.DISORGANIZED,
+			player = player,
+			positiveTrait = false,
+			gainingTrait = false,
+		})
 	end
 	if
 		not player:hasTrait(CharacterTrait.DISORGANIZED)
@@ -78,30 +47,13 @@ function ETW_TimedActionsSharedLogic.checkInventoryTransferPerks(player, modData
 		and transferModData.ItemsTransferred >= SBvars.InventoryTransferSystemItems * 0.66
 		and SBvars.TraitsLockSystemCanGainPositive
 	then
-		if
-			SBvars.DelayedTraitsSystem
-			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.ORGANIZED, modData)
-		then
-			ETW_CommonFunctions.addTraitToDelayTable({
-				modData = modData,
-				trait = CharacterTrait.ORGANIZED,
-				player = player,
-				positiveTrait = true,
-				gainingTrait = true,
-			})
-		elseif
-			not SBvars.DelayedTraitsSystem
-			or (
-				SBvars.DelayedTraitsSystem
-				and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.ORGANIZED, modData)
-			)
-		then
-			ETW_CommonFunctions.addTraitToPlayer({
-				player = player,
-				trait = CharacterTrait.ORGANIZED,
-				positiveTrait = true,
-			})
-		end
+		ETW_CommonFunctions.processTraitChange({
+			modData = modData,
+			trait = CharacterTrait.ORGANIZED,
+			player = player,
+			positiveTrait = true,
+			gainingTrait = true,
+		})
 	end
 	if
 		player:hasTrait(CharacterTrait.ALL_THUMBS)
@@ -109,30 +61,13 @@ function ETW_TimedActionsSharedLogic.checkInventoryTransferPerks(player, modData
 		and transferModData.ItemsTransferred >= SBvars.InventoryTransferSystemItems * 0.66
 		and SBvars.TraitsLockSystemCanLoseNegative
 	then
-		if
-			SBvars.DelayedTraitsSystem
-			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.ALL_THUMBS, modData)
-		then
-			ETW_CommonFunctions.addTraitToDelayTable({
-				modData = modData,
-				trait = CharacterTrait.ALL_THUMBS,
-				player = player,
-				positiveTrait = false,
-				gainingTrait = false,
-			})
-		elseif
-			not SBvars.DelayedTraitsSystem
-			or (
-				SBvars.DelayedTraitsSystem
-				and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.ALL_THUMBS, modData)
-			)
-		then
-			ETW_CommonFunctions.removeTraitFromPlayer({
-				player = player,
-				trait = CharacterTrait.ALL_THUMBS,
-				positiveTrait = false,
-			})
-		end
+		ETW_CommonFunctions.processTraitChange({
+			modData = modData,
+			trait = CharacterTrait.ALL_THUMBS,
+			player = player,
+			positiveTrait = false,
+			gainingTrait = false,
+		})
 	end
 	if
 		not player:hasTrait(CharacterTrait.DEXTROUS)
@@ -140,30 +75,13 @@ function ETW_TimedActionsSharedLogic.checkInventoryTransferPerks(player, modData
 		and transferModData.ItemsTransferred >= SBvars.InventoryTransferSystemItems
 		and SBvars.TraitsLockSystemCanGainPositive
 	then
-		if
-			SBvars.DelayedTraitsSystem
-			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.DEXTROUS, modData)
-		then
-			ETW_CommonFunctions.addTraitToDelayTable({
-				modData = modData,
-				trait = CharacterTrait.DEXTROUS,
-				player = player,
-				positiveTrait = true,
-				gainingTrait = true,
-			})
-		elseif
-			not SBvars.DelayedTraitsSystem
-			or (
-				SBvars.DelayedTraitsSystem
-				and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.DEXTROUS, modData)
-			)
-		then
-			ETW_CommonFunctions.addTraitToPlayer({
-				player = player,
-				trait = CharacterTrait.DEXTROUS,
-				positiveTrait = true,
-			})
-		end
+		ETW_CommonFunctions.processTraitChange({
+			modData = modData,
+			trait = CharacterTrait.DEXTROUS,
+			player = player,
+			positiveTrait = true,
+			gainingTrait = true,
+		})
 	end
 end
 

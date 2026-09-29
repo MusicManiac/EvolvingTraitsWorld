@@ -256,13 +256,13 @@ local function rollForRemovingInjuryTrait(player, modData, trait, chanceOneIn)
 		or (trait == ETWTraitsRegistry.BROKEN_LEG and ETW_CommonLogicChecks.BrokenLegShouldExecute(player))
 	then
 		if ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, trait, modData) then
-			if SBvars.DelayedTraitsSystem and ETW_CommonFunctions.checkDelayedTraits(player, trait, modData) then
-				ETW_CommonFunctions.removeTraitFromPlayer({
-					player = player,
-					trait = trait,
-					positiveTrait = false,
-				})
-			end
+			ETW_CommonFunctions.processTraitChange({
+				player = player,
+				modData = modData,
+				trait = trait,
+				positiveTrait = false,
+				gainingTrait = false,
+			})
 			return
 		end
 
@@ -282,21 +282,13 @@ local function rollForRemovingInjuryTrait(player, modData, trait, chanceOneIn)
 			return
 		end
 
-		if SBvars.DelayedTraitsSystem then
-			ETW_CommonFunctions.addTraitToDelayTable({
-				modData = modData,
-				trait = trait,
-				player = player,
-				positiveTrait = false,
-				gainingTrait = false,
-			})
-		else
-			ETW_CommonFunctions.removeTraitFromPlayer({
-				player = player,
-				trait = trait,
-				positiveTrait = false,
-			})
-	end
+		ETW_CommonFunctions.processTraitChange({
+			player = player,
+			modData = modData,
+			trait = trait,
+			positiveTrait = false,
+			gainingTrait = false,
+		})
 	end
 end
 

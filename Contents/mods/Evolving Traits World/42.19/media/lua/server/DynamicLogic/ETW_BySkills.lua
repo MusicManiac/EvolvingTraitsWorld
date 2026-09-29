@@ -95,38 +95,15 @@ local function applyTraitChange(ctx, trait, positiveTrait, gainingTrait, onApply
 		)
 		return
 	end
-	if
-		SBvars.DelayedTraitsSystem
-		and not CommonFunctions.checkIfTraitIsInDelayedTraitsTable(ctx.player, trait, ctx.modData)
-	then
-		CommonFunctions.addTraitToDelayTable({
-			modData = ctx.modData,
-			trait = trait,
-			player = ctx.player,
-			positiveTrait = positiveTrait,
-			gainingTrait = gainingTrait,
-		})
-		return
-	end
-
-	if not SBvars.DelayedTraitsSystem or CommonFunctions.checkDelayedTraits(ctx.player, trait, ctx.modData) then
-		if gainingTrait then
-			CommonFunctions.addTraitToPlayer({
-				player = ctx.player,
-				trait = trait,
-				positiveTrait = positiveTrait,
-			})
-		else
-			CommonFunctions.removeTraitFromPlayer({
-				player = ctx.player,
-				trait = trait,
-				positiveTrait = positiveTrait,
-			})
-		end
-
-		if onApply then
-			onApply(ctx)
-		end
+	local applied = CommonFunctions.processTraitChange({
+		modData = ctx.modData,
+		trait = trait,
+		player = ctx.player,
+		positiveTrait = positiveTrait,
+		gainingTrait = gainingTrait,
+	})
+	if applied and onApply then
+		onApply(ctx)
 	end
 end
 

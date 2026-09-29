@@ -168,64 +168,26 @@ local function checkReaderTraits(player, modData)
 		and modData.PagesReadCounter >= SBvars.ReaderSystemCounter / 2
 		and SBvars.TraitsLockSystemCanLoseNegative
 	then
-		if
-			SBvars.DelayedTraitsSystem
-			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(
-				player,
-				CharacterTrait.SLOW_READER,
-				modData
-			)
-		then
-			ETW_CommonFunctions.addTraitToDelayTable({
-				modData = modData,
-				trait = CharacterTrait.SLOW_READER,
-				player = player,
-				positiveTrait = false,
-				gainingTrait = false,
-			})
-		elseif
-			not SBvars.DelayedTraitsSystem
-			or (
-				SBvars.DelayedTraitsSystem
-				and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.SLOW_READER, modData)
-			)
-		then
-			ETW_CommonFunctions.removeTraitFromPlayer({
-				player = player,
-				trait = CharacterTrait.SLOW_READER,
-				positiveTrait = false,
-			})
-		end
+		ETW_CommonFunctions.processTraitChange({
+			modData = modData,
+			trait = CharacterTrait.SLOW_READER,
+			player = player,
+			positiveTrait = false,
+			gainingTrait = false,
+		})
 	elseif
 		not player:hasTrait(CharacterTrait.SLOW_READER)
 		and not player:hasTrait(CharacterTrait.FAST_READER)
 		and modData.PagesReadCounter >= SBvars.ReaderSystemCounter
 		and SBvars.TraitsLockSystemCanGainPositive
 	then
-		if
-			SBvars.DelayedTraitsSystem
-			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.FAST_READER, modData)
-		then
-			ETW_CommonFunctions.addTraitToDelayTable({
-				modData = modData,
-				trait = CharacterTrait.FAST_READER,
-				player = player,
-				positiveTrait = true,
-				gainingTrait = true,
-			})
-		elseif
-			not SBvars.DelayedTraitsSystem
-			or (
-				SBvars.DelayedTraitsSystem
-				and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.FAST_READER, modData)
-			)
-		then
-			ETW_CommonFunctions.addTraitToPlayer({
-				player = player,
-				trait = CharacterTrait.FAST_READER,
-				positiveTrait = true,
-			})
-		end
+		ETW_CommonFunctions.processTraitChange({
+			modData = modData,
+			trait = CharacterTrait.FAST_READER,
+			player = player,
+			positiveTrait = true,
+			gainingTrait = true,
+		})
 	end
 end
 

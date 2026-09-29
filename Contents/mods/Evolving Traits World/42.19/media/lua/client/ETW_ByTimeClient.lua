@@ -93,29 +93,13 @@ local function applyCatEyesProgress(player, progressIncrease, isKill)
 		return
 	end
 
-	if
-		SBvars.DelayedTraitsSystem
-		and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.NIGHT_VISION, modData)
-	then
-		ETW_CommonFunctions.addTraitToDelayTable({
-			modData = modData,
-			trait = CharacterTrait.NIGHT_VISION,
-			player = player,
-			positiveTrait = true,
-			gainingTrait = true,
-		})
-	elseif
-		not SBvars.DelayedTraitsSystem
-		or (
-			SBvars.DelayedTraitsSystem
-			and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.NIGHT_VISION, modData)
-		)
-	then
-		ETW_CommonFunctions.addTraitToPlayer({
-			player = player,
-			trait = CharacterTrait.NIGHT_VISION,
-			positiveTrait = true,
-		})
+	if ETW_CommonFunctions.processTraitChange({
+		modData = modData,
+		trait = CharacterTrait.NIGHT_VISION,
+		player = player,
+		positiveTrait = true,
+		gainingTrait = true,
+	}) then
 		Events.EveryOneMinute.Remove(catEyes)
 	end
 end

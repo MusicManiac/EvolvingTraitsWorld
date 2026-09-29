@@ -350,38 +350,13 @@ function ISPetAnimal:animEvent(event, parameter)
 							#animalsSystemModData.UniqueAnimalsPetted >= SBvars.PetTherapyUniqueAnimalsPetted
 							and husbandry >= SBvars.PetTherapySkill
 						then
-							if
-								SBvars.DelayedTraitsSystem
-								and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(
-									player,
-									ETWTraitsRegistry.PET_THERAPY,
-									modData
-								)
-							then
-								ETW_CommonFunctions.addTraitToDelayTable({
-									modData = modData,
-									trait = ETWTraitsRegistry.PET_THERAPY,
-									player = player,
-									positiveTrait = true,
-									gainingTrait = true,
-								})
-							elseif
-								not SBvars.DelayedTraitsSystem
-								or (
-									SBvars.DelayedTraitsSystem
-									and ETW_CommonFunctions.checkDelayedTraits(
-										player,
-										ETWTraitsRegistry.PET_THERAPY,
-										modData
-									)
-								)
-							then
-								ETW_CommonFunctions.addTraitToPlayer({
-									player = player,
-									trait = ETWTraitsRegistry.PET_THERAPY,
-									positiveTrait = true,
-								})
-							end
+							ETW_CommonFunctions.processTraitChange({
+								modData = modData,
+								trait = ETWTraitsRegistry.PET_THERAPY,
+								player = player,
+								positiveTrait = true,
+								gainingTrait = true,
+							})
 						end
 					end
 				end

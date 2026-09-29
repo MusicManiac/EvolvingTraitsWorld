@@ -22,46 +22,6 @@ end
 ---@type fun(...: string)
 local logETW = ETW_CommonFunctions.log
 
----Queues or applies an Immunity System trait change.
---- TODO: move to ETW_CommonFunctions and reuse everywhere. 
----@param player IsoPlayer
----@param modData EvolvingTraitsWorldModData
----@param trait CharacterTrait
----@param positiveTrait boolean
----@param gainingTrait boolean
----@return boolean applied
-local function processImmunityTraitChange(player, modData, trait, positiveTrait, gainingTrait)
-	if
-		SBvars.DelayedTraitsSystem
-		and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, trait, modData)
-	then
-		ETW_CommonFunctions.addTraitToDelayTable({
-			modData = modData,
-			trait = trait,
-			player = player,
-			positiveTrait = positiveTrait,
-			gainingTrait = gainingTrait,
-		})
-		return false
-	elseif not SBvars.DelayedTraitsSystem or ETW_CommonFunctions.checkDelayedTraits(player, trait, modData) then
-		if gainingTrait then
-			ETW_CommonFunctions.addTraitToPlayer({
-				player = player,
-				trait = trait,
-				positiveTrait = positiveTrait,
-			})
-		else
-			ETW_CommonFunctions.removeTraitFromPlayer({
-				player = player,
-				trait = trait,
-				positiveTrait = positiveTrait,
-			})
-		end
-		return true
-	end
-	return false
-end
-
 ---Records an active Knox infection or a transition indicating that the player survived one.
 ---@param bodyDamage BodyDamage
 ---@param modData EvolvingTraitsWorldModData
@@ -148,7 +108,13 @@ local function immunitySystemTraits()
 					modData.ImmunitySystemCounter >= proneToIllnessThreshold
 					and ETW_CommonLogicChecks.ImmunitySystemShouldExecute(player, CharacterTrait.PRONE_TO_ILLNESS)
 				then
-					processImmunityTraitChange(player, modData, CharacterTrait.PRONE_TO_ILLNESS, false, false)
+					ETW_CommonFunctions.processTraitChange({
+						player = player,
+						modData = modData,
+						trait = CharacterTrait.PRONE_TO_ILLNESS,
+						positiveTrait = false,
+						gainingTrait = false,
+					})
 				elseif
 					modData.ImmunitySystemCounter >= immunocompromisedThreshold
 					and ETW_CommonLogicChecks.ImmunitySystemShouldExecute(
@@ -156,7 +122,13 @@ local function immunitySystemTraits()
 						ETWTraitsRegistry.IMMUNOCOMPROMISED
 					)
 				then
-					processImmunityTraitChange(player, modData, ETWTraitsRegistry.IMMUNOCOMPROMISED, false, false)
+					ETW_CommonFunctions.processTraitChange({
+						player = player,
+						modData = modData,
+						trait = ETWTraitsRegistry.IMMUNOCOMPROMISED,
+						positiveTrait = false,
+						gainingTrait = false,
+					})
 				elseif
 					modData.ImmunitySystemCounter >= resilientThreshold
 					and not player:hasTrait(CharacterTrait.PRONE_TO_ILLNESS)
@@ -166,13 +138,13 @@ local function immunitySystemTraits()
 					)
 					and ETW_CommonLogicChecks.ImmunitySystemShouldExecute(player, CharacterTrait.RESILIENT)
 				then
-					local resilientAdded = processImmunityTraitChange(
-						player,
-						modData,
-						CharacterTrait.RESILIENT,
-						true,
-						true
-					)
+					local resilientAdded = ETW_CommonFunctions.processTraitChange({
+						player = player,
+						modData = modData,
+						trait = CharacterTrait.RESILIENT,
+						positiveTrait = true,
+						gainingTrait = true,
+					})
 					if resilientAdded and not superImmuneStageEnabled and gameMode == ETW_CommonFunctions.GameMode.SP then
 						Events.EveryOneMinute.Remove(immunitySystemTraits)
 					end
@@ -187,13 +159,13 @@ local function immunitySystemTraits()
 					and ETW_CommonLogicChecks.ImmunitySystemShouldExecute(player, ETWTraitsRegistry.SUPER_IMMUNE)
 					and superImmuneInfectionRequirementMet(modData)
 				then
-					local superImmuneAdded = processImmunityTraitChange(
-						player,
-						modData,
-						ETWTraitsRegistry.SUPER_IMMUNE,
-						true,
-						true
-					)
+					local superImmuneAdded = ETW_CommonFunctions.processTraitChange({
+						player = player,
+						modData = modData,
+						trait = ETWTraitsRegistry.SUPER_IMMUNE,
+						positiveTrait = true,
+						gainingTrait = true,
+					})
 					if superImmuneAdded and gameMode == ETW_CommonFunctions.GameMode.SP then
 						Events.EveryOneMinute.Remove(immunitySystemTraits)
 					end
@@ -232,63 +204,26 @@ local function foodSicknessTraitsETW()
 				and modData.FoodSicknessWeathered >= SBvars.FoodSicknessSystemCounter / 2
 				and SBvars.TraitsLockSystemCanLoseNegative
 			then
-				if
-					SBvars.DelayedTraitsSystem
-					and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(
-						player,
-						CharacterTrait.WEAK_STOMACH,
-						modData
-					)
-				then
-					ETW_CommonFunctions.addTraitToDelayTable({
-						modData = modData,
-						trait = CharacterTrait.WEAK_STOMACH,
-						player = player,
-						positiveTrait = false,
-						gainingTrait = false,
-					})
-				elseif
-					not SBvars.DelayedTraitsSystem
-					or (
-						SBvars.DelayedTraitsSystem
-						and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.WEAK_STOMACH, modData)
-					)
-				then
-					ETW_CommonFunctions.removeTraitFromPlayer({
-						player = player,
-						trait = CharacterTrait.WEAK_STOMACH,
-						positiveTrait = false,
-					})
-				end
+				ETW_CommonFunctions.processTraitChange({
+					modData = modData,
+					trait = CharacterTrait.WEAK_STOMACH,
+					player = player,
+					positiveTrait = false,
+					gainingTrait = false,
+				})
 			elseif
 				not player:hasTrait(CharacterTrait.WEAK_STOMACH)
 				and not player:hasTrait(CharacterTrait.IRON_GUT)
 				and modData.FoodSicknessWeathered >= SBvars.FoodSicknessSystemCounter
 				and SBvars.TraitsLockSystemCanGainPositive
 			then
-				if
-					SBvars.DelayedTraitsSystem
-					and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.IRON_GUT, modData)
-				then
-					ETW_CommonFunctions.addTraitToDelayTable({
-						modData = modData,
-						trait = CharacterTrait.IRON_GUT,
-						player = player,
-						positiveTrait = true,
-						gainingTrait = true,
-					})
-				elseif
-					not SBvars.DelayedTraitsSystem
-					or (
-						SBvars.DelayedTraitsSystem
-						and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.IRON_GUT, modData)
-					)
-				then
-					ETW_CommonFunctions.addTraitToPlayer({
-						player = player,
-						trait = CharacterTrait.IRON_GUT,
-						positiveTrait = true,
-					})
+				if ETW_CommonFunctions.processTraitChange({
+					modData = modData,
+					trait = CharacterTrait.IRON_GUT,
+					player = player,
+					positiveTrait = true,
+					gainingTrait = true,
+				}) then
 					if gameMode == ETW_CommonFunctions.GameMode.SP then
 						Events.EveryOneMinute.Remove(foodSicknessTraitsETW)
 					end
@@ -1203,33 +1138,13 @@ local function painToleranceTraitETW()
 			modData.PainToleranceCounter = modData.PainToleranceCounter + pain
 			logETW("ETW Logger | painToleranceTraitETW(): pain counter: " .. modData.PainToleranceCounter)
 			if modData.PainToleranceCounter >= SBvars.PainToleranceCounter then
-				if
-					SBvars.DelayedTraitsSystem
-					and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(
-						player,
-						ETWTraitsRegistry.PAIN_TOLERANCE,
-						modData
-					)
-				then
-					ETW_CommonFunctions.addTraitToDelayTable({
-						modData = modData,
-						trait = ETWTraitsRegistry.PAIN_TOLERANCE,
-						player = player,
-						positiveTrait = true,
-						gainingTrait = true,
-					})
-				elseif
-					not SBvars.DelayedTraitsSystem
-					or (
-						SBvars.DelayedTraitsSystem
-						and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.PAIN_TOLERANCE, modData)
-					)
-				then
-					ETW_CommonFunctions.addTraitToPlayer({
-						player = player,
-						trait = ETWTraitsRegistry.PAIN_TOLERANCE,
-						positiveTrait = true,
-					})
+				if ETW_CommonFunctions.processTraitChange({
+					modData = modData,
+					trait = ETWTraitsRegistry.PAIN_TOLERANCE,
+					player = player,
+					positiveTrait = true,
+					gainingTrait = true,
+				}) then
 					if gameMode == ETW_CommonFunctions.GameMode.SP then
 						Events.EveryTenMinutes.Remove(painToleranceTraitETW)
 					end

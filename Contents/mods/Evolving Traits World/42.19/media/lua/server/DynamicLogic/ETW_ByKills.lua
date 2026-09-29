@@ -118,30 +118,13 @@ local function grantEagleEyedKill(player, distance)
 		return
 	end
 
-	if
-		SBvars.DelayedTraitsSystem
-		and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.EAGLE_EYED, modData)
-	then
-		ETW_CommonFunctions.addTraitToDelayTable({
-			modData = modData,
-			trait = CharacterTrait.EAGLE_EYED,
-			player = player,
-			positiveTrait = true,
-			gainingTrait = true,
-		})
-	elseif
-		not SBvars.DelayedTraitsSystem
-		or (
-			SBvars.DelayedTraitsSystem
-			and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.EAGLE_EYED, modData)
-		)
-	then
-		ETW_CommonFunctions.addTraitToPlayer({
-			player = player,
-			trait = CharacterTrait.EAGLE_EYED,
-			positiveTrait = true,
-		})
-	end
+	ETW_CommonFunctions.processTraitChange({
+		modData = modData,
+		trait = CharacterTrait.EAGLE_EYED,
+		player = player,
+		positiveTrait = true,
+		gainingTrait = true,
+	})
 end
 
 ---Resolves Eagle Eyed kill credit when a zombie dies.
@@ -265,30 +248,13 @@ local function braverySystemETW(zombie)
 						and (not cantHaveTrait or not player:hasTrait(cantHaveTrait))
 						and SBvars.TraitsLockSystemCanLoseNegative
 					then
-						if
-							SBvars.DelayedTraitsSystem
-							and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, trait, ETWModData)
-						then
-							ETW_CommonFunctions.addTraitToDelayTable({
-								modData = ETWModData,
-								trait = trait,
-								player = player,
-								positiveTrait = false,
-								gainingTrait = false,
-							})
-						elseif
-							not SBvars.DelayedTraitsSystem
-							or (
-								SBvars.DelayedTraitsSystem
-								and ETW_CommonFunctions.checkDelayedTraits(player, trait, ETWModData)
-							)
-						then
-							ETW_CommonFunctions.removeTraitFromPlayer({
-								player = player,
-								trait = trait,
-								positiveTrait = false,
-							})
-						end
+						ETW_CommonFunctions.processTraitChange({
+							modData = ETWModData,
+							trait = trait,
+							player = player,
+							positiveTrait = false,
+							gainingTrait = false,
+						})
 						break
 					elseif
 						not player:hasTrait(trait)
@@ -297,29 +263,13 @@ local function braverySystemETW(zombie)
 						and (not requiredTrait or player:hasTrait(requiredTrait))
 						and SBvars.TraitsLockSystemCanGainPositive
 					then
-						if
-							SBvars.DelayedTraitsSystem
-							and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, trait, ETWModData)
-						then
-							ETW_CommonFunctions.addTraitToDelayTable({
-								modData = ETWModData,
-								trait = trait,
-								player = player,
-								positiveTrait = true,
-								gainingTrait = true,
-							})
-						elseif
-							not SBvars.DelayedTraitsSystem
-							or (
-								SBvars.DelayedTraitsSystem
-								and ETW_CommonFunctions.checkDelayedTraits(player, trait, ETWModData)
-							)
-						then
-							ETW_CommonFunctions.addTraitToPlayer({
-								player = player,
-								trait = trait,
-								positiveTrait = true,
-							})
+						if ETW_CommonFunctions.processTraitChange({
+							modData = ETWModData,
+							trait = trait,
+							player = player,
+							positiveTrait = true,
+							gainingTrait = true,
+						}) then
 							if trait == CharacterTrait.DESENSITIZED then
 								if gameMode == ETW_CommonFunctions.GameMode.SP then
 									Events.OnZombieDead.Remove(braverySystemETW)

@@ -294,30 +294,13 @@ local function carryWeightSystem()
 				modData.CarryWeightCounter >= maximumProgress / 3
 				and ETW_CommonLogicChecks.CarryWeightSystemShouldExecute(player, ETWTraitsRegistry.PACK_MOUSE)
 			then
-				if
-					SBvars.DelayedTraitsSystem
-					and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(
-						player,
-						ETWTraitsRegistry.PACK_MOUSE,
-						modData
-					)
-				then
-					ETW_CommonFunctions.addTraitToDelayTable({
-						modData = modData,
-						trait = ETWTraitsRegistry.PACK_MOUSE,
-						player = player,
-						positiveTrait = false,
-						gainingTrait = false,
-					})
-				elseif
-					not SBvars.DelayedTraitsSystem
-					or ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.PACK_MOUSE, modData)
-				then
-					ETW_CommonFunctions.removeTraitFromPlayer({
-						player = player,
-						trait = ETWTraitsRegistry.PACK_MOUSE,
-						positiveTrait = false,
-					})
+				if ETW_CommonFunctions.processTraitChange({
+					modData = modData,
+					trait = ETWTraitsRegistry.PACK_MOUSE,
+					player = player,
+					positiveTrait = false,
+					gainingTrait = false,
+				}) then
 					UCWF.recomputeAll(player)
 				end
 			end
@@ -327,30 +310,13 @@ local function carryWeightSystem()
 				and not player:hasTrait(ETWTraitsRegistry.PACK_MOUSE)
 				and ETW_CommonLogicChecks.CarryWeightSystemShouldExecute(player, ETWTraitsRegistry.HOARDER)
 			then
-				if
-					SBvars.DelayedTraitsSystem
-					and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(
-						player,
-						ETWTraitsRegistry.HOARDER,
-						modData
-					)
-				then
-					ETW_CommonFunctions.addTraitToDelayTable({
-						modData = modData,
-						trait = ETWTraitsRegistry.HOARDER,
-						player = player,
-						positiveTrait = true,
-						gainingTrait = true,
-					})
-				elseif
-					not SBvars.DelayedTraitsSystem
-					or ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.HOARDER, modData)
-				then
-					ETW_CommonFunctions.addTraitToPlayer({
-						player = player,
-						trait = ETWTraitsRegistry.HOARDER,
-						positiveTrait = true,
-					})
+				if ETW_CommonFunctions.processTraitChange({
+					modData = modData,
+					trait = ETWTraitsRegistry.HOARDER,
+					player = player,
+					positiveTrait = true,
+					gainingTrait = true,
+				}) then
 					UCWF.recomputeAll(player)
 				end
 			end
@@ -363,30 +329,13 @@ local function carryWeightSystem()
 				and (not hoarderRequired or player:hasTrait(ETWTraitsRegistry.HOARDER))
 				and ETW_CommonLogicChecks.CarryWeightSystemShouldExecute(player, ETWTraitsRegistry.PACK_MULE)
 			then
-				if
-					SBvars.DelayedTraitsSystem
-					and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(
-						player,
-						ETWTraitsRegistry.PACK_MULE,
-						modData
-					)
-				then
-					ETW_CommonFunctions.addTraitToDelayTable({
-						modData = modData,
-						trait = ETWTraitsRegistry.PACK_MULE,
-						player = player,
-						positiveTrait = true,
-						gainingTrait = true,
-					})
-				elseif
-					not SBvars.DelayedTraitsSystem
-					or ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.PACK_MULE, modData)
-				then
-					ETW_CommonFunctions.addTraitToPlayer({
-						player = player,
-						trait = ETWTraitsRegistry.PACK_MULE,
-						positiveTrait = true,
-					})
+				if ETW_CommonFunctions.processTraitChange({
+					modData = modData,
+					trait = ETWTraitsRegistry.PACK_MULE,
+					player = player,
+					positiveTrait = true,
+					gainingTrait = true,
+				}) then
 					UCWF.recomputeAll(player)
 				end
 			end
@@ -411,31 +360,13 @@ local function olympian()
 					modData.OlympianCounter = modData.OlympianCounter + 1
 				end
 				if modData.OlympianCounter >= SBvars.OlympianCounter then
-					if
-						SBvars.DelayedTraitsSystem
-						and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(
-							player,
-							ETWTraitsRegistry.OLYMPIAN,
-							modData
-						)
-					then
-						ETW_CommonFunctions.addTraitToDelayTable({
-							modData = modData,
-							trait = ETWTraitsRegistry.OLYMPIAN,
-							player = player,
-							positiveTrait = true,
-							gainingTrait = true,
-						})
-					elseif
-						not SBvars.DelayedTraitsSystem
-						or ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.OLYMPIAN, modData)
-					then
-						ETW_CommonFunctions.addTraitToPlayer({
-							player = player,
-							trait = ETWTraitsRegistry.OLYMPIAN,
-							positiveTrait = true,
-						})
-					end
+					ETW_CommonFunctions.processTraitChange({
+						modData = modData,
+						trait = ETWTraitsRegistry.OLYMPIAN,
+						player = player,
+						positiveTrait = true,
+						gainingTrait = true,
+					})
 				end
 			end
 		end

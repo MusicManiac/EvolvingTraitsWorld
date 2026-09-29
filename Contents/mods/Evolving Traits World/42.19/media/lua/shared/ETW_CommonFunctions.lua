@@ -763,6 +763,37 @@ function ETW_CommonFunctions.removeTraitFromPlayer(context)
 	end
 end
 
+---@class ETWProcessTraitChangeContext
+---@field player IsoPlayer|IsoGameCharacter the player whose trait should change
+---@field trait CharacterTrait the trait to gain or lose
+---@field modData EvolvingTraitsWorldModData the player's ETW mod data
+---@field positiveTrait boolean whether the trait is positive or negative, used for notifications
+---@field gainingTrait boolean whether the trait is being gained or lost
+
+---Queues a trait change when the Delayed Traits System is enabled, or applies it when ready.
+---@param context ETWProcessTraitChangeContext
+---@return boolean applied whether the trait change was applied immediately
+function ETW_CommonFunctions.processTraitChange(context)
+	local player = context.player
+	local trait = context.trait
+	local modData = context.modData
+	if
+		SBvars.DelayedTraitsSystem
+		and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, trait, modData)
+	then
+		ETW_CommonFunctions.addTraitToDelayTable(context)
+		return false
+	elseif not SBvars.DelayedTraitsSystem or ETW_CommonFunctions.checkDelayedTraits(player, trait, modData) then
+		if context.gainingTrait then
+			ETW_CommonFunctions.addTraitToPlayer(context)
+		else
+			ETW_CommonFunctions.removeTraitFromPlayer(context)
+		end
+		return true
+	end
+	return false
+end
+
 ---@class ETWAddTraitToDelayTableContext
 ---@field player IsoPlayer|IsoGameCharacter the player to add trait to
 ---@field trait CharacterTrait the trait to add

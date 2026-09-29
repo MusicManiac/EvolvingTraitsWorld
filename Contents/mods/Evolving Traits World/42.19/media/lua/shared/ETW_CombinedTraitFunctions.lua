@@ -375,38 +375,13 @@ function ETWCombinedTraitChecks.bodyworkEnthusiastCheck(player)
 	if modData then
 		local level = player:getPerkLevel(Perks.MetalWelding) + player:getPerkLevel(Perks.Mechanics)
 		if level >= SBvars.BodyworkEnthusiastSkill and modData.VehiclePartRepairs >= SBvars.BodyworkEnthusiastRepairs then
-			if
-				SBvars.DelayedTraitsSystem
-				and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(
-					player,
-					ETWTraitsRegistry.BODYWORK_ENTHUSIAST,
-					modData
-				)
-			then
-				ETW_CommonFunctions.addTraitToDelayTable({
-					modData = modData,
-					trait = ETWTraitsRegistry.BODYWORK_ENTHUSIAST,
-					player = player,
-					positiveTrait = true,
-					gainingTrait = true,
-				})
-			elseif
-				not SBvars.DelayedTraitsSystem
-				or (
-					SBvars.DelayedTraitsSystem
-					and ETW_CommonFunctions.checkDelayedTraits(
-						player,
-						ETWTraitsRegistry.BODYWORK_ENTHUSIAST,
-						modData
-					)
-				)
-			then
-				ETW_CommonFunctions.addTraitToPlayer({
-					player = player,
-					trait = ETWTraitsRegistry.BODYWORK_ENTHUSIAST,
-					positiveTrait = true,
-				})
-			end
+			ETW_CommonFunctions.processTraitChange({
+				modData = modData,
+				trait = ETWTraitsRegistry.BODYWORK_ENTHUSIAST,
+				player = player,
+				positiveTrait = true,
+				gainingTrait = true,
+			})
 		end
 	end
 end
@@ -420,30 +395,13 @@ function ETWCombinedTraitChecks.mechanicsCheck(player)
 		player:getPerkLevel(Perks.Mechanics) >= SBvars.MechanicsSkill
 		and modData and modData.VehiclePartRepairs >= SBvars.MechanicsRepairs
 	then
-		if
-			SBvars.DelayedTraitsSystem
-			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.MECHANICS, modData)
-		then
-			ETW_CommonFunctions.addTraitToDelayTable({
-				modData = modData,
-				trait = CharacterTrait.MECHANICS,
-				player = player,
-				positiveTrait = true,
-				gainingTrait = true,
-			})
-		elseif
-			not SBvars.DelayedTraitsSystem
-			or (
-				SBvars.DelayedTraitsSystem
-				and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.MECHANICS, modData)
-			)
-		then
-			ETW_CommonFunctions.addTraitToPlayer({
-				player = player,
-				trait = CharacterTrait.MECHANICS,
-				positiveTrait = true,
-			})
-		end
+		ETW_CommonFunctions.processTraitChange({
+			modData = modData,
+			trait = CharacterTrait.MECHANICS,
+			player = player,
+			positiveTrait = true,
+			gainingTrait = true,
+		})
 	end
 end
 
@@ -456,30 +414,13 @@ function ETWCombinedTraitChecks.sewerCheck(player)
 		player:getPerkLevel(Perks.Tailoring) >= SBvars.SewerSkill
 		and modData and #modData.UniqueClothingRipped >= SBvars.SewerUniqueClothesRipped
 	then
-		if
-			SBvars.DelayedTraitsSystem
-			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, CharacterTrait.TAILOR, modData)
-		then
-			ETW_CommonFunctions.addTraitToDelayTable({
-				modData = modData,
-				trait = CharacterTrait.TAILOR,
-				player = player,
-				positiveTrait = true,
-				gainingTrait = true,
-			})
-		elseif
-			not SBvars.DelayedTraitsSystem
-			or (
-				SBvars.DelayedTraitsSystem
-				and ETW_CommonFunctions.checkDelayedTraits(player, CharacterTrait.TAILOR, modData)
-			)
-		then
-			ETW_CommonFunctions.addTraitToPlayer({
-				player = player,
-				trait = CharacterTrait.TAILOR,
-				positiveTrait = true,
-			})
-		end
+		ETW_CommonFunctions.processTraitChange({
+			modData = modData,
+			trait = CharacterTrait.TAILOR,
+			player = player,
+			positiveTrait = true,
+			gainingTrait = true,
+		})
 	end
 end
 

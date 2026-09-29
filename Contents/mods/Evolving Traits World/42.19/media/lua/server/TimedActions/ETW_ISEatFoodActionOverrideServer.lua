@@ -99,27 +99,13 @@ local function recordNaturalEaterFood(player, item)
 	if modData.NaturalEaterFoodsEaten < target then
 		return
 	end
-	if
-		SBvars.DelayedTraitsSystem
-		and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(
-			player,
-			ETWTraitsRegistry.NATURAL_EATER,
-			modData
-		)
-	then
-		ETW_CommonFunctions.addTraitToDelayTable({
-			modData = modData,
-			trait = ETWTraitsRegistry.NATURAL_EATER,
-			player = player,
-			positiveTrait = true,
-			gainingTrait = true,
-		})
-	elseif
-		not SBvars.DelayedTraitsSystem
-		or ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.NATURAL_EATER, modData)
-	then
-		ETW_CommonFunctions.addTraitToPlayer({ player = player, trait = ETWTraitsRegistry.NATURAL_EATER, positiveTrait = true })
-	end
+	ETW_CommonFunctions.processTraitChange({
+		modData = modData,
+		trait = ETWTraitsRegistry.NATURAL_EATER,
+		player = player,
+		positiveTrait = true,
+		gainingTrait = true,
+	})
 end
 
 ---@class AsceticFoodAdjustment
@@ -319,64 +305,26 @@ local function checkEatingSpeedTraits(player, modData)
 		and counter >= target / 2
 		and SBvars.TraitsLockSystemCanLoseNegative
 	then
-		if
-			SBvars.DelayedTraitsSystem
-			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(
-				player,
-				ETWTraitsRegistry.SLOW_EATER,
-				modData
-			)
-		then
-			ETW_CommonFunctions.addTraitToDelayTable({
-				modData = modData,
-				trait = ETWTraitsRegistry.SLOW_EATER,
-				player = player,
-				positiveTrait = false,
-				gainingTrait = false,
-			})
-		elseif
-			not SBvars.DelayedTraitsSystem
-			or (
-				SBvars.DelayedTraitsSystem
-					and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.SLOW_EATER, modData)
-			)
-		then
-			ETW_CommonFunctions.removeTraitFromPlayer({
-				player = player,
-				trait = ETWTraitsRegistry.SLOW_EATER,
-				positiveTrait = false,
-			})
-		end
+		ETW_CommonFunctions.processTraitChange({
+			modData = modData,
+			trait = ETWTraitsRegistry.SLOW_EATER,
+			player = player,
+			positiveTrait = false,
+			gainingTrait = false,
+		})
 	elseif
 		not player:hasTrait(ETWTraitsRegistry.SLOW_EATER)
 		and not player:hasTrait(ETWTraitsRegistry.FAST_EATER)
 		and counter >= target
 		and SBvars.TraitsLockSystemCanGainPositive
 	then
-		if
-			SBvars.DelayedTraitsSystem
-			and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(player, ETWTraitsRegistry.FAST_EATER, modData)
-		then
-			ETW_CommonFunctions.addTraitToDelayTable({
-				modData = modData,
-				trait = ETWTraitsRegistry.FAST_EATER,
-				player = player,
-				positiveTrait = true,
-				gainingTrait = true,
-			})
-		elseif
-			not SBvars.DelayedTraitsSystem
-			or (
-				SBvars.DelayedTraitsSystem
-					and ETW_CommonFunctions.checkDelayedTraits(player, ETWTraitsRegistry.FAST_EATER, modData)
-			)
-		then
-			ETW_CommonFunctions.addTraitToPlayer({
-				player = player,
-				trait = ETWTraitsRegistry.FAST_EATER,
-				positiveTrait = true,
-			})
-		end
+		ETW_CommonFunctions.processTraitChange({
+			modData = modData,
+			trait = ETWTraitsRegistry.FAST_EATER,
+			player = player,
+			positiveTrait = true,
+			gainingTrait = true,
+		})
 	end
 end
 

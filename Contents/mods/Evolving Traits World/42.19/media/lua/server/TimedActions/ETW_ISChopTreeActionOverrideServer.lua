@@ -26,34 +26,13 @@ function ISChopTreeAction:complete()
 		modData.TreesChopped = modData.TreesChopped + 1
 		logETW("ETW Logger | ISChopTreeAction.complete(): modData.TreesChopped = " .. modData.TreesChopped)
 		if modData.TreesChopped >= SBvars.AxemanTrees and ETW_CommonLogicChecks.AxemanShouldExecute(self.character) then
-			if
-				SBvars.DelayedTraitsSystem
-				and not ETW_CommonFunctions.checkIfTraitIsInDelayedTraitsTable(
-					self.character,
-					CharacterTrait.AXEMAN,
-					modData
-				)
-			then
-				ETW_CommonFunctions.addTraitToDelayTable({
-					modData = modData,
-					trait = CharacterTrait.AXEMAN,
-					player = self.character,
-					positiveTrait = true,
-					gainingTrait = true,
-				})
-			elseif
-				not SBvars.DelayedTraitsSystem
-				or (
-					SBvars.DelayedTraitsSystem
-					and ETW_CommonFunctions.checkDelayedTraits(self.character, CharacterTrait.AXEMAN, modData)
-				)
-			then
-				ETW_CommonFunctions.addTraitToPlayer({
-					player = self.character,
-					trait = CharacterTrait.AXEMAN,
-					positiveTrait = true,
-				})
-			end
+			ETW_CommonFunctions.processTraitChange({
+				modData = modData,
+				trait = CharacterTrait.AXEMAN,
+				player = self.character,
+				positiveTrait = true,
+				gainingTrait = true,
+			})
 		end
 	end
 	return originalReturn
