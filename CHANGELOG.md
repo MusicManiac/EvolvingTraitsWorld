@@ -1,5 +1,5 @@
-## v.14.x.x.
-###### xx Sep 2026
+## v.14.3.0
+###### 30 Sep 2026
 
 - General:
   - Some internal code changes
@@ -7,6 +7,8 @@
   - Adjusted default Bloodlust gain multiplier (0.5 -> 1.25)
   - Starting with Gym Rat gives you adjustable average exercise regularity. Option for ppl starting without either Gym Traits System is also present (default: 0)
   - Workshop screenshots updated
+- Translations:
+  - Updated TR to v.14.2.0
 
 ## v.14.2.0
 ###### 28 Sep 2026
