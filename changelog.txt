@@ -1,6 +1,2 @@
 [url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
 
-v.14.1.1
-
-- Fix:
-  - Fixed duplicate translation in JP json
