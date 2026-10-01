@@ -1,6 +1,8 @@
 ## v.14.x.x
 ###### xx Sep 2026
 
+- General:
+  - Added alcoholic traits that each represent different severity of dependence: Alcoholic (Mild), Alcoholic (Moderate), Alcoholic (High), Alcoholic (Severe)
 - Fix:
   - Swapped out Couch Potato to Gym Hater so the name explicitly targets gym exercises 
 

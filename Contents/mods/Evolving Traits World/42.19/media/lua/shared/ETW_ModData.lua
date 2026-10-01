@@ -17,7 +17,7 @@ local ETWTraitsRegistry = ETW_Registry.traits
 local random_instance = newrandom()
 
 ---Increment when fields are added to or migrated in EvolvingTraitsWorld modData.
-local MOD_DATA_VERSION = 1.15
+local MOD_DATA_VERSION = 1.16
 
 local RECENT_TRAIT_EVENT_LIMIT = 10
 
@@ -290,7 +290,14 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	modData.UnwaveringInjurySpeedApplied = modData.UnwaveringInjurySpeedApplied or false
 	modData.SunSensitivityExposure = modData.SunSensitivityExposure or 0
 	modData.SunSensitivityAppliedPain = modData.SunSensitivityAppliedPain or 0
-	
+
+	modData.AlcoholicSystem = modData.AlcoholicSystem or {}
+	local alcoholicSystem = modData.AlcoholicSystem
+	alcoholicSystem.MinutesSinceBeingDrunk = alcoholicSystem.MinutesSinceBeingDrunk or 0
+	alcoholicSystem.WithdrawalStage = alcoholicSystem.WithdrawalStage or 0
+	alcoholicSystem.MinutesUntilNextWithdrawalStage = alcoholicSystem.MinutesUntilNextWithdrawalStage or 0
+	alcoholicSystem.WithdrawalStress = alcoholicSystem.WithdrawalStress or 0
+
 	modData.NoodleLegs = modData.NoodleLegs or {}
 	local noodleLegs = modData.NoodleLegs
 	noodleLegs.Distance = noodleLegs.Distance or 0

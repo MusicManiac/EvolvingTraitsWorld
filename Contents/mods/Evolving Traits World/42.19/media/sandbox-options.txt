@@ -895,6 +895,69 @@ option EvolvingTraitsWorld.ActionHeroCloseDamageBonusPercent
 	page = ETWTraitsSettings,
 	translation = ETW_ActionHeroCloseDamageBonusPercent,
 }
+option EvolvingTraitsWorld.AlcoholicPositiveEffectBaseIntoxicationPercent
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 20,
+	page = ETWTraitsSettings,
+	translation = ETW_AlcoholicPositiveEffectBaseIntoxicationPercent,
+}
+option EvolvingTraitsWorld.AlcoholicPositiveEffectIntoxicationPercentPerStage
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 10,
+	page = ETWTraitsSettings,
+	translation = ETW_AlcoholicPositiveEffectIntoxicationPercentPerStage,
+}
+option EvolvingTraitsWorld.AlcoholicStressAndPanicReductionPerMinute
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 2,
+	page = ETWTraitsSettings,
+	translation = ETW_AlcoholicStressAndPanicReductionPerMinute,
+}
+option EvolvingTraitsWorld.AlcoholicStressAndPanicReductionPerStage
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 1,
+	page = ETWTraitsSettings,
+	translation = ETW_AlcoholicStressAndPanicReductionPerStage,
+}
+option EvolvingTraitsWorld.AlcoholicWithdrawalDelayMultiplier
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 1,
+	page = ETWTraitsSettings,
+	translation = ETW_AlcoholicWithdrawalDelayMultiplier,
+}
+option EvolvingTraitsWorld.AlcoholicWithdrawalResetThresholdPercent
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 50,
+	page = ETWTraitsSettings,
+	translation = ETW_AlcoholicWithdrawalResetThresholdPercent,
+}
+option EvolvingTraitsWorld.AlcoholicWithdrawalStressIncreasePerTick
+{
+	type = double,
+	min = 0,
+	max = 1,
+	default = 0.00001,
+	page = ETWTraitsSettings,
+	translation = ETW_AlcoholicWithdrawalStressIncreasePerTick,
+}
 option EvolvingTraitsWorld.AnemicBleedingDamage
 {
 	type = double,

@@ -108,6 +108,13 @@
 -- Moodles
 --- @field SleepMoodle boolean
 -- Traits
+--- @field AlcoholicPositiveEffectBaseIntoxicationPercent number
+--- @field AlcoholicPositiveEffectIntoxicationPercentPerStage number
+--- @field AlcoholicStressAndPanicReductionPerMinute number
+--- @field AlcoholicStressAndPanicReductionPerStage number
+--- @field AlcoholicWithdrawalDelayMultiplier number
+--- @field AlcoholicWithdrawalResetThresholdPercent number
+--- @field AlcoholicWithdrawalStressIncreasePerTick number
 --- @field Injured boolean
 --- @field InjuredBurns boolean
 --- @field InjuredWoundTimeMultiplier number

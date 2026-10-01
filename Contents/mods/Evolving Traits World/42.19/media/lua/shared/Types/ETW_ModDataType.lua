@@ -78,6 +78,13 @@
 --- @field BloodlustSystem BloodlustSystem
 --- @field GymTraitsSystem GymTraitsSystem
 --- @field AnimalsSystem AnimalsSystem
+--- @field AlcoholicSystem AlcoholicSystem
+
+--- @class AlcoholicSystem
+--- @field MinutesSinceBeingDrunk integer
+--- @field WithdrawalStage integer
+--- @field MinutesUntilNextWithdrawalStage integer
+--- @field WithdrawalStress number
 
 --- @class GymTraitsSystem
 --- @field GymTraitsSystemCounter number

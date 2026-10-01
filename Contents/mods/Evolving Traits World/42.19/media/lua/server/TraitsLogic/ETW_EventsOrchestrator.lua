@@ -2,6 +2,7 @@ require("ETW_ModDataServer")
 
 local ETW_CommonFunctions = require("ETW_CommonFunctions")
 local ETW_Registry = require("ETW_Registry")
+local ETW_Alcoholic = require("TraitsLogic/ETW_Alcoholic")
 local ETW_CombatTraits = require("TraitsLogic/ETW_CombatTraits")
 local ETW_HealthTraits = require("TraitsLogic/ETW_HealthTraits")
 local ETW_MentalTraits = require("TraitsLogic/ETW_MentalTraits")
@@ -46,6 +47,14 @@ local function oneMinuteUpdate()
 		local bodyDamage
 		local stats
 		local modData
+		local alcoholicStage = ETW_Alcoholic.getAlcoholicStage(player)
+		if alcoholicStage > 0 then
+			stats = stats or player:getStats()
+			modData = modData or ETW_CommonFunctions.getETWModData(player)
+			if modData then
+				ETW_Alcoholic.oneMinuteUpdate(player, stats, modData, alcoholicStage)
+			end
+		end
 		if rainIntensity > 0 then
 			stats = stats or player:getStats()
 			ETW_WeatherTraits.rainTraits(player, stats, rainIntensity)
@@ -282,6 +291,7 @@ local function initializeTraitsLogic(playerIndex, player)
 end
 
 local function clearEventsETW()
+	ETW_Alcoholic.clearWithdrawalStressEvent()
 	Events.OnZombieDead.Remove(ETW_CombatTraits.onZombieDead)
 	Events.OnWeaponHitXp.Remove(ETW_CombatTraits.onWeaponHitXP)
 	Events.OnWeaponSwing.Remove(ETW_CombatTraits.onWeaponSwing)
