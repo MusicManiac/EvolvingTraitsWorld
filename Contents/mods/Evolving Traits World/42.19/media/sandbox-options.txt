@@ -375,6 +375,24 @@ option EvolvingTraitsWorld.GymTraitsSystemRegularityMidpoint
 	page = ETWSystems,
 	translation = ETW_GymTraitsSystemRegularityMidpoint,
 }
+option EvolvingTraitsWorld.GymTraitsSystemStartingGymRatRegularity
+{
+	type = integer,
+	min = 0,
+	max = 100,
+	default = 75,
+	page = ETWSystems,
+	translation = ETW_GymTraitsSystemStartingGymRatRegularity,
+}
+option EvolvingTraitsWorld.GymTraitsSystemStartingNoTraitRegularity
+{
+	type = integer,
+	min = 0,
+	max = 100,
+	default = 0,
+	page = ETWSystems,
+	translation = ETW_GymTraitsSystemStartingNoTraitRegularity,
+}
 option EvolvingTraitsWorld.GymTraitsSystemWorkoutGracePeriodHours
 {
 	type = integer,

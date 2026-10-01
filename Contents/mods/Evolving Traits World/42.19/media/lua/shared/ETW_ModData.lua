@@ -14,6 +14,8 @@ local SBvars = SandboxVars.EvolvingTraitsWorld
 local ETW_Registry = require("ETW_Registry")
 local ETWTraitsRegistry = ETW_Registry.traits
 
+local random_instance = newrandom()
+
 ---Increment when fields are added to or migrated in EvolvingTraitsWorld modData.
 local MOD_DATA_VERSION = 1.15
 
@@ -197,6 +199,55 @@ local function getInitialMentalAverage(startingTraits)
 		return midpoint(0, SBvars.MentalStateSystemDepressiveGainThreshold)
 	end
 	return midpoint(SBvars.MentalStateSystemDepressiveLoseThreshold, SBvars.MentalStateSystemBlissfulLoseThreshold)
+end
+
+---Randomly distributes exercise regularity as closely as vanilla increments allow to the requested average.
+---@param player IsoPlayer
+---@param averageRegularity integer
+local function setInitialExerciseRegularity(player, averageRegularity)
+	local exerciseTypes = {}
+	for exerciseType, _ in pairs(FitnessExercises.exercisesType) do
+		exerciseTypes[#exerciseTypes + 1] = exerciseType
+	end
+	if #exerciseTypes == 0 then
+		return
+	end
+
+	for index = #exerciseTypes, 2, -1 do
+		local otherIndex = random_instance:random(1, index)
+		exerciseTypes[index], exerciseTypes[otherIndex] = exerciseTypes[otherIndex], exerciseTypes[index]
+	end
+
+	local fitness = player:getFitness()
+	local regularityMap = fitness:getRegularityMap()
+	regularityMap:clear()
+	local targetAverage = math.max(0, math.min(100, math.floor(averageRegularity)))
+	if targetAverage == 0 then
+		return
+	end
+	fitness:setCurrentExercise(exerciseTypes[1])
+	fitness:incRegularity()
+	local regularityIncrement = fitness:getRegularity(exerciseTypes[1])
+	regularityMap:clear()
+	if regularityIncrement <= 0 then
+		return
+	end
+	local remainingRegularity = targetAverage * #exerciseTypes
+	for index = 1, #exerciseTypes do
+		local remainingExercises = #exerciseTypes - index
+		local minimum = math.max(0, remainingRegularity - remainingExercises * 100)
+		local maximum = math.min(100, remainingRegularity)
+		local regularity = minimum
+		if maximum > minimum then
+			regularity = random_instance:random(minimum, maximum)
+		end
+		fitness:setCurrentExercise(exerciseTypes[index])
+		local repeatCount = math.max(0, math.floor(regularity / regularityIncrement + 0.5))
+		for _ = 1, repeatCount do
+			fitness:incRegularity()
+		end
+		remainingRegularity = remainingRegularity - regularity
+	end
 end
 
 ---Creates modData for player if it doesn't exist and fills it with default values if they don't exist. Should be ran on character creation and loading.
@@ -504,12 +555,14 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	modData.GymTraitsSystem = modData.GymTraitsSystem or {}
 	local gymTraitsSystem = modData.GymTraitsSystem
 	if gymTraitsSystem.GymTraitsSystemCounter == nil then
-		if startingTraits[ETWTraitsRegistry.GYM_RAT:toString()] == true then
+		if startingTraits[ETWTraitsRegistry.GYM_RAT:toString()] == true then 
 			gymTraitsSystem.GymTraitsSystemCounter = SBvars.GymTraitsSystemCounter
+			setInitialExerciseRegularity(player, SBvars.GymTraitsSystemStartingGymRatRegularity or 0)
 		elseif startingTraits[ETWTraitsRegistry.GYM_HATER:toString()] == true then
 			gymTraitsSystem.GymTraitsSystemCounter = -SBvars.GymTraitsSystemCounter
 		else
 			gymTraitsSystem.GymTraitsSystemCounter = 0
+			setInitialExerciseRegularity(player, SBvars.GymTraitsSystemStartingNoTraitRegularity or 0)
 		end
 	end
 	gymTraitsSystem.HoursSinceLastWorkout = gymTraitsSystem.HoursSinceLastWorkout

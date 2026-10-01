@@ -1,6 +1,12 @@
 [url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
 
-v.14.1.1
+v.14.3.0
 
-- Fix:
-  - Fixed duplicate translation in JP json
+- General:
+  - Some internal code changes
+  - Minor optimizations (UI caching)
+  - Adjusted default Bloodlust gain multiplier (0.5 -> 1.25)
+  - Starting with Gym Rat gives you adjustable average exercise regularity. Option for ppl starting without either Gym Traits System is also present (default: 0)
+  - Workshop screenshots updated
+- Translations:
+  - Updated TR to v.14.2.0
