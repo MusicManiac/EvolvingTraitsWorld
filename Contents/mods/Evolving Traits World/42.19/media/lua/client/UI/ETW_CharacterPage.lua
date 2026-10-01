@@ -2770,8 +2770,8 @@ function ISETWUI:createChildren()
 			end
 
 			if ETW_CommonLogicChecks.GymTraitsSystemShouldExecute(player) then
-				str = "+ " .. getCachedTraitUIName(ETWTraitsRegistry.COUCH_POTATO)
-				self.labelCouchPotatoGain = ISLabel:new(
+				str = "+ " .. getCachedTraitUIName(ETWTraitsRegistry.GYM_HATER)
+				self.labelGymHaterGain = ISLabel:new(
 					barOneEighthPosition - strLen(textManager, str) / 2,
 					y,
 					FONT_HGT_SMALL,
@@ -2783,8 +2783,8 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelCouchPotatoGain:setTooltip(getText("UI_ETW_GainTooltip"), "below")
-				self:addChild(self.labelCouchPotatoGain)
+				self.labelGymHaterGain:setTooltip(getText("UI_ETW_GainTooltip"), "below")
+				self:addChild(self.labelGymHaterGain)
 
 				str = "+ " .. getCachedTraitUIName(ETWTraitsRegistry.GYM_RAT)
 				self.labelGymRatGain = ISLabel:new(
@@ -2804,8 +2804,8 @@ function ISETWUI:createChildren()
 
 				y = y + FONT_HGT_SMALL
 
-				str = "- " .. getCachedTraitUIName(ETWTraitsRegistry.COUCH_POTATO)
-				self.labelCouchPotatoLose = ISLabel:new(
+				str = "- " .. getCachedTraitUIName(ETWTraitsRegistry.GYM_HATER)
+				self.labelGymHaterLose = ISLabel:new(
 					barThreeEighthPosition - strLen(textManager, str) / 2,
 					y + FONT_HGT_SMALL,
 					FONT_HGT_SMALL,
@@ -2817,8 +2817,8 @@ function ISETWUI:createChildren()
 					UIFont.Small,
 					true
 				)
-				self.labelCouchPotatoLose:setTooltip(getText("UI_ETW_LooseTooltip"), "above")
-				self:addChild(self.labelCouchPotatoLose)
+				self.labelGymHaterLose:setTooltip(getText("UI_ETW_LooseTooltip"), "above")
+				self:addChild(self.labelGymHaterLose)
 
 				str = "- " .. getCachedTraitUIName(ETWTraitsRegistry.GYM_RAT)
 				self.labelGymRatLose = ISLabel:new(

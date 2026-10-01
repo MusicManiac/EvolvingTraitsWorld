@@ -21,6 +21,7 @@ ETW_Registry = ETW_Registry or {}
 ---@field COLD_AVERSE CharacterTrait
 ---@field COLD_LOVING CharacterTrait
 ---@field COUCH_POTATO CharacterTrait
+---@field GYM_HATER CharacterTrait
 ---@field DEPRIVED CharacterTrait
 ---@field DEPRESSIVE CharacterTrait
 ---@field FURNITURE_ASSEMBLER CharacterTrait
@@ -102,6 +103,7 @@ ETW_Registry.traits = {
 	COLD_AVERSE = CharacterTrait.register("ETW:ColdAverse"),
 	COLD_LOVING = CharacterTrait.register("ETW:ColdLoving"),
 	COUCH_POTATO = CharacterTrait.register("ETW:CouchPotato"),
+	GYM_HATER = CharacterTrait.register("ETW:GymHater"),
 	DEPRIVED = CharacterTrait.register("ETW:Deprived"),
 	DEPRESSIVE = CharacterTrait.register("ETW:Depressive"),
 	FURNITURE_ASSEMBLER = CharacterTrait.register("ETW:FurnitureAssembler"),

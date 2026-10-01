@@ -51,25 +51,25 @@ local function recordGymTraitsWorkoutLoop(player)
 	end
 end
 
----Applies the exercise-only effects of Gym Rat and Couch Potato to a vanilla exercise repeat.
+---Applies the exercise-only effects of Gym Rat and Gym Hater to a vanilla exercise repeat.
 function ISFitnessAction:exeLooped()
 	local player = self.character
 	if not instanceof(player, "IsoPlayer") then
 		return original_ISFitnessAction_exeLooped(self)
 	end
 	local isGymRat = player:hasTrait(ETWTraitsRegistry.GYM_RAT)
-	local isCouchPotato = player:hasTrait(ETWTraitsRegistry.COUCH_POTATO)
+	local isGymHater = player:hasTrait(ETWTraitsRegistry.GYM_HATER)
 	local gymRatXPMultiplier = math.max(1, SBvars.GymRatExerciseXPMultiplier or 2)
-	local couchPotatoXPMultiplier = math.max(0.1, math.min(1, SBvars.CouchPotatoExerciseXPMultiplier or 0.5))
+	local gymHaterXPMultiplier = math.max(0.1, math.min(1, SBvars.GymHaterExerciseXPMultiplier or 0.5))
 	local shouldProcess = (isGymRat and gymRatXPMultiplier > 1)
-		or (isCouchPotato and couchPotatoXPMultiplier < 1)
+		or (isGymHater and gymHaterXPMultiplier < 1)
 	local fitnessXPBefore = shouldProcess and player:getXp():getXP(Perks.Fitness) or 0
 	local strengthXPBefore = shouldProcess and player:getXp():getXP(Perks.Strength) or 0
 
 	local originalReturn = original_ISFitnessAction_exeLooped(self)
 	recordGymTraitsWorkoutLoop(player)
-	if isCouchPotato then
-		local fatigueMultiplier = math.max(1, math.floor(SBvars.CouchPotatoExerciseFatigueMultiplier or 2))
+	if isGymHater then
+		local fatigueMultiplier = math.max(1, math.floor(SBvars.GymHaterExerciseFatigueMultiplier or 2))
 		for _ = 2, fatigueMultiplier do
 			self.fitness:incFutureStiffness()
 		end
@@ -82,7 +82,7 @@ function ISFitnessAction:exeLooped()
 	local strengthXPAfter = player:getXp():getXP(Perks.Strength)
 	local fitnessGain = math.max(0, fitnessXPAfter - fitnessXPBefore)
 	local strengthGain = math.max(0, strengthXPAfter - strengthXPBefore)
-	local xpMultiplier = isGymRat and gymRatXPMultiplier or couchPotatoXPMultiplier
+	local xpMultiplier = isGymRat and gymRatXPMultiplier or gymHaterXPMultiplier
 	local fitnessAdjustment, _, fitnessReason = ETW_CombinedTraitFunctions.calculateProtectedXPAdjustment(
 		player,
 		Perks.Fitness,

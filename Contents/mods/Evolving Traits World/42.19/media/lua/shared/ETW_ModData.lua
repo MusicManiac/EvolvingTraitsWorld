@@ -303,7 +303,7 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.NEEDS_MORE_SLEEP)
 	ETW_ModData.checkStartingTrait(startingTraits, player, ETWTraitsRegistry.BLOODLUST)
 	ETW_ModData.checkStartingTrait(startingTraits, player, ETWTraitsRegistry.GYM_RAT)
-	ETW_ModData.checkStartingTrait(startingTraits, player, ETWTraitsRegistry.COUCH_POTATO)
+	ETW_ModData.checkStartingTrait(startingTraits, player, ETWTraitsRegistry.GYM_HATER)
 	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.SMOKER)
 	ETW_ModData.checkStartingTrait(startingTraits, player, CharacterTrait.OUTDOORSMAN)
 	ETW_ModData.checkStartingTrait(startingTraits, player, ETWTraitsRegistry.PLUVIOPHILE)
@@ -506,7 +506,7 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	if gymTraitsSystem.GymTraitsSystemCounter == nil then
 		if startingTraits[ETWTraitsRegistry.GYM_RAT:toString()] == true then
 			gymTraitsSystem.GymTraitsSystemCounter = SBvars.GymTraitsSystemCounter
-		elseif startingTraits[ETWTraitsRegistry.COUCH_POTATO:toString()] == true then
+		elseif startingTraits[ETWTraitsRegistry.GYM_HATER:toString()] == true then
 			gymTraitsSystem.GymTraitsSystemCounter = -SBvars.GymTraitsSystemCounter
 		else
 			gymTraitsSystem.GymTraitsSystemCounter = 0

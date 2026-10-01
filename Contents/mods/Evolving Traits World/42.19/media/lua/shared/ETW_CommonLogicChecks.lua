@@ -366,10 +366,10 @@ function ETW_CommonLogicChecks.GymRatGameplayEnabled()
 	return traitShouldExecute("GymRatEnabled")
 end
 
----Returns whether Trait Sandbox permits Couch Potato gameplay acquisition.
+---Returns whether Trait Sandbox permits Gym Hater gameplay acquisition.
 ---@return boolean
-function ETW_CommonLogicChecks.CouchPotatoGameplayEnabled()
-	return traitShouldExecute("CouchPotatoEnabled")
+function ETW_CommonLogicChecks.GymHaterGameplayEnabled()
+	return traitShouldExecute("GymHaterEnabled")
 end
 
 ---Returns whether Injured may be lost dynamically.

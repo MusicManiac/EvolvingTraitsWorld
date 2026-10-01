@@ -373,18 +373,24 @@ local function olympian()
 	end
 end
 
----Advances Gym Rat and Couch Potato progression from average exercise regularity once per in-game hour.
+---Advances Gym Rat and Gym Hater progression from average exercise regularity once per in-game hour.
 local function gymTraitsSystem()
 	local playersList = ETW_CommonFunctions.playersList()
 	local maximumProgress = SBvars.GymTraitsSystemCounter
 	local midpoint = math.max(0, math.min(100, SBvars.GymTraitsSystemRegularityMidpoint or 50))
-	local couchPotatoGainThreshold = maximumProgress * -0.75
-	local couchPotatoLossThreshold = maximumProgress * -0.25
+	local gymHaterGainThreshold = maximumProgress * -0.75
+	local gymHaterLossThreshold = maximumProgress * -0.25
 	local gymRatLossThreshold = maximumProgress * 0.25
 	local gymRatGainThreshold = maximumProgress * 0.75
 
 	for i = 0, playersList:size() - 1 do
 		local player = playersList:get(i)
+		-- Temporary save migration: keep the legacy trait registered so old saves load,
+		-- then replace it before the Gym Traits System performs any normal processing.
+		if player:hasTrait(ETWTraitsRegistry.COUCH_POTATO) then
+			player:getCharacterTraits():remove(ETWTraitsRegistry.COUCH_POTATO)
+			player:getCharacterTraits():add(ETWTraitsRegistry.GYM_HATER)
+		end
 		if ETW_CommonLogicChecks.GymTraitsSystemShouldExecute(player) then
 			local modData = ETW_CommonFunctions.getETWModData(player)
 			if modData then
@@ -393,7 +399,7 @@ local function gymTraitsSystem()
 				gymTraitsSystem.HoursSinceLastWorkout = gymTraitsSystem.HoursSinceLastWorkout + 1
 				local averageRegularity = ETW_CommonFunctions.getAverageExerciseRegularity(player)
 				local distanceFromMidpoint = averageRegularity - midpoint
-				local hasCouchPotato = player:hasTrait(ETWTraitsRegistry.COUCH_POTATO)
+				local hasGymHater = player:hasTrait(ETWTraitsRegistry.GYM_HATER)
 				local hasGymRat = player:hasTrait(ETWTraitsRegistry.GYM_RAT)
 				local multiplier = distanceFromMidpoint >= 0
 						and math.max(0, SBvars.GymTraitsSystemProgressGainMultiplier or 1)
@@ -404,7 +410,7 @@ local function gymTraitsSystem()
 					counterChange = ETW_CommonFunctions.applyAffinityToDirectionalChange(
 						modData,
 						distanceFromMidpoint * multiplier,
-						ETWTraitsRegistry.COUCH_POTATO,
+						ETWTraitsRegistry.GYM_HATER,
 						ETWTraitsRegistry.GYM_RAT
 					)
 				end
@@ -412,25 +418,25 @@ local function gymTraitsSystem()
 				gymTraitsSystem.GymTraitsSystemCounter = counter
 
 				if
-					hasCouchPotato
-					and counter >= couchPotatoLossThreshold
+					hasGymHater
+					and counter >= gymHaterLossThreshold
 					and SBvars.TraitsLockSystemCanLoseNegative
 				then
 					ETW_CommonFunctions.removeTraitFromPlayer({
 						player = player,
-						trait = ETWTraitsRegistry.COUCH_POTATO,
+						trait = ETWTraitsRegistry.GYM_HATER,
 						positiveTrait = false,
 					})
 				elseif
-					not hasCouchPotato
+					not hasGymHater
 					and not hasGymRat
-					and counter <= couchPotatoGainThreshold
+					and counter <= gymHaterGainThreshold
 					and SBvars.TraitsLockSystemCanGainNegative
-					and ETW_CommonLogicChecks.CouchPotatoGameplayEnabled()
+					and ETW_CommonLogicChecks.GymHaterGameplayEnabled()
 				then
 					ETW_CommonFunctions.addTraitToPlayer({
 						player = player,
-						trait = ETWTraitsRegistry.COUCH_POTATO,
+						trait = ETWTraitsRegistry.GYM_HATER,
 						positiveTrait = false,
 					})
 				end
@@ -447,7 +453,7 @@ local function gymTraitsSystem()
 					})
 				elseif
 					not hasGymRat
-					and not hasCouchPotato
+					and not hasGymHater
 					and counter >= gymRatGainThreshold
 					and SBvars.TraitsLockSystemCanGainPositive
 					and ETW_CommonLogicChecks.GymRatGameplayEnabled()

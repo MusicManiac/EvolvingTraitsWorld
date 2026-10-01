@@ -254,21 +254,21 @@ option ETWTraitSandbox.GymRatPointValue
 	translation = ETWTS_GymRatPointValue,
 }
 
-option ETWTraitSandbox.CouchPotatoEnabled
+option ETWTraitSandbox.GymHaterEnabled
 {
 	type = boolean,
 	default = true,
 	page = ETWTraitSandbox,
-	translation = ETWTS_CouchPotatoEnabled,
+	translation = ETWTS_GymHaterEnabled,
 }
-option ETWTraitSandbox.CouchPotatoPointValue
+option ETWTraitSandbox.GymHaterPointValue
 {
 	type = integer,
 	min = -100,
 	max = 100,
 	default = 8,
 	page = ETWTraitSandbox,
-	translation = ETWTS_CouchPotatoPointValue,
+	translation = ETWTS_GymHaterPointValue,
 }
 
 option ETWTraitSandbox.HoarderEnabled
@@ -1323,4 +1323,3 @@ option ETWTraitSandbox.MadeOfGlassPointValue
 	page = ETWTraitSandbox,
 	translation = ETWTS_MadeOfGlassPointValue,
 }
-
