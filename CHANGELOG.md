@@ -1,3 +1,9 @@
+## v.14.x.x
+###### xx Sep 2026
+
+- Fix:
+  - Swapped out Couch Potato to Gym Hater so the name explicitly targets gym exercises 
+
 ## v.14.3.0
 ###### 30 Sep 2026
 
