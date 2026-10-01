@@ -1193,24 +1193,6 @@ option EvolvingTraitsWorld.ButterfingersTransferDropChance
 	page = ETWTraitsSettings,
 	translation = ETW_ButterfingersTransferDropChance,
 }
-option EvolvingTraitsWorld.GymHaterExerciseFatigueMultiplier
-{
-	type = integer,
-	min = 1,
-	max = 10,
-	default = 2,
-	page = ETWTraitsSettings,
-	translation = ETW_GymHaterExerciseFatigueMultiplier,
-}
-option EvolvingTraitsWorld.GymHaterExerciseXPMultiplier
-{
-	type = double,
-	min = 0.1,
-	max = 1,
-	default = 0.5,
-	page = ETWTraitsSettings,
-	translation = ETW_GymHaterExerciseXPMultiplier,
-}
 option EvolvingTraitsWorld.DepressiveEpisodeChance
 {
 	type = integer,
@@ -1336,6 +1318,24 @@ option EvolvingTraitsWorld.GourmandCookingTimeMultiplier
 	default = 0.5,
 	page = ETWTraitsSettings,
 	translation = ETW_GourmandCookingTimeMultiplier,
+}
+option EvolvingTraitsWorld.GymHaterExerciseFatigueMultiplier
+{
+	type = integer,
+	min = 1,
+	max = 10,
+	default = 2,
+	page = ETWTraitsSettings,
+	translation = ETW_GymHaterExerciseFatigueMultiplier,
+}
+option EvolvingTraitsWorld.GymHaterExerciseXPMultiplier
+{
+	type = double,
+	min = 0.1,
+	max = 1,
+	default = 0.5,
+	page = ETWTraitsSettings,
+	translation = ETW_GymHaterExerciseXPMultiplier,
 }
 option EvolvingTraitsWorld.GymRatExerciseFatigueReductionPercent
 {
