@@ -4,7 +4,8 @@
 - General:
   - Added alcoholic traits that each represent different severity of dependence: Alcoholic (Mild), Alcoholic (Moderate), Alcoholic (High), Alcoholic (Severe)
 - Fix:
-  - Swapped out Couch Potato to Gym Hater so the name explicitly targets gym exercises 
+  - Swapped out Couch Potato to Gym Hater so the name explicitly targets gym exercises
+  - Fixed misaligned kills display in Bravery System (shown number of progress and real progress were different)
 
 ## v.14.3.0
 ###### 30 Sep 2026

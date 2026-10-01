@@ -3971,7 +3971,10 @@ local function buildRenderStatsCache(player, modData)
 		longBladeKills = (killCountModData["LongBlade"] or {}).count or 0,
 		shortBladeKills = (killCountModData["SmallBlade"] or {}).count or 0,
 		spearKills = (killCountModData["Spear"] or {}).count or 0,
+		fireKills = (killCountModData["Fire"] or {}).count or 0,
 		firearmKills = (killCountModData["Firearm"] or {}).count or 0,
+		vehicleKills = (killCountModData["Vehicles"] or {}).count or 0,
+		explosiveKills = (killCountModData["Explosives"] or {}).count or 0,
 		gordoniteCrowbarKills = ETW_CommonFunctions.getGordoniteCrowbarKills(killCountModData),
 		prowessBladeKillsRequired = ETW_CommonFunctions.getProwessKillRequirement(
 			player,
@@ -4235,7 +4238,10 @@ function ISETWUI:render()
 	local longBladeKills = renderStats.longBladeKills
 	local shortBladeKills = renderStats.shortBladeKills
 	local spearKills = renderStats.spearKills
+	local fireKills = renderStats.fireKills
 	local firearmKills = renderStats.firearmKills
+	local vehicleKills = renderStats.vehicleKills
+	local explosiveKills = renderStats.explosiveKills
 	local gordoniteCrowbarKills = renderStats.gordoniteCrowbarKills
 	local prowessBladeKillsRequired = renderStats.prowessBladeKillsRequired
 	local prowessBluntKillsRequired = renderStats.prowessBluntKillsRequired
@@ -4494,14 +4500,10 @@ function ISETWUI:render()
 	end
 	if self.barBravery ~= nil then
 		local totalKills = player:getZombieKills()
-		local fireKills = killCountModData and (killCountModData["Fire"] or {}).count or 0
-		local firearmsKills = killCountModData and (killCountModData["Firearm"] or {}).count or 0
-		local vehiclesKills = killCountModData and (killCountModData["Vehicles"] or {}).count or 0
-		local explosivesKills = killCountModData and (killCountModData["Explosives"] or {}).count or 0
-		local otherKills = fireKills + vehiclesKills + explosivesKills
-		local meleeKills = totalKills - firearmsKills - otherKills
+		local otherKills = fireKills + vehicleKills + explosiveKills
+		local meleeKills = totalKills - firearmKills - otherKills
 		local braveryKills = meleeKills * SBvars.BraverySystemMeleeKillValue
-			+ firearmsKills * SBvars.BraverySystemFirearmKillValue
+			+ firearmKills * SBvars.BraverySystemFirearmKillValue
 			+ otherKills * SBvars.BraverySystemOtherKillValue
 		self.barBravery:setValue(percentile(0, SBvars.BraverySystemKills, braveryKills))
 		self.barBravery:setTooltip(braveryKills)
