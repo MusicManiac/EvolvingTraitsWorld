@@ -683,8 +683,8 @@ module ETW
         DisabledInMultiplayer = false,
         CharacterTrait = ETW:CouchPotato,
         Cost = 0,
-        UIName = UI_trait_GymHater,
-        UIDescription = UI_trait_GymHaterDesc,
+        UIName = UI_trait_CouchPotato,
+        UIDescription = UI_trait_CouchPotato,
         XPBoosts = Fitness=-1;Strength=-1,
         MutuallyExclusiveTraits = base:athletic;base:fit;base:stout;base:strong;ETW:GymRat,
     }
