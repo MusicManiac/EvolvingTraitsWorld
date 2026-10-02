@@ -110,6 +110,8 @@
 -- Traits
 --- @field AlcoholicPositiveEffectBaseIntoxicationPercent number
 --- @field AlcoholicPositiveEffectIntoxicationPercentPerStage number
+--- @field AlcoholicSevereWithdrawalHandItemDropChancePercent number
+--- @field AlcoholicSevereWithdrawalScreamChancePercent number
 --- @field AlcoholicStressAndPanicReductionPerMinute number
 --- @field AlcoholicStressAndPanicReductionPerStage number
 --- @field AlcoholicWithdrawalDelayMultiplier number

@@ -1,4 +1,5 @@
 local ETW_CommonFunctions = require("ETW_CommonFunctions")
+local ETW_CommonServerFunctions = require("ETW_CommonServerFunctions")
 local ETW_Registry = require("ETW_Registry")
 
 local FILENAME = "ETW_Alcoholic.lua"
@@ -24,6 +25,8 @@ local MINUTES_IN_HOUR = 60
 local MILD_WITHDRAWAL_SEVERITY = 33
 local MODERATE_WITHDRAWAL_SEVERITY = 67
 local SEVERE_WITHDRAWAL_SEVERITY = 100
+local SEVERE_WITHDRAWAL_DROP_SOURCE = "withdrawal(): severe hand-item drop"
+local SEVERE_WITHDRAWAL_SCREAM_SOURCE = "withdrawal(): severe scream"
 
 local MAX_WITHDRAWAL_SEVERITY_BY_ALCOHOLIC_STAGE = {
 	[0] = 0,
@@ -40,6 +43,14 @@ local ALCOHOLIC_TRAIT_STAGES = {
 
 local withdrawalStressEventRegistered = false
 
+---Rolls a percentage chance with two decimal places of precision.
+---@param chance number Percentage from 0 to 100.
+---@return boolean succeeds
+local function rollPercentChance(chance)
+	local clampedChance = math.max(0, math.min(100, chance))
+	return random_instance:random(1, 10000) <= clampedChance * 100
+end
+
 ---Returns the severity of the Alcoholic trait currently held by the player.
 ---@param player IsoPlayer
 ---@return integer stage Zero when the player has no Alcoholic trait.
@@ -54,7 +65,7 @@ function ETW_Alcoholic.getAlcoholicStage(player)
 	return 0
 end
 
----Applies shared acute-withdrawal effects and provides severity-specific effect sections.
+---Applies shared per-minute acute-withdrawal effects and provides severity-specific effect sections.
 ---@param player IsoPlayer
 ---@param stats Stats
 ---@param withdrawalSeverity number Percentage from 0 to 100.
@@ -62,6 +73,14 @@ local function withdrawal(player, stats, withdrawalSeverity)
 	-- Shared withdrawal effects belong here and can scale with withdrawalSeverity.
 	if withdrawalSeverity >= SEVERE_WITHDRAWAL_SEVERITY then
 		-- Severe: seizures, severe agitation, hallucinations, or delirium-like symptoms.
+		local dropChance = SBvars.AlcoholicSevereWithdrawalHandItemDropChancePercent or 4
+		if rollPercentChance(dropChance) then
+			ETW_CommonServerFunctions.triggerHandItemDrop(player, SEVERE_WITHDRAWAL_DROP_SOURCE)
+		end
+		local screamChance = SBvars.AlcoholicSevereWithdrawalScreamChancePercent or 4
+		if rollPercentChance(screamChance) then
+			ETW_CommonServerFunctions.triggerSurprisedScream(player, true, SEVERE_WITHDRAWAL_SCREAM_SOURCE)
+		end
 	elseif withdrawalSeverity >= MODERATE_WITHDRAWAL_SEVERITY then
 		-- Moderate: stronger tremor, nausea, elevated heart rate, worse anxiety, confusion, or perceptual disturbances.
 	elseif withdrawalSeverity > 0 then
@@ -120,7 +139,7 @@ local function selectNextWithdrawalTarget(alcoholicSystem, alcoholicStage)
 	alcoholicSystem.MinutesUntilNextWithdrawalSeverityChange = rollWithdrawalDelay(alcoholicStage)
 end
 
----Moves acute-withdrawal severity toward its target by one minute of the rolled duration.
+---Moves acute-withdrawal severity toward its target and holds the severe peak for a full stage duration.
 ---@param alcoholicSystem AlcoholicSystem
 ---@param alcoholicStage integer
 local function updateWithdrawal(alcoholicSystem, alcoholicStage)
@@ -137,13 +156,27 @@ local function updateWithdrawal(alcoholicSystem, alcoholicStage)
 
 	local minutesRemaining = math.max(1, alcoholicSystem.MinutesUntilNextWithdrawalSeverityChange)
 	local targetSeverity = alcoholicSystem.WithdrawalTargetSeverity
+	local previousSeverity = alcoholicSystem.WithdrawalSeverity
 	alcoholicSystem.WithdrawalSeverity = alcoholicSystem.WithdrawalSeverity
 		+ (targetSeverity - alcoholicSystem.WithdrawalSeverity) / minutesRemaining
 	alcoholicSystem.MinutesUntilNextWithdrawalSeverityChange = minutesRemaining - 1
 
 	if alcoholicSystem.MinutesUntilNextWithdrawalSeverityChange <= 0 then
 		alcoholicSystem.WithdrawalSeverity = targetSeverity
-		alcoholicSystem.WithdrawalTargetSeverity = nil
+		if
+			previousSeverity < SEVERE_WITHDRAWAL_SEVERITY
+			and targetSeverity >= SEVERE_WITHDRAWAL_SEVERITY
+		then
+			local severeStageMinutesRemaining = rollWithdrawalDelay(alcoholicStage) - 1
+			if severeStageMinutesRemaining > 0 then
+				alcoholicSystem.WithdrawalTargetSeverity = SEVERE_WITHDRAWAL_SEVERITY
+				alcoholicSystem.MinutesUntilNextWithdrawalSeverityChange = severeStageMinutesRemaining
+			else
+				alcoholicSystem.WithdrawalTargetSeverity = nil
+			end
+		else
+			alcoholicSystem.WithdrawalTargetSeverity = nil
+		end
 	end
 end
 

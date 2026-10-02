@@ -913,6 +913,24 @@ option EvolvingTraitsWorld.AlcoholicPositiveEffectIntoxicationPercentPerStage
 	page = ETWTraitsSettings,
 	translation = ETW_AlcoholicPositiveEffectIntoxicationPercentPerStage,
 }
+option EvolvingTraitsWorld.AlcoholicSevereWithdrawalHandItemDropChancePercent
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 4,
+	page = ETWTraitsSettings,
+	translation = ETW_AlcoholicSevereWithdrawalHandItemDropChancePercent,
+}
+option EvolvingTraitsWorld.AlcoholicSevereWithdrawalScreamChancePercent
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 4,
+	page = ETWTraitsSettings,
+	translation = ETW_AlcoholicSevereWithdrawalScreamChancePercent,
+}
 option EvolvingTraitsWorld.AlcoholicStressAndPanicReductionPerMinute
 {
 	type = double,
