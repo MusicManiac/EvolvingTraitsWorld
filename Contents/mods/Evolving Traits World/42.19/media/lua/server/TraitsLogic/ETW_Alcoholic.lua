@@ -19,14 +19,17 @@ local ETWTraitsRegistry = ETW_Registry.traits
 local SBvars = SandboxVars.EvolvingTraitsWorld
 local random_instance = newrandom()
 local MAX_WITHDRAWAL_STRESS = 0.5
-local MAX_WITHDRAWAL_SEVERITY_LEVEL = 3
+local MAX_ALCOHOLIC_STAGE = 3
 local MINUTES_IN_HOUR = 60
+local MILD_WITHDRAWAL_SEVERITY = 33
+local MODERATE_WITHDRAWAL_SEVERITY = 67
+local SEVERE_WITHDRAWAL_SEVERITY = 100
 
-local WITHDRAWAL_SEVERITY_BY_LEVEL = {
+local MAX_WITHDRAWAL_SEVERITY_BY_ALCOHOLIC_STAGE = {
 	[0] = 0,
-	[1] = 33,
-	[2] = 67,
-	[3] = 100,
+	[1] = MILD_WITHDRAWAL_SEVERITY,
+	[2] = MODERATE_WITHDRAWAL_SEVERITY,
+	[3] = SEVERE_WITHDRAWAL_SEVERITY,
 }
 
 local ALCOHOLIC_TRAIT_STAGES = {
@@ -57,9 +60,9 @@ end
 ---@param withdrawalSeverity number Percentage from 0 to 100.
 local function withdrawal(player, stats, withdrawalSeverity)
 	-- Shared withdrawal effects belong here and can scale with withdrawalSeverity.
-	if withdrawalSeverity >= WITHDRAWAL_SEVERITY_BY_LEVEL[3] then
+	if withdrawalSeverity >= SEVERE_WITHDRAWAL_SEVERITY then
 		-- Severe: seizures, severe agitation, hallucinations, or delirium-like symptoms.
-	elseif withdrawalSeverity >= WITHDRAWAL_SEVERITY_BY_LEVEL[2] then
+	elseif withdrawalSeverity >= MODERATE_WITHDRAWAL_SEVERITY then
 		-- Moderate: stronger tremor, nausea, elevated heart rate, worse anxiety, confusion, or perceptual disturbances.
 	elseif withdrawalSeverity > 0 then
 		-- Mild: anxiety, irritability, sweating, mild tremor, headache, or trouble sleeping.
@@ -70,22 +73,20 @@ end
 ---@param alcoholicStage integer
 ---@return integer minutes
 local function rollWithdrawalDelay(alcoholicStage)
-	local minimum = 12 * MINUTES_IN_HOUR - alcoholicStage * 1.5 * MINUTES_IN_HOUR
-	local maximum = 24 * MINUTES_IN_HOUR - alcoholicStage * 2 * MINUTES_IN_HOUR
+	local minimum = 12 * MINUTES_IN_HOUR + alcoholicStage * 1.5 * MINUTES_IN_HOUR
+	local maximum = 24 * MINUTES_IN_HOUR + alcoholicStage * 3 * MINUTES_IN_HOUR
 	local multiplier = math.max(0, SBvars.AlcoholicWithdrawalDelayMultiplier or 1)
 	return math.max(1, math.floor(random_instance:random(minimum, maximum) * multiplier + 0.5))
 end
 
----Returns the discrete timing level represented by an acute-withdrawal severity.
----@param withdrawalSeverity number
----@return integer level
-local function withdrawalSeverityLevel(withdrawalSeverity)
-	if withdrawalSeverity >= 84 then
-		return 3
-	elseif withdrawalSeverity >= 50 then
-		return 2
-	elseif withdrawalSeverity > 0 then
-		return 1
+---Returns the next lower acute-withdrawal severity target.
+---@param currentSeverity number
+---@return number severity
+local function nextLowerWithdrawalSeverity(currentSeverity)
+	if currentSeverity > MODERATE_WITHDRAWAL_SEVERITY then
+		return MODERATE_WITHDRAWAL_SEVERITY
+	elseif currentSeverity > MILD_WITHDRAWAL_SEVERITY then
+		return MILD_WITHDRAWAL_SEVERITY
 	end
 	return 0
 end
@@ -94,24 +95,28 @@ end
 ---@param alcoholicSystem AlcoholicSystem
 ---@param alcoholicStage integer
 local function selectNextWithdrawalTarget(alcoholicSystem, alcoholicStage)
-	local maximumSeverityLevel = math.min(alcoholicStage, MAX_WITHDRAWAL_SEVERITY_LEVEL)
-	local currentSeverityLevel = withdrawalSeverityLevel(alcoholicSystem.WithdrawalSeverity)
-	local nextSeverityLevel
-	if alcoholicSystem.WithdrawalIncreasing then
-		if currentSeverityLevel >= maximumSeverityLevel then
-			alcoholicSystem.WithdrawalIncreasing = false
-			nextSeverityLevel = math.min(currentSeverityLevel - 1, maximumSeverityLevel)
+	local maximumSeverity =
+		MAX_WITHDRAWAL_SEVERITY_BY_ALCOHOLIC_STAGE[math.min(alcoholicStage, MAX_ALCOHOLIC_STAGE)]
+	local currentSeverity = alcoholicSystem.WithdrawalSeverity
+	local nextSeverity
+	if alcoholicSystem.WithdrawalIncreasing and currentSeverity < maximumSeverity then
+		if currentSeverity < MILD_WITHDRAWAL_SEVERITY then
+			nextSeverity = MILD_WITHDRAWAL_SEVERITY
+		elseif currentSeverity < MODERATE_WITHDRAWAL_SEVERITY then
+			nextSeverity = MODERATE_WITHDRAWAL_SEVERITY
 		else
-			nextSeverityLevel = currentSeverityLevel + 1
-			if nextSeverityLevel >= maximumSeverityLevel then
-				alcoholicSystem.WithdrawalIncreasing = false
-			end
+			nextSeverity = SEVERE_WITHDRAWAL_SEVERITY
+		end
+		nextSeverity = math.min(nextSeverity, maximumSeverity)
+		if nextSeverity >= maximumSeverity then
+			alcoholicSystem.WithdrawalIncreasing = false
 		end
 	else
-		nextSeverityLevel = math.min(maximumSeverityLevel, math.max(0, currentSeverityLevel - 1))
+		alcoholicSystem.WithdrawalIncreasing = false
+		nextSeverity = nextLowerWithdrawalSeverity(currentSeverity)
 	end
 
-	alcoholicSystem.WithdrawalTargetSeverity = WITHDRAWAL_SEVERITY_BY_LEVEL[nextSeverityLevel]
+	alcoholicSystem.WithdrawalTargetSeverity = nextSeverity
 	alcoholicSystem.MinutesUntilNextWithdrawalSeverityChange = rollWithdrawalDelay(alcoholicStage)
 end
 

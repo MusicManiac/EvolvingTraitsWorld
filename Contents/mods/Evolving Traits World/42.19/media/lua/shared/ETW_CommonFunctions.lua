@@ -50,10 +50,11 @@ local function paranoiaScreamVolume()
 	return 1
 end
 
----Plays the local false-scare sounds used by Paranoia.
+---Plays the local surprise and optional scream sounds requested by a server-side effect.
 ---@param player IsoPlayer
 ---@param yell boolean
-function ETW_CommonFunctions.playParanoiaScare(player, yell)
+---@param source string
+function ETW_CommonFunctions.playSurprisedScream(player, yell, source)
 	local surprisedSoundID = player:playSoundLocal("ZombieSurprisedPlayer")
 	local yellSound
 	local yellSoundID
@@ -69,7 +70,9 @@ function ETW_CommonFunctions.playParanoiaScare(player, yell)
 		end
 	end
 	ETW_CommonFunctions.log(
-		"ETW Logger | playParanoiaScare(): played ZombieSurprisedPlayer; sound ID="
+		"ETW Logger | playSurprisedScream(): source: "
+			.. source
+			.. "; played ZombieSurprisedPlayer; sound ID="
 			.. tostring(surprisedSoundID)
 			.. "; yell: "
 			.. tostring(yellSound ~= nil)
@@ -1002,18 +1005,21 @@ function ETW_CommonFunctions.displayButterfingersPopup(player)
 	end
 end
 
----Drops held items locally, or asks the owning client to do so when called by an MP server.
+---Drops the player's held items in the local owning-player context.
 ---@param player IsoPlayer
-function ETW_CommonFunctions.dropButterfingersHandItems(player)
-	if gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
-		sendServerCommand(player, "ETW", "dropButterfingersHandItems", {})
-		ETW_CommonFunctions.log(
-			"ETW Logger | dropButterfingersHandItems(): requested client-side drop for " .. player:getUsername()
-		)
-	else
-		player:dropHandItems()
-		ETW_CommonFunctions.log("ETW Logger | dropButterfingersHandItems(): executed locally")
-	end
+---@param source string
+function ETW_CommonFunctions.executeHandItemDrop(player, source)
+	local primaryItem = player:getPrimaryHandItem()
+	local secondaryItem = player:getSecondaryHandItem()
+	player:dropHandItems()
+	ETW_CommonFunctions.log(
+		"ETW Logger | executeHandItemDrop(): source: "
+			.. source
+			.. "; primary: "
+			.. (primaryItem and primaryItem:getFullType() or "nil")
+			.. "; secondary: "
+			.. (secondaryItem and secondaryItem:getFullType() or "nil")
+	)
 end
 
 ---Triggers a Noodle Legs fall locally, or asks the owning client to do so when called by an MP server.

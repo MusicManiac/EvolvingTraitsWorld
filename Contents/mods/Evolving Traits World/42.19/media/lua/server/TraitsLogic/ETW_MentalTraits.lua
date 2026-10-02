@@ -21,7 +21,6 @@ local ETWTraitsRegistry = ETW_Registry.traits
 local SBvars = SandboxVars.EvolvingTraitsWorld
 local random_instance = newrandom()
 local logETW = ETW_CommonFunctions.log
-local gameMode = ETW_CommonFunctions.gameMode()
 local PARANOIA_YELL_RADIUS = 50
 local PARANOIA_YELL_VOLUME = 50
 local FIRE_RADIUS = 12
@@ -560,11 +559,7 @@ function ETW_MentalTraits.paranoiaTrait(player, stats, modData)
 		)
 	end
 
-	if gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
-		sendServerCommand(player, "ETW", "triggerParanoiaScare", { yell = yell })
-	else
-		ETW_CommonFunctions.playParanoiaScare(player, yell)
-	end
+	ETW_CommonServerFunctions.triggerSurprisedScream(player, yell, "paranoiaTrait()")
 	logETW(
 		"ETW Logger | paranoiaTrait(): triggered for "
 			.. tostring(player:getUsername())

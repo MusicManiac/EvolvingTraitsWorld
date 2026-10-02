@@ -19,6 +19,11 @@ local logETW = ETW_CommonFunctions.log
 local random_instance = newrandom()
 local ETW_ItemTraits = {}
 local gameMode = ETW_CommonFunctions.gameMode()
+local ETW_CommonServerFunctions
+if gameMode ~= ETW_CommonFunctions.GameMode.MP_CLIENT then
+	ETW_CommonServerFunctions = require("ETW_CommonServerFunctions")
+end
+local BUTTERFINGERS_DROP_SOURCE = "butterfingersTrait()"
 
 ---Limits local execution to the current player while allowing every player on the server.
 ---@param player IsoPlayer|nil
@@ -928,7 +933,9 @@ local function butterfingersTrait(player)
 	if random_instance:random(1, chanceIn) <= math.min(chanceIn, math.max(1, chance)) then
 		local primaryItem = player:getPrimaryHandItem()
 		local secondaryItem = player:getSecondaryHandItem()
-		ETW_CommonFunctions.dropButterfingersHandItems(player)
+		if ETW_CommonServerFunctions then
+			ETW_CommonServerFunctions.triggerHandItemDrop(player, BUTTERFINGERS_DROP_SOURCE)
+		end
 		ETW_CommonFunctions.displayButterfingersPopup(player)
 		logETW(
 			"ETW Logger | butterfingersTrait(): triggered held-item drop; primary: "

@@ -7,9 +7,55 @@ local ETWTraitsRegistry = ETW_Registry.traits
 local SBvars = SandboxVars.EvolvingTraitsWorld
 
 local ETW_CommonServerFunctions = {}
+local gameMode = ETW_CommonFunctions.gameMode()
+
+local FILENAME = "ETW_CommonServerFunctions.lua"
+if
+	not ETW_CommonFunctions.gameModeSafeguard(
+		FILENAME,
+		{ ETW_CommonFunctions.GameMode.SP, ETW_CommonFunctions.GameMode.MP_SERVER }
+	)
+then
+	return
+end
 
 local BLOODLUST_KILLS_FOR_BASE_MULTIPLIER = 10
 local BLOODLUST_KILLS_PER_ADDITIONAL_MULTIPLIER = 20
+
+---Drops held items locally in SP or requests the owning client to drop them in MP.
+---@param player IsoPlayer
+---@param source string
+function ETW_CommonServerFunctions.triggerHandItemDrop(player, source)
+	if gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
+		sendServerCommand(player, "ETW", "triggerHandItemDrop", { source = source })
+		ETW_CommonFunctions.log(
+			"ETW Logger | triggerHandItemDrop(): source: "
+				.. source
+				.. "; requested client-side drop for "
+				.. player:getUsername()
+		)
+	else
+		ETW_CommonFunctions.executeHandItemDrop(player, source)
+	end
+end
+
+---Plays surprise and optional scream sounds locally in SP or requests them on the owning client in MP.
+---@param player IsoPlayer
+---@param yell boolean
+---@param source string
+function ETW_CommonServerFunctions.triggerSurprisedScream(player, yell, source)
+	if gameMode == ETW_CommonFunctions.GameMode.MP_SERVER then
+		sendServerCommand(player, "ETW", "triggerSurprisedScream", { yell = yell, source = source })
+		ETW_CommonFunctions.log(
+			"ETW Logger | triggerSurprisedScream(): source: "
+				.. source
+				.. "; requested client-side playback for "
+				.. player:getUsername()
+		)
+	else
+		ETW_CommonFunctions.playSurprisedScream(player, yell, source)
+	end
+end
 
 ---Loops over worn clothing and optionally calculates its average blood level.
 ---@param player IsoPlayer

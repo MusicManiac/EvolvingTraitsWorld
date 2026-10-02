@@ -107,22 +107,22 @@ Commands.displayButterfingersPopup = function(player, args)
 	ETW_CommonFunctions.displayButterfingersPopup(player)
 end
 
----Executes the owning client's Butterfingers held-item drop so MP inventory changes synchronize correctly.
-Commands.dropButterfingersHandItems = function(player, args)
+---Drops the owning client's held items so MP inventory changes synchronize correctly.
+---@class TriggerHandItemDropArgs
+---@field source string
+---@param args TriggerHandItemDropArgs
+Commands.triggerHandItemDrop = function(player, args)
+	local source = tostring(args and args.source or "unknown")
 	player = resolveLocalPlayer(player)
 	if not player then
-		logETW("ETW Logger | Commands.dropButterfingersHandItems(): player not ready, skipping")
+		logETW(
+			"ETW Logger | Commands.triggerHandItemDrop(): source: "
+				.. source
+				.. "; player not ready, skipping"
+		)
 		return
 	end
-	local primaryItem = player:getPrimaryHandItem()
-	local secondaryItem = player:getSecondaryHandItem()
-	player:dropHandItems()
-	logETW(
-		"ETW Logger | Commands.dropButterfingersHandItems(): executed; primary: "
-			.. (primaryItem and primaryItem:getFullType() or "nil")
-			.. ", secondary: "
-			.. (secondaryItem and secondaryItem:getFullType() or "nil")
-	)
+	ETW_CommonFunctions.executeHandItemDrop(player, source)
 end
 
 ---Applies the Noodle Legs bump state on the owning client.
@@ -136,21 +136,23 @@ Commands.triggerNoodleLegsTrip = function(player, args)
 	ETW_CommonFunctions.triggerNoodleLegsTrip(player, side)
 end
 
----Plays a server-authorized Paranoia false scare on the owning MP client.
----@class TriggerParanoiaScareArgs
+---Plays server-authorized surprise and optional scream sounds on the owning MP client.
+---@class TriggerSurprisedScreamArgs
 ---@field yell boolean
----@param args TriggerParanoiaScareArgs
-Commands.triggerParanoiaScare = function(player, args)
+---@field source string
+---@param args TriggerSurprisedScreamArgs
+Commands.triggerSurprisedScream = function(player, args)
+	local source = tostring(args and args.source or "unknown")
 	player = resolveLocalPlayer(player)
 	if not player then
-		logETW("ETW Logger | Commands.triggerParanoiaScare(): player not ready, skipping")
+		logETW(
+			"ETW Logger | Commands.triggerSurprisedScream(): source: "
+				.. source
+				.. "; player not ready, skipping"
+		)
 		return
 	end
-	ETW_CommonFunctions.playParanoiaScare(player, args.yell == true)
-	logETW(
-		"ETW Logger | Commands.triggerParanoiaScare(): played locally for "
-			.. tostring(player:getUsername())
-	)
+	ETW_CommonFunctions.playSurprisedScream(player, args.yell == true, source)
 end
 
 ---Mirrors a server-authoritative Bouncer stagger on the owning client.
