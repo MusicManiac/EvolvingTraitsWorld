@@ -6,7 +6,6 @@ ETW_Registry = ETW_Registry or {}
 ---@field ACTION_HERO CharacterTrait
 ---@field ALCOHOLIC_MILD CharacterTrait
 ---@field ALCOHOLIC_MODERATE CharacterTrait
----@field ALCOHOLIC_HIGH CharacterTrait
 ---@field ALCOHOLIC_SEVERE CharacterTrait
 ---@field ANEMIC CharacterTrait
 ---@field ANTI_GUN_ACTIVIST CharacterTrait
@@ -92,7 +91,6 @@ ETW_Registry.traits = {
 	ACTION_HERO = CharacterTrait.register("ETW:ActionHero"),
 	ALCOHOLIC_MILD = CharacterTrait.register("ETW:AlcoholicMild"),
 	ALCOHOLIC_MODERATE = CharacterTrait.register("ETW:AlcoholicModerate"),
-	ALCOHOLIC_HIGH = CharacterTrait.register("ETW:AlcoholicHigh"),
 	ALCOHOLIC_SEVERE = CharacterTrait.register("ETW:AlcoholicSevere"),
 	ANEMIC = CharacterTrait.register("ETW:Anemic"),
 	ANTI_GUN_ACTIVIST = CharacterTrait.register("ETW:AntiGunActivist"),

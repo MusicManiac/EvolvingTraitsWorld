@@ -95,8 +95,6 @@
     "UI_trait_AVClubDesc": "You are a part of the AV Club",
     "UI_trait_ActionHero": "Action Hero",
     "UI_trait_ActionHeroDesc": "You live for the thick of the fight.<br>Your weapons deal half their normal damage when no enemies are nearby, but gain damage and critical chance for every living zombie within 10 tiles. Closer zombies provide larger bonuses.",
-    "UI_trait_AlcoholicHigh": "Alcoholic (High)",
-    "UI_trait_AlcoholicHighDesc": "You are highly dependent on alcohol.<br>Sufficient intoxication steadily reduces panic and stress, but going without alcohol eventually causes acute withdrawal.",
     "UI_trait_AlcoholicMild": "Alcoholic (Mild)",
     "UI_trait_AlcoholicMildDesc": "You are mildly dependent on alcohol.<br>Sufficient intoxication steadily reduces panic and stress, but going without alcohol eventually causes acute withdrawal.",
     "UI_trait_AlcoholicModerate": "Alcoholic (Moderate)",

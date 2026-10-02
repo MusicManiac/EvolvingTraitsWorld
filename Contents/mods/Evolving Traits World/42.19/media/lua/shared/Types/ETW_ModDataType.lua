@@ -82,9 +82,11 @@
 
 --- @class AlcoholicSystem
 --- @field MinutesSinceBeingDrunk integer
---- @field WithdrawalStage integer
---- @field MinutesUntilNextWithdrawalStage integer
+--- @field WithdrawalSeverity number
+--- @field MinutesUntilNextWithdrawalSeverityChange integer
+--- @field WithdrawalTargetSeverity number|nil
 --- @field WithdrawalStress number
+--- @field WithdrawalIncreasing boolean
 
 --- @class GymTraitsSystem
 --- @field GymTraitsSystemCounter number

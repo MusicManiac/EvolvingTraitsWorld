@@ -8,7 +8,7 @@ module ETW
         Cost = -2,
         UIName = UI_trait_AlcoholicMild,
         UIDescription = UI_trait_AlcoholicMildDesc,
-        MutuallyExclusiveTraits = ETW:AlcoholicModerate;ETW:AlcoholicHigh;ETW:AlcoholicSevere,
+        MutuallyExclusiveTraits = ETW:AlcoholicModerate;ETW:AlcoholicSevere,
     }
 
     character_trait_definition ETW:AlcoholicModerate
@@ -19,18 +19,7 @@ module ETW
         Cost = -4,
         UIName = UI_trait_AlcoholicModerate,
         UIDescription = UI_trait_AlcoholicModerateDesc,
-        MutuallyExclusiveTraits = ETW:AlcoholicMild;ETW:AlcoholicHigh;ETW:AlcoholicSevere,
-    }
-
-    character_trait_definition ETW:AlcoholicHigh
-    {
-        IsProfessionTrait = false,
-        DisabledInMultiplayer = false,
-        CharacterTrait = ETW:AlcoholicHigh,
-        Cost = -6,
-        UIName = UI_trait_AlcoholicHigh,
-        UIDescription = UI_trait_AlcoholicHighDesc,
-        MutuallyExclusiveTraits = ETW:AlcoholicMild;ETW:AlcoholicModerate;ETW:AlcoholicSevere,
+        MutuallyExclusiveTraits = ETW:AlcoholicMild;ETW:AlcoholicSevere,
     }
 
     character_trait_definition ETW:AlcoholicSevere
@@ -41,7 +30,7 @@ module ETW
         Cost = -8,
         UIName = UI_trait_AlcoholicSevere,
         UIDescription = UI_trait_AlcoholicSevereDesc,
-        MutuallyExclusiveTraits = ETW:AlcoholicMild;ETW:AlcoholicModerate;ETW:AlcoholicHigh,
+        MutuallyExclusiveTraits = ETW:AlcoholicMild;ETW:AlcoholicModerate,
     }
 
     character_trait_definition ETW:ActionHero

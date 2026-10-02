@@ -19,14 +19,20 @@ local ETWTraitsRegistry = ETW_Registry.traits
 local SBvars = SandboxVars.EvolvingTraitsWorld
 local random_instance = newrandom()
 local MAX_WITHDRAWAL_STRESS = 0.5
-local WITHDRAWAL_STAGE_HEAVY = 3
+local MAX_WITHDRAWAL_SEVERITY_LEVEL = 3
 local MINUTES_IN_HOUR = 60
+
+local WITHDRAWAL_SEVERITY_BY_LEVEL = {
+	[0] = 0,
+	[1] = 33,
+	[2] = 67,
+	[3] = 100,
+}
 
 local ALCOHOLIC_TRAIT_STAGES = {
 	[ETWTraitsRegistry.ALCOHOLIC_MILD] = 1,
 	[ETWTraitsRegistry.ALCOHOLIC_MODERATE] = 2,
-	[ETWTraitsRegistry.ALCOHOLIC_HIGH] = 3,
-	[ETWTraitsRegistry.ALCOHOLIC_SEVERE] = 4,
+	[ETWTraitsRegistry.ALCOHOLIC_SEVERE] = 3,
 }
 
 local withdrawalStressEventRegistered = false
@@ -37,8 +43,6 @@ local withdrawalStressEventRegistered = false
 function ETW_Alcoholic.getAlcoholicStage(player)
 	if player:hasTrait(ETWTraitsRegistry.ALCOHOLIC_SEVERE) then
 		return ALCOHOLIC_TRAIT_STAGES[ETWTraitsRegistry.ALCOHOLIC_SEVERE]
-	elseif player:hasTrait(ETWTraitsRegistry.ALCOHOLIC_HIGH) then
-		return ALCOHOLIC_TRAIT_STAGES[ETWTraitsRegistry.ALCOHOLIC_HIGH]
 	elseif player:hasTrait(ETWTraitsRegistry.ALCOHOLIC_MODERATE) then
 		return ALCOHOLIC_TRAIT_STAGES[ETWTraitsRegistry.ALCOHOLIC_MODERATE]
 	elseif player:hasTrait(ETWTraitsRegistry.ALCOHOLIC_MILD) then
@@ -47,22 +51,22 @@ function ETW_Alcoholic.getAlcoholicStage(player)
 	return 0
 end
 
----Placeholder for the first acute-withdrawal stage.
+---Applies shared acute-withdrawal effects and provides severity-specific effect sections.
 ---@param player IsoPlayer
-local function lightWithdrawal(player)
+---@param stats Stats
+---@param withdrawalSeverity number Percentage from 0 to 100.
+local function withdrawal(player, stats, withdrawalSeverity)
+	-- Shared withdrawal effects belong here and can scale with withdrawalSeverity.
+	if withdrawalSeverity >= WITHDRAWAL_SEVERITY_BY_LEVEL[3] then
+		-- Severe: seizures, severe agitation, hallucinations, or delirium-like symptoms.
+	elseif withdrawalSeverity >= WITHDRAWAL_SEVERITY_BY_LEVEL[2] then
+		-- Moderate: stronger tremor, nausea, elevated heart rate, worse anxiety, confusion, or perceptual disturbances.
+	elseif withdrawalSeverity > 0 then
+		-- Mild: anxiety, irritability, sweating, mild tremor, headache, or trouble sleeping.
+	end
 end
 
----Placeholder for the second acute-withdrawal stage.
----@param player IsoPlayer
-local function mediumWithdrawal(player)
-end
-
----Placeholder for the third acute-withdrawal stage.
----@param player IsoPlayer
-local function heavyWithdrawal(player)
-end
-
----Rolls the number of sober minutes before the next acute-withdrawal stage.
+---Rolls the number of sober minutes before the next acute-withdrawal severity change.
 ---@param alcoholicStage integer
 ---@return integer minutes
 local function rollWithdrawalDelay(alcoholicStage)
@@ -72,35 +76,69 @@ local function rollWithdrawalDelay(alcoholicStage)
 	return math.max(1, math.floor(random_instance:random(minimum, maximum) * multiplier + 0.5))
 end
 
----Advances acute withdrawal when the current persisted delay has elapsed.
----@param player IsoPlayer
+---Returns the discrete timing level represented by an acute-withdrawal severity.
+---@param withdrawalSeverity number
+---@return integer level
+local function withdrawalSeverityLevel(withdrawalSeverity)
+	if withdrawalSeverity >= 84 then
+		return 3
+	elseif withdrawalSeverity >= 50 then
+		return 2
+	elseif withdrawalSeverity > 0 then
+		return 1
+	end
+	return 0
+end
+
+---Selects the next progressive acute-withdrawal severity target and its duration.
 ---@param alcoholicSystem AlcoholicSystem
 ---@param alcoholicStage integer
-local function updateWithdrawal(player, alcoholicSystem, alcoholicStage)
-	if alcoholicSystem.WithdrawalStage >= WITHDRAWAL_STAGE_HEAVY then
-		return
-	end
-	if alcoholicSystem.MinutesUntilNextWithdrawalStage <= 0 then
-		alcoholicSystem.MinutesUntilNextWithdrawalStage = rollWithdrawalDelay(alcoholicStage)
-	end
-	alcoholicSystem.MinutesUntilNextWithdrawalStage = alcoholicSystem.MinutesUntilNextWithdrawalStage - 1
-	if alcoholicSystem.MinutesUntilNextWithdrawalStage > 0 then
-		return
-	end
-
-	if alcoholicSystem.WithdrawalStage == 0 then
-		lightWithdrawal(player)
-		alcoholicSystem.WithdrawalStage = 1
-	elseif alcoholicSystem.WithdrawalStage == 1 then
-		mediumWithdrawal(player)
-		alcoholicSystem.WithdrawalStage = 2
+local function selectNextWithdrawalTarget(alcoholicSystem, alcoholicStage)
+	local maximumSeverityLevel = math.min(alcoholicStage, MAX_WITHDRAWAL_SEVERITY_LEVEL)
+	local currentSeverityLevel = withdrawalSeverityLevel(alcoholicSystem.WithdrawalSeverity)
+	local nextSeverityLevel
+	if alcoholicSystem.WithdrawalIncreasing then
+		if currentSeverityLevel >= maximumSeverityLevel then
+			alcoholicSystem.WithdrawalIncreasing = false
+			nextSeverityLevel = math.min(currentSeverityLevel - 1, maximumSeverityLevel)
+		else
+			nextSeverityLevel = currentSeverityLevel + 1
+			if nextSeverityLevel >= maximumSeverityLevel then
+				alcoholicSystem.WithdrawalIncreasing = false
+			end
+		end
 	else
-		heavyWithdrawal(player)
-		alcoholicSystem.WithdrawalStage = WITHDRAWAL_STAGE_HEAVY
+		nextSeverityLevel = math.min(maximumSeverityLevel, math.max(0, currentSeverityLevel - 1))
 	end
 
-	if alcoholicSystem.WithdrawalStage < WITHDRAWAL_STAGE_HEAVY then
-		alcoholicSystem.MinutesUntilNextWithdrawalStage = rollWithdrawalDelay(alcoholicStage)
+	alcoholicSystem.WithdrawalTargetSeverity = WITHDRAWAL_SEVERITY_BY_LEVEL[nextSeverityLevel]
+	alcoholicSystem.MinutesUntilNextWithdrawalSeverityChange = rollWithdrawalDelay(alcoholicStage)
+end
+
+---Moves acute-withdrawal severity toward its target by one minute of the rolled duration.
+---@param alcoholicSystem AlcoholicSystem
+---@param alcoholicStage integer
+local function updateWithdrawal(alcoholicSystem, alcoholicStage)
+	if
+		alcoholicSystem.WithdrawalSeverity <= 0
+		and not alcoholicSystem.WithdrawalIncreasing
+		and alcoholicSystem.WithdrawalTargetSeverity == nil
+	then
+		return
+	end
+	if alcoholicSystem.WithdrawalTargetSeverity == nil then
+		selectNextWithdrawalTarget(alcoholicSystem, alcoholicStage)
+	end
+
+	local minutesRemaining = math.max(1, alcoholicSystem.MinutesUntilNextWithdrawalSeverityChange)
+	local targetSeverity = alcoholicSystem.WithdrawalTargetSeverity
+	alcoholicSystem.WithdrawalSeverity = alcoholicSystem.WithdrawalSeverity
+		+ (targetSeverity - alcoholicSystem.WithdrawalSeverity) / minutesRemaining
+	alcoholicSystem.MinutesUntilNextWithdrawalSeverityChange = minutesRemaining - 1
+
+	if alcoholicSystem.MinutesUntilNextWithdrawalSeverityChange <= 0 then
+		alcoholicSystem.WithdrawalSeverity = targetSeverity
+		alcoholicSystem.WithdrawalTargetSeverity = nil
 	end
 end
 
@@ -113,7 +151,7 @@ local function withdrawalStressUpdate()
 		local alcoholicStage = ETW_Alcoholic.getAlcoholicStage(player)
 		if alcoholicStage > 0 then
 			local modData = ETW_CommonFunctions.getETWModData(player)
-			if modData and modData.AlcoholicSystem.WithdrawalStage > 0 then
+			if modData and modData.AlcoholicSystem.WithdrawalSeverity > 0 then
 				hasWithdrawingAlcoholic = true
 				local stats = player:getStats()
 				local alcoholicSystem = modData.AlcoholicSystem
@@ -168,9 +206,11 @@ function ETW_Alcoholic.oneMinuteUpdate(player, stats, modData, alcoholicStage)
 
 	if intoxication >= withdrawalResetThreshold then
 		alcoholicSystem.MinutesSinceBeingDrunk = 0
-		alcoholicSystem.WithdrawalStage = 0
-		alcoholicSystem.MinutesUntilNextWithdrawalStage = 0
+		alcoholicSystem.WithdrawalSeverity = 0
+		alcoholicSystem.MinutesUntilNextWithdrawalSeverityChange = 0
+		alcoholicSystem.WithdrawalTargetSeverity = nil
 		alcoholicSystem.WithdrawalStress = 0
+		alcoholicSystem.WithdrawalIncreasing = true
 
 		if intoxication >= positiveEffectThreshold then
 			local baseReduction = math.max(0, SBvars.AlcoholicStressAndPanicReductionPerMinute or 2)
@@ -186,8 +226,9 @@ function ETW_Alcoholic.oneMinuteUpdate(player, stats, modData, alcoholicStage)
 	end
 
 	alcoholicSystem.MinutesSinceBeingDrunk = alcoholicSystem.MinutesSinceBeingDrunk + 1
-	updateWithdrawal(player, alcoholicSystem, alcoholicStage)
-	if alcoholicSystem.WithdrawalStage > 0 then
+	updateWithdrawal(alcoholicSystem, alcoholicStage)
+	if alcoholicSystem.WithdrawalSeverity > 0 then
+		withdrawal(player, stats, alcoholicSystem.WithdrawalSeverity)
 		ETW_Alcoholic.ensureWithdrawalStressEvent()
 	end
 end
