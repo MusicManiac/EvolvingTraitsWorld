@@ -1,12 +1,13 @@
 [url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
 
-v.14.3.0
+v.14.4.0
 
 - General:
-  - Some internal code changes
-  - Minor optimizations (UI caching)
-  - Adjusted default Bloodlust gain multiplier (0.5 -> 1.25)
-  - Starting with Gym Rat gives you adjustable average exercise regularity. Option for ppl starting without either Gym Traits System is also present (default: 0)
-  - Workshop screenshots updated
-- Translations:
-  - Updated TR to v.14.2.0
+  - Added alcoholic traits that each represent different severity of dependence: Alcoholic (Mild), Alcoholic (Moderate), Alcoholic (Severe)
+    - Detailed withdrawal effects simulation.
+    - Moodle support
+    - Sandbox options
+    - Not dynamic
+- Fix:
+  - Swapped out Couch Potato to Gym Hater so the name explicitly targets gym exercises
+  - Fixed misaligned kills display in Bravery System (shown number of progress and real progress were different)

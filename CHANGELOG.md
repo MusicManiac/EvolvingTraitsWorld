@@ -1,3 +1,10 @@
+## v.14.x.x
+###### xx Oct 2026
+
+- Fix:
+  - Fixed Immunocompromised and Super-Immune not being marked as dynamic.
+
+
 ## v.14.4.0
 ###### 03 Oct 2026
 
