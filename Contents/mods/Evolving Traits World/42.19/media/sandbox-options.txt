@@ -1100,15 +1100,6 @@ option EvolvingTraitsWorld.AlcoholicStressAndPanicReductionPerStage
 	page = ETWTraitsSettings,
 	translation = ETW_AlcoholicStressAndPanicReductionPerStage,
 }
-option EvolvingTraitsWorld.AlcoholicWithdrawalDelayMultiplier
-{
-	type = double,
-	min = 0,
-	max = 100,
-	default = 1,
-	page = ETWTraitsSettings,
-	translation = ETW_AlcoholicWithdrawalDelayMultiplier,
-}
 option EvolvingTraitsWorld.AlcoholicWithdrawalResetThresholdPercent
 {
 	type = double,
@@ -1117,6 +1108,15 @@ option EvolvingTraitsWorld.AlcoholicWithdrawalResetThresholdPercent
 	default = 50,
 	page = ETWTraitsSettings,
 	translation = ETW_AlcoholicWithdrawalResetThresholdPercent,
+}
+option EvolvingTraitsWorld.AlcoholicWithdrawalStageDurationMultiplier
+{
+	type = double,
+	min = 0,
+	max = 100,
+	default = 1,
+	page = ETWTraitsSettings,
+	translation = ETW_AlcoholicWithdrawalStageDurationMultiplier,
 }
 option EvolvingTraitsWorld.AlcoholicWithdrawalStressIncreasePerTick
 {

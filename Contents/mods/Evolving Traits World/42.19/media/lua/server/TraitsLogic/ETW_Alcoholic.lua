@@ -371,7 +371,7 @@ end
 local function rollWithdrawalDelay(alcoholicTraitStage)
 	local minimum = 8 * 60 + alcoholicTraitStage * 1.5 * 60
 	local maximum = 24 * 60 + alcoholicTraitStage * 3 * 60
-	local multiplier = math.max(0, SBvars.AlcoholicWithdrawalDelayMultiplier)
+	local multiplier = math.max(0, SBvars.AlcoholicWithdrawalStageDurationMultiplier)
 	return math.max(1, math.floor(random_instance:random(minimum, maximum) * multiplier + 0.5))
 end
 
