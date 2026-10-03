@@ -87,6 +87,10 @@
 --- @field WithdrawalTargetSeverity number|nil
 --- @field WithdrawalStress number
 --- @field WithdrawalIncreasing boolean
+--- @field WithdrawalStartDelayCompleted boolean
+--- @field WithdrawalWakeUpCooldownUntilHours number
+--- @field TemperatureSwingDirection "hot"|"cold"|nil
+--- @field TemperatureSwingMinutesRemaining integer
 
 --- @class GymTraitsSystem
 --- @field GymTraitsSystemCounter number

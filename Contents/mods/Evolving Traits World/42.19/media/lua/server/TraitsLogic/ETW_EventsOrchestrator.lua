@@ -47,12 +47,12 @@ local function oneMinuteUpdate()
 		local bodyDamage
 		local stats
 		local modData
-		local alcoholicStage = ETW_Alcoholic.getAlcoholicStage(player)
-		if alcoholicStage > 0 then
+		local alcoholicTraitStage = ETW_Alcoholic.getAlcoholicTraitStage(player)
+		if alcoholicTraitStage > 0 then
 			stats = stats or player:getStats()
 			modData = modData or ETW_CommonFunctions.getETWModData(player)
 			if modData then
-				ETW_Alcoholic.oneMinuteUpdate(player, stats, modData, alcoholicStage)
+				ETW_Alcoholic.oneMinuteUpdate(player, stats, modData, alcoholicTraitStage)
 			end
 		end
 		if rainIntensity > 0 then
@@ -133,10 +133,7 @@ local function oneMinuteUpdate()
 			bodyDamage = bodyDamage or player:getBodyDamage()
 			ETW_MentalTraits.temperatureTrait(player, stats, bodyDamage)
 		end
-		if
-			player:hasTrait(ETWTraitsRegistry.HEAVY_DRESSER)
-			or player:hasTrait(ETWTraitsRegistry.LIGHT_DRESSER)
-		then
+		if player:hasTrait(ETWTraitsRegistry.HEAVY_DRESSER) or player:hasTrait(ETWTraitsRegistry.LIGHT_DRESSER) then
 			stats = stats or player:getStats()
 			ETW_MentalTraits.dresserTrait(player, stats)
 		end
@@ -236,10 +233,7 @@ local function everyTickUpdate()
 				bodyDamage = bodyDamage or player:getBodyDamage()
 				startingInjuryParts = ETW_StartingTraits.updateStartingInjuries(player, bodyDamage, modData)
 			end
-			if
-				player:hasTrait(ETWTraitsRegistry.BRITTLE_BONES)
-				or player:hasTrait(ETWTraitsRegistry.STRONG_BONES)
-			then
+			if player:hasTrait(ETWTraitsRegistry.BRITTLE_BONES) or player:hasTrait(ETWTraitsRegistry.STRONG_BONES) then
 				bodyDamage = bodyDamage or player:getBodyDamage()
 				ETW_HealthTraits.boneTraits(player, bodyDamage, modData, startingInjuryParts)
 			end
