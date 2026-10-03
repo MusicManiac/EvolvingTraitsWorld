@@ -1,8 +1,12 @@
-## v.14.x.x
-###### xx Sep 2026
+## v.14.4.0
+###### 03 Oct 2026
 
 - General:
-  - Added alcoholic traits that each represent different severity of dependence: Alcoholic (Mild), Alcoholic (Moderate), Alcoholic (High), Alcoholic (Severe)
+  - Added alcoholic traits that each represent different severity of dependence: Alcoholic (Mild), Alcoholic (Moderate), Alcoholic (Severe)
+    - Detailed withdrawal effects simulation.
+    - Moodle support
+    - Sandbox options
+    - Not dynamic
 - Fix:
   - Swapped out Couch Potato to Gym Hater so the name explicitly targets gym exercises
   - Fixed misaligned kills display in Bravery System (shown number of progress and real progress were different)
