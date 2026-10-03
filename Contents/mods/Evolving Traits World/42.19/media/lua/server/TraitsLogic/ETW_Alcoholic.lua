@@ -22,13 +22,16 @@ local logETW = ETW_CommonFunctions.log
 local random_instance = newrandom()
 local MAX_WITHDRAWAL_STRESS = 0.5
 local MAX_ALCOHOLIC_STAGE = 3
-local MINUTES_IN_HOUR = 60
 local MILD_WITHDRAWAL_SEVERITY = 33
 local MODERATE_WITHDRAWAL_SEVERITY = 67
 local SEVERE_WITHDRAWAL_SEVERITY = 100
-local WITHDRAWAL_HEAD_PAIN_AMOUNT = 50
-local WITHDRAWAL_SICKNESS_INCREASE = 0.02
-local MAX_WITHDRAWAL_SICKNESS = 0.8999
+local WITHDRAWAL_HEAD_PAIN_AMOUNT = 20
+local WITHDRAWAL_HEAD_PAIN_COOLDOWN_THRESHOLD = 70
+local WITHDRAWAL_HEAD_PAIN_COOLDOWN_HOURS = 4
+local WITHDRAWAL_FOOD_SICKNESS_INCREASE = 10
+local MAX_WITHDRAWAL_FOOD_SICKNESS = 89.99
+local WITHDRAWAL_FOOD_SICKNESS_COOLDOWN_THRESHOLD = 70
+local WITHDRAWAL_FOOD_SICKNESS_COOLDOWN_HOURS = 4
 local WITHDRAWAL_WAKE_UP_COOLDOWN_HOURS = 4
 local TEMPERATURE_SWING_DEGREES_PER_MINUTE = 1
 local TEMPERATURE_SWING_DIRECTION_COLD = "cold"
@@ -151,6 +154,7 @@ end
 ---Adds withdrawal headache pain to the player's head body part.
 ---@param player IsoPlayer
 ---@param source string
+---@return number resultingPain
 local function addWithdrawalHeadPain(player, source)
 	local head = player:getBodyDamage():getBodyPart(BodyPartType.Head)
 	local previousPain = head:getAdditionalPain()
@@ -166,35 +170,100 @@ local function addWithdrawalHeadPain(player, source)
 			.. "; player: "
 			.. player:getUsername()
 	)
+	return resultingPain
 end
 
----Adds withdrawal sickness without allowing this effect to raise it above 89.99%.
+---Rolls withdrawal head pain when its cooldown has expired and starts a cooldown at 70 pain.
+---@param player IsoPlayer
+---@param alcoholicSystem AlcoholicSystem
+---@param chance number Percentage from 0 to 100.
+---@param source string
+local function tryWithdrawalHeadPain(player, alcoholicSystem, chance, source)
+	if chance <= 0 then
+		return
+	end
+	local worldAgeHours = getGameTime():getWorldAgeHours()
+	if worldAgeHours < alcoholicSystem.WithdrawalHeadPainCooldownUntilHours or not rollPercentChance(chance) then
+		return
+	end
+	local resultingPain = addWithdrawalHeadPain(player, source)
+	if resultingPain >= WITHDRAWAL_HEAD_PAIN_COOLDOWN_THRESHOLD then
+		alcoholicSystem.WithdrawalHeadPainCooldownUntilHours = worldAgeHours + WITHDRAWAL_HEAD_PAIN_COOLDOWN_HOURS
+		logETW(
+			"ETW Logger | tryWithdrawalHeadPain(): head pain reached "
+				.. resultingPain
+				.. "; cooldown until world age hour: "
+				.. alcoholicSystem.WithdrawalHeadPainCooldownUntilHours
+				.. "; player: "
+				.. player:getUsername()
+		)
+	end
+end
+
+---Adds withdrawal food sickness without allowing this effect to raise it above 89.99%.
 ---@param player IsoPlayer
 ---@param stats Stats
 ---@param source string
+---@return number resultingSickness
 local function addWithdrawalSickness(player, stats, source)
-	local previousSickness = stats:get(CharacterStat.SICKNESS)
-	if previousSickness >= MAX_WITHDRAWAL_SICKNESS then
-		return
+	local previousSickness = stats:get(CharacterStat.FOOD_SICKNESS)
+	if previousSickness >= MAX_WITHDRAWAL_FOOD_SICKNESS then
+		return previousSickness
 	end
-	local amount = math.min(WITHDRAWAL_SICKNESS_INCREASE, MAX_WITHDRAWAL_SICKNESS - previousSickness)
-	stats:add(CharacterStat.SICKNESS, amount)
-	local resultingSickness = math.min(MAX_WITHDRAWAL_SICKNESS, stats:get(CharacterStat.SICKNESS))
-	stats:set(CharacterStat.SICKNESS, resultingSickness)
+	local amount = math.min(
+		WITHDRAWAL_FOOD_SICKNESS_INCREASE,
+		MAX_WITHDRAWAL_FOOD_SICKNESS - previousSickness
+	)
+	stats:add(CharacterStat.FOOD_SICKNESS, amount)
+	local resultingSickness = math.min(
+		MAX_WITHDRAWAL_FOOD_SICKNESS,
+		stats:get(CharacterStat.FOOD_SICKNESS)
+	)
+	stats:set(CharacterStat.FOOD_SICKNESS, resultingSickness)
 	logETW(
 		"ETW Logger | addWithdrawalSickness(): source: "
 			.. source
-			.. "; sickness: "
+			.. "; food sickness: "
 			.. previousSickness
 			.. "->"
 			.. resultingSickness
 			.. "; requested increase: "
-			.. WITHDRAWAL_SICKNESS_INCREASE
+			.. WITHDRAWAL_FOOD_SICKNESS_INCREASE
 			.. "; applied increase: "
 			.. amount
 			.. "; player: "
 			.. player:getUsername()
 	)
+	return resultingSickness
+end
+
+---Rolls withdrawal food sickness when its cooldown has expired and starts a cooldown at 70% sickness.
+---@param player IsoPlayer
+---@param stats Stats
+---@param alcoholicSystem AlcoholicSystem
+---@param chance number Percentage from 0 to 100.
+---@param source string
+local function tryWithdrawalSickness(player, stats, alcoholicSystem, chance, source)
+	if chance <= 0 then
+		return
+	end
+	local worldAgeHours = getGameTime():getWorldAgeHours()
+	if worldAgeHours < alcoholicSystem.WithdrawalFoodSicknessCooldownUntilHours or not rollPercentChance(chance) then
+		return
+	end
+	local resultingSickness = addWithdrawalSickness(player, stats, source)
+	if resultingSickness >= WITHDRAWAL_FOOD_SICKNESS_COOLDOWN_THRESHOLD then
+		alcoholicSystem.WithdrawalFoodSicknessCooldownUntilHours =
+			worldAgeHours + WITHDRAWAL_FOOD_SICKNESS_COOLDOWN_HOURS
+		logETW(
+			"ETW Logger | tryWithdrawalSickness(): food sickness reached "
+				.. resultingSickness
+				.. "; cooldown until world age hour: "
+				.. alcoholicSystem.WithdrawalFoodSicknessCooldownUntilHours
+				.. "; player: "
+				.. player:getUsername()
+		)
+	end
 end
 
 ---Rolls an asleep player's withdrawal wake-up chance when its cooldown has expired.
@@ -284,13 +353,13 @@ local function withdrawal(player, stats, alcoholicSystem, withdrawalSeverity)
 	if screamChance and screamChanceReason and rollPercentChance(screamChance) then
 		ETW_CommonServerFunctions.triggerSurprisedScream(player, true, screamChanceReason)
 	end
-	if headPainChance and headPainChanceReason and rollPercentChance(headPainChance) then
-		addWithdrawalHeadPain(player, headPainChanceReason)
+	if headPainChance and headPainChanceReason then
+		tryWithdrawalHeadPain(player, alcoholicSystem, headPainChance, headPainChanceReason)
 	end
-	if sicknessChance and sicknessChanceReason and rollPercentChance(sicknessChance) then
-		addWithdrawalSickness(player, stats, sicknessChanceReason)
+	if sicknessChance and sicknessChanceReason then
+		tryWithdrawalSickness(player, stats, alcoholicSystem, sicknessChance, sicknessChanceReason)
 	end
-	if wakeUpChance and wakeUpChanceReason and player:isAsleep() and rollPercentChance(wakeUpChance) then
+	if wakeUpChance and wakeUpChanceReason and player:isAsleep() then
 		tryWithdrawalWakeUp(player, alcoholicSystem, wakeUpChance, wakeUpChanceReason)
 	end
 	updateTemperatureSwing(player, stats, alcoholicSystem, withdrawalSeverity)
@@ -300,8 +369,8 @@ end
 ---@param alcoholicTraitStage integer
 ---@return integer minutes
 local function rollWithdrawalDelay(alcoholicTraitStage)
-	local minimum = 8 * MINUTES_IN_HOUR + alcoholicTraitStage * 1.5 * MINUTES_IN_HOUR
-	local maximum = 24 * MINUTES_IN_HOUR + alcoholicTraitStage * 3 * MINUTES_IN_HOUR
+	local minimum = 8 * 60 + alcoholicTraitStage * 1.5 * 60
+	local maximum = 24 * 60 + alcoholicTraitStage * 3 * 60
 	local multiplier = math.max(0, SBvars.AlcoholicWithdrawalDelayMultiplier)
 	return math.max(1, math.floor(random_instance:random(minimum, maximum) * multiplier + 0.5))
 end

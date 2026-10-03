@@ -106,6 +106,7 @@
 --- @field ReaderSystem boolean
 --- @field ReaderSystemCounter integer
 -- Moodles
+--- @field AlcoholicMoodle boolean
 --- @field SleepMoodle boolean
 -- Traits
 --- @field AlcoholicMildWithdrawalHandItemDropChancePercent number

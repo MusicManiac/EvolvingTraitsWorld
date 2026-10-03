@@ -305,9 +305,10 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	if alcoholicSystem.WithdrawalStartDelayCompleted == nil then
 		alcoholicSystem.WithdrawalStartDelayCompleted = false
 	end
-	if alcoholicSystem.WithdrawalWakeUpCooldownUntilHours == nil then
-		alcoholicSystem.WithdrawalWakeUpCooldownUntilHours = 0
-	end
+	alcoholicSystem.WithdrawalWakeUpCooldownUntilHours = alcoholicSystem.WithdrawalWakeUpCooldownUntilHours or 0
+	alcoholicSystem.WithdrawalFoodSicknessCooldownUntilHours =
+		alcoholicSystem.WithdrawalFoodSicknessCooldownUntilHours or 0
+	alcoholicSystem.WithdrawalHeadPainCooldownUntilHours = alcoholicSystem.WithdrawalHeadPainCooldownUntilHours or 0
 	alcoholicSystem.TemperatureSwingMinutesRemaining = alcoholicSystem.TemperatureSwingMinutesRemaining or 0
 	if alcoholicSystem.TemperatureSwingMinutesRemaining <= 0 then
 		alcoholicSystem.TemperatureSwingDirection = nil

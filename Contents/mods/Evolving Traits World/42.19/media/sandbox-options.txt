@@ -848,6 +848,13 @@ option EvolvingTraitsWorld.MOODLES
 {
 	translation = -----------------------------------------------MOODLES-----------------------------------------------------------------,
 }
+option EvolvingTraitsWorld.AlcoholicMoodle
+{
+	type = boolean,
+	default = true,
+	page = ETWMoodles,
+	translation = ETW_AlcoholicMoodle,
+}
 option EvolvingTraitsWorld.SleepMoodle
 {
 	type = boolean,

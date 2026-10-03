@@ -98,6 +98,12 @@ etwOptions:addTickBox(
 	getText("UI_ETW_Options_EnableButterfingersPopup_tooltip")
 )
 etwOptions:addTickBox(
+	"EnableAlcoholicMoodle",
+	getText("UI_ETW_Options_EnableAlcoholicMoodle"),
+	true,
+	getText("UI_ETW_Options_EnableAlcoholicMoodle_tooltip")
+)
+etwOptions:addTickBox(
 	"EnableSleepHealthMoodle",
 	getText("UI_ETW_Options_EnableSleepHealthMoodle"),
 	true,

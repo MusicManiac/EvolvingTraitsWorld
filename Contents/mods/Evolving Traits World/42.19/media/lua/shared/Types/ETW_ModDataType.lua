@@ -89,6 +89,8 @@
 --- @field WithdrawalIncreasing boolean
 --- @field WithdrawalStartDelayCompleted boolean
 --- @field WithdrawalWakeUpCooldownUntilHours number
+--- @field WithdrawalFoodSicknessCooldownUntilHours number
+--- @field WithdrawalHeadPainCooldownUntilHours number
 --- @field TemperatureSwingDirection "hot"|"cold"|nil
 --- @field TemperatureSwingMinutesRemaining integer
 
