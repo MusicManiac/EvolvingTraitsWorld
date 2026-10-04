@@ -1,13 +1,8 @@
 [url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
 
-v.14.4.0
+v.14.4.1
 
-- General:
-  - Added alcoholic traits that each represent different severity of dependence: Alcoholic (Mild), Alcoholic (Moderate), Alcoholic (Severe)
-    - Detailed withdrawal effects simulation.
-    - Moodle support
-    - Sandbox options
-    - Not dynamic
 - Fix:
-  - Swapped out Couch Potato to Gym Hater so the name explicitly targets gym exercises
-  - Fixed misaligned kills display in Bravery System (shown number of progress and real progress were different)
+  - Fixed Immunocompromised and Super-Immune not being marked as dynamic.
+- Translations:
+  - Updated TR to v.14.4.1
