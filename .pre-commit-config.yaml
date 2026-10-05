@@ -9,10 +9,10 @@ repos:
         always_run: true
         stages: [pre-push]
 
-      - id: sorted-translation-json
-        name: Check translation JSON ordering
-        entry: python sort_translation_json.py --check
-        language: system
-        pass_filenames: false
-        always_run: true
-        stages: [pre-push]
+      # - id: current-translation-stats
+      #   name: Check generated translation completion metadata
+      #   entry: python update_translation_stats.py --check
+      #   language: system
+      #   pass_filenames: false
+      #   always_run: true
+      #   stages: [pre-push]

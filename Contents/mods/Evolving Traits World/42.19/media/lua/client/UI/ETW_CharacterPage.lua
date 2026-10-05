@@ -166,8 +166,9 @@ local HELP_WINDOW_MIN_HEIGHT = 120
 local HELP_WINDOW_MAX_HEIGHT = 500
 local RECENT_TRAIT_EVENT_LIMIT = 10
 local RENDER_STATS_CACHE_REFRESH_INTERVAL = 10
-local TRANSLATION_STATUS_FILE_PREFIX = "media/lua/shared/Translate/"
-local TRANSLATION_STATUS_FILE_SUFFIX = "/UI.json"
+local TRANSLATION_STATS_KEY_PREFIX = "UI_ETW_TranslationStats_"
+local TRANSLATION_STATS_NEEDS_EDITING_KEY_PREFIX = TRANSLATION_STATS_KEY_PREFIX .. "NeedsEditing_"
+local TRANSLATION_STATS_TOTAL_KEY = TRANSLATION_STATS_KEY_PREFIX .. "Total"
 local SUPPORTED_TRANSLATIONS = {
 	{ code = "CH", nameKey = "UI_ETW_TranslationsStatus_Language_CH" },
 	{ code = "CN", nameKey = "UI_ETW_TranslationsStatus_Language_CN" },
@@ -211,43 +212,23 @@ local function getHelpWindowHeight(helpText)
 	return math.max(HELP_WINDOW_MIN_HEIGHT, math.min(HELP_WINDOW_MAX_HEIGHT, contentHeight))
 end
 
----Reads the version marker kept at the top of a language's UI translation file.
+---Returns a language's generated Weblate completion percentage.
 ---@param languageCode string
----@return string
-local function getTranslationVersion(languageCode)
-	local path = TRANSLATION_STATUS_FILE_PREFIX .. languageCode .. TRANSLATION_STATUS_FILE_SUFFIX
-	local reader = getModFileReader("EvolvingTraitsWorld", path, false)
-	if not reader then
-		return "0.0.0"
-	end
-
-	local version = "0.0.0"
-	for _ = 1, 10 do
-		local line = reader:readLine()
-		if not line then
-			break
-		end
-		local marker = string.match(line, '"UI_ETW_AAA_TranslationVersion"%s*:%s*"([^"]+)"')
-		if marker then
-			version = marker
-			break
-		end
-	end
-	reader:close()
-	return version
+---@return number
+local function getTranslationCompletion(languageCode)
+	local completion = tonumber(getText(TRANSLATION_STATS_KEY_PREFIX .. languageCode)) or 0
+	return math.max(0, math.min(100, completion))
 end
 
----Splits an ETW semantic version into its numeric major, minor, and patch parts.
----@param version string
----@return number|nil, number|nil, number|nil
-local function parseETWVersion(version)
-	local major, minor, patch = string.match(version or "", "^(%d+)%.(%d+)%.(%d+)")
-	return tonumber(major), tonumber(minor), tonumber(patch)
+---Returns the percentage of a language that Weblate marks as needing editing.
+---@param languageCode string
+---@return number
+local function getTranslationNeedsEditing(languageCode)
+	local needsEditing = tonumber(getText(TRANSLATION_STATS_NEEDS_EDITING_KEY_PREFIX .. languageCode)) or 0
+	return math.max(0, math.min(100, needsEditing))
 end
 
--- Staleness gradient: 2+ major versions behind, 1 major, 10+ to 1 minor,
--- 5+ bug-fix versions, and finally 0-4 bug-fix versions behind.
-local TRANSLATION_VERSION_COLORS = {
+local TRANSLATION_COMPLETION_COLORS = {
 	{ r = 1, g = 0.15, b = 0.15, a = 1 },
 	{ r = 1, g = 0.28, b = 0.12, a = 1 },
 	{ r = 1, g = 0.4, b = 0.1, a = 1 },
@@ -262,41 +243,12 @@ local TRANSLATION_VERSION_COLORS = {
 	{ r = 0.2, g = 1, b = 0.2, a = 1 },
 }
 
----Returns the status color for a translation version relative to the installed mod version.
----@param currentVersion string
----@param translationVersion string
+---Returns the red-to-green status color for a completion percentage.
+---@param completion number
 ---@return {r:number, g:number, b:number, a:number}
-local function getTranslationVersionColor(currentVersion, translationVersion)
-	local currentMajor, currentMinor, currentPatch = parseETWVersion(currentVersion)
-	local translationMajor, translationMinor, translationPatch = parseETWVersion(translationVersion)
-	if not currentMajor or not translationMajor then
-		return TRANSLATION_VERSION_COLORS[1]
-	end
-
-	local majorDifference = currentMajor - translationMajor
-	if majorDifference >= 2 then
-		return TRANSLATION_VERSION_COLORS[1]
-	elseif majorDifference == 1 then
-		return TRANSLATION_VERSION_COLORS[2]
-	elseif majorDifference < 0 then
-		return TRANSLATION_VERSION_COLORS[12]
-	end
-
-	local minorDifference = currentMinor - translationMinor
-	if minorDifference >= 10 then
-		return TRANSLATION_VERSION_COLORS[3]
-	elseif minorDifference > 0 then
-		---@diagnostic disable-next-line: return-type-mismatch
-		return TRANSLATION_VERSION_COLORS[11 - math.ceil(minorDifference * 8 / 10)]
-	elseif minorDifference < 0 then
-		return TRANSLATION_VERSION_COLORS[12]
-	end
-
-	local patchDifference = currentPatch - translationPatch
-	if patchDifference > 4 then
-		return TRANSLATION_VERSION_COLORS[11]
-	end
-	return TRANSLATION_VERSION_COLORS[12]
+local function getTranslationCompletionColor(completion)
+	local colorIndex = math.floor(completion / 100 * (#TRANSLATION_COMPLETION_COLORS - 1)) + 1
+	return TRANSLATION_COMPLETION_COLORS[colorIndex]
 end
 
 ---Adds a horizontally-centered label to a panel.
@@ -315,9 +267,8 @@ end
 
 ---Populates the translation-status subtab and returns its required content height.
 ---@param panel ISPanel
----@param currentVersion string
 ---@return number
-local function buildTranslationStatusView(panel, currentVersion)
+local function buildTranslationStatusView(panel)
 	local white = { r = 1, g = 1, b = 1, a = 1 }
 	local dim = { r = 0.75, g = 0.75, b = 0.75, a = 1 }
 	local rowHeight = FONT_HGT_SMALL + 4
@@ -325,18 +276,28 @@ local function buildTranslationStatusView(panel, currentVersion)
 	addCenteredLabel(
 		panel,
 		statusY,
-		getText("UI_ETW_TranslationsStatus_CurrentModVersion", currentVersion),
+		getText("UI_ETW_TranslationsStatus_OverallCompletion"),
 		UIFont.Medium,
 		white
 	)
 
-	statusY = statusY + FONT_HGT_MEDIUM + 22
+	statusY = statusY + FONT_HGT_MEDIUM + 8
+	local totalLines = tonumber(getText(TRANSLATION_STATS_TOTAL_KEY)) or 0
+	addCenteredLabel(
+		panel,
+		statusY,
+		getText("UI_ETW_TranslationsStatus_TotalLines", totalLines),
+		UIFont.Small,
+		dim
+	)
+
+	statusY = statusY + FONT_HGT_SMALL + 14
 	local groupWidth = WINDOW_WIDTH / 2
 	local groupPadding = 40
 	local rowsPerGroup = math.ceil(#SUPPORTED_TRANSLATIONS / 2)
 	for groupIndex = 0, 1 do
 		local languageX = groupIndex * groupWidth + groupPadding
-		local versionRightX = (groupIndex + 1) * groupWidth - groupPadding
+		local completionRightX = (groupIndex + 1) * groupWidth - groupPadding
 		panel:addChild(
 			ISLabel:new(
 				languageX,
@@ -353,10 +314,10 @@ local function buildTranslationStatusView(panel, currentVersion)
 		)
 		panel:addChild(
 			ISLabel:new(
-				versionRightX,
+				completionRightX,
 				statusY,
 				FONT_HGT_SMALL,
-				getText("UI_ETW_TranslationsStatus_LastUpdated"),
+				getText("UI_ETW_TranslationsStatus_Completion"),
 				1,
 				1,
 				1,
@@ -372,10 +333,11 @@ local function buildTranslationStatusView(panel, currentVersion)
 		local groupIndex = math.floor((index - 1) / rowsPerGroup)
 		local rowIndex = (index - 1) % rowsPerGroup
 		local languageX = groupIndex * groupWidth + groupPadding
-		local versionRightX = (groupIndex + 1) * groupWidth - groupPadding
+		local completionRightX = (groupIndex + 1) * groupWidth - groupPadding
 		local rowY = listStartY + rowIndex * rowHeight
-		local translationVersion = getTranslationVersion(language.code)
-		local color = getTranslationVersionColor(currentVersion, translationVersion)
+		local completion = getTranslationCompletion(language.code)
+		local needsEditing = getTranslationNeedsEditing(language.code)
+		local color = getTranslationCompletionColor(completion)
 		panel:addChild(
 			ISLabel:new(
 				languageX,
@@ -392,10 +354,10 @@ local function buildTranslationStatusView(panel, currentVersion)
 		)
 		panel:addChild(
 			ISLabel:new(
-				versionRightX,
+				completionRightX,
 				rowY,
 				FONT_HGT_SMALL,
-				translationVersion,
+				string.format("%.1f%% / %.1f%%", completion, needsEditing),
 				color.r,
 				color.g,
 				color.b,
@@ -407,16 +369,26 @@ local function buildTranslationStatusView(panel, currentVersion)
 	end
 
 	statusY = listStartY + rowsPerGroup * rowHeight + 14
-	addCenteredLabel(panel, statusY, getText("UI_ETW_TranslationsStatus_Explanation"), UIFont.Small, dim)
-	statusY = statusY + rowHeight + 10
-	addCenteredLabel(
-		panel,
-		statusY,
-		getText("UI_ETW_TranslationsStatus_MaintainersNeeded"),
-		UIFont.Small,
-		{ r = 1, g = 0.75, b = 0.2, a = 1 }
-	)
-	return statusY + rowHeight + 10
+	local explanationKeys = {
+		"UI_ETW_TranslationsStatus_CompletionExplanationTranslated",
+		"UI_ETW_TranslationsStatus_CompletionExplanationNeedsEditing",
+		"UI_ETW_TranslationsStatus_CompletionExplanationExample",
+	}
+	for _, explanationKey in ipairs(explanationKeys) do
+		addCenteredLabel(panel, statusY, getText(explanationKey), UIFont.Small, dim)
+		statusY = statusY + rowHeight
+	end
+	statusY = statusY + 10
+	local maintainerColor = { r = 1, g = 0.75, b = 0.2, a = 1 }
+	local maintainerKeys = {
+		"UI_ETW_TranslationsStatus_MaintainersNeeded",
+		"UI_ETW_TranslationsStatus_MaintainersWeblate",
+	}
+	for _, maintainerKey in ipairs(maintainerKeys) do
+		addCenteredLabel(panel, statusY, getText(maintainerKey), UIFont.Small, maintainerColor)
+		statusY = statusY + rowHeight
+	end
+	return statusY + 10
 end
 
 ---@type {x:number, y:number, nonBarsEntryNumber:number}|nil
@@ -640,9 +612,7 @@ function ISETWUI:createChildren()
 	self.subViewTranslationStatus = ISPanel:new(0, 0, self.width, self.height - TAB_H)
 	self.subViewTranslationStatus:initialise()
 	self.subViewTranslationStatus:noBackground()
-	local modInfo = getModInfoByID("EvolvingTraitsWorld")
-	local currentVersion = modInfo and modInfo:getModVersion() or "0.0.0"
-	self.translationStatusWindowHeight = buildTranslationStatusView(self.subViewTranslationStatus, currentVersion)
+	self.translationStatusWindowHeight = buildTranslationStatusView(self.subViewTranslationStatus)
 
 	local vitalsLayoutCursor = newLayoutCursor()
 	local combatTraitsLayoutCursor = newLayoutCursor()
