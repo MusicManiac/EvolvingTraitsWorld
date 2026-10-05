@@ -748,6 +748,5 @@
     "Sandbox_ETW_WhittlerSkill": "Whittler Carving Skill Requirement",
     "Sandbox_ETW_WildernessKnowledge": "Bushcrafter",
     "Sandbox_ETW_WildernessKnowledgeSkill": "Bushcrafter Skills requirement",
-    "Sandbox_ETW_WildernessKnowledgeSkill_tooltip": "Foraging + Knapping + Maintenance + Carving. Additional requirement is to have at least 2 levels in each skill.",
-    "note_to_LANGUAGE_translators": "Make sure file is saved in <ENCODING> encoding, so game display correct characters"
+    "Sandbox_ETW_WildernessKnowledgeSkill_tooltip": "Foraging + Knapping + Maintenance + Carving. Additional requirement is to have at least 2 levels in each skill."
 }
