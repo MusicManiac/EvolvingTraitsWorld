@@ -615,6 +615,5 @@
     "Sandbox_ETW_WhittlerSkill": "Exigence de compétence en Sculpture sur bois pour Sculpteur sur bois",
     "Sandbox_ETW_WildernessKnowledge": "Homme des bois",
     "Sandbox_ETW_WildernessKnowledgeSkill": "Exigence de compétences pour Homme des bois",
-    "Sandbox_ETW_WildernessKnowledgeSkill_tooltip": "Recherche + Taillage de pierre + Entretien + Sculpture sur bois. Exigence supplémentaire : posséder au moins le niveau 2 dans chacune de ces compétences.",
-    "note_to_LANGUAGE_translators": "Make sure file is saved in <ENCODING> encoding, so game display correct characters"
+    "Sandbox_ETW_WildernessKnowledgeSkill_tooltip": "Recherche + Taillage de pierre + Entretien + Sculpture sur bois. Exigence supplémentaire : posséder au moins le niveau 2 dans chacune de ces compétences."
 }

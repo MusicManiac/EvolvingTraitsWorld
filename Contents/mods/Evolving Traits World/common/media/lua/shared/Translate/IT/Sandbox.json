@@ -539,6 +539,5 @@
     "Sandbox_ETW_WhittlerSkill": "Requisito di abilità Intaglio per Intagliatore",
     "Sandbox_ETW_WildernessKnowledge": "Sopravvivenzialista",
     "Sandbox_ETW_WildernessKnowledgeSkill": "Requisito di abilità per Sopravvivenzialista",
-    "Sandbox_ETW_WildernessKnowledgeSkill_tooltip": "Foraggiamento + Scheggiatura + Manutenzione + Intaglio. Requisito aggiuntivo: avere almeno 2 livelli in ciascuna abilità.",
-    "note_to_LANGUAGE_translators": "Make sure file is saved in <ENCODING> encoding, so game display correct characters"
+    "Sandbox_ETW_WildernessKnowledgeSkill_tooltip": "Foraggiamento + Scheggiatura + Manutenzione + Intaglio. Requisito aggiuntivo: avere almeno 2 livelli in ciascuna abilità."
 }

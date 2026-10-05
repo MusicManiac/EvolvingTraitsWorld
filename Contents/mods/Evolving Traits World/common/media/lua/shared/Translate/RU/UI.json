@@ -3,12 +3,9 @@
     "UI_ETW_AAA_TranslationVersion": "13.2.1",
     "UI_ETW_AffinitySystemEnabled": "Система сродства включена",
     "UI_ETW_Chance": "из",
-    "UI_ETW_Chance___note_to_translators": "(Don't translate this, this is just info for you guys) UI_ETW_Chance is used in displaying chances, so for example '1 in 300' or '1 in 50300', etc.",
     "UI_ETW_CurrentValue": "Текущее значение: ",
-    "UI_ETW_CurrentValue___note_to_translators": "(Don't translate this, this is just info for you guys) UI_ETW_CurrentValue is shown in tooltip when hovering over gradient bars in UI page",
     "UI_ETW_DelayedNotificationsStringAdd": "Подходит для получения ",
     "UI_ETW_DelayedNotificationsStringRemove": "Подходит для потери ",
-    "UI_ETW_DelayedNotificationsStringRemove___note_to_translators": "(Don't translate this, this is just info for you guys) UI_ETW_DelayedNotificationsStringAdd and UI_ETW_DelayedNotificationsStringRemove is used in combination with trait names, for example 'Qualified for gaining Hoarder' or 'Qualified for losing Unlucky'. You get the idea.",
     "UI_ETW_DelayedTraitReadyOnNextAction": "получено при следующем действии, связанном с чертой",
     "UI_ETW_GainLoseTooltip": "Вы получите/потеряете черту, когда полоска будет примерно здесь (или будете соответствовать условиям для получения/потери, если включена система отложенных черт и эта черта в ней)",
     "UI_ETW_GainTooltip": "Вы получите черту, когда полоска будет примерно здесь (или будете соответствовать условиям для получения, если включена система отложенных черт и эта черта в ней)",
@@ -205,6 +202,5 @@
     "UI_trait_Unwavering": "Непоколебимый",
     "UI_trait_UnwaveringDesc": "Низкая выносливость, усталость и боль уменьшают ваш урон оружием значительно меньше.<br>Раны меньше мешают вашему передвижению.",
     "UI_trait_WellFitted": "Удобная одежда",
-    "UI_trait_WellFittedDesc": "Носимая одежда весит меньше и накладывает меньшие штрафы к скорости бега и бою.",
-    "note_to_LANGUAGE_translators": "Make sure file is saved in <ENCODING> encoding, so game display correct characters"
+    "UI_trait_WellFittedDesc": "Носимая одежда весит меньше и накладывает меньшие штрафы к скорости бега и бою."
 }

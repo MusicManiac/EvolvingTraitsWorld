@@ -3,12 +3,9 @@
     "UI_ETW_AAA_TranslationVersion": "13.4.2",
     "UI_ETW_AffinitySystemEnabled": "適性システムが有効",
     "UI_ETW_Chance": "/",
-    "UI_ETW_Chance___note_to_translators": "(Don't translate this, this is just info for you guys) UI_ETW_Chance is used in displaying chances, so for example '1 in 300' or '1 in 50300', etc.",
     "UI_ETW_CurrentValue": "現在の値: ",
-    "UI_ETW_CurrentValue___note_to_translators": "(Don't translate this, this is just info for you guys) UI_ETW_CurrentValue is shown in tooltip when hovering over gradient bars in UI page",
     "UI_ETW_DelayedNotificationsStringAdd": "獲得条件を達成: ",
     "UI_ETW_DelayedNotificationsStringRemove": "喪失条件を達成: ",
-    "UI_ETW_DelayedNotificationsStringRemove___note_to_translators": "(Don't translate this, this is just info for you guys) UI_ETW_DelayedNotificationsStringAdd and UI_ETW_DelayedNotificationsStringRemove is used in combination with trait names, for example 'Qualified for gaining Hoarder' or 'Qualified for losing Unlucky'. You get the idea.",
     "UI_ETW_DelayedTraitReadyOnNextAction": "（該当する次のアクション時に付与されます）",
     "UI_ETW_GainLoseTooltip": "ゲージがこの付近に達すると特性を獲得/喪失します<br>（保留システムが有効な場合、条件達成として登録されます）",
     "UI_ETW_GainTooltip": "ゲージがこの付近に達すると特性を獲得します<br>（保留システムが有効な場合、条件達成として登録されます）",
@@ -209,6 +206,5 @@
     "UI_trait_Unwavering": "揺るぎなき意志",
     "UI_trait_UnwaveringDesc": "スタミナ低下、疲労、痛みによる攻撃力減少の影響をほとんど受けなくなります。<br>また、負傷による移動速度低下の影響も軽減されます。",
     "UI_trait_WellFitted": "ジャストサイズ",
-    "UI_trait_WellFittedDesc": "着用している衣類の重量が軽減され、移動速度や戦闘速度へのペナルティが和らぎます。",
-    "note_to_LANGUAGE_translators": "Make sure file is saved in <ENCODING> encoding, so game display correct characters"
+    "UI_trait_WellFittedDesc": "着用している衣類の重量が軽減され、移動速度や戦闘速度へのペナルティが和らぎます。"
 }

@@ -75,6 +75,5 @@
     "Sandbox_ETW_TraitsLockSystemCanGainPositive": "Sistema de Bloqueio de Traços: Pode Ganhar Positivos",
     "Sandbox_ETW_TraitsLockSystemCanGainPositive_tooltip": "Se isso estiver habilitado, você pode ganhar traços positivos durante o jogo. Isso se aplica a muitos traços; você NÃO quer desabilitar isso.",
     "Sandbox_ETW_TraitsLockSystemCanLoseNegative": "Sistema de Bloqueio de Traços: Pode Perder Negativos",
-    "Sandbox_ETW_TraitsLockSystemCanLosePositive": "Sistema de Bloqueio de Traços: Pode Perder Positivos",
-    "___note_to_PTBR_translators": "Make sure file is saved in UTF-8 encoding, so game display correct characters"
+    "Sandbox_ETW_TraitsLockSystemCanLosePositive": "Sistema de Bloqueio de Traços: Pode Perder Positivos"
 }

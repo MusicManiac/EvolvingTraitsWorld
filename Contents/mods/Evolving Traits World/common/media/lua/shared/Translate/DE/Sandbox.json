@@ -190,6 +190,5 @@
     "Sandbox_ETW_TraitsLockSystemCanGainPositive": "Eigenschaften sperren: Kann positiv werden",
     "Sandbox_ETW_TraitsLockSystemCanGainPositive_tooltip": "Wenn dies aktiviert ist, können Sie während des Spiels positive Eigenschaften erhalten. Dies gilt für viele Eigenschaften; Sie wollen dies NICHT deaktiviert haben",
     "Sandbox_ETW_TraitsLockSystemCanLoseNegative": "Eigenschaften sperren: Kann negativ verlieren",
-    "Sandbox_ETW_TraitsLockSystemCanLosePositive": "Eigenschaften sperren: Kann positiv verlieren",
-    "note_to_german_translators": "Make sure file is saved in UTF-8 encoding, so game display correct characters"
+    "Sandbox_ETW_TraitsLockSystemCanLosePositive": "Eigenschaften sperren: Kann positiv verlieren"
 }

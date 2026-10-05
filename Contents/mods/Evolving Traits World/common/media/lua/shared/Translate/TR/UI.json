@@ -4,12 +4,9 @@
     "UI_ETW_AffinitySystemEnabled": "Yakınlık Sistemi etkin",
     "UI_ETW_CarryWeightSystem": "Taşıma Kapasitesi Sistemi",
     "UI_ETW_Chance": "içinde",
-    "UI_ETW_Chance___note_to_translators": "(Don't translate this, this is just info for you guys) UI_ETW_Chance is used in displaying chances, so for example '1 in 300' or '1 in 50300', etc.",
     "UI_ETW_CurrentValue": "Mevcut değer: ",
-    "UI_ETW_CurrentValue___note_to_translators": "(Don't translate this, this is just info for you guys) UI_ETW_CurrentValue is shown in tooltip when hovering over gradient bars in UI page",
     "UI_ETW_DelayedNotificationsStringAdd": "Kazanma hakkı elde edildi",
     "UI_ETW_DelayedNotificationsStringRemove": "Kaybetme hakkı elde edildi",
-    "UI_ETW_DelayedNotificationsStringRemove___note_to_translators": "(Don't translate this, this is just info for you guys) UI_ETW_DelayedNotificationsStringAdd and UI_ETW_DelayedNotificationsStringRemove is used in combination with trait names, for example 'Qualified for gaining Hoarder' or 'Qualified for losing Conspicuous'. You get the idea.",
     "UI_ETW_DelayedTraitReadyOnNextAction": "sonraki özelliğe özel eylemde kazanılır",
     "UI_ETW_GainLoseTooltip": "Çubuk yaklaşık buraya geldiğinde özelliği kazanır/kaybedersiniz (veya Gecikmeli Özellikler Sistemi etkinse ve bu özellik sistemdeyse, kazanma/kaybetme hakkı elde edersiniz)",
     "UI_ETW_GainTooltip": "Çubuk yaklaşık buraya geldiğinde özelliği kazanırsınız (veya Gecikmeli Özellikler Sistemi etkinse ve bu özellik sistemdeyse, kazanma hakkı elde edersiniz)",
@@ -260,6 +257,5 @@
     "UI_trait_Unwavering": "Sarsılmaz",
     "UI_trait_UnwaveringDesc": "Düşük dayanıklılık, yorgunluk ve ağrı silah hasarınızı çok daha az azaltır.<br>Yaralar hareketinizi daha az kısıtlar.",
     "UI_trait_WellFitted": "Tam Oturan",
-    "UI_trait_WellFittedDesc": "Giyilen kıyafetler daha az ağırlık yapar ve koşu ile savaş hızına daha az ceza verir.",
-    "note_to_LANGUAGE_translators": "Make sure file is saved in <ENCODING> encoding, so game display correct characters"
+    "UI_trait_WellFittedDesc": "Giyilen kıyafetler daha az ağırlık yapar ve koşu ile savaş hızına daha az ceza verir."
 }

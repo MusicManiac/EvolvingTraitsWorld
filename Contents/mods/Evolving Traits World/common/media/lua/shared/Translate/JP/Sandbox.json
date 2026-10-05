@@ -555,6 +555,5 @@
     "Sandbox_ETW_WhittlerSkill": "「木彫り職人」必要木彫りスキル",
     "Sandbox_ETW_WildernessKnowledge": "ブッシュクラフター",
     "Sandbox_ETW_WildernessKnowledgeSkill": "「ブッシュクラフター」必要合計スキル",
-    "Sandbox_ETW_WildernessKnowledgeSkill_tooltip": "採集 ＋ 打製石器（Knapping） ＋ メンテナンス ＋ 木彫り<br>※追加条件として、各スキルでレベル2以上が必要です。",
-    "note_to_LANGUAGE_translators": "Make sure file is saved in <ENCODING> encoding, so game display correct characters"
+    "Sandbox_ETW_WildernessKnowledgeSkill_tooltip": "採集 ＋ 打製石器（Knapping） ＋ メンテナンス ＋ 木彫り<br>※追加条件として、各スキルでレベル2以上が必要です。"
 }

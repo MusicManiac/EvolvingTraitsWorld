@@ -305,6 +305,5 @@
     "Sandbox_ETW_WhittlerSkill": "requisitos de habilidad de tallado",
     "Sandbox_ETW_WildernessKnowledge": "Conocimiento de la naturaleza",
     "Sandbox_ETW_WildernessKnowledgeSkill": "requerimiento de habilidad de conocimiento de la naturaleza",
-    "Sandbox_ETW_WildernessKnowledgeSkill_tooltip": "Recoleccion + Labrar piedra + Mantenimiento + Tallado. Como requerimiento adicional es necesario tener almenos 2 niveles en cada habilidad.",
-    "note_to_ES_translators": "Make sure file is saved in UTF-8 encoding, so game display correct characters"
+    "Sandbox_ETW_WildernessKnowledgeSkill_tooltip": "Recoleccion + Labrar piedra + Mantenimiento + Tallado. Como requerimiento adicional es necesario tener almenos 2 niveles en cada habilidad."
 }

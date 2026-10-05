@@ -673,6 +673,5 @@
     "Sandbox_ETW_WhittlerSkill": "雕刻工雕刻技能要求",
     "Sandbox_ETW_WildernessKnowledge": "丛林专家",
     "Sandbox_ETW_WildernessKnowledgeSkill": "丛林专家技能要求",
-    "Sandbox_ETW_WildernessKnowledgeSkill_tooltip": "搜寻 + 石器 + 维护 + 雕刻。额外要求是每项技能至少达到2级。",
-    "note_to_LANGUAGE_translators": "请确保文件以<ENCODING>编码保存，以便游戏正确显示字符。"
+    "Sandbox_ETW_WildernessKnowledgeSkill_tooltip": "搜寻 + 石器 + 维护 + 雕刻。额外要求是每项技能至少达到2级。"
 }

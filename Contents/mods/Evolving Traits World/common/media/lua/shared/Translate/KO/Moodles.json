@@ -6,7 +6,5 @@
     "Moodles_SleepHealthMoodle_Good_lvl1": "잠들기 적절한 시간을 조금 넘음.",
     "Moodles_SleepHealthMoodle_Good_lvl2": "잠들기 적절한 시간",
     "Moodles_SleepHealthMoodle_Good_lvl3": "잠들기 탁월한 시간",
-    "Moodles_SleepHealthMoodle_Good_lvl4": "잠들기 완벽한 시간",
-    "___note_to_KO_translators": "Make sure file is saved in UTF-8 encoding, so game display correct characters",
-    "___note_to_translators": "(Don't translate this, this is just info for you guys) If a field has %1 in it, it's replaced with value later on when the code is run"
+    "Moodles_SleepHealthMoodle_Good_lvl4": "잠들기 완벽한 시간"
 }

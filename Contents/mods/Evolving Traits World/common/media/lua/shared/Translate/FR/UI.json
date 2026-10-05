@@ -4,12 +4,9 @@
     "UI_ETW_AffinitySystemEnabled": "Le système d'affinité est activé",
     "UI_ETW_CarryWeightSystem": "Système de charge transportable",
     "UI_ETW_Chance": "sur",
-    "UI_ETW_Chance___note_to_translators": "(Don't translate this, this is just info for you guys) UI_ETW_Chance is used in displaying chances, so for example '1 in 300' or '1 in 50300', etc.",
     "UI_ETW_CurrentValue": "Valeur actuelle : ",
-    "UI_ETW_CurrentValue___note_to_translators": "(Don't translate this, this is just info for you guys) UI_ETW_CurrentValue is shown in tooltip when hovering over gradient bars in UI page",
     "UI_ETW_DelayedNotificationsStringAdd": "Éligible pour obtenir ",
     "UI_ETW_DelayedNotificationsStringRemove": "Éligible pour perdre ",
-    "UI_ETW_DelayedNotificationsStringRemove___note_to_translators": "(Don't translate this, this is just info for you guys) UI_ETW_DelayedNotificationsStringAdd and UI_ETW_DelayedNotificationsStringRemove is used in combination with trait names, for example 'Qualified for gaining Hoarder' or 'Qualified for losing Unlucky'. You get the idea.",
     "UI_ETW_DelayedTraitReadyOnNextAction": "obtenu lors de la prochaine action spécifique au trait",
     "UI_ETW_GainLoseTooltip": "Vous obtiendrez/perdrez le trait lorsque la barre sera par ici (ou deviendrez éligible pour l'obtenir/le perdre si le système de traits différés est activé et que ce trait en fait partie)",
     "UI_ETW_GainTooltip": "Vous obtiendrez le trait lorsque la barre sera par ici (ou deviendrez éligible pour l'obtenir si le système de traits différés est activé et que ce trait en fait partie)",
@@ -221,6 +218,5 @@
     "UI_trait_Unwavering": "Inébranlable",
     "UI_trait_UnwaveringDesc": "Le manque d'endurance, la fatigue et la douleur diminuent nettement moins les dégâts de vos armes.<br>Les blessures entravent également moins vos mouvements.",
     "UI_trait_WellFitted": "Ajusté",
-    "UI_trait_WellFittedDesc": "Les vêtements portés pèsent moins lourd et imposent des pénalités de course et de vitesse de combat réduites.",
-    "note_to_LANGUAGE_translators": "Make sure file is saved in <ENCODING> encoding, so game display correct characters"
+    "UI_trait_WellFittedDesc": "Les vêtements portés pèsent moins lourd et imposent des pénalités de course et de vitesse de combat réduites."
 }

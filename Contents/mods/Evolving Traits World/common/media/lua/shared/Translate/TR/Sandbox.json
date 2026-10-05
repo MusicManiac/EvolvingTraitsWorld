@@ -742,6 +742,5 @@
     "Sandbox_ETW_WhittlerSkill": "Oyma Ustası Oyma becerisi gereksinimi",
     "Sandbox_ETW_WildernessKnowledge": "Doğa Bilgini",
     "Sandbox_ETW_WildernessKnowledgeSkill": "Doğa Bilgini beceri gereksinimi",
-    "Sandbox_ETW_WildernessKnowledgeSkill_tooltip": "Toplayıcılık + Yontma + Bakım + Oyma. Ek olarak her beceride en az 2 seviyeye sahip olma gereksinimi vardır.",
-    "note_to_LANGUAGE_translators": "Make sure file is saved in <ENCODING> encoding, so game display correct characters"
+    "Sandbox_ETW_WildernessKnowledgeSkill_tooltip": "Toplayıcılık + Yontma + Bakım + Oyma. Ek olarak her beceride en az 2 seviyeye sahip olma gereksinimi vardır."
 }

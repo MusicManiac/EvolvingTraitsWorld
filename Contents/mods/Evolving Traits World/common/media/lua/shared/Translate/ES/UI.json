@@ -3,12 +3,9 @@
     "UI_ETW_AAA_TranslationVersion": "12.11.1",
     "UI_ETW_AffinitySystemEnabled": "El sistema de Afinidad esta habilitado",
     "UI_ETW_Chance": "en",
-    "UI_ETW_Chance___note_to_translators": "(Don't translate this, this is just info for you guys) UI_ETW_Chance is used in displaying chances, so for example '1 in 300' or '1 in 50300', etc.",
     "UI_ETW_CurrentValue": "Valor actual: ",
-    "UI_ETW_CurrentValue___note_to_translators": "(Don't translate this, this is just info for you guys) UI_ETW_CurrentValue is shown in tooltip when hovering over gradient bars in UI page",
     "UI_ETW_DelayedNotificationsStringAdd": "Calificado para obtener ",
     "UI_ETW_DelayedNotificationsStringRemove": "Calificado para perder ",
-    "UI_ETW_DelayedNotificationsStringRemove___note_to_translators": "(Don't translate this, this is just info for you guys) UI_ETW_DelayedNotificationsStringAdd and UI_ETW_DelayedNotificationsStringRemove is used in combination with trait names, for example 'Qualified for gaining Hoarder' or 'Qualified for losing Unlucky'. You get the idea.",
     "UI_ETW_DelayedTraitReadyOnNextAction": "Obtenido en la siguiente acion especifica de rasgo",
     "UI_ETW_GainLoseTooltip": "obtendras/perderas el rasgo cuando la barra este cerca de aqui (o calificado para obtenerlo/perderlo, si el sistema de rasgos tardios esta activo y este rasgo esta en este sistema)",
     "UI_ETW_GainTooltip": "Vas a obtener el rasgo cuando la barra este cerca de aqui (o calificado para obtenerlo, si el sistema de rasgos tardios esta activo y este rasgo esta en ese sistema)",
@@ -116,7 +113,5 @@
     "UI_trait_SlowEater": "Comedor lento",
     "UI_trait_SlowEaterDesc": "te tomas tu tiempo para comer. La comida toma mas tiempo en ser consumida.",
     "UI_trait_StickFighter": "Luchador con palos",
-    "UI_trait_StickFighterDesc": "haz practicado el arte marcial de la lucha con palos",
-    "note_to_ES_translators": "Make sure file is saved in UTF-8 encoding, so game display correct characters",
-    "note_to_LANGUAGE_translators": "Make sure file is saved in <ENCODING> encoding, so game display correct characters"
+    "UI_trait_StickFighterDesc": "haz practicado el arte marcial de la lucha con palos"
 }

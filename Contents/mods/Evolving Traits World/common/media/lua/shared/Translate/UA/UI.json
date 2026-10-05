@@ -3,12 +3,9 @@
     "UI_ETW_AAA_TranslationVersion": "13.4.0",
     "UI_ETW_AffinitySystemEnabled": "Систему спорідненості увімкнено",
     "UI_ETW_Chance": "з",
-    "UI_ETW_Chance___note_to_translators": "(Don't translate this, this is just info for you guys) UI_ETW_Chance is used in displaying chances, so for example '1 in 300' or '1 in 50300', etc.",
     "UI_ETW_CurrentValue": "Поточне значення: ",
-    "UI_ETW_CurrentValue___note_to_translators": "(Don't translate this, this is just info for you guys) UI_ETW_CurrentValue is shown in tooltip when hovering over gradient bars in UI page",
     "UI_ETW_DelayedNotificationsStringAdd": "Кваліфікований для отримання ",
     "UI_ETW_DelayedNotificationsStringRemove": "Кваліфікований для втрати ",
-    "UI_ETW_DelayedNotificationsStringRemove___note_to_translators": "(Don't translate this, this is just info for you guys) UI_ETW_DelayedNotificationsStringAdd and UI_ETW_DelayedNotificationsStringRemove is used in combination with trait names, for example 'Qualified for gaining Hoarder' or 'Qualified for losing Unlucky'. You get the idea.",
     "UI_ETW_DelayedTraitReadyOnNextAction": "отримаєте після наступної дії, пов’язаної з рисою",
     "UI_ETW_GainLoseTooltip": "Ви отримаєте/втратите рису, коли смуга буде приблизно тут (або будете кваліфіковані для отримання/втрати, якщо ввімкнено Систему відкладених рис і ця риса в цій системі)",
     "UI_ETW_GainTooltip": "Ви отримаєте рису, коли смуга буде приблизно тут (або будете кваліфіковані для отримання, якщо ввімкнено Систему відкладених рис і ця риса в цій системі)",
@@ -209,6 +206,5 @@
     "UI_trait_Unwavering": "Непохитний",
     "UI_trait_UnwaveringDesc": "Низька витривалість, втома та біль набагато менше зменшують шкоду від вашої зброї.<br>Рани менше впливають на ваш рух.",
     "UI_trait_WellFitted": "Добре підігнаний",
-    "UI_trait_WellFittedDesc": "Одяг важить менше і накладає менші штрафи до швидкості бігу та бою.",
-    "note_to_LANGUAGE_translators": "Make sure file is saved in <ENCODING> encoding, so game display correct characters"
+    "UI_trait_WellFittedDesc": "Одяг важить менше і накладає менші штрафи до швидкості бігу та бою."
 }

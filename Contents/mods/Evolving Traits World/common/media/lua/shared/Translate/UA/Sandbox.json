@@ -555,6 +555,5 @@
     "Sandbox_ETW_WhittlerSkill": "Вимога до рівня Різьбярства для Різьбяра",
     "Sandbox_ETW_WildernessKnowledge": "Лісоруб",
     "Sandbox_ETW_WildernessKnowledgeSkill": "Вимога до рівня навичок для Лісоруба",
-    "Sandbox_ETW_WildernessKnowledgeSkill_tooltip": "Збирання + Обробка каменю + Міцність + Різьбярство. Додаткова вимога: мати принаймні 2 рівні з кожної навички.",
-    "note_to_LANGUAGE_translators": "Make sure file is saved in <ENCODING> encoding, so game display correct characters"
+    "Sandbox_ETW_WildernessKnowledgeSkill_tooltip": "Збирання + Обробка каменю + Міцність + Різьбярство. Додаткова вимога: мати принаймні 2 рівні з кожної навички."
 }

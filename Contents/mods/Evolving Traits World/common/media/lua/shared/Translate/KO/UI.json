@@ -56,7 +56,5 @@
     "UI_trait_RestorationExpert": "복원전문가",
     "UI_trait_RestorationExpertDesc": "오래된 물건을 원래 상태로 복원하는 방법을 알고 있습니다. 아이템을 여러번 수리할 때, 일정확률로 수리 페널티가 무효화됩니다.",
     "UI_trait_StickFighter": "단봉술 수련자",
-    "UI_trait_StickFighterDesc": "단봉을 이용하여 호신술을 배웠습니다.",
-    "___note_to_translators": "(Don't translate this, this is just info for you guys) UI_ETW_Chance is used in displaying chances, so for example '1 in 300' or '1 in 50300', etc.",
-    "note_to_KO_translators": "Make sure file is saved in UTF-8 encoding, so game display correct characters"
+    "UI_trait_StickFighterDesc": "단봉을 이용하여 호신술을 배웠습니다."
 }

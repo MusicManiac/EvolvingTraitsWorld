@@ -4,12 +4,9 @@
     "UI_ETW_AffinitySystemEnabled": "亲和系统已启用",
     "UI_ETW_CarryWeightSystem": "负重系统",
     "UI_ETW_Chance": "分之一",
-    "UI_ETW_Chance___note_to_translators": "(Don't translate this, this is just info for you guys) UI_ETW_Chance is used in displaying chances, so for example '1 in 300' or '1 in 50300', etc.",
     "UI_ETW_CurrentValue": "当前值：",
-    "UI_ETW_CurrentValue___note_to_translators": "(Don't translate this, this is just info for you guys) UI_ETW_CurrentValue is shown in tooltip when hovering over gradient bars in UI page",
     "UI_ETW_DelayedNotificationsStringAdd": "有资格获得 ",
     "UI_ETW_DelayedNotificationsStringRemove": "有资格失去 ",
-    "UI_ETW_DelayedNotificationsStringRemove___note_to_translators": "（Don't translate this, this is just info for you guys) UI_ETW_DelayedNotificationsStringAdd and UI_ETW_DelayedNotificationsStringRemove is used in combination with trait names, for example 'Qualified for gaining Hoarder' or 'Qualified for losing Unlucky'. You get the idea.",
     "UI_ETW_DelayedTraitReadyOnNextAction": "将在下次特质特定行动时获得",
     "UI_ETW_GainLoseTooltip": "当进度条在此附近时，你将获得/失去该特质（如果延迟特质系统已启用且该特质在此系统中，则为有资格获得/失去它）",
     "UI_ETW_GainTooltip": "当进度条在此附近时，你将获得该特质（如果延迟特质系统已启用且该特质在此系统中，则为有资格获得它）",
@@ -245,6 +242,5 @@
     "UI_trait_Unwavering": "坚定不移",
     "UI_trait_UnwaveringDesc": "低耐力、疲劳和疼痛对你的武器伤害影响小得多。<br>伤口对你的移动影响较小。",
     "UI_trait_WellFitted": "百搭",
-    "UI_trait_WellFittedDesc": "穿戴的衣物重量减轻，奔跑和战斗速度惩罚减少。",
-    "note_to_LANGUAGE_translators": "确保文件以<ENCODING>编码保存，以便游戏正确显示字符"
+    "UI_trait_WellFittedDesc": "穿戴的衣物重量减轻，奔跑和战斗速度惩罚减少。"
 }

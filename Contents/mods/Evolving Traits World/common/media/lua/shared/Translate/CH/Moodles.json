@@ -6,7 +6,5 @@
     "Moodles_SleepHealthMoodle_Good_lvl1": "比平常睡覺時間略好。",
     "Moodles_SleepHealthMoodle_Good_lvl2": "不錯的睡覺時間",
     "Moodles_SleepHealthMoodle_Good_lvl3": "睡覺的好時間",
-    "Moodles_SleepHealthMoodle_Good_lvl4": "完美的睡眠時間",
-    "___note_to_CH_translators": "Make sure file is saved in UTF-8 encoding, so game display correct characters",
-    "___note_to_translators": "(Don't translate this, this is just info for you guys) If a field has %1 in it, it's replaced with value later on when the code is run"
+    "Moodles_SleepHealthMoodle_Good_lvl4": "完美的睡眠時間"
 }

@@ -192,6 +192,5 @@
     "Sandbox_ETW_TraitsLockSystemCanGainPositive": "特質鎖定: 可獲得正向特質",
     "Sandbox_ETW_TraitsLockSystemCanGainPositive_tooltip": "開啟此選項讓你在遊戲過程中可獲得正向特質. 此選項會影響 很 多 特質, 你絕對不會想關閉它.",
     "Sandbox_ETW_TraitsLockSystemCanLoseNegative": "特質鎖定: 可丟失負面特質",
-    "Sandbox_ETW_TraitsLockSystemCanLosePositive": "特製鎖定: 正向特製可丟失",
-    "note_to_CH_translators": "Make sure file is saved in UTF-8 encoding, so game display correct characters"
+    "Sandbox_ETW_TraitsLockSystemCanLosePositive": "特製鎖定: 正向特製可丟失"
 }

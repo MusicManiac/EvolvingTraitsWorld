@@ -505,6 +505,5 @@
     "Sandbox_ETW_WhittlerSkill": "Требование к навыку резьбы для резчика по дереву",
     "Sandbox_ETW_WildernessKnowledge": "Лесной житель (Bushcrafter)",
     "Sandbox_ETW_WildernessKnowledgeSkill": "Требование к навыкам лесного жителя",
-    "Sandbox_ETW_WildernessKnowledgeSkill_tooltip": "Поиск + Обработка камня + Техобслуживание + Резьба. Дополнительное требование: иметь как минимум 2 уровня в каждом навыке.",
-    "note_to_LANGUAGE_translators": "Make sure file is saved in <ENCODING> encoding, so game display correct characters"
+    "Sandbox_ETW_WildernessKnowledgeSkill_tooltip": "Поиск + Обработка камня + Техобслуживание + Резьба. Дополнительное требование: иметь как минимум 2 уровня в каждом навыке."
 }

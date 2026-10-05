@@ -57,7 +57,5 @@
     "UI_trait_RestorationExpert": "Experte für Restaurierung",
     "UI_trait_RestorationExpertDesc": "Du weisst, wie man alte Gegenstände wieder in ihren ursprünglichen Zustand versetzt. Du hast die Möglichkeit, keine Strafe für mehrfache Reparaturen zu erhalten.<br>+1 Wartung",
     "UI_trait_StickFighter": "Stumpfer Kämpfer",
-    "UI_trait_StickFighterDesc": "Du hast Kampfsportarten ausgeübt, bei denen ein Stock benutzt wird.",
-    "___note_to_translators": "(Don't translate this, this is just info for you guys) UI_ETW_Chance is used in displaying chances, so for example '1 in 300' or '1 in 50300', etc.",
-    "note_to_german_translators": "Make sure file is saved in UTF-8 encoding, so game display correct characters"
+    "UI_trait_StickFighterDesc": "Du hast Kampfsportarten ausgeübt, bei denen ein Stock benutzt wird."
 }

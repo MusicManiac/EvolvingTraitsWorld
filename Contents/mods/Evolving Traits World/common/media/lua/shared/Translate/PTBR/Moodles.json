@@ -6,7 +6,5 @@
     "Moodles_SleepHealthMoodle_Good_lvl1": "Perto da minha hora de dormir.",
     "Moodles_SleepHealthMoodle_Good_lvl2": "Bom momento para dormir",
     "Moodles_SleepHealthMoodle_Good_lvl3": "Ótimo momento para dormir",
-    "Moodles_SleepHealthMoodle_Good_lvl4": "Na hora certa!",
-    "___note_to_PTBR_translators": "Make sure file is saved in UTF-8 encoding, so game display correct characters",
-    "___note_to_translators": "(Don't translate this, this is just info for you guys) If a field has %1 in it, it's replaced with value later on when the code is run"
+    "Moodles_SleepHealthMoodle_Good_lvl4": "Na hora certa!"
 }

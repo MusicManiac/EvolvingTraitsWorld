@@ -478,6 +478,11 @@ def is_metadata_key(key: TranslationKey) -> bool:
     )
 
 
+def is_version_key(key: TranslationKey) -> bool:
+    """Return whether a key stores the target language's version marker."""
+    return key[1].lower() == VERSION_KEY.lower()
+
+
 def translation_version(snapshot: TranslationMap, language: str) -> str:
     """Read and validate the declared version from a language snapshot."""
     matches = [value for (_, key), value in snapshot.items() if key.lower() == VERSION_KEY.lower()]
@@ -557,9 +562,14 @@ def analyze_language(
         if key in current_source and key in current_target and not is_metadata_key(key)
     )
     source_keys = {key for key in current_source if not is_metadata_key(key)}
-    target_keys = {key for key in current_target if not is_metadata_key(key)}
-    missing = tuple(sorted(source_keys - target_keys))
-    obsolete = tuple(sorted(target_keys - source_keys))
+    target_translation_keys = {
+        key for key in current_target if not is_metadata_key(key)
+    }
+    target_cleanup_keys = {
+        key for key in current_target if not is_version_key(key)
+    }
+    missing = tuple(sorted(source_keys - target_translation_keys))
+    obsolete = tuple(sorted(target_cleanup_keys - current_source.keys()))
     return LanguageReport(
         language=language,
         version=version,

@@ -51,7 +51,5 @@
     "UI_trait_RestorationExpert": "Especialista em Restauração",
     "UI_trait_RestorationExpertDesc": "Você sabe como restaurar um item. Tem a chance de não tomar penalidade por reparações múltiplas.<br>+1 Manutenção",
     "UI_trait_StickFighter": "Lutador de Bastão",
-    "UI_trait_StickFighterDesc": "Você praticou a luta com bastões.",
-    "___note_to_translators": "(Don't translate this, this is just info for you guys) UI_ETW_Chance is used in displaying chances, so for example '1 in 300' or '1 in 50300', etc.",
-    "note_to_PTBR_translators": "Make sure file is saved in UTF-8 encoding, so game display correct characters"
+    "UI_trait_StickFighterDesc": "Você praticou a luta com bastões."
 }
