@@ -204,9 +204,13 @@ def updated_english_ui() -> tuple[str, dict[str, str]]:
 
 
 def updated_workshop_description(percentages: dict[str, str]) -> str:
-    """Return workshopDesc.txt with current completion beside each language."""
+    """Return workshopDesc.txt with current completion in descending order."""
     description = WORKSHOP_DESCRIPTION_PATH.read_text(encoding="utf-8")
-    for label, language in WORKSHOP_LANGUAGES:
+    lines = description.splitlines(keepends=True)
+    entries: list[tuple[str, str | None, str, int]] = []
+    matched_indices: list[int] = []
+
+    for order, (label, language) in enumerate(WORKSHOP_LANGUAGES):
         percentage = "100.0" if language is None else percentages.get(language)
         if percentage is None:
             raise TranslationStatsError(
@@ -215,20 +219,40 @@ def updated_workshop_description(percentages: dict[str, str]) -> str:
 
         bullet = f"[*]{label}"
         pattern = re.compile(
-            rf"^{re.escape(bullet)}(?: \(\d+(?:\.\d+)?%\))?$",
-            re.MULTILINE,
+            rf"{re.escape(bullet)}(?: \(\d+(?:\.\d+)?%\))?",
         )
-        description, replacements = pattern.subn(
-            f"{bullet} ({percentage}%)",
-            description,
-        )
-        if replacements != 1:
+        indices = [
+            index
+            for index, line in enumerate(lines)
+            if pattern.fullmatch(line.rstrip("\r\n"))
+        ]
+        if len(indices) != 1:
             raise TranslationStatsError(
                 f"Expected exactly one workshop language bullet {bullet!r}; "
-                f"found {replacements}."
+                f"found {len(indices)}."
             )
+        entries.append((label, language, percentage, order))
+        matched_indices.append(indices[0])
 
-    return description
+    sorted_indices = sorted(matched_indices)
+    first_index = sorted_indices[0]
+    expected_indices = list(range(first_index, first_index + len(WORKSHOP_LANGUAGES)))
+    if sorted_indices != expected_indices:
+        raise TranslationStatsError(
+            "Expected workshop language bullets to form one contiguous list."
+        )
+
+    english = next(entry for entry in entries if entry[1] is None)
+    translations = sorted(
+        (entry for entry in entries if entry[1] is not None),
+        key=lambda entry: (-float(entry[2]), entry[3]),
+    )
+    for offset, (label, _, percentage, _) in enumerate((english, *translations)):
+        index = first_index + offset
+        line_ending = lines[index][len(lines[index].rstrip("\r\n")) :]
+        lines[index] = f"[*]{label} ({percentage}%){line_ending}"
+
+    return "".join(lines)
 
 
 def parse_args() -> argparse.Namespace:

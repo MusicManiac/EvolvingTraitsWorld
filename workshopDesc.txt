@@ -30,18 +30,18 @@ List of credits, contributors and translators can be found in [url=https://steam
 Currently mod supports following languages:
 [list]
 [*]English (100.0%)
-[*]Italiano / Italian (72.7%)
-[*]French / Français (80.6%)
-[*]Español / Spanish (41.6%)
-[*]簡体中文 / Simplified Chinese (88.1%)
-[*]繁體中文 / Traditional Chinese (27.6%)
-[*]Português Brasileiro / Brazilian Portuguese (14.5%)
-[*]한국어 / Korean (27.3%)
-[*]日本語 / Japanese (74.2%)
 [*]Türkçe / Turkish (96.3%)
-[*]Deutsch / German (27.1%)
+[*]簡体中文 / Simplified Chinese (88.1%)
+[*]French / Français (80.6%)
+[*]日本語 / Japanese (74.2%)
 [*]Українська / Ukrainian (74.2%)
+[*]Italiano / Italian (72.7%)
 [*]Русский / Russian (69.6%)
+[*]Español / Spanish (41.6%)
+[*]繁體中文 / Traditional Chinese (27.6%)
+[*]한국어 / Korean (27.3%)
+[*]Deutsch / German (27.1%)
+[*]Português Brasileiro / Brazilian Portuguese (14.5%)
 [/list]
 
 [h1]Afterword and Permission[/h1]
