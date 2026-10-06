@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from collections import defaultdict
 from pathlib import Path
@@ -25,10 +26,26 @@ TRANSLATIONS_DIRECTORY = (
     / "Translate"
 )
 ENGLISH_UI_PATH = TRANSLATIONS_DIRECTORY / "EN" / "UI.json"
+WORKSHOP_DESCRIPTION_PATH = REPOSITORY_ROOT / "workshopDesc.txt"
 EXPECTED_COMPONENTS = {"moodles", "sandbox", "ui"}
 STATS_KEY_PREFIX = "UI_ETW_TranslationStats_"
 TOTAL_LINES_KEY = f"{STATS_KEY_PREFIX}Total"
 LEGACY_STATS_KEY_PREFIXES = ("___translation_stats_",)
+WORKSHOP_LANGUAGES = (
+    ("English", None),
+    ("Italiano / Italian", "IT"),
+    ("French / Français", "FR"),
+    ("Español / Spanish", "ES"),
+    ("簡体中文 / Simplified Chinese", "CN"),
+    ("繁體中文 / Traditional Chinese", "CH"),
+    ("Português Brasileiro / Brazilian Portuguese", "PTBR"),
+    ("한국어 / Korean", "KO"),
+    ("日本語 / Japanese", "JP"),
+    ("Türkçe / Turkish", "TR"),
+    ("Deutsch / German", "DE"),
+    ("Українська / Ukrainian", "UA"),
+    ("Русский / Russian", "RU"),
+)
 
 
 class TranslationStatsError(RuntimeError):
@@ -186,15 +203,46 @@ def updated_english_ui() -> tuple[str, dict[str, str]]:
     )
 
 
+def updated_workshop_description(percentages: dict[str, str]) -> str:
+    """Return workshopDesc.txt with current completion beside each language."""
+    description = WORKSHOP_DESCRIPTION_PATH.read_text(encoding="utf-8")
+    for label, language in WORKSHOP_LANGUAGES:
+        percentage = "100.0" if language is None else percentages.get(language)
+        if percentage is None:
+            raise TranslationStatsError(
+                f"No generated translation percentage for workshop language {language}."
+            )
+
+        bullet = f"[*]{label}"
+        pattern = re.compile(
+            rf"^{re.escape(bullet)}(?: \(\d+(?:\.\d+)?%\))?$",
+            re.MULTILINE,
+        )
+        description, replacements = pattern.subn(
+            f"{bullet} ({percentage}%)",
+            description,
+        )
+        if replacements != 1:
+            raise TranslationStatsError(
+                f"Expected exactly one workshop language bullet {bullet!r}; "
+                f"found {replacements}."
+            )
+
+    return description
+
+
 def parse_args() -> argparse.Namespace:
     """Parse command-line options."""
     parser = argparse.ArgumentParser(
-        description="Update EN/UI.json with aggregate Weblate completion percentages."
+        description=(
+            "Update EN/UI.json and workshopDesc.txt with aggregate Weblate "
+            "completion percentages."
+        )
     )
     parser.add_argument(
         "--check",
         action="store_true",
-        help="report whether EN/UI.json needs to be updated without changing it",
+        help="report whether generated translation percentages need updating",
     )
     return parser.parse_args()
 
@@ -203,31 +251,43 @@ def main() -> int:
     """Update or verify generated translation completion metadata."""
     args = parse_args()
     try:
-        updated, generated = updated_english_ui()
-        current = ENGLISH_UI_PATH.read_text(encoding="utf-8")
+        updated_ui, generated = updated_english_ui()
+        updated_description = updated_workshop_description(generated)
+        current_ui = ENGLISH_UI_PATH.read_text(encoding="utf-8")
+        current_description = WORKSHOP_DESCRIPTION_PATH.read_text(encoding="utf-8")
     except (OSError, TranslationStatsError) as error:
         print(error, file=sys.stderr)
         return 1
 
-    if current == updated:
-        print("Translation completion metadata is current.")
+    outdated_paths = []
+    if current_ui != updated_ui:
+        outdated_paths.append(ENGLISH_UI_PATH)
+    if current_description != updated_description:
+        outdated_paths.append(WORKSHOP_DESCRIPTION_PATH)
+
+    if not outdated_paths:
+        print("Translation completion metadata and workshop description are current.")
         return 0
     if args.check:
         print(
-            "Translation completion metadata is outdated; "
+            "Generated translation percentages are outdated in "
+            f"{', '.join(path.name for path in outdated_paths)}; "
             "run python update_translation_stats.py.",
             file=sys.stderr,
         )
         return 1
 
-    ENGLISH_UI_PATH.write_text(updated, encoding="utf-8")
+    if current_ui != updated_ui:
+        ENGLISH_UI_PATH.write_text(updated_ui, encoding="utf-8")
+    if current_description != updated_description:
+        WORKSHOP_DESCRIPTION_PATH.write_text(updated_description, encoding="utf-8")
     summary = ", ".join(
         f"Total={generated['Total']} lines"
         if language == "Total"
         else f"{language}={value}%"
         for language, value in generated.items()
     )
-    print(f"Updated translation completion metadata: {summary}")
+    print(f"Updated translation completion percentages: {summary}")
     return 0
 
 

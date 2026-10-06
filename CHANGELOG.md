@@ -1,3 +1,11 @@
+## v.14.5.0
+###### 06 Oct 2026
+
+- General:
+  - Translations page got changed, now shows actual translated % and not just version number. Still looks coll with numbers and stuff.
+- Translations:
+  - Moved to [Weblate](https://weblate.musicmaniac.dev/engage/evolving-traits-world-etw/). Anyone can contribute few lines without leaving your browser. No more digging inside files and having to translate all 1000 lines. Contribute few lines when you want to. Basically actual community translations.
+
 ## v.14.4.1
 ###### 04 Oct 2026
 

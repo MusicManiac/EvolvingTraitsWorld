@@ -26,21 +26,22 @@ If you want to submit translation files, make suggestions or report bugs, the ea
 Big separate thanks to [url=https://steamcommunity.com/profiles/76561198035789219]HypnoToadTrance[/url] and [url=https://steamcommunity.com/profiles/76561198361427460]Fajdek[/url] for their work on [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1299328280]More Traits[/url] before it was absorbed into ETW.
 
 List of credits, contributors and translators can be found in [url=https://steamcommunity.com/workshop/filedetails/discussion/2914075159/3785877016603169742/]this discussion[/url] (hitting description limit so had to move it).
-Currently mod supports following languages (note that not all translations are 100% complete as mod is getting updates):
+[h2]Translations are now done via [url=https://weblate.musicmaniac.dev/engage/evolving-traits-world-etw/]Weblate[/url] - you can easily translate few lines into your language in your browser, no need to dig inside the files[/h2]
+Currently mod supports following languages:
 [list]
-[*]English
-[*]Italiano / Italian
-[*]French / Français
-[*]Español / Spanish
-[*]簡体中文 / Simplified Chinese
-[*]繁體中文 / Traditional Chinese
-[*]Português Brasileiro / Brazilian Portuguese
-[*]한국어 / Korean
-[*]日本語 / Japanese
-[*]Türkçe / Turkish
-[*]Deutsch / German
-[*]Українська / Ukrainian
-[*]Русский / Russian
+[*]English (100.0%)
+[*]Italiano / Italian (72.7%)
+[*]French / Français (80.6%)
+[*]Español / Spanish (41.6%)
+[*]簡体中文 / Simplified Chinese (88.1%)
+[*]繁體中文 / Traditional Chinese (27.6%)
+[*]Português Brasileiro / Brazilian Portuguese (14.5%)
+[*]한국어 / Korean (27.3%)
+[*]日本語 / Japanese (74.2%)
+[*]Türkçe / Turkish (96.3%)
+[*]Deutsch / German (27.1%)
+[*]Українська / Ukrainian (74.2%)
+[*]Русский / Russian (69.6%)
 [/list]
 
 [h1]Afterword and Permission[/h1]
