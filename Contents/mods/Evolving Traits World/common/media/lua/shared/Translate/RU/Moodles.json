@@ -6,5 +6,17 @@
     "Moodles_SleepHealthMoodle_Good_lvl1": "Немного выше среднего время для сна.",
     "Moodles_SleepHealthMoodle_Good_lvl2": "Неплохое время для сна",
     "Moodles_SleepHealthMoodle_Good_lvl3": "Отличное время для сна",
-    "Moodles_SleepHealthMoodle_Good_lvl4": "Точно в идеальной точке"
+    "Moodles_SleepHealthMoodle_Good_lvl4": "Точно в идеальной точке",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_desc_lvl3": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Good_desc_lvl2": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Good_lvl1": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Good_lvl2": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_desc_effects_continued": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_desc_lvl1": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_lvl3": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Good_desc_lvl1": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_desc_lvl2": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_lvl1": "",
+    "Moodles_SleepHealthMoodle_Custom": "Сон на %1 ч от оптимального часа",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_lvl2": ""
 }

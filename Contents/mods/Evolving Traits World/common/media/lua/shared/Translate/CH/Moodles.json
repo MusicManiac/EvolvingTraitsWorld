@@ -6,5 +6,17 @@
     "Moodles_SleepHealthMoodle_Good_lvl1": "比平常睡覺時間略好。",
     "Moodles_SleepHealthMoodle_Good_lvl2": "不錯的睡覺時間",
     "Moodles_SleepHealthMoodle_Good_lvl3": "睡覺的好時間",
-    "Moodles_SleepHealthMoodle_Good_lvl4": "完美的睡眠時間"
+    "Moodles_SleepHealthMoodle_Good_lvl4": "完美的睡眠時間",
+    "Moodles_AlcoholicWithdrawalMoodle_Good_lvl1": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Good_desc_lvl1": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Good_desc_lvl2": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_lvl3": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_lvl2": "",
+    "Moodles_SleepHealthMoodle_Custom": "離最佳時間還有 %1 小時的睡眠",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_desc_lvl3": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Good_lvl2": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_desc_effects_continued": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_desc_lvl1": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_desc_lvl2": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_lvl1": ""
 }

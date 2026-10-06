@@ -1,0 +1,84 @@
+{
+    "component": "sandbox",
+    "languages": {
+
+        "CH": {
+            "total": 750,
+            "translated": 219,
+            "needs_editing": 0
+        },
+
+        "CN": {
+            "total": 750,
+            "translated": 680,
+            "needs_editing": 0
+        },
+
+        "DE": {
+            "total": 750,
+            "translated": 214,
+            "needs_editing": 0
+        },
+
+        "ES": {
+            "total": 750,
+            "translated": 317,
+            "needs_editing": 0
+        },
+
+        "FR": {
+            "total": 750,
+            "translated": 624,
+            "needs_editing": 0
+        },
+
+        "IT": {
+            "total": 750,
+            "translated": 551,
+            "needs_editing": 0
+        },
+
+        "JP": {
+            "total": 750,
+            "translated": 567,
+            "needs_editing": 0
+        },
+
+        "KO": {
+            "total": 750,
+            "translated": 218,
+            "needs_editing": 0
+        },
+
+        "PTBR": {
+            "total": 750,
+            "translated": 87,
+            "needs_editing": 0
+        },
+
+        "RU": {
+            "total": 750,
+            "translated": 519,
+            "needs_editing": 0
+        },
+
+        "TR": {
+            "total": 750,
+            "translated": 744,
+            "needs_editing": 0
+        },
+
+        "UA": {
+            "total": 750,
+            "translated": 567,
+            "needs_editing": 0
+        },
+
+        "en": {
+            "total": 750,
+            "translated": 750,
+            "needs_editing": 0
+        }
+
+    }
+}

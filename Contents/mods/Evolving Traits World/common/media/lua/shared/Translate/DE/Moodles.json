@@ -6,5 +6,17 @@
     "Moodles_SleepHealthMoodle_Good_lvl1": "Ich habe anständig geschlafen",
     "Moodles_SleepHealthMoodle_Good_lvl2": "Ich habe gut geschlafen",
     "Moodles_SleepHealthMoodle_Good_lvl3": "Mein Schlaf war sehr erholsam",
-    "Moodles_SleepHealthMoodle_Good_lvl4": "Was für ein guter Schlaf"
+    "Moodles_SleepHealthMoodle_Good_lvl4": "Was für ein guter Schlaf",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_desc_lvl1": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_lvl3": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_desc_lvl2": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_desc_lvl3": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Good_desc_lvl1": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Good_desc_lvl2": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Good_lvl1": "",
+    "Moodles_SleepHealthMoodle_Custom": "Mein Schlaf ist im Vergleich zu meinem üblichen Zeitplan um %1 Stunde verschoben",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_lvl2": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Good_lvl2": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_desc_effects_continued": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_lvl1": ""
 }

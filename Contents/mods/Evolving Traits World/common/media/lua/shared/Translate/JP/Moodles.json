@@ -6,5 +6,17 @@
     "Moodles_SleepHealthMoodle_Good_lvl1": "平均より少し良い時間帯の睡眠だ",
     "Moodles_SleepHealthMoodle_Good_lvl2": "睡眠をとるには良い時間帯だ",
     "Moodles_SleepHealthMoodle_Good_lvl3": "睡眠をとるには最高の時間帯だ",
-    "Moodles_SleepHealthMoodle_Good_lvl4": "完璧なタイミングでの睡眠だ"
+    "Moodles_SleepHealthMoodle_Good_lvl4": "完璧なタイミングでの睡眠だ",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_desc_lvl2": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_lvl3": "",
+    "Moodles_SleepHealthMoodle_Custom": "最適な就寝時間から %1 時間離れています",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_desc_lvl1": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_lvl1": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_desc_effects_continued": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_desc_lvl3": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Good_desc_lvl1": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Good_desc_lvl2": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Good_lvl1": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Good_lvl2": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_lvl2": ""
 }

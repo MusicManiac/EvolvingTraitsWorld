@@ -1,0 +1,84 @@
+{
+    "component": "moodles",
+    "languages": {
+
+        "CH": {
+            "total": 20,
+            "translated": 9,
+            "needs_editing": 0
+        },
+
+        "CN": {
+            "total": 20,
+            "translated": 9,
+            "needs_editing": 0
+        },
+
+        "DE": {
+            "total": 20,
+            "translated": 9,
+            "needs_editing": 0
+        },
+
+        "ES": {
+            "total": 20,
+            "translated": 9,
+            "needs_editing": 0
+        },
+
+        "FR": {
+            "total": 20,
+            "translated": 9,
+            "needs_editing": 0
+        },
+
+        "IT": {
+            "total": 20,
+            "translated": 9,
+            "needs_editing": 0
+        },
+
+        "JP": {
+            "total": 20,
+            "translated": 9,
+            "needs_editing": 0
+        },
+
+        "KO": {
+            "total": 20,
+            "translated": 9,
+            "needs_editing": 0
+        },
+
+        "PTBR": {
+            "total": 20,
+            "translated": 9,
+            "needs_editing": 0
+        },
+
+        "RU": {
+            "total": 20,
+            "translated": 9,
+            "needs_editing": 0
+        },
+
+        "TR": {
+            "total": 20,
+            "translated": 20,
+            "needs_editing": 0
+        },
+
+        "UA": {
+            "total": 20,
+            "translated": 9,
+            "needs_editing": 0
+        },
+
+        "en": {
+            "total": 20,
+            "translated": 20,
+            "needs_editing": 0
+        }
+
+    }
+}

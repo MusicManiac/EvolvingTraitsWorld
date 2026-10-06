@@ -6,5 +6,17 @@
     "Moodles_SleepHealthMoodle_Good_lvl1": "Un moment légèrement plus propice que d'habitude pour dormir.",
     "Moodles_SleepHealthMoodle_Good_lvl2": "Moment convenable pour dormir",
     "Moodles_SleepHealthMoodle_Good_lvl3": "Excellent moment pour dormir",
-    "Moodles_SleepHealthMoodle_Good_lvl4": "Pile au moment idéal"
+    "Moodles_SleepHealthMoodle_Good_lvl4": "Pile au moment idéal",
+    "Moodles_AlcoholicWithdrawalMoodle_Good_desc_lvl1": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Good_desc_lvl2": "",
+    "Moodles_SleepHealthMoodle_Custom": "Sommeil décalé de %1 h par rapport à l'heure optimale",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_lvl2": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_lvl3": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Good_lvl1": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Good_lvl2": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_desc_effects_continued": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_desc_lvl1": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_desc_lvl2": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_desc_lvl3": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_lvl1": ""
 }

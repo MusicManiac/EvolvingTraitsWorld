@@ -6,5 +6,17 @@
     "Moodles_SleepHealthMoodle_Good_lvl1": "Perto da minha hora de dormir.",
     "Moodles_SleepHealthMoodle_Good_lvl2": "Bom momento para dormir",
     "Moodles_SleepHealthMoodle_Good_lvl3": "Ótimo momento para dormir",
-    "Moodles_SleepHealthMoodle_Good_lvl4": "Na hora certa!"
+    "Moodles_SleepHealthMoodle_Good_lvl4": "Na hora certa!",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_desc_lvl3": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_lvl3": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Good_desc_lvl1": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Good_desc_lvl2": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Good_lvl1": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Good_lvl2": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_desc_effects_continued": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_desc_lvl1": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_desc_lvl2": "",
+    "Moodles_SleepHealthMoodle_Custom": "Dormindo a %1 h do horário ideal",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_lvl2": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_lvl1": ""
 }
