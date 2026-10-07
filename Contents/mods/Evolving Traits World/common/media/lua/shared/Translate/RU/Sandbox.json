@@ -209,7 +209,7 @@
     "Sandbox_ETW_BrokenLeg_tooltip": "",
     "Sandbox_ETW_Burglar": "Взломщик",
     "Sandbox_ETW_BurglarSkill": "Требование к навыку взломщика",
-    "Sandbox_ETW_BurglarSkill_tooltip": "Механика + Электрика + Ловкость. Обратите внимание, что нужно иметь как минимум 2 уровня и в механике, и в электрике.",
+    "Sandbox_ETW_BurglarSkill_tooltip": "Автомеханика + Электрика + Проворность. Обратите внимание, что нужно иметь как минимум 2 уровня и в автомеханике, и в электрике.",
     "Sandbox_ETW_BurnWardPatient": "",
     "Sandbox_ETW_BurnWardPatientBurnTimeMultiplier": "",
     "Sandbox_ETW_BurnWardPatientBurnTimeMultiplier_tooltip": "",
@@ -326,7 +326,7 @@
     "Sandbox_ETW_GourmandCookingTimeMultiplier_tooltip": "Множитель времени, за которое еда, приготовленная гурманом, становится готовой в нагретой ёмкости.",
     "Sandbox_ETW_Graceful": "Грациозность",
     "Sandbox_ETW_GracefulSkill": "Требование к навыку грациозности",
-    "Sandbox_ETW_GracefulSkill_tooltip": "Ловкость + Скрытность + Легкость",
+    "Sandbox_ETW_GracefulSkill_tooltip": "Проворность + Скрытность + Лёгкий шаг",
     "Sandbox_ETW_GunEnthusiast": "Энтузиаст оружия",
     "Sandbox_ETW_GunEnthusiastKills": "Требование убийств из огнестрела для энтузиаста оружия",
     "Sandbox_ETW_GunEnthusiastSkill": "Требование к навыку энтузиаста оружия",
@@ -400,9 +400,9 @@
     "Sandbox_ETW_HomichlophobiaMultiplier_tooltip": "Определяет, насколько гомихлофобия влияет на игрока. Формула увеличения стресса и паники каждую минуту в тумане: 4%% * интенсивность_тумана * множитель гомихлофобии. Интенсивность тумана варьируется от 0 до 1, поэтому полное увеличение на 4%% случается редко.",
     "Sandbox_ETW_Hunter": "Охотник",
     "Sandbox_ETW_HunterKills": "Требование убийств для охотника",
-    "Sandbox_ETW_HunterKills_tooltip": "Огнестрел + Малые клинки",
+    "Sandbox_ETW_HunterKills_tooltip": "Огнестрельное оружие + Короткое режущее",
     "Sandbox_ETW_HunterSkill": "Требование к навыку охотника",
-    "Sandbox_ETW_HunterSkill_tooltip": "Скрытность + Прицеливание + Малые клинки + Слежение + Разделка. Дополнительное требование: иметь как минимум 2 уровня в каждом навыке.",
+    "Sandbox_ETW_HunterSkill_tooltip": "Скрытность + Точность + Короткое режущее + Выслеживание + Мясницкое дело. Дополнительное требование: иметь как минимум 2 уровня в каждом навыке.",
     "Sandbox_ETW_IdealWeight": "",
     "Sandbox_ETW_IdealWeightCounter": "",
     "Sandbox_ETW_IdealWeightCounter_tooltip": "",
@@ -748,5 +748,5 @@
     "Sandbox_ETW_WhittlerSkill": "Требование к навыку резьбы для резчика по дереву",
     "Sandbox_ETW_WildernessKnowledge": "Лесной житель (Bushcrafter)",
     "Sandbox_ETW_WildernessKnowledgeSkill": "Требование к навыкам лесного жителя",
-    "Sandbox_ETW_WildernessKnowledgeSkill_tooltip": "Поиск + Обработка камня + Техобслуживание + Резьба. Дополнительное требование: иметь как минимум 2 уровня в каждом навыке."
+    "Sandbox_ETW_WildernessKnowledgeSkill_tooltip": "Собирательство + Камнеобработка + Прочность + Резьба. Дополнительное требование: иметь как минимум 2 уровня в каждом навыке."
 }
