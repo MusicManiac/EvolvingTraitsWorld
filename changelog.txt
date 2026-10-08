@@ -1,8 +1,11 @@
 [url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
 
-v.14.5.0
+v.14.6.0
 
 - General:
-  - Translations page got changed, now shows actual translated % and not just version number. Still looks coll with numbers and stuff.
+  - Lowered bloodlust decay by 15%
+- Fix:
+  - Fixed Hunter requirements in UI being outdated
+  - Fixed bloodlust counter being able to go below intended floor.
 - Translations:
-  - Moved to [url=https://weblate.musicmaniac.dev/engage/evolving-traits-world-etw/]Weblate[/url]. Anyone can contribute few lines without leaving your browser. No more digging inside files and having to translate all 1000 lines. Contribute few lines when you want to. Basically actual community translations.
+  - Translations gained 435 completed entries across 5 languages since v.14.5.0: +215 DE, +101 CN, +82 RU, +23 FR, +14 TR. Overall completion changed from 61.06% to 66.41%. [url=https://weblate.musicmaniac.dev/engage/evolving-traits-world-etw/]Contribute or fix few lines on Weblate[/url].

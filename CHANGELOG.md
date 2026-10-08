@@ -1,4 +1,4 @@
-## v.14.x.x
+## v.14.6.0
 ###### 08 Oct 2026
 
 - General:
@@ -6,6 +6,8 @@
 - Fix:
   - Fixed Hunter requirements in UI being outdated
   - Fixed bloodlust counter being able to go below intended floor.
+- Translations:
+  - Translations gained 435 completed entries across 5 languages since v.14.5.0: +215 DE, +101 CN, +82 RU, +23 FR, +14 TR. Overall completion changed from 61.06% to 66.41%. [Contribute or fix few lines on Weblate](https://weblate.musicmaniac.dev/engage/evolving-traits-world-etw/). <!-- generated:translation-stats baseline=v.14.5.0 ignore-per-language=25 -->
 
 ## v.14.5.0
 ###### 06 Oct 2026
