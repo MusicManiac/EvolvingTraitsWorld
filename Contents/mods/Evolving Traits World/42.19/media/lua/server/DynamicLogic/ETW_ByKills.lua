@@ -24,7 +24,7 @@ then
 	return
 end
 
-local BLOODLUST_HOURLY_PROGRESS_DECAY = 7.2
+local BLOODLUST_HOURLY_PROGRESS_DECAY = 6.12
 
 ---Adds Bloodlust progress when a nearby zombie dies.
 ---@param zombie IsoZombie
@@ -67,7 +67,10 @@ local function bloodlustTimeETW()
 				nil,
 				ETWTraitsRegistry.BLOODLUST
 			)
-			bloodlustModData.BloodlustProgress = bloodlustModData.BloodlustProgress + progressChange
+			bloodlustModData.BloodlustProgress = math.max(
+				-SBvars.BloodlustProgress,
+				bloodlustModData.BloodlustProgress + progressChange
+			)
 			logETW(
 				"ETW Logger | bloodlustTimeETW(): hourly decay applied, BloodlustProgress="
 					.. bloodlustModData.BloodlustProgress

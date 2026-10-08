@@ -1,8 +1,11 @@
 ## v.14.6.0
 ###### 08 Oct 2026
 
+- General:
+  - Lowered bloodlust decay by 15%
 - Fix:
   - Fixed Hunter requirements in UI being outdated
+  - Fixed bloodlust counter being able to go below intended floor.
 
 ## v.14.5.0
 ###### 06 Oct 2026
