@@ -20,7 +20,7 @@ WORKSHOP_HEADER = (
     "(Properly formatted changelog can be found here)[/url]"
 )
 GENERATED_MARKER_PATTERN = re.compile(
-    r"\s*<!-- generated:translation-stats baseline=[^ ]+ -->"
+    r"\s*<!-- generated:translation-stats [^>]+ -->"
 )
 MARKDOWN_LINK_PATTERN = re.compile(r"(?<!!)\[([^\]]+)]\(([^)]+)\)")
 BOLD_PATTERN = re.compile(r"\*\*(.+?)\*\*")

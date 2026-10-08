@@ -350,15 +350,16 @@ def newest_changelog_release_version(changelog: str) -> str:
     return lines[start].removeprefix("## ").strip()
 
 
-def pinned_changelog_baseline(changelog: str) -> str | None:
-    """Return the baseline recorded in the newest generated changelog entry."""
+def pinned_changelog_settings(changelog: str) -> tuple[str | None, int | None]:
+    """Return settings recorded in the newest generated changelog entry."""
     lines = changelog.splitlines(keepends=True)
     start, end = first_changelog_release_range(lines)
     pattern = re.compile(
-        rf"<!-- {re.escape(CHANGELOG_MARKER)} baseline=([^ ]+) -->"
+        rf"<!-- {re.escape(CHANGELOG_MARKER)} baseline=([^ ]+)"
+        rf"(?: ignore-per-language=(\d+))? -->"
     )
     matches = [
-        match.group(1)
+        match.groups()
         for line in lines[start:end]
         if (match := pattern.search(line)) is not None
     ]
@@ -366,7 +367,10 @@ def pinned_changelog_baseline(changelog: str) -> str | None:
         raise TranslationStatsError(
             "The newest changelog release has multiple generated translation entries."
         )
-    return matches[0] if matches else None
+    if not matches:
+        return None, None
+    baseline_tag, ignored = matches[0]
+    return baseline_tag, int(ignored or 0)
 
 
 def latest_release_tag() -> str:
@@ -382,17 +386,27 @@ def latest_release_tag() -> str:
 
 def select_baseline_tag(explicit_tag: str | None, changelog: str) -> str:
     """Choose an explicit, pinned, or latest release baseline tag."""
-    baseline_tag = explicit_tag or pinned_changelog_baseline(changelog)
+    pinned_baseline, _ = pinned_changelog_settings(changelog)
+    baseline_tag = explicit_tag or pinned_baseline
     if baseline_tag is None:
         baseline_tag = latest_release_tag()
     resolve_git_ref(baseline_tag)
     return baseline_tag
 
 
+def select_ignored_per_language(explicit_count: int | None, changelog: str) -> int:
+    """Choose an explicit, pinned, or zero per-language delta adjustment."""
+    if explicit_count is not None:
+        return explicit_count
+    _, pinned_count = pinned_changelog_settings(changelog)
+    return pinned_count or 0
+
+
 def release_translation_summary(
     current: dict[str, tuple[int, int, int]],
     baseline: dict[str, tuple[int, int, int]],
     baseline_tag: str,
+    ignored_per_language: int,
 ) -> str | None:
     """Return a Markdown release summary for translation-count changes."""
     if current.keys() != baseline.keys():
@@ -406,12 +420,6 @@ def release_translation_summary(
     baseline_capacity = sum(total for _, _, total in baseline.values())
     if current_capacity == 0 or baseline_capacity == 0:
         raise TranslationStatsError("Weblate reported zero aggregate translation capacity.")
-    if (
-        current_completed == baseline_completed
-        and current_capacity == baseline_capacity
-    ):
-        return None
-
     current_source_totals = {total for _, _, total in current.values()}
     baseline_source_totals = {total for _, _, total in baseline.values()}
     if len(current_source_totals) != 1 or len(baseline_source_totals) != 1:
@@ -419,11 +427,17 @@ def release_translation_summary(
             "Weblate statistics report inconsistent source totals."
         )
 
-    delta = current_completed - baseline_completed
     language_deltas = {
-        language: current[language][0] - baseline[language][0]
+        language: (
+            current[language][0]
+            - baseline[language][0]
+            - ignored_per_language
+        )
         for language in current
     }
+    delta = sum(language_deltas.values())
+    if not any(language_deltas.values()) and current_capacity == baseline_capacity:
+        return None
     gained_languages = sorted(
         (language for language, change in language_deltas.items() if change > 0),
         key=lambda language: (-language_deltas[language], language),
@@ -486,17 +500,23 @@ def updated_changelog(
     current: dict[str, tuple[int, int, int]],
     baseline: dict[str, tuple[int, int, int]],
     baseline_tag: str,
+    ignored_per_language: int,
 ) -> tuple[str, str | None]:
     """Return CHANGELOG.md with one idempotent generated translation entry."""
     lines = changelog.splitlines(keepends=True)
     start, end = first_changelog_release_range(lines)
     marker_pattern = re.compile(
-        rf"<!-- {re.escape(CHANGELOG_MARKER)} baseline=[^ ]+ -->"
+        rf"<!-- {re.escape(CHANGELOG_MARKER)} [^>]+ -->"
     )
     release_lines = [
         line for line in lines[start:end] if marker_pattern.search(line) is None
     ]
-    summary = release_translation_summary(current, baseline, baseline_tag)
+    summary = release_translation_summary(
+        current,
+        baseline,
+        baseline_tag,
+        ignored_per_language,
+    )
     if summary is not None:
         release_version = release_lines[0].removeprefix("## ").strip()
         if release_version == baseline_tag:
@@ -507,7 +527,8 @@ def updated_changelog(
         newline = "\r\n" if "\r\n" in changelog else "\n"
         generated_line = (
             f"  - {summary} "
-            f"<!-- {CHANGELOG_MARKER} baseline={baseline_tag} -->{newline}"
+            f"<!-- {CHANGELOG_MARKER} baseline={baseline_tag} "
+            f"ignore-per-language={ignored_per_language} -->{newline}"
         )
         translations_indices = [
             index
@@ -533,6 +554,17 @@ def updated_changelog(
             )
 
     return "".join((*lines[:start], *release_lines, *lines[end:])), summary
+
+
+def nonnegative_integer(value: str) -> int:
+    """Return an argparse integer constrained to zero or greater."""
+    try:
+        parsed = int(value)
+    except ValueError as error:
+        raise argparse.ArgumentTypeError("expected an integer") from error
+    if parsed < 0:
+        raise argparse.ArgumentTypeError("expected a non-negative integer")
+    return parsed
 
 
 def parse_args() -> argparse.Namespace:
@@ -565,6 +597,16 @@ def parse_args() -> argparse.Namespace:
             "defaults to origin/weblate and implies --check"
         ),
     )
+    parser.add_argument(
+        "--ignore-per-language",
+        type=nonnegative_integer,
+        metavar="COUNT",
+        help=(
+            "subtract COUNT known non-translation completions from every "
+            "language's release delta; defaults to the value pinned in the "
+            "generated changelog entry or zero"
+        ),
+    )
     return parser.parse_args()
 
 
@@ -580,6 +622,10 @@ def main() -> int:
                 git_statistics_documents(args.weblate_branch)
             )
         baseline_tag = select_baseline_tag(args.baseline_tag, changelog)
+        ignored_per_language = select_ignored_per_language(
+            args.ignore_per_language,
+            changelog,
+        )
         baseline_statistics = aggregate_statistics(
             git_statistics_documents(baseline_tag)
         )
@@ -589,6 +635,7 @@ def main() -> int:
             statistics,
             baseline_statistics,
             baseline_tag,
+            ignored_per_language,
         )
         detached_changelog_preview = (
             args.weblate_branch is not None
@@ -603,6 +650,7 @@ def main() -> int:
                 statistics,
                 baseline_statistics,
                 baseline_tag,
+                ignored_per_language,
             )
         current_ui = ENGLISH_UI_PATH.read_text(encoding="utf-8")
         current_description = WORKSHOP_DESCRIPTION_PATH.read_text(encoding="utf-8")
@@ -624,6 +672,11 @@ def main() -> int:
             "no files were changed."
         )
         print(f"Generated percentages: {completion_summary(generated)}")
+        if ignored_per_language:
+            print(
+                "Release contribution adjustment: ignoring "
+                f"{ignored_per_language} completions per language."
+            )
         if release_summary is None:
             print("Generated changelog entry: none (no completion-count change).")
         else:
