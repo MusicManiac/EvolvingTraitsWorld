@@ -1,3 +1,9 @@
+## v.14.6.0
+###### 08 Oct 2026
+
+- Fix:
+  - Fixed Hunter requirements in UI being outdated
+
 ## v.14.5.0
 ###### 06 Oct 2026
 

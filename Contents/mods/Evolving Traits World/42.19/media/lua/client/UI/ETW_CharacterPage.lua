@@ -673,6 +673,8 @@ function ISETWUI:createChildren()
 		local reloading = player:getPerkLevel(Perks.Reloading)
 		local fishing = player:getPerkLevel(Perks.Fishing)
 		local trapping = player:getPerkLevel(Perks.Trapping)
+		local butchering = player:getPerkLevel(Perks.Butchering)
+		local tracking = player:getPerkLevel(Perks.Tracking)
 		local foraging = player:getPerkLevel(Perks.PlantScavenging)
 		local husbandry = player:getPerkLevel(Perks.Husbandry)
 		local carving = player:getPerkLevel(Perks.Carving)
@@ -2502,8 +2504,15 @@ function ISETWUI:createChildren()
 				ETW_CommonLogicChecks.HunterShouldExecute(player)
 				and not playerHasDelayedTraitNoCache(player, CharacterTrait.HUNTER)
 			then
-				local levels = sneaking + aiming + trapping + shortBlade
-				if sneaking < 2 or aiming < 2 or trapping < 2 or shortBlade < 2 or levels < SBvars.HunterSkill then
+				local levels = sneaking + aiming + shortBlade + tracking + butchering
+				if
+					sneaking < 2
+					or aiming < 2
+					or shortBlade < 2
+					or tracking < 2
+					or butchering < 2
+					or levels < SBvars.HunterSkill
+				then
 					self.labelHunterSkillProgress = addProgressLabel(self, getText("Sandbox_ETW_HunterSkill_tooltip"))
 				end
 				if (shortBladeKills + firearmKills) < SBvars.HunterKills then
@@ -3929,6 +3938,8 @@ local function buildRenderStatsCache(player, modData)
 		reloading = player:getPerkLevel(Perks.Reloading),
 		fishing = player:getPerkLevel(Perks.Fishing),
 		trapping = player:getPerkLevel(Perks.Trapping),
+		butchering = player:getPerkLevel(Perks.Butchering),
+		tracking = player:getPerkLevel(Perks.Tracking),
 		foraging = player:getPerkLevel(Perks.PlantScavenging),
 		husbandry = player:getPerkLevel(Perks.Husbandry),
 		carving = player:getPerkLevel(Perks.Carving),
@@ -4196,6 +4207,8 @@ function ISETWUI:render()
 	local reloading = renderStats.reloading
 	local fishing = renderStats.fishing
 	local trapping = renderStats.trapping
+	local butchering = renderStats.butchering
+	local tracking = renderStats.tracking
 	local foraging = renderStats.foraging
 	local husbandry = renderStats.husbandry
 	local carving = renderStats.carving
@@ -4624,7 +4637,7 @@ function ISETWUI:render()
 		self.labelHunterSkillProgress,
 		getCachedTraitUIName(CharacterTrait.HUNTER)
 			.. ": "
-			.. sneaking + aiming + trapping + shortBlade
+			.. sneaking + aiming + shortBlade + tracking + butchering
 			.. "/"
 			.. SBvars.HunterSkill
 			.. " | "
@@ -4632,9 +4645,11 @@ function ISETWUI:render()
 			.. "/2 | "
 			.. aiming
 			.. "/2 | "
-			.. trapping
-			.. "/2 | "
 			.. shortBlade
+			.. "/2 | "
+			.. tracking
+			.. "/2 | "
+			.. butchering
 			.. "/2"
 	)
 	updateLabel(
