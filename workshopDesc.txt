@@ -33,7 +33,7 @@ Currently mod supports following languages:
 [*]簡体中文 / Simplified Chinese (100.0%)
 [*]Türkçe / Turkish (100.0%)
 [*]French / Français (85.1%)
-[*]Русский / Russian (79.8%)
+[*]Русский / Russian (82.5%)
 [*]日本語 / Japanese (76.5%)
 [*]Українська / Ukrainian (76.5%)
 [*]Italiano / Italian (75.0%)

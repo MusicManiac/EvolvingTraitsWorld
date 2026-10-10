@@ -540,13 +540,16 @@ def updated_changelog(
                 "The newest changelog release has multiple Translations sections."
             )
         if translations_indices:
-            release_lines.insert(translations_indices[0] + 1, generated_line)
+            translations_index = translations_indices[0]
+            while translations_index > 0 and not release_lines[translations_index - 1].strip():
+                del release_lines[translations_index - 1]
+                translations_index -= 1
+            release_lines.insert(translations_index + 1, generated_line)
         else:
             while release_lines and not release_lines[-1].strip():
                 release_lines.pop()
             release_lines.extend(
                 [
-                    newline,
                     f"- Translations:{newline}",
                     generated_line,
                     newline,

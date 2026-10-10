@@ -3,6 +3,8 @@
 
 - Fix:
   - Fixed starting exercise regularity causing multiplayer login errors and overwriting existing regularity progress.
+- Translations:
+  - Translations gained 29 completed entries across 1 language since v.14.6.0: +29 RU. Overall completion changed from 66.41% to 66.62%. [Contribute or fix few lines on Weblate](https://weblate.musicmaniac.dev/engage/evolving-traits-world-etw/). <!-- generated:translation-stats baseline=v.14.6.0 ignore-per-language=0 -->
 
 ## v.14.6.0
 ###### 08 Oct 2026
