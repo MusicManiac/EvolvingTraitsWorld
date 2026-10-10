@@ -53,7 +53,7 @@ local function refreshETWModDataForAllClients()
 	for i = 0, onlinePlayers:size() - 1 do
 		local player = onlinePlayers:get(i)
 		ETW_CommonFunctions.log("ETW Logger | System: refreshing modData for player " .. player:getUsername())
-		ETW_CommonFunctions.syncETWModDataToClient(player)
+		ETW_CommonFunctions.syncETWModDataToClient(player, false)
 	end
 end
 

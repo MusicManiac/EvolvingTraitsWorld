@@ -1,3 +1,9 @@
+## v.14.6.1
+###### 10 Oct 2026
+
+- Fix:
+  - Fixed starting exercise regularity causing multiplayer login errors and overwriting existing regularity progress.
+
 ## v.14.6.0
 ###### 08 Oct 2026
 

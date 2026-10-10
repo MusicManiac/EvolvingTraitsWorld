@@ -20,6 +20,7 @@ local random_instance = newrandom()
 local MOD_DATA_VERSION = 1.19
 
 local RECENT_TRAIT_EVENT_LIMIT = 10
+local NEW_CHARACTER_MAX_HOURS = 1
 
 ---Returns the midpoint between two numeric values.
 ---@param a number
@@ -201,10 +202,17 @@ local function getInitialMentalAverage(startingTraits)
 	return midpoint(SBvars.MentalStateSystemDepressiveLoseThreshold, SBvars.MentalStateSystemBlissfulLoseThreshold)
 end
 
----Randomly distributes exercise regularity as closely as vanilla increments allow to the requested average.
+---Returns whether the character is still within its initial creation window.
+---@param player IsoPlayer
+---@return boolean
+local function isFreshCharacter(player)
+	return player:getHoursSurvived() < NEW_CHARACTER_MAX_HOURS
+end
+
+---Raises average exercise regularity to the requested minimum while preserving all existing progress.
 ---@param player IsoPlayer
 ---@param averageRegularity integer
-local function setInitialExerciseRegularity(player, averageRegularity)
+local function topUpInitialExerciseRegularity(player, averageRegularity)
 	local exerciseTypes = {}
 	for exerciseType, _ in pairs(FitnessExercises.exercisesType) do
 		exerciseTypes[#exerciseTypes + 1] = exerciseType
@@ -219,35 +227,41 @@ local function setInitialExerciseRegularity(player, averageRegularity)
 	end
 
 	local fitness = player:getFitness()
-	local regularityMap = fitness:getRegularityMap()
-	regularityMap:clear()
+	fitness:init()
 	local targetAverage = math.max(0, math.min(100, math.floor(averageRegularity)))
-	if targetAverage == 0 then
-		return
-	end
-	fitness:setCurrentExercise(exerciseTypes[1])
-	fitness:incRegularity()
-	local regularityIncrement = fitness:getRegularity(exerciseTypes[1])
-	regularityMap:clear()
-	if regularityIncrement <= 0 then
-		return
-	end
-	local remainingRegularity = targetAverage * #exerciseTypes
+	local currentTotal = 0
 	for index = 1, #exerciseTypes do
-		local remainingExercises = #exerciseTypes - index
-		local minimum = math.max(0, remainingRegularity - remainingExercises * 100)
-		local maximum = math.min(100, remainingRegularity)
-		local regularity = minimum
-		if maximum > minimum then
-			regularity = random_instance:random(minimum, maximum)
-		end
-		fitness:setCurrentExercise(exerciseTypes[index])
-		local repeatCount = math.max(0, math.floor(regularity / regularityIncrement + 0.5))
-		for _ = 1, repeatCount do
-			fitness:incRegularity()
-		end
-		remainingRegularity = remainingRegularity - regularity
+		currentTotal = currentTotal + fitness:getRegularity(exerciseTypes[index])
 	end
+
+	local remainingRegularity = targetAverage * #exerciseTypes - currentTotal
+	if remainingRegularity <= 0 then
+		return
+	end
+
+	while remainingRegularity > 0 do
+		local madeProgress = false
+		for index = 1, #exerciseTypes do
+			if remainingRegularity <= 0 then
+				break
+			end
+			local exerciseType = exerciseTypes[index]
+			local regularityBefore = fitness:getRegularity(exerciseType)
+			if regularityBefore < 100 then
+				fitness:setCurrentExercise(exerciseType)
+				fitness:incRegularity()
+				local regularityIncrease = fitness:getRegularity(exerciseType) - regularityBefore
+				if regularityIncrease > 0 then
+					remainingRegularity = remainingRegularity - regularityIncrease
+					madeProgress = true
+				end
+			end
+		end
+		if not madeProgress then
+			break
+		end
+	end
+	fitness:setCurrentExercise(nil)
 end
 
 ---Creates modData for player if it doesn't exist and fills it with default values if they don't exist. Should be ran on character creation and loading.
@@ -578,15 +592,21 @@ function ETW_ModData.createETWModData(playerIndex, player)
 	modData.GymTraitsSystem = modData.GymTraitsSystem or {}
 	local gymTraitsSystem = modData.GymTraitsSystem
 	if gymTraitsSystem.GymTraitsSystemCounter == nil then
+		local initialCounter
+		local initialRegularity
 		if startingTraits[ETWTraitsRegistry.GYM_RAT:toString()] == true then 
-			gymTraitsSystem.GymTraitsSystemCounter = SBvars.GymTraitsSystemCounter
-			setInitialExerciseRegularity(player, SBvars.GymTraitsSystemStartingGymRatRegularity or 0)
+			initialCounter = SBvars.GymTraitsSystemCounter
+			initialRegularity = SBvars.GymTraitsSystemStartingGymRatRegularity or 0
 		elseif startingTraits[ETWTraitsRegistry.GYM_HATER:toString()] == true then
-			gymTraitsSystem.GymTraitsSystemCounter = -SBvars.GymTraitsSystemCounter
+			initialCounter = -SBvars.GymTraitsSystemCounter
 		else
-			gymTraitsSystem.GymTraitsSystemCounter = 0
-			setInitialExerciseRegularity(player, SBvars.GymTraitsSystemStartingNoTraitRegularity or 0)
+			initialCounter = 0
+			initialRegularity = SBvars.GymTraitsSystemStartingNoTraitRegularity or 0
 		end
+		if initialRegularity ~= nil and isFreshCharacter(player) then
+			topUpInitialExerciseRegularity(player, initialRegularity)
+		end
+		gymTraitsSystem.GymTraitsSystemCounter = initialCounter
 	end
 	gymTraitsSystem.HoursSinceLastWorkout = gymTraitsSystem.HoursSinceLastWorkout
 		or math.max(0, SBvars.GymTraitsSystemWorkoutGracePeriodHours or 16)

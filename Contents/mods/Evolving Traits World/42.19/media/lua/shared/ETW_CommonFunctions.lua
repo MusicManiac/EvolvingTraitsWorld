@@ -566,8 +566,17 @@ end
 
 ---Immediately refreshes ETW ModData on the owning multiplayer client.
 ---@param player IsoPlayer|IsoGameCharacter
-function ETW_CommonFunctions.syncETWModDataToClient(player)
+---@param createIfMissing boolean|nil Whether missing server ModData should be initialized before syncing.
+function ETW_CommonFunctions.syncETWModDataToClient(player, createIfMissing)
 	if gameMode ~= ETW_CommonFunctions.GameMode.MP_SERVER then
+		return
+	end
+	local playerModData = player:getModData()
+	if
+		createIfMissing == false
+		and not modDataReferences[player]
+		and (not playerModData or not playerModData.EvolvingTraitsWorld)
+	then
 		return
 	end
 	local modData = ETW_CommonFunctions.getETWModData(player)
