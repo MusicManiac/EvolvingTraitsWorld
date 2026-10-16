@@ -1,11 +1,6 @@
 [url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
 
-v.14.6.0
+v.14.6.2
 
-- General:
-  - Lowered bloodlust decay by 15%
-- Fix:
-  - Fixed Hunter requirements in UI being outdated
-  - Fixed bloodlust counter being able to go below intended floor.
 - Translations:
-  - Translations gained 435 completed entries across 5 languages since v.14.5.0: +215 DE, +101 CN, +82 RU, +23 FR, +14 TR. Overall completion changed from 61.06% to 66.41%. [url=https://weblate.musicmaniac.dev/engage/evolving-traits-world-etw/]Contribute or fix few lines on Weblate[/url].
+  - Translations gained 419 completed entries across 5 languages since v.14.6.1: +208 RU, +96 KO, +93 PTBR, +19 FR, +3 DE. Overall completion changed from 66.41% to 69.46%. [url=https://weblate.musicmaniac.dev/engage/evolving-traits-world-etw/]Contribute or fix few lines on Weblate[/url].

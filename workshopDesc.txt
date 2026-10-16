@@ -32,16 +32,16 @@ Currently mod supports following languages:
 [*]English (100.0%)
 [*]簡体中文 / Simplified Chinese (100.0%)
 [*]Türkçe / Turkish (100.0%)
-[*]French / Français (85.1%)
-[*]Русский / Russian (82.5%)
+[*]Русский / Russian (99.4%)
+[*]French / Français (86.9%)
 [*]日本語 / Japanese (76.5%)
 [*]Українська / Ukrainian (76.5%)
 [*]Italiano / Italian (75.0%)
-[*]Deutsch / German (49.8%)
+[*]Deutsch / German (50.0%)
 [*]Español / Spanish (44.0%)
+[*]한국어 / Korean (38.8%)
 [*]繁體中文 / Traditional Chinese (30.0%)
-[*]한국어 / Korean (29.7%)
-[*]Português Brasileiro / Brazilian Portuguese (16.8%)
+[*]Português Brasileiro / Brazilian Portuguese (25.6%)
 [/list]
 
 [h1]Afterword and Permission[/h1]
