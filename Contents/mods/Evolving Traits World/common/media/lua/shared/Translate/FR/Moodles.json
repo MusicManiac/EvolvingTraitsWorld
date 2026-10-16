@@ -10,13 +10,13 @@
     "Moodles_AlcoholicWithdrawalMoodle_Good_desc_lvl1": "",
     "Moodles_AlcoholicWithdrawalMoodle_Good_desc_lvl2": "",
     "Moodles_SleepHealthMoodle_Custom": "Sommeil décalé de %1 h par rapport à l'heure optimale",
-    "Moodles_AlcoholicWithdrawalMoodle_Bad_lvl2": "",
-    "Moodles_AlcoholicWithdrawalMoodle_Bad_lvl3": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_lvl2": "Manque moyen d'alcool",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_lvl3": "Manque Sévère d'alcool",
     "Moodles_AlcoholicWithdrawalMoodle_Good_lvl1": "",
     "Moodles_AlcoholicWithdrawalMoodle_Good_lvl2": "",
-    "Moodles_AlcoholicWithdrawalMoodle_Bad_desc_effects_continued": "",
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_desc_effects_continued": "<br>Changement de température : %1%% par minute quand rien n'est actif (+/-1 degré par minute pour %2 minutes). <br>",
     "Moodles_AlcoholicWithdrawalMoodle_Bad_desc_lvl1": "",
     "Moodles_AlcoholicWithdrawalMoodle_Bad_desc_lvl2": "",
     "Moodles_AlcoholicWithdrawalMoodle_Bad_desc_lvl3": "",
-    "Moodles_AlcoholicWithdrawalMoodle_Bad_lvl1": ""
+    "Moodles_AlcoholicWithdrawalMoodle_Bad_lvl1": "Léger manque d'alcool"
 }

@@ -28,8 +28,8 @@
 
         "FR": {
             "total": 287,
-            "translated": 267,
-            "needs_editing": 6
+            "translated": 286,
+            "needs_editing": 0
         },
 
         "IT": {
@@ -46,14 +46,14 @@
 
         "KO": {
             "total": 287,
-            "translated": 87,
+            "translated": 183,
             "needs_editing": 0
         },
 
         "PTBR": {
             "total": 287,
-            "translated": 82,
-            "needs_editing": 0
+            "translated": 175,
+            "needs_editing": 2
         },
 
         "RU": {
