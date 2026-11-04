@@ -1,6 +1,8 @@
 [url=https://github.com/MusicManiac/EvolvingTraitsWorld/blob/main/CHANGELOG.md](Properly formatted changelog can be found here)[/url]
 
-v.14.6.2
+v.14.6.3
 
 - Translations:
-  - Translations gained 419 completed entries across 5 languages since v.14.6.1: +208 RU, +96 KO, +93 PTBR, +19 FR, +3 DE. Overall completion changed from 66.41% to 69.46%. [url=https://weblate.musicmaniac.dev/engage/evolving-traits-world-etw/]Contribute or fix few lines on Weblate[/url].
+  - Translations gained 41 completed entries across 3 languages since v.14.6.2: +36 ES, +3 KO, +2 RU.
+  - Existing translations revised: 488 across 2 languages: 487 RU, 1 ES.
+  - Overall completion changed from 69.46% to 69.75%. [url=https://weblate.musicmaniac.dev/engage/evolving-traits-world-etw/]Contribute or fix few lines on Weblate[/url].

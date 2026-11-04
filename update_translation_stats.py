@@ -156,6 +156,39 @@ def git_statistics_documents(ref: str) -> list[tuple[str, dict[str, Any]]]:
     return documents
 
 
+def revised_translation_counts(baseline_ref: str, current_ref: str | None) -> dict[str, int]:
+    """Count final changes to existing nonempty translations by JSON key."""
+    baseline_commit = resolve_git_ref(baseline_ref)
+    current_commit = resolve_git_ref(current_ref) if current_ref else None
+    counts: dict[str, int] = {}
+    for language in sorted(target_languages()):
+        count = 0
+        for filename in ("Moodles.json", "Sandbox.json", "UI.json"):
+            path = (TRANSLATIONS_DIRECTORY / language / filename)
+            relative_path = path.relative_to(REPOSITORY_ROOT).as_posix()
+            old_source = f"{baseline_ref}:{relative_path}"
+            old = load_json_text(
+                git_output(["show", f"{baseline_commit}:{relative_path}"], f"read {old_source}"),
+                old_source,
+            )
+            if current_commit:
+                new_source = f"{current_ref}:{relative_path}"
+                new = load_json_text(
+                    git_output(["show", f"{current_commit}:{relative_path}"], f"read {new_source}"),
+                    new_source,
+                )
+            else:
+                new = load_json(path)
+            count += sum(
+                1 for key, value in old.items()
+                if isinstance(value, str) and value
+                and isinstance(new.get(key), str) and new[key]
+                and value != new[key]
+            )
+        counts[language] = count
+    return counts
+
+
 def aggregate_statistics(
     documents: Iterable[tuple[str, dict[str, Any]]] | None = None,
 ) -> dict[str, tuple[int, int, int]]:
@@ -407,6 +440,7 @@ def release_translation_summary(
     baseline: dict[str, tuple[int, int, int]],
     baseline_tag: str,
     ignored_per_language: int,
+    revised_counts: dict[str, int] | None = None,
 ) -> str | None:
     """Return a Markdown release summary for translation-count changes."""
     if current.keys() != baseline.keys():
@@ -436,7 +470,8 @@ def release_translation_summary(
         for language in current
     }
     delta = sum(language_deltas.values())
-    if not any(language_deltas.values()) and current_capacity == baseline_capacity:
+    revised_counts = revised_counts or {}
+    if not any(language_deltas.values()) and current_capacity == baseline_capacity and not any(revised_counts.values()):
         return None
     gained_languages = sorted(
         (language for language, change in language_deltas.items() if change > 0),
@@ -474,25 +509,50 @@ def release_translation_summary(
         opening = (
             f"Translations have a net loss of {abs(delta)} completed {entry_word}"
         )
-    else:
+    elif gained_languages or lost_languages:
         affected_languages = sorted(
             (*gained_languages, *lost_languages),
             key=lambda language: (-abs(language_deltas[language]), language),
         )
         opening = "Translation completion has no net change in completed entries"
+    else:
+        affected_languages = []
+        opening = "Translation completion is unchanged"
 
     language_word = "language" if len(affected_languages) == 1 else "languages"
     language_changes = ", ".join(
         f"{language_deltas[language]:+d} {language}"
         for language in affected_languages
     )
-
-    return (
+    completion_summary = (
         f"{opening} across {len(affected_languages)} {language_word} "
-        f"since {baseline_tag}: {language_changes}. Overall completion changed from "
-        f"{baseline_percent:.2f}% to {current_percent:.2f}%. "
+        f"since {baseline_tag}: {language_changes}. "
+        if affected_languages else f"{opening} since {baseline_tag}. "
+    )
+
+    revision_languages = sorted(
+        (language for language, count in revised_counts.items() if count),
+        key=lambda language: (-revised_counts[language], language),
+    )
+    revision_summary = ""
+    if revision_languages:
+        revision_details = ", ".join(
+            f"{revised_counts[language]} {language}" for language in revision_languages
+        )
+        revision_summary = (
+            f"Existing translations revised: {sum(revised_counts.values())} "
+            f"across {len(revision_languages)} languages: {revision_details}. "
+        )
+
+    lines = [completion_summary.strip()]
+    if revision_summary:
+        lines.append(revision_summary.strip())
+    lines.append(
+        f"Overall completion changed from {baseline_percent:.2f}% to "
+        f"{current_percent:.2f}%. "
         f"[Contribute or fix few lines on Weblate]({WEBLATE_URL})."
     )
+    return "\n".join(f"  - {line}" for line in lines)
 
 
 def updated_changelog(
@@ -501,6 +561,7 @@ def updated_changelog(
     baseline: dict[str, tuple[int, int, int]],
     baseline_tag: str,
     ignored_per_language: int,
+    revised_counts: dict[str, int] | None = None,
 ) -> tuple[str, str | None]:
     """Return CHANGELOG.md with one idempotent generated translation entry."""
     lines = changelog.splitlines(keepends=True)
@@ -508,14 +569,31 @@ def updated_changelog(
     marker_pattern = re.compile(
         rf"<!-- {re.escape(CHANGELOG_MARKER)} [^>]+ -->"
     )
-    release_lines = [
-        line for line in lines[start:end] if marker_pattern.search(line) is None
+    release_lines = list(lines[start:end])
+    marker_indices = [
+        index for index, line in enumerate(release_lines)
+        if marker_pattern.search(line) is not None
     ]
+    if len(marker_indices) > 1:
+        raise TranslationStatsError(
+            "The newest changelog release has multiple generated translation entries."
+        )
+    if marker_indices:
+        marker_index = marker_indices[0]
+        first_index = marker_index
+        while first_index > 0 and release_lines[first_index - 1].startswith(
+            ("  - Translations gained ", "  - Translations had ",
+             "  - Translations have ", "  - Translation completion ",
+             "  - Existing translations revised: ")
+        ):
+            first_index -= 1
+        del release_lines[first_index:marker_index + 1]
     summary = release_translation_summary(
         current,
         baseline,
         baseline_tag,
         ignored_per_language,
+        revised_counts,
     )
     if summary is not None:
         release_version = release_lines[0].removeprefix("## ").strip()
@@ -525,10 +603,11 @@ def updated_changelog(
                 "add the new release heading before generating its translation entry."
             )
         newline = "\r\n" if "\r\n" in changelog else "\n"
-        generated_line = (
-            f"  - {summary} "
-            f"<!-- {CHANGELOG_MARKER} baseline={baseline_tag} "
-            f"ignore-per-language={ignored_per_language} -->{newline}"
+        generated_lines = [f"{line}{newline}" for line in summary.splitlines()]
+        generated_lines[-1] = (
+            generated_lines[-1].rstrip("\r\n")
+            + f" <!-- {CHANGELOG_MARKER} baseline={baseline_tag} "
+            + f"ignore-per-language={ignored_per_language} -->{newline}"
         )
         translations_indices = [
             index
@@ -544,14 +623,14 @@ def updated_changelog(
             while translations_index > 0 and not release_lines[translations_index - 1].strip():
                 del release_lines[translations_index - 1]
                 translations_index -= 1
-            release_lines.insert(translations_index + 1, generated_line)
+            release_lines[translations_index + 1:translations_index + 1] = generated_lines
         else:
             while release_lines and not release_lines[-1].strip():
                 release_lines.pop()
             release_lines.extend(
                 [
                     f"- Translations:{newline}",
-                    generated_line,
+                    *generated_lines,
                     newline,
                 ]
             )
@@ -632,6 +711,7 @@ def main() -> int:
         baseline_statistics = aggregate_statistics(
             git_statistics_documents(baseline_tag)
         )
+        revised_counts = revised_translation_counts(baseline_tag, args.weblate_branch)
         updated_ui, generated = updated_english_ui(statistics)
         updated_description = updated_workshop_description(generated)
         release_summary = release_translation_summary(
@@ -639,6 +719,7 @@ def main() -> int:
             baseline_statistics,
             baseline_tag,
             ignored_per_language,
+            revised_counts,
         )
         detached_changelog_preview = (
             args.weblate_branch is not None
@@ -654,6 +735,7 @@ def main() -> int:
                 baseline_statistics,
                 baseline_tag,
                 ignored_per_language,
+                revised_counts,
             )
         current_ui = ENGLISH_UI_PATH.read_text(encoding="utf-8")
         current_description = WORKSHOP_DESCRIPTION_PATH.read_text(encoding="utf-8")
