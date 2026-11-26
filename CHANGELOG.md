@@ -1,3 +1,11 @@
+## v.14.6.4
+###### 26 Nov 2026
+- Translations:
+  - Translations gained 202 completed entries across 2 languages since v.14.6.3: +177 PTBR, +25 KO.
+  - Existing translations revised: 24 across 2 languages: 19 PTBR, 5 KO.
+  - Overall completion changed from 69.75% to 71.22%. [Contribute or fix few lines on Weblate](https://weblate.musicmaniac.dev/engage/evolving-traits-world-etw/).
+  - Want your language added so you can translate it? Let me know. <!-- generated:translation-stats baseline=v.14.6.3 ignore-per-language=0 -->
+
 ## v.14.6.3
 ###### 04 Nov 2026
 - Translations:

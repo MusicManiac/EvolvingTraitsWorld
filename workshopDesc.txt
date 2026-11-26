@@ -39,9 +39,9 @@ Currently mod supports following languages:
 [*]Italiano / Italian (75.0%)
 [*]Deutsch / German (50.0%)
 [*]Español / Spanish (47.4%)
-[*]한국어 / Korean (39.1%)
+[*]Português Brasileiro / Brazilian Portuguese (42.4%)
+[*]한국어 / Korean (41.4%)
 [*]繁體中文 / Traditional Chinese (30.0%)
-[*]Português Brasileiro / Brazilian Portuguese (25.6%)
 [/list]
 
 [h1]Afterword and Permission[/h1]

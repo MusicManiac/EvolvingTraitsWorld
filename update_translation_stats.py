@@ -552,6 +552,7 @@ def release_translation_summary(
         f"{current_percent:.2f}%. "
         f"[Contribute or fix few lines on Weblate]({WEBLATE_URL})."
     )
+    lines.append("Want your language added so you can translate it? Let me know.")
     return "\n".join(f"  - {line}" for line in lines)
 
 
